@@ -484,7 +484,7 @@ Module hash.
                                     "to_vec",
                                     []
                                   |),
-                                  [ (* Unsize *) M.pointer_coercion output ]
+                                  [ output ]
                                 |)
                               ]
                             |)

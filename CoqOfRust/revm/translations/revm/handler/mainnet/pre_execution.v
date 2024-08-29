@@ -231,8 +231,7 @@ Module handler.
                                               "coinbase"
                                             |)
                                           |);
-                                          (* Unsize *)
-                                          M.pointer_coercion (M.alloc (| Value.Array [] |));
+                                          M.alloc (| Value.Array [] |);
                                           M.SubPointer.get_struct_record_field (|
                                             M.SubPointer.get_struct_record_field (|
                                               M.SubPointer.get_struct_record_field (|

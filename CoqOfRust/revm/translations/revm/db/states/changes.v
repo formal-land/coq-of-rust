@@ -179,31 +179,25 @@ Module db.
                   M.read (| f |);
                   M.read (| Value.String "StateChangeset" |);
                   M.read (| Value.String "accounts" |);
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "revm::db::states::changes::StateChangeset",
-                      "accounts"
-                    |));
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "revm::db::states::changes::StateChangeset",
+                    "accounts"
+                  |);
                   M.read (| Value.String "storage" |);
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.SubPointer.get_struct_record_field (|
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "revm::db::states::changes::StateChangeset",
+                    "storage"
+                  |);
+                  M.read (| Value.String "contracts" |);
+                  M.alloc (|
+                    M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
                       "revm::db::states::changes::StateChangeset",
-                      "storage"
-                    |));
-                  M.read (| Value.String "contracts" |);
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.alloc (|
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "revm::db::states::changes::StateChangeset",
-                        "contracts"
-                      |)
-                    |))
+                      "contracts"
+                    |)
+                  |)
                 ]
               |)))
           | _, _, _ => M.impossible
@@ -440,31 +434,25 @@ Module db.
                   M.read (| f |);
                   M.read (| Value.String "PlainStorageChangeset" |);
                   M.read (| Value.String "address" |);
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "revm::db::states::changes::PlainStorageChangeset",
-                      "address"
-                    |));
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "revm::db::states::changes::PlainStorageChangeset",
+                    "address"
+                  |);
                   M.read (| Value.String "wipe_storage" |);
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.SubPointer.get_struct_record_field (|
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "revm::db::states::changes::PlainStorageChangeset",
+                    "wipe_storage"
+                  |);
+                  M.read (| Value.String "storage" |);
+                  M.alloc (|
+                    M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
                       "revm::db::states::changes::PlainStorageChangeset",
-                      "wipe_storage"
-                    |));
-                  M.read (| Value.String "storage" |);
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.alloc (|
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "revm::db::states::changes::PlainStorageChangeset",
-                        "storage"
-                      |)
-                    |))
+                      "storage"
+                    |)
+                  |)
                 ]
               |)))
           | _, _, _ => M.impossible
@@ -606,17 +594,6 @@ Module db.
             (* Trait polymorphic types *) []
             (* Instance *) [ ("eq", InstanceField.Method eq) ].
       End Impl_core_cmp_PartialEq_for_revm_db_states_changes_PlainStorageChangeset.
-      
-      Module Impl_core_marker_StructuralEq_for_revm_db_states_changes_PlainStorageChangeset.
-        Definition Self : Ty.t := Ty.path "revm::db::states::changes::PlainStorageChangeset".
-        
-        Axiom Implements :
-          M.IsTraitInstance
-            "core::marker::StructuralEq"
-            Self
-            (* Trait polymorphic types *) []
-            (* Instance *) [].
-      End Impl_core_marker_StructuralEq_for_revm_db_states_changes_PlainStorageChangeset.
       
       Module Impl_core_cmp_Eq_for_revm_db_states_changes_PlainStorageChangeset.
         Definition Self : Ty.t := Ty.path "revm::db::states::changes::PlainStorageChangeset".
@@ -867,31 +844,25 @@ Module db.
                   M.read (| f |);
                   M.read (| Value.String "PlainStorageRevert" |);
                   M.read (| Value.String "address" |);
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "revm::db::states::changes::PlainStorageRevert",
-                      "address"
-                    |));
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "revm::db::states::changes::PlainStorageRevert",
+                    "address"
+                  |);
                   M.read (| Value.String "wiped" |);
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.SubPointer.get_struct_record_field (|
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "revm::db::states::changes::PlainStorageRevert",
+                    "wiped"
+                  |);
+                  M.read (| Value.String "storage_revert" |);
+                  M.alloc (|
+                    M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
                       "revm::db::states::changes::PlainStorageRevert",
-                      "wiped"
-                    |));
-                  M.read (| Value.String "storage_revert" |);
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.alloc (|
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "revm::db::states::changes::PlainStorageRevert",
-                        "storage_revert"
-                      |)
-                    |))
+                      "storage_revert"
+                    |)
+                  |)
                 ]
               |)))
           | _, _, _ => M.impossible
@@ -1027,17 +998,6 @@ Module db.
             (* Trait polymorphic types *) []
             (* Instance *) [ ("eq", InstanceField.Method eq) ].
       End Impl_core_cmp_PartialEq_for_revm_db_states_changes_PlainStorageRevert.
-      
-      Module Impl_core_marker_StructuralEq_for_revm_db_states_changes_PlainStorageRevert.
-        Definition Self : Ty.t := Ty.path "revm::db::states::changes::PlainStorageRevert".
-        
-        Axiom Implements :
-          M.IsTraitInstance
-            "core::marker::StructuralEq"
-            Self
-            (* Trait polymorphic types *) []
-            (* Instance *) [].
-      End Impl_core_marker_StructuralEq_for_revm_db_states_changes_PlainStorageRevert.
       
       Module Impl_core_cmp_Eq_for_revm_db_states_changes_PlainStorageRevert.
         Definition Self : Ty.t := Ty.path "revm::db::states::changes::PlainStorageRevert".
@@ -1307,23 +1267,19 @@ Module db.
                   M.read (| f |);
                   M.read (| Value.String "PlainStateReverts" |);
                   M.read (| Value.String "accounts" |);
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.SubPointer.get_struct_record_field (|
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "revm::db::states::changes::PlainStateReverts",
+                    "accounts"
+                  |);
+                  M.read (| Value.String "storage" |);
+                  M.alloc (|
+                    M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
                       "revm::db::states::changes::PlainStateReverts",
-                      "accounts"
-                    |));
-                  M.read (| Value.String "storage" |);
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.alloc (|
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "revm::db::states::changes::PlainStateReverts",
-                        "storage"
-                      |)
-                    |))
+                      "storage"
+                    |)
+                  |)
                 ]
               |)))
           | _, _, _ => M.impossible

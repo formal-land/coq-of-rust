@@ -865,17 +865,15 @@ Module instructions.
                                                       []
                                                     |),
                                                     [
-                                                      (* Unsize *)
-                                                      M.pointer_coercion
-                                                        (M.alloc (|
-                                                          Value.Array
-                                                            [
-                                                              M.read (|
-                                                                Value.String
-                                                                  "Panic if data section is not full"
-                                                              |)
-                                                            ]
-                                                        |))
+                                                      M.alloc (|
+                                                        Value.Array
+                                                          [
+                                                            M.read (|
+                                                              Value.String
+                                                                "Panic if data section is not full"
+                                                            |)
+                                                          ]
+                                                      |)
                                                     ]
                                                   |)
                                                 ]
@@ -2971,10 +2969,7 @@ Module instructions.
                                       |)
                                     |)));
                                 fun γ =>
-                                  ltac:(M.monadic
-                                    (M.alloc (|
-                                      (* Unsize *) M.pointer_coercion (M.alloc (| Value.Array [] |))
-                                    |)))
+                                  ltac:(M.monadic (M.alloc (| M.alloc (| Value.Array [] |) |)))
                               ]
                             |)
                           |) in
@@ -3138,45 +3133,42 @@ Module instructions.
                                     [ Ty.path "u8" ]
                                   |),
                                   [
-                                    (* Unsize *)
-                                    M.pointer_coercion
-                                      (M.alloc (|
-                                        Value.Array
-                                          [
-                                            M.call_closure (|
-                                              M.get_trait_method (|
-                                                "core::ops::deref::Deref",
-                                                Ty.path "bytes::bytes::Bytes",
-                                                [],
-                                                "deref",
-                                                []
-                                              |),
-                                              [
-                                                M.call_closure (|
-                                                  M.get_trait_method (|
-                                                    "core::ops::deref::Deref",
-                                                    Ty.path "alloy_primitives::bytes_::Bytes",
-                                                    [],
-                                                    "deref",
-                                                    []
-                                                  |),
-                                                  [
-                                                    M.call_closure (|
-                                                      M.get_associated_function (|
-                                                        Ty.path
-                                                          "revm_primitives::bytecode::eof::Eof",
-                                                        "raw",
-                                                        []
-                                                      |),
-                                                      [ new_eof ]
-                                                    |)
-                                                  ]
-                                                |)
-                                              ]
-                                            |);
-                                            M.read (| aux_slice |)
-                                          ]
-                                      |))
+                                    M.alloc (|
+                                      Value.Array
+                                        [
+                                          M.call_closure (|
+                                            M.get_trait_method (|
+                                              "core::ops::deref::Deref",
+                                              Ty.path "bytes::bytes::Bytes",
+                                              [],
+                                              "deref",
+                                              []
+                                            |),
+                                            [
+                                              M.call_closure (|
+                                                M.get_trait_method (|
+                                                  "core::ops::deref::Deref",
+                                                  Ty.path "alloy_primitives::bytes_::Bytes",
+                                                  [],
+                                                  "deref",
+                                                  []
+                                                |),
+                                                [
+                                                  M.call_closure (|
+                                                    M.get_associated_function (|
+                                                      Ty.path "revm_primitives::bytecode::eof::Eof",
+                                                      "raw",
+                                                      []
+                                                    |),
+                                                    [ new_eof ]
+                                                  |)
+                                                ]
+                                              |)
+                                            ]
+                                          |);
+                                          M.read (| aux_slice |)
+                                        ]
+                                    |)
                                   ]
                                 |)
                               ]

@@ -105,31 +105,25 @@ Module bytecode.
                 M.read (| f |);
                 M.read (| Value.String "LegacyAnalyzedBytecode" |);
                 M.read (| Value.String "bytecode" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "revm_primitives::bytecode::legacy::LegacyAnalyzedBytecode",
-                    "bytecode"
-                  |));
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "revm_primitives::bytecode::legacy::LegacyAnalyzedBytecode",
+                  "bytecode"
+                |);
                 M.read (| Value.String "original_len" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.SubPointer.get_struct_record_field (|
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "revm_primitives::bytecode::legacy::LegacyAnalyzedBytecode",
+                  "original_len"
+                |);
+                M.read (| Value.String "jump_table" |);
+                M.alloc (|
+                  M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
                     "revm_primitives::bytecode::legacy::LegacyAnalyzedBytecode",
-                    "original_len"
-                  |));
-                M.read (| Value.String "jump_table" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.alloc (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "revm_primitives::bytecode::legacy::LegacyAnalyzedBytecode",
-                      "jump_table"
-                    |)
-                  |))
+                    "jump_table"
+                  |)
+                |)
               ]
             |)))
         | _, _, _ => M.impossible
@@ -237,17 +231,6 @@ Module bytecode.
           (* Trait polymorphic types *) []
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
     End Impl_core_cmp_PartialEq_for_revm_primitives_bytecode_legacy_LegacyAnalyzedBytecode.
-    
-    Module Impl_core_marker_StructuralEq_for_revm_primitives_bytecode_legacy_LegacyAnalyzedBytecode.
-      Definition Self : Ty.t := Ty.path "revm_primitives::bytecode::legacy::LegacyAnalyzedBytecode".
-      
-      Axiom Implements :
-        M.IsTraitInstance
-          "core::marker::StructuralEq"
-          Self
-          (* Trait polymorphic types *) []
-          (* Instance *) [].
-    End Impl_core_marker_StructuralEq_for_revm_primitives_bytecode_legacy_LegacyAnalyzedBytecode.
     
     Module Impl_core_cmp_Eq_for_revm_primitives_bytecode_legacy_LegacyAnalyzedBytecode.
       Definition Self : Ty.t := Ty.path "revm_primitives::bytecode::legacy::LegacyAnalyzedBytecode".
@@ -402,10 +385,7 @@ Module bytecode.
                       "from_static",
                       []
                     |),
-                    [
-                      (* Unsize *)
-                      M.pointer_coercion (M.alloc (| Value.Array [ Value.Integer 0 ] |))
-                    ]
+                    [ M.alloc (| Value.Array [ Value.Integer 0 ] |) ]
                   |));
                 ("original_len", Value.Integer 0);
                 ("jump_table",

@@ -68,23 +68,19 @@ Module inspector.
                 M.read (| f |);
                 M.read (| Value.String "GasInspector" |);
                 M.read (| Value.String "gas_remaining" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.SubPointer.get_struct_record_field (|
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "revm::inspector::gas::GasInspector",
+                  "gas_remaining"
+                |);
+                M.read (| Value.String "last_gas_cost" |);
+                M.alloc (|
+                  M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
                     "revm::inspector::gas::GasInspector",
-                    "gas_remaining"
-                  |));
-                M.read (| Value.String "last_gas_cost" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.alloc (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "revm::inspector::gas::GasInspector",
-                      "last_gas_cost"
-                    |)
-                  |))
+                    "last_gas_cost"
+                  |)
+                |)
               ]
             |)))
         | _, _, _ => M.impossible

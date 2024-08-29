@@ -92,47 +92,37 @@ Module db.
                 M.read (| f |);
                 M.read (| Value.String "CacheDB" |);
                 M.read (| Value.String "accounts" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "revm::db::in_memory_db::CacheDB",
-                    "accounts"
-                  |));
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "revm::db::in_memory_db::CacheDB",
+                  "accounts"
+                |);
                 M.read (| Value.String "contracts" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "revm::db::in_memory_db::CacheDB",
-                    "contracts"
-                  |));
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "revm::db::in_memory_db::CacheDB",
+                  "contracts"
+                |);
                 M.read (| Value.String "logs" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "revm::db::in_memory_db::CacheDB",
-                    "logs"
-                  |));
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "revm::db::in_memory_db::CacheDB",
+                  "logs"
+                |);
                 M.read (| Value.String "block_hashes" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.SubPointer.get_struct_record_field (|
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "revm::db::in_memory_db::CacheDB",
+                  "block_hashes"
+                |);
+                M.read (| Value.String "db" |);
+                M.alloc (|
+                  M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
                     "revm::db::in_memory_db::CacheDB",
-                    "block_hashes"
-                  |));
-                M.read (| Value.String "db" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.alloc (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "revm::db::in_memory_db::CacheDB",
-                      "db"
-                    |)
-                  |))
+                    "db"
+                  |)
+                |)
               ]
             |)))
         | _, _, _ => M.impossible
@@ -4435,31 +4425,25 @@ Module db.
                 M.read (| f |);
                 M.read (| Value.String "DbAccount" |);
                 M.read (| Value.String "info" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "revm::db::in_memory_db::DbAccount",
-                    "info"
-                  |));
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "revm::db::in_memory_db::DbAccount",
+                  "info"
+                |);
                 M.read (| Value.String "account_state" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.SubPointer.get_struct_record_field (|
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "revm::db::in_memory_db::DbAccount",
+                  "account_state"
+                |);
+                M.read (| Value.String "storage" |);
+                M.alloc (|
+                  M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
                     "revm::db::in_memory_db::DbAccount",
-                    "account_state"
-                  |));
-                M.read (| Value.String "storage" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.alloc (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "revm::db::in_memory_db::DbAccount",
-                      "storage"
-                    |)
-                  |))
+                    "storage"
+                  |)
+                |)
               ]
             |)))
         | _, _, _ => M.impossible
@@ -5067,7 +5051,7 @@ Module db.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ __self_tag :=
+              let~ __self_discr :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -5077,7 +5061,7 @@ Module db.
                     [ M.read (| self |) ]
                   |)
                 |) in
-              let~ __arg1_tag :=
+              let~ __arg1_discr :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -5087,7 +5071,7 @@ Module db.
                     [ M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)) |)
+              M.alloc (| BinOp.Pure.eq (M.read (| __self_discr |)) (M.read (| __arg1_discr |)) |)
             |)))
         | _, _, _ => M.impossible
         end.
@@ -5099,17 +5083,6 @@ Module db.
           (* Trait polymorphic types *) []
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
     End Impl_core_cmp_PartialEq_for_revm_db_in_memory_db_AccountState.
-    
-    Module Impl_core_marker_StructuralEq_for_revm_db_in_memory_db_AccountState.
-      Definition Self : Ty.t := Ty.path "revm::db::in_memory_db::AccountState".
-      
-      Axiom Implements :
-        M.IsTraitInstance
-          "core::marker::StructuralEq"
-          Self
-          (* Trait polymorphic types *) []
-          (* Instance *) [].
-    End Impl_core_marker_StructuralEq_for_revm_db_in_memory_db_AccountState.
     
     Module Impl_core_cmp_Eq_for_revm_db_in_memory_db_AccountState.
       Definition Self : Ty.t := Ty.path "revm::db::in_memory_db::AccountState".
@@ -5148,7 +5121,7 @@ Module db.
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
             M.read (|
-              let~ __self_tag :=
+              let~ __self_discr :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -5161,7 +5134,7 @@ Module db.
               M.alloc (|
                 M.call_closure (|
                   M.get_trait_method (| "core::hash::Hash", Ty.path "isize", [], "hash", [ __H ] |),
-                  [ __self_tag; M.read (| state |) ]
+                  [ __self_discr; M.read (| state |) ]
                 |)
               |)
             |)))
@@ -5244,22 +5217,18 @@ Module db.
               [
                 M.read (| f |);
                 M.read (| Value.String "BenchmarkDB" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.SubPointer.get_struct_tuple_field (|
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "revm::db::in_memory_db::BenchmarkDB",
+                  0
+                |);
+                M.alloc (|
+                  M.SubPointer.get_struct_tuple_field (|
                     M.read (| self |),
                     "revm::db::in_memory_db::BenchmarkDB",
-                    0
-                  |));
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.alloc (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      M.read (| self |),
-                      "revm::db::in_memory_db::BenchmarkDB",
-                      1
-                    |)
-                  |))
+                    1
+                  |)
+                |)
               ]
             |)))
         | _, _, _ => M.impossible

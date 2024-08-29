@@ -136,23 +136,19 @@ Module context.
                           |)
                         |);
                         M.read (| Value.String "inner" |);
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "revm::context::evm_context::EvmContext",
-                            "inner"
-                          |))
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "revm::context::evm_context::EvmContext",
+                          "inner"
+                        |)
                       ]
                     |);
                     M.read (| Value.String "precompiles" |);
-                    (* Unsize *)
-                    M.pointer_coercion
-                      (M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "revm::context::evm_context::EvmContext",
-                        "inner"
-                      |))
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "revm::context::evm_context::EvmContext",
+                      "inner"
+                    |)
                   ]
                 |)
               ]

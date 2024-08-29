@@ -101,23 +101,19 @@ Module db.
                   M.read (| f |);
                   M.read (| Value.String "CacheAccount" |);
                   M.read (| Value.String "account" |);
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.SubPointer.get_struct_record_field (|
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "revm::db::states::cache_account::CacheAccount",
+                    "account"
+                  |);
+                  M.read (| Value.String "status" |);
+                  M.alloc (|
+                    M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
                       "revm::db::states::cache_account::CacheAccount",
-                      "account"
-                    |));
-                  M.read (| Value.String "status" |);
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.alloc (|
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "revm::db::states::cache_account::CacheAccount",
-                        "status"
-                      |)
-                    |))
+                      "status"
+                    |)
+                  |)
                 ]
               |)))
           | _, _, _ => M.impossible
@@ -215,17 +211,6 @@ Module db.
             (* Trait polymorphic types *) []
             (* Instance *) [ ("eq", InstanceField.Method eq) ].
       End Impl_core_cmp_PartialEq_for_revm_db_states_cache_account_CacheAccount.
-      
-      Module Impl_core_marker_StructuralEq_for_revm_db_states_cache_account_CacheAccount.
-        Definition Self : Ty.t := Ty.path "revm::db::states::cache_account::CacheAccount".
-        
-        Axiom Implements :
-          M.IsTraitInstance
-            "core::marker::StructuralEq"
-            Self
-            (* Trait polymorphic types *) []
-            (* Instance *) [].
-      End Impl_core_marker_StructuralEq_for_revm_db_states_cache_account_CacheAccount.
       
       Module Impl_core_cmp_Eq_for_revm_db_states_cache_account_CacheAccount.
         Definition Self : Ty.t := Ty.path "revm::db::states::cache_account::CacheAccount".

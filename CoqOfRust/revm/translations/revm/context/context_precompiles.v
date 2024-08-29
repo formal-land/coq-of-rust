@@ -120,28 +120,26 @@ Module context.
                         Value.StructTuple
                           "revm::context::context_precompiles::ContextPrecompile::ContextStateful"
                           [
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.call_closure (|
-                                M.get_trait_method (|
-                                  "core::clone::Clone",
-                                  Ty.apply
-                                    (Ty.path "alloc::sync::Arc")
-                                    []
-                                    [
-                                      Ty.dyn
-                                        [
-                                          ("revm::context::context_precompiles::ContextStatefulPrecompile::Trait",
-                                            [])
-                                        ];
-                                      Ty.path "alloc::alloc::Global"
-                                    ],
-                                  [],
-                                  "clone",
+                            M.call_closure (|
+                              M.get_trait_method (|
+                                "core::clone::Clone",
+                                Ty.apply
+                                  (Ty.path "alloc::sync::Arc")
                                   []
-                                |),
-                                [ M.read (| arg0 |) ]
-                              |))
+                                  [
+                                    Ty.dyn
+                                      [
+                                        ("revm::context::context_precompiles::ContextStatefulPrecompile::Trait",
+                                          [])
+                                      ];
+                                    Ty.path "alloc::alloc::Global"
+                                  ],
+                                [],
+                                "clone",
+                                []
+                              |),
+                              [ M.read (| arg0 |) ]
+                            |)
                           ]
                       |)));
                   fun γ =>
@@ -158,28 +156,26 @@ Module context.
                         Value.StructTuple
                           "revm::context::context_precompiles::ContextPrecompile::ContextStatefulMut"
                           [
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.call_closure (|
-                                M.get_trait_method (|
-                                  "core::clone::Clone",
-                                  Ty.apply
-                                    (Ty.path "alloc::boxed::Box")
-                                    []
-                                    [
-                                      Ty.dyn
-                                        [
-                                          ("revm::context::context_precompiles::ContextStatefulPrecompileMut::Trait",
-                                            [])
-                                        ];
-                                      Ty.path "alloc::alloc::Global"
-                                    ],
-                                  [],
-                                  "clone",
+                            M.call_closure (|
+                              M.get_trait_method (|
+                                "core::clone::Clone",
+                                Ty.apply
+                                  (Ty.path "alloc::boxed::Box")
                                   []
-                                |),
-                                [ M.read (| arg0 |) ]
-                              |))
+                                  [
+                                    Ty.dyn
+                                      [
+                                        ("revm::context::context_precompiles::ContextStatefulPrecompileMut::Trait",
+                                          [])
+                                      ];
+                                    Ty.path "alloc::alloc::Global"
+                                  ],
+                                [],
+                                "clone",
+                                []
+                              |),
+                              [ M.read (| arg0 |) ]
+                            |)
                           ]
                       |)))
                 ]

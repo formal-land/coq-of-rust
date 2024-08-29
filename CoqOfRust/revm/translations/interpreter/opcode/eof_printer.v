@@ -199,18 +199,16 @@ Module opcode.
                                                                       []
                                                                     |),
                                                                     [
-                                                                      (* Unsize *)
-                                                                      M.pointer_coercion
-                                                                        (M.alloc (|
-                                                                          Value.Array
-                                                                            [
-                                                                              M.read (|
-                                                                                Value.String
-                                                                                  "Malformed code: immediate out of bounds
+                                                                      M.alloc (|
+                                                                        Value.Array
+                                                                          [
+                                                                            M.read (|
+                                                                              Value.String
+                                                                                "Malformed code: immediate out of bounds
 "
-                                                                              |)
-                                                                            ]
-                                                                        |))
+                                                                            |)
+                                                                          ]
+                                                                      |)
                                                                     ]
                                                                   |)
                                                                 ]
@@ -241,43 +239,39 @@ Module opcode.
                                               []
                                             |),
                                             [
-                                              (* Unsize *)
-                                              M.pointer_coercion
-                                                (M.alloc (|
-                                                  Value.Array [ M.read (| Value.String "" |) ]
-                                                |));
-                                              (* Unsize *)
-                                              M.pointer_coercion
-                                                (M.alloc (|
-                                                  Value.Array
-                                                    [
-                                                      M.call_closure (|
-                                                        M.get_associated_function (|
-                                                          Ty.path "core::fmt::rt::Argument",
-                                                          "new_display",
-                                                          [
-                                                            Ty.apply
-                                                              (Ty.path "&")
-                                                              []
-                                                              [ Ty.path "str" ]
-                                                          ]
-                                                        |),
+                                              M.alloc (|
+                                                Value.Array [ M.read (| Value.String "" |) ]
+                                              |);
+                                              M.alloc (|
+                                                Value.Array
+                                                  [
+                                                    M.call_closure (|
+                                                      M.get_associated_function (|
+                                                        Ty.path "core::fmt::rt::Argument",
+                                                        "new_display",
                                                         [
-                                                          M.alloc (|
-                                                            M.call_closure (|
-                                                              M.get_associated_function (|
-                                                                Ty.path
-                                                                  "revm_interpreter::opcode::OpCodeInfo",
-                                                                "name",
-                                                                []
-                                                              |),
-                                                              [ M.read (| opcode |) ]
-                                                            |)
-                                                          |)
+                                                          Ty.apply
+                                                            (Ty.path "&")
+                                                            []
+                                                            [ Ty.path "str" ]
                                                         ]
-                                                      |)
-                                                    ]
-                                                |))
+                                                      |),
+                                                      [
+                                                        M.alloc (|
+                                                          M.call_closure (|
+                                                            M.get_associated_function (|
+                                                              Ty.path
+                                                                "revm_interpreter::opcode::OpCodeInfo",
+                                                              "name",
+                                                              []
+                                                            |),
+                                                            [ M.read (| opcode |) ]
+                                                          |)
+                                                        |)
+                                                      ]
+                                                    |)
+                                                  ]
+                                              |)
                                             ]
                                           |)
                                         ]
@@ -323,110 +317,100 @@ Module opcode.
                                                         []
                                                       |),
                                                       [
-                                                        (* Unsize *)
-                                                        M.pointer_coercion
-                                                          (M.alloc (|
-                                                            Value.Array
-                                                              [ M.read (| Value.String " : 0x" |) ]
-                                                          |));
-                                                        (* Unsize *)
-                                                        M.pointer_coercion
-                                                          (M.alloc (|
-                                                            Value.Array
-                                                              [
-                                                                M.call_closure (|
-                                                                  M.get_associated_function (|
-                                                                    Ty.path
-                                                                      "core::fmt::rt::Argument",
-                                                                    "new_display",
-                                                                    [
-                                                                      Ty.path
-                                                                        "alloc::string::String"
-                                                                    ]
-                                                                  |),
-                                                                  [
-                                                                    M.alloc (|
-                                                                      M.call_closure (|
-                                                                        M.get_function (|
-                                                                          "const_hex::encode",
-                                                                          [
-                                                                            Ty.apply
-                                                                              (Ty.path "&")
-                                                                              []
-                                                                              [
-                                                                                Ty.apply
-                                                                                  (Ty.path "slice")
-                                                                                  []
-                                                                                  [ Ty.path "u8" ]
-                                                                              ]
-                                                                          ]
-                                                                        |),
+                                                        M.alloc (|
+                                                          Value.Array
+                                                            [ M.read (| Value.String " : 0x" |) ]
+                                                        |);
+                                                        M.alloc (|
+                                                          Value.Array
+                                                            [
+                                                              M.call_closure (|
+                                                                M.get_associated_function (|
+                                                                  Ty.path "core::fmt::rt::Argument",
+                                                                  "new_display",
+                                                                  [ Ty.path "alloc::string::String"
+                                                                  ]
+                                                                |),
+                                                                [
+                                                                  M.alloc (|
+                                                                    M.call_closure (|
+                                                                      M.get_function (|
+                                                                        "const_hex::encode",
                                                                         [
-                                                                          M.call_closure (|
-                                                                            M.get_trait_method (|
-                                                                              "core::ops::index::Index",
+                                                                          Ty.apply
+                                                                            (Ty.path "&")
+                                                                            []
+                                                                            [
                                                                               Ty.apply
                                                                                 (Ty.path "slice")
                                                                                 []
-                                                                                [ Ty.path "u8" ],
-                                                                              [
-                                                                                Ty.apply
-                                                                                  (Ty.path
-                                                                                    "core::ops::range::Range")
-                                                                                  []
-                                                                                  [ Ty.path "usize"
-                                                                                  ]
-                                                                              ],
-                                                                              "index",
+                                                                                [ Ty.path "u8" ]
+                                                                            ]
+                                                                        ]
+                                                                      |),
+                                                                      [
+                                                                        M.call_closure (|
+                                                                          M.get_trait_method (|
+                                                                            "core::ops::index::Index",
+                                                                            Ty.apply
+                                                                              (Ty.path "slice")
                                                                               []
-                                                                            |),
+                                                                              [ Ty.path "u8" ],
                                                                             [
-                                                                              M.read (| code |);
-                                                                              Value.StructRecord
-                                                                                "core::ops::range::Range"
-                                                                                [
-                                                                                  ("start",
-                                                                                    BinOp.Wrap.add
+                                                                              Ty.apply
+                                                                                (Ty.path
+                                                                                  "core::ops::range::Range")
+                                                                                []
+                                                                                [ Ty.path "usize" ]
+                                                                            ],
+                                                                            "index",
+                                                                            []
+                                                                          |),
+                                                                          [
+                                                                            M.read (| code |);
+                                                                            Value.StructRecord
+                                                                              "core::ops::range::Range"
+                                                                              [
+                                                                                ("start",
+                                                                                  BinOp.Wrap.add
+                                                                                    Integer.Usize
+                                                                                    (M.read (| i |))
+                                                                                    (Value.Integer
+                                                                                      1));
+                                                                                ("end_",
+                                                                                  BinOp.Wrap.add
+                                                                                    Integer.Usize
+                                                                                    (BinOp.Wrap.add
                                                                                       Integer.Usize
                                                                                       (M.read (|
                                                                                         i
                                                                                       |))
                                                                                       (Value.Integer
-                                                                                        1));
-                                                                                  ("end_",
-                                                                                    BinOp.Wrap.add
-                                                                                      Integer.Usize
-                                                                                      (BinOp.Wrap.add
-                                                                                        Integer.Usize
-                                                                                        (M.read (|
-                                                                                          i
-                                                                                        |))
-                                                                                        (Value.Integer
-                                                                                          1))
-                                                                                      (M.rust_cast
-                                                                                        (M.call_closure (|
-                                                                                          M.get_associated_function (|
-                                                                                            Ty.path
-                                                                                              "revm_interpreter::opcode::OpCodeInfo",
-                                                                                            "immediate_size",
-                                                                                            []
-                                                                                          |),
-                                                                                          [
-                                                                                            M.read (|
-                                                                                              opcode
-                                                                                            |)
-                                                                                          ]
-                                                                                        |))))
-                                                                                ]
-                                                                            ]
-                                                                          |)
-                                                                        ]
-                                                                      |)
+                                                                                        1))
+                                                                                    (M.rust_cast
+                                                                                      (M.call_closure (|
+                                                                                        M.get_associated_function (|
+                                                                                          Ty.path
+                                                                                            "revm_interpreter::opcode::OpCodeInfo",
+                                                                                          "immediate_size",
+                                                                                          []
+                                                                                        |),
+                                                                                        [
+                                                                                          M.read (|
+                                                                                            opcode
+                                                                                          |)
+                                                                                        ]
+                                                                                      |))))
+                                                                              ]
+                                                                          ]
+                                                                        |)
+                                                                      ]
                                                                     |)
-                                                                  ]
-                                                                |)
-                                                              ]
-                                                          |))
+                                                                  |)
+                                                                ]
+                                                              |)
+                                                            ]
+                                                        |)
                                                       ]
                                                     |)
                                                   ]
@@ -547,18 +531,16 @@ Module opcode.
                                                                         []
                                                                       |),
                                                                       [
-                                                                        (* Unsize *)
-                                                                        M.pointer_coercion
-                                                                          (M.alloc (|
-                                                                            Value.Array
-                                                                              [
-                                                                                M.read (|
-                                                                                  Value.String
-                                                                                    "Malformed code: immediate out of bounds
+                                                                        M.alloc (|
+                                                                          Value.Array
+                                                                            [
+                                                                              M.read (|
+                                                                                Value.String
+                                                                                  "Malformed code: immediate out of bounds
 "
-                                                                                |)
-                                                                              ]
-                                                                          |))
+                                                                              |)
+                                                                            ]
+                                                                        |)
                                                                       ]
                                                                     |)
                                                                   ]
@@ -716,197 +698,190 @@ Module opcode.
                                                                                 []
                                                                               |),
                                                                               [
-                                                                                (* Unsize *)
-                                                                                M.pointer_coercion
-                                                                                  (M.alloc (|
-                                                                                    Value.Array
-                                                                                      [
-                                                                                        M.read (|
-                                                                                          Value.String
-                                                                                            "RJUMPV["
-                                                                                        |);
-                                                                                        M.read (|
-                                                                                          Value.String
-                                                                                            "]: 0x"
-                                                                                        |);
-                                                                                        M.read (|
-                                                                                          Value.String
-                                                                                            "("
-                                                                                        |);
-                                                                                        M.read (|
-                                                                                          Value.String
-                                                                                            ")
-"
-                                                                                        |)
-                                                                                      ]
-                                                                                  |));
-                                                                                (* Unsize *)
-                                                                                M.pointer_coercion
-                                                                                  (M.match_operator (|
-                                                                                    M.alloc (|
-                                                                                      Value.Tuple
-                                                                                        [
-                                                                                          vtablei;
-                                                                                          offset
-                                                                                        ]
-                                                                                    |),
+                                                                                M.alloc (|
+                                                                                  Value.Array
                                                                                     [
-                                                                                      fun γ =>
-                                                                                        ltac:(M.monadic
-                                                                                          (let
-                                                                                                args :=
-                                                                                            M.copy (|
-                                                                                              γ
-                                                                                            |) in
-                                                                                          M.alloc (|
-                                                                                            Value.Array
-                                                                                              [
-                                                                                                M.call_closure (|
-                                                                                                  M.get_associated_function (|
-                                                                                                    Ty.path
-                                                                                                      "core::fmt::rt::Argument",
-                                                                                                    "new_display",
-                                                                                                    [
-                                                                                                      Ty.path
-                                                                                                        "usize"
-                                                                                                    ]
-                                                                                                  |),
-                                                                                                  [
-                                                                                                    M.read (|
-                                                                                                      M.SubPointer.get_tuple_field (|
-                                                                                                        args,
-                                                                                                        0
-                                                                                                      |)
-                                                                                                    |)
-                                                                                                  ]
-                                                                                                |);
-                                                                                                M.call_closure (|
-                                                                                                  M.get_associated_function (|
-                                                                                                    Ty.path
-                                                                                                      "core::fmt::rt::Argument",
-                                                                                                    "new_upper_hex",
-                                                                                                    [
-                                                                                                      Ty.path
-                                                                                                        "isize"
-                                                                                                    ]
-                                                                                                  |),
-                                                                                                  [
-                                                                                                    M.read (|
-                                                                                                      M.SubPointer.get_tuple_field (|
-                                                                                                        args,
-                                                                                                        1
-                                                                                                      |)
-                                                                                                    |)
-                                                                                                  ]
-                                                                                                |);
-                                                                                                M.call_closure (|
-                                                                                                  M.get_associated_function (|
-                                                                                                    Ty.path
-                                                                                                      "core::fmt::rt::Argument",
-                                                                                                    "new_display",
-                                                                                                    [
-                                                                                                      Ty.path
-                                                                                                        "isize"
-                                                                                                    ]
-                                                                                                  |),
-                                                                                                  [
-                                                                                                    M.read (|
-                                                                                                      M.SubPointer.get_tuple_field (|
-                                                                                                        args,
-                                                                                                        1
-                                                                                                      |)
-                                                                                                    |)
-                                                                                                  ]
-                                                                                                |)
-                                                                                              ]
-                                                                                          |)))
+                                                                                      M.read (|
+                                                                                        Value.String
+                                                                                          "RJUMPV["
+                                                                                      |);
+                                                                                      M.read (|
+                                                                                        Value.String
+                                                                                          "]: 0x"
+                                                                                      |);
+                                                                                      M.read (|
+                                                                                        Value.String
+                                                                                          "("
+                                                                                      |);
+                                                                                      M.read (|
+                                                                                        Value.String
+                                                                                          ")
+"
+                                                                                      |)
                                                                                     ]
-                                                                                  |));
-                                                                                (* Unsize *)
-                                                                                M.pointer_coercion
-                                                                                  (M.alloc (|
-                                                                                    Value.Array
+                                                                                |);
+                                                                                M.match_operator (|
+                                                                                  M.alloc (|
+                                                                                    Value.Tuple
                                                                                       [
-                                                                                        M.call_closure (|
-                                                                                          M.get_associated_function (|
-                                                                                            Ty.path
-                                                                                              "core::fmt::rt::Placeholder",
-                                                                                            "new",
-                                                                                            []
-                                                                                          |),
-                                                                                          [
-                                                                                            Value.Integer
-                                                                                              0;
-                                                                                            Value.UnicodeChar
-                                                                                              32;
-                                                                                            Value.StructTuple
-                                                                                              "core::fmt::rt::Alignment::Unknown"
-                                                                                              [];
-                                                                                            Value.Integer
-                                                                                              0;
-                                                                                            Value.StructTuple
-                                                                                              "core::fmt::rt::Count::Implied"
-                                                                                              [];
-                                                                                            Value.StructTuple
-                                                                                              "core::fmt::rt::Count::Implied"
-                                                                                              []
-                                                                                          ]
-                                                                                        |);
-                                                                                        M.call_closure (|
-                                                                                          M.get_associated_function (|
-                                                                                            Ty.path
-                                                                                              "core::fmt::rt::Placeholder",
-                                                                                            "new",
-                                                                                            []
-                                                                                          |),
-                                                                                          [
-                                                                                            Value.Integer
-                                                                                              1;
-                                                                                            Value.UnicodeChar
-                                                                                              32;
-                                                                                            Value.StructTuple
-                                                                                              "core::fmt::rt::Alignment::Unknown"
-                                                                                              [];
-                                                                                            Value.Integer
-                                                                                              8;
-                                                                                            Value.StructTuple
-                                                                                              "core::fmt::rt::Count::Implied"
-                                                                                              [];
-                                                                                            Value.StructTuple
-                                                                                              "core::fmt::rt::Count::Is"
-                                                                                              [
-                                                                                                Value.Integer
-                                                                                                  4
-                                                                                              ]
-                                                                                          ]
-                                                                                        |);
-                                                                                        M.call_closure (|
-                                                                                          M.get_associated_function (|
-                                                                                            Ty.path
-                                                                                              "core::fmt::rt::Placeholder",
-                                                                                            "new",
-                                                                                            []
-                                                                                          |),
-                                                                                          [
-                                                                                            Value.Integer
-                                                                                              2;
-                                                                                            Value.UnicodeChar
-                                                                                              32;
-                                                                                            Value.StructTuple
-                                                                                              "core::fmt::rt::Alignment::Unknown"
-                                                                                              [];
-                                                                                            Value.Integer
-                                                                                              0;
-                                                                                            Value.StructTuple
-                                                                                              "core::fmt::rt::Count::Implied"
-                                                                                              [];
-                                                                                            Value.StructTuple
-                                                                                              "core::fmt::rt::Count::Implied"
-                                                                                              []
-                                                                                          ]
-                                                                                        |)
+                                                                                        vtablei;
+                                                                                        offset
                                                                                       ]
-                                                                                  |));
+                                                                                  |),
+                                                                                  [
+                                                                                    fun γ =>
+                                                                                      ltac:(M.monadic
+                                                                                        (let args :=
+                                                                                          M.copy (|
+                                                                                            γ
+                                                                                          |) in
+                                                                                        M.alloc (|
+                                                                                          Value.Array
+                                                                                            [
+                                                                                              M.call_closure (|
+                                                                                                M.get_associated_function (|
+                                                                                                  Ty.path
+                                                                                                    "core::fmt::rt::Argument",
+                                                                                                  "new_display",
+                                                                                                  [
+                                                                                                    Ty.path
+                                                                                                      "usize"
+                                                                                                  ]
+                                                                                                |),
+                                                                                                [
+                                                                                                  M.read (|
+                                                                                                    M.SubPointer.get_tuple_field (|
+                                                                                                      args,
+                                                                                                      0
+                                                                                                    |)
+                                                                                                  |)
+                                                                                                ]
+                                                                                              |);
+                                                                                              M.call_closure (|
+                                                                                                M.get_associated_function (|
+                                                                                                  Ty.path
+                                                                                                    "core::fmt::rt::Argument",
+                                                                                                  "new_upper_hex",
+                                                                                                  [
+                                                                                                    Ty.path
+                                                                                                      "isize"
+                                                                                                  ]
+                                                                                                |),
+                                                                                                [
+                                                                                                  M.read (|
+                                                                                                    M.SubPointer.get_tuple_field (|
+                                                                                                      args,
+                                                                                                      1
+                                                                                                    |)
+                                                                                                  |)
+                                                                                                ]
+                                                                                              |);
+                                                                                              M.call_closure (|
+                                                                                                M.get_associated_function (|
+                                                                                                  Ty.path
+                                                                                                    "core::fmt::rt::Argument",
+                                                                                                  "new_display",
+                                                                                                  [
+                                                                                                    Ty.path
+                                                                                                      "isize"
+                                                                                                  ]
+                                                                                                |),
+                                                                                                [
+                                                                                                  M.read (|
+                                                                                                    M.SubPointer.get_tuple_field (|
+                                                                                                      args,
+                                                                                                      1
+                                                                                                    |)
+                                                                                                  |)
+                                                                                                ]
+                                                                                              |)
+                                                                                            ]
+                                                                                        |)))
+                                                                                  ]
+                                                                                |);
+                                                                                M.alloc (|
+                                                                                  Value.Array
+                                                                                    [
+                                                                                      M.call_closure (|
+                                                                                        M.get_associated_function (|
+                                                                                          Ty.path
+                                                                                            "core::fmt::rt::Placeholder",
+                                                                                          "new",
+                                                                                          []
+                                                                                        |),
+                                                                                        [
+                                                                                          Value.Integer
+                                                                                            0;
+                                                                                          Value.UnicodeChar
+                                                                                            32;
+                                                                                          Value.StructTuple
+                                                                                            "core::fmt::rt::Alignment::Unknown"
+                                                                                            [];
+                                                                                          Value.Integer
+                                                                                            0;
+                                                                                          Value.StructTuple
+                                                                                            "core::fmt::rt::Count::Implied"
+                                                                                            [];
+                                                                                          Value.StructTuple
+                                                                                            "core::fmt::rt::Count::Implied"
+                                                                                            []
+                                                                                        ]
+                                                                                      |);
+                                                                                      M.call_closure (|
+                                                                                        M.get_associated_function (|
+                                                                                          Ty.path
+                                                                                            "core::fmt::rt::Placeholder",
+                                                                                          "new",
+                                                                                          []
+                                                                                        |),
+                                                                                        [
+                                                                                          Value.Integer
+                                                                                            1;
+                                                                                          Value.UnicodeChar
+                                                                                            32;
+                                                                                          Value.StructTuple
+                                                                                            "core::fmt::rt::Alignment::Unknown"
+                                                                                            [];
+                                                                                          Value.Integer
+                                                                                            8;
+                                                                                          Value.StructTuple
+                                                                                            "core::fmt::rt::Count::Implied"
+                                                                                            [];
+                                                                                          Value.StructTuple
+                                                                                            "core::fmt::rt::Count::Is"
+                                                                                            [
+                                                                                              Value.Integer
+                                                                                                4
+                                                                                            ]
+                                                                                        ]
+                                                                                      |);
+                                                                                      M.call_closure (|
+                                                                                        M.get_associated_function (|
+                                                                                          Ty.path
+                                                                                            "core::fmt::rt::Placeholder",
+                                                                                          "new",
+                                                                                          []
+                                                                                        |),
+                                                                                        [
+                                                                                          Value.Integer
+                                                                                            2;
+                                                                                          Value.UnicodeChar
+                                                                                            32;
+                                                                                          Value.StructTuple
+                                                                                            "core::fmt::rt::Alignment::Unknown"
+                                                                                            [];
+                                                                                          Value.Integer
+                                                                                            0;
+                                                                                          Value.StructTuple
+                                                                                            "core::fmt::rt::Count::Implied"
+                                                                                            [];
+                                                                                          Value.StructTuple
+                                                                                            "core::fmt::rt::Count::Implied"
+                                                                                            []
+                                                                                        ]
+                                                                                      |)
+                                                                                    ]
+                                                                                |);
                                                                                 M.call_closure (|
                                                                                   M.get_associated_function (|
                                                                                     Ty.path

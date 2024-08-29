@@ -213,18 +213,6 @@ Module interpreter.
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
     End Impl_core_cmp_PartialEq_for_revm_interpreter_interpreter_shared_memory_SharedMemory.
     
-    Module Impl_core_marker_StructuralEq_for_revm_interpreter_interpreter_shared_memory_SharedMemory.
-      Definition Self : Ty.t :=
-        Ty.path "revm_interpreter::interpreter::shared_memory::SharedMemory".
-      
-      Axiom Implements :
-        M.IsTraitInstance
-          "core::marker::StructuralEq"
-          Self
-          (* Trait polymorphic types *) []
-          (* Instance *) [].
-    End Impl_core_marker_StructuralEq_for_revm_interpreter_interpreter_shared_memory_SharedMemory.
-    
     Module Impl_core_cmp_Eq_for_revm_interpreter_interpreter_shared_memory_SharedMemory.
       Definition Self : Ty.t :=
         Ty.path "revm_interpreter::interpreter::shared_memory::SharedMemory".
@@ -442,48 +430,42 @@ Module interpreter.
                           |)
                         |);
                         M.read (| Value.String "current_len" |);
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.alloc (|
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.path
-                                  "revm_interpreter::interpreter::shared_memory::SharedMemory",
-                                "len",
-                                []
-                              |),
-                              [ M.read (| self |) ]
-                            |)
-                          |))
+                        M.alloc (|
+                          M.call_closure (|
+                            M.get_associated_function (|
+                              Ty.path "revm_interpreter::interpreter::shared_memory::SharedMemory",
+                              "len",
+                              []
+                            |),
+                            [ M.read (| self |) ]
+                          |)
+                        |)
                       ]
                     |);
                     M.read (| Value.String "context_memory" |);
-                    (* Unsize *)
-                    M.pointer_coercion
-                      (M.alloc (|
-                        M.call_closure (|
-                          M.get_function (|
-                            "const_hex::encode",
-                            [
-                              Ty.apply
-                                (Ty.path "&")
-                                []
-                                [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
-                            ]
-                          |),
+                    M.alloc (|
+                      M.call_closure (|
+                        M.get_function (|
+                          "const_hex::encode",
                           [
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.path
-                                  "revm_interpreter::interpreter::shared_memory::SharedMemory",
-                                "context_memory",
-                                []
-                              |),
-                              [ M.read (| self |) ]
-                            |)
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
                           ]
-                        |)
-                      |))
+                        |),
+                        [
+                          M.call_closure (|
+                            M.get_associated_function (|
+                              Ty.path "revm_interpreter::interpreter::shared_memory::SharedMemory",
+                              "context_memory",
+                              []
+                            |),
+                            [ M.read (| self |) ]
+                          |)
+                        ]
+                      |)
+                    |)
                   ]
                 |)
               ]
@@ -1087,99 +1069,95 @@ Module interpreter.
                                                   []
                                                 |),
                                                 [
-                                                  (* Unsize *)
-                                                  M.pointer_coercion
-                                                    (M.alloc (|
-                                                      Value.Array
-                                                        [
-                                                          M.read (|
-                                                            Value.String
-                                                              "internal error: entered unreachable code: slice OOB: "
-                                                          |);
-                                                          M.read (| Value.String ".." |);
-                                                          M.read (| Value.String "; len: " |)
-                                                        ]
-                                                    |));
-                                                  (* Unsize *)
-                                                  M.pointer_coercion
-                                                    (M.match_operator (|
-                                                      M.alloc (|
-                                                        Value.Tuple
-                                                          [
-                                                            M.alloc (|
-                                                              M.call_closure (|
-                                                                M.get_associated_function (|
-                                                                  Ty.path
-                                                                    "revm_interpreter::interpreter::shared_memory::SharedMemory",
-                                                                  "len",
-                                                                  []
-                                                                |),
-                                                                [ M.read (| self |) ]
-                                                              |)
-                                                            |);
-                                                            start;
-                                                            end_
-                                                          ]
-                                                      |),
+                                                  M.alloc (|
+                                                    Value.Array
                                                       [
-                                                        fun γ =>
-                                                          ltac:(M.monadic
-                                                            (let args := M.copy (| γ |) in
-                                                            M.alloc (|
-                                                              Value.Array
-                                                                [
-                                                                  M.call_closure (|
-                                                                    M.get_associated_function (|
-                                                                      Ty.path
-                                                                        "core::fmt::rt::Argument",
-                                                                      "new_display",
-                                                                      [ Ty.path "usize" ]
-                                                                    |),
-                                                                    [
-                                                                      M.read (|
-                                                                        M.SubPointer.get_tuple_field (|
-                                                                          args,
-                                                                          1
-                                                                        |)
-                                                                      |)
-                                                                    ]
-                                                                  |);
-                                                                  M.call_closure (|
-                                                                    M.get_associated_function (|
-                                                                      Ty.path
-                                                                        "core::fmt::rt::Argument",
-                                                                      "new_display",
-                                                                      [ Ty.path "usize" ]
-                                                                    |),
-                                                                    [
-                                                                      M.read (|
-                                                                        M.SubPointer.get_tuple_field (|
-                                                                          args,
-                                                                          2
-                                                                        |)
-                                                                      |)
-                                                                    ]
-                                                                  |);
-                                                                  M.call_closure (|
-                                                                    M.get_associated_function (|
-                                                                      Ty.path
-                                                                        "core::fmt::rt::Argument",
-                                                                      "new_display",
-                                                                      [ Ty.path "usize" ]
-                                                                    |),
-                                                                    [
-                                                                      M.read (|
-                                                                        M.SubPointer.get_tuple_field (|
-                                                                          args,
-                                                                          0
-                                                                        |)
-                                                                      |)
-                                                                    ]
-                                                                  |)
-                                                                ]
-                                                            |)))
+                                                        M.read (|
+                                                          Value.String
+                                                            "internal error: entered unreachable code: slice OOB: "
+                                                        |);
+                                                        M.read (| Value.String ".." |);
+                                                        M.read (| Value.String "; len: " |)
                                                       ]
-                                                    |))
+                                                  |);
+                                                  M.match_operator (|
+                                                    M.alloc (|
+                                                      Value.Tuple
+                                                        [
+                                                          M.alloc (|
+                                                            M.call_closure (|
+                                                              M.get_associated_function (|
+                                                                Ty.path
+                                                                  "revm_interpreter::interpreter::shared_memory::SharedMemory",
+                                                                "len",
+                                                                []
+                                                              |),
+                                                              [ M.read (| self |) ]
+                                                            |)
+                                                          |);
+                                                          start;
+                                                          end_
+                                                        ]
+                                                    |),
+                                                    [
+                                                      fun γ =>
+                                                        ltac:(M.monadic
+                                                          (let args := M.copy (| γ |) in
+                                                          M.alloc (|
+                                                            Value.Array
+                                                              [
+                                                                M.call_closure (|
+                                                                  M.get_associated_function (|
+                                                                    Ty.path
+                                                                      "core::fmt::rt::Argument",
+                                                                    "new_display",
+                                                                    [ Ty.path "usize" ]
+                                                                  |),
+                                                                  [
+                                                                    M.read (|
+                                                                      M.SubPointer.get_tuple_field (|
+                                                                        args,
+                                                                        1
+                                                                      |)
+                                                                    |)
+                                                                  ]
+                                                                |);
+                                                                M.call_closure (|
+                                                                  M.get_associated_function (|
+                                                                    Ty.path
+                                                                      "core::fmt::rt::Argument",
+                                                                    "new_display",
+                                                                    [ Ty.path "usize" ]
+                                                                  |),
+                                                                  [
+                                                                    M.read (|
+                                                                      M.SubPointer.get_tuple_field (|
+                                                                        args,
+                                                                        2
+                                                                      |)
+                                                                    |)
+                                                                  ]
+                                                                |);
+                                                                M.call_closure (|
+                                                                  M.get_associated_function (|
+                                                                    Ty.path
+                                                                      "core::fmt::rt::Argument",
+                                                                    "new_display",
+                                                                    [ Ty.path "usize" ]
+                                                                  |),
+                                                                  [
+                                                                    M.read (|
+                                                                      M.SubPointer.get_tuple_field (|
+                                                                        args,
+                                                                        0
+                                                                      |)
+                                                                    |)
+                                                                  ]
+                                                                |)
+                                                              ]
+                                                          |)))
+                                                    ]
+                                                  |)
                                                 ]
                                               |)
                                             ]
@@ -1302,41 +1280,37 @@ Module interpreter.
                                               []
                                             |),
                                             [
-                                              (* Unsize *)
-                                              M.pointer_coercion
-                                                (M.alloc (|
-                                                  Value.Array
-                                                    [
-                                                      M.read (|
-                                                        Value.String
-                                                          "internal error: entered unreachable code: slice OOB: "
-                                                      |);
-                                                      M.read (| Value.String ".." |)
-                                                    ]
-                                                |));
-                                              (* Unsize *)
-                                              M.pointer_coercion
-                                                (M.alloc (|
-                                                  Value.Array
-                                                    [
-                                                      M.call_closure (|
-                                                        M.get_associated_function (|
-                                                          Ty.path "core::fmt::rt::Argument",
-                                                          "new_display",
-                                                          [ Ty.path "usize" ]
-                                                        |),
-                                                        [ offset ]
-                                                      |);
-                                                      M.call_closure (|
-                                                        M.get_associated_function (|
-                                                          Ty.path "core::fmt::rt::Argument",
-                                                          "new_display",
-                                                          [ Ty.path "usize" ]
-                                                        |),
-                                                        [ end_ ]
-                                                      |)
-                                                    ]
-                                                |))
+                                              M.alloc (|
+                                                Value.Array
+                                                  [
+                                                    M.read (|
+                                                      Value.String
+                                                        "internal error: entered unreachable code: slice OOB: "
+                                                    |);
+                                                    M.read (| Value.String ".." |)
+                                                  ]
+                                              |);
+                                              M.alloc (|
+                                                Value.Array
+                                                  [
+                                                    M.call_closure (|
+                                                      M.get_associated_function (|
+                                                        Ty.path "core::fmt::rt::Argument",
+                                                        "new_display",
+                                                        [ Ty.path "usize" ]
+                                                      |),
+                                                      [ offset ]
+                                                    |);
+                                                    M.call_closure (|
+                                                      M.get_associated_function (|
+                                                        Ty.path "core::fmt::rt::Argument",
+                                                        "new_display",
+                                                        [ Ty.path "usize" ]
+                                                      |),
+                                                      [ end_ ]
+                                                    |)
+                                                  ]
+                                              |)
                                             ]
                                           |)
                                         ]
@@ -1525,8 +1499,7 @@ Module interpreter.
                     [
                       M.read (| self |);
                       M.read (| offset |);
-                      (* Unsize *)
-                      M.pointer_coercion (M.alloc (| Value.Array [ M.read (| byte |) ] |))
+                      M.alloc (| Value.Array [ M.read (| byte |) ] |)
                     ]
                   |)
                 |) in
@@ -1608,21 +1581,19 @@ Module interpreter.
                     [
                       M.read (| self |);
                       M.read (| offset |);
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          M.call_closure (|
-                            M.get_associated_function (|
-                              Ty.apply
-                                (Ty.path "ruint::Uint")
-                                [ Value.Integer 256; Value.Integer 4 ]
-                                [],
-                              "to_be_bytes",
-                              []
-                            |),
-                            [ value ]
-                          |)
-                        |))
+                      M.alloc (|
+                        M.call_closure (|
+                          M.get_associated_function (|
+                            Ty.apply
+                              (Ty.path "ruint::Uint")
+                              [ Value.Integer 256; Value.Integer 4 ]
+                              [],
+                            "to_be_bytes",
+                            []
+                          |),
+                          [ value ]
+                        |)
+                      |)
                     ]
                   |)
                 |) in

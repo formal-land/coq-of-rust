@@ -157,16 +157,14 @@ Module utilities.
                                                 []
                                               |),
                                               [
-                                                (* Unsize *)
-                                                M.pointer_coercion
-                                                  (M.alloc (|
-                                                    Value.Array
-                                                      [
-                                                        M.read (|
-                                                          Value.String "attempt to divide by zero"
-                                                        |)
-                                                      ]
-                                                  |))
+                                                M.alloc (|
+                                                  Value.Array
+                                                    [
+                                                      M.read (|
+                                                        Value.String "attempt to divide by zero"
+                                                      |)
+                                                    ]
+                                                |)
                                               ]
                                             |)
                                           ]

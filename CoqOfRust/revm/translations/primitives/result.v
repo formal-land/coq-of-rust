@@ -61,23 +61,19 @@ Module result.
               M.read (| f |);
               M.read (| Value.String "ResultAndState" |);
               M.read (| Value.String "result" |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.SubPointer.get_struct_record_field (|
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "revm_primitives::result::ResultAndState",
+                "result"
+              |);
+              M.read (| Value.String "state" |);
+              M.alloc (|
+                M.SubPointer.get_struct_record_field (|
                   M.read (| self |),
                   "revm_primitives::result::ResultAndState",
-                  "result"
-                |));
-              M.read (| Value.String "state" |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.alloc (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "revm_primitives::result::ResultAndState",
-                    "state"
-                  |)
-                |))
+                  "state"
+                |)
+              |)
             ]
           |)))
       | _, _, _ => M.impossible
@@ -249,17 +245,6 @@ Module result.
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_revm_primitives_result_ResultAndState.
   
-  Module Impl_core_marker_StructuralEq_for_revm_primitives_result_ResultAndState.
-    Definition Self : Ty.t := Ty.path "revm_primitives::result::ResultAndState".
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::marker::StructuralEq"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [].
-  End Impl_core_marker_StructuralEq_for_revm_primitives_result_ResultAndState.
-  
   Module Impl_core_cmp_Eq_for_revm_primitives_result_ResultAndState.
     Definition Self : Ty.t := Ty.path "revm_primitives::result::ResultAndState".
     
@@ -413,15 +398,15 @@ Module result.
                           M.read (| f |);
                           M.read (| Value.String "Success" |);
                           M.read (| Value.String "reason" |);
-                          (* Unsize *) M.pointer_coercion (M.read (| __self_0 |));
+                          M.read (| __self_0 |);
                           M.read (| Value.String "gas_used" |);
-                          (* Unsize *) M.pointer_coercion (M.read (| __self_1 |));
+                          M.read (| __self_1 |);
                           M.read (| Value.String "gas_refunded" |);
-                          (* Unsize *) M.pointer_coercion (M.read (| __self_2 |));
+                          M.read (| __self_2 |);
                           M.read (| Value.String "logs" |);
-                          (* Unsize *) M.pointer_coercion (M.read (| __self_3 |));
+                          M.read (| __self_3 |);
                           M.read (| Value.String "output" |);
-                          (* Unsize *) M.pointer_coercion __self_4
+                          __self_4
                         ]
                       |)
                     |)));
@@ -453,9 +438,9 @@ Module result.
                           M.read (| f |);
                           M.read (| Value.String "Revert" |);
                           M.read (| Value.String "gas_used" |);
-                          (* Unsize *) M.pointer_coercion (M.read (| __self_0 |));
+                          M.read (| __self_0 |);
                           M.read (| Value.String "output" |);
-                          (* Unsize *) M.pointer_coercion __self_1
+                          __self_1
                         ]
                       |)
                     |)));
@@ -487,9 +472,9 @@ Module result.
                           M.read (| f |);
                           M.read (| Value.String "Halt" |);
                           M.read (| Value.String "reason" |);
-                          (* Unsize *) M.pointer_coercion (M.read (| __self_0 |));
+                          M.read (| __self_0 |);
                           M.read (| Value.String "gas_used" |);
-                          (* Unsize *) M.pointer_coercion __self_1
+                          __self_1
                         ]
                       |)
                     |)))
@@ -754,7 +739,7 @@ Module result.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ __self_tag :=
+            let~ __self_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -764,7 +749,7 @@ Module result.
                   [ M.read (| self |) ]
                 |)
               |) in
-            let~ __arg1_tag :=
+            let~ __arg1_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -776,7 +761,7 @@ Module result.
               |) in
             M.alloc (|
               LogicalOp.and (|
-                BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)),
+                BinOp.Pure.eq (M.read (| __self_discr |)) (M.read (| __arg1_discr |)),
                 ltac:(M.monadic
                   (M.read (|
                     M.match_operator (|
@@ -866,65 +851,105 @@ Module result.
                                       M.call_closure (|
                                         M.get_trait_method (|
                                           "core::cmp::PartialEq",
-                                          Ty.path "revm_primitives::result::SuccessReason",
-                                          [ Ty.path "revm_primitives::result::SuccessReason" ],
+                                          Ty.apply
+                                            (Ty.path "&")
+                                            []
+                                            [ Ty.path "revm_primitives::result::SuccessReason" ],
+                                          [
+                                            Ty.apply
+                                              (Ty.path "&")
+                                              []
+                                              [ Ty.path "revm_primitives::result::SuccessReason" ]
+                                          ],
                                           "eq",
                                           []
                                         |),
-                                        [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                        [ __self_0; __arg1_0 ]
                                       |),
                                       ltac:(M.monadic
-                                        (BinOp.Pure.eq
-                                          (M.read (| M.read (| __self_1 |) |))
-                                          (M.read (| M.read (| __arg1_1 |) |))))
+                                        (M.call_closure (|
+                                          M.get_trait_method (|
+                                            "core::cmp::PartialEq",
+                                            Ty.apply (Ty.path "&") [] [ Ty.path "u64" ],
+                                            [ Ty.apply (Ty.path "&") [] [ Ty.path "u64" ] ],
+                                            "eq",
+                                            []
+                                          |),
+                                          [ __self_1; __arg1_1 ]
+                                        |)))
                                     |),
                                     ltac:(M.monadic
-                                      (BinOp.Pure.eq
-                                        (M.read (| M.read (| __self_2 |) |))
-                                        (M.read (| M.read (| __arg1_2 |) |))))
+                                      (M.call_closure (|
+                                        M.get_trait_method (|
+                                          "core::cmp::PartialEq",
+                                          Ty.apply (Ty.path "&") [] [ Ty.path "u64" ],
+                                          [ Ty.apply (Ty.path "&") [] [ Ty.path "u64" ] ],
+                                          "eq",
+                                          []
+                                        |),
+                                        [ __self_2; __arg1_2 ]
+                                      |)))
                                   |),
                                   ltac:(M.monadic
                                     (M.call_closure (|
                                       M.get_trait_method (|
                                         "core::cmp::PartialEq",
                                         Ty.apply
-                                          (Ty.path "alloc::vec::Vec")
+                                          (Ty.path "&")
                                           []
                                           [
                                             Ty.apply
-                                              (Ty.path "alloy_primitives::log::Log")
+                                              (Ty.path "alloc::vec::Vec")
                                               []
-                                              [ Ty.path "alloy_primitives::log::LogData" ];
-                                            Ty.path "alloc::alloc::Global"
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "alloy_primitives::log::Log")
+                                                  []
+                                                  [ Ty.path "alloy_primitives::log::LogData" ];
+                                                Ty.path "alloc::alloc::Global"
+                                              ]
                                           ],
                                         [
                                           Ty.apply
-                                            (Ty.path "alloc::vec::Vec")
+                                            (Ty.path "&")
                                             []
                                             [
                                               Ty.apply
-                                                (Ty.path "alloy_primitives::log::Log")
+                                                (Ty.path "alloc::vec::Vec")
                                                 []
-                                                [ Ty.path "alloy_primitives::log::LogData" ];
-                                              Ty.path "alloc::alloc::Global"
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "alloy_primitives::log::Log")
+                                                    []
+                                                    [ Ty.path "alloy_primitives::log::LogData" ];
+                                                  Ty.path "alloc::alloc::Global"
+                                                ]
                                             ]
                                         ],
                                         "eq",
                                         []
                                       |),
-                                      [ M.read (| __self_3 |); M.read (| __arg1_3 |) ]
+                                      [ __self_3; __arg1_3 ]
                                     |)))
                                 |),
                                 ltac:(M.monadic
                                   (M.call_closure (|
                                     M.get_trait_method (|
                                       "core::cmp::PartialEq",
-                                      Ty.path "revm_primitives::result::Output",
-                                      [ Ty.path "revm_primitives::result::Output" ],
+                                      Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [ Ty.path "revm_primitives::result::Output" ],
+                                      [
+                                        Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [ Ty.path "revm_primitives::result::Output" ]
+                                      ],
                                       "eq",
                                       []
                                     |),
-                                    [ M.read (| __self_4 |); M.read (| __arg1_4 |) ]
+                                    [ __self_4; __arg1_4 ]
                                   |)))
                               |)
                             |)));
@@ -964,19 +989,34 @@ Module result.
                             let __arg1_1 := M.alloc (| γ2_1 |) in
                             M.alloc (|
                               LogicalOp.and (|
-                                BinOp.Pure.eq
-                                  (M.read (| M.read (| __self_0 |) |))
-                                  (M.read (| M.read (| __arg1_0 |) |)),
+                                M.call_closure (|
+                                  M.get_trait_method (|
+                                    "core::cmp::PartialEq",
+                                    Ty.apply (Ty.path "&") [] [ Ty.path "u64" ],
+                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "u64" ] ],
+                                    "eq",
+                                    []
+                                  |),
+                                  [ __self_0; __arg1_0 ]
+                                |),
                                 ltac:(M.monadic
                                   (M.call_closure (|
                                     M.get_trait_method (|
                                       "core::cmp::PartialEq",
-                                      Ty.path "alloy_primitives::bytes_::Bytes",
-                                      [ Ty.path "alloy_primitives::bytes_::Bytes" ],
+                                      Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [ Ty.path "alloy_primitives::bytes_::Bytes" ],
+                                      [
+                                        Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [ Ty.path "alloy_primitives::bytes_::Bytes" ]
+                                      ],
                                       "eq",
                                       []
                                     |),
-                                    [ M.read (| __self_1 |); M.read (| __arg1_1 |) ]
+                                    [ __self_1; __arg1_1 ]
                                   |)))
                               |)
                             |)));
@@ -1019,17 +1059,32 @@ Module result.
                                 M.call_closure (|
                                   M.get_trait_method (|
                                     "core::cmp::PartialEq",
-                                    Ty.path "revm_primitives::result::HaltReason",
-                                    [ Ty.path "revm_primitives::result::HaltReason" ],
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.path "revm_primitives::result::HaltReason" ],
+                                    [
+                                      Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [ Ty.path "revm_primitives::result::HaltReason" ]
+                                    ],
                                     "eq",
                                     []
                                   |),
-                                  [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                  [ __self_0; __arg1_0 ]
                                 |),
                                 ltac:(M.monadic
-                                  (BinOp.Pure.eq
-                                    (M.read (| M.read (| __self_1 |) |))
-                                    (M.read (| M.read (| __arg1_1 |) |))))
+                                  (M.call_closure (|
+                                    M.get_trait_method (|
+                                      "core::cmp::PartialEq",
+                                      Ty.apply (Ty.path "&") [] [ Ty.path "u64" ],
+                                      [ Ty.apply (Ty.path "&") [] [ Ty.path "u64" ] ],
+                                      "eq",
+                                      []
+                                    |),
+                                    [ __self_1; __arg1_1 ]
+                                  |)))
                               |)
                             |)));
                         fun γ =>
@@ -1058,17 +1113,6 @@ Module result.
         (* Trait polymorphic types *) []
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_revm_primitives_result_ExecutionResult.
-  
-  Module Impl_core_marker_StructuralEq_for_revm_primitives_result_ExecutionResult.
-    Definition Self : Ty.t := Ty.path "revm_primitives::result::ExecutionResult".
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::marker::StructuralEq"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [].
-  End Impl_core_marker_StructuralEq_for_revm_primitives_result_ExecutionResult.
   
   Module Impl_core_cmp_Eq_for_revm_primitives_result_ExecutionResult.
     Definition Self : Ty.t := Ty.path "revm_primitives::result::ExecutionResult".
@@ -1151,7 +1195,7 @@ Module result.
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
           M.read (|
-            let~ __self_tag :=
+            let~ __self_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -1165,7 +1209,7 @@ Module result.
               M.alloc (|
                 M.call_closure (|
                   M.get_trait_method (| "core::hash::Hash", Ty.path "isize", [], "hash", [ __H ] |),
-                  [ __self_tag; M.read (| state |) ]
+                  [ __self_discr; M.read (| state |) ]
                 |)
               |) in
             M.match_operator (|
@@ -1620,9 +1664,7 @@ Module result.
                         [ M.read (| logs |) ]
                       |)
                     |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (M.alloc (| (* Unsize *) M.pointer_coercion (M.alloc (| Value.Array [] |)) |)))
+                fun γ => ltac:(M.monadic (M.alloc (| M.alloc (| Value.Array [] |) |)))
               ]
             |)
           |)))
@@ -1815,11 +1857,7 @@ Module result.
                           "debug_tuple_field1_finish",
                           []
                         |),
-                        [
-                          M.read (| f |);
-                          M.read (| Value.String "Call" |);
-                          (* Unsize *) M.pointer_coercion __self_0
-                        ]
+                        [ M.read (| f |); M.read (| Value.String "Call" |); __self_0 ]
                       |)
                     |)));
                 fun γ =>
@@ -1849,8 +1887,8 @@ Module result.
                         [
                           M.read (| f |);
                           M.read (| Value.String "Create" |);
-                          (* Unsize *) M.pointer_coercion (M.read (| __self_0 |));
-                          (* Unsize *) M.pointer_coercion __self_1
+                          M.read (| __self_0 |);
+                          __self_1
                         ]
                       |)
                     |)))
@@ -1989,7 +2027,7 @@ Module result.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ __self_tag :=
+            let~ __self_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -1999,7 +2037,7 @@ Module result.
                   [ M.read (| self |) ]
                 |)
               |) in
-            let~ __arg1_tag :=
+            let~ __arg1_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -2011,7 +2049,7 @@ Module result.
               |) in
             M.alloc (|
               LogicalOp.and (|
-                BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)),
+                BinOp.Pure.eq (M.read (| __self_discr |)) (M.read (| __arg1_discr |)),
                 ltac:(M.monadic
                   (M.read (|
                     M.match_operator (|
@@ -2041,12 +2079,20 @@ Module result.
                               M.call_closure (|
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
-                                  Ty.path "alloy_primitives::bytes_::Bytes",
-                                  [ Ty.path "alloy_primitives::bytes_::Bytes" ],
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.path "alloy_primitives::bytes_::Bytes" ],
+                                  [
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.path "alloy_primitives::bytes_::Bytes" ]
+                                  ],
                                   "eq",
                                   []
                                 |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                [ __self_0; __arg1_0 ]
                               |)
                             |)));
                         fun γ =>
@@ -2088,31 +2134,49 @@ Module result.
                                 M.call_closure (|
                                   M.get_trait_method (|
                                     "core::cmp::PartialEq",
-                                    Ty.path "alloy_primitives::bytes_::Bytes",
-                                    [ Ty.path "alloy_primitives::bytes_::Bytes" ],
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.path "alloy_primitives::bytes_::Bytes" ],
+                                    [
+                                      Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [ Ty.path "alloy_primitives::bytes_::Bytes" ]
+                                    ],
                                     "eq",
                                     []
                                   |),
-                                  [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                  [ __self_0; __arg1_0 ]
                                 |),
                                 ltac:(M.monadic
                                   (M.call_closure (|
                                     M.get_trait_method (|
                                       "core::cmp::PartialEq",
                                       Ty.apply
-                                        (Ty.path "core::option::Option")
+                                        (Ty.path "&")
                                         []
-                                        [ Ty.path "alloy_primitives::bits::address::Address" ],
+                                        [
+                                          Ty.apply
+                                            (Ty.path "core::option::Option")
+                                            []
+                                            [ Ty.path "alloy_primitives::bits::address::Address" ]
+                                        ],
                                       [
                                         Ty.apply
-                                          (Ty.path "core::option::Option")
+                                          (Ty.path "&")
                                           []
-                                          [ Ty.path "alloy_primitives::bits::address::Address" ]
+                                          [
+                                            Ty.apply
+                                              (Ty.path "core::option::Option")
+                                              []
+                                              [ Ty.path "alloy_primitives::bits::address::Address" ]
+                                          ]
                                       ],
                                       "eq",
                                       []
                                     |),
-                                    [ M.read (| __self_1 |); M.read (| __arg1_1 |) ]
+                                    [ __self_1; __arg1_1 ]
                                   |)))
                               |)
                             |)));
@@ -2142,17 +2206,6 @@ Module result.
         (* Trait polymorphic types *) []
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_revm_primitives_result_Output.
-  
-  Module Impl_core_marker_StructuralEq_for_revm_primitives_result_Output.
-    Definition Self : Ty.t := Ty.path "revm_primitives::result::Output".
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::marker::StructuralEq"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [].
-  End Impl_core_marker_StructuralEq_for_revm_primitives_result_Output.
   
   Module Impl_core_cmp_Eq_for_revm_primitives_result_Output.
     Definition Self : Ty.t := Ty.path "revm_primitives::result::Output".
@@ -2203,7 +2256,7 @@ Module result.
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
           M.read (|
-            let~ __self_tag :=
+            let~ __self_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -2217,7 +2270,7 @@ Module result.
               M.alloc (|
                 M.call_closure (|
                   M.get_trait_method (| "core::hash::Hash", Ty.path "isize", [], "hash", [ __H ] |),
-                  [ __self_tag; M.read (| state |) ]
+                  [ __self_discr; M.read (| state |) ]
                 |)
               |) in
             M.match_operator (|
@@ -2540,11 +2593,7 @@ Module result.
                           "debug_tuple_field1_finish",
                           []
                         |),
-                        [
-                          M.read (| f |);
-                          M.read (| Value.String "Transaction" |);
-                          (* Unsize *) M.pointer_coercion __self_0
-                        ]
+                        [ M.read (| f |); M.read (| Value.String "Transaction" |); __self_0 ]
                       |)
                     |)));
                 fun γ =>
@@ -2564,11 +2613,7 @@ Module result.
                           "debug_tuple_field1_finish",
                           []
                         |),
-                        [
-                          M.read (| f |);
-                          M.read (| Value.String "Header" |);
-                          (* Unsize *) M.pointer_coercion __self_0
-                        ]
+                        [ M.read (| f |); M.read (| Value.String "Header" |); __self_0 ]
                       |)
                     |)));
                 fun γ =>
@@ -2588,11 +2633,7 @@ Module result.
                           "debug_tuple_field1_finish",
                           []
                         |),
-                        [
-                          M.read (| f |);
-                          M.read (| Value.String "Database" |);
-                          (* Unsize *) M.pointer_coercion __self_0
-                        ]
+                        [ M.read (| f |); M.read (| Value.String "Database" |); __self_0 ]
                       |)
                     |)));
                 fun γ =>
@@ -2612,11 +2653,7 @@ Module result.
                           "debug_tuple_field1_finish",
                           []
                         |),
-                        [
-                          M.read (| f |);
-                          M.read (| Value.String "Custom" |);
-                          (* Unsize *) M.pointer_coercion __self_0
-                        ]
+                        [ M.read (| f |); M.read (| Value.String "Custom" |); __self_0 ]
                       |)
                     |)))
               ]
@@ -2788,7 +2825,7 @@ Module result.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ __self_tag :=
+            let~ __self_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -2798,7 +2835,7 @@ Module result.
                   [ M.read (| self |) ]
                 |)
               |) in
-            let~ __arg1_tag :=
+            let~ __arg1_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -2810,7 +2847,7 @@ Module result.
               |) in
             M.alloc (|
               LogicalOp.and (|
-                BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)),
+                BinOp.Pure.eq (M.read (| __self_discr |)) (M.read (| __arg1_discr |)),
                 ltac:(M.monadic
                   (M.read (|
                     M.match_operator (|
@@ -2840,12 +2877,20 @@ Module result.
                               M.call_closure (|
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
-                                  Ty.path "revm_primitives::result::InvalidTransaction",
-                                  [ Ty.path "revm_primitives::result::InvalidTransaction" ],
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.path "revm_primitives::result::InvalidTransaction" ],
+                                  [
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.path "revm_primitives::result::InvalidTransaction" ]
+                                  ],
                                   "eq",
                                   []
                                 |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                [ __self_0; __arg1_0 ]
                               |)
                             |)));
                         fun γ =>
@@ -2872,12 +2917,20 @@ Module result.
                               M.call_closure (|
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
-                                  Ty.path "revm_primitives::result::InvalidHeader",
-                                  [ Ty.path "revm_primitives::result::InvalidHeader" ],
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.path "revm_primitives::result::InvalidHeader" ],
+                                  [
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.path "revm_primitives::result::InvalidHeader" ]
+                                  ],
                                   "eq",
                                   []
                                 |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                [ __self_0; __arg1_0 ]
                               |)
                             |)));
                         fun γ =>
@@ -2904,12 +2957,12 @@ Module result.
                               M.call_closure (|
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
-                                  DBError,
-                                  [ DBError ],
+                                  Ty.apply (Ty.path "&") [] [ DBError ],
+                                  [ Ty.apply (Ty.path "&") [] [ DBError ] ],
                                   "eq",
                                   []
                                 |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                [ __self_0; __arg1_0 ]
                               |)
                             |)));
                         fun γ =>
@@ -2936,12 +2989,12 @@ Module result.
                               M.call_closure (|
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
-                                  Ty.path "alloc::string::String",
-                                  [ Ty.path "alloc::string::String" ],
+                                  Ty.apply (Ty.path "&") [] [ Ty.path "alloc::string::String" ],
+                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "alloc::string::String" ] ],
                                   "eq",
                                   []
                                 |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                [ __self_0; __arg1_0 ]
                               |)
                             |)));
                         fun γ =>
@@ -2971,19 +3024,6 @@ Module result.
         (* Trait polymorphic types *) []
         (* Instance *) [ ("eq", InstanceField.Method (eq DBError)) ].
   End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_DBError_for_revm_primitives_result_EVMError_DBError.
-  
-  Module Impl_core_marker_StructuralEq_for_revm_primitives_result_EVMError_DBError.
-    Definition Self (DBError : Ty.t) : Ty.t :=
-      Ty.apply (Ty.path "revm_primitives::result::EVMError") [] [ DBError ].
-    
-    Axiom Implements :
-      forall (DBError : Ty.t),
-      M.IsTraitInstance
-        "core::marker::StructuralEq"
-        (Self DBError)
-        (* Trait polymorphic types *) []
-        (* Instance *) [].
-  End Impl_core_marker_StructuralEq_for_revm_primitives_result_EVMError_DBError.
   
   Module Impl_core_cmp_Eq_where_core_cmp_Eq_DBError_for_revm_primitives_result_EVMError_DBError.
     Definition Self (DBError : Ty.t) : Ty.t :=
@@ -3057,7 +3097,7 @@ Module result.
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
           M.read (|
-            let~ __self_tag :=
+            let~ __self_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -3071,7 +3111,7 @@ Module result.
               M.alloc (|
                 M.call_closure (|
                   M.get_trait_method (| "core::hash::Hash", Ty.path "isize", [], "hash", [ __H ] |),
-                  [ __self_tag; M.read (| state |) ]
+                  [ __self_discr; M.read (| state |) ]
                 |)
               |) in
             M.match_operator (|
@@ -3209,9 +3249,7 @@ Module result.
                       |) in
                     let e := M.alloc (| γ1_0 |) in
                     M.alloc (|
-                      Value.StructTuple
-                        "core::option::Option::Some"
-                        [ (* Unsize *) M.pointer_coercion (M.read (| e |)) ]
+                      Value.StructTuple "core::option::Option::Some" [ M.read (| e |) ]
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -3224,9 +3262,7 @@ Module result.
                       |) in
                     let e := M.alloc (| γ1_0 |) in
                     M.alloc (|
-                      Value.StructTuple
-                        "core::option::Option::Some"
-                        [ (* Unsize *) M.pointer_coercion (M.read (| e |)) ]
+                      Value.StructTuple "core::option::Option::Some" [ M.read (| e |) ]
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -3239,9 +3275,7 @@ Module result.
                       |) in
                     let e := M.alloc (| γ1_0 |) in
                     M.alloc (|
-                      Value.StructTuple
-                        "core::option::Option::Some"
-                        [ (* Unsize *) M.pointer_coercion (M.read (| e |)) ]
+                      Value.StructTuple "core::option::Option::Some" [ M.read (| e |) ]
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -3319,35 +3353,29 @@ Module result.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [ M.read (| Value.String "transaction validation error: " |) ]
-                                |));
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path "core::fmt::rt::Argument",
-                                          "new_display",
-                                          [
-                                            Ty.apply
-                                              (Ty.path "&")
-                                              []
-                                              [
-                                                Ty.path
-                                                  "revm_primitives::result::InvalidTransaction"
-                                              ]
-                                          ]
-                                        |),
-                                        [ e ]
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [ M.read (| Value.String "transaction validation error: " |) ]
+                              |);
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "core::fmt::rt::Argument",
+                                        "new_display",
+                                        [
+                                          Ty.apply
+                                            (Ty.path "&")
+                                            []
+                                            [ Ty.path "revm_primitives::result::InvalidTransaction"
+                                            ]
+                                        ]
+                                      |),
+                                      [ e ]
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -3379,32 +3407,28 @@ Module result.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [ M.read (| Value.String "header validation error: " |) ]
-                                |));
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path "core::fmt::rt::Argument",
-                                          "new_display",
-                                          [
-                                            Ty.apply
-                                              (Ty.path "&")
-                                              []
-                                              [ Ty.path "revm_primitives::result::InvalidHeader" ]
-                                          ]
-                                        |),
-                                        [ e ]
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [ M.read (| Value.String "header validation error: " |) ]
+                              |);
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "core::fmt::rt::Argument",
+                                        "new_display",
+                                        [
+                                          Ty.apply
+                                            (Ty.path "&")
+                                            []
+                                            [ Ty.path "revm_primitives::result::InvalidHeader" ]
+                                        ]
+                                      |),
+                                      [ e ]
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -3436,26 +3460,22 @@ Module result.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array [ M.read (| Value.String "database error: " |) ]
-                                |));
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path "core::fmt::rt::Argument",
-                                          "new_display",
-                                          [ Ty.apply (Ty.path "&") [] [ DBError ] ]
-                                        |),
-                                        [ e ]
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array [ M.read (| Value.String "database error: " |) ]
+                              |);
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "core::fmt::rt::Argument",
+                                        "new_display",
+                                        [ Ty.apply (Ty.path "&") [] [ DBError ] ]
+                                      |),
+                                      [ e ]
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -3849,9 +3869,9 @@ Module result.
                           M.read (| f |);
                           M.read (| Value.String "LackOfFundForMaxFee" |);
                           M.read (| Value.String "fee" |);
-                          (* Unsize *) M.pointer_coercion (M.read (| __self_0 |));
+                          M.read (| __self_0 |);
                           M.read (| Value.String "balance" |);
-                          (* Unsize *) M.pointer_coercion __self_1
+                          __self_1
                         ]
                       |)
                     |)));
@@ -3919,9 +3939,9 @@ Module result.
                           M.read (| f |);
                           M.read (| Value.String "NonceTooHigh" |);
                           M.read (| Value.String "tx" |);
-                          (* Unsize *) M.pointer_coercion (M.read (| __self_0 |));
+                          M.read (| __self_0 |);
                           M.read (| Value.String "state" |);
-                          (* Unsize *) M.pointer_coercion __self_1
+                          __self_1
                         ]
                       |)
                     |)));
@@ -3953,9 +3973,9 @@ Module result.
                           M.read (| f |);
                           M.read (| Value.String "NonceTooLow" |);
                           M.read (| Value.String "tx" |);
-                          (* Unsize *) M.pointer_coercion (M.read (| __self_0 |));
+                          M.read (| __self_0 |);
                           M.read (| Value.String "state" |);
-                          (* Unsize *) M.pointer_coercion __self_1
+                          __self_1
                         ]
                       |)
                     |)));
@@ -4701,7 +4721,7 @@ Module result.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ __self_tag :=
+            let~ __self_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -4711,7 +4731,7 @@ Module result.
                   [ M.read (| self |) ]
                 |)
               |) in
-            let~ __arg1_tag :=
+            let~ __arg1_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -4723,7 +4743,7 @@ Module result.
               |) in
             M.alloc (|
               LogicalOp.and (|
-                BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)),
+                BinOp.Pure.eq (M.read (| __self_discr |)) (M.read (| __arg1_discr |)),
                 ltac:(M.monadic
                   (M.read (|
                     M.match_operator (|
@@ -4769,46 +4789,8 @@ Module result.
                                   M.get_trait_method (|
                                     "core::cmp::PartialEq",
                                     Ty.apply
-                                      (Ty.path "alloc::boxed::Box")
+                                      (Ty.path "&")
                                       []
-                                      [
-                                        Ty.apply
-                                          (Ty.path "ruint::Uint")
-                                          [ Value.Integer 256; Value.Integer 4 ]
-                                          [];
-                                        Ty.path "alloc::alloc::Global"
-                                      ],
-                                    [
-                                      Ty.apply
-                                        (Ty.path "alloc::boxed::Box")
-                                        []
-                                        [
-                                          Ty.apply
-                                            (Ty.path "ruint::Uint")
-                                            [ Value.Integer 256; Value.Integer 4 ]
-                                            [];
-                                          Ty.path "alloc::alloc::Global"
-                                        ]
-                                    ],
-                                    "eq",
-                                    []
-                                  |),
-                                  [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
-                                |),
-                                ltac:(M.monadic
-                                  (M.call_closure (|
-                                    M.get_trait_method (|
-                                      "core::cmp::PartialEq",
-                                      Ty.apply
-                                        (Ty.path "alloc::boxed::Box")
-                                        []
-                                        [
-                                          Ty.apply
-                                            (Ty.path "ruint::Uint")
-                                            [ Value.Integer 256; Value.Integer 4 ]
-                                            [];
-                                          Ty.path "alloc::alloc::Global"
-                                        ],
                                       [
                                         Ty.apply
                                           (Ty.path "alloc::boxed::Box")
@@ -4821,10 +4803,68 @@ Module result.
                                             Ty.path "alloc::alloc::Global"
                                           ]
                                       ],
+                                    [
+                                      Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "alloc::boxed::Box")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "ruint::Uint")
+                                                [ Value.Integer 256; Value.Integer 4 ]
+                                                [];
+                                              Ty.path "alloc::alloc::Global"
+                                            ]
+                                        ]
+                                    ],
+                                    "eq",
+                                    []
+                                  |),
+                                  [ __self_0; __arg1_0 ]
+                                |),
+                                ltac:(M.monadic
+                                  (M.call_closure (|
+                                    M.get_trait_method (|
+                                      "core::cmp::PartialEq",
+                                      Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "alloc::boxed::Box")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "ruint::Uint")
+                                                [ Value.Integer 256; Value.Integer 4 ]
+                                                [];
+                                              Ty.path "alloc::alloc::Global"
+                                            ]
+                                        ],
+                                      [
+                                        Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "alloc::boxed::Box")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "ruint::Uint")
+                                                  [ Value.Integer 256; Value.Integer 4 ]
+                                                  [];
+                                                Ty.path "alloc::alloc::Global"
+                                              ]
+                                          ]
+                                      ],
                                       "eq",
                                       []
                                     |),
-                                    [ M.read (| __self_1 |); M.read (| __arg1_1 |) ]
+                                    [ __self_1; __arg1_1 ]
                                   |)))
                               |)
                             |)));
@@ -4864,13 +4904,27 @@ Module result.
                             let __arg1_1 := M.alloc (| γ2_1 |) in
                             M.alloc (|
                               LogicalOp.and (|
-                                BinOp.Pure.eq
-                                  (M.read (| M.read (| __self_0 |) |))
-                                  (M.read (| M.read (| __arg1_0 |) |)),
+                                M.call_closure (|
+                                  M.get_trait_method (|
+                                    "core::cmp::PartialEq",
+                                    Ty.apply (Ty.path "&") [] [ Ty.path "u64" ],
+                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "u64" ] ],
+                                    "eq",
+                                    []
+                                  |),
+                                  [ __self_0; __arg1_0 ]
+                                |),
                                 ltac:(M.monadic
-                                  (BinOp.Pure.eq
-                                    (M.read (| M.read (| __self_1 |) |))
-                                    (M.read (| M.read (| __arg1_1 |) |))))
+                                  (M.call_closure (|
+                                    M.get_trait_method (|
+                                      "core::cmp::PartialEq",
+                                      Ty.apply (Ty.path "&") [] [ Ty.path "u64" ],
+                                      [ Ty.apply (Ty.path "&") [] [ Ty.path "u64" ] ],
+                                      "eq",
+                                      []
+                                    |),
+                                    [ __self_1; __arg1_1 ]
+                                  |)))
                               |)
                             |)));
                         fun γ =>
@@ -4909,13 +4963,27 @@ Module result.
                             let __arg1_1 := M.alloc (| γ2_1 |) in
                             M.alloc (|
                               LogicalOp.and (|
-                                BinOp.Pure.eq
-                                  (M.read (| M.read (| __self_0 |) |))
-                                  (M.read (| M.read (| __arg1_0 |) |)),
+                                M.call_closure (|
+                                  M.get_trait_method (|
+                                    "core::cmp::PartialEq",
+                                    Ty.apply (Ty.path "&") [] [ Ty.path "u64" ],
+                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "u64" ] ],
+                                    "eq",
+                                    []
+                                  |),
+                                  [ __self_0; __arg1_0 ]
+                                |),
                                 ltac:(M.monadic
-                                  (BinOp.Pure.eq
-                                    (M.read (| M.read (| __self_1 |) |))
-                                    (M.read (| M.read (| __arg1_1 |) |))))
+                                  (M.call_closure (|
+                                    M.get_trait_method (|
+                                      "core::cmp::PartialEq",
+                                      Ty.apply (Ty.path "&") [] [ Ty.path "u64" ],
+                                      [ Ty.apply (Ty.path "&") [] [ Ty.path "u64" ] ],
+                                      "eq",
+                                      []
+                                    |),
+                                    [ __self_1; __arg1_1 ]
+                                  |)))
                               |)
                             |)));
                         fun γ => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
@@ -4935,17 +5003,6 @@ Module result.
         (* Trait polymorphic types *) []
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_revm_primitives_result_InvalidTransaction.
-  
-  Module Impl_core_marker_StructuralEq_for_revm_primitives_result_InvalidTransaction.
-    Definition Self : Ty.t := Ty.path "revm_primitives::result::InvalidTransaction".
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::marker::StructuralEq"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [].
-  End Impl_core_marker_StructuralEq_for_revm_primitives_result_InvalidTransaction.
   
   Module Impl_core_cmp_Eq_for_revm_primitives_result_InvalidTransaction.
     Definition Self : Ty.t := Ty.path "revm_primitives::result::InvalidTransaction".
@@ -5003,7 +5060,7 @@ Module result.
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
           M.read (|
-            let~ __self_tag :=
+            let~ __self_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -5017,7 +5074,7 @@ Module result.
               M.alloc (|
                 M.call_closure (|
                   M.get_trait_method (| "core::hash::Hash", Ty.path "isize", [], "hash", [ __H ] |),
-                  [ __self_tag; M.read (| state |) ]
+                  [ __self_discr; M.read (| state |) ]
                 |)
               |) in
             M.match_operator (|
@@ -5302,16 +5359,11 @@ Module result.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "priority fee is greater than max fee"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [ M.read (| Value.String "priority fee is greater than max fee" |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -5341,12 +5393,10 @@ Module result.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [ M.read (| Value.String "gas price is less than basefee" |) ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [ M.read (| Value.String "gas price is less than basefee" |) ]
+                              |)
                             ]
                           |)
                         ]
@@ -5376,16 +5426,14 @@ Module result.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "caller gas limit exceeds the block gas limit"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "caller gas limit exceeds the block gas limit"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -5415,16 +5463,11 @@ Module result.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "call gas cost exceeds the gas limit"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [ M.read (| Value.String "call gas cost exceeds the gas limit" |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -5454,17 +5497,15 @@ Module result.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String
-                                          "reject transactions from senders with deployed code"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String
+                                        "reject transactions from senders with deployed code"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -5503,71 +5544,67 @@ Module result.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (| Value.String "lack of funds (" |);
-                                      M.read (| Value.String ") for max fee (" |);
-                                      M.read (| Value.String ")" |)
-                                    ]
-                                |));
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path "core::fmt::rt::Argument",
-                                          "new_display",
-                                          [
-                                            Ty.apply
-                                              (Ty.path "&")
-                                              []
-                                              [
-                                                Ty.apply
-                                                  (Ty.path "alloc::boxed::Box")
-                                                  []
-                                                  [
-                                                    Ty.apply
-                                                      (Ty.path "ruint::Uint")
-                                                      [ Value.Integer 256; Value.Integer 4 ]
-                                                      [];
-                                                    Ty.path "alloc::alloc::Global"
-                                                  ]
-                                              ]
-                                          ]
-                                        |),
-                                        [ balance ]
-                                      |);
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path "core::fmt::rt::Argument",
-                                          "new_display",
-                                          [
-                                            Ty.apply
-                                              (Ty.path "&")
-                                              []
-                                              [
-                                                Ty.apply
-                                                  (Ty.path "alloc::boxed::Box")
-                                                  []
-                                                  [
-                                                    Ty.apply
-                                                      (Ty.path "ruint::Uint")
-                                                      [ Value.Integer 256; Value.Integer 4 ]
-                                                      [];
-                                                    Ty.path "alloc::alloc::Global"
-                                                  ]
-                                              ]
-                                          ]
-                                        |),
-                                        [ fee ]
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (| Value.String "lack of funds (" |);
+                                    M.read (| Value.String ") for max fee (" |);
+                                    M.read (| Value.String ")" |)
+                                  ]
+                              |);
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "core::fmt::rt::Argument",
+                                        "new_display",
+                                        [
+                                          Ty.apply
+                                            (Ty.path "&")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "alloc::boxed::Box")
+                                                []
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "ruint::Uint")
+                                                    [ Value.Integer 256; Value.Integer 4 ]
+                                                    [];
+                                                  Ty.path "alloc::alloc::Global"
+                                                ]
+                                            ]
+                                        ]
+                                      |),
+                                      [ balance ]
+                                    |);
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "core::fmt::rt::Argument",
+                                        "new_display",
+                                        [
+                                          Ty.apply
+                                            (Ty.path "&")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "alloc::boxed::Box")
+                                                []
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "ruint::Uint")
+                                                    [ Value.Integer 256; Value.Integer 4 ]
+                                                    [];
+                                                  Ty.path "alloc::alloc::Global"
+                                                ]
+                                            ]
+                                        ]
+                                      |),
+                                      [ fee ]
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -5597,12 +5634,10 @@ Module result.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [ M.read (| Value.String "overflow payment in transaction" |) ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [ M.read (| Value.String "overflow payment in transaction" |) ]
+                              |)
                             ]
                           |)
                         ]
@@ -5632,12 +5667,10 @@ Module result.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [ M.read (| Value.String "nonce overflow in transaction" |) ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [ M.read (| Value.String "nonce overflow in transaction" |) ]
+                              |)
                             ]
                           |)
                         ]
@@ -5676,38 +5709,34 @@ Module result.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (| Value.String "nonce " |);
-                                      M.read (| Value.String " too high, expected " |)
-                                    ]
-                                |));
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path "core::fmt::rt::Argument",
-                                          "new_display",
-                                          [ Ty.apply (Ty.path "&") [] [ Ty.path "u64" ] ]
-                                        |),
-                                        [ tx ]
-                                      |);
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path "core::fmt::rt::Argument",
-                                          "new_display",
-                                          [ Ty.apply (Ty.path "&") [] [ Ty.path "u64" ] ]
-                                        |),
-                                        [ state ]
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (| Value.String "nonce " |);
+                                    M.read (| Value.String " too high, expected " |)
+                                  ]
+                              |);
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "core::fmt::rt::Argument",
+                                        "new_display",
+                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "u64" ] ]
+                                      |),
+                                      [ tx ]
+                                    |);
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "core::fmt::rt::Argument",
+                                        "new_display",
+                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "u64" ] ]
+                                      |),
+                                      [ state ]
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -5746,38 +5775,34 @@ Module result.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (| Value.String "nonce " |);
-                                      M.read (| Value.String " too low, expected " |)
-                                    ]
-                                |));
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path "core::fmt::rt::Argument",
-                                          "new_display",
-                                          [ Ty.apply (Ty.path "&") [] [ Ty.path "u64" ] ]
-                                        |),
-                                        [ tx ]
-                                      |);
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path "core::fmt::rt::Argument",
-                                          "new_display",
-                                          [ Ty.apply (Ty.path "&") [] [ Ty.path "u64" ] ]
-                                        |),
-                                        [ state ]
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (| Value.String "nonce " |);
+                                    M.read (| Value.String " too low, expected " |)
+                                  ]
+                              |);
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "core::fmt::rt::Argument",
+                                        "new_display",
+                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "u64" ] ]
+                                      |),
+                                      [ tx ]
+                                    |);
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "core::fmt::rt::Argument",
+                                        "new_display",
+                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "u64" ] ]
+                                      |),
+                                      [ state ]
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -5807,12 +5832,10 @@ Module result.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [ M.read (| Value.String "create initcode size limit" |) ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [ M.read (| Value.String "create initcode size limit" |) ]
+                              |)
                             ]
                           |)
                         ]
@@ -5842,11 +5865,9 @@ Module result.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array [ M.read (| Value.String "invalid chain ID" |) ]
-                                |))
+                              M.alloc (|
+                                Value.Array [ M.read (| Value.String "invalid chain ID" |) ]
+                              |)
                             ]
                           |)
                         ]
@@ -5876,12 +5897,10 @@ Module result.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [ M.read (| Value.String "access list not supported" |) ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [ M.read (| Value.String "access list not supported" |) ]
+                              |)
                             ]
                           |)
                         ]
@@ -5911,13 +5930,10 @@ Module result.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [ M.read (| Value.String "max fee per blob gas not supported" |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [ M.read (| Value.String "max fee per blob gas not supported" |) ]
+                              |)
                             ]
                           |)
                         ]
@@ -5947,16 +5963,11 @@ Module result.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "blob versioned hashes not supported"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [ M.read (| Value.String "blob versioned hashes not supported" |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -5986,17 +5997,15 @@ Module result.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String
-                                          "blob gas price is greater than max fee per blob gas"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String
+                                        "blob gas price is greater than max fee per blob gas"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -6025,12 +6034,7 @@ Module result.
                               "new_const",
                               []
                             |),
-                            [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array [ M.read (| Value.String "empty blobs" |) ]
-                                |))
+                            [ M.alloc (| Value.Array [ M.read (| Value.String "empty blobs" |) ] |)
                             ]
                           |)
                         ]
@@ -6060,12 +6064,9 @@ Module result.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [ M.read (| Value.String "blob create transaction" |) ]
-                                |))
+                              M.alloc (|
+                                Value.Array [ M.read (| Value.String "blob create transaction" |) ]
+                              |)
                             ]
                           |)
                         ]
@@ -6095,11 +6096,9 @@ Module result.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array [ M.read (| Value.String "too many blobs" |) ]
-                                |))
+                              M.alloc (|
+                                Value.Array [ M.read (| Value.String "too many blobs" |) ]
+                              |)
                             ]
                           |)
                         ]
@@ -6129,12 +6128,10 @@ Module result.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [ M.read (| Value.String "blob version not supported" |) ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [ M.read (| Value.String "blob version not supported" |) ]
+                              |)
                             ]
                           |)
                         ]
@@ -6164,12 +6161,10 @@ Module result.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [ M.read (| Value.String "EOF initcodes not supported" |) ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [ M.read (| Value.String "EOF initcodes not supported" |) ]
+                              |)
                             ]
                           |)
                         ]
@@ -6199,13 +6194,10 @@ Module result.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [ M.read (| Value.String "EOF crate should have `to` address" |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [ M.read (| Value.String "EOF crate should have `to` address" |) ]
+                              |)
                             ]
                           |)
                         ]
@@ -6235,12 +6227,9 @@ Module result.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [ M.read (| Value.String "EOF initcodes size limit" |) ]
-                                |))
+                              M.alloc (|
+                                Value.Array [ M.read (| Value.String "EOF initcodes size limit" |) ]
+                              |)
                             ]
                           |)
                         ]
@@ -6270,12 +6259,10 @@ Module result.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [ M.read (| Value.String "EOF initcodes number limit" |) ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [ M.read (| Value.String "EOF initcodes number limit" |) ]
+                              |)
                             ]
                           |)
                         ]
@@ -6422,7 +6409,7 @@ Module result.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ __self_tag :=
+            let~ __self_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -6432,7 +6419,7 @@ Module result.
                   [ M.read (| self |) ]
                 |)
               |) in
-            let~ __arg1_tag :=
+            let~ __arg1_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -6442,7 +6429,7 @@ Module result.
                   [ M.read (| other |) ]
                 |)
               |) in
-            M.alloc (| BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)) |)
+            M.alloc (| BinOp.Pure.eq (M.read (| __self_discr |)) (M.read (| __arg1_discr |)) |)
           |)))
       | _, _, _ => M.impossible
       end.
@@ -6454,17 +6441,6 @@ Module result.
         (* Trait polymorphic types *) []
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_revm_primitives_result_InvalidHeader.
-  
-  Module Impl_core_marker_StructuralEq_for_revm_primitives_result_InvalidHeader.
-    Definition Self : Ty.t := Ty.path "revm_primitives::result::InvalidHeader".
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::marker::StructuralEq"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [].
-  End Impl_core_marker_StructuralEq_for_revm_primitives_result_InvalidHeader.
   
   Module Impl_core_cmp_Eq_for_revm_primitives_result_InvalidHeader.
     Definition Self : Ty.t := Ty.path "revm_primitives::result::InvalidHeader".
@@ -6503,7 +6479,7 @@ Module result.
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
           M.read (|
-            let~ __self_tag :=
+            let~ __self_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -6516,7 +6492,7 @@ Module result.
             M.alloc (|
               M.call_closure (|
                 M.get_trait_method (| "core::hash::Hash", Ty.path "isize", [], "hash", [ __H ] |),
-                [ __self_tag; M.read (| state |) ]
+                [ __self_discr; M.read (| state |) ]
               |)
             |)
           |)))
@@ -6587,11 +6563,9 @@ Module result.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array [ M.read (| Value.String "`prevrandao` not set" |) ]
-                                |))
+                              M.alloc (|
+                                Value.Array [ M.read (| Value.String "`prevrandao` not set" |) ]
+                              |)
                             ]
                           |)
                         ]
@@ -6621,12 +6595,10 @@ Module result.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [ M.read (| Value.String "`excess_blob_gas` not set" |) ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [ M.read (| Value.String "`excess_blob_gas` not set" |) ]
+                              |)
                             ]
                           |)
                         ]
@@ -6787,7 +6759,7 @@ Module result.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ __self_tag :=
+            let~ __self_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -6797,7 +6769,7 @@ Module result.
                   [ M.read (| self |) ]
                 |)
               |) in
-            let~ __arg1_tag :=
+            let~ __arg1_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -6807,7 +6779,7 @@ Module result.
                   [ M.read (| other |) ]
                 |)
               |) in
-            M.alloc (| BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)) |)
+            M.alloc (| BinOp.Pure.eq (M.read (| __self_discr |)) (M.read (| __arg1_discr |)) |)
           |)))
       | _, _, _ => M.impossible
       end.
@@ -6819,17 +6791,6 @@ Module result.
         (* Trait polymorphic types *) []
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_revm_primitives_result_SuccessReason.
-  
-  Module Impl_core_marker_StructuralEq_for_revm_primitives_result_SuccessReason.
-    Definition Self : Ty.t := Ty.path "revm_primitives::result::SuccessReason".
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::marker::StructuralEq"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [].
-  End Impl_core_marker_StructuralEq_for_revm_primitives_result_SuccessReason.
   
   Module Impl_core_cmp_Eq_for_revm_primitives_result_SuccessReason.
     Definition Self : Ty.t := Ty.path "revm_primitives::result::SuccessReason".
@@ -6868,7 +6829,7 @@ Module result.
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
           M.read (|
-            let~ __self_tag :=
+            let~ __self_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -6881,7 +6842,7 @@ Module result.
             M.alloc (|
               M.call_closure (|
                 M.get_trait_method (| "core::hash::Hash", Ty.path "isize", [], "hash", [ __H ] |),
-                [ __self_tag; M.read (| state |) ]
+                [ __self_discr; M.read (| state |) ]
               |)
             |)
           |)))
@@ -7033,11 +6994,7 @@ Module result.
                           "debug_tuple_field1_finish",
                           []
                         |),
-                        [
-                          M.read (| f |);
-                          M.read (| Value.String "OutOfGas" |);
-                          (* Unsize *) M.pointer_coercion __self_0
-                        ]
+                        [ M.read (| f |); M.read (| Value.String "OutOfGas" |); __self_0 ]
                       |)
                     |)));
                 fun γ =>
@@ -7437,7 +7394,7 @@ Module result.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ __self_tag :=
+            let~ __self_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -7447,7 +7404,7 @@ Module result.
                   [ M.read (| self |) ]
                 |)
               |) in
-            let~ __arg1_tag :=
+            let~ __arg1_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -7459,7 +7416,7 @@ Module result.
               |) in
             M.alloc (|
               LogicalOp.and (|
-                BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)),
+                BinOp.Pure.eq (M.read (| __self_discr |)) (M.read (| __arg1_discr |)),
                 ltac:(M.monadic
                   (M.read (|
                     M.match_operator (|
@@ -7489,12 +7446,20 @@ Module result.
                               M.call_closure (|
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
-                                  Ty.path "revm_primitives::result::OutOfGasError",
-                                  [ Ty.path "revm_primitives::result::OutOfGasError" ],
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.path "revm_primitives::result::OutOfGasError" ],
+                                  [
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.path "revm_primitives::result::OutOfGasError" ]
+                                  ],
                                   "eq",
                                   []
                                 |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                [ __self_0; __arg1_0 ]
                               |)
                             |)));
                         fun γ => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
@@ -7514,17 +7479,6 @@ Module result.
         (* Trait polymorphic types *) []
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_revm_primitives_result_HaltReason.
-  
-  Module Impl_core_marker_StructuralEq_for_revm_primitives_result_HaltReason.
-    Definition Self : Ty.t := Ty.path "revm_primitives::result::HaltReason".
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::marker::StructuralEq"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [].
-  End Impl_core_marker_StructuralEq_for_revm_primitives_result_HaltReason.
   
   Module Impl_core_cmp_Eq_for_revm_primitives_result_HaltReason.
     Definition Self : Ty.t := Ty.path "revm_primitives::result::HaltReason".
@@ -7568,7 +7522,7 @@ Module result.
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
           M.read (|
-            let~ __self_tag :=
+            let~ __self_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -7582,7 +7536,7 @@ Module result.
               M.alloc (|
                 M.call_closure (|
                   M.get_trait_method (| "core::hash::Hash", Ty.path "isize", [], "hash", [ __H ] |),
-                  [ __self_tag; M.read (| state |) ]
+                  [ __self_discr; M.read (| state |) ]
                 |)
               |) in
             M.match_operator (|
@@ -7794,7 +7748,7 @@ Module result.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ __self_tag :=
+            let~ __self_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -7804,7 +7758,7 @@ Module result.
                   [ M.read (| self |) ]
                 |)
               |) in
-            let~ __arg1_tag :=
+            let~ __arg1_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -7814,7 +7768,7 @@ Module result.
                   [ M.read (| other |) ]
                 |)
               |) in
-            M.alloc (| BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)) |)
+            M.alloc (| BinOp.Pure.eq (M.read (| __self_discr |)) (M.read (| __arg1_discr |)) |)
           |)))
       | _, _, _ => M.impossible
       end.
@@ -7826,17 +7780,6 @@ Module result.
         (* Trait polymorphic types *) []
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_revm_primitives_result_OutOfGasError.
-  
-  Module Impl_core_marker_StructuralEq_for_revm_primitives_result_OutOfGasError.
-    Definition Self : Ty.t := Ty.path "revm_primitives::result::OutOfGasError".
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::marker::StructuralEq"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [].
-  End Impl_core_marker_StructuralEq_for_revm_primitives_result_OutOfGasError.
   
   Module Impl_core_cmp_Eq_for_revm_primitives_result_OutOfGasError.
     Definition Self : Ty.t := Ty.path "revm_primitives::result::OutOfGasError".
@@ -7875,7 +7818,7 @@ Module result.
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
           M.read (|
-            let~ __self_tag :=
+            let~ __self_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -7888,7 +7831,7 @@ Module result.
             M.alloc (|
               M.call_closure (|
                 M.get_trait_method (| "core::hash::Hash", Ty.path "isize", [], "hash", [ __H ] |),
-                [ __self_tag; M.read (| state |) ]
+                [ __self_discr; M.read (| state |) ]
               |)
             |)
           |)))

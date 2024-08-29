@@ -132,15 +132,13 @@ Module db.
                   M.read (| f |);
                   M.read (| Value.String "TransitionState" |);
                   M.read (| Value.String "transitions" |);
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.alloc (|
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "revm::db::states::transition_state::TransitionState",
-                        "transitions"
-                      |)
-                    |))
+                  M.alloc (|
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "revm::db::states::transition_state::TransitionState",
+                      "transitions"
+                    |)
+                  |)
                 ]
               |)))
           | _, _, _ => M.impossible
@@ -222,17 +220,6 @@ Module db.
             (* Trait polymorphic types *) []
             (* Instance *) [ ("eq", InstanceField.Method eq) ].
       End Impl_core_cmp_PartialEq_for_revm_db_states_transition_state_TransitionState.
-      
-      Module Impl_core_marker_StructuralEq_for_revm_db_states_transition_state_TransitionState.
-        Definition Self : Ty.t := Ty.path "revm::db::states::transition_state::TransitionState".
-        
-        Axiom Implements :
-          M.IsTraitInstance
-            "core::marker::StructuralEq"
-            Self
-            (* Trait polymorphic types *) []
-            (* Instance *) [].
-      End Impl_core_marker_StructuralEq_for_revm_db_states_transition_state_TransitionState.
       
       Module Impl_core_cmp_Eq_for_revm_db_states_transition_state_TransitionState.
         Definition Self : Ty.t := Ty.path "revm::db::states::transition_state::TransitionState".

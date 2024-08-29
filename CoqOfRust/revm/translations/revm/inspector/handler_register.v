@@ -857,543 +857,538 @@ Module inspector.
                                                 |),
                                                 [
                                                   M.read (| i |);
-                                                  (* Unsize *)
-                                                  M.pointer_coercion
-                                                    (M.call_closure (|
-                                                      M.get_associated_function (|
-                                                        Ty.apply
-                                                          (Ty.path "alloc::boxed::Box")
-                                                          []
-                                                          [
-                                                            Ty.function
-                                                              [
-                                                                Ty.tuple
-                                                                  [
-                                                                    Ty.apply
-                                                                      (Ty.path "&mut")
-                                                                      []
-                                                                      [
-                                                                        Ty.path
-                                                                          "revm_interpreter::interpreter::Interpreter"
-                                                                      ];
-                                                                    Ty.apply
-                                                                      (Ty.path "&mut")
-                                                                      []
-                                                                      [
-                                                                        Ty.apply
-                                                                          (Ty.path "revm::evm::Evm")
-                                                                          []
-                                                                          [ EXT; DB ]
-                                                                      ]
-                                                                  ]
-                                                              ]
-                                                              (Ty.tuple []);
-                                                            Ty.path "alloc::alloc::Global"
-                                                          ],
-                                                        "new",
+                                                  M.call_closure (|
+                                                    M.get_associated_function (|
+                                                      Ty.apply
+                                                        (Ty.path "alloc::boxed::Box")
                                                         []
-                                                      |),
-                                                      [
-                                                        M.closure
-                                                          (fun γ =>
-                                                            ltac:(M.monadic
-                                                              match γ with
-                                                              | [ α0; α1 ] =>
-                                                                M.match_operator (|
-                                                                  M.alloc (| α0 |),
-                                                                  [
-                                                                    fun γ =>
-                                                                      ltac:(M.monadic
-                                                                        (M.match_operator (|
-                                                                          M.alloc (| α1 |),
-                                                                          [
-                                                                            fun γ =>
-                                                                              ltac:(M.monadic
-                                                                                (Value.Tuple []))
-                                                                          ]
-                                                                        |)))
-                                                                  ]
-                                                                |)
-                                                              | _ => M.impossible (||)
-                                                              end))
-                                                      ]
-                                                    |))
+                                                        [
+                                                          Ty.function
+                                                            [
+                                                              Ty.tuple
+                                                                [
+                                                                  Ty.apply
+                                                                    (Ty.path "&mut")
+                                                                    []
+                                                                    [
+                                                                      Ty.path
+                                                                        "revm_interpreter::interpreter::Interpreter"
+                                                                    ];
+                                                                  Ty.apply
+                                                                    (Ty.path "&mut")
+                                                                    []
+                                                                    [
+                                                                      Ty.apply
+                                                                        (Ty.path "revm::evm::Evm")
+                                                                        []
+                                                                        [ EXT; DB ]
+                                                                    ]
+                                                                ]
+                                                            ]
+                                                            (Ty.tuple []);
+                                                          Ty.path "alloc::alloc::Global"
+                                                        ],
+                                                      "new",
+                                                      []
+                                                    |),
+                                                    [
+                                                      M.closure
+                                                        (fun γ =>
+                                                          ltac:(M.monadic
+                                                            match γ with
+                                                            | [ α0; α1 ] =>
+                                                              M.match_operator (|
+                                                                M.alloc (| α0 |),
+                                                                [
+                                                                  fun γ =>
+                                                                    ltac:(M.monadic
+                                                                      (M.match_operator (|
+                                                                        M.alloc (| α1 |),
+                                                                        [
+                                                                          fun γ =>
+                                                                            ltac:(M.monadic
+                                                                              (Value.Tuple []))
+                                                                        ]
+                                                                      |)))
+                                                                ]
+                                                              |)
+                                                            | _ => M.impossible (||)
+                                                            end))
+                                                    ]
+                                                  |)
                                                 ]
                                               |)
                                             |) in
                                           M.write (|
                                             M.read (| i |),
-                                            (* Unsize *)
-                                            M.pointer_coercion
-                                              (M.call_closure (|
-                                                M.get_associated_function (|
-                                                  Ty.apply
-                                                    (Ty.path "alloc::boxed::Box")
-                                                    []
-                                                    [
-                                                      Ty.function
-                                                        [
-                                                          Ty.tuple
-                                                            [
-                                                              Ty.apply
-                                                                (Ty.path "&mut")
-                                                                []
-                                                                [
-                                                                  Ty.path
-                                                                    "revm_interpreter::interpreter::Interpreter"
-                                                                ];
-                                                              Ty.apply
-                                                                (Ty.path "&mut")
-                                                                []
-                                                                [
-                                                                  Ty.apply
-                                                                    (Ty.path "revm::evm::Evm")
-                                                                    []
-                                                                    [ EXT; DB ]
-                                                                ]
-                                                            ]
-                                                        ]
-                                                        (Ty.tuple []);
-                                                      Ty.path "alloc::alloc::Global"
-                                                    ],
-                                                  "new",
+                                            M.call_closure (|
+                                              M.get_associated_function (|
+                                                Ty.apply
+                                                  (Ty.path "alloc::boxed::Box")
                                                   []
-                                                |),
-                                                [
-                                                  M.closure
-                                                    (fun γ =>
-                                                      ltac:(M.monadic
-                                                        match γ with
-                                                        | [ α0; α1 ] =>
-                                                          M.match_operator (|
-                                                            M.alloc (| α0 |),
-                                                            [
-                                                              fun γ =>
-                                                                ltac:(M.monadic
-                                                                  (let interpreter :=
-                                                                    M.copy (| γ |) in
-                                                                  M.match_operator (|
-                                                                    M.alloc (| α1 |),
-                                                                    [
-                                                                      fun γ =>
-                                                                        ltac:(M.monadic
-                                                                          (let host :=
-                                                                            M.copy (| γ |) in
-                                                                          M.read (|
-                                                                            let~ old_log_len :=
-                                                                              M.alloc (|
-                                                                                M.call_closure (|
-                                                                                  M.get_associated_function (|
-                                                                                    Ty.apply
-                                                                                      (Ty.path
-                                                                                        "alloc::vec::Vec")
-                                                                                      []
+                                                  [
+                                                    Ty.function
+                                                      [
+                                                        Ty.tuple
+                                                          [
+                                                            Ty.apply
+                                                              (Ty.path "&mut")
+                                                              []
+                                                              [
+                                                                Ty.path
+                                                                  "revm_interpreter::interpreter::Interpreter"
+                                                              ];
+                                                            Ty.apply
+                                                              (Ty.path "&mut")
+                                                              []
+                                                              [
+                                                                Ty.apply
+                                                                  (Ty.path "revm::evm::Evm")
+                                                                  []
+                                                                  [ EXT; DB ]
+                                                              ]
+                                                          ]
+                                                      ]
+                                                      (Ty.tuple []);
+                                                    Ty.path "alloc::alloc::Global"
+                                                  ],
+                                                "new",
+                                                []
+                                              |),
+                                              [
+                                                M.closure
+                                                  (fun γ =>
+                                                    ltac:(M.monadic
+                                                      match γ with
+                                                      | [ α0; α1 ] =>
+                                                        M.match_operator (|
+                                                          M.alloc (| α0 |),
+                                                          [
+                                                            fun γ =>
+                                                              ltac:(M.monadic
+                                                                (let interpreter :=
+                                                                  M.copy (| γ |) in
+                                                                M.match_operator (|
+                                                                  M.alloc (| α1 |),
+                                                                  [
+                                                                    fun γ =>
+                                                                      ltac:(M.monadic
+                                                                        (let host :=
+                                                                          M.copy (| γ |) in
+                                                                        M.read (|
+                                                                          let~ old_log_len :=
+                                                                            M.alloc (|
+                                                                              M.call_closure (|
+                                                                                M.get_associated_function (|
+                                                                                  Ty.apply
+                                                                                    (Ty.path
+                                                                                      "alloc::vec::Vec")
+                                                                                    []
+                                                                                    [
+                                                                                      Ty.apply
+                                                                                        (Ty.path
+                                                                                          "alloy_primitives::log::Log")
+                                                                                        []
+                                                                                        [
+                                                                                          Ty.path
+                                                                                            "alloy_primitives::log::LogData"
+                                                                                        ];
+                                                                                      Ty.path
+                                                                                        "alloc::alloc::Global"
+                                                                                    ],
+                                                                                  "len",
+                                                                                  []
+                                                                                |),
+                                                                                [
+                                                                                  M.SubPointer.get_struct_record_field (|
+                                                                                    M.SubPointer.get_struct_record_field (|
+                                                                                      M.call_closure (|
+                                                                                        M.get_trait_method (|
+                                                                                          "core::ops::deref::Deref",
+                                                                                          Ty.apply
+                                                                                            (Ty.path
+                                                                                              "revm::context::evm_context::EvmContext")
+                                                                                            []
+                                                                                            [ DB ],
+                                                                                          [],
+                                                                                          "deref",
+                                                                                          []
+                                                                                        |),
+                                                                                        [
+                                                                                          M.SubPointer.get_struct_record_field (|
+                                                                                            M.SubPointer.get_struct_record_field (|
+                                                                                              M.read (|
+                                                                                                host
+                                                                                              |),
+                                                                                              "revm::evm::Evm",
+                                                                                              "context"
+                                                                                            |),
+                                                                                            "revm::context::Context",
+                                                                                            "evm"
+                                                                                          |)
+                                                                                        ]
+                                                                                      |),
+                                                                                      "revm::context::inner_evm_context::InnerEvmContext",
+                                                                                      "journaled_state"
+                                                                                    |),
+                                                                                    "revm::journaled_state::JournaledState",
+                                                                                    "logs"
+                                                                                  |)
+                                                                                ]
+                                                                              |)
+                                                                            |) in
+                                                                          let~ _ :=
+                                                                            M.alloc (|
+                                                                              M.call_closure (|
+                                                                                M.get_trait_method (|
+                                                                                  "core::ops::function::Fn",
+                                                                                  Ty.apply
+                                                                                    (Ty.path
+                                                                                      "alloc::boxed::Box")
+                                                                                    []
+                                                                                    [
+                                                                                      Ty.dyn
+                                                                                        [
+                                                                                          ("existential predicate with variables",
+                                                                                            []);
+                                                                                          ("existential predicate with variables",
+                                                                                            [])
+                                                                                        ];
+                                                                                      Ty.path
+                                                                                        "alloc::alloc::Global"
+                                                                                    ],
+                                                                                  [
+                                                                                    Ty.tuple
                                                                                       [
                                                                                         Ty.apply
                                                                                           (Ty.path
-                                                                                            "alloy_primitives::log::Log")
+                                                                                            "&mut")
                                                                                           []
                                                                                           [
                                                                                             Ty.path
-                                                                                              "alloy_primitives::log::LogData"
+                                                                                              "revm_interpreter::interpreter::Interpreter"
                                                                                           ];
-                                                                                        Ty.path
-                                                                                          "alloc::alloc::Global"
-                                                                                      ],
-                                                                                    "len",
-                                                                                    []
-                                                                                  |),
-                                                                                  [
-                                                                                    M.SubPointer.get_struct_record_field (|
-                                                                                      M.SubPointer.get_struct_record_field (|
-                                                                                        M.call_closure (|
-                                                                                          M.get_trait_method (|
-                                                                                            "core::ops::deref::Deref",
+                                                                                        Ty.apply
+                                                                                          (Ty.path
+                                                                                            "&mut")
+                                                                                          []
+                                                                                          [
                                                                                             Ty.apply
                                                                                               (Ty.path
-                                                                                                "revm::context::evm_context::EvmContext")
+                                                                                                "revm::evm::Evm")
                                                                                               []
-                                                                                              [ DB
-                                                                                              ],
-                                                                                            [],
-                                                                                            "deref",
-                                                                                            []
-                                                                                          |),
-                                                                                          [
-                                                                                            M.SubPointer.get_struct_record_field (|
-                                                                                              M.SubPointer.get_struct_record_field (|
-                                                                                                M.read (|
-                                                                                                  host
-                                                                                                |),
-                                                                                                "revm::evm::Evm",
-                                                                                                "context"
-                                                                                              |),
-                                                                                              "revm::context::Context",
-                                                                                              "evm"
-                                                                                            |)
+                                                                                              [
+                                                                                                EXT;
+                                                                                                DB
+                                                                                              ]
                                                                                           ]
-                                                                                        |),
-                                                                                        "revm::context::inner_evm_context::InnerEvmContext",
-                                                                                        "journaled_state"
-                                                                                      |),
-                                                                                      "revm::journaled_state::JournaledState",
-                                                                                      "logs"
-                                                                                    |)
-                                                                                  ]
-                                                                                |)
-                                                                              |) in
-                                                                            let~ _ :=
-                                                                              M.alloc (|
-                                                                                M.call_closure (|
-                                                                                  M.get_trait_method (|
-                                                                                    "core::ops::function::Fn",
-                                                                                    Ty.apply
-                                                                                      (Ty.path
-                                                                                        "alloc::boxed::Box")
-                                                                                      []
-                                                                                      [
-                                                                                        Ty.dyn
-                                                                                          [
-                                                                                            ("existential predicate with variables",
-                                                                                              []);
-                                                                                            ("existential predicate with variables",
-                                                                                              [])
-                                                                                          ];
-                                                                                        Ty.path
-                                                                                          "alloc::alloc::Global"
-                                                                                      ],
+                                                                                      ]
+                                                                                  ],
+                                                                                  "call",
+                                                                                  []
+                                                                                |),
+                                                                                [
+                                                                                  old;
+                                                                                  Value.Tuple
                                                                                     [
-                                                                                      Ty.tuple
-                                                                                        [
+                                                                                      M.read (|
+                                                                                        interpreter
+                                                                                      |);
+                                                                                      M.read (|
+                                                                                        host
+                                                                                      |)
+                                                                                    ]
+                                                                                ]
+                                                                              |)
+                                                                            |) in
+                                                                          M.match_operator (|
+                                                                            M.alloc (|
+                                                                              Value.Tuple []
+                                                                            |),
+                                                                            [
+                                                                              fun γ =>
+                                                                                ltac:(M.monadic
+                                                                                  (let γ :=
+                                                                                    M.use
+                                                                                      (M.alloc (|
+                                                                                        BinOp.Pure.eq
+                                                                                          (M.call_closure (|
+                                                                                            M.get_associated_function (|
+                                                                                              Ty.apply
+                                                                                                (Ty.path
+                                                                                                  "alloc::vec::Vec")
+                                                                                                []
+                                                                                                [
+                                                                                                  Ty.apply
+                                                                                                    (Ty.path
+                                                                                                      "alloy_primitives::log::Log")
+                                                                                                    []
+                                                                                                    [
+                                                                                                      Ty.path
+                                                                                                        "alloy_primitives::log::LogData"
+                                                                                                    ];
+                                                                                                  Ty.path
+                                                                                                    "alloc::alloc::Global"
+                                                                                                ],
+                                                                                              "len",
+                                                                                              []
+                                                                                            |),
+                                                                                            [
+                                                                                              M.SubPointer.get_struct_record_field (|
+                                                                                                M.SubPointer.get_struct_record_field (|
+                                                                                                  M.call_closure (|
+                                                                                                    M.get_trait_method (|
+                                                                                                      "core::ops::deref::Deref",
+                                                                                                      Ty.apply
+                                                                                                        (Ty.path
+                                                                                                          "revm::context::evm_context::EvmContext")
+                                                                                                        []
+                                                                                                        [
+                                                                                                          DB
+                                                                                                        ],
+                                                                                                      [],
+                                                                                                      "deref",
+                                                                                                      []
+                                                                                                    |),
+                                                                                                    [
+                                                                                                      M.SubPointer.get_struct_record_field (|
+                                                                                                        M.SubPointer.get_struct_record_field (|
+                                                                                                          M.read (|
+                                                                                                            host
+                                                                                                          |),
+                                                                                                          "revm::evm::Evm",
+                                                                                                          "context"
+                                                                                                        |),
+                                                                                                        "revm::context::Context",
+                                                                                                        "evm"
+                                                                                                      |)
+                                                                                                    ]
+                                                                                                  |),
+                                                                                                  "revm::context::inner_evm_context::InnerEvmContext",
+                                                                                                  "journaled_state"
+                                                                                                |),
+                                                                                                "revm::journaled_state::JournaledState",
+                                                                                                "logs"
+                                                                                              |)
+                                                                                            ]
+                                                                                          |))
+                                                                                          (BinOp.Wrap.add
+                                                                                            Integer.Usize
+                                                                                            (M.read (|
+                                                                                              old_log_len
+                                                                                            |))
+                                                                                            (Value.Integer
+                                                                                              1))
+                                                                                      |)) in
+                                                                                  let _ :=
+                                                                                    M.is_constant_or_break_match (|
+                                                                                      M.read (|
+                                                                                        γ
+                                                                                      |),
+                                                                                      Value.Bool
+                                                                                        true
+                                                                                    |) in
+                                                                                  let~ last_log :=
+                                                                                    M.alloc (|
+                                                                                      M.call_closure (|
+                                                                                        M.get_trait_method (|
+                                                                                          "core::clone::Clone",
                                                                                           Ty.apply
                                                                                             (Ty.path
-                                                                                              "&mut")
+                                                                                              "alloy_primitives::log::Log")
                                                                                             []
                                                                                             [
                                                                                               Ty.path
-                                                                                                "revm_interpreter::interpreter::Interpreter"
-                                                                                            ];
-                                                                                          Ty.apply
-                                                                                            (Ty.path
-                                                                                              "&mut")
-                                                                                            []
-                                                                                            [
+                                                                                                "alloy_primitives::log::LogData"
+                                                                                            ],
+                                                                                          [],
+                                                                                          "clone",
+                                                                                          []
+                                                                                        |),
+                                                                                        [
+                                                                                          M.call_closure (|
+                                                                                            M.get_associated_function (|
                                                                                               Ty.apply
                                                                                                 (Ty.path
-                                                                                                  "revm::evm::Evm")
+                                                                                                  "core::option::Option")
                                                                                                 []
                                                                                                 [
-                                                                                                  EXT;
-                                                                                                  DB
-                                                                                                ]
-                                                                                            ]
-                                                                                        ]
-                                                                                    ],
-                                                                                    "call",
-                                                                                    []
-                                                                                  |),
-                                                                                  [
-                                                                                    old;
-                                                                                    Value.Tuple
-                                                                                      [
-                                                                                        M.read (|
-                                                                                          interpreter
-                                                                                        |);
-                                                                                        M.read (|
-                                                                                          host
-                                                                                        |)
-                                                                                      ]
-                                                                                  ]
-                                                                                |)
-                                                                              |) in
-                                                                            M.match_operator (|
-                                                                              M.alloc (|
-                                                                                Value.Tuple []
-                                                                              |),
-                                                                              [
-                                                                                fun γ =>
-                                                                                  ltac:(M.monadic
-                                                                                    (let γ :=
-                                                                                      M.use
-                                                                                        (M.alloc (|
-                                                                                          BinOp.Pure.eq
-                                                                                            (M.call_closure (|
-                                                                                              M.get_associated_function (|
-                                                                                                Ty.apply
-                                                                                                  (Ty.path
-                                                                                                    "alloc::vec::Vec")
-                                                                                                  []
-                                                                                                  [
-                                                                                                    Ty.apply
-                                                                                                      (Ty.path
-                                                                                                        "alloy_primitives::log::Log")
-                                                                                                      []
-                                                                                                      [
-                                                                                                        Ty.path
-                                                                                                          "alloy_primitives::log::LogData"
-                                                                                                      ];
-                                                                                                    Ty.path
-                                                                                                      "alloc::alloc::Global"
-                                                                                                  ],
-                                                                                                "len",
-                                                                                                []
-                                                                                              |),
-                                                                                              [
-                                                                                                M.SubPointer.get_struct_record_field (|
-                                                                                                  M.SubPointer.get_struct_record_field (|
-                                                                                                    M.call_closure (|
-                                                                                                      M.get_trait_method (|
-                                                                                                        "core::ops::deref::Deref",
-                                                                                                        Ty.apply
-                                                                                                          (Ty.path
-                                                                                                            "revm::context::evm_context::EvmContext")
-                                                                                                          []
-                                                                                                          [
-                                                                                                            DB
-                                                                                                          ],
-                                                                                                        [],
-                                                                                                        "deref",
-                                                                                                        []
-                                                                                                      |),
-                                                                                                      [
-                                                                                                        M.SubPointer.get_struct_record_field (|
-                                                                                                          M.SubPointer.get_struct_record_field (|
-                                                                                                            M.read (|
-                                                                                                              host
-                                                                                                            |),
-                                                                                                            "revm::evm::Evm",
-                                                                                                            "context"
-                                                                                                          |),
-                                                                                                          "revm::context::Context",
-                                                                                                          "evm"
-                                                                                                        |)
-                                                                                                      ]
-                                                                                                    |),
-                                                                                                    "revm::context::inner_evm_context::InnerEvmContext",
-                                                                                                    "journaled_state"
-                                                                                                  |),
-                                                                                                  "revm::journaled_state::JournaledState",
-                                                                                                  "logs"
-                                                                                                |)
-                                                                                              ]
-                                                                                            |))
-                                                                                            (BinOp.Wrap.add
-                                                                                              Integer.Usize
-                                                                                              (M.read (|
-                                                                                                old_log_len
-                                                                                              |))
-                                                                                              (Value.Integer
-                                                                                                1))
-                                                                                        |)) in
-                                                                                    let _ :=
-                                                                                      M.is_constant_or_break_match (|
-                                                                                        M.read (|
-                                                                                          γ
-                                                                                        |),
-                                                                                        Value.Bool
-                                                                                          true
-                                                                                      |) in
-                                                                                    let~ last_log :=
-                                                                                      M.alloc (|
-                                                                                        M.call_closure (|
-                                                                                          M.get_trait_method (|
-                                                                                            "core::clone::Clone",
-                                                                                            Ty.apply
-                                                                                              (Ty.path
-                                                                                                "alloy_primitives::log::Log")
-                                                                                              []
-                                                                                              [
-                                                                                                Ty.path
-                                                                                                  "alloy_primitives::log::LogData"
-                                                                                              ],
-                                                                                            [],
-                                                                                            "clone",
-                                                                                            []
-                                                                                          |),
-                                                                                          [
-                                                                                            M.call_closure (|
-                                                                                              M.get_associated_function (|
-                                                                                                Ty.apply
-                                                                                                  (Ty.path
-                                                                                                    "core::option::Option")
-                                                                                                  []
-                                                                                                  [
-                                                                                                    Ty.apply
-                                                                                                      (Ty.path
-                                                                                                        "&")
-                                                                                                      []
-                                                                                                      [
-                                                                                                        Ty.apply
-                                                                                                          (Ty.path
-                                                                                                            "alloy_primitives::log::Log")
-                                                                                                          []
-                                                                                                          [
-                                                                                                            Ty.path
-                                                                                                              "alloy_primitives::log::LogData"
-                                                                                                          ]
-                                                                                                      ]
-                                                                                                  ],
-                                                                                                "unwrap",
-                                                                                                []
-                                                                                              |),
-                                                                                              [
-                                                                                                M.call_closure (|
-                                                                                                  M.get_associated_function (|
-                                                                                                    Ty.apply
-                                                                                                      (Ty.path
-                                                                                                        "slice")
-                                                                                                      []
-                                                                                                      [
-                                                                                                        Ty.apply
-                                                                                                          (Ty.path
-                                                                                                            "alloy_primitives::log::Log")
-                                                                                                          []
-                                                                                                          [
-                                                                                                            Ty.path
-                                                                                                              "alloy_primitives::log::LogData"
-                                                                                                          ]
-                                                                                                      ],
-                                                                                                    "last",
+                                                                                                  Ty.apply
+                                                                                                    (Ty.path
+                                                                                                      "&")
                                                                                                     []
-                                                                                                  |),
-                                                                                                  [
-                                                                                                    M.call_closure (|
-                                                                                                      M.get_trait_method (|
-                                                                                                        "core::ops::deref::Deref",
-                                                                                                        Ty.apply
-                                                                                                          (Ty.path
-                                                                                                            "alloc::vec::Vec")
-                                                                                                          []
-                                                                                                          [
-                                                                                                            Ty.apply
-                                                                                                              (Ty.path
-                                                                                                                "alloy_primitives::log::Log")
-                                                                                                              []
-                                                                                                              [
-                                                                                                                Ty.path
-                                                                                                                  "alloy_primitives::log::LogData"
-                                                                                                              ];
-                                                                                                            Ty.path
-                                                                                                              "alloc::alloc::Global"
-                                                                                                          ],
-                                                                                                        [],
-                                                                                                        "deref",
+                                                                                                    [
+                                                                                                      Ty.apply
+                                                                                                        (Ty.path
+                                                                                                          "alloy_primitives::log::Log")
                                                                                                         []
-                                                                                                      |),
-                                                                                                      [
-                                                                                                        M.SubPointer.get_struct_record_field (|
-                                                                                                          M.SubPointer.get_struct_record_field (|
-                                                                                                            M.call_closure (|
-                                                                                                              M.get_trait_method (|
-                                                                                                                "core::ops::deref::Deref",
-                                                                                                                Ty.apply
-                                                                                                                  (Ty.path
-                                                                                                                    "revm::context::evm_context::EvmContext")
-                                                                                                                  []
-                                                                                                                  [
-                                                                                                                    DB
-                                                                                                                  ],
-                                                                                                                [],
-                                                                                                                "deref",
-                                                                                                                []
-                                                                                                              |),
-                                                                                                              [
-                                                                                                                M.SubPointer.get_struct_record_field (|
-                                                                                                                  M.SubPointer.get_struct_record_field (|
-                                                                                                                    M.read (|
-                                                                                                                      host
-                                                                                                                    |),
-                                                                                                                    "revm::evm::Evm",
-                                                                                                                    "context"
-                                                                                                                  |),
-                                                                                                                  "revm::context::Context",
-                                                                                                                  "evm"
-                                                                                                                |)
-                                                                                                              ]
-                                                                                                            |),
-                                                                                                            "revm::context::inner_evm_context::InnerEvmContext",
-                                                                                                            "journaled_state"
-                                                                                                          |),
-                                                                                                          "revm::journaled_state::JournaledState",
-                                                                                                          "logs"
-                                                                                                        |)
-                                                                                                      ]
-                                                                                                    |)
-                                                                                                  ]
-                                                                                                |)
-                                                                                              ]
-                                                                                            |)
-                                                                                          ]
-                                                                                        |)
-                                                                                      |) in
-                                                                                    let~ _ :=
-                                                                                      M.alloc (|
-                                                                                        M.call_closure (|
-                                                                                          M.get_trait_method (|
-                                                                                            "revm::inspector::Inspector",
-                                                                                            Ty.associated,
-                                                                                            [ DB ],
-                                                                                            "log",
-                                                                                            []
-                                                                                          |),
-                                                                                          [
-                                                                                            M.call_closure (|
-                                                                                              M.get_trait_method (|
-                                                                                                "revm::inspector::handler_register::GetInspector",
-                                                                                                EXT,
-                                                                                                [ DB
+                                                                                                        [
+                                                                                                          Ty.path
+                                                                                                            "alloy_primitives::log::LogData"
+                                                                                                        ]
+                                                                                                    ]
                                                                                                 ],
-                                                                                                "get_inspector",
-                                                                                                []
-                                                                                              |),
-                                                                                              [
-                                                                                                M.SubPointer.get_struct_record_field (|
-                                                                                                  M.SubPointer.get_struct_record_field (|
-                                                                                                    M.read (|
-                                                                                                      host
-                                                                                                    |),
-                                                                                                    "revm::evm::Evm",
-                                                                                                    "context"
-                                                                                                  |),
-                                                                                                  "revm::context::Context",
-                                                                                                  "external"
-                                                                                                |)
-                                                                                              ]
-                                                                                            |);
-                                                                                            M.SubPointer.get_struct_record_field (|
-                                                                                              M.SubPointer.get_struct_record_field (|
-                                                                                                M.read (|
-                                                                                                  host
+                                                                                              "unwrap",
+                                                                                              []
+                                                                                            |),
+                                                                                            [
+                                                                                              M.call_closure (|
+                                                                                                M.get_associated_function (|
+                                                                                                  Ty.apply
+                                                                                                    (Ty.path
+                                                                                                      "slice")
+                                                                                                    []
+                                                                                                    [
+                                                                                                      Ty.apply
+                                                                                                        (Ty.path
+                                                                                                          "alloy_primitives::log::Log")
+                                                                                                        []
+                                                                                                        [
+                                                                                                          Ty.path
+                                                                                                            "alloy_primitives::log::LogData"
+                                                                                                        ]
+                                                                                                    ],
+                                                                                                  "last",
+                                                                                                  []
                                                                                                 |),
-                                                                                                "revm::evm::Evm",
-                                                                                                "context"
-                                                                                              |),
-                                                                                              "revm::context::Context",
-                                                                                              "evm"
-                                                                                            |);
-                                                                                            last_log
-                                                                                          ]
-                                                                                        |)
-                                                                                      |) in
+                                                                                                [
+                                                                                                  M.call_closure (|
+                                                                                                    M.get_trait_method (|
+                                                                                                      "core::ops::deref::Deref",
+                                                                                                      Ty.apply
+                                                                                                        (Ty.path
+                                                                                                          "alloc::vec::Vec")
+                                                                                                        []
+                                                                                                        [
+                                                                                                          Ty.apply
+                                                                                                            (Ty.path
+                                                                                                              "alloy_primitives::log::Log")
+                                                                                                            []
+                                                                                                            [
+                                                                                                              Ty.path
+                                                                                                                "alloy_primitives::log::LogData"
+                                                                                                            ];
+                                                                                                          Ty.path
+                                                                                                            "alloc::alloc::Global"
+                                                                                                        ],
+                                                                                                      [],
+                                                                                                      "deref",
+                                                                                                      []
+                                                                                                    |),
+                                                                                                    [
+                                                                                                      M.SubPointer.get_struct_record_field (|
+                                                                                                        M.SubPointer.get_struct_record_field (|
+                                                                                                          M.call_closure (|
+                                                                                                            M.get_trait_method (|
+                                                                                                              "core::ops::deref::Deref",
+                                                                                                              Ty.apply
+                                                                                                                (Ty.path
+                                                                                                                  "revm::context::evm_context::EvmContext")
+                                                                                                                []
+                                                                                                                [
+                                                                                                                  DB
+                                                                                                                ],
+                                                                                                              [],
+                                                                                                              "deref",
+                                                                                                              []
+                                                                                                            |),
+                                                                                                            [
+                                                                                                              M.SubPointer.get_struct_record_field (|
+                                                                                                                M.SubPointer.get_struct_record_field (|
+                                                                                                                  M.read (|
+                                                                                                                    host
+                                                                                                                  |),
+                                                                                                                  "revm::evm::Evm",
+                                                                                                                  "context"
+                                                                                                                |),
+                                                                                                                "revm::context::Context",
+                                                                                                                "evm"
+                                                                                                              |)
+                                                                                                            ]
+                                                                                                          |),
+                                                                                                          "revm::context::inner_evm_context::InnerEvmContext",
+                                                                                                          "journaled_state"
+                                                                                                        |),
+                                                                                                        "revm::journaled_state::JournaledState",
+                                                                                                        "logs"
+                                                                                                      |)
+                                                                                                    ]
+                                                                                                  |)
+                                                                                                ]
+                                                                                              |)
+                                                                                            ]
+                                                                                          |)
+                                                                                        ]
+                                                                                      |)
+                                                                                    |) in
+                                                                                  let~ _ :=
                                                                                     M.alloc (|
-                                                                                      Value.Tuple []
-                                                                                    |)));
-                                                                                fun γ =>
-                                                                                  ltac:(M.monadic
-                                                                                    (M.alloc (|
-                                                                                      Value.Tuple []
-                                                                                    |)))
-                                                                              ]
-                                                                            |)
-                                                                          |)))
-                                                                    ]
-                                                                  |)))
-                                                            ]
-                                                          |)
-                                                        | _ => M.impossible (||)
-                                                        end))
-                                                ]
-                                              |))
+                                                                                      M.call_closure (|
+                                                                                        M.get_trait_method (|
+                                                                                          "revm::inspector::Inspector",
+                                                                                          Ty.associated,
+                                                                                          [ DB ],
+                                                                                          "log",
+                                                                                          []
+                                                                                        |),
+                                                                                        [
+                                                                                          M.call_closure (|
+                                                                                            M.get_trait_method (|
+                                                                                              "revm::inspector::handler_register::GetInspector",
+                                                                                              EXT,
+                                                                                              [ DB
+                                                                                              ],
+                                                                                              "get_inspector",
+                                                                                              []
+                                                                                            |),
+                                                                                            [
+                                                                                              M.SubPointer.get_struct_record_field (|
+                                                                                                M.SubPointer.get_struct_record_field (|
+                                                                                                  M.read (|
+                                                                                                    host
+                                                                                                  |),
+                                                                                                  "revm::evm::Evm",
+                                                                                                  "context"
+                                                                                                |),
+                                                                                                "revm::context::Context",
+                                                                                                "external"
+                                                                                              |)
+                                                                                            ]
+                                                                                          |);
+                                                                                          M.SubPointer.get_struct_record_field (|
+                                                                                            M.SubPointer.get_struct_record_field (|
+                                                                                              M.read (|
+                                                                                                host
+                                                                                              |),
+                                                                                              "revm::evm::Evm",
+                                                                                              "context"
+                                                                                            |),
+                                                                                            "revm::context::Context",
+                                                                                            "evm"
+                                                                                          |);
+                                                                                          last_log
+                                                                                        ]
+                                                                                      |)
+                                                                                    |) in
+                                                                                  M.alloc (|
+                                                                                    Value.Tuple []
+                                                                                  |)));
+                                                                              fun γ =>
+                                                                                ltac:(M.monadic
+                                                                                  (M.alloc (|
+                                                                                    Value.Tuple []
+                                                                                  |)))
+                                                                            ]
+                                                                          |)
+                                                                        |)))
+                                                                  ]
+                                                                |)))
+                                                          ]
+                                                        |)
+                                                      | _ => M.impossible (||)
+                                                      end))
+                                              ]
+                                            |)
                                           |)));
                                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                                     ]
@@ -1580,416 +1575,405 @@ Module inspector.
                             |),
                             [
                               M.read (| i |);
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.apply
-                                      (Ty.path "alloc::boxed::Box")
-                                      []
-                                      [
-                                        Ty.function
-                                          [
-                                            Ty.tuple
-                                              [
-                                                Ty.apply
-                                                  (Ty.path "&mut")
-                                                  []
-                                                  [
-                                                    Ty.path
-                                                      "revm_interpreter::interpreter::Interpreter"
-                                                  ];
-                                                Ty.apply
-                                                  (Ty.path "&mut")
-                                                  []
-                                                  [
-                                                    Ty.apply
-                                                      (Ty.path "revm::evm::Evm")
-                                                      []
-                                                      [ EXT; DB ]
-                                                  ]
-                                              ]
-                                          ]
-                                          (Ty.tuple []);
-                                        Ty.path "alloc::alloc::Global"
-                                      ],
-                                    "new",
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.apply
+                                    (Ty.path "alloc::boxed::Box")
                                     []
-                                  |),
-                                  [
-                                    M.closure
-                                      (fun γ =>
-                                        ltac:(M.monadic
-                                          match γ with
-                                          | [ α0; α1 ] =>
-                                            M.match_operator (|
-                                              M.alloc (| α0 |),
-                                              [
-                                                fun γ =>
-                                                  ltac:(M.monadic
-                                                    (M.match_operator (|
-                                                      M.alloc (| α1 |),
-                                                      [ fun γ => ltac:(M.monadic (Value.Tuple [])) ]
-                                                    |)))
-                                              ]
-                                            |)
-                                          | _ => M.impossible (||)
-                                          end))
-                                  ]
-                                |))
+                                    [
+                                      Ty.function
+                                        [
+                                          Ty.tuple
+                                            [
+                                              Ty.apply
+                                                (Ty.path "&mut")
+                                                []
+                                                [
+                                                  Ty.path
+                                                    "revm_interpreter::interpreter::Interpreter"
+                                                ];
+                                              Ty.apply
+                                                (Ty.path "&mut")
+                                                []
+                                                [ Ty.apply (Ty.path "revm::evm::Evm") [] [ EXT; DB ]
+                                                ]
+                                            ]
+                                        ]
+                                        (Ty.tuple []);
+                                      Ty.path "alloc::alloc::Global"
+                                    ],
+                                  "new",
+                                  []
+                                |),
+                                [
+                                  M.closure
+                                    (fun γ =>
+                                      ltac:(M.monadic
+                                        match γ with
+                                        | [ α0; α1 ] =>
+                                          M.match_operator (|
+                                            M.alloc (| α0 |),
+                                            [
+                                              fun γ =>
+                                                ltac:(M.monadic
+                                                  (M.match_operator (|
+                                                    M.alloc (| α1 |),
+                                                    [ fun γ => ltac:(M.monadic (Value.Tuple [])) ]
+                                                  |)))
+                                            ]
+                                          |)
+                                        | _ => M.impossible (||)
+                                        end))
+                                ]
+                              |)
                             ]
                           |)
                         |) in
                       M.write (|
                         M.read (| i |),
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.call_closure (|
-                            M.get_associated_function (|
-                              Ty.apply
-                                (Ty.path "alloc::boxed::Box")
-                                []
-                                [
-                                  Ty.function
-                                    [
-                                      Ty.tuple
-                                        [
-                                          Ty.apply
-                                            (Ty.path "&mut")
-                                            []
-                                            [ Ty.path "revm_interpreter::interpreter::Interpreter"
-                                            ];
-                                          Ty.apply
-                                            (Ty.path "&mut")
-                                            []
-                                            [ Ty.apply (Ty.path "revm::evm::Evm") [] [ EXT; DB ] ]
-                                        ]
-                                    ]
-                                    (Ty.tuple []);
-                                  Ty.path "alloc::alloc::Global"
-                                ],
-                              "new",
+                        M.call_closure (|
+                          M.get_associated_function (|
+                            Ty.apply
+                              (Ty.path "alloc::boxed::Box")
                               []
-                            |),
-                            [
-                              M.closure
-                                (fun γ =>
-                                  ltac:(M.monadic
-                                    match γ with
-                                    | [ α0; α1 ] =>
-                                      M.match_operator (|
-                                        M.alloc (| α0 |),
-                                        [
-                                          fun γ =>
-                                            ltac:(M.monadic
-                                              (let interpreter := M.copy (| γ |) in
-                                              M.match_operator (|
-                                                M.alloc (| α1 |),
-                                                [
-                                                  fun γ =>
-                                                    ltac:(M.monadic
-                                                      (let host := M.copy (| γ |) in
-                                                      M.read (|
-                                                        let~ _ :=
-                                                          M.alloc (|
-                                                            M.call_closure (|
-                                                              M.get_trait_method (|
-                                                                "core::ops::function::Fn",
-                                                                Ty.apply
-                                                                  (Ty.path "alloc::boxed::Box")
-                                                                  []
-                                                                  [
-                                                                    Ty.dyn
-                                                                      [
-                                                                        ("existential predicate with variables",
-                                                                          []);
-                                                                        ("existential predicate with variables",
-                                                                          [])
-                                                                      ];
-                                                                    Ty.path "alloc::alloc::Global"
-                                                                  ],
+                              [
+                                Ty.function
+                                  [
+                                    Ty.tuple
+                                      [
+                                        Ty.apply
+                                          (Ty.path "&mut")
+                                          []
+                                          [ Ty.path "revm_interpreter::interpreter::Interpreter" ];
+                                        Ty.apply
+                                          (Ty.path "&mut")
+                                          []
+                                          [ Ty.apply (Ty.path "revm::evm::Evm") [] [ EXT; DB ] ]
+                                      ]
+                                  ]
+                                  (Ty.tuple []);
+                                Ty.path "alloc::alloc::Global"
+                              ],
+                            "new",
+                            []
+                          |),
+                          [
+                            M.closure
+                              (fun γ =>
+                                ltac:(M.monadic
+                                  match γ with
+                                  | [ α0; α1 ] =>
+                                    M.match_operator (|
+                                      M.alloc (| α0 |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let interpreter := M.copy (| γ |) in
+                                            M.match_operator (|
+                                              M.alloc (| α1 |),
+                                              [
+                                                fun γ =>
+                                                  ltac:(M.monadic
+                                                    (let host := M.copy (| γ |) in
+                                                    M.read (|
+                                                      let~ _ :=
+                                                        M.alloc (|
+                                                          M.call_closure (|
+                                                            M.get_trait_method (|
+                                                              "core::ops::function::Fn",
+                                                              Ty.apply
+                                                                (Ty.path "alloc::boxed::Box")
+                                                                []
                                                                 [
-                                                                  Ty.tuple
+                                                                  Ty.dyn
                                                                     [
+                                                                      ("existential predicate with variables",
+                                                                        []);
+                                                                      ("existential predicate with variables",
+                                                                        [])
+                                                                    ];
+                                                                  Ty.path "alloc::alloc::Global"
+                                                                ],
+                                                              [
+                                                                Ty.tuple
+                                                                  [
+                                                                    Ty.apply
+                                                                      (Ty.path "&mut")
+                                                                      []
+                                                                      [
+                                                                        Ty.path
+                                                                          "revm_interpreter::interpreter::Interpreter"
+                                                                      ];
+                                                                    Ty.apply
+                                                                      (Ty.path "&mut")
+                                                                      []
+                                                                      [
+                                                                        Ty.apply
+                                                                          (Ty.path "revm::evm::Evm")
+                                                                          []
+                                                                          [ EXT; DB ]
+                                                                      ]
+                                                                  ]
+                                                              ],
+                                                              "call",
+                                                              []
+                                                            |),
+                                                            [
+                                                              old;
+                                                              Value.Tuple
+                                                                [
+                                                                  M.read (| interpreter |);
+                                                                  M.read (| host |)
+                                                                ]
+                                                            ]
+                                                          |)
+                                                        |) in
+                                                      M.match_operator (|
+                                                        M.alloc (| Value.Tuple [] |),
+                                                        [
+                                                          fun γ =>
+                                                            ltac:(M.monadic
+                                                              (let γ :=
+                                                                M.alloc (|
+                                                                  M.call_closure (|
+                                                                    M.get_associated_function (|
                                                                       Ty.apply
-                                                                        (Ty.path "&mut")
+                                                                        (Ty.path "slice")
                                                                         []
                                                                         [
                                                                           Ty.path
-                                                                            "revm_interpreter::interpreter::Interpreter"
-                                                                        ];
-                                                                      Ty.apply
-                                                                        (Ty.path "&mut")
-                                                                        []
-                                                                        [
+                                                                            "revm::journaled_state::JournalEntry"
+                                                                        ],
+                                                                      "last",
+                                                                      []
+                                                                    |),
+                                                                    [
+                                                                      M.call_closure (|
+                                                                        M.get_trait_method (|
+                                                                          "core::ops::deref::Deref",
                                                                           Ty.apply
                                                                             (Ty.path
-                                                                              "revm::evm::Evm")
+                                                                              "alloc::vec::Vec")
                                                                             []
-                                                                            [ EXT; DB ]
-                                                                        ]
-                                                                    ]
-                                                                ],
-                                                                "call",
-                                                                []
-                                                              |),
-                                                              [
-                                                                old;
-                                                                Value.Tuple
-                                                                  [
-                                                                    M.read (| interpreter |);
-                                                                    M.read (| host |)
-                                                                  ]
-                                                              ]
-                                                            |)
-                                                          |) in
-                                                        M.match_operator (|
-                                                          M.alloc (| Value.Tuple [] |),
-                                                          [
-                                                            fun γ =>
-                                                              ltac:(M.monadic
-                                                                (let γ :=
-                                                                  M.alloc (|
-                                                                    M.call_closure (|
-                                                                      M.get_associated_function (|
-                                                                        Ty.apply
-                                                                          (Ty.path "slice")
+                                                                            [
+                                                                              Ty.path
+                                                                                "revm::journaled_state::JournalEntry";
+                                                                              Ty.path
+                                                                                "alloc::alloc::Global"
+                                                                            ],
+                                                                          [],
+                                                                          "deref",
                                                                           []
-                                                                          [
-                                                                            Ty.path
-                                                                              "revm::journaled_state::JournalEntry"
-                                                                          ],
-                                                                        "last",
-                                                                        []
-                                                                      |),
-                                                                      [
-                                                                        M.call_closure (|
-                                                                          M.get_trait_method (|
-                                                                            "core::ops::deref::Deref",
-                                                                            Ty.apply
-                                                                              (Ty.path
-                                                                                "alloc::vec::Vec")
-                                                                              []
-                                                                              [
-                                                                                Ty.path
-                                                                                  "revm::journaled_state::JournalEntry";
-                                                                                Ty.path
-                                                                                  "alloc::alloc::Global"
-                                                                              ],
-                                                                            [],
-                                                                            "deref",
-                                                                            []
-                                                                          |),
-                                                                          [
-                                                                            M.call_closure (|
-                                                                              M.get_associated_function (|
-                                                                                Ty.apply
-                                                                                  (Ty.path
-                                                                                    "core::option::Option")
-                                                                                  []
-                                                                                  [
-                                                                                    Ty.apply
-                                                                                      (Ty.path "&")
-                                                                                      []
-                                                                                      [
-                                                                                        Ty.apply
-                                                                                          (Ty.path
-                                                                                            "alloc::vec::Vec")
-                                                                                          []
-                                                                                          [
-                                                                                            Ty.path
-                                                                                              "revm::journaled_state::JournalEntry";
-                                                                                            Ty.path
-                                                                                              "alloc::alloc::Global"
-                                                                                          ]
-                                                                                      ]
-                                                                                  ],
-                                                                                "unwrap",
+                                                                        |),
+                                                                        [
+                                                                          M.call_closure (|
+                                                                            M.get_associated_function (|
+                                                                              Ty.apply
+                                                                                (Ty.path
+                                                                                  "core::option::Option")
                                                                                 []
-                                                                              |),
-                                                                              [
-                                                                                M.call_closure (|
-                                                                                  M.get_associated_function (|
-                                                                                    Ty.apply
-                                                                                      (Ty.path
-                                                                                        "slice")
-                                                                                      []
-                                                                                      [
-                                                                                        Ty.apply
-                                                                                          (Ty.path
-                                                                                            "alloc::vec::Vec")
-                                                                                          []
-                                                                                          [
-                                                                                            Ty.path
-                                                                                              "revm::journaled_state::JournalEntry";
-                                                                                            Ty.path
-                                                                                              "alloc::alloc::Global"
-                                                                                          ]
-                                                                                      ],
-                                                                                    "last",
+                                                                                [
+                                                                                  Ty.apply
+                                                                                    (Ty.path "&")
                                                                                     []
-                                                                                  |),
-                                                                                  [
-                                                                                    M.call_closure (|
-                                                                                      M.get_trait_method (|
-                                                                                        "core::ops::deref::Deref",
-                                                                                        Ty.apply
-                                                                                          (Ty.path
-                                                                                            "alloc::vec::Vec")
-                                                                                          []
-                                                                                          [
-                                                                                            Ty.apply
-                                                                                              (Ty.path
-                                                                                                "alloc::vec::Vec")
-                                                                                              []
-                                                                                              [
-                                                                                                Ty.path
-                                                                                                  "revm::journaled_state::JournalEntry";
-                                                                                                Ty.path
-                                                                                                  "alloc::alloc::Global"
-                                                                                              ];
-                                                                                            Ty.path
-                                                                                              "alloc::alloc::Global"
-                                                                                          ],
-                                                                                        [],
-                                                                                        "deref",
+                                                                                    [
+                                                                                      Ty.apply
+                                                                                        (Ty.path
+                                                                                          "alloc::vec::Vec")
                                                                                         []
-                                                                                      |),
-                                                                                      [
+                                                                                        [
+                                                                                          Ty.path
+                                                                                            "revm::journaled_state::JournalEntry";
+                                                                                          Ty.path
+                                                                                            "alloc::alloc::Global"
+                                                                                        ]
+                                                                                    ]
+                                                                                ],
+                                                                              "unwrap",
+                                                                              []
+                                                                            |),
+                                                                            [
+                                                                              M.call_closure (|
+                                                                                M.get_associated_function (|
+                                                                                  Ty.apply
+                                                                                    (Ty.path
+                                                                                      "slice")
+                                                                                    []
+                                                                                    [
+                                                                                      Ty.apply
+                                                                                        (Ty.path
+                                                                                          "alloc::vec::Vec")
+                                                                                        []
+                                                                                        [
+                                                                                          Ty.path
+                                                                                            "revm::journaled_state::JournalEntry";
+                                                                                          Ty.path
+                                                                                            "alloc::alloc::Global"
+                                                                                        ]
+                                                                                    ],
+                                                                                  "last",
+                                                                                  []
+                                                                                |),
+                                                                                [
+                                                                                  M.call_closure (|
+                                                                                    M.get_trait_method (|
+                                                                                      "core::ops::deref::Deref",
+                                                                                      Ty.apply
+                                                                                        (Ty.path
+                                                                                          "alloc::vec::Vec")
+                                                                                        []
+                                                                                        [
+                                                                                          Ty.apply
+                                                                                            (Ty.path
+                                                                                              "alloc::vec::Vec")
+                                                                                            []
+                                                                                            [
+                                                                                              Ty.path
+                                                                                                "revm::journaled_state::JournalEntry";
+                                                                                              Ty.path
+                                                                                                "alloc::alloc::Global"
+                                                                                            ];
+                                                                                          Ty.path
+                                                                                            "alloc::alloc::Global"
+                                                                                        ],
+                                                                                      [],
+                                                                                      "deref",
+                                                                                      []
+                                                                                    |),
+                                                                                    [
+                                                                                      M.SubPointer.get_struct_record_field (|
                                                                                         M.SubPointer.get_struct_record_field (|
-                                                                                          M.SubPointer.get_struct_record_field (|
-                                                                                            M.call_closure (|
-                                                                                              M.get_trait_method (|
-                                                                                                "core::ops::deref::Deref",
-                                                                                                Ty.apply
-                                                                                                  (Ty.path
-                                                                                                    "revm::context::evm_context::EvmContext")
-                                                                                                  []
-                                                                                                  [
-                                                                                                    DB
-                                                                                                  ],
-                                                                                                [],
-                                                                                                "deref",
+                                                                                          M.call_closure (|
+                                                                                            M.get_trait_method (|
+                                                                                              "core::ops::deref::Deref",
+                                                                                              Ty.apply
+                                                                                                (Ty.path
+                                                                                                  "revm::context::evm_context::EvmContext")
                                                                                                 []
-                                                                                              |),
-                                                                                              [
-                                                                                                M.SubPointer.get_struct_record_field (|
-                                                                                                  M.SubPointer.get_struct_record_field (|
-                                                                                                    M.read (|
-                                                                                                      host
-                                                                                                    |),
-                                                                                                    "revm::evm::Evm",
-                                                                                                    "context"
-                                                                                                  |),
-                                                                                                  "revm::context::Context",
-                                                                                                  "evm"
-                                                                                                |)
-                                                                                              ]
+                                                                                                [ DB
+                                                                                                ],
+                                                                                              [],
+                                                                                              "deref",
+                                                                                              []
                                                                                             |),
-                                                                                            "revm::context::inner_evm_context::InnerEvmContext",
-                                                                                            "journaled_state"
+                                                                                            [
+                                                                                              M.SubPointer.get_struct_record_field (|
+                                                                                                M.SubPointer.get_struct_record_field (|
+                                                                                                  M.read (|
+                                                                                                    host
+                                                                                                  |),
+                                                                                                  "revm::evm::Evm",
+                                                                                                  "context"
+                                                                                                |),
+                                                                                                "revm::context::Context",
+                                                                                                "evm"
+                                                                                              |)
+                                                                                            ]
                                                                                           |),
-                                                                                          "revm::journaled_state::JournaledState",
-                                                                                          "journal"
-                                                                                        |)
-                                                                                      ]
-                                                                                    |)
-                                                                                  ]
-                                                                                |)
-                                                                              ]
-                                                                            |)
-                                                                          ]
-                                                                        |)
-                                                                      ]
-                                                                    |)
-                                                                  |) in
-                                                                let γ0_0 :=
-                                                                  M.SubPointer.get_struct_tuple_field (|
-                                                                    γ,
-                                                                    "core::option::Option::Some",
-                                                                    0
-                                                                  |) in
-                                                                let γ0_0 := M.read (| γ0_0 |) in
-                                                                let γ2_0 :=
-                                                                  M.SubPointer.get_struct_record_field (|
-                                                                    γ0_0,
-                                                                    "revm::journaled_state::JournalEntry::AccountDestroyed",
-                                                                    "address"
-                                                                  |) in
-                                                                let γ2_1 :=
-                                                                  M.SubPointer.get_struct_record_field (|
-                                                                    γ0_0,
-                                                                    "revm::journaled_state::JournalEntry::AccountDestroyed",
-                                                                    "target"
-                                                                  |) in
-                                                                let γ2_2 :=
-                                                                  M.SubPointer.get_struct_record_field (|
-                                                                    γ0_0,
-                                                                    "revm::journaled_state::JournalEntry::AccountDestroyed",
-                                                                    "had_balance"
-                                                                  |) in
-                                                                let address := M.alloc (| γ2_0 |) in
-                                                                let target := M.alloc (| γ2_1 |) in
-                                                                let had_balance :=
-                                                                  M.alloc (| γ2_2 |) in
-                                                                let~ _ :=
-                                                                  M.alloc (|
-                                                                    M.call_closure (|
-                                                                      M.get_trait_method (|
-                                                                        "revm::inspector::Inspector",
-                                                                        Ty.associated,
-                                                                        [ DB ],
-                                                                        "selfdestruct",
-                                                                        []
-                                                                      |),
-                                                                      [
-                                                                        M.call_closure (|
-                                                                          M.get_trait_method (|
-                                                                            "revm::inspector::handler_register::GetInspector",
-                                                                            EXT,
-                                                                            [ DB ],
-                                                                            "get_inspector",
-                                                                            []
-                                                                          |),
-                                                                          [
+                                                                                          "revm::context::inner_evm_context::InnerEvmContext",
+                                                                                          "journaled_state"
+                                                                                        |),
+                                                                                        "revm::journaled_state::JournaledState",
+                                                                                        "journal"
+                                                                                      |)
+                                                                                    ]
+                                                                                  |)
+                                                                                ]
+                                                                              |)
+                                                                            ]
+                                                                          |)
+                                                                        ]
+                                                                      |)
+                                                                    ]
+                                                                  |)
+                                                                |) in
+                                                              let γ0_0 :=
+                                                                M.SubPointer.get_struct_tuple_field (|
+                                                                  γ,
+                                                                  "core::option::Option::Some",
+                                                                  0
+                                                                |) in
+                                                              let γ0_0 := M.read (| γ0_0 |) in
+                                                              let γ2_0 :=
+                                                                M.SubPointer.get_struct_record_field (|
+                                                                  γ0_0,
+                                                                  "revm::journaled_state::JournalEntry::AccountDestroyed",
+                                                                  "address"
+                                                                |) in
+                                                              let γ2_1 :=
+                                                                M.SubPointer.get_struct_record_field (|
+                                                                  γ0_0,
+                                                                  "revm::journaled_state::JournalEntry::AccountDestroyed",
+                                                                  "target"
+                                                                |) in
+                                                              let γ2_2 :=
+                                                                M.SubPointer.get_struct_record_field (|
+                                                                  γ0_0,
+                                                                  "revm::journaled_state::JournalEntry::AccountDestroyed",
+                                                                  "had_balance"
+                                                                |) in
+                                                              let address := M.alloc (| γ2_0 |) in
+                                                              let target := M.alloc (| γ2_1 |) in
+                                                              let had_balance :=
+                                                                M.alloc (| γ2_2 |) in
+                                                              let~ _ :=
+                                                                M.alloc (|
+                                                                  M.call_closure (|
+                                                                    M.get_trait_method (|
+                                                                      "revm::inspector::Inspector",
+                                                                      Ty.associated,
+                                                                      [ DB ],
+                                                                      "selfdestruct",
+                                                                      []
+                                                                    |),
+                                                                    [
+                                                                      M.call_closure (|
+                                                                        M.get_trait_method (|
+                                                                          "revm::inspector::handler_register::GetInspector",
+                                                                          EXT,
+                                                                          [ DB ],
+                                                                          "get_inspector",
+                                                                          []
+                                                                        |),
+                                                                        [
+                                                                          M.SubPointer.get_struct_record_field (|
                                                                             M.SubPointer.get_struct_record_field (|
-                                                                              M.SubPointer.get_struct_record_field (|
-                                                                                M.read (| host |),
-                                                                                "revm::evm::Evm",
-                                                                                "context"
-                                                                              |),
-                                                                              "revm::context::Context",
-                                                                              "external"
-                                                                            |)
-                                                                          ]
-                                                                        |);
-                                                                        M.read (|
-                                                                          M.read (| address |)
-                                                                        |);
-                                                                        M.read (|
-                                                                          M.read (| target |)
-                                                                        |);
-                                                                        M.read (|
-                                                                          M.read (| had_balance |)
-                                                                        |)
-                                                                      ]
-                                                                    |)
-                                                                  |) in
-                                                                M.alloc (| Value.Tuple [] |)));
-                                                            fun γ =>
-                                                              ltac:(M.monadic
-                                                                (M.alloc (| Value.Tuple [] |)))
-                                                          ]
-                                                        |)
-                                                      |)))
-                                                ]
-                                              |)))
-                                        ]
-                                      |)
-                                    | _ => M.impossible (||)
-                                    end))
-                            ]
-                          |))
+                                                                              M.read (| host |),
+                                                                              "revm::evm::Evm",
+                                                                              "context"
+                                                                            |),
+                                                                            "revm::context::Context",
+                                                                            "external"
+                                                                          |)
+                                                                        ]
+                                                                      |);
+                                                                      M.read (|
+                                                                        M.read (| address |)
+                                                                      |);
+                                                                      M.read (|
+                                                                        M.read (| target |)
+                                                                      |);
+                                                                      M.read (|
+                                                                        M.read (| had_balance |)
+                                                                      |)
+                                                                    ]
+                                                                  |)
+                                                                |) in
+                                                              M.alloc (| Value.Tuple [] |)));
+                                                          fun γ =>
+                                                            ltac:(M.monadic
+                                                              (M.alloc (| Value.Tuple [] |)))
+                                                        ]
+                                                      |)
+                                                    |)))
+                                              ]
+                                            |)))
+                                      ]
+                                    |)
+                                  | _ => M.impossible (||)
+                                  end))
+                          ]
+                        |)
                       |)));
                   fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                 ]
@@ -2483,359 +2467,124 @@ Module inspector.
                   "revm::handler::handle_types::execution::ExecutionHandler",
                   "create"
                 |),
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.apply
-                        (Ty.path "alloc::sync::Arc")
-                        []
-                        [
-                          Ty.function
-                            [
-                              Ty.tuple
-                                [
-                                  Ty.apply
-                                    (Ty.path "&mut")
-                                    []
-                                    [ Ty.apply (Ty.path "revm::context::Context") [] [ EXT; DB ] ];
-                                  Ty.apply
-                                    (Ty.path "alloc::boxed::Box")
-                                    []
-                                    [
-                                      Ty.path
-                                        "revm_interpreter::interpreter_action::create_inputs::CreateInputs";
-                                      Ty.path "alloc::alloc::Global"
-                                    ]
-                                ]
-                            ]
-                            (Ty.apply
-                              (Ty.path "core::result::Result")
-                              []
-                              [
-                                Ty.path "revm::frame::FrameOrResult";
-                                Ty.apply
-                                  (Ty.path "revm_primitives::result::EVMError")
-                                  []
-                                  [ Ty.associated ]
-                              ]);
-                          Ty.path "alloc::alloc::Global"
-                        ],
-                      "new",
+                M.call_closure (|
+                  M.get_associated_function (|
+                    Ty.apply
+                      (Ty.path "alloc::sync::Arc")
                       []
-                    |),
-                    [
-                      M.closure
-                        (fun γ =>
-                          ltac:(M.monadic
-                            match γ with
-                            | [ α0; α1 ] =>
-                              M.match_operator (|
-                                M.alloc (| α0 |),
-                                [
-                                  fun γ =>
-                                    ltac:(M.monadic
-                                      (let ctx := M.copy (| γ |) in
-                                      M.match_operator (|
-                                        M.alloc (| α1 |),
-                                        [
-                                          fun γ =>
-                                            ltac:(M.monadic
-                                              (let inputs := M.copy (| γ |) in
-                                              M.read (|
-                                                let~ inspector :=
-                                                  M.alloc (|
-                                                    M.call_closure (|
-                                                      M.get_trait_method (|
-                                                        "revm::inspector::handler_register::GetInspector",
-                                                        EXT,
-                                                        [ DB ],
-                                                        "get_inspector",
-                                                        []
-                                                      |),
-                                                      [
-                                                        M.SubPointer.get_struct_record_field (|
-                                                          M.read (| ctx |),
-                                                          "revm::context::Context",
-                                                          "external"
-                                                        |)
-                                                      ]
-                                                    |)
-                                                  |) in
-                                                let~ _ :=
-                                                  M.match_operator (|
-                                                    M.alloc (| Value.Tuple [] |),
+                      [
+                        Ty.function
+                          [
+                            Ty.tuple
+                              [
+                                Ty.apply
+                                  (Ty.path "&mut")
+                                  []
+                                  [ Ty.apply (Ty.path "revm::context::Context") [] [ EXT; DB ] ];
+                                Ty.apply
+                                  (Ty.path "alloc::boxed::Box")
+                                  []
+                                  [
+                                    Ty.path
+                                      "revm_interpreter::interpreter_action::create_inputs::CreateInputs";
+                                    Ty.path "alloc::alloc::Global"
+                                  ]
+                              ]
+                          ]
+                          (Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [
+                              Ty.path "revm::frame::FrameOrResult";
+                              Ty.apply
+                                (Ty.path "revm_primitives::result::EVMError")
+                                []
+                                [ Ty.associated ]
+                            ]);
+                        Ty.path "alloc::alloc::Global"
+                      ],
+                    "new",
+                    []
+                  |),
+                  [
+                    M.closure
+                      (fun γ =>
+                        ltac:(M.monadic
+                          match γ with
+                          | [ α0; α1 ] =>
+                            M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let ctx := M.copy (| γ |) in
+                                    M.match_operator (|
+                                      M.alloc (| α1 |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let inputs := M.copy (| γ |) in
+                                            M.read (|
+                                              let~ inspector :=
+                                                M.alloc (|
+                                                  M.call_closure (|
+                                                    M.get_trait_method (|
+                                                      "revm::inspector::handler_register::GetInspector",
+                                                      EXT,
+                                                      [ DB ],
+                                                      "get_inspector",
+                                                      []
+                                                    |),
                                                     [
-                                                      fun γ =>
-                                                        ltac:(M.monadic
-                                                          (let γ :=
-                                                            M.alloc (|
-                                                              M.call_closure (|
-                                                                M.get_trait_method (|
-                                                                  "revm::inspector::Inspector",
-                                                                  Ty.associated,
-                                                                  [ DB ],
-                                                                  "create",
-                                                                  []
-                                                                |),
-                                                                [
-                                                                  M.read (| inspector |);
-                                                                  M.SubPointer.get_struct_record_field (|
-                                                                    M.read (| ctx |),
-                                                                    "revm::context::Context",
-                                                                    "evm"
-                                                                  |);
-                                                                  M.read (| inputs |)
-                                                                ]
-                                                              |)
-                                                            |) in
-                                                          let γ0_0 :=
-                                                            M.SubPointer.get_struct_tuple_field (|
-                                                              γ,
-                                                              "core::option::Option::Some",
-                                                              0
-                                                            |) in
-                                                          let outcome := M.copy (| γ0_0 |) in
-                                                          M.alloc (|
-                                                            M.never_to_any (|
-                                                              M.read (|
-                                                                let~ _ :=
-                                                                  M.alloc (|
-                                                                    M.call_closure (|
-                                                                      M.get_associated_function (|
-                                                                        Ty.apply
-                                                                          (Ty.path
-                                                                            "alloc::vec::Vec")
-                                                                          []
-                                                                          [
-                                                                            Ty.apply
-                                                                              (Ty.path
-                                                                                "alloc::boxed::Box")
-                                                                              []
-                                                                              [
-                                                                                Ty.path
-                                                                                  "revm_interpreter::interpreter_action::create_inputs::CreateInputs";
-                                                                                Ty.path
-                                                                                  "alloc::alloc::Global"
-                                                                              ];
-                                                                            Ty.path
-                                                                              "alloc::alloc::Global"
-                                                                          ],
-                                                                        "push",
-                                                                        []
-                                                                      |),
-                                                                      [
-                                                                        M.call_closure (|
-                                                                          M.get_trait_method (|
-                                                                            "core::ops::deref::DerefMut",
-                                                                            Ty.apply
-                                                                              (Ty.path
-                                                                                "core::cell::RefMut")
-                                                                              []
-                                                                              [
-                                                                                Ty.apply
-                                                                                  (Ty.path
-                                                                                    "alloc::vec::Vec")
-                                                                                  []
-                                                                                  [
-                                                                                    Ty.apply
-                                                                                      (Ty.path
-                                                                                        "alloc::boxed::Box")
-                                                                                      []
-                                                                                      [
-                                                                                        Ty.path
-                                                                                          "revm_interpreter::interpreter_action::create_inputs::CreateInputs";
-                                                                                        Ty.path
-                                                                                          "alloc::alloc::Global"
-                                                                                      ];
-                                                                                    Ty.path
-                                                                                      "alloc::alloc::Global"
-                                                                                  ]
-                                                                              ],
-                                                                            [],
-                                                                            "deref_mut",
-                                                                            []
-                                                                          |),
-                                                                          [
-                                                                            M.alloc (|
-                                                                              M.call_closure (|
-                                                                                M.get_associated_function (|
-                                                                                  Ty.apply
-                                                                                    (Ty.path
-                                                                                      "core::cell::RefCell")
-                                                                                    []
-                                                                                    [
-                                                                                      Ty.apply
-                                                                                        (Ty.path
-                                                                                          "alloc::vec::Vec")
-                                                                                        []
-                                                                                        [
-                                                                                          Ty.apply
-                                                                                            (Ty.path
-                                                                                              "alloc::boxed::Box")
-                                                                                            []
-                                                                                            [
-                                                                                              Ty.path
-                                                                                                "revm_interpreter::interpreter_action::create_inputs::CreateInputs";
-                                                                                              Ty.path
-                                                                                                "alloc::alloc::Global"
-                                                                                            ];
-                                                                                          Ty.path
-                                                                                            "alloc::alloc::Global"
-                                                                                        ]
-                                                                                    ],
-                                                                                  "borrow_mut",
-                                                                                  []
-                                                                                |),
-                                                                                [
-                                                                                  M.call_closure (|
-                                                                                    M.get_trait_method (|
-                                                                                      "core::ops::deref::Deref",
-                                                                                      Ty.apply
-                                                                                        (Ty.path
-                                                                                          "alloc::rc::Rc")
-                                                                                        []
-                                                                                        [
-                                                                                          Ty.apply
-                                                                                            (Ty.path
-                                                                                              "core::cell::RefCell")
-                                                                                            []
-                                                                                            [
-                                                                                              Ty.apply
-                                                                                                (Ty.path
-                                                                                                  "alloc::vec::Vec")
-                                                                                                []
-                                                                                                [
-                                                                                                  Ty.apply
-                                                                                                    (Ty.path
-                                                                                                      "alloc::boxed::Box")
-                                                                                                    []
-                                                                                                    [
-                                                                                                      Ty.path
-                                                                                                        "revm_interpreter::interpreter_action::create_inputs::CreateInputs";
-                                                                                                      Ty.path
-                                                                                                        "alloc::alloc::Global"
-                                                                                                    ];
-                                                                                                  Ty.path
-                                                                                                    "alloc::alloc::Global"
-                                                                                                ]
-                                                                                            ];
-                                                                                          Ty.path
-                                                                                            "alloc::alloc::Global"
-                                                                                        ],
-                                                                                      [],
-                                                                                      "deref",
-                                                                                      []
-                                                                                    |),
-                                                                                    [
-                                                                                      create_input_stack_inner
-                                                                                    ]
-                                                                                  |)
-                                                                                ]
-                                                                              |)
-                                                                            |)
-                                                                          ]
-                                                                        |);
-                                                                        M.call_closure (|
-                                                                          M.get_trait_method (|
-                                                                            "core::clone::Clone",
-                                                                            Ty.apply
-                                                                              (Ty.path
-                                                                                "alloc::boxed::Box")
-                                                                              []
-                                                                              [
-                                                                                Ty.path
-                                                                                  "revm_interpreter::interpreter_action::create_inputs::CreateInputs";
-                                                                                Ty.path
-                                                                                  "alloc::alloc::Global"
-                                                                              ],
-                                                                            [],
-                                                                            "clone",
-                                                                            []
-                                                                          |),
-                                                                          [ inputs ]
-                                                                        |)
-                                                                      ]
-                                                                    |)
-                                                                  |) in
-                                                                M.return_ (|
-                                                                  Value.StructTuple
-                                                                    "core::result::Result::Ok"
-                                                                    [
-                                                                      Value.StructTuple
-                                                                        "revm::frame::FrameOrResult::Result"
-                                                                        [
-                                                                          Value.StructTuple
-                                                                            "revm::frame::FrameResult::Create"
-                                                                            [ M.read (| outcome |) ]
-                                                                        ]
-                                                                    ]
-                                                                |)
-                                                              |)
-                                                            |)
-                                                          |)));
-                                                      fun γ =>
-                                                        ltac:(M.monadic
-                                                          (M.alloc (| Value.Tuple [] |)))
+                                                      M.SubPointer.get_struct_record_field (|
+                                                        M.read (| ctx |),
+                                                        "revm::context::Context",
+                                                        "external"
+                                                      |)
                                                     ]
-                                                  |) in
-                                                let~ _ :=
-                                                  M.alloc (|
-                                                    M.call_closure (|
-                                                      M.get_associated_function (|
-                                                        Ty.apply
-                                                          (Ty.path "alloc::vec::Vec")
-                                                          []
-                                                          [
-                                                            Ty.apply
-                                                              (Ty.path "alloc::boxed::Box")
-                                                              []
+                                                  |)
+                                                |) in
+                                              let~ _ :=
+                                                M.match_operator (|
+                                                  M.alloc (| Value.Tuple [] |),
+                                                  [
+                                                    fun γ =>
+                                                      ltac:(M.monadic
+                                                        (let γ :=
+                                                          M.alloc (|
+                                                            M.call_closure (|
+                                                              M.get_trait_method (|
+                                                                "revm::inspector::Inspector",
+                                                                Ty.associated,
+                                                                [ DB ],
+                                                                "create",
+                                                                []
+                                                              |),
                                                               [
-                                                                Ty.path
-                                                                  "revm_interpreter::interpreter_action::create_inputs::CreateInputs";
-                                                                Ty.path "alloc::alloc::Global"
-                                                              ];
-                                                            Ty.path "alloc::alloc::Global"
-                                                          ],
-                                                        "push",
-                                                        []
-                                                      |),
-                                                      [
-                                                        M.call_closure (|
-                                                          M.get_trait_method (|
-                                                            "core::ops::deref::DerefMut",
-                                                            Ty.apply
-                                                              (Ty.path "core::cell::RefMut")
-                                                              []
-                                                              [
-                                                                Ty.apply
-                                                                  (Ty.path "alloc::vec::Vec")
-                                                                  []
-                                                                  [
-                                                                    Ty.apply
-                                                                      (Ty.path "alloc::boxed::Box")
-                                                                      []
-                                                                      [
-                                                                        Ty.path
-                                                                          "revm_interpreter::interpreter_action::create_inputs::CreateInputs";
-                                                                        Ty.path
-                                                                          "alloc::alloc::Global"
-                                                                      ];
-                                                                    Ty.path "alloc::alloc::Global"
-                                                                  ]
-                                                              ],
-                                                            [],
-                                                            "deref_mut",
-                                                            []
-                                                          |),
-                                                          [
-                                                            M.alloc (|
-                                                              M.call_closure (|
-                                                                M.get_associated_function (|
-                                                                  Ty.apply
-                                                                    (Ty.path "core::cell::RefCell")
-                                                                    []
-                                                                    [
+                                                                M.read (| inspector |);
+                                                                M.SubPointer.get_struct_record_field (|
+                                                                  M.read (| ctx |),
+                                                                  "revm::context::Context",
+                                                                  "evm"
+                                                                |);
+                                                                M.read (| inputs |)
+                                                              ]
+                                                            |)
+                                                          |) in
+                                                        let γ0_0 :=
+                                                          M.SubPointer.get_struct_tuple_field (|
+                                                            γ,
+                                                            "core::option::Option::Some",
+                                                            0
+                                                          |) in
+                                                        let outcome := M.copy (| γ0_0 |) in
+                                                        M.alloc (|
+                                                          M.never_to_any (|
+                                                            M.read (|
+                                                              let~ _ :=
+                                                                M.alloc (|
+                                                                  M.call_closure (|
+                                                                    M.get_associated_function (|
                                                                       Ty.apply
                                                                         (Ty.path "alloc::vec::Vec")
                                                                         []
@@ -2852,22 +2601,17 @@ Module inspector.
                                                                             ];
                                                                           Ty.path
                                                                             "alloc::alloc::Global"
-                                                                        ]
-                                                                    ],
-                                                                  "borrow_mut",
-                                                                  []
-                                                                |),
-                                                                [
-                                                                  M.call_closure (|
-                                                                    M.get_trait_method (|
-                                                                      "core::ops::deref::Deref",
-                                                                      Ty.apply
-                                                                        (Ty.path "alloc::rc::Rc")
-                                                                        []
-                                                                        [
+                                                                        ],
+                                                                      "push",
+                                                                      []
+                                                                    |),
+                                                                    [
+                                                                      M.call_closure (|
+                                                                        M.get_trait_method (|
+                                                                          "core::ops::deref::DerefMut",
                                                                           Ty.apply
                                                                             (Ty.path
-                                                                              "core::cell::RefCell")
+                                                                              "core::cell::RefMut")
                                                                             []
                                                                             [
                                                                               Ty.apply
@@ -2888,24 +2632,301 @@ Module inspector.
                                                                                   Ty.path
                                                                                     "alloc::alloc::Global"
                                                                                 ]
-                                                                            ];
-                                                                          Ty.path
-                                                                            "alloc::alloc::Global"
-                                                                        ],
-                                                                      [],
-                                                                      "deref",
-                                                                      []
-                                                                    |),
-                                                                    [ create_input_stack_inner ]
+                                                                            ],
+                                                                          [],
+                                                                          "deref_mut",
+                                                                          []
+                                                                        |),
+                                                                        [
+                                                                          M.alloc (|
+                                                                            M.call_closure (|
+                                                                              M.get_associated_function (|
+                                                                                Ty.apply
+                                                                                  (Ty.path
+                                                                                    "core::cell::RefCell")
+                                                                                  []
+                                                                                  [
+                                                                                    Ty.apply
+                                                                                      (Ty.path
+                                                                                        "alloc::vec::Vec")
+                                                                                      []
+                                                                                      [
+                                                                                        Ty.apply
+                                                                                          (Ty.path
+                                                                                            "alloc::boxed::Box")
+                                                                                          []
+                                                                                          [
+                                                                                            Ty.path
+                                                                                              "revm_interpreter::interpreter_action::create_inputs::CreateInputs";
+                                                                                            Ty.path
+                                                                                              "alloc::alloc::Global"
+                                                                                          ];
+                                                                                        Ty.path
+                                                                                          "alloc::alloc::Global"
+                                                                                      ]
+                                                                                  ],
+                                                                                "borrow_mut",
+                                                                                []
+                                                                              |),
+                                                                              [
+                                                                                M.call_closure (|
+                                                                                  M.get_trait_method (|
+                                                                                    "core::ops::deref::Deref",
+                                                                                    Ty.apply
+                                                                                      (Ty.path
+                                                                                        "alloc::rc::Rc")
+                                                                                      []
+                                                                                      [
+                                                                                        Ty.apply
+                                                                                          (Ty.path
+                                                                                            "core::cell::RefCell")
+                                                                                          []
+                                                                                          [
+                                                                                            Ty.apply
+                                                                                              (Ty.path
+                                                                                                "alloc::vec::Vec")
+                                                                                              []
+                                                                                              [
+                                                                                                Ty.apply
+                                                                                                  (Ty.path
+                                                                                                    "alloc::boxed::Box")
+                                                                                                  []
+                                                                                                  [
+                                                                                                    Ty.path
+                                                                                                      "revm_interpreter::interpreter_action::create_inputs::CreateInputs";
+                                                                                                    Ty.path
+                                                                                                      "alloc::alloc::Global"
+                                                                                                  ];
+                                                                                                Ty.path
+                                                                                                  "alloc::alloc::Global"
+                                                                                              ]
+                                                                                          ];
+                                                                                        Ty.path
+                                                                                          "alloc::alloc::Global"
+                                                                                      ],
+                                                                                    [],
+                                                                                    "deref",
+                                                                                    []
+                                                                                  |),
+                                                                                  [
+                                                                                    create_input_stack_inner
+                                                                                  ]
+                                                                                |)
+                                                                              ]
+                                                                            |)
+                                                                          |)
+                                                                        ]
+                                                                      |);
+                                                                      M.call_closure (|
+                                                                        M.get_trait_method (|
+                                                                          "core::clone::Clone",
+                                                                          Ty.apply
+                                                                            (Ty.path
+                                                                              "alloc::boxed::Box")
+                                                                            []
+                                                                            [
+                                                                              Ty.path
+                                                                                "revm_interpreter::interpreter_action::create_inputs::CreateInputs";
+                                                                              Ty.path
+                                                                                "alloc::alloc::Global"
+                                                                            ],
+                                                                          [],
+                                                                          "clone",
+                                                                          []
+                                                                        |),
+                                                                        [ inputs ]
+                                                                      |)
+                                                                    ]
                                                                   |)
-                                                                ]
+                                                                |) in
+                                                              M.return_ (|
+                                                                Value.StructTuple
+                                                                  "core::result::Result::Ok"
+                                                                  [
+                                                                    Value.StructTuple
+                                                                      "revm::frame::FrameOrResult::Result"
+                                                                      [
+                                                                        Value.StructTuple
+                                                                          "revm::frame::FrameResult::Create"
+                                                                          [ M.read (| outcome |) ]
+                                                                      ]
+                                                                  ]
                                                               |)
                                                             |)
-                                                          ]
-                                                        |);
-                                                        M.call_closure (|
-                                                          M.get_trait_method (|
-                                                            "core::clone::Clone",
+                                                          |)
+                                                        |)));
+                                                    fun γ =>
+                                                      ltac:(M.monadic
+                                                        (M.alloc (| Value.Tuple [] |)))
+                                                  ]
+                                                |) in
+                                              let~ _ :=
+                                                M.alloc (|
+                                                  M.call_closure (|
+                                                    M.get_associated_function (|
+                                                      Ty.apply
+                                                        (Ty.path "alloc::vec::Vec")
+                                                        []
+                                                        [
+                                                          Ty.apply
+                                                            (Ty.path "alloc::boxed::Box")
+                                                            []
+                                                            [
+                                                              Ty.path
+                                                                "revm_interpreter::interpreter_action::create_inputs::CreateInputs";
+                                                              Ty.path "alloc::alloc::Global"
+                                                            ];
+                                                          Ty.path "alloc::alloc::Global"
+                                                        ],
+                                                      "push",
+                                                      []
+                                                    |),
+                                                    [
+                                                      M.call_closure (|
+                                                        M.get_trait_method (|
+                                                          "core::ops::deref::DerefMut",
+                                                          Ty.apply
+                                                            (Ty.path "core::cell::RefMut")
+                                                            []
+                                                            [
+                                                              Ty.apply
+                                                                (Ty.path "alloc::vec::Vec")
+                                                                []
+                                                                [
+                                                                  Ty.apply
+                                                                    (Ty.path "alloc::boxed::Box")
+                                                                    []
+                                                                    [
+                                                                      Ty.path
+                                                                        "revm_interpreter::interpreter_action::create_inputs::CreateInputs";
+                                                                      Ty.path "alloc::alloc::Global"
+                                                                    ];
+                                                                  Ty.path "alloc::alloc::Global"
+                                                                ]
+                                                            ],
+                                                          [],
+                                                          "deref_mut",
+                                                          []
+                                                        |),
+                                                        [
+                                                          M.alloc (|
+                                                            M.call_closure (|
+                                                              M.get_associated_function (|
+                                                                Ty.apply
+                                                                  (Ty.path "core::cell::RefCell")
+                                                                  []
+                                                                  [
+                                                                    Ty.apply
+                                                                      (Ty.path "alloc::vec::Vec")
+                                                                      []
+                                                                      [
+                                                                        Ty.apply
+                                                                          (Ty.path
+                                                                            "alloc::boxed::Box")
+                                                                          []
+                                                                          [
+                                                                            Ty.path
+                                                                              "revm_interpreter::interpreter_action::create_inputs::CreateInputs";
+                                                                            Ty.path
+                                                                              "alloc::alloc::Global"
+                                                                          ];
+                                                                        Ty.path
+                                                                          "alloc::alloc::Global"
+                                                                      ]
+                                                                  ],
+                                                                "borrow_mut",
+                                                                []
+                                                              |),
+                                                              [
+                                                                M.call_closure (|
+                                                                  M.get_trait_method (|
+                                                                    "core::ops::deref::Deref",
+                                                                    Ty.apply
+                                                                      (Ty.path "alloc::rc::Rc")
+                                                                      []
+                                                                      [
+                                                                        Ty.apply
+                                                                          (Ty.path
+                                                                            "core::cell::RefCell")
+                                                                          []
+                                                                          [
+                                                                            Ty.apply
+                                                                              (Ty.path
+                                                                                "alloc::vec::Vec")
+                                                                              []
+                                                                              [
+                                                                                Ty.apply
+                                                                                  (Ty.path
+                                                                                    "alloc::boxed::Box")
+                                                                                  []
+                                                                                  [
+                                                                                    Ty.path
+                                                                                      "revm_interpreter::interpreter_action::create_inputs::CreateInputs";
+                                                                                    Ty.path
+                                                                                      "alloc::alloc::Global"
+                                                                                  ];
+                                                                                Ty.path
+                                                                                  "alloc::alloc::Global"
+                                                                              ]
+                                                                          ];
+                                                                        Ty.path
+                                                                          "alloc::alloc::Global"
+                                                                      ],
+                                                                    [],
+                                                                    "deref",
+                                                                    []
+                                                                  |),
+                                                                  [ create_input_stack_inner ]
+                                                                |)
+                                                              ]
+                                                            |)
+                                                          |)
+                                                        ]
+                                                      |);
+                                                      M.call_closure (|
+                                                        M.get_trait_method (|
+                                                          "core::clone::Clone",
+                                                          Ty.apply
+                                                            (Ty.path "alloc::boxed::Box")
+                                                            []
+                                                            [
+                                                              Ty.path
+                                                                "revm_interpreter::interpreter_action::create_inputs::CreateInputs";
+                                                              Ty.path "alloc::alloc::Global"
+                                                            ],
+                                                          [],
+                                                          "clone",
+                                                          []
+                                                        |),
+                                                        [ inputs ]
+                                                      |)
+                                                    ]
+                                                  |)
+                                                |) in
+                                              let~ frame_or_result :=
+                                                M.alloc (|
+                                                  M.call_closure (|
+                                                    M.get_trait_method (|
+                                                      "core::ops::function::Fn",
+                                                      Ty.dyn
+                                                        [
+                                                          ("existential predicate with variables",
+                                                            []);
+                                                          ("existential predicate with variables",
+                                                            [])
+                                                        ],
+                                                      [
+                                                        Ty.tuple
+                                                          [
+                                                            Ty.apply
+                                                              (Ty.path "&mut")
+                                                              []
+                                                              [
+                                                                Ty.apply
+                                                                  (Ty.path "revm::context::Context")
+                                                                  []
+                                                                  [ EXT; DB ]
+                                                              ];
                                                             Ty.apply
                                                               (Ty.path "alloc::boxed::Box")
                                                               []
@@ -2913,160 +2934,118 @@ Module inspector.
                                                                 Ty.path
                                                                   "revm_interpreter::interpreter_action::create_inputs::CreateInputs";
                                                                 Ty.path "alloc::alloc::Global"
-                                                              ],
-                                                            [],
-                                                            "clone",
-                                                            []
-                                                          |),
-                                                          [ inputs ]
-                                                        |)
-                                                      ]
-                                                    |)
-                                                  |) in
-                                                let~ frame_or_result :=
-                                                  M.alloc (|
-                                                    M.call_closure (|
-                                                      M.get_trait_method (|
-                                                        "core::ops::function::Fn",
-                                                        Ty.dyn
-                                                          [
-                                                            ("existential predicate with variables",
-                                                              []);
-                                                            ("existential predicate with variables",
-                                                              [])
-                                                          ],
-                                                        [
-                                                          Ty.tuple
-                                                            [
-                                                              Ty.apply
-                                                                (Ty.path "&mut")
-                                                                []
-                                                                [
-                                                                  Ty.apply
-                                                                    (Ty.path
-                                                                      "revm::context::Context")
-                                                                    []
-                                                                    [ EXT; DB ]
-                                                                ];
-                                                              Ty.apply
-                                                                (Ty.path "alloc::boxed::Box")
-                                                                []
-                                                                [
-                                                                  Ty.path
-                                                                    "revm_interpreter::interpreter_action::create_inputs::CreateInputs";
-                                                                  Ty.path "alloc::alloc::Global"
-                                                                ]
-                                                            ]
-                                                        ],
-                                                        "call",
-                                                        []
-                                                      |),
-                                                      [
-                                                        M.call_closure (|
-                                                          M.get_trait_method (|
-                                                            "core::ops::deref::Deref",
-                                                            Ty.apply
-                                                              (Ty.path "alloc::sync::Arc")
-                                                              []
-                                                              [
-                                                                Ty.dyn
-                                                                  [
-                                                                    ("existential predicate with variables",
-                                                                      []);
-                                                                    ("existential predicate with variables",
-                                                                      [])
-                                                                  ];
-                                                                Ty.path "alloc::alloc::Global"
-                                                              ],
-                                                            [],
-                                                            "deref",
-                                                            []
-                                                          |),
-                                                          [ old_handle ]
-                                                        |);
-                                                        Value.Tuple
-                                                          [ M.read (| ctx |); M.read (| inputs |) ]
-                                                      ]
-                                                    |)
-                                                  |) in
-                                                let~ _ :=
-                                                  M.match_operator (|
-                                                    M.alloc (| Value.Tuple [] |),
-                                                    [
-                                                      fun γ =>
-                                                        ltac:(M.monadic
-                                                          (let γ := M.alloc (| frame_or_result |) in
-                                                          let γ := M.read (| γ |) in
-                                                          let γ1_0 :=
-                                                            M.SubPointer.get_struct_tuple_field (|
-                                                              γ,
-                                                              "core::result::Result::Ok",
-                                                              0
-                                                            |) in
-                                                          let γ2_0 :=
-                                                            M.SubPointer.get_struct_tuple_field (|
-                                                              γ1_0,
-                                                              "revm::frame::FrameOrResult::Frame",
-                                                              0
-                                                            |) in
-                                                          let frame := M.alloc (| γ2_0 |) in
-                                                          M.alloc (|
-                                                            M.call_closure (|
-                                                              M.get_trait_method (|
-                                                                "revm::inspector::Inspector",
-                                                                Ty.associated,
-                                                                [ DB ],
-                                                                "initialize_interp",
-                                                                []
-                                                              |),
-                                                              [
-                                                                M.call_closure (|
-                                                                  M.get_trait_method (|
-                                                                    "revm::inspector::handler_register::GetInspector",
-                                                                    EXT,
-                                                                    [ DB ],
-                                                                    "get_inspector",
-                                                                    []
-                                                                  |),
-                                                                  [
-                                                                    M.SubPointer.get_struct_record_field (|
-                                                                      M.read (| ctx |),
-                                                                      "revm::context::Context",
-                                                                      "external"
-                                                                    |)
-                                                                  ]
-                                                                |);
-                                                                M.call_closure (|
-                                                                  M.get_associated_function (|
-                                                                    Ty.path "revm::frame::Frame",
-                                                                    "interpreter_mut",
-                                                                    []
-                                                                  |),
-                                                                  [ M.read (| frame |) ]
-                                                                |);
-                                                                M.SubPointer.get_struct_record_field (|
-                                                                  M.read (| ctx |),
-                                                                  "revm::context::Context",
-                                                                  "evm"
-                                                                |)
                                                               ]
-                                                            |)
-                                                          |)));
-                                                      fun γ =>
-                                                        ltac:(M.monadic
-                                                          (M.alloc (| Value.Tuple [] |)))
+                                                          ]
+                                                      ],
+                                                      "call",
+                                                      []
+                                                    |),
+                                                    [
+                                                      M.call_closure (|
+                                                        M.get_trait_method (|
+                                                          "core::ops::deref::Deref",
+                                                          Ty.apply
+                                                            (Ty.path "alloc::sync::Arc")
+                                                            []
+                                                            [
+                                                              Ty.dyn
+                                                                [
+                                                                  ("existential predicate with variables",
+                                                                    []);
+                                                                  ("existential predicate with variables",
+                                                                    [])
+                                                                ];
+                                                              Ty.path "alloc::alloc::Global"
+                                                            ],
+                                                          [],
+                                                          "deref",
+                                                          []
+                                                        |),
+                                                        [ old_handle ]
+                                                      |);
+                                                      Value.Tuple
+                                                        [ M.read (| ctx |); M.read (| inputs |) ]
                                                     ]
-                                                  |) in
-                                                frame_or_result
-                                              |)))
-                                        ]
-                                      |)))
-                                ]
-                              |)
-                            | _ => M.impossible (||)
-                            end))
-                    ]
-                  |))
+                                                  |)
+                                                |) in
+                                              let~ _ :=
+                                                M.match_operator (|
+                                                  M.alloc (| Value.Tuple [] |),
+                                                  [
+                                                    fun γ =>
+                                                      ltac:(M.monadic
+                                                        (let γ := M.alloc (| frame_or_result |) in
+                                                        let γ := M.read (| γ |) in
+                                                        let γ1_0 :=
+                                                          M.SubPointer.get_struct_tuple_field (|
+                                                            γ,
+                                                            "core::result::Result::Ok",
+                                                            0
+                                                          |) in
+                                                        let γ2_0 :=
+                                                          M.SubPointer.get_struct_tuple_field (|
+                                                            γ1_0,
+                                                            "revm::frame::FrameOrResult::Frame",
+                                                            0
+                                                          |) in
+                                                        let frame := M.alloc (| γ2_0 |) in
+                                                        M.alloc (|
+                                                          M.call_closure (|
+                                                            M.get_trait_method (|
+                                                              "revm::inspector::Inspector",
+                                                              Ty.associated,
+                                                              [ DB ],
+                                                              "initialize_interp",
+                                                              []
+                                                            |),
+                                                            [
+                                                              M.call_closure (|
+                                                                M.get_trait_method (|
+                                                                  "revm::inspector::handler_register::GetInspector",
+                                                                  EXT,
+                                                                  [ DB ],
+                                                                  "get_inspector",
+                                                                  []
+                                                                |),
+                                                                [
+                                                                  M.SubPointer.get_struct_record_field (|
+                                                                    M.read (| ctx |),
+                                                                    "revm::context::Context",
+                                                                    "external"
+                                                                  |)
+                                                                ]
+                                                              |);
+                                                              M.call_closure (|
+                                                                M.get_associated_function (|
+                                                                  Ty.path "revm::frame::Frame",
+                                                                  "interpreter_mut",
+                                                                  []
+                                                                |),
+                                                                [ M.read (| frame |) ]
+                                                              |);
+                                                              M.SubPointer.get_struct_record_field (|
+                                                                M.read (| ctx |),
+                                                                "revm::context::Context",
+                                                                "evm"
+                                                              |)
+                                                            ]
+                                                          |)
+                                                        |)));
+                                                    fun γ =>
+                                                      ltac:(M.monadic
+                                                        (M.alloc (| Value.Tuple [] |)))
+                                                  ]
+                                                |) in
+                                              frame_or_result
+                                            |)))
+                                      ]
+                                    |)))
+                              ]
+                            |)
+                          | _ => M.impossible (||)
+                          end))
+                  ]
+                |)
               |) in
             let~ call_input_stack_inner :=
               M.alloc (|
@@ -3149,428 +3128,424 @@ Module inspector.
                   "revm::handler::handle_types::execution::ExecutionHandler",
                   "call"
                 |),
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.apply
-                        (Ty.path "alloc::sync::Arc")
-                        []
-                        [
-                          Ty.function
-                            [
-                              Ty.tuple
-                                [
-                                  Ty.apply
-                                    (Ty.path "&mut")
-                                    []
-                                    [ Ty.apply (Ty.path "revm::context::Context") [] [ EXT; DB ] ];
-                                  Ty.apply
-                                    (Ty.path "alloc::boxed::Box")
-                                    []
-                                    [
-                                      Ty.path
-                                        "revm_interpreter::interpreter_action::call_inputs::CallInputs";
-                                      Ty.path "alloc::alloc::Global"
-                                    ]
-                                ]
-                            ]
-                            (Ty.apply
-                              (Ty.path "core::result::Result")
-                              []
-                              [
-                                Ty.path "revm::frame::FrameOrResult";
-                                Ty.apply
-                                  (Ty.path "revm_primitives::result::EVMError")
-                                  []
-                                  [ Ty.associated ]
-                              ]);
-                          Ty.path "alloc::alloc::Global"
-                        ],
-                      "new",
+                M.call_closure (|
+                  M.get_associated_function (|
+                    Ty.apply
+                      (Ty.path "alloc::sync::Arc")
                       []
-                    |),
-                    [
-                      M.closure
-                        (fun γ =>
-                          ltac:(M.monadic
-                            match γ with
-                            | [ α0; α1 ] =>
-                              M.match_operator (|
-                                M.alloc (| α0 |),
-                                [
-                                  fun γ =>
-                                    ltac:(M.monadic
-                                      (let ctx := M.copy (| γ |) in
-                                      M.match_operator (|
-                                        M.alloc (| α1 |),
-                                        [
-                                          fun γ =>
-                                            ltac:(M.monadic
-                                              (let inputs := M.copy (| γ |) in
-                                              M.read (|
-                                                let~ outcome :=
-                                                  M.alloc (|
-                                                    M.call_closure (|
-                                                      M.get_trait_method (|
-                                                        "revm::inspector::Inspector",
-                                                        Ty.associated,
-                                                        [ DB ],
-                                                        "call",
-                                                        []
-                                                      |),
-                                                      [
-                                                        M.call_closure (|
-                                                          M.get_trait_method (|
-                                                            "revm::inspector::handler_register::GetInspector",
-                                                            EXT,
-                                                            [ DB ],
-                                                            "get_inspector",
-                                                            []
-                                                          |),
-                                                          [
-                                                            M.SubPointer.get_struct_record_field (|
-                                                              M.read (| ctx |),
-                                                              "revm::context::Context",
-                                                              "external"
-                                                            |)
-                                                          ]
-                                                        |);
-                                                        M.SubPointer.get_struct_record_field (|
-                                                          M.read (| ctx |),
-                                                          "revm::context::Context",
-                                                          "evm"
-                                                        |);
-                                                        M.read (| inputs |)
-                                                      ]
-                                                    |)
-                                                  |) in
-                                                let~ _ :=
-                                                  M.alloc (|
-                                                    M.call_closure (|
-                                                      M.get_associated_function (|
-                                                        Ty.apply
-                                                          (Ty.path "alloc::vec::Vec")
+                      [
+                        Ty.function
+                          [
+                            Ty.tuple
+                              [
+                                Ty.apply
+                                  (Ty.path "&mut")
+                                  []
+                                  [ Ty.apply (Ty.path "revm::context::Context") [] [ EXT; DB ] ];
+                                Ty.apply
+                                  (Ty.path "alloc::boxed::Box")
+                                  []
+                                  [
+                                    Ty.path
+                                      "revm_interpreter::interpreter_action::call_inputs::CallInputs";
+                                    Ty.path "alloc::alloc::Global"
+                                  ]
+                              ]
+                          ]
+                          (Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [
+                              Ty.path "revm::frame::FrameOrResult";
+                              Ty.apply
+                                (Ty.path "revm_primitives::result::EVMError")
+                                []
+                                [ Ty.associated ]
+                            ]);
+                        Ty.path "alloc::alloc::Global"
+                      ],
+                    "new",
+                    []
+                  |),
+                  [
+                    M.closure
+                      (fun γ =>
+                        ltac:(M.monadic
+                          match γ with
+                          | [ α0; α1 ] =>
+                            M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let ctx := M.copy (| γ |) in
+                                    M.match_operator (|
+                                      M.alloc (| α1 |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let inputs := M.copy (| γ |) in
+                                            M.read (|
+                                              let~ outcome :=
+                                                M.alloc (|
+                                                  M.call_closure (|
+                                                    M.get_trait_method (|
+                                                      "revm::inspector::Inspector",
+                                                      Ty.associated,
+                                                      [ DB ],
+                                                      "call",
+                                                      []
+                                                    |),
+                                                    [
+                                                      M.call_closure (|
+                                                        M.get_trait_method (|
+                                                          "revm::inspector::handler_register::GetInspector",
+                                                          EXT,
+                                                          [ DB ],
+                                                          "get_inspector",
                                                           []
-                                                          [
-                                                            Ty.apply
-                                                              (Ty.path "alloc::boxed::Box")
-                                                              []
-                                                              [
-                                                                Ty.path
-                                                                  "revm_interpreter::interpreter_action::call_inputs::CallInputs";
-                                                                Ty.path "alloc::alloc::Global"
-                                                              ];
-                                                            Ty.path "alloc::alloc::Global"
-                                                          ],
-                                                        "push",
+                                                        |),
+                                                        [
+                                                          M.SubPointer.get_struct_record_field (|
+                                                            M.read (| ctx |),
+                                                            "revm::context::Context",
+                                                            "external"
+                                                          |)
+                                                        ]
+                                                      |);
+                                                      M.SubPointer.get_struct_record_field (|
+                                                        M.read (| ctx |),
+                                                        "revm::context::Context",
+                                                        "evm"
+                                                      |);
+                                                      M.read (| inputs |)
+                                                    ]
+                                                  |)
+                                                |) in
+                                              let~ _ :=
+                                                M.alloc (|
+                                                  M.call_closure (|
+                                                    M.get_associated_function (|
+                                                      Ty.apply
+                                                        (Ty.path "alloc::vec::Vec")
                                                         []
-                                                      |),
-                                                      [
-                                                        M.call_closure (|
-                                                          M.get_trait_method (|
-                                                            "core::ops::deref::DerefMut",
-                                                            Ty.apply
-                                                              (Ty.path "core::cell::RefMut")
-                                                              []
-                                                              [
+                                                        [
+                                                          Ty.apply
+                                                            (Ty.path "alloc::boxed::Box")
+                                                            []
+                                                            [
+                                                              Ty.path
+                                                                "revm_interpreter::interpreter_action::call_inputs::CallInputs";
+                                                              Ty.path "alloc::alloc::Global"
+                                                            ];
+                                                          Ty.path "alloc::alloc::Global"
+                                                        ],
+                                                      "push",
+                                                      []
+                                                    |),
+                                                    [
+                                                      M.call_closure (|
+                                                        M.get_trait_method (|
+                                                          "core::ops::deref::DerefMut",
+                                                          Ty.apply
+                                                            (Ty.path "core::cell::RefMut")
+                                                            []
+                                                            [
+                                                              Ty.apply
+                                                                (Ty.path "alloc::vec::Vec")
+                                                                []
+                                                                [
+                                                                  Ty.apply
+                                                                    (Ty.path "alloc::boxed::Box")
+                                                                    []
+                                                                    [
+                                                                      Ty.path
+                                                                        "revm_interpreter::interpreter_action::call_inputs::CallInputs";
+                                                                      Ty.path "alloc::alloc::Global"
+                                                                    ];
+                                                                  Ty.path "alloc::alloc::Global"
+                                                                ]
+                                                            ],
+                                                          [],
+                                                          "deref_mut",
+                                                          []
+                                                        |),
+                                                        [
+                                                          M.alloc (|
+                                                            M.call_closure (|
+                                                              M.get_associated_function (|
                                                                 Ty.apply
-                                                                  (Ty.path "alloc::vec::Vec")
+                                                                  (Ty.path "core::cell::RefCell")
                                                                   []
                                                                   [
                                                                     Ty.apply
-                                                                      (Ty.path "alloc::boxed::Box")
+                                                                      (Ty.path "alloc::vec::Vec")
                                                                       []
                                                                       [
-                                                                        Ty.path
-                                                                          "revm_interpreter::interpreter_action::call_inputs::CallInputs";
+                                                                        Ty.apply
+                                                                          (Ty.path
+                                                                            "alloc::boxed::Box")
+                                                                          []
+                                                                          [
+                                                                            Ty.path
+                                                                              "revm_interpreter::interpreter_action::call_inputs::CallInputs";
+                                                                            Ty.path
+                                                                              "alloc::alloc::Global"
+                                                                          ];
                                                                         Ty.path
                                                                           "alloc::alloc::Global"
-                                                                      ];
-                                                                    Ty.path "alloc::alloc::Global"
-                                                                  ]
-                                                              ],
-                                                            [],
-                                                            "deref_mut",
-                                                            []
-                                                          |),
-                                                          [
-                                                            M.alloc (|
-                                                              M.call_closure (|
-                                                                M.get_associated_function (|
-                                                                  Ty.apply
-                                                                    (Ty.path "core::cell::RefCell")
-                                                                    []
-                                                                    [
-                                                                      Ty.apply
-                                                                        (Ty.path "alloc::vec::Vec")
-                                                                        []
-                                                                        [
-                                                                          Ty.apply
-                                                                            (Ty.path
-                                                                              "alloc::boxed::Box")
-                                                                            []
-                                                                            [
-                                                                              Ty.path
-                                                                                "revm_interpreter::interpreter_action::call_inputs::CallInputs";
-                                                                              Ty.path
-                                                                                "alloc::alloc::Global"
-                                                                            ];
-                                                                          Ty.path
-                                                                            "alloc::alloc::Global"
-                                                                        ]
-                                                                    ],
-                                                                  "borrow_mut",
-                                                                  []
-                                                                |),
-                                                                [
-                                                                  M.call_closure (|
-                                                                    M.get_trait_method (|
-                                                                      "core::ops::deref::Deref",
-                                                                      Ty.apply
-                                                                        (Ty.path "alloc::rc::Rc")
-                                                                        []
-                                                                        [
-                                                                          Ty.apply
-                                                                            (Ty.path
-                                                                              "core::cell::RefCell")
-                                                                            []
-                                                                            [
-                                                                              Ty.apply
-                                                                                (Ty.path
-                                                                                  "alloc::vec::Vec")
-                                                                                []
-                                                                                [
-                                                                                  Ty.apply
-                                                                                    (Ty.path
-                                                                                      "alloc::boxed::Box")
-                                                                                    []
-                                                                                    [
-                                                                                      Ty.path
-                                                                                        "revm_interpreter::interpreter_action::call_inputs::CallInputs";
-                                                                                      Ty.path
-                                                                                        "alloc::alloc::Global"
-                                                                                    ];
-                                                                                  Ty.path
-                                                                                    "alloc::alloc::Global"
-                                                                                ]
-                                                                            ];
-                                                                          Ty.path
-                                                                            "alloc::alloc::Global"
-                                                                        ],
-                                                                      [],
-                                                                      "deref",
-                                                                      []
-                                                                    |),
-                                                                    [ call_input_stack_inner ]
-                                                                  |)
-                                                                ]
-                                                              |)
-                                                            |)
-                                                          ]
-                                                        |);
-                                                        M.call_closure (|
-                                                          M.get_trait_method (|
-                                                            "core::clone::Clone",
-                                                            Ty.apply
-                                                              (Ty.path "alloc::boxed::Box")
-                                                              []
-                                                              [
-                                                                Ty.path
-                                                                  "revm_interpreter::interpreter_action::call_inputs::CallInputs";
-                                                                Ty.path "alloc::alloc::Global"
-                                                              ],
-                                                            [],
-                                                            "clone",
-                                                            []
-                                                          |),
-                                                          [ inputs ]
-                                                        |)
-                                                      ]
-                                                    |)
-                                                  |) in
-                                                let~ _ :=
-                                                  M.match_operator (|
-                                                    M.alloc (| Value.Tuple [] |),
-                                                    [
-                                                      fun γ =>
-                                                        ltac:(M.monadic
-                                                          (let γ := outcome in
-                                                          let γ0_0 :=
-                                                            M.SubPointer.get_struct_tuple_field (|
-                                                              γ,
-                                                              "core::option::Option::Some",
-                                                              0
-                                                            |) in
-                                                          let outcome := M.copy (| γ0_0 |) in
-                                                          M.alloc (|
-                                                            M.never_to_any (|
-                                                              M.read (|
-                                                                M.return_ (|
-                                                                  Value.StructTuple
-                                                                    "core::result::Result::Ok"
-                                                                    [
-                                                                      Value.StructTuple
-                                                                        "revm::frame::FrameOrResult::Result"
-                                                                        [
-                                                                          Value.StructTuple
-                                                                            "revm::frame::FrameResult::Call"
-                                                                            [ M.read (| outcome |) ]
-                                                                        ]
-                                                                    ]
-                                                                |)
-                                                              |)
-                                                            |)
-                                                          |)));
-                                                      fun γ =>
-                                                        ltac:(M.monadic
-                                                          (M.alloc (| Value.Tuple [] |)))
-                                                    ]
-                                                  |) in
-                                                let~ frame_or_result :=
-                                                  M.alloc (|
-                                                    M.call_closure (|
-                                                      M.get_trait_method (|
-                                                        "core::ops::function::Fn",
-                                                        Ty.dyn
-                                                          [
-                                                            ("existential predicate with variables",
-                                                              []);
-                                                            ("existential predicate with variables",
-                                                              [])
-                                                          ],
-                                                        [
-                                                          Ty.tuple
-                                                            [
-                                                              Ty.apply
-                                                                (Ty.path "&mut")
-                                                                []
-                                                                [
-                                                                  Ty.apply
-                                                                    (Ty.path
-                                                                      "revm::context::Context")
-                                                                    []
-                                                                    [ EXT; DB ]
-                                                                ];
-                                                              Ty.apply
-                                                                (Ty.path "alloc::boxed::Box")
-                                                                []
-                                                                [
-                                                                  Ty.path
-                                                                    "revm_interpreter::interpreter_action::call_inputs::CallInputs";
-                                                                  Ty.path "alloc::alloc::Global"
-                                                                ]
-                                                            ]
-                                                        ],
-                                                        "call",
-                                                        []
-                                                      |),
-                                                      [
-                                                        M.call_closure (|
-                                                          M.get_trait_method (|
-                                                            "core::ops::deref::Deref",
-                                                            Ty.apply
-                                                              (Ty.path "alloc::sync::Arc")
-                                                              []
-                                                              [
-                                                                Ty.dyn
-                                                                  [
-                                                                    ("existential predicate with variables",
-                                                                      []);
-                                                                    ("existential predicate with variables",
-                                                                      [])
-                                                                  ];
-                                                                Ty.path "alloc::alloc::Global"
-                                                              ],
-                                                            [],
-                                                            "deref",
-                                                            []
-                                                          |),
-                                                          [ old_handle ]
-                                                        |);
-                                                        Value.Tuple
-                                                          [ M.read (| ctx |); M.read (| inputs |) ]
-                                                      ]
-                                                    |)
-                                                  |) in
-                                                let~ _ :=
-                                                  M.match_operator (|
-                                                    M.alloc (| Value.Tuple [] |),
-                                                    [
-                                                      fun γ =>
-                                                        ltac:(M.monadic
-                                                          (let γ := M.alloc (| frame_or_result |) in
-                                                          let γ := M.read (| γ |) in
-                                                          let γ1_0 :=
-                                                            M.SubPointer.get_struct_tuple_field (|
-                                                              γ,
-                                                              "core::result::Result::Ok",
-                                                              0
-                                                            |) in
-                                                          let γ2_0 :=
-                                                            M.SubPointer.get_struct_tuple_field (|
-                                                              γ1_0,
-                                                              "revm::frame::FrameOrResult::Frame",
-                                                              0
-                                                            |) in
-                                                          let frame := M.alloc (| γ2_0 |) in
-                                                          M.alloc (|
-                                                            M.call_closure (|
-                                                              M.get_trait_method (|
-                                                                "revm::inspector::Inspector",
-                                                                Ty.associated,
-                                                                [ DB ],
-                                                                "initialize_interp",
+                                                                      ]
+                                                                  ],
+                                                                "borrow_mut",
                                                                 []
                                                               |),
                                                               [
                                                                 M.call_closure (|
                                                                   M.get_trait_method (|
-                                                                    "revm::inspector::handler_register::GetInspector",
-                                                                    EXT,
-                                                                    [ DB ],
-                                                                    "get_inspector",
+                                                                    "core::ops::deref::Deref",
+                                                                    Ty.apply
+                                                                      (Ty.path "alloc::rc::Rc")
+                                                                      []
+                                                                      [
+                                                                        Ty.apply
+                                                                          (Ty.path
+                                                                            "core::cell::RefCell")
+                                                                          []
+                                                                          [
+                                                                            Ty.apply
+                                                                              (Ty.path
+                                                                                "alloc::vec::Vec")
+                                                                              []
+                                                                              [
+                                                                                Ty.apply
+                                                                                  (Ty.path
+                                                                                    "alloc::boxed::Box")
+                                                                                  []
+                                                                                  [
+                                                                                    Ty.path
+                                                                                      "revm_interpreter::interpreter_action::call_inputs::CallInputs";
+                                                                                    Ty.path
+                                                                                      "alloc::alloc::Global"
+                                                                                  ];
+                                                                                Ty.path
+                                                                                  "alloc::alloc::Global"
+                                                                              ]
+                                                                          ];
+                                                                        Ty.path
+                                                                          "alloc::alloc::Global"
+                                                                      ],
+                                                                    [],
+                                                                    "deref",
                                                                     []
                                                                   |),
-                                                                  [
-                                                                    M.SubPointer.get_struct_record_field (|
-                                                                      M.read (| ctx |),
-                                                                      "revm::context::Context",
-                                                                      "external"
-                                                                    |)
-                                                                  ]
-                                                                |);
-                                                                M.call_closure (|
-                                                                  M.get_associated_function (|
-                                                                    Ty.path "revm::frame::Frame",
-                                                                    "interpreter_mut",
-                                                                    []
-                                                                  |),
-                                                                  [ M.read (| frame |) ]
-                                                                |);
-                                                                M.SubPointer.get_struct_record_field (|
-                                                                  M.read (| ctx |),
-                                                                  "revm::context::Context",
-                                                                  "evm"
+                                                                  [ call_input_stack_inner ]
                                                                 |)
                                                               ]
                                                             |)
-                                                          |)));
-                                                      fun γ =>
-                                                        ltac:(M.monadic
-                                                          (M.alloc (| Value.Tuple [] |)))
+                                                          |)
+                                                        ]
+                                                      |);
+                                                      M.call_closure (|
+                                                        M.get_trait_method (|
+                                                          "core::clone::Clone",
+                                                          Ty.apply
+                                                            (Ty.path "alloc::boxed::Box")
+                                                            []
+                                                            [
+                                                              Ty.path
+                                                                "revm_interpreter::interpreter_action::call_inputs::CallInputs";
+                                                              Ty.path "alloc::alloc::Global"
+                                                            ],
+                                                          [],
+                                                          "clone",
+                                                          []
+                                                        |),
+                                                        [ inputs ]
+                                                      |)
                                                     ]
-                                                  |) in
-                                                frame_or_result
-                                              |)))
-                                        ]
-                                      |)))
-                                ]
-                              |)
-                            | _ => M.impossible (||)
-                            end))
-                    ]
-                  |))
+                                                  |)
+                                                |) in
+                                              let~ _ :=
+                                                M.match_operator (|
+                                                  M.alloc (| Value.Tuple [] |),
+                                                  [
+                                                    fun γ =>
+                                                      ltac:(M.monadic
+                                                        (let γ := outcome in
+                                                        let γ0_0 :=
+                                                          M.SubPointer.get_struct_tuple_field (|
+                                                            γ,
+                                                            "core::option::Option::Some",
+                                                            0
+                                                          |) in
+                                                        let outcome := M.copy (| γ0_0 |) in
+                                                        M.alloc (|
+                                                          M.never_to_any (|
+                                                            M.read (|
+                                                              M.return_ (|
+                                                                Value.StructTuple
+                                                                  "core::result::Result::Ok"
+                                                                  [
+                                                                    Value.StructTuple
+                                                                      "revm::frame::FrameOrResult::Result"
+                                                                      [
+                                                                        Value.StructTuple
+                                                                          "revm::frame::FrameResult::Call"
+                                                                          [ M.read (| outcome |) ]
+                                                                      ]
+                                                                  ]
+                                                              |)
+                                                            |)
+                                                          |)
+                                                        |)));
+                                                    fun γ =>
+                                                      ltac:(M.monadic
+                                                        (M.alloc (| Value.Tuple [] |)))
+                                                  ]
+                                                |) in
+                                              let~ frame_or_result :=
+                                                M.alloc (|
+                                                  M.call_closure (|
+                                                    M.get_trait_method (|
+                                                      "core::ops::function::Fn",
+                                                      Ty.dyn
+                                                        [
+                                                          ("existential predicate with variables",
+                                                            []);
+                                                          ("existential predicate with variables",
+                                                            [])
+                                                        ],
+                                                      [
+                                                        Ty.tuple
+                                                          [
+                                                            Ty.apply
+                                                              (Ty.path "&mut")
+                                                              []
+                                                              [
+                                                                Ty.apply
+                                                                  (Ty.path "revm::context::Context")
+                                                                  []
+                                                                  [ EXT; DB ]
+                                                              ];
+                                                            Ty.apply
+                                                              (Ty.path "alloc::boxed::Box")
+                                                              []
+                                                              [
+                                                                Ty.path
+                                                                  "revm_interpreter::interpreter_action::call_inputs::CallInputs";
+                                                                Ty.path "alloc::alloc::Global"
+                                                              ]
+                                                          ]
+                                                      ],
+                                                      "call",
+                                                      []
+                                                    |),
+                                                    [
+                                                      M.call_closure (|
+                                                        M.get_trait_method (|
+                                                          "core::ops::deref::Deref",
+                                                          Ty.apply
+                                                            (Ty.path "alloc::sync::Arc")
+                                                            []
+                                                            [
+                                                              Ty.dyn
+                                                                [
+                                                                  ("existential predicate with variables",
+                                                                    []);
+                                                                  ("existential predicate with variables",
+                                                                    [])
+                                                                ];
+                                                              Ty.path "alloc::alloc::Global"
+                                                            ],
+                                                          [],
+                                                          "deref",
+                                                          []
+                                                        |),
+                                                        [ old_handle ]
+                                                      |);
+                                                      Value.Tuple
+                                                        [ M.read (| ctx |); M.read (| inputs |) ]
+                                                    ]
+                                                  |)
+                                                |) in
+                                              let~ _ :=
+                                                M.match_operator (|
+                                                  M.alloc (| Value.Tuple [] |),
+                                                  [
+                                                    fun γ =>
+                                                      ltac:(M.monadic
+                                                        (let γ := M.alloc (| frame_or_result |) in
+                                                        let γ := M.read (| γ |) in
+                                                        let γ1_0 :=
+                                                          M.SubPointer.get_struct_tuple_field (|
+                                                            γ,
+                                                            "core::result::Result::Ok",
+                                                            0
+                                                          |) in
+                                                        let γ2_0 :=
+                                                          M.SubPointer.get_struct_tuple_field (|
+                                                            γ1_0,
+                                                            "revm::frame::FrameOrResult::Frame",
+                                                            0
+                                                          |) in
+                                                        let frame := M.alloc (| γ2_0 |) in
+                                                        M.alloc (|
+                                                          M.call_closure (|
+                                                            M.get_trait_method (|
+                                                              "revm::inspector::Inspector",
+                                                              Ty.associated,
+                                                              [ DB ],
+                                                              "initialize_interp",
+                                                              []
+                                                            |),
+                                                            [
+                                                              M.call_closure (|
+                                                                M.get_trait_method (|
+                                                                  "revm::inspector::handler_register::GetInspector",
+                                                                  EXT,
+                                                                  [ DB ],
+                                                                  "get_inspector",
+                                                                  []
+                                                                |),
+                                                                [
+                                                                  M.SubPointer.get_struct_record_field (|
+                                                                    M.read (| ctx |),
+                                                                    "revm::context::Context",
+                                                                    "external"
+                                                                  |)
+                                                                ]
+                                                              |);
+                                                              M.call_closure (|
+                                                                M.get_associated_function (|
+                                                                  Ty.path "revm::frame::Frame",
+                                                                  "interpreter_mut",
+                                                                  []
+                                                                |),
+                                                                [ M.read (| frame |) ]
+                                                              |);
+                                                              M.SubPointer.get_struct_record_field (|
+                                                                M.read (| ctx |),
+                                                                "revm::context::Context",
+                                                                "evm"
+                                                              |)
+                                                            ]
+                                                          |)
+                                                        |)));
+                                                    fun γ =>
+                                                      ltac:(M.monadic
+                                                        (M.alloc (| Value.Tuple [] |)))
+                                                  ]
+                                                |) in
+                                              frame_or_result
+                                            |)))
+                                      ]
+                                    |)))
+                              ]
+                            |)
+                          | _ => M.impossible (||)
+                          end))
+                  ]
+                |)
               |) in
             let~ call_input_stack_inner :=
               M.alloc (|
@@ -3653,377 +3628,373 @@ Module inspector.
                   "revm::handler::handle_types::execution::ExecutionHandler",
                   "insert_call_outcome"
                 |),
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.apply
-                        (Ty.path "alloc::sync::Arc")
-                        []
-                        [
-                          Ty.function
-                            [
-                              Ty.tuple
-                                [
-                                  Ty.apply
-                                    (Ty.path "&mut")
-                                    []
-                                    [ Ty.apply (Ty.path "revm::context::Context") [] [ EXT; DB ] ];
-                                  Ty.apply (Ty.path "&mut") [] [ Ty.path "revm::frame::Frame" ];
-                                  Ty.apply
-                                    (Ty.path "&mut")
-                                    []
-                                    [
-                                      Ty.path
-                                        "revm_interpreter::interpreter::shared_memory::SharedMemory"
-                                    ];
-                                  Ty.path
-                                    "revm_interpreter::interpreter_action::call_outcome::CallOutcome"
-                                ]
-                            ]
-                            (Ty.apply
-                              (Ty.path "core::result::Result")
-                              []
-                              [
-                                Ty.tuple [];
-                                Ty.apply
-                                  (Ty.path "revm_primitives::result::EVMError")
-                                  []
-                                  [ Ty.associated ]
-                              ]);
-                          Ty.path "alloc::alloc::Global"
-                        ],
-                      "new",
+                M.call_closure (|
+                  M.get_associated_function (|
+                    Ty.apply
+                      (Ty.path "alloc::sync::Arc")
                       []
-                    |),
-                    [
-                      M.closure
-                        (fun γ =>
-                          ltac:(M.monadic
-                            match γ with
-                            | [ α0; α1; α2; α3 ] =>
-                              M.match_operator (|
-                                M.alloc (| α0 |),
-                                [
-                                  fun γ =>
-                                    ltac:(M.monadic
-                                      (let ctx := M.copy (| γ |) in
-                                      M.match_operator (|
-                                        M.alloc (| α1 |),
-                                        [
-                                          fun γ =>
-                                            ltac:(M.monadic
-                                              (let frame := M.copy (| γ |) in
-                                              M.match_operator (|
-                                                M.alloc (| α2 |),
-                                                [
-                                                  fun γ =>
-                                                    ltac:(M.monadic
-                                                      (let shared_memory := M.copy (| γ |) in
-                                                      M.match_operator (|
-                                                        M.alloc (| α3 |),
-                                                        [
-                                                          fun γ =>
-                                                            ltac:(M.monadic
-                                                              (let outcome := M.copy (| γ |) in
-                                                              M.read (|
-                                                                let~ call_inputs :=
-                                                                  M.alloc (|
-                                                                    M.call_closure (|
-                                                                      M.get_associated_function (|
-                                                                        Ty.apply
-                                                                          (Ty.path
-                                                                            "core::option::Option")
-                                                                          []
-                                                                          [
-                                                                            Ty.apply
-                                                                              (Ty.path
-                                                                                "alloc::boxed::Box")
-                                                                              []
-                                                                              [
-                                                                                Ty.path
-                                                                                  "revm_interpreter::interpreter_action::call_inputs::CallInputs";
-                                                                                Ty.path
-                                                                                  "alloc::alloc::Global"
-                                                                              ]
-                                                                          ],
-                                                                        "unwrap",
+                      [
+                        Ty.function
+                          [
+                            Ty.tuple
+                              [
+                                Ty.apply
+                                  (Ty.path "&mut")
+                                  []
+                                  [ Ty.apply (Ty.path "revm::context::Context") [] [ EXT; DB ] ];
+                                Ty.apply (Ty.path "&mut") [] [ Ty.path "revm::frame::Frame" ];
+                                Ty.apply
+                                  (Ty.path "&mut")
+                                  []
+                                  [
+                                    Ty.path
+                                      "revm_interpreter::interpreter::shared_memory::SharedMemory"
+                                  ];
+                                Ty.path
+                                  "revm_interpreter::interpreter_action::call_outcome::CallOutcome"
+                              ]
+                          ]
+                          (Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [
+                              Ty.tuple [];
+                              Ty.apply
+                                (Ty.path "revm_primitives::result::EVMError")
+                                []
+                                [ Ty.associated ]
+                            ]);
+                        Ty.path "alloc::alloc::Global"
+                      ],
+                    "new",
+                    []
+                  |),
+                  [
+                    M.closure
+                      (fun γ =>
+                        ltac:(M.monadic
+                          match γ with
+                          | [ α0; α1; α2; α3 ] =>
+                            M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let ctx := M.copy (| γ |) in
+                                    M.match_operator (|
+                                      M.alloc (| α1 |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let frame := M.copy (| γ |) in
+                                            M.match_operator (|
+                                              M.alloc (| α2 |),
+                                              [
+                                                fun γ =>
+                                                  ltac:(M.monadic
+                                                    (let shared_memory := M.copy (| γ |) in
+                                                    M.match_operator (|
+                                                      M.alloc (| α3 |),
+                                                      [
+                                                        fun γ =>
+                                                          ltac:(M.monadic
+                                                            (let outcome := M.copy (| γ |) in
+                                                            M.read (|
+                                                              let~ call_inputs :=
+                                                                M.alloc (|
+                                                                  M.call_closure (|
+                                                                    M.get_associated_function (|
+                                                                      Ty.apply
+                                                                        (Ty.path
+                                                                          "core::option::Option")
                                                                         []
-                                                                      |),
-                                                                      [
-                                                                        M.call_closure (|
-                                                                          M.get_associated_function (|
-                                                                            Ty.apply
-                                                                              (Ty.path
-                                                                                "alloc::vec::Vec")
-                                                                              []
-                                                                              [
-                                                                                Ty.apply
-                                                                                  (Ty.path
-                                                                                    "alloc::boxed::Box")
-                                                                                  []
-                                                                                  [
-                                                                                    Ty.path
-                                                                                      "revm_interpreter::interpreter_action::call_inputs::CallInputs";
-                                                                                    Ty.path
-                                                                                      "alloc::alloc::Global"
-                                                                                  ];
-                                                                                Ty.path
-                                                                                  "alloc::alloc::Global"
-                                                                              ],
-                                                                            "pop",
+                                                                        [
+                                                                          Ty.apply
+                                                                            (Ty.path
+                                                                              "alloc::boxed::Box")
                                                                             []
-                                                                          |),
-                                                                          [
-                                                                            M.call_closure (|
-                                                                              M.get_trait_method (|
-                                                                                "core::ops::deref::DerefMut",
-                                                                                Ty.apply
-                                                                                  (Ty.path
-                                                                                    "core::cell::RefMut")
-                                                                                  []
-                                                                                  [
+                                                                            [
+                                                                              Ty.path
+                                                                                "revm_interpreter::interpreter_action::call_inputs::CallInputs";
+                                                                              Ty.path
+                                                                                "alloc::alloc::Global"
+                                                                            ]
+                                                                        ],
+                                                                      "unwrap",
+                                                                      []
+                                                                    |),
+                                                                    [
+                                                                      M.call_closure (|
+                                                                        M.get_associated_function (|
+                                                                          Ty.apply
+                                                                            (Ty.path
+                                                                              "alloc::vec::Vec")
+                                                                            []
+                                                                            [
+                                                                              Ty.apply
+                                                                                (Ty.path
+                                                                                  "alloc::boxed::Box")
+                                                                                []
+                                                                                [
+                                                                                  Ty.path
+                                                                                    "revm_interpreter::interpreter_action::call_inputs::CallInputs";
+                                                                                  Ty.path
+                                                                                    "alloc::alloc::Global"
+                                                                                ];
+                                                                              Ty.path
+                                                                                "alloc::alloc::Global"
+                                                                            ],
+                                                                          "pop",
+                                                                          []
+                                                                        |),
+                                                                        [
+                                                                          M.call_closure (|
+                                                                            M.get_trait_method (|
+                                                                              "core::ops::deref::DerefMut",
+                                                                              Ty.apply
+                                                                                (Ty.path
+                                                                                  "core::cell::RefMut")
+                                                                                []
+                                                                                [
+                                                                                  Ty.apply
+                                                                                    (Ty.path
+                                                                                      "alloc::vec::Vec")
+                                                                                    []
+                                                                                    [
+                                                                                      Ty.apply
+                                                                                        (Ty.path
+                                                                                          "alloc::boxed::Box")
+                                                                                        []
+                                                                                        [
+                                                                                          Ty.path
+                                                                                            "revm_interpreter::interpreter_action::call_inputs::CallInputs";
+                                                                                          Ty.path
+                                                                                            "alloc::alloc::Global"
+                                                                                        ];
+                                                                                      Ty.path
+                                                                                        "alloc::alloc::Global"
+                                                                                    ]
+                                                                                ],
+                                                                              [],
+                                                                              "deref_mut",
+                                                                              []
+                                                                            |),
+                                                                            [
+                                                                              M.alloc (|
+                                                                                M.call_closure (|
+                                                                                  M.get_associated_function (|
                                                                                     Ty.apply
                                                                                       (Ty.path
-                                                                                        "alloc::vec::Vec")
+                                                                                        "core::cell::RefCell")
                                                                                       []
                                                                                       [
                                                                                         Ty.apply
                                                                                           (Ty.path
-                                                                                            "alloc::boxed::Box")
+                                                                                            "alloc::vec::Vec")
                                                                                           []
                                                                                           [
-                                                                                            Ty.path
-                                                                                              "revm_interpreter::interpreter_action::call_inputs::CallInputs";
+                                                                                            Ty.apply
+                                                                                              (Ty.path
+                                                                                                "alloc::boxed::Box")
+                                                                                              []
+                                                                                              [
+                                                                                                Ty.path
+                                                                                                  "revm_interpreter::interpreter_action::call_inputs::CallInputs";
+                                                                                                Ty.path
+                                                                                                  "alloc::alloc::Global"
+                                                                                              ];
                                                                                             Ty.path
                                                                                               "alloc::alloc::Global"
-                                                                                          ];
-                                                                                        Ty.path
-                                                                                          "alloc::alloc::Global"
-                                                                                      ]
-                                                                                  ],
-                                                                                [],
-                                                                                "deref_mut",
-                                                                                []
-                                                                              |),
-                                                                              [
-                                                                                M.alloc (|
-                                                                                  M.call_closure (|
-                                                                                    M.get_associated_function (|
-                                                                                      Ty.apply
-                                                                                        (Ty.path
-                                                                                          "core::cell::RefCell")
-                                                                                        []
-                                                                                        [
-                                                                                          Ty.apply
-                                                                                            (Ty.path
-                                                                                              "alloc::vec::Vec")
-                                                                                            []
-                                                                                            [
-                                                                                              Ty.apply
-                                                                                                (Ty.path
-                                                                                                  "alloc::boxed::Box")
-                                                                                                []
-                                                                                                [
-                                                                                                  Ty.path
-                                                                                                    "revm_interpreter::interpreter_action::call_inputs::CallInputs";
-                                                                                                  Ty.path
-                                                                                                    "alloc::alloc::Global"
-                                                                                                ];
-                                                                                              Ty.path
-                                                                                                "alloc::alloc::Global"
-                                                                                            ]
-                                                                                        ],
-                                                                                      "borrow_mut",
-                                                                                      []
-                                                                                    |),
-                                                                                    [
-                                                                                      M.call_closure (|
-                                                                                        M.get_trait_method (|
-                                                                                          "core::ops::deref::Deref",
-                                                                                          Ty.apply
-                                                                                            (Ty.path
-                                                                                              "alloc::rc::Rc")
-                                                                                            []
-                                                                                            [
-                                                                                              Ty.apply
-                                                                                                (Ty.path
-                                                                                                  "core::cell::RefCell")
-                                                                                                []
-                                                                                                [
-                                                                                                  Ty.apply
-                                                                                                    (Ty.path
-                                                                                                      "alloc::vec::Vec")
-                                                                                                    []
-                                                                                                    [
-                                                                                                      Ty.apply
-                                                                                                        (Ty.path
-                                                                                                          "alloc::boxed::Box")
-                                                                                                        []
-                                                                                                        [
-                                                                                                          Ty.path
-                                                                                                            "revm_interpreter::interpreter_action::call_inputs::CallInputs";
-                                                                                                          Ty.path
-                                                                                                            "alloc::alloc::Global"
-                                                                                                        ];
-                                                                                                      Ty.path
-                                                                                                        "alloc::alloc::Global"
-                                                                                                    ]
-                                                                                                ];
-                                                                                              Ty.path
-                                                                                                "alloc::alloc::Global"
-                                                                                            ],
-                                                                                          [],
-                                                                                          "deref",
+                                                                                          ]
+                                                                                      ],
+                                                                                    "borrow_mut",
+                                                                                    []
+                                                                                  |),
+                                                                                  [
+                                                                                    M.call_closure (|
+                                                                                      M.get_trait_method (|
+                                                                                        "core::ops::deref::Deref",
+                                                                                        Ty.apply
+                                                                                          (Ty.path
+                                                                                            "alloc::rc::Rc")
                                                                                           []
-                                                                                        |),
-                                                                                        [
-                                                                                          call_input_stack_inner
-                                                                                        ]
-                                                                                      |)
-                                                                                    ]
-                                                                                  |)
+                                                                                          [
+                                                                                            Ty.apply
+                                                                                              (Ty.path
+                                                                                                "core::cell::RefCell")
+                                                                                              []
+                                                                                              [
+                                                                                                Ty.apply
+                                                                                                  (Ty.path
+                                                                                                    "alloc::vec::Vec")
+                                                                                                  []
+                                                                                                  [
+                                                                                                    Ty.apply
+                                                                                                      (Ty.path
+                                                                                                        "alloc::boxed::Box")
+                                                                                                      []
+                                                                                                      [
+                                                                                                        Ty.path
+                                                                                                          "revm_interpreter::interpreter_action::call_inputs::CallInputs";
+                                                                                                        Ty.path
+                                                                                                          "alloc::alloc::Global"
+                                                                                                      ];
+                                                                                                    Ty.path
+                                                                                                      "alloc::alloc::Global"
+                                                                                                  ]
+                                                                                              ];
+                                                                                            Ty.path
+                                                                                              "alloc::alloc::Global"
+                                                                                          ],
+                                                                                        [],
+                                                                                        "deref",
+                                                                                        []
+                                                                                      |),
+                                                                                      [
+                                                                                        call_input_stack_inner
+                                                                                      ]
+                                                                                    |)
+                                                                                  ]
                                                                                 |)
-                                                                              ]
-                                                                            |)
-                                                                          ]
-                                                                        |)
-                                                                      ]
-                                                                    |)
-                                                                  |) in
-                                                                let~ _ :=
-                                                                  M.write (|
-                                                                    outcome,
-                                                                    M.call_closure (|
-                                                                      M.get_trait_method (|
-                                                                        "revm::inspector::Inspector",
-                                                                        Ty.associated,
-                                                                        [ DB ],
-                                                                        "call_end",
-                                                                        []
-                                                                      |),
-                                                                      [
-                                                                        M.call_closure (|
-                                                                          M.get_trait_method (|
-                                                                            "revm::inspector::handler_register::GetInspector",
-                                                                            EXT,
-                                                                            [ DB ],
-                                                                            "get_inspector",
-                                                                            []
-                                                                          |),
-                                                                          [
-                                                                            M.SubPointer.get_struct_record_field (|
-                                                                              M.read (| ctx |),
-                                                                              "revm::context::Context",
-                                                                              "external"
-                                                                            |)
-                                                                          ]
-                                                                        |);
-                                                                        M.SubPointer.get_struct_record_field (|
-                                                                          M.read (| ctx |),
-                                                                          "revm::context::Context",
-                                                                          "evm"
-                                                                        |);
-                                                                        M.read (| call_inputs |);
-                                                                        M.read (| outcome |)
-                                                                      ]
-                                                                    |)
-                                                                  |) in
-                                                                M.alloc (|
+                                                                              |)
+                                                                            ]
+                                                                          |)
+                                                                        ]
+                                                                      |)
+                                                                    ]
+                                                                  |)
+                                                                |) in
+                                                              let~ _ :=
+                                                                M.write (|
+                                                                  outcome,
                                                                   M.call_closure (|
                                                                     M.get_trait_method (|
-                                                                      "core::ops::function::Fn",
-                                                                      Ty.dyn
-                                                                        [
-                                                                          ("existential predicate with variables",
-                                                                            []);
-                                                                          ("existential predicate with variables",
-                                                                            [])
-                                                                        ],
-                                                                      [
-                                                                        Ty.tuple
-                                                                          [
-                                                                            Ty.apply
-                                                                              (Ty.path "&mut")
-                                                                              []
-                                                                              [
-                                                                                Ty.apply
-                                                                                  (Ty.path
-                                                                                    "revm::context::Context")
-                                                                                  []
-                                                                                  [ EXT; DB ]
-                                                                              ];
-                                                                            Ty.apply
-                                                                              (Ty.path "&mut")
-                                                                              []
-                                                                              [
-                                                                                Ty.path
-                                                                                  "revm::frame::Frame"
-                                                                              ];
-                                                                            Ty.apply
-                                                                              (Ty.path "&mut")
-                                                                              []
-                                                                              [
-                                                                                Ty.path
-                                                                                  "revm_interpreter::interpreter::shared_memory::SharedMemory"
-                                                                              ];
-                                                                            Ty.path
-                                                                              "revm_interpreter::interpreter_action::call_outcome::CallOutcome"
-                                                                          ]
-                                                                      ],
-                                                                      "call",
+                                                                      "revm::inspector::Inspector",
+                                                                      Ty.associated,
+                                                                      [ DB ],
+                                                                      "call_end",
                                                                       []
                                                                     |),
                                                                     [
                                                                       M.call_closure (|
                                                                         M.get_trait_method (|
-                                                                          "core::ops::deref::Deref",
-                                                                          Ty.apply
-                                                                            (Ty.path
-                                                                              "alloc::sync::Arc")
-                                                                            []
-                                                                            [
-                                                                              Ty.dyn
-                                                                                [
-                                                                                  ("existential predicate with variables",
-                                                                                    []);
-                                                                                  ("existential predicate with variables",
-                                                                                    [])
-                                                                                ];
-                                                                              Ty.path
-                                                                                "alloc::alloc::Global"
-                                                                            ],
-                                                                          [],
-                                                                          "deref",
+                                                                          "revm::inspector::handler_register::GetInspector",
+                                                                          EXT,
+                                                                          [ DB ],
+                                                                          "get_inspector",
                                                                           []
                                                                         |),
-                                                                        [ old_handle ]
-                                                                      |);
-                                                                      Value.Tuple
                                                                         [
-                                                                          M.read (| ctx |);
-                                                                          M.read (| frame |);
-                                                                          M.read (|
-                                                                            shared_memory
-                                                                          |);
-                                                                          M.read (| outcome |)
+                                                                          M.SubPointer.get_struct_record_field (|
+                                                                            M.read (| ctx |),
+                                                                            "revm::context::Context",
+                                                                            "external"
+                                                                          |)
                                                                         ]
+                                                                      |);
+                                                                      M.SubPointer.get_struct_record_field (|
+                                                                        M.read (| ctx |),
+                                                                        "revm::context::Context",
+                                                                        "evm"
+                                                                      |);
+                                                                      M.read (| call_inputs |);
+                                                                      M.read (| outcome |)
                                                                     ]
                                                                   |)
+                                                                |) in
+                                                              M.alloc (|
+                                                                M.call_closure (|
+                                                                  M.get_trait_method (|
+                                                                    "core::ops::function::Fn",
+                                                                    Ty.dyn
+                                                                      [
+                                                                        ("existential predicate with variables",
+                                                                          []);
+                                                                        ("existential predicate with variables",
+                                                                          [])
+                                                                      ],
+                                                                    [
+                                                                      Ty.tuple
+                                                                        [
+                                                                          Ty.apply
+                                                                            (Ty.path "&mut")
+                                                                            []
+                                                                            [
+                                                                              Ty.apply
+                                                                                (Ty.path
+                                                                                  "revm::context::Context")
+                                                                                []
+                                                                                [ EXT; DB ]
+                                                                            ];
+                                                                          Ty.apply
+                                                                            (Ty.path "&mut")
+                                                                            []
+                                                                            [
+                                                                              Ty.path
+                                                                                "revm::frame::Frame"
+                                                                            ];
+                                                                          Ty.apply
+                                                                            (Ty.path "&mut")
+                                                                            []
+                                                                            [
+                                                                              Ty.path
+                                                                                "revm_interpreter::interpreter::shared_memory::SharedMemory"
+                                                                            ];
+                                                                          Ty.path
+                                                                            "revm_interpreter::interpreter_action::call_outcome::CallOutcome"
+                                                                        ]
+                                                                    ],
+                                                                    "call",
+                                                                    []
+                                                                  |),
+                                                                  [
+                                                                    M.call_closure (|
+                                                                      M.get_trait_method (|
+                                                                        "core::ops::deref::Deref",
+                                                                        Ty.apply
+                                                                          (Ty.path
+                                                                            "alloc::sync::Arc")
+                                                                          []
+                                                                          [
+                                                                            Ty.dyn
+                                                                              [
+                                                                                ("existential predicate with variables",
+                                                                                  []);
+                                                                                ("existential predicate with variables",
+                                                                                  [])
+                                                                              ];
+                                                                            Ty.path
+                                                                              "alloc::alloc::Global"
+                                                                          ],
+                                                                        [],
+                                                                        "deref",
+                                                                        []
+                                                                      |),
+                                                                      [ old_handle ]
+                                                                    |);
+                                                                    Value.Tuple
+                                                                      [
+                                                                        M.read (| ctx |);
+                                                                        M.read (| frame |);
+                                                                        M.read (| shared_memory |);
+                                                                        M.read (| outcome |)
+                                                                      ]
+                                                                  ]
                                                                 |)
-                                                              |)))
-                                                        ]
-                                                      |)))
-                                                ]
-                                              |)))
-                                        ]
-                                      |)))
-                                ]
-                              |)
-                            | _ => M.impossible (||)
-                            end))
-                    ]
-                  |))
+                                                              |)
+                                                            |)))
+                                                      ]
+                                                    |)))
+                                              ]
+                                            |)))
+                                      ]
+                                    |)))
+                              ]
+                            |)
+                          | _ => M.impossible (||)
+                          end))
+                  ]
+                |)
               |) in
             let~ create_input_stack_inner :=
               M.alloc (|
@@ -4106,67 +4077,673 @@ Module inspector.
                   "revm::handler::handle_types::execution::ExecutionHandler",
                   "insert_create_outcome"
                 |),
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.apply
-                        (Ty.path "alloc::sync::Arc")
-                        []
-                        [
-                          Ty.function
-                            [
-                              Ty.tuple
-                                [
-                                  Ty.apply
-                                    (Ty.path "&mut")
-                                    []
-                                    [ Ty.apply (Ty.path "revm::context::Context") [] [ EXT; DB ] ];
-                                  Ty.apply (Ty.path "&mut") [] [ Ty.path "revm::frame::Frame" ];
-                                  Ty.path
-                                    "revm_interpreter::interpreter_action::create_outcome::CreateOutcome"
-                                ]
-                            ]
-                            (Ty.apply
-                              (Ty.path "core::result::Result")
-                              []
-                              [
-                                Ty.tuple [];
-                                Ty.apply
-                                  (Ty.path "revm_primitives::result::EVMError")
-                                  []
-                                  [ Ty.associated ]
-                              ]);
-                          Ty.path "alloc::alloc::Global"
-                        ],
-                      "new",
+                M.call_closure (|
+                  M.get_associated_function (|
+                    Ty.apply
+                      (Ty.path "alloc::sync::Arc")
                       []
-                    |),
-                    [
-                      M.closure
-                        (fun γ =>
-                          ltac:(M.monadic
-                            match γ with
-                            | [ α0; α1; α2 ] =>
-                              M.match_operator (|
-                                M.alloc (| α0 |),
-                                [
-                                  fun γ =>
-                                    ltac:(M.monadic
-                                      (let ctx := M.copy (| γ |) in
-                                      M.match_operator (|
-                                        M.alloc (| α1 |),
-                                        [
-                                          fun γ =>
-                                            ltac:(M.monadic
-                                              (let frame := M.copy (| γ |) in
-                                              M.match_operator (|
-                                                M.alloc (| α2 |),
-                                                [
-                                                  fun γ =>
-                                                    ltac:(M.monadic
-                                                      (let outcome := M.copy (| γ |) in
-                                                      M.read (|
+                      [
+                        Ty.function
+                          [
+                            Ty.tuple
+                              [
+                                Ty.apply
+                                  (Ty.path "&mut")
+                                  []
+                                  [ Ty.apply (Ty.path "revm::context::Context") [] [ EXT; DB ] ];
+                                Ty.apply (Ty.path "&mut") [] [ Ty.path "revm::frame::Frame" ];
+                                Ty.path
+                                  "revm_interpreter::interpreter_action::create_outcome::CreateOutcome"
+                              ]
+                          ]
+                          (Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [
+                              Ty.tuple [];
+                              Ty.apply
+                                (Ty.path "revm_primitives::result::EVMError")
+                                []
+                                [ Ty.associated ]
+                            ]);
+                        Ty.path "alloc::alloc::Global"
+                      ],
+                    "new",
+                    []
+                  |),
+                  [
+                    M.closure
+                      (fun γ =>
+                        ltac:(M.monadic
+                          match γ with
+                          | [ α0; α1; α2 ] =>
+                            M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let ctx := M.copy (| γ |) in
+                                    M.match_operator (|
+                                      M.alloc (| α1 |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let frame := M.copy (| γ |) in
+                                            M.match_operator (|
+                                              M.alloc (| α2 |),
+                                              [
+                                                fun γ =>
+                                                  ltac:(M.monadic
+                                                    (let outcome := M.copy (| γ |) in
+                                                    M.read (|
+                                                      let~ create_inputs :=
+                                                        M.alloc (|
+                                                          M.call_closure (|
+                                                            M.get_associated_function (|
+                                                              Ty.apply
+                                                                (Ty.path "core::option::Option")
+                                                                []
+                                                                [
+                                                                  Ty.apply
+                                                                    (Ty.path "alloc::boxed::Box")
+                                                                    []
+                                                                    [
+                                                                      Ty.path
+                                                                        "revm_interpreter::interpreter_action::create_inputs::CreateInputs";
+                                                                      Ty.path "alloc::alloc::Global"
+                                                                    ]
+                                                                ],
+                                                              "unwrap",
+                                                              []
+                                                            |),
+                                                            [
+                                                              M.call_closure (|
+                                                                M.get_associated_function (|
+                                                                  Ty.apply
+                                                                    (Ty.path "alloc::vec::Vec")
+                                                                    []
+                                                                    [
+                                                                      Ty.apply
+                                                                        (Ty.path
+                                                                          "alloc::boxed::Box")
+                                                                        []
+                                                                        [
+                                                                          Ty.path
+                                                                            "revm_interpreter::interpreter_action::create_inputs::CreateInputs";
+                                                                          Ty.path
+                                                                            "alloc::alloc::Global"
+                                                                        ];
+                                                                      Ty.path "alloc::alloc::Global"
+                                                                    ],
+                                                                  "pop",
+                                                                  []
+                                                                |),
+                                                                [
+                                                                  M.call_closure (|
+                                                                    M.get_trait_method (|
+                                                                      "core::ops::deref::DerefMut",
+                                                                      Ty.apply
+                                                                        (Ty.path
+                                                                          "core::cell::RefMut")
+                                                                        []
+                                                                        [
+                                                                          Ty.apply
+                                                                            (Ty.path
+                                                                              "alloc::vec::Vec")
+                                                                            []
+                                                                            [
+                                                                              Ty.apply
+                                                                                (Ty.path
+                                                                                  "alloc::boxed::Box")
+                                                                                []
+                                                                                [
+                                                                                  Ty.path
+                                                                                    "revm_interpreter::interpreter_action::create_inputs::CreateInputs";
+                                                                                  Ty.path
+                                                                                    "alloc::alloc::Global"
+                                                                                ];
+                                                                              Ty.path
+                                                                                "alloc::alloc::Global"
+                                                                            ]
+                                                                        ],
+                                                                      [],
+                                                                      "deref_mut",
+                                                                      []
+                                                                    |),
+                                                                    [
+                                                                      M.alloc (|
+                                                                        M.call_closure (|
+                                                                          M.get_associated_function (|
+                                                                            Ty.apply
+                                                                              (Ty.path
+                                                                                "core::cell::RefCell")
+                                                                              []
+                                                                              [
+                                                                                Ty.apply
+                                                                                  (Ty.path
+                                                                                    "alloc::vec::Vec")
+                                                                                  []
+                                                                                  [
+                                                                                    Ty.apply
+                                                                                      (Ty.path
+                                                                                        "alloc::boxed::Box")
+                                                                                      []
+                                                                                      [
+                                                                                        Ty.path
+                                                                                          "revm_interpreter::interpreter_action::create_inputs::CreateInputs";
+                                                                                        Ty.path
+                                                                                          "alloc::alloc::Global"
+                                                                                      ];
+                                                                                    Ty.path
+                                                                                      "alloc::alloc::Global"
+                                                                                  ]
+                                                                              ],
+                                                                            "borrow_mut",
+                                                                            []
+                                                                          |),
+                                                                          [
+                                                                            M.call_closure (|
+                                                                              M.get_trait_method (|
+                                                                                "core::ops::deref::Deref",
+                                                                                Ty.apply
+                                                                                  (Ty.path
+                                                                                    "alloc::rc::Rc")
+                                                                                  []
+                                                                                  [
+                                                                                    Ty.apply
+                                                                                      (Ty.path
+                                                                                        "core::cell::RefCell")
+                                                                                      []
+                                                                                      [
+                                                                                        Ty.apply
+                                                                                          (Ty.path
+                                                                                            "alloc::vec::Vec")
+                                                                                          []
+                                                                                          [
+                                                                                            Ty.apply
+                                                                                              (Ty.path
+                                                                                                "alloc::boxed::Box")
+                                                                                              []
+                                                                                              [
+                                                                                                Ty.path
+                                                                                                  "revm_interpreter::interpreter_action::create_inputs::CreateInputs";
+                                                                                                Ty.path
+                                                                                                  "alloc::alloc::Global"
+                                                                                              ];
+                                                                                            Ty.path
+                                                                                              "alloc::alloc::Global"
+                                                                                          ]
+                                                                                      ];
+                                                                                    Ty.path
+                                                                                      "alloc::alloc::Global"
+                                                                                  ],
+                                                                                [],
+                                                                                "deref",
+                                                                                []
+                                                                              |),
+                                                                              [
+                                                                                create_input_stack_inner
+                                                                              ]
+                                                                            |)
+                                                                          ]
+                                                                        |)
+                                                                      |)
+                                                                    ]
+                                                                  |)
+                                                                ]
+                                                              |)
+                                                            ]
+                                                          |)
+                                                        |) in
+                                                      let~ _ :=
+                                                        M.write (|
+                                                          outcome,
+                                                          M.call_closure (|
+                                                            M.get_trait_method (|
+                                                              "revm::inspector::Inspector",
+                                                              Ty.associated,
+                                                              [ DB ],
+                                                              "create_end",
+                                                              []
+                                                            |),
+                                                            [
+                                                              M.call_closure (|
+                                                                M.get_trait_method (|
+                                                                  "revm::inspector::handler_register::GetInspector",
+                                                                  EXT,
+                                                                  [ DB ],
+                                                                  "get_inspector",
+                                                                  []
+                                                                |),
+                                                                [
+                                                                  M.SubPointer.get_struct_record_field (|
+                                                                    M.read (| ctx |),
+                                                                    "revm::context::Context",
+                                                                    "external"
+                                                                  |)
+                                                                ]
+                                                              |);
+                                                              M.SubPointer.get_struct_record_field (|
+                                                                M.read (| ctx |),
+                                                                "revm::context::Context",
+                                                                "evm"
+                                                              |);
+                                                              M.read (| create_inputs |);
+                                                              M.read (| outcome |)
+                                                            ]
+                                                          |)
+                                                        |) in
+                                                      M.alloc (|
+                                                        M.call_closure (|
+                                                          M.get_trait_method (|
+                                                            "core::ops::function::Fn",
+                                                            Ty.dyn
+                                                              [
+                                                                ("existential predicate with variables",
+                                                                  []);
+                                                                ("existential predicate with variables",
+                                                                  [])
+                                                              ],
+                                                            [
+                                                              Ty.tuple
+                                                                [
+                                                                  Ty.apply
+                                                                    (Ty.path "&mut")
+                                                                    []
+                                                                    [
+                                                                      Ty.apply
+                                                                        (Ty.path
+                                                                          "revm::context::Context")
+                                                                        []
+                                                                        [ EXT; DB ]
+                                                                    ];
+                                                                  Ty.apply
+                                                                    (Ty.path "&mut")
+                                                                    []
+                                                                    [ Ty.path "revm::frame::Frame"
+                                                                    ];
+                                                                  Ty.path
+                                                                    "revm_interpreter::interpreter_action::create_outcome::CreateOutcome"
+                                                                ]
+                                                            ],
+                                                            "call",
+                                                            []
+                                                          |),
+                                                          [
+                                                            M.call_closure (|
+                                                              M.get_trait_method (|
+                                                                "core::ops::deref::Deref",
+                                                                Ty.apply
+                                                                  (Ty.path "alloc::sync::Arc")
+                                                                  []
+                                                                  [
+                                                                    Ty.dyn
+                                                                      [
+                                                                        ("existential predicate with variables",
+                                                                          []);
+                                                                        ("existential predicate with variables",
+                                                                          [])
+                                                                      ];
+                                                                    Ty.path "alloc::alloc::Global"
+                                                                  ],
+                                                                [],
+                                                                "deref",
+                                                                []
+                                                              |),
+                                                              [ old_handle ]
+                                                            |);
+                                                            Value.Tuple
+                                                              [
+                                                                M.read (| ctx |);
+                                                                M.read (| frame |);
+                                                                M.read (| outcome |)
+                                                              ]
+                                                          ]
+                                                        |)
+                                                      |)
+                                                    |)))
+                                              ]
+                                            |)))
+                                      ]
+                                    |)))
+                              ]
+                            |)
+                          | _ => M.impossible (||)
+                          end))
+                  ]
+                |)
+              |) in
+            let~ old_handle :=
+              M.alloc (|
+                M.call_closure (|
+                  M.get_trait_method (|
+                    "core::clone::Clone",
+                    Ty.apply
+                      (Ty.path "alloc::sync::Arc")
+                      []
+                      [
+                        Ty.dyn
+                          [
+                            ("existential predicate with variables", []);
+                            ("existential predicate with variables", [])
+                          ];
+                        Ty.path "alloc::alloc::Global"
+                      ],
+                    [],
+                    "clone",
+                    []
+                  |),
+                  [
+                    M.SubPointer.get_struct_record_field (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| handler |),
+                        "revm::handler::Handler",
+                        "execution"
+                      |),
+                      "revm::handler::handle_types::execution::ExecutionHandler",
+                      "last_frame_return"
+                    |)
+                  ]
+                |)
+              |) in
+            let~ _ :=
+              M.write (|
+                M.SubPointer.get_struct_record_field (|
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| handler |),
+                    "revm::handler::Handler",
+                    "execution"
+                  |),
+                  "revm::handler::handle_types::execution::ExecutionHandler",
+                  "last_frame_return"
+                |),
+                M.call_closure (|
+                  M.get_associated_function (|
+                    Ty.apply
+                      (Ty.path "alloc::sync::Arc")
+                      []
+                      [
+                        Ty.function
+                          [
+                            Ty.tuple
+                              [
+                                Ty.apply
+                                  (Ty.path "&mut")
+                                  []
+                                  [ Ty.apply (Ty.path "revm::context::Context") [] [ EXT; DB ] ];
+                                Ty.apply (Ty.path "&mut") [] [ Ty.path "revm::frame::FrameResult" ]
+                              ]
+                          ]
+                          (Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [
+                              Ty.tuple [];
+                              Ty.apply
+                                (Ty.path "revm_primitives::result::EVMError")
+                                []
+                                [ Ty.associated ]
+                            ]);
+                        Ty.path "alloc::alloc::Global"
+                      ],
+                    "new",
+                    []
+                  |),
+                  [
+                    M.closure
+                      (fun γ =>
+                        ltac:(M.monadic
+                          match γ with
+                          | [ α0; α1 ] =>
+                            M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let ctx := M.copy (| γ |) in
+                                    M.match_operator (|
+                                      M.alloc (| α1 |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let frame_result := M.copy (| γ |) in
+                                            M.read (|
+                                              let~ inspector :=
+                                                M.alloc (|
+                                                  M.call_closure (|
+                                                    M.get_trait_method (|
+                                                      "revm::inspector::handler_register::GetInspector",
+                                                      EXT,
+                                                      [ DB ],
+                                                      "get_inspector",
+                                                      []
+                                                    |),
+                                                    [
+                                                      M.SubPointer.get_struct_record_field (|
+                                                        M.read (| ctx |),
+                                                        "revm::context::Context",
+                                                        "external"
+                                                      |)
+                                                    ]
+                                                  |)
+                                                |) in
+                                              let~ _ :=
+                                                M.match_operator (|
+                                                  frame_result,
+                                                  [
+                                                    fun γ =>
+                                                      ltac:(M.monadic
+                                                        (let γ := M.read (| γ |) in
+                                                        let γ1_0 :=
+                                                          M.SubPointer.get_struct_tuple_field (|
+                                                            γ,
+                                                            "revm::frame::FrameResult::Call",
+                                                            0
+                                                          |) in
+                                                        let outcome := M.alloc (| γ1_0 |) in
+                                                        let~ call_inputs :=
+                                                          M.alloc (|
+                                                            M.call_closure (|
+                                                              M.get_associated_function (|
+                                                                Ty.apply
+                                                                  (Ty.path "core::option::Option")
+                                                                  []
+                                                                  [
+                                                                    Ty.apply
+                                                                      (Ty.path "alloc::boxed::Box")
+                                                                      []
+                                                                      [
+                                                                        Ty.path
+                                                                          "revm_interpreter::interpreter_action::call_inputs::CallInputs";
+                                                                        Ty.path
+                                                                          "alloc::alloc::Global"
+                                                                      ]
+                                                                  ],
+                                                                "unwrap",
+                                                                []
+                                                              |),
+                                                              [
+                                                                M.call_closure (|
+                                                                  M.get_associated_function (|
+                                                                    Ty.apply
+                                                                      (Ty.path "alloc::vec::Vec")
+                                                                      []
+                                                                      [
+                                                                        Ty.apply
+                                                                          (Ty.path
+                                                                            "alloc::boxed::Box")
+                                                                          []
+                                                                          [
+                                                                            Ty.path
+                                                                              "revm_interpreter::interpreter_action::call_inputs::CallInputs";
+                                                                            Ty.path
+                                                                              "alloc::alloc::Global"
+                                                                          ];
+                                                                        Ty.path
+                                                                          "alloc::alloc::Global"
+                                                                      ],
+                                                                    "pop",
+                                                                    []
+                                                                  |),
+                                                                  [
+                                                                    M.call_closure (|
+                                                                      M.get_trait_method (|
+                                                                        "core::ops::deref::DerefMut",
+                                                                        Ty.apply
+                                                                          (Ty.path
+                                                                            "core::cell::RefMut")
+                                                                          []
+                                                                          [
+                                                                            Ty.apply
+                                                                              (Ty.path
+                                                                                "alloc::vec::Vec")
+                                                                              []
+                                                                              [
+                                                                                Ty.apply
+                                                                                  (Ty.path
+                                                                                    "alloc::boxed::Box")
+                                                                                  []
+                                                                                  [
+                                                                                    Ty.path
+                                                                                      "revm_interpreter::interpreter_action::call_inputs::CallInputs";
+                                                                                    Ty.path
+                                                                                      "alloc::alloc::Global"
+                                                                                  ];
+                                                                                Ty.path
+                                                                                  "alloc::alloc::Global"
+                                                                              ]
+                                                                          ],
+                                                                        [],
+                                                                        "deref_mut",
+                                                                        []
+                                                                      |),
+                                                                      [
+                                                                        M.alloc (|
+                                                                          M.call_closure (|
+                                                                            M.get_associated_function (|
+                                                                              Ty.apply
+                                                                                (Ty.path
+                                                                                  "core::cell::RefCell")
+                                                                                []
+                                                                                [
+                                                                                  Ty.apply
+                                                                                    (Ty.path
+                                                                                      "alloc::vec::Vec")
+                                                                                    []
+                                                                                    [
+                                                                                      Ty.apply
+                                                                                        (Ty.path
+                                                                                          "alloc::boxed::Box")
+                                                                                        []
+                                                                                        [
+                                                                                          Ty.path
+                                                                                            "revm_interpreter::interpreter_action::call_inputs::CallInputs";
+                                                                                          Ty.path
+                                                                                            "alloc::alloc::Global"
+                                                                                        ];
+                                                                                      Ty.path
+                                                                                        "alloc::alloc::Global"
+                                                                                    ]
+                                                                                ],
+                                                                              "borrow_mut",
+                                                                              []
+                                                                            |),
+                                                                            [
+                                                                              M.call_closure (|
+                                                                                M.get_trait_method (|
+                                                                                  "core::ops::deref::Deref",
+                                                                                  Ty.apply
+                                                                                    (Ty.path
+                                                                                      "alloc::rc::Rc")
+                                                                                    []
+                                                                                    [
+                                                                                      Ty.apply
+                                                                                        (Ty.path
+                                                                                          "core::cell::RefCell")
+                                                                                        []
+                                                                                        [
+                                                                                          Ty.apply
+                                                                                            (Ty.path
+                                                                                              "alloc::vec::Vec")
+                                                                                            []
+                                                                                            [
+                                                                                              Ty.apply
+                                                                                                (Ty.path
+                                                                                                  "alloc::boxed::Box")
+                                                                                                []
+                                                                                                [
+                                                                                                  Ty.path
+                                                                                                    "revm_interpreter::interpreter_action::call_inputs::CallInputs";
+                                                                                                  Ty.path
+                                                                                                    "alloc::alloc::Global"
+                                                                                                ];
+                                                                                              Ty.path
+                                                                                                "alloc::alloc::Global"
+                                                                                            ]
+                                                                                        ];
+                                                                                      Ty.path
+                                                                                        "alloc::alloc::Global"
+                                                                                    ],
+                                                                                  [],
+                                                                                  "deref",
+                                                                                  []
+                                                                                |),
+                                                                                [ call_input_stack ]
+                                                                              |)
+                                                                            ]
+                                                                          |)
+                                                                        |)
+                                                                      ]
+                                                                    |)
+                                                                  ]
+                                                                |)
+                                                              ]
+                                                            |)
+                                                          |) in
+                                                        let~ _ :=
+                                                          M.write (|
+                                                            M.read (| outcome |),
+                                                            M.call_closure (|
+                                                              M.get_trait_method (|
+                                                                "revm::inspector::Inspector",
+                                                                Ty.associated,
+                                                                [ DB ],
+                                                                "call_end",
+                                                                []
+                                                              |),
+                                                              [
+                                                                M.read (| inspector |);
+                                                                M.SubPointer.get_struct_record_field (|
+                                                                  M.read (| ctx |),
+                                                                  "revm::context::Context",
+                                                                  "evm"
+                                                                |);
+                                                                M.read (| call_inputs |);
+                                                                M.call_closure (|
+                                                                  M.get_trait_method (|
+                                                                    "core::clone::Clone",
+                                                                    Ty.path
+                                                                      "revm_interpreter::interpreter_action::call_outcome::CallOutcome",
+                                                                    [],
+                                                                    "clone",
+                                                                    []
+                                                                  |),
+                                                                  [ M.read (| outcome |) ]
+                                                                |)
+                                                              ]
+                                                            |)
+                                                          |) in
+                                                        M.alloc (| Value.Tuple [] |)));
+                                                    fun γ =>
+                                                      ltac:(M.monadic
+                                                        (let γ := M.read (| γ |) in
+                                                        let γ1_0 :=
+                                                          M.SubPointer.get_struct_tuple_field (|
+                                                            γ,
+                                                            "revm::frame::FrameResult::Create",
+                                                            0
+                                                          |) in
+                                                        let outcome := M.alloc (| γ1_0 |) in
                                                         let~ create_inputs :=
                                                           M.alloc (|
                                                             M.call_closure (|
@@ -4314,8 +4891,7 @@ Module inspector.
                                                                                   "deref",
                                                                                   []
                                                                                 |),
-                                                                                [
-                                                                                  create_input_stack_inner
+                                                                                [ create_input_stack
                                                                                 ]
                                                                               |)
                                                                             ]
@@ -4330,7 +4906,7 @@ Module inspector.
                                                           |) in
                                                         let~ _ :=
                                                           M.write (|
-                                                            outcome,
+                                                            M.read (| outcome |),
                                                             M.call_closure (|
                                                               M.get_trait_method (|
                                                                 "revm::inspector::Inspector",
@@ -4340,886 +4916,265 @@ Module inspector.
                                                                 []
                                                               |),
                                                               [
-                                                                M.call_closure (|
-                                                                  M.get_trait_method (|
-                                                                    "revm::inspector::handler_register::GetInspector",
-                                                                    EXT,
-                                                                    [ DB ],
-                                                                    "get_inspector",
-                                                                    []
-                                                                  |),
-                                                                  [
-                                                                    M.SubPointer.get_struct_record_field (|
-                                                                      M.read (| ctx |),
-                                                                      "revm::context::Context",
-                                                                      "external"
-                                                                    |)
-                                                                  ]
-                                                                |);
+                                                                M.read (| inspector |);
                                                                 M.SubPointer.get_struct_record_field (|
                                                                   M.read (| ctx |),
                                                                   "revm::context::Context",
                                                                   "evm"
                                                                 |);
                                                                 M.read (| create_inputs |);
-                                                                M.read (| outcome |)
+                                                                M.call_closure (|
+                                                                  M.get_trait_method (|
+                                                                    "core::clone::Clone",
+                                                                    Ty.path
+                                                                      "revm_interpreter::interpreter_action::create_outcome::CreateOutcome",
+                                                                    [],
+                                                                    "clone",
+                                                                    []
+                                                                  |),
+                                                                  [ M.read (| outcome |) ]
+                                                                |)
                                                               ]
                                                             |)
                                                           |) in
-                                                        M.alloc (|
-                                                          M.call_closure (|
-                                                            M.get_trait_method (|
-                                                              "core::ops::function::Fn",
-                                                              Ty.dyn
-                                                                [
-                                                                  ("existential predicate with variables",
-                                                                    []);
-                                                                  ("existential predicate with variables",
-                                                                    [])
-                                                                ],
-                                                              [
-                                                                Ty.tuple
+                                                        M.alloc (| Value.Tuple [] |)));
+                                                    fun γ =>
+                                                      ltac:(M.monadic
+                                                        (let γ := M.read (| γ |) in
+                                                        let γ1_0 :=
+                                                          M.SubPointer.get_struct_tuple_field (|
+                                                            γ,
+                                                            "revm::frame::FrameResult::EOFCreate",
+                                                            0
+                                                          |) in
+                                                        let outcome := M.alloc (| γ1_0 |) in
+                                                        let~ eofcreate_inputs :=
+                                                          M.alloc (|
+                                                            M.call_closure (|
+                                                              M.get_associated_function (|
+                                                                Ty.apply
+                                                                  (Ty.path "core::option::Option")
+                                                                  []
                                                                   [
+                                                                    Ty.path
+                                                                      "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInput"
+                                                                  ],
+                                                                "unwrap",
+                                                                []
+                                                              |),
+                                                              [
+                                                                M.call_closure (|
+                                                                  M.get_associated_function (|
                                                                     Ty.apply
-                                                                      (Ty.path "&mut")
+                                                                      (Ty.path "alloc::vec::Vec")
                                                                       []
                                                                       [
+                                                                        Ty.path
+                                                                          "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInput";
+                                                                        Ty.path
+                                                                          "alloc::alloc::Global"
+                                                                      ],
+                                                                    "pop",
+                                                                    []
+                                                                  |),
+                                                                  [
+                                                                    M.call_closure (|
+                                                                      M.get_trait_method (|
+                                                                        "core::ops::deref::DerefMut",
                                                                         Ty.apply
                                                                           (Ty.path
-                                                                            "revm::context::Context")
+                                                                            "core::cell::RefMut")
                                                                           []
-                                                                          [ EXT; DB ]
-                                                                      ];
-                                                                    Ty.apply
-                                                                      (Ty.path "&mut")
-                                                                      []
-                                                                      [ Ty.path "revm::frame::Frame"
-                                                                      ];
-                                                                    Ty.path
-                                                                      "revm_interpreter::interpreter_action::create_outcome::CreateOutcome"
+                                                                          [
+                                                                            Ty.apply
+                                                                              (Ty.path
+                                                                                "alloc::vec::Vec")
+                                                                              []
+                                                                              [
+                                                                                Ty.path
+                                                                                  "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInput";
+                                                                                Ty.path
+                                                                                  "alloc::alloc::Global"
+                                                                              ]
+                                                                          ],
+                                                                        [],
+                                                                        "deref_mut",
+                                                                        []
+                                                                      |),
+                                                                      [
+                                                                        M.alloc (|
+                                                                          M.call_closure (|
+                                                                            M.get_associated_function (|
+                                                                              Ty.apply
+                                                                                (Ty.path
+                                                                                  "core::cell::RefCell")
+                                                                                []
+                                                                                [
+                                                                                  Ty.apply
+                                                                                    (Ty.path
+                                                                                      "alloc::vec::Vec")
+                                                                                    []
+                                                                                    [
+                                                                                      Ty.path
+                                                                                        "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInput";
+                                                                                      Ty.path
+                                                                                        "alloc::alloc::Global"
+                                                                                    ]
+                                                                                ],
+                                                                              "borrow_mut",
+                                                                              []
+                                                                            |),
+                                                                            [
+                                                                              M.call_closure (|
+                                                                                M.get_trait_method (|
+                                                                                  "core::ops::deref::Deref",
+                                                                                  Ty.apply
+                                                                                    (Ty.path
+                                                                                      "alloc::rc::Rc")
+                                                                                    []
+                                                                                    [
+                                                                                      Ty.apply
+                                                                                        (Ty.path
+                                                                                          "core::cell::RefCell")
+                                                                                        []
+                                                                                        [
+                                                                                          Ty.apply
+                                                                                            (Ty.path
+                                                                                              "alloc::vec::Vec")
+                                                                                            []
+                                                                                            [
+                                                                                              Ty.path
+                                                                                                "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInput";
+                                                                                              Ty.path
+                                                                                                "alloc::alloc::Global"
+                                                                                            ]
+                                                                                        ];
+                                                                                      Ty.path
+                                                                                        "alloc::alloc::Global"
+                                                                                    ],
+                                                                                  [],
+                                                                                  "deref",
+                                                                                  []
+                                                                                |),
+                                                                                [
+                                                                                  eofcreate_input_stack
+                                                                                ]
+                                                                              |)
+                                                                            ]
+                                                                          |)
+                                                                        |)
+                                                                      ]
+                                                                    |)
                                                                   ]
-                                                              ],
-                                                              "call",
-                                                              []
-                                                            |),
-                                                            [
-                                                              M.call_closure (|
-                                                                M.get_trait_method (|
-                                                                  "core::ops::deref::Deref",
-                                                                  Ty.apply
-                                                                    (Ty.path "alloc::sync::Arc")
-                                                                    []
-                                                                    [
-                                                                      Ty.dyn
-                                                                        [
-                                                                          ("existential predicate with variables",
-                                                                            []);
-                                                                          ("existential predicate with variables",
-                                                                            [])
-                                                                        ];
-                                                                      Ty.path "alloc::alloc::Global"
-                                                                    ],
-                                                                  [],
-                                                                  "deref",
-                                                                  []
-                                                                |),
-                                                                [ old_handle ]
-                                                              |);
-                                                              Value.Tuple
-                                                                [
-                                                                  M.read (| ctx |);
-                                                                  M.read (| frame |);
-                                                                  M.read (| outcome |)
-                                                                ]
-                                                            ]
-                                                          |)
-                                                        |)
-                                                      |)))
-                                                ]
-                                              |)))
-                                        ]
-                                      |)))
-                                ]
-                              |)
-                            | _ => M.impossible (||)
-                            end))
-                    ]
-                  |))
-              |) in
-            let~ old_handle :=
-              M.alloc (|
-                M.call_closure (|
-                  M.get_trait_method (|
-                    "core::clone::Clone",
-                    Ty.apply
-                      (Ty.path "alloc::sync::Arc")
-                      []
-                      [
-                        Ty.dyn
-                          [
-                            ("existential predicate with variables", []);
-                            ("existential predicate with variables", [])
-                          ];
-                        Ty.path "alloc::alloc::Global"
-                      ],
-                    [],
-                    "clone",
-                    []
-                  |),
-                  [
-                    M.SubPointer.get_struct_record_field (|
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| handler |),
-                        "revm::handler::Handler",
-                        "execution"
-                      |),
-                      "revm::handler::handle_types::execution::ExecutionHandler",
-                      "last_frame_return"
-                    |)
-                  ]
-                |)
-              |) in
-            let~ _ :=
-              M.write (|
-                M.SubPointer.get_struct_record_field (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| handler |),
-                    "revm::handler::Handler",
-                    "execution"
-                  |),
-                  "revm::handler::handle_types::execution::ExecutionHandler",
-                  "last_frame_return"
-                |),
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.apply
-                        (Ty.path "alloc::sync::Arc")
-                        []
-                        [
-                          Ty.function
-                            [
-                              Ty.tuple
-                                [
-                                  Ty.apply
-                                    (Ty.path "&mut")
-                                    []
-                                    [ Ty.apply (Ty.path "revm::context::Context") [] [ EXT; DB ] ];
-                                  Ty.apply
-                                    (Ty.path "&mut")
-                                    []
-                                    [ Ty.path "revm::frame::FrameResult" ]
-                                ]
-                            ]
-                            (Ty.apply
-                              (Ty.path "core::result::Result")
-                              []
-                              [
-                                Ty.tuple [];
-                                Ty.apply
-                                  (Ty.path "revm_primitives::result::EVMError")
-                                  []
-                                  [ Ty.associated ]
-                              ]);
-                          Ty.path "alloc::alloc::Global"
-                        ],
-                      "new",
-                      []
-                    |),
-                    [
-                      M.closure
-                        (fun γ =>
-                          ltac:(M.monadic
-                            match γ with
-                            | [ α0; α1 ] =>
-                              M.match_operator (|
-                                M.alloc (| α0 |),
-                                [
-                                  fun γ =>
-                                    ltac:(M.monadic
-                                      (let ctx := M.copy (| γ |) in
-                                      M.match_operator (|
-                                        M.alloc (| α1 |),
-                                        [
-                                          fun γ =>
-                                            ltac:(M.monadic
-                                              (let frame_result := M.copy (| γ |) in
-                                              M.read (|
-                                                let~ inspector :=
-                                                  M.alloc (|
-                                                    M.call_closure (|
-                                                      M.get_trait_method (|
-                                                        "revm::inspector::handler_register::GetInspector",
-                                                        EXT,
-                                                        [ DB ],
-                                                        "get_inspector",
-                                                        []
-                                                      |),
-                                                      [
-                                                        M.SubPointer.get_struct_record_field (|
-                                                          M.read (| ctx |),
-                                                          "revm::context::Context",
-                                                          "external"
-                                                        |)
-                                                      ]
-                                                    |)
-                                                  |) in
-                                                let~ _ :=
-                                                  M.match_operator (|
-                                                    frame_result,
-                                                    [
-                                                      fun γ =>
-                                                        ltac:(M.monadic
-                                                          (let γ := M.read (| γ |) in
-                                                          let γ1_0 :=
-                                                            M.SubPointer.get_struct_tuple_field (|
-                                                              γ,
-                                                              "revm::frame::FrameResult::Call",
-                                                              0
-                                                            |) in
-                                                          let outcome := M.alloc (| γ1_0 |) in
-                                                          let~ call_inputs :=
-                                                            M.alloc (|
-                                                              M.call_closure (|
-                                                                M.get_associated_function (|
-                                                                  Ty.apply
-                                                                    (Ty.path "core::option::Option")
-                                                                    []
-                                                                    [
-                                                                      Ty.apply
-                                                                        (Ty.path
-                                                                          "alloc::boxed::Box")
-                                                                        []
-                                                                        [
-                                                                          Ty.path
-                                                                            "revm_interpreter::interpreter_action::call_inputs::CallInputs";
-                                                                          Ty.path
-                                                                            "alloc::alloc::Global"
-                                                                        ]
-                                                                    ],
-                                                                  "unwrap",
-                                                                  []
-                                                                |),
-                                                                [
-                                                                  M.call_closure (|
-                                                                    M.get_associated_function (|
-                                                                      Ty.apply
-                                                                        (Ty.path "alloc::vec::Vec")
-                                                                        []
-                                                                        [
-                                                                          Ty.apply
-                                                                            (Ty.path
-                                                                              "alloc::boxed::Box")
-                                                                            []
-                                                                            [
-                                                                              Ty.path
-                                                                                "revm_interpreter::interpreter_action::call_inputs::CallInputs";
-                                                                              Ty.path
-                                                                                "alloc::alloc::Global"
-                                                                            ];
-                                                                          Ty.path
-                                                                            "alloc::alloc::Global"
-                                                                        ],
-                                                                      "pop",
-                                                                      []
-                                                                    |),
-                                                                    [
-                                                                      M.call_closure (|
-                                                                        M.get_trait_method (|
-                                                                          "core::ops::deref::DerefMut",
-                                                                          Ty.apply
-                                                                            (Ty.path
-                                                                              "core::cell::RefMut")
-                                                                            []
-                                                                            [
-                                                                              Ty.apply
-                                                                                (Ty.path
-                                                                                  "alloc::vec::Vec")
-                                                                                []
-                                                                                [
-                                                                                  Ty.apply
-                                                                                    (Ty.path
-                                                                                      "alloc::boxed::Box")
-                                                                                    []
-                                                                                    [
-                                                                                      Ty.path
-                                                                                        "revm_interpreter::interpreter_action::call_inputs::CallInputs";
-                                                                                      Ty.path
-                                                                                        "alloc::alloc::Global"
-                                                                                    ];
-                                                                                  Ty.path
-                                                                                    "alloc::alloc::Global"
-                                                                                ]
-                                                                            ],
-                                                                          [],
-                                                                          "deref_mut",
-                                                                          []
-                                                                        |),
-                                                                        [
-                                                                          M.alloc (|
-                                                                            M.call_closure (|
-                                                                              M.get_associated_function (|
-                                                                                Ty.apply
-                                                                                  (Ty.path
-                                                                                    "core::cell::RefCell")
-                                                                                  []
-                                                                                  [
-                                                                                    Ty.apply
-                                                                                      (Ty.path
-                                                                                        "alloc::vec::Vec")
-                                                                                      []
-                                                                                      [
-                                                                                        Ty.apply
-                                                                                          (Ty.path
-                                                                                            "alloc::boxed::Box")
-                                                                                          []
-                                                                                          [
-                                                                                            Ty.path
-                                                                                              "revm_interpreter::interpreter_action::call_inputs::CallInputs";
-                                                                                            Ty.path
-                                                                                              "alloc::alloc::Global"
-                                                                                          ];
-                                                                                        Ty.path
-                                                                                          "alloc::alloc::Global"
-                                                                                      ]
-                                                                                  ],
-                                                                                "borrow_mut",
-                                                                                []
-                                                                              |),
-                                                                              [
-                                                                                M.call_closure (|
-                                                                                  M.get_trait_method (|
-                                                                                    "core::ops::deref::Deref",
-                                                                                    Ty.apply
-                                                                                      (Ty.path
-                                                                                        "alloc::rc::Rc")
-                                                                                      []
-                                                                                      [
-                                                                                        Ty.apply
-                                                                                          (Ty.path
-                                                                                            "core::cell::RefCell")
-                                                                                          []
-                                                                                          [
-                                                                                            Ty.apply
-                                                                                              (Ty.path
-                                                                                                "alloc::vec::Vec")
-                                                                                              []
-                                                                                              [
-                                                                                                Ty.apply
-                                                                                                  (Ty.path
-                                                                                                    "alloc::boxed::Box")
-                                                                                                  []
-                                                                                                  [
-                                                                                                    Ty.path
-                                                                                                      "revm_interpreter::interpreter_action::call_inputs::CallInputs";
-                                                                                                    Ty.path
-                                                                                                      "alloc::alloc::Global"
-                                                                                                  ];
-                                                                                                Ty.path
-                                                                                                  "alloc::alloc::Global"
-                                                                                              ]
-                                                                                          ];
-                                                                                        Ty.path
-                                                                                          "alloc::alloc::Global"
-                                                                                      ],
-                                                                                    [],
-                                                                                    "deref",
-                                                                                    []
-                                                                                  |),
-                                                                                  [ call_input_stack
-                                                                                  ]
-                                                                                |)
-                                                                              ]
-                                                                            |)
-                                                                          |)
-                                                                        ]
-                                                                      |)
-                                                                    ]
-                                                                  |)
-                                                                ]
-                                                              |)
-                                                            |) in
-                                                          let~ _ :=
-                                                            M.write (|
-                                                              M.read (| outcome |),
-                                                              M.call_closure (|
-                                                                M.get_trait_method (|
-                                                                  "revm::inspector::Inspector",
-                                                                  Ty.associated,
-                                                                  [ DB ],
-                                                                  "call_end",
-                                                                  []
-                                                                |),
-                                                                [
-                                                                  M.read (| inspector |);
-                                                                  M.SubPointer.get_struct_record_field (|
-                                                                    M.read (| ctx |),
-                                                                    "revm::context::Context",
-                                                                    "evm"
-                                                                  |);
-                                                                  M.read (| call_inputs |);
-                                                                  M.call_closure (|
-                                                                    M.get_trait_method (|
-                                                                      "core::clone::Clone",
-                                                                      Ty.path
-                                                                        "revm_interpreter::interpreter_action::call_outcome::CallOutcome",
-                                                                      [],
-                                                                      "clone",
-                                                                      []
-                                                                    |),
-                                                                    [ M.read (| outcome |) ]
-                                                                  |)
-                                                                ]
-                                                              |)
-                                                            |) in
-                                                          M.alloc (| Value.Tuple [] |)));
-                                                      fun γ =>
-                                                        ltac:(M.monadic
-                                                          (let γ := M.read (| γ |) in
-                                                          let γ1_0 :=
-                                                            M.SubPointer.get_struct_tuple_field (|
-                                                              γ,
-                                                              "revm::frame::FrameResult::Create",
-                                                              0
-                                                            |) in
-                                                          let outcome := M.alloc (| γ1_0 |) in
-                                                          let~ create_inputs :=
-                                                            M.alloc (|
-                                                              M.call_closure (|
-                                                                M.get_associated_function (|
-                                                                  Ty.apply
-                                                                    (Ty.path "core::option::Option")
-                                                                    []
-                                                                    [
-                                                                      Ty.apply
-                                                                        (Ty.path
-                                                                          "alloc::boxed::Box")
-                                                                        []
-                                                                        [
-                                                                          Ty.path
-                                                                            "revm_interpreter::interpreter_action::create_inputs::CreateInputs";
-                                                                          Ty.path
-                                                                            "alloc::alloc::Global"
-                                                                        ]
-                                                                    ],
-                                                                  "unwrap",
-                                                                  []
-                                                                |),
-                                                                [
-                                                                  M.call_closure (|
-                                                                    M.get_associated_function (|
-                                                                      Ty.apply
-                                                                        (Ty.path "alloc::vec::Vec")
-                                                                        []
-                                                                        [
-                                                                          Ty.apply
-                                                                            (Ty.path
-                                                                              "alloc::boxed::Box")
-                                                                            []
-                                                                            [
-                                                                              Ty.path
-                                                                                "revm_interpreter::interpreter_action::create_inputs::CreateInputs";
-                                                                              Ty.path
-                                                                                "alloc::alloc::Global"
-                                                                            ];
-                                                                          Ty.path
-                                                                            "alloc::alloc::Global"
-                                                                        ],
-                                                                      "pop",
-                                                                      []
-                                                                    |),
-                                                                    [
-                                                                      M.call_closure (|
-                                                                        M.get_trait_method (|
-                                                                          "core::ops::deref::DerefMut",
-                                                                          Ty.apply
-                                                                            (Ty.path
-                                                                              "core::cell::RefMut")
-                                                                            []
-                                                                            [
-                                                                              Ty.apply
-                                                                                (Ty.path
-                                                                                  "alloc::vec::Vec")
-                                                                                []
-                                                                                [
-                                                                                  Ty.apply
-                                                                                    (Ty.path
-                                                                                      "alloc::boxed::Box")
-                                                                                    []
-                                                                                    [
-                                                                                      Ty.path
-                                                                                        "revm_interpreter::interpreter_action::create_inputs::CreateInputs";
-                                                                                      Ty.path
-                                                                                        "alloc::alloc::Global"
-                                                                                    ];
-                                                                                  Ty.path
-                                                                                    "alloc::alloc::Global"
-                                                                                ]
-                                                                            ],
-                                                                          [],
-                                                                          "deref_mut",
-                                                                          []
-                                                                        |),
-                                                                        [
-                                                                          M.alloc (|
-                                                                            M.call_closure (|
-                                                                              M.get_associated_function (|
-                                                                                Ty.apply
-                                                                                  (Ty.path
-                                                                                    "core::cell::RefCell")
-                                                                                  []
-                                                                                  [
-                                                                                    Ty.apply
-                                                                                      (Ty.path
-                                                                                        "alloc::vec::Vec")
-                                                                                      []
-                                                                                      [
-                                                                                        Ty.apply
-                                                                                          (Ty.path
-                                                                                            "alloc::boxed::Box")
-                                                                                          []
-                                                                                          [
-                                                                                            Ty.path
-                                                                                              "revm_interpreter::interpreter_action::create_inputs::CreateInputs";
-                                                                                            Ty.path
-                                                                                              "alloc::alloc::Global"
-                                                                                          ];
-                                                                                        Ty.path
-                                                                                          "alloc::alloc::Global"
-                                                                                      ]
-                                                                                  ],
-                                                                                "borrow_mut",
-                                                                                []
-                                                                              |),
-                                                                              [
-                                                                                M.call_closure (|
-                                                                                  M.get_trait_method (|
-                                                                                    "core::ops::deref::Deref",
-                                                                                    Ty.apply
-                                                                                      (Ty.path
-                                                                                        "alloc::rc::Rc")
-                                                                                      []
-                                                                                      [
-                                                                                        Ty.apply
-                                                                                          (Ty.path
-                                                                                            "core::cell::RefCell")
-                                                                                          []
-                                                                                          [
-                                                                                            Ty.apply
-                                                                                              (Ty.path
-                                                                                                "alloc::vec::Vec")
-                                                                                              []
-                                                                                              [
-                                                                                                Ty.apply
-                                                                                                  (Ty.path
-                                                                                                    "alloc::boxed::Box")
-                                                                                                  []
-                                                                                                  [
-                                                                                                    Ty.path
-                                                                                                      "revm_interpreter::interpreter_action::create_inputs::CreateInputs";
-                                                                                                    Ty.path
-                                                                                                      "alloc::alloc::Global"
-                                                                                                  ];
-                                                                                                Ty.path
-                                                                                                  "alloc::alloc::Global"
-                                                                                              ]
-                                                                                          ];
-                                                                                        Ty.path
-                                                                                          "alloc::alloc::Global"
-                                                                                      ],
-                                                                                    [],
-                                                                                    "deref",
-                                                                                    []
-                                                                                  |),
-                                                                                  [
-                                                                                    create_input_stack
-                                                                                  ]
-                                                                                |)
-                                                                              ]
-                                                                            |)
-                                                                          |)
-                                                                        ]
-                                                                      |)
-                                                                    ]
-                                                                  |)
-                                                                ]
-                                                              |)
-                                                            |) in
-                                                          let~ _ :=
-                                                            M.write (|
-                                                              M.read (| outcome |),
-                                                              M.call_closure (|
-                                                                M.get_trait_method (|
-                                                                  "revm::inspector::Inspector",
-                                                                  Ty.associated,
-                                                                  [ DB ],
-                                                                  "create_end",
-                                                                  []
-                                                                |),
-                                                                [
-                                                                  M.read (| inspector |);
-                                                                  M.SubPointer.get_struct_record_field (|
-                                                                    M.read (| ctx |),
-                                                                    "revm::context::Context",
-                                                                    "evm"
-                                                                  |);
-                                                                  M.read (| create_inputs |);
-                                                                  M.call_closure (|
-                                                                    M.get_trait_method (|
-                                                                      "core::clone::Clone",
-                                                                      Ty.path
-                                                                        "revm_interpreter::interpreter_action::create_outcome::CreateOutcome",
-                                                                      [],
-                                                                      "clone",
-                                                                      []
-                                                                    |),
-                                                                    [ M.read (| outcome |) ]
-                                                                  |)
-                                                                ]
-                                                              |)
-                                                            |) in
-                                                          M.alloc (| Value.Tuple [] |)));
-                                                      fun γ =>
-                                                        ltac:(M.monadic
-                                                          (let γ := M.read (| γ |) in
-                                                          let γ1_0 :=
-                                                            M.SubPointer.get_struct_tuple_field (|
-                                                              γ,
-                                                              "revm::frame::FrameResult::EOFCreate",
-                                                              0
-                                                            |) in
-                                                          let outcome := M.alloc (| γ1_0 |) in
-                                                          let~ eofcreate_inputs :=
-                                                            M.alloc (|
-                                                              M.call_closure (|
-                                                                M.get_associated_function (|
-                                                                  Ty.apply
-                                                                    (Ty.path "core::option::Option")
-                                                                    []
-                                                                    [
-                                                                      Ty.path
-                                                                        "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInput"
-                                                                    ],
-                                                                  "unwrap",
-                                                                  []
-                                                                |),
-                                                                [
-                                                                  M.call_closure (|
-                                                                    M.get_associated_function (|
-                                                                      Ty.apply
-                                                                        (Ty.path "alloc::vec::Vec")
-                                                                        []
-                                                                        [
-                                                                          Ty.path
-                                                                            "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInput";
-                                                                          Ty.path
-                                                                            "alloc::alloc::Global"
-                                                                        ],
-                                                                      "pop",
-                                                                      []
-                                                                    |),
-                                                                    [
-                                                                      M.call_closure (|
-                                                                        M.get_trait_method (|
-                                                                          "core::ops::deref::DerefMut",
-                                                                          Ty.apply
-                                                                            (Ty.path
-                                                                              "core::cell::RefMut")
-                                                                            []
-                                                                            [
-                                                                              Ty.apply
-                                                                                (Ty.path
-                                                                                  "alloc::vec::Vec")
-                                                                                []
-                                                                                [
-                                                                                  Ty.path
-                                                                                    "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInput";
-                                                                                  Ty.path
-                                                                                    "alloc::alloc::Global"
-                                                                                ]
-                                                                            ],
-                                                                          [],
-                                                                          "deref_mut",
-                                                                          []
-                                                                        |),
-                                                                        [
-                                                                          M.alloc (|
-                                                                            M.call_closure (|
-                                                                              M.get_associated_function (|
-                                                                                Ty.apply
-                                                                                  (Ty.path
-                                                                                    "core::cell::RefCell")
-                                                                                  []
-                                                                                  [
-                                                                                    Ty.apply
-                                                                                      (Ty.path
-                                                                                        "alloc::vec::Vec")
-                                                                                      []
-                                                                                      [
-                                                                                        Ty.path
-                                                                                          "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInput";
-                                                                                        Ty.path
-                                                                                          "alloc::alloc::Global"
-                                                                                      ]
-                                                                                  ],
-                                                                                "borrow_mut",
-                                                                                []
-                                                                              |),
-                                                                              [
-                                                                                M.call_closure (|
-                                                                                  M.get_trait_method (|
-                                                                                    "core::ops::deref::Deref",
-                                                                                    Ty.apply
-                                                                                      (Ty.path
-                                                                                        "alloc::rc::Rc")
-                                                                                      []
-                                                                                      [
-                                                                                        Ty.apply
-                                                                                          (Ty.path
-                                                                                            "core::cell::RefCell")
-                                                                                          []
-                                                                                          [
-                                                                                            Ty.apply
-                                                                                              (Ty.path
-                                                                                                "alloc::vec::Vec")
-                                                                                              []
-                                                                                              [
-                                                                                                Ty.path
-                                                                                                  "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInput";
-                                                                                                Ty.path
-                                                                                                  "alloc::alloc::Global"
-                                                                                              ]
-                                                                                          ];
-                                                                                        Ty.path
-                                                                                          "alloc::alloc::Global"
-                                                                                      ],
-                                                                                    [],
-                                                                                    "deref",
-                                                                                    []
-                                                                                  |),
-                                                                                  [
-                                                                                    eofcreate_input_stack
-                                                                                  ]
-                                                                                |)
-                                                                              ]
-                                                                            |)
-                                                                          |)
-                                                                        ]
-                                                                      |)
-                                                                    ]
-                                                                  |)
-                                                                ]
-                                                              |)
-                                                            |) in
-                                                          let~ _ :=
-                                                            M.write (|
-                                                              M.read (| outcome |),
-                                                              M.call_closure (|
-                                                                M.get_trait_method (|
-                                                                  "revm::inspector::Inspector",
-                                                                  Ty.associated,
-                                                                  [ DB ],
-                                                                  "eofcreate_end",
-                                                                  []
-                                                                |),
-                                                                [
-                                                                  M.read (| inspector |);
-                                                                  M.SubPointer.get_struct_record_field (|
-                                                                    M.read (| ctx |),
-                                                                    "revm::context::Context",
-                                                                    "evm"
-                                                                  |);
-                                                                  eofcreate_inputs;
-                                                                  M.call_closure (|
-                                                                    M.get_trait_method (|
-                                                                      "core::clone::Clone",
-                                                                      Ty.path
-                                                                        "revm_interpreter::interpreter_action::eof_create_outcome::EOFCreateOutcome",
-                                                                      [],
-                                                                      "clone",
-                                                                      []
-                                                                    |),
-                                                                    [ M.read (| outcome |) ]
-                                                                  |)
-                                                                ]
-                                                              |)
-                                                            |) in
-                                                          M.alloc (| Value.Tuple [] |)))
-                                                    ]
-                                                  |) in
-                                                M.alloc (|
-                                                  M.call_closure (|
-                                                    M.get_trait_method (|
-                                                      "core::ops::function::Fn",
-                                                      Ty.dyn
-                                                        [
-                                                          ("existential predicate with variables",
-                                                            []);
-                                                          ("existential predicate with variables",
-                                                            [])
-                                                        ],
-                                                      [
-                                                        Ty.tuple
-                                                          [
-                                                            Ty.apply
-                                                              (Ty.path "&mut")
-                                                              []
+                                                                |)
+                                                              ]
+                                                            |)
+                                                          |) in
+                                                        let~ _ :=
+                                                          M.write (|
+                                                            M.read (| outcome |),
+                                                            M.call_closure (|
+                                                              M.get_trait_method (|
+                                                                "revm::inspector::Inspector",
+                                                                Ty.associated,
+                                                                [ DB ],
+                                                                "eofcreate_end",
+                                                                []
+                                                              |),
                                                               [
-                                                                Ty.apply
-                                                                  (Ty.path "revm::context::Context")
-                                                                  []
-                                                                  [ EXT; DB ]
-                                                              ];
-                                                            Ty.apply
-                                                              (Ty.path "&mut")
-                                                              []
-                                                              [ Ty.path "revm::frame::FrameResult" ]
-                                                          ]
+                                                                M.read (| inspector |);
+                                                                M.SubPointer.get_struct_record_field (|
+                                                                  M.read (| ctx |),
+                                                                  "revm::context::Context",
+                                                                  "evm"
+                                                                |);
+                                                                eofcreate_inputs;
+                                                                M.call_closure (|
+                                                                  M.get_trait_method (|
+                                                                    "core::clone::Clone",
+                                                                    Ty.path
+                                                                      "revm_interpreter::interpreter_action::eof_create_outcome::EOFCreateOutcome",
+                                                                    [],
+                                                                    "clone",
+                                                                    []
+                                                                  |),
+                                                                  [ M.read (| outcome |) ]
+                                                                |)
+                                                              ]
+                                                            |)
+                                                          |) in
+                                                        M.alloc (| Value.Tuple [] |)))
+                                                  ]
+                                                |) in
+                                              M.alloc (|
+                                                M.call_closure (|
+                                                  M.get_trait_method (|
+                                                    "core::ops::function::Fn",
+                                                    Ty.dyn
+                                                      [
+                                                        ("existential predicate with variables",
+                                                          []);
+                                                        ("existential predicate with variables", [])
                                                       ],
-                                                      "call",
-                                                      []
-                                                    |),
                                                     [
-                                                      M.call_closure (|
-                                                        M.get_trait_method (|
-                                                          "core::ops::deref::Deref",
+                                                      Ty.tuple
+                                                        [
                                                           Ty.apply
-                                                            (Ty.path "alloc::sync::Arc")
+                                                            (Ty.path "&mut")
                                                             []
                                                             [
-                                                              Ty.dyn
-                                                                [
-                                                                  ("existential predicate with variables",
-                                                                    []);
-                                                                  ("existential predicate with variables",
-                                                                    [])
-                                                                ];
-                                                              Ty.path "alloc::alloc::Global"
-                                                            ],
-                                                          [],
-                                                          "deref",
-                                                          []
-                                                        |),
-                                                        [ old_handle ]
-                                                      |);
-                                                      Value.Tuple
-                                                        [
-                                                          M.read (| ctx |);
-                                                          M.read (| frame_result |)
+                                                              Ty.apply
+                                                                (Ty.path "revm::context::Context")
+                                                                []
+                                                                [ EXT; DB ]
+                                                            ];
+                                                          Ty.apply
+                                                            (Ty.path "&mut")
+                                                            []
+                                                            [ Ty.path "revm::frame::FrameResult" ]
                                                         ]
-                                                    ]
-                                                  |)
+                                                    ],
+                                                    "call",
+                                                    []
+                                                  |),
+                                                  [
+                                                    M.call_closure (|
+                                                      M.get_trait_method (|
+                                                        "core::ops::deref::Deref",
+                                                        Ty.apply
+                                                          (Ty.path "alloc::sync::Arc")
+                                                          []
+                                                          [
+                                                            Ty.dyn
+                                                              [
+                                                                ("existential predicate with variables",
+                                                                  []);
+                                                                ("existential predicate with variables",
+                                                                  [])
+                                                              ];
+                                                            Ty.path "alloc::alloc::Global"
+                                                          ],
+                                                        [],
+                                                        "deref",
+                                                        []
+                                                      |),
+                                                      [ old_handle ]
+                                                    |);
+                                                    Value.Tuple
+                                                      [ M.read (| ctx |); M.read (| frame_result |)
+                                                      ]
+                                                  ]
                                                 |)
-                                              |)))
-                                        ]
-                                      |)))
-                                ]
-                              |)
-                            | _ => M.impossible (||)
-                            end))
-                    ]
-                  |))
+                                              |)
+                                            |)))
+                                      ]
+                                    |)))
+                              ]
+                            |)
+                          | _ => M.impossible (||)
+                          end))
+                  ]
+                |)
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
@@ -5273,112 +5228,96 @@ Module inspector.
       | [], [ INSP; DB; Instruction ], [ instruction ] =>
         ltac:(M.monadic
           (let instruction := M.alloc (| instruction |) in
-          (* Unsize *)
-          M.pointer_coercion
-            (* Unsize *)
-            (M.pointer_coercion
-              (M.call_closure (|
-                M.get_associated_function (|
-                  Ty.apply
-                    (Ty.path "alloc::boxed::Box")
-                    []
-                    [
-                      Ty.function
-                        [
-                          Ty.tuple
-                            [
-                              Ty.apply
-                                (Ty.path "&mut")
-                                []
-                                [ Ty.path "revm_interpreter::interpreter::Interpreter" ];
-                              Ty.apply
-                                (Ty.path "&mut")
-                                []
-                                [ Ty.apply (Ty.path "revm::evm::Evm") [] [ INSP; DB ] ]
-                            ]
-                        ]
-                        (Ty.tuple []);
-                      Ty.path "alloc::alloc::Global"
-                    ],
-                  "new",
-                  []
-                |),
+          M.call_closure (|
+            M.get_associated_function (|
+              Ty.apply
+                (Ty.path "alloc::boxed::Box")
+                []
                 [
-                  M.closure
-                    (fun γ =>
-                      ltac:(M.monadic
-                        match γ with
-                        | [ α0; α1 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let interpreter := M.copy (| γ |) in
-                                  M.match_operator (|
-                                    M.alloc (| α1 |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let host := M.copy (| γ |) in
-                                          M.read (|
-                                            let~ _ :=
-                                              M.write (|
-                                                M.SubPointer.get_struct_record_field (|
-                                                  M.read (| interpreter |),
-                                                  "revm_interpreter::interpreter::Interpreter",
-                                                  "instruction_pointer"
-                                                |),
-                                                M.call_closure (|
-                                                  M.get_associated_function (|
-                                                    Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
-                                                    "sub",
-                                                    []
-                                                  |),
-                                                  [
-                                                    M.read (|
-                                                      M.SubPointer.get_struct_record_field (|
-                                                        M.read (| interpreter |),
-                                                        "revm_interpreter::interpreter::Interpreter",
-                                                        "instruction_pointer"
-                                                      |)
-                                                    |);
-                                                    Value.Integer 1
-                                                  ]
-                                                |)
-                                              |) in
-                                            let~ _ :=
-                                              M.alloc (|
+                  Ty.function
+                    [
+                      Ty.tuple
+                        [
+                          Ty.apply
+                            (Ty.path "&mut")
+                            []
+                            [ Ty.path "revm_interpreter::interpreter::Interpreter" ];
+                          Ty.apply
+                            (Ty.path "&mut")
+                            []
+                            [ Ty.apply (Ty.path "revm::evm::Evm") [] [ INSP; DB ] ]
+                        ]
+                    ]
+                    (Ty.tuple []);
+                  Ty.path "alloc::alloc::Global"
+                ],
+              "new",
+              []
+            |),
+            [
+              M.closure
+                (fun γ =>
+                  ltac:(M.monadic
+                    match γ with
+                    | [ α0; α1 ] =>
+                      M.match_operator (|
+                        M.alloc (| α0 |),
+                        [
+                          fun γ =>
+                            ltac:(M.monadic
+                              (let interpreter := M.copy (| γ |) in
+                              M.match_operator (|
+                                M.alloc (| α1 |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let host := M.copy (| γ |) in
+                                      M.read (|
+                                        let~ _ :=
+                                          M.write (|
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.read (| interpreter |),
+                                              "revm_interpreter::interpreter::Interpreter",
+                                              "instruction_pointer"
+                                            |),
+                                            M.call_closure (|
+                                              M.get_associated_function (|
+                                                Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
+                                                "sub",
+                                                []
+                                              |),
+                                              [
+                                                M.read (|
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    M.read (| interpreter |),
+                                                    "revm_interpreter::interpreter::Interpreter",
+                                                    "instruction_pointer"
+                                                  |)
+                                                |);
+                                                Value.Integer 1
+                                              ]
+                                            |)
+                                          |) in
+                                        let~ _ :=
+                                          M.alloc (|
+                                            M.call_closure (|
+                                              M.get_trait_method (|
+                                                "revm::inspector::Inspector",
+                                                Ty.associated,
+                                                [ DB ],
+                                                "step",
+                                                []
+                                              |),
+                                              [
                                                 M.call_closure (|
                                                   M.get_trait_method (|
-                                                    "revm::inspector::Inspector",
-                                                    Ty.associated,
+                                                    "revm::inspector::handler_register::GetInspector",
+                                                    INSP,
                                                     [ DB ],
-                                                    "step",
+                                                    "get_inspector",
                                                     []
                                                   |),
                                                   [
-                                                    M.call_closure (|
-                                                      M.get_trait_method (|
-                                                        "revm::inspector::handler_register::GetInspector",
-                                                        INSP,
-                                                        [ DB ],
-                                                        "get_inspector",
-                                                        []
-                                                      |),
-                                                      [
-                                                        M.SubPointer.get_struct_record_field (|
-                                                          M.SubPointer.get_struct_record_field (|
-                                                            M.read (| host |),
-                                                            "revm::evm::Evm",
-                                                            "context"
-                                                          |),
-                                                          "revm::context::Context",
-                                                          "external"
-                                                        |)
-                                                      ]
-                                                    |);
-                                                    M.read (| interpreter |);
                                                     M.SubPointer.get_struct_record_field (|
                                                       M.SubPointer.get_struct_record_field (|
                                                         M.read (| host |),
@@ -5386,157 +5325,154 @@ Module inspector.
                                                         "context"
                                                       |),
                                                       "revm::context::Context",
-                                                      "evm"
+                                                      "external"
                                                     |)
                                                   ]
-                                                |)
-                                              |) in
-                                            let~ _ :=
-                                              M.match_operator (|
-                                                M.alloc (| Value.Tuple [] |),
-                                                [
-                                                  fun γ =>
-                                                    ltac:(M.monadic
-                                                      (let γ :=
-                                                        M.use
-                                                          (M.alloc (|
-                                                            M.call_closure (|
-                                                              M.get_trait_method (|
-                                                                "core::cmp::PartialEq",
-                                                                Ty.path
-                                                                  "revm_interpreter::instruction_result::InstructionResult",
-                                                                [
-                                                                  Ty.path
-                                                                    "revm_interpreter::instruction_result::InstructionResult"
-                                                                ],
-                                                                "ne",
-                                                                []
-                                                              |),
-                                                              [
-                                                                M.SubPointer.get_struct_record_field (|
-                                                                  M.read (| interpreter |),
-                                                                  "revm_interpreter::interpreter::Interpreter",
-                                                                  "instruction_result"
-                                                                |);
-                                                                M.alloc (|
-                                                                  Value.StructTuple
-                                                                    "revm_interpreter::instruction_result::InstructionResult::Continue"
-                                                                    []
-                                                                |)
-                                                              ]
-                                                            |)
-                                                          |)) in
-                                                      let _ :=
-                                                        M.is_constant_or_break_match (|
-                                                          M.read (| γ |),
-                                                          Value.Bool true
-                                                        |) in
-                                                      M.alloc (|
-                                                        M.never_to_any (|
-                                                          M.read (|
-                                                            M.return_ (| Value.Tuple [] |)
-                                                          |)
-                                                        |)
-                                                      |)));
-                                                  fun γ =>
-                                                    ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                                                ]
-                                              |) in
-                                            let~ _ :=
-                                              M.write (|
+                                                |);
+                                                M.read (| interpreter |);
                                                 M.SubPointer.get_struct_record_field (|
-                                                  M.read (| interpreter |),
-                                                  "revm_interpreter::interpreter::Interpreter",
-                                                  "instruction_pointer"
-                                                |),
-                                                M.call_closure (|
-                                                  M.get_associated_function (|
-                                                    Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
-                                                    "add",
-                                                    []
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    M.read (| host |),
+                                                    "revm::evm::Evm",
+                                                    "context"
                                                   |),
-                                                  [
-                                                    M.read (|
-                                                      M.SubPointer.get_struct_record_field (|
-                                                        M.read (| interpreter |),
-                                                        "revm_interpreter::interpreter::Interpreter",
-                                                        "instruction_pointer"
-                                                      |)
-                                                    |);
-                                                    Value.Integer 1
-                                                  ]
+                                                  "revm::context::Context",
+                                                  "evm"
                                                 |)
-                                              |) in
-                                            let~ _ :=
-                                              M.alloc (|
-                                                M.call_closure (|
-                                                  M.get_trait_method (|
-                                                    "core::ops::function::Fn",
-                                                    Instruction,
-                                                    [
-                                                      Ty.tuple
-                                                        [
-                                                          Ty.apply
-                                                            (Ty.path "&mut")
-                                                            []
+                                              ]
+                                            |)
+                                          |) in
+                                        let~ _ :=
+                                          M.match_operator (|
+                                            M.alloc (| Value.Tuple [] |),
+                                            [
+                                              fun γ =>
+                                                ltac:(M.monadic
+                                                  (let γ :=
+                                                    M.use
+                                                      (M.alloc (|
+                                                        M.call_closure (|
+                                                          M.get_trait_method (|
+                                                            "core::cmp::PartialEq",
+                                                            Ty.path
+                                                              "revm_interpreter::instruction_result::InstructionResult",
                                                             [
                                                               Ty.path
-                                                                "revm_interpreter::interpreter::Interpreter"
-                                                            ];
-                                                          Ty.apply
-                                                            (Ty.path "&mut")
+                                                                "revm_interpreter::instruction_result::InstructionResult"
+                                                            ],
+                                                            "ne",
                                                             []
-                                                            [
-                                                              Ty.apply
-                                                                (Ty.path "revm::evm::Evm")
+                                                          |),
+                                                          [
+                                                            M.SubPointer.get_struct_record_field (|
+                                                              M.read (| interpreter |),
+                                                              "revm_interpreter::interpreter::Interpreter",
+                                                              "instruction_result"
+                                                            |);
+                                                            M.alloc (|
+                                                              Value.StructTuple
+                                                                "revm_interpreter::instruction_result::InstructionResult::Continue"
                                                                 []
-                                                                [ INSP; DB ]
-                                                            ]
+                                                            |)
+                                                          ]
+                                                        |)
+                                                      |)) in
+                                                  let _ :=
+                                                    M.is_constant_or_break_match (|
+                                                      M.read (| γ |),
+                                                      Value.Bool true
+                                                    |) in
+                                                  M.alloc (|
+                                                    M.never_to_any (|
+                                                      M.read (| M.return_ (| Value.Tuple [] |) |)
+                                                    |)
+                                                  |)));
+                                              fun γ =>
+                                                ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                            ]
+                                          |) in
+                                        let~ _ :=
+                                          M.write (|
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.read (| interpreter |),
+                                              "revm_interpreter::interpreter::Interpreter",
+                                              "instruction_pointer"
+                                            |),
+                                            M.call_closure (|
+                                              M.get_associated_function (|
+                                                Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
+                                                "add",
+                                                []
+                                              |),
+                                              [
+                                                M.read (|
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    M.read (| interpreter |),
+                                                    "revm_interpreter::interpreter::Interpreter",
+                                                    "instruction_pointer"
+                                                  |)
+                                                |);
+                                                Value.Integer 1
+                                              ]
+                                            |)
+                                          |) in
+                                        let~ _ :=
+                                          M.alloc (|
+                                            M.call_closure (|
+                                              M.get_trait_method (|
+                                                "core::ops::function::Fn",
+                                                Instruction,
+                                                [
+                                                  Ty.tuple
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "&mut")
+                                                        []
+                                                        [
+                                                          Ty.path
+                                                            "revm_interpreter::interpreter::Interpreter"
+                                                        ];
+                                                      Ty.apply
+                                                        (Ty.path "&mut")
+                                                        []
+                                                        [
+                                                          Ty.apply
+                                                            (Ty.path "revm::evm::Evm")
+                                                            []
+                                                            [ INSP; DB ]
                                                         ]
-                                                    ],
-                                                    "call",
-                                                    []
-                                                  |),
-                                                  [
-                                                    instruction;
-                                                    Value.Tuple
-                                                      [ M.read (| interpreter |); M.read (| host |)
-                                                      ]
-                                                  ]
-                                                |)
-                                              |) in
-                                            let~ _ :=
-                                              M.alloc (|
+                                                    ]
+                                                ],
+                                                "call",
+                                                []
+                                              |),
+                                              [
+                                                instruction;
+                                                Value.Tuple
+                                                  [ M.read (| interpreter |); M.read (| host |) ]
+                                              ]
+                                            |)
+                                          |) in
+                                        let~ _ :=
+                                          M.alloc (|
+                                            M.call_closure (|
+                                              M.get_trait_method (|
+                                                "revm::inspector::Inspector",
+                                                Ty.associated,
+                                                [ DB ],
+                                                "step_end",
+                                                []
+                                              |),
+                                              [
                                                 M.call_closure (|
                                                   M.get_trait_method (|
-                                                    "revm::inspector::Inspector",
-                                                    Ty.associated,
+                                                    "revm::inspector::handler_register::GetInspector",
+                                                    INSP,
                                                     [ DB ],
-                                                    "step_end",
+                                                    "get_inspector",
                                                     []
                                                   |),
                                                   [
-                                                    M.call_closure (|
-                                                      M.get_trait_method (|
-                                                        "revm::inspector::handler_register::GetInspector",
-                                                        INSP,
-                                                        [ DB ],
-                                                        "get_inspector",
-                                                        []
-                                                      |),
-                                                      [
-                                                        M.SubPointer.get_struct_record_field (|
-                                                          M.SubPointer.get_struct_record_field (|
-                                                            M.read (| host |),
-                                                            "revm::evm::Evm",
-                                                            "context"
-                                                          |),
-                                                          "revm::context::Context",
-                                                          "external"
-                                                        |)
-                                                      ]
-                                                    |);
-                                                    M.read (| interpreter |);
                                                     M.SubPointer.get_struct_record_field (|
                                                       M.SubPointer.get_struct_record_field (|
                                                         M.read (| host |),
@@ -5544,21 +5480,33 @@ Module inspector.
                                                         "context"
                                                       |),
                                                       "revm::context::Context",
-                                                      "evm"
+                                                      "external"
                                                     |)
                                                   ]
+                                                |);
+                                                M.read (| interpreter |);
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    M.read (| host |),
+                                                    "revm::evm::Evm",
+                                                    "context"
+                                                  |),
+                                                  "revm::context::Context",
+                                                  "evm"
                                                 |)
-                                              |) in
-                                            M.alloc (| Value.Tuple [] |)
-                                          |)))
-                                    ]
-                                  |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
-                        end))
-                ]
-              |)))))
+                                              ]
+                                            |)
+                                          |) in
+                                        M.alloc (| Value.Tuple [] |)
+                                      |)))
+                                ]
+                              |)))
+                        ]
+                      |)
+                    | _ => M.impossible (||)
+                    end))
+            ]
+          |)))
       | _, _, _ => M.impossible
       end.
     

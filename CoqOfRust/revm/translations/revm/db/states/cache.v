@@ -148,31 +148,25 @@ Module db.
                   M.read (| f |);
                   M.read (| Value.String "CacheState" |);
                   M.read (| Value.String "accounts" |);
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "revm::db::states::cache::CacheState",
-                      "accounts"
-                    |));
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "revm::db::states::cache::CacheState",
+                    "accounts"
+                  |);
                   M.read (| Value.String "contracts" |);
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.SubPointer.get_struct_record_field (|
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "revm::db::states::cache::CacheState",
+                    "contracts"
+                  |);
+                  M.read (| Value.String "has_state_clear" |);
+                  M.alloc (|
+                    M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
                       "revm::db::states::cache::CacheState",
-                      "contracts"
-                    |));
-                  M.read (| Value.String "has_state_clear" |);
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.alloc (|
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "revm::db::states::cache::CacheState",
-                        "has_state_clear"
-                      |)
-                    |))
+                      "has_state_clear"
+                    |)
+                  |)
                 ]
               |)))
           | _, _, _ => M.impossible
@@ -318,17 +312,6 @@ Module db.
             (* Trait polymorphic types *) []
             (* Instance *) [ ("eq", InstanceField.Method eq) ].
       End Impl_core_cmp_PartialEq_for_revm_db_states_cache_CacheState.
-      
-      Module Impl_core_marker_StructuralEq_for_revm_db_states_cache_CacheState.
-        Definition Self : Ty.t := Ty.path "revm::db::states::cache::CacheState".
-        
-        Axiom Implements :
-          M.IsTraitInstance
-            "core::marker::StructuralEq"
-            Self
-            (* Trait polymorphic types *) []
-            (* Instance *) [].
-      End Impl_core_marker_StructuralEq_for_revm_db_states_cache_CacheState.
       
       Module Impl_core_cmp_Eq_for_revm_db_states_cache_CacheState.
         Definition Self : Ty.t := Ty.path "revm::db::states::cache::CacheState".

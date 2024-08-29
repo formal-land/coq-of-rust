@@ -949,22 +949,20 @@ Module secp256k1.
                                                   []
                                                 |),
                                                 [
-                                                  (* Unsize *)
-                                                  M.pointer_coercion
-                                                    (M.call_closure (|
-                                                      M.get_trait_method (|
-                                                        "core::ops::deref::Deref",
-                                                        Ty.apply
-                                                          (Ty.path
-                                                            "alloy_primitives::bits::fixed::FixedBytes")
-                                                          [ Value.Integer 32 ]
-                                                          [],
+                                                  M.call_closure (|
+                                                    M.get_trait_method (|
+                                                      "core::ops::deref::Deref",
+                                                      Ty.apply
+                                                        (Ty.path
+                                                          "alloy_primitives::bits::fixed::FixedBytes")
+                                                        [ Value.Integer 32 ]
                                                         [],
-                                                        "deref",
-                                                        []
-                                                      |),
-                                                      [ o ]
-                                                    |))
+                                                      [],
+                                                      "deref",
+                                                      []
+                                                    |),
+                                                    [ o ]
+                                                  |)
                                                 ]
                                               |)
                                             ]

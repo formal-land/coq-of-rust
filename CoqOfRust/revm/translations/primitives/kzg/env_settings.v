@@ -80,11 +80,7 @@ Module kzg.
                             "debug_tuple_field1_finish",
                             []
                           |),
-                          [
-                            M.read (| f |);
-                            M.read (| Value.String "Custom" |);
-                            (* Unsize *) M.pointer_coercion __self_0
-                          ]
+                          [ M.read (| f |); M.read (| Value.String "Custom" |); __self_0 ]
                         |)
                       |)))
                 ]
@@ -192,17 +188,6 @@ Module kzg.
           (* Trait polymorphic types *) []
           (* Instance *) [ ("default", InstanceField.Method default) ].
     End Impl_core_default_Default_for_revm_primitives_kzg_env_settings_EnvKzgSettings.
-    
-    Module Impl_core_marker_StructuralEq_for_revm_primitives_kzg_env_settings_EnvKzgSettings.
-      Definition Self : Ty.t := Ty.path "revm_primitives::kzg::env_settings::EnvKzgSettings".
-      
-      Axiom Implements :
-        M.IsTraitInstance
-          "core::marker::StructuralEq"
-          Self
-          (* Trait polymorphic types *) []
-          (* Instance *) [].
-    End Impl_core_marker_StructuralEq_for_revm_primitives_kzg_env_settings_EnvKzgSettings.
     
     Module Impl_core_cmp_Eq_for_revm_primitives_kzg_env_settings_EnvKzgSettings.
       Definition Self : Ty.t := Ty.path "revm_primitives::kzg::env_settings::EnvKzgSettings".
@@ -535,64 +520,60 @@ Module kzg.
                                                           []
                                                         |),
                                                         [
-                                                          (* Unsize *)
-                                                          M.pointer_coercion
-                                                            (M.call_closure (|
-                                                              M.get_trait_method (|
-                                                                "core::convert::AsRef",
-                                                                Ty.path
-                                                                  "revm_primitives::kzg::trusted_setup_points::G1Points",
-                                                                [
-                                                                  Ty.apply
-                                                                    (Ty.path "array")
-                                                                    [ Value.Integer 4096 ]
-                                                                    [
-                                                                      Ty.apply
-                                                                        (Ty.path "array")
-                                                                        [ Value.Integer 48 ]
-                                                                        [ Ty.path "u8" ]
-                                                                    ]
-                                                                ],
-                                                                "as_ref",
-                                                                []
-                                                              |),
+                                                          M.call_closure (|
+                                                            M.get_trait_method (|
+                                                              "core::convert::AsRef",
+                                                              Ty.path
+                                                                "revm_primitives::kzg::trusted_setup_points::G1Points",
                                                               [
-                                                                M.read (|
-                                                                  M.get_constant (|
-                                                                    "revm_primitives::kzg::trusted_setup_points::G1_POINTS"
-                                                                  |)
+                                                                Ty.apply
+                                                                  (Ty.path "array")
+                                                                  [ Value.Integer 4096 ]
+                                                                  [
+                                                                    Ty.apply
+                                                                      (Ty.path "array")
+                                                                      [ Value.Integer 48 ]
+                                                                      [ Ty.path "u8" ]
+                                                                  ]
+                                                              ],
+                                                              "as_ref",
+                                                              []
+                                                            |),
+                                                            [
+                                                              M.read (|
+                                                                M.get_constant (|
+                                                                  "revm_primitives::kzg::trusted_setup_points::G1_POINTS"
                                                                 |)
-                                                              ]
-                                                            |));
-                                                          (* Unsize *)
-                                                          M.pointer_coercion
-                                                            (M.call_closure (|
-                                                              M.get_trait_method (|
-                                                                "core::convert::AsRef",
-                                                                Ty.path
-                                                                  "revm_primitives::kzg::trusted_setup_points::G2Points",
-                                                                [
-                                                                  Ty.apply
-                                                                    (Ty.path "array")
-                                                                    [ Value.Integer 65 ]
-                                                                    [
-                                                                      Ty.apply
-                                                                        (Ty.path "array")
-                                                                        [ Value.Integer 96 ]
-                                                                        [ Ty.path "u8" ]
-                                                                    ]
-                                                                ],
-                                                                "as_ref",
-                                                                []
-                                                              |),
+                                                              |)
+                                                            ]
+                                                          |);
+                                                          M.call_closure (|
+                                                            M.get_trait_method (|
+                                                              "core::convert::AsRef",
+                                                              Ty.path
+                                                                "revm_primitives::kzg::trusted_setup_points::G2Points",
                                                               [
-                                                                M.read (|
-                                                                  M.get_constant (|
-                                                                    "revm_primitives::kzg::trusted_setup_points::G2_POINTS"
-                                                                  |)
+                                                                Ty.apply
+                                                                  (Ty.path "array")
+                                                                  [ Value.Integer 65 ]
+                                                                  [
+                                                                    Ty.apply
+                                                                      (Ty.path "array")
+                                                                      [ Value.Integer 96 ]
+                                                                      [ Ty.path "u8" ]
+                                                                  ]
+                                                              ],
+                                                              "as_ref",
+                                                              []
+                                                            |),
+                                                            [
+                                                              M.read (|
+                                                                M.get_constant (|
+                                                                  "revm_primitives::kzg::trusted_setup_points::G2_POINTS"
                                                                 |)
-                                                              ]
-                                                            |))
+                                                              |)
+                                                            ]
+                                                          |)
                                                         ]
                                                       |);
                                                       M.read (|

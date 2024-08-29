@@ -44,15 +44,13 @@ Module interpreter.
                 M.read (| f |);
                 M.read (| Value.String "Stack" |);
                 M.read (| Value.String "data" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.alloc (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "revm_interpreter::interpreter::stack::Stack",
-                      "data"
-                    |)
-                  |))
+                M.alloc (|
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "revm_interpreter::interpreter::stack::Stack",
+                    "data"
+                  |)
+                |)
               ]
             |)))
         | _, _, _ => M.impossible
@@ -132,17 +130,6 @@ Module interpreter.
           (* Trait polymorphic types *) []
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
     End Impl_core_cmp_PartialEq_for_revm_interpreter_interpreter_stack_Stack.
-    
-    Module Impl_core_marker_StructuralEq_for_revm_interpreter_interpreter_stack_Stack.
-      Definition Self : Ty.t := Ty.path "revm_interpreter::interpreter::stack::Stack".
-      
-      Axiom Implements :
-        M.IsTraitInstance
-          "core::marker::StructuralEq"
-          Self
-          (* Trait polymorphic types *) []
-          (* Instance *) [].
-    End Impl_core_marker_StructuralEq_for_revm_interpreter_interpreter_stack_Stack.
     
     Module Impl_core_cmp_Eq_for_revm_interpreter_interpreter_stack_Stack.
       Definition Self : Ty.t := Ty.path "revm_interpreter::interpreter::stack::Stack".
@@ -612,43 +599,38 @@ Module interpreter.
                                                               []
                                                             |),
                                                             [
-                                                              (* Unsize *)
-                                                              M.pointer_coercion
-                                                                (M.alloc (|
-                                                                  Value.Array
-                                                                    [ M.read (| Value.String "" |) ]
-                                                                |));
-                                                              (* Unsize *)
-                                                              M.pointer_coercion
-                                                                (M.alloc (|
-                                                                  Value.Array
-                                                                    [
-                                                                      M.call_closure (|
-                                                                        M.get_associated_function (|
-                                                                          Ty.path
-                                                                            "core::fmt::rt::Argument",
-                                                                          "new_display",
-                                                                          [
-                                                                            Ty.apply
-                                                                              (Ty.path "&")
-                                                                              []
-                                                                              [
-                                                                                Ty.apply
-                                                                                  (Ty.path
-                                                                                    "ruint::Uint")
-                                                                                  [
-                                                                                    Value.Integer
-                                                                                      256;
-                                                                                    Value.Integer 4
-                                                                                  ]
-                                                                                  []
-                                                                              ]
-                                                                          ]
-                                                                        |),
-                                                                        [ x ]
-                                                                      |)
-                                                                    ]
-                                                                |))
+                                                              M.alloc (|
+                                                                Value.Array
+                                                                  [ M.read (| Value.String "" |) ]
+                                                              |);
+                                                              M.alloc (|
+                                                                Value.Array
+                                                                  [
+                                                                    M.call_closure (|
+                                                                      M.get_associated_function (|
+                                                                        Ty.path
+                                                                          "core::fmt::rt::Argument",
+                                                                        "new_display",
+                                                                        [
+                                                                          Ty.apply
+                                                                            (Ty.path "&")
+                                                                            []
+                                                                            [
+                                                                              Ty.apply
+                                                                                (Ty.path
+                                                                                  "ruint::Uint")
+                                                                                [
+                                                                                  Value.Integer 256;
+                                                                                  Value.Integer 4
+                                                                                ]
+                                                                                []
+                                                                            ]
+                                                                        ]
+                                                                      |),
+                                                                      [ x ]
+                                                                    |)
+                                                                  ]
+                                                              |)
                                                             ]
                                                           |)
                                                         ]
@@ -1618,29 +1600,25 @@ Module interpreter.
                                                         []
                                                       |),
                                                       [
-                                                        (* Unsize *)
-                                                        M.pointer_coercion
-                                                          (M.alloc (|
-                                                            Value.Array
-                                                              [
-                                                                M.read (|
-                                                                  Value.String
-                                                                    "internal error: entered unreachable code: self.data.capacity() == STACK_LIMIT"
-                                                                |)
-                                                              ]
-                                                          |));
-                                                        (* Unsize *)
-                                                        M.pointer_coercion
-                                                          (M.alloc (|
-                                                            M.call_closure (|
-                                                              M.get_associated_function (|
-                                                                Ty.path "core::fmt::rt::Argument",
-                                                                "none",
-                                                                []
-                                                              |),
+                                                        M.alloc (|
+                                                          Value.Array
+                                                            [
+                                                              M.read (|
+                                                                Value.String
+                                                                  "internal error: entered unreachable code: self.data.capacity() == STACK_LIMIT"
+                                                              |)
+                                                            ]
+                                                        |);
+                                                        M.alloc (|
+                                                          M.call_closure (|
+                                                            M.get_associated_function (|
+                                                              Ty.path "core::fmt::rt::Argument",
+                                                              "none",
                                                               []
-                                                            |)
-                                                          |))
+                                                            |),
+                                                            []
+                                                          |)
+                                                        |)
                                                       ]
                                                     |)
                                                   ]
@@ -1969,29 +1947,25 @@ Module interpreter.
                                                     []
                                                   |),
                                                   [
-                                                    (* Unsize *)
-                                                    M.pointer_coercion
-                                                      (M.alloc (|
-                                                        Value.Array
-                                                          [
-                                                            M.read (|
-                                                              Value.String
-                                                                "internal error: entered unreachable code: attempted to dup 0"
-                                                            |)
-                                                          ]
-                                                      |));
-                                                    (* Unsize *)
-                                                    M.pointer_coercion
-                                                      (M.alloc (|
-                                                        M.call_closure (|
-                                                          M.get_associated_function (|
-                                                            Ty.path "core::fmt::rt::Argument",
-                                                            "none",
-                                                            []
-                                                          |),
+                                                    M.alloc (|
+                                                      Value.Array
+                                                        [
+                                                          M.read (|
+                                                            Value.String
+                                                              "internal error: entered unreachable code: attempted to dup 0"
+                                                          |)
+                                                        ]
+                                                    |);
+                                                    M.alloc (|
+                                                      M.call_closure (|
+                                                        M.get_associated_function (|
+                                                          Ty.path "core::fmt::rt::Argument",
+                                                          "none",
                                                           []
-                                                        |)
-                                                      |))
+                                                        |),
+                                                        []
+                                                      |)
+                                                    |)
                                                   ]
                                                 |)
                                               ]
@@ -2330,29 +2304,25 @@ Module interpreter.
                                                         []
                                                       |),
                                                       [
-                                                        (* Unsize *)
-                                                        M.pointer_coercion
-                                                          (M.alloc (|
-                                                            Value.Array
-                                                              [
-                                                                M.read (|
-                                                                  Value.String
-                                                                    "internal error: entered unreachable code: overlapping exchange"
-                                                                |)
-                                                              ]
-                                                          |));
-                                                        (* Unsize *)
-                                                        M.pointer_coercion
-                                                          (M.alloc (|
-                                                            M.call_closure (|
-                                                              M.get_associated_function (|
-                                                                Ty.path "core::fmt::rt::Argument",
-                                                                "none",
-                                                                []
-                                                              |),
+                                                        M.alloc (|
+                                                          Value.Array
+                                                            [
+                                                              M.read (|
+                                                                Value.String
+                                                                  "internal error: entered unreachable code: overlapping exchange"
+                                                              |)
+                                                            ]
+                                                        |);
+                                                        M.alloc (|
+                                                          M.call_closure (|
+                                                            M.get_associated_function (|
+                                                              Ty.path "core::fmt::rt::Argument",
+                                                              "none",
                                                               []
-                                                            |)
-                                                          |))
+                                                            |),
+                                                            []
+                                                          |)
+                                                        |)
                                                       ]
                                                     |)
                                                   ]
@@ -3551,17 +3521,15 @@ Module interpreter.
                                                                     []
                                                                   |),
                                                                   [
-                                                                    (* Unsize *)
-                                                                    M.pointer_coercion
-                                                                      (M.alloc (|
-                                                                        Value.Array
-                                                                          [
-                                                                            M.read (|
-                                                                              Value.String
-                                                                                "wrote too much"
-                                                                            |)
-                                                                          ]
-                                                                      |))
+                                                                    M.alloc (|
+                                                                      Value.Array
+                                                                        [
+                                                                          M.read (|
+                                                                            Value.String
+                                                                              "wrote too much"
+                                                                          |)
+                                                                        ]
+                                                                    |)
                                                                   ]
                                                                 |)
                                                               ]

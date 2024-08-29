@@ -30,23 +30,19 @@ Module function_stack.
               M.read (| f |);
               M.read (| Value.String "FunctionReturnFrame" |);
               M.read (| Value.String "idx" |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.SubPointer.get_struct_record_field (|
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "revm_interpreter::function_stack::FunctionReturnFrame",
+                "idx"
+              |);
+              M.read (| Value.String "pc" |);
+              M.alloc (|
+                M.SubPointer.get_struct_record_field (|
                   M.read (| self |),
                   "revm_interpreter::function_stack::FunctionReturnFrame",
-                  "idx"
-                |));
-              M.read (| Value.String "pc" |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.alloc (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "revm_interpreter::function_stack::FunctionReturnFrame",
-                    "pc"
-                  |)
-                |))
+                  "pc"
+                |)
+              |)
             ]
           |)))
       | _, _, _ => M.impossible
@@ -207,17 +203,6 @@ Module function_stack.
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_revm_interpreter_function_stack_FunctionReturnFrame.
   
-  Module Impl_core_marker_StructuralEq_for_revm_interpreter_function_stack_FunctionReturnFrame.
-    Definition Self : Ty.t := Ty.path "revm_interpreter::function_stack::FunctionReturnFrame".
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::marker::StructuralEq"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [].
-  End Impl_core_marker_StructuralEq_for_revm_interpreter_function_stack_FunctionReturnFrame.
-  
   Module Impl_core_cmp_Eq_for_revm_interpreter_function_stack_FunctionReturnFrame.
     Definition Self : Ty.t := Ty.path "revm_interpreter::function_stack::FunctionReturnFrame".
     
@@ -361,23 +346,19 @@ Module function_stack.
               M.read (| f |);
               M.read (| Value.String "FunctionStack" |);
               M.read (| Value.String "return_stack" |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.SubPointer.get_struct_record_field (|
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "revm_interpreter::function_stack::FunctionStack",
+                "return_stack"
+              |);
+              M.read (| Value.String "current_code_idx" |);
+              M.alloc (|
+                M.SubPointer.get_struct_record_field (|
                   M.read (| self |),
                   "revm_interpreter::function_stack::FunctionStack",
-                  "return_stack"
-                |));
-              M.read (| Value.String "current_code_idx" |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.alloc (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "revm_interpreter::function_stack::FunctionStack",
-                    "current_code_idx"
-                  |)
-                |))
+                  "current_code_idx"
+                |)
+              |)
             ]
           |)))
       | _, _, _ => M.impossible

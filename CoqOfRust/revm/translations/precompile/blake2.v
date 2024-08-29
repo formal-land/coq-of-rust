@@ -923,7 +923,7 @@ Module blake2.
                                   "iter",
                                   []
                                 |),
-                                [ (* Unsize *) M.pointer_coercion h ]
+                                [ h ]
                               |)
                             ]
                           |)
@@ -1026,18 +1026,16 @@ Module blake2.
                                                       ]
                                                   ]
                                                 |);
-                                                (* Unsize *)
-                                                M.pointer_coercion
-                                                  (M.alloc (|
-                                                    M.call_closure (|
-                                                      M.get_associated_function (|
-                                                        Ty.path "u64",
-                                                        "to_le_bytes",
-                                                        []
-                                                      |),
-                                                      [ M.read (| M.read (| h |) |) ]
-                                                    |)
-                                                  |))
+                                                M.alloc (|
+                                                  M.call_closure (|
+                                                    M.get_associated_function (|
+                                                      Ty.path "u64",
+                                                      "to_le_bytes",
+                                                      []
+                                                    |),
+                                                    [ M.read (| M.read (| h |) |) ]
+                                                  |)
+                                                |)
                                               ]
                                             |)
                                           |) in
@@ -1502,12 +1500,12 @@ Module blake2.
                                   "len",
                                   []
                                 |),
-                                [ (* Unsize *) M.pointer_coercion (M.read (| h |)) ]
+                                [ M.read (| h |) ]
                               |))
                           ]
                       ]
                     |);
-                    (* Unsize *) M.pointer_coercion (M.read (| h |))
+                    M.read (| h |)
                   ]
                 |)
               |) in
@@ -1540,13 +1538,12 @@ Module blake2.
                                   "len",
                                   []
                                 |),
-                                [ (* Unsize *) M.pointer_coercion (M.read (| h |)) ]
+                                [ M.read (| h |) ]
                               |))
                           ]
                       ]
                     |);
-                    (* Unsize *)
-                    M.pointer_coercion (M.get_constant (| "revm_precompile::blake2::algo::IV" |))
+                    M.get_constant (| "revm_precompile::blake2::algo::IV" |)
                   ]
                 |)
               |) in
@@ -1665,7 +1662,7 @@ Module blake2.
                                               []
                                             |),
                                             [
-                                              (* Unsize *) M.pointer_coercion v;
+                                              v;
                                               Value.Integer 0;
                                               Value.Integer 4;
                                               Value.Integer 8;
@@ -1699,7 +1696,7 @@ Module blake2.
                                               []
                                             |),
                                             [
-                                              (* Unsize *) M.pointer_coercion v;
+                                              v;
                                               Value.Integer 1;
                                               Value.Integer 5;
                                               Value.Integer 9;
@@ -1733,7 +1730,7 @@ Module blake2.
                                               []
                                             |),
                                             [
-                                              (* Unsize *) M.pointer_coercion v;
+                                              v;
                                               Value.Integer 2;
                                               Value.Integer 6;
                                               Value.Integer 10;
@@ -1767,7 +1764,7 @@ Module blake2.
                                               []
                                             |),
                                             [
-                                              (* Unsize *) M.pointer_coercion v;
+                                              v;
                                               Value.Integer 3;
                                               Value.Integer 7;
                                               Value.Integer 11;
@@ -1801,7 +1798,7 @@ Module blake2.
                                               []
                                             |),
                                             [
-                                              (* Unsize *) M.pointer_coercion v;
+                                              v;
                                               Value.Integer 0;
                                               Value.Integer 5;
                                               Value.Integer 10;
@@ -1835,7 +1832,7 @@ Module blake2.
                                               []
                                             |),
                                             [
-                                              (* Unsize *) M.pointer_coercion v;
+                                              v;
                                               Value.Integer 1;
                                               Value.Integer 6;
                                               Value.Integer 11;
@@ -1869,7 +1866,7 @@ Module blake2.
                                               []
                                             |),
                                             [
-                                              (* Unsize *) M.pointer_coercion v;
+                                              v;
                                               Value.Integer 2;
                                               Value.Integer 7;
                                               Value.Integer 8;
@@ -1903,7 +1900,7 @@ Module blake2.
                                               []
                                             |),
                                             [
-                                              (* Unsize *) M.pointer_coercion v;
+                                              v;
                                               Value.Integer 3;
                                               Value.Integer 4;
                                               Value.Integer 9;

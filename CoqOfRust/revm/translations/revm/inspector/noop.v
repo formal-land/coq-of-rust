@@ -120,17 +120,6 @@ Module inspector.
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
     End Impl_core_cmp_PartialEq_for_revm_inspector_noop_NoOpInspector.
     
-    Module Impl_core_marker_StructuralEq_for_revm_inspector_noop_NoOpInspector.
-      Definition Self : Ty.t := Ty.path "revm::inspector::noop::NoOpInspector".
-      
-      Axiom Implements :
-        M.IsTraitInstance
-          "core::marker::StructuralEq"
-          Self
-          (* Trait polymorphic types *) []
-          (* Instance *) [].
-    End Impl_core_marker_StructuralEq_for_revm_inspector_noop_NoOpInspector.
-    
     Module Impl_core_cmp_Eq_for_revm_inspector_noop_NoOpInspector.
       Definition Self : Ty.t := Ty.path "revm::inspector::noop::NoOpInspector".
       

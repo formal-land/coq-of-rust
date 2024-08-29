@@ -94,64 +94,48 @@ Module journaled_state.
               |) in
             let~ values :=
               M.alloc (|
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.alloc (|
-                    Value.Array
-                      [
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "revm::journaled_state::JournaledState",
-                            "state"
-                          |));
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "revm::journaled_state::JournaledState",
-                            "transient_storage"
-                          |));
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "revm::journaled_state::JournaledState",
-                            "logs"
-                          |));
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "revm::journaled_state::JournaledState",
-                            "depth"
-                          |));
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "revm::journaled_state::JournaledState",
-                            "journal"
-                          |));
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "revm::journaled_state::JournaledState",
-                            "spec"
-                          |));
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.alloc (|
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "revm::journaled_state::JournaledState",
-                              "warm_preloaded_addresses"
-                            |)
-                          |))
-                      ]
-                  |))
+                M.alloc (|
+                  Value.Array
+                    [
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "revm::journaled_state::JournaledState",
+                        "state"
+                      |);
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "revm::journaled_state::JournaledState",
+                        "transient_storage"
+                      |);
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "revm::journaled_state::JournaledState",
+                        "logs"
+                      |);
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "revm::journaled_state::JournaledState",
+                        "depth"
+                      |);
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "revm::journaled_state::JournaledState",
+                        "journal"
+                      |);
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "revm::journaled_state::JournaledState",
+                        "spec"
+                      |);
+                      M.alloc (|
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "revm::journaled_state::JournaledState",
+                          "warm_preloaded_addresses"
+                        |)
+                      |)
+                    ]
+                |)
               |) in
             M.alloc (|
               M.call_closure (|
@@ -163,7 +147,7 @@ Module journaled_state.
                 [
                   M.read (| f |);
                   M.read (| Value.String "JournaledState" |);
-                  (* Unsize *) M.pointer_coercion (M.read (| names |));
+                  M.read (| names |);
                   M.read (| values |)
                 ]
               |)
@@ -668,17 +652,6 @@ Module journaled_state.
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_revm_journaled_state_JournaledState.
   
-  Module Impl_core_marker_StructuralEq_for_revm_journaled_state_JournaledState.
-    Definition Self : Ty.t := Ty.path "revm::journaled_state::JournaledState".
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::marker::StructuralEq"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [].
-  End Impl_core_marker_StructuralEq_for_revm_journaled_state_JournaledState.
-  
   Module Impl_core_cmp_Eq_for_revm_journaled_state_JournaledState.
     Definition Self : Ty.t := Ty.path "revm::journaled_state::JournaledState".
     
@@ -859,55 +832,53 @@ Module journaled_state.
                     [ Ty.path "alloc::alloc::Global" ]
                   |),
                   [
-                    (* Unsize *)
-                    M.pointer_coercion
-                      (M.read (|
-                        M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.apply
-                              (Ty.path "alloc::boxed::Box")
-                              []
+                    M.read (|
+                      M.call_closure (|
+                        M.get_associated_function (|
+                          Ty.apply
+                            (Ty.path "alloc::boxed::Box")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer 1 ]
+                                [
+                                  Ty.apply
+                                    (Ty.path "alloc::vec::Vec")
+                                    []
+                                    [
+                                      Ty.path "revm::journaled_state::JournalEntry";
+                                      Ty.path "alloc::alloc::Global"
+                                    ]
+                                ];
+                              Ty.path "alloc::alloc::Global"
+                            ],
+                          "new",
+                          []
+                        |),
+                        [
+                          M.alloc (|
+                            Value.Array
                               [
-                                Ty.apply
-                                  (Ty.path "array")
-                                  [ Value.Integer 1 ]
-                                  [
+                                M.call_closure (|
+                                  M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "alloc::vec::Vec")
                                       []
                                       [
                                         Ty.path "revm::journaled_state::JournalEntry";
                                         Ty.path "alloc::alloc::Global"
-                                      ]
-                                  ];
-                                Ty.path "alloc::alloc::Global"
-                              ],
-                            "new",
-                            []
-                          |),
-                          [
-                            M.alloc (|
-                              Value.Array
-                                [
-                                  M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.apply
-                                        (Ty.path "alloc::vec::Vec")
-                                        []
-                                        [
-                                          Ty.path "revm::journaled_state::JournalEntry";
-                                          Ty.path "alloc::alloc::Global"
-                                        ],
-                                      "new",
-                                      []
-                                    |),
+                                      ],
+                                    "new",
                                     []
-                                  |)
-                                ]
-                            |)
-                          ]
-                        |)
-                      |))
+                                  |),
+                                  []
+                                |)
+                              ]
+                          |)
+                        ]
+                      |)
+                    |)
                   ]
                 |));
               ("depth", Value.Integer 0);
@@ -1382,55 +1353,53 @@ Module journaled_state.
                             [ Ty.path "alloc::alloc::Global" ]
                           |),
                           [
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.read (|
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.apply
-                                      (Ty.path "alloc::boxed::Box")
-                                      []
+                            M.read (|
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.apply
+                                    (Ty.path "alloc::boxed::Box")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ Value.Integer 1 ]
+                                        [
+                                          Ty.apply
+                                            (Ty.path "alloc::vec::Vec")
+                                            []
+                                            [
+                                              Ty.path "revm::journaled_state::JournalEntry";
+                                              Ty.path "alloc::alloc::Global"
+                                            ]
+                                        ];
+                                      Ty.path "alloc::alloc::Global"
+                                    ],
+                                  "new",
+                                  []
+                                |),
+                                [
+                                  M.alloc (|
+                                    Value.Array
                                       [
-                                        Ty.apply
-                                          (Ty.path "array")
-                                          [ Value.Integer 1 ]
-                                          [
+                                        M.call_closure (|
+                                          M.get_associated_function (|
                                             Ty.apply
                                               (Ty.path "alloc::vec::Vec")
                                               []
                                               [
                                                 Ty.path "revm::journaled_state::JournalEntry";
                                                 Ty.path "alloc::alloc::Global"
-                                              ]
-                                          ];
-                                        Ty.path "alloc::alloc::Global"
-                                      ],
-                                    "new",
-                                    []
-                                  |),
-                                  [
-                                    M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.call_closure (|
-                                            M.get_associated_function (|
-                                              Ty.apply
-                                                (Ty.path "alloc::vec::Vec")
-                                                []
-                                                [
-                                                  Ty.path "revm::journaled_state::JournalEntry";
-                                                  Ty.path "alloc::alloc::Global"
-                                                ],
-                                              "new",
-                                              []
-                                            |),
+                                              ],
+                                            "new",
                                             []
-                                          |)
-                                        ]
-                                    |)
-                                  ]
-                                |)
-                              |))
+                                          |),
+                                          []
+                                        |)
+                                      ]
+                                  |)
+                                ]
+                              |)
+                            |)
                           ]
                         |)
                       |) in
@@ -9657,7 +9626,7 @@ Module journaled_state.
                           M.read (| f |);
                           M.read (| Value.String "AccountLoaded" |);
                           M.read (| Value.String "address" |);
-                          (* Unsize *) M.pointer_coercion __self_0
+                          __self_0
                         ]
                       |)
                     |)));
@@ -9703,13 +9672,13 @@ Module journaled_state.
                           M.read (| f |);
                           M.read (| Value.String "AccountDestroyed" |);
                           M.read (| Value.String "address" |);
-                          (* Unsize *) M.pointer_coercion (M.read (| __self_0 |));
+                          M.read (| __self_0 |);
                           M.read (| Value.String "target" |);
-                          (* Unsize *) M.pointer_coercion (M.read (| __self_1 |));
+                          M.read (| __self_1 |);
                           M.read (| Value.String "was_destroyed" |);
-                          (* Unsize *) M.pointer_coercion (M.read (| __self_2 |));
+                          M.read (| __self_2 |);
                           M.read (| Value.String "had_balance" |);
-                          (* Unsize *) M.pointer_coercion __self_3
+                          __self_3
                         ]
                       |)
                     |)));
@@ -9734,7 +9703,7 @@ Module journaled_state.
                           M.read (| f |);
                           M.read (| Value.String "AccountTouched" |);
                           M.read (| Value.String "address" |);
-                          (* Unsize *) M.pointer_coercion __self_0
+                          __self_0
                         ]
                       |)
                     |)));
@@ -9773,11 +9742,11 @@ Module journaled_state.
                           M.read (| f |);
                           M.read (| Value.String "BalanceTransfer" |);
                           M.read (| Value.String "from" |);
-                          (* Unsize *) M.pointer_coercion (M.read (| __self_0 |));
+                          M.read (| __self_0 |);
                           M.read (| Value.String "to" |);
-                          (* Unsize *) M.pointer_coercion (M.read (| __self_1 |));
+                          M.read (| __self_1 |);
                           M.read (| Value.String "balance" |);
-                          (* Unsize *) M.pointer_coercion __self_2
+                          __self_2
                         ]
                       |)
                     |)));
@@ -9802,7 +9771,7 @@ Module journaled_state.
                           M.read (| f |);
                           M.read (| Value.String "NonceChange" |);
                           M.read (| Value.String "address" |);
-                          (* Unsize *) M.pointer_coercion __self_0
+                          __self_0
                         ]
                       |)
                     |)));
@@ -9827,7 +9796,7 @@ Module journaled_state.
                           M.read (| f |);
                           M.read (| Value.String "AccountCreated" |);
                           M.read (| Value.String "address" |);
-                          (* Unsize *) M.pointer_coercion __self_0
+                          __self_0
                         ]
                       |)
                     |)));
@@ -9866,11 +9835,11 @@ Module journaled_state.
                           M.read (| f |);
                           M.read (| Value.String "StorageChange" |);
                           M.read (| Value.String "address" |);
-                          (* Unsize *) M.pointer_coercion (M.read (| __self_0 |));
+                          M.read (| __self_0 |);
                           M.read (| Value.String "key" |);
-                          (* Unsize *) M.pointer_coercion (M.read (| __self_1 |));
+                          M.read (| __self_1 |);
                           M.read (| Value.String "had_value" |);
-                          (* Unsize *) M.pointer_coercion __self_2
+                          __self_2
                         ]
                       |)
                     |)));
@@ -9909,11 +9878,11 @@ Module journaled_state.
                           M.read (| f |);
                           M.read (| Value.String "TransientStorageChange" |);
                           M.read (| Value.String "address" |);
-                          (* Unsize *) M.pointer_coercion (M.read (| __self_0 |));
+                          M.read (| __self_0 |);
                           M.read (| Value.String "key" |);
-                          (* Unsize *) M.pointer_coercion (M.read (| __self_1 |));
+                          M.read (| __self_1 |);
                           M.read (| Value.String "had_value" |);
-                          (* Unsize *) M.pointer_coercion __self_2
+                          __self_2
                         ]
                       |)
                     |)));
@@ -9938,7 +9907,7 @@ Module journaled_state.
                           M.read (| f |);
                           M.read (| Value.String "CodeChange" |);
                           M.read (| Value.String "address" |);
-                          (* Unsize *) M.pointer_coercion __self_0
+                          __self_0
                         ]
                       |)
                     |)))
@@ -10433,7 +10402,7 @@ Module journaled_state.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ __self_tag :=
+            let~ __self_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -10443,7 +10412,7 @@ Module journaled_state.
                   [ M.read (| self |) ]
                 |)
               |) in
-            let~ __arg1_tag :=
+            let~ __arg1_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -10455,7 +10424,7 @@ Module journaled_state.
               |) in
             M.alloc (|
               LogicalOp.and (|
-                BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)),
+                BinOp.Pure.eq (M.read (| __self_discr |)) (M.read (| __arg1_discr |)),
                 ltac:(M.monadic
                   (M.read (|
                     M.match_operator (|
@@ -10485,12 +10454,20 @@ Module journaled_state.
                               M.call_closure (|
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
-                                  Ty.path "alloy_primitives::bits::address::Address",
-                                  [ Ty.path "alloy_primitives::bits::address::Address" ],
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.path "alloy_primitives::bits::address::Address" ],
+                                  [
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.path "alloy_primitives::bits::address::Address" ]
+                                  ],
                                   "eq",
                                   []
                                 |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                [ __self_0; __arg1_0 ]
                               |)
                             |)));
                         fun γ =>
@@ -10562,154 +10539,51 @@ Module journaled_state.
                                     M.call_closure (|
                                       M.get_trait_method (|
                                         "core::cmp::PartialEq",
-                                        Ty.path "alloy_primitives::bits::address::Address",
-                                        [ Ty.path "alloy_primitives::bits::address::Address" ],
+                                        Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [ Ty.path "alloy_primitives::bits::address::Address" ],
+                                        [
+                                          Ty.apply
+                                            (Ty.path "&")
+                                            []
+                                            [ Ty.path "alloy_primitives::bits::address::Address" ]
+                                        ],
                                         "eq",
                                         []
                                       |),
-                                      [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                      [ __self_0; __arg1_0 ]
                                     |),
                                     ltac:(M.monadic
                                       (M.call_closure (|
                                         M.get_trait_method (|
                                           "core::cmp::PartialEq",
-                                          Ty.path "alloy_primitives::bits::address::Address",
-                                          [ Ty.path "alloy_primitives::bits::address::Address" ],
+                                          Ty.apply
+                                            (Ty.path "&")
+                                            []
+                                            [ Ty.path "alloy_primitives::bits::address::Address" ],
+                                          [
+                                            Ty.apply
+                                              (Ty.path "&")
+                                              []
+                                              [ Ty.path "alloy_primitives::bits::address::Address" ]
+                                          ],
                                           "eq",
                                           []
                                         |),
-                                        [ M.read (| __self_1 |); M.read (| __arg1_1 |) ]
+                                        [ __self_1; __arg1_1 ]
                                       |)))
                                   |),
                                   ltac:(M.monadic
-                                    (BinOp.Pure.eq
-                                      (M.read (| M.read (| __self_2 |) |))
-                                      (M.read (| M.read (| __arg1_2 |) |))))
-                                |),
-                                ltac:(M.monadic
-                                  (M.call_closure (|
-                                    M.get_trait_method (|
-                                      "core::cmp::PartialEq",
-                                      Ty.apply
-                                        (Ty.path "ruint::Uint")
-                                        [ Value.Integer 256; Value.Integer 4 ]
-                                        [],
-                                      [
-                                        Ty.apply
-                                          (Ty.path "ruint::Uint")
-                                          [ Value.Integer 256; Value.Integer 4 ]
-                                          []
-                                      ],
-                                      "eq",
-                                      []
-                                    |),
-                                    [ M.read (| __self_3 |); M.read (| __arg1_3 |) ]
-                                  |)))
-                              |)
-                            |)));
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                            let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                            let γ0_0 := M.read (| γ0_0 |) in
-                            let γ2_0 :=
-                              M.SubPointer.get_struct_record_field (|
-                                γ0_0,
-                                "revm::journaled_state::JournalEntry::AccountTouched",
-                                "address"
-                              |) in
-                            let __self_0 := M.alloc (| γ2_0 |) in
-                            let γ0_1 := M.read (| γ0_1 |) in
-                            let γ2_0 :=
-                              M.SubPointer.get_struct_record_field (|
-                                γ0_1,
-                                "revm::journaled_state::JournalEntry::AccountTouched",
-                                "address"
-                              |) in
-                            let __arg1_0 := M.alloc (| γ2_0 |) in
-                            M.alloc (|
-                              M.call_closure (|
-                                M.get_trait_method (|
-                                  "core::cmp::PartialEq",
-                                  Ty.path "alloy_primitives::bits::address::Address",
-                                  [ Ty.path "alloy_primitives::bits::address::Address" ],
-                                  "eq",
-                                  []
-                                |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
-                              |)
-                            |)));
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                            let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                            let γ0_0 := M.read (| γ0_0 |) in
-                            let γ2_0 :=
-                              M.SubPointer.get_struct_record_field (|
-                                γ0_0,
-                                "revm::journaled_state::JournalEntry::BalanceTransfer",
-                                "from"
-                              |) in
-                            let γ2_1 :=
-                              M.SubPointer.get_struct_record_field (|
-                                γ0_0,
-                                "revm::journaled_state::JournalEntry::BalanceTransfer",
-                                "to"
-                              |) in
-                            let γ2_2 :=
-                              M.SubPointer.get_struct_record_field (|
-                                γ0_0,
-                                "revm::journaled_state::JournalEntry::BalanceTransfer",
-                                "balance"
-                              |) in
-                            let __self_0 := M.alloc (| γ2_0 |) in
-                            let __self_1 := M.alloc (| γ2_1 |) in
-                            let __self_2 := M.alloc (| γ2_2 |) in
-                            let γ0_1 := M.read (| γ0_1 |) in
-                            let γ2_0 :=
-                              M.SubPointer.get_struct_record_field (|
-                                γ0_1,
-                                "revm::journaled_state::JournalEntry::BalanceTransfer",
-                                "from"
-                              |) in
-                            let γ2_1 :=
-                              M.SubPointer.get_struct_record_field (|
-                                γ0_1,
-                                "revm::journaled_state::JournalEntry::BalanceTransfer",
-                                "to"
-                              |) in
-                            let γ2_2 :=
-                              M.SubPointer.get_struct_record_field (|
-                                γ0_1,
-                                "revm::journaled_state::JournalEntry::BalanceTransfer",
-                                "balance"
-                              |) in
-                            let __arg1_0 := M.alloc (| γ2_0 |) in
-                            let __arg1_1 := M.alloc (| γ2_1 |) in
-                            let __arg1_2 := M.alloc (| γ2_2 |) in
-                            M.alloc (|
-                              LogicalOp.and (|
-                                LogicalOp.and (|
-                                  M.call_closure (|
-                                    M.get_trait_method (|
-                                      "core::cmp::PartialEq",
-                                      Ty.path "alloy_primitives::bits::address::Address",
-                                      [ Ty.path "alloy_primitives::bits::address::Address" ],
-                                      "eq",
-                                      []
-                                    |),
-                                    [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
-                                  |),
-                                  ltac:(M.monadic
                                     (M.call_closure (|
                                       M.get_trait_method (|
                                         "core::cmp::PartialEq",
-                                        Ty.path "alloy_primitives::bits::address::Address",
-                                        [ Ty.path "alloy_primitives::bits::address::Address" ],
+                                        Ty.apply (Ty.path "&") [] [ Ty.path "bool" ],
+                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "bool" ] ],
                                         "eq",
                                         []
                                       |),
-                                      [ M.read (| __self_1 |); M.read (| __arg1_1 |) ]
+                                      [ __self_2; __arg1_2 ]
                                     |)))
                                 |),
                                 ltac:(M.monadic
@@ -10717,173 +10591,7 @@ Module journaled_state.
                                     M.get_trait_method (|
                                       "core::cmp::PartialEq",
                                       Ty.apply
-                                        (Ty.path "ruint::Uint")
-                                        [ Value.Integer 256; Value.Integer 4 ]
-                                        [],
-                                      [
-                                        Ty.apply
-                                          (Ty.path "ruint::Uint")
-                                          [ Value.Integer 256; Value.Integer 4 ]
-                                          []
-                                      ],
-                                      "eq",
-                                      []
-                                    |),
-                                    [ M.read (| __self_2 |); M.read (| __arg1_2 |) ]
-                                  |)))
-                              |)
-                            |)));
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                            let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                            let γ0_0 := M.read (| γ0_0 |) in
-                            let γ2_0 :=
-                              M.SubPointer.get_struct_record_field (|
-                                γ0_0,
-                                "revm::journaled_state::JournalEntry::NonceChange",
-                                "address"
-                              |) in
-                            let __self_0 := M.alloc (| γ2_0 |) in
-                            let γ0_1 := M.read (| γ0_1 |) in
-                            let γ2_0 :=
-                              M.SubPointer.get_struct_record_field (|
-                                γ0_1,
-                                "revm::journaled_state::JournalEntry::NonceChange",
-                                "address"
-                              |) in
-                            let __arg1_0 := M.alloc (| γ2_0 |) in
-                            M.alloc (|
-                              M.call_closure (|
-                                M.get_trait_method (|
-                                  "core::cmp::PartialEq",
-                                  Ty.path "alloy_primitives::bits::address::Address",
-                                  [ Ty.path "alloy_primitives::bits::address::Address" ],
-                                  "eq",
-                                  []
-                                |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
-                              |)
-                            |)));
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                            let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                            let γ0_0 := M.read (| γ0_0 |) in
-                            let γ2_0 :=
-                              M.SubPointer.get_struct_record_field (|
-                                γ0_0,
-                                "revm::journaled_state::JournalEntry::AccountCreated",
-                                "address"
-                              |) in
-                            let __self_0 := M.alloc (| γ2_0 |) in
-                            let γ0_1 := M.read (| γ0_1 |) in
-                            let γ2_0 :=
-                              M.SubPointer.get_struct_record_field (|
-                                γ0_1,
-                                "revm::journaled_state::JournalEntry::AccountCreated",
-                                "address"
-                              |) in
-                            let __arg1_0 := M.alloc (| γ2_0 |) in
-                            M.alloc (|
-                              M.call_closure (|
-                                M.get_trait_method (|
-                                  "core::cmp::PartialEq",
-                                  Ty.path "alloy_primitives::bits::address::Address",
-                                  [ Ty.path "alloy_primitives::bits::address::Address" ],
-                                  "eq",
-                                  []
-                                |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
-                              |)
-                            |)));
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                            let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                            let γ0_0 := M.read (| γ0_0 |) in
-                            let γ2_0 :=
-                              M.SubPointer.get_struct_record_field (|
-                                γ0_0,
-                                "revm::journaled_state::JournalEntry::StorageChange",
-                                "address"
-                              |) in
-                            let γ2_1 :=
-                              M.SubPointer.get_struct_record_field (|
-                                γ0_0,
-                                "revm::journaled_state::JournalEntry::StorageChange",
-                                "key"
-                              |) in
-                            let γ2_2 :=
-                              M.SubPointer.get_struct_record_field (|
-                                γ0_0,
-                                "revm::journaled_state::JournalEntry::StorageChange",
-                                "had_value"
-                              |) in
-                            let __self_0 := M.alloc (| γ2_0 |) in
-                            let __self_1 := M.alloc (| γ2_1 |) in
-                            let __self_2 := M.alloc (| γ2_2 |) in
-                            let γ0_1 := M.read (| γ0_1 |) in
-                            let γ2_0 :=
-                              M.SubPointer.get_struct_record_field (|
-                                γ0_1,
-                                "revm::journaled_state::JournalEntry::StorageChange",
-                                "address"
-                              |) in
-                            let γ2_1 :=
-                              M.SubPointer.get_struct_record_field (|
-                                γ0_1,
-                                "revm::journaled_state::JournalEntry::StorageChange",
-                                "key"
-                              |) in
-                            let γ2_2 :=
-                              M.SubPointer.get_struct_record_field (|
-                                γ0_1,
-                                "revm::journaled_state::JournalEntry::StorageChange",
-                                "had_value"
-                              |) in
-                            let __arg1_0 := M.alloc (| γ2_0 |) in
-                            let __arg1_1 := M.alloc (| γ2_1 |) in
-                            let __arg1_2 := M.alloc (| γ2_2 |) in
-                            M.alloc (|
-                              LogicalOp.and (|
-                                LogicalOp.and (|
-                                  M.call_closure (|
-                                    M.get_trait_method (|
-                                      "core::cmp::PartialEq",
-                                      Ty.path "alloy_primitives::bits::address::Address",
-                                      [ Ty.path "alloy_primitives::bits::address::Address" ],
-                                      "eq",
-                                      []
-                                    |),
-                                    [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
-                                  |),
-                                  ltac:(M.monadic
-                                    (M.call_closure (|
-                                      M.get_trait_method (|
-                                        "core::cmp::PartialEq",
-                                        Ty.apply
-                                          (Ty.path "ruint::Uint")
-                                          [ Value.Integer 256; Value.Integer 4 ]
-                                          [],
-                                        [
-                                          Ty.apply
-                                            (Ty.path "ruint::Uint")
-                                            [ Value.Integer 256; Value.Integer 4 ]
-                                            []
-                                        ],
-                                        "eq",
-                                        []
-                                      |),
-                                      [ M.read (| __self_1 |); M.read (| __arg1_1 |) ]
-                                    |)))
-                                |),
-                                ltac:(M.monadic
-                                  (M.call_closure (|
-                                    M.get_trait_method (|
-                                      "core::cmp::PartialEq",
-                                      Ty.apply
-                                        (Ty.path "core::option::Option")
+                                        (Ty.path "&")
                                         []
                                         [
                                           Ty.apply
@@ -10893,7 +10601,7 @@ Module journaled_state.
                                         ],
                                       [
                                         Ty.apply
-                                          (Ty.path "core::option::Option")
+                                          (Ty.path "&")
                                           []
                                           [
                                             Ty.apply
@@ -10905,7 +10613,387 @@ Module journaled_state.
                                       "eq",
                                       []
                                     |),
-                                    [ M.read (| __self_2 |); M.read (| __arg1_2 |) ]
+                                    [ __self_3; __arg1_3 ]
+                                  |)))
+                              |)
+                            |)));
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                            let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                            let γ0_0 := M.read (| γ0_0 |) in
+                            let γ2_0 :=
+                              M.SubPointer.get_struct_record_field (|
+                                γ0_0,
+                                "revm::journaled_state::JournalEntry::AccountTouched",
+                                "address"
+                              |) in
+                            let __self_0 := M.alloc (| γ2_0 |) in
+                            let γ0_1 := M.read (| γ0_1 |) in
+                            let γ2_0 :=
+                              M.SubPointer.get_struct_record_field (|
+                                γ0_1,
+                                "revm::journaled_state::JournalEntry::AccountTouched",
+                                "address"
+                              |) in
+                            let __arg1_0 := M.alloc (| γ2_0 |) in
+                            M.alloc (|
+                              M.call_closure (|
+                                M.get_trait_method (|
+                                  "core::cmp::PartialEq",
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.path "alloy_primitives::bits::address::Address" ],
+                                  [
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.path "alloy_primitives::bits::address::Address" ]
+                                  ],
+                                  "eq",
+                                  []
+                                |),
+                                [ __self_0; __arg1_0 ]
+                              |)
+                            |)));
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                            let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                            let γ0_0 := M.read (| γ0_0 |) in
+                            let γ2_0 :=
+                              M.SubPointer.get_struct_record_field (|
+                                γ0_0,
+                                "revm::journaled_state::JournalEntry::BalanceTransfer",
+                                "from"
+                              |) in
+                            let γ2_1 :=
+                              M.SubPointer.get_struct_record_field (|
+                                γ0_0,
+                                "revm::journaled_state::JournalEntry::BalanceTransfer",
+                                "to"
+                              |) in
+                            let γ2_2 :=
+                              M.SubPointer.get_struct_record_field (|
+                                γ0_0,
+                                "revm::journaled_state::JournalEntry::BalanceTransfer",
+                                "balance"
+                              |) in
+                            let __self_0 := M.alloc (| γ2_0 |) in
+                            let __self_1 := M.alloc (| γ2_1 |) in
+                            let __self_2 := M.alloc (| γ2_2 |) in
+                            let γ0_1 := M.read (| γ0_1 |) in
+                            let γ2_0 :=
+                              M.SubPointer.get_struct_record_field (|
+                                γ0_1,
+                                "revm::journaled_state::JournalEntry::BalanceTransfer",
+                                "from"
+                              |) in
+                            let γ2_1 :=
+                              M.SubPointer.get_struct_record_field (|
+                                γ0_1,
+                                "revm::journaled_state::JournalEntry::BalanceTransfer",
+                                "to"
+                              |) in
+                            let γ2_2 :=
+                              M.SubPointer.get_struct_record_field (|
+                                γ0_1,
+                                "revm::journaled_state::JournalEntry::BalanceTransfer",
+                                "balance"
+                              |) in
+                            let __arg1_0 := M.alloc (| γ2_0 |) in
+                            let __arg1_1 := M.alloc (| γ2_1 |) in
+                            let __arg1_2 := M.alloc (| γ2_2 |) in
+                            M.alloc (|
+                              LogicalOp.and (|
+                                LogicalOp.and (|
+                                  M.call_closure (|
+                                    M.get_trait_method (|
+                                      "core::cmp::PartialEq",
+                                      Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [ Ty.path "alloy_primitives::bits::address::Address" ],
+                                      [
+                                        Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [ Ty.path "alloy_primitives::bits::address::Address" ]
+                                      ],
+                                      "eq",
+                                      []
+                                    |),
+                                    [ __self_0; __arg1_0 ]
+                                  |),
+                                  ltac:(M.monadic
+                                    (M.call_closure (|
+                                      M.get_trait_method (|
+                                        "core::cmp::PartialEq",
+                                        Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [ Ty.path "alloy_primitives::bits::address::Address" ],
+                                        [
+                                          Ty.apply
+                                            (Ty.path "&")
+                                            []
+                                            [ Ty.path "alloy_primitives::bits::address::Address" ]
+                                        ],
+                                        "eq",
+                                        []
+                                      |),
+                                      [ __self_1; __arg1_1 ]
+                                    |)))
+                                |),
+                                ltac:(M.monadic
+                                  (M.call_closure (|
+                                    M.get_trait_method (|
+                                      "core::cmp::PartialEq",
+                                      Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "ruint::Uint")
+                                            [ Value.Integer 256; Value.Integer 4 ]
+                                            []
+                                        ],
+                                      [
+                                        Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "ruint::Uint")
+                                              [ Value.Integer 256; Value.Integer 4 ]
+                                              []
+                                          ]
+                                      ],
+                                      "eq",
+                                      []
+                                    |),
+                                    [ __self_2; __arg1_2 ]
+                                  |)))
+                              |)
+                            |)));
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                            let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                            let γ0_0 := M.read (| γ0_0 |) in
+                            let γ2_0 :=
+                              M.SubPointer.get_struct_record_field (|
+                                γ0_0,
+                                "revm::journaled_state::JournalEntry::NonceChange",
+                                "address"
+                              |) in
+                            let __self_0 := M.alloc (| γ2_0 |) in
+                            let γ0_1 := M.read (| γ0_1 |) in
+                            let γ2_0 :=
+                              M.SubPointer.get_struct_record_field (|
+                                γ0_1,
+                                "revm::journaled_state::JournalEntry::NonceChange",
+                                "address"
+                              |) in
+                            let __arg1_0 := M.alloc (| γ2_0 |) in
+                            M.alloc (|
+                              M.call_closure (|
+                                M.get_trait_method (|
+                                  "core::cmp::PartialEq",
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.path "alloy_primitives::bits::address::Address" ],
+                                  [
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.path "alloy_primitives::bits::address::Address" ]
+                                  ],
+                                  "eq",
+                                  []
+                                |),
+                                [ __self_0; __arg1_0 ]
+                              |)
+                            |)));
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                            let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                            let γ0_0 := M.read (| γ0_0 |) in
+                            let γ2_0 :=
+                              M.SubPointer.get_struct_record_field (|
+                                γ0_0,
+                                "revm::journaled_state::JournalEntry::AccountCreated",
+                                "address"
+                              |) in
+                            let __self_0 := M.alloc (| γ2_0 |) in
+                            let γ0_1 := M.read (| γ0_1 |) in
+                            let γ2_0 :=
+                              M.SubPointer.get_struct_record_field (|
+                                γ0_1,
+                                "revm::journaled_state::JournalEntry::AccountCreated",
+                                "address"
+                              |) in
+                            let __arg1_0 := M.alloc (| γ2_0 |) in
+                            M.alloc (|
+                              M.call_closure (|
+                                M.get_trait_method (|
+                                  "core::cmp::PartialEq",
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.path "alloy_primitives::bits::address::Address" ],
+                                  [
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.path "alloy_primitives::bits::address::Address" ]
+                                  ],
+                                  "eq",
+                                  []
+                                |),
+                                [ __self_0; __arg1_0 ]
+                              |)
+                            |)));
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                            let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                            let γ0_0 := M.read (| γ0_0 |) in
+                            let γ2_0 :=
+                              M.SubPointer.get_struct_record_field (|
+                                γ0_0,
+                                "revm::journaled_state::JournalEntry::StorageChange",
+                                "address"
+                              |) in
+                            let γ2_1 :=
+                              M.SubPointer.get_struct_record_field (|
+                                γ0_0,
+                                "revm::journaled_state::JournalEntry::StorageChange",
+                                "key"
+                              |) in
+                            let γ2_2 :=
+                              M.SubPointer.get_struct_record_field (|
+                                γ0_0,
+                                "revm::journaled_state::JournalEntry::StorageChange",
+                                "had_value"
+                              |) in
+                            let __self_0 := M.alloc (| γ2_0 |) in
+                            let __self_1 := M.alloc (| γ2_1 |) in
+                            let __self_2 := M.alloc (| γ2_2 |) in
+                            let γ0_1 := M.read (| γ0_1 |) in
+                            let γ2_0 :=
+                              M.SubPointer.get_struct_record_field (|
+                                γ0_1,
+                                "revm::journaled_state::JournalEntry::StorageChange",
+                                "address"
+                              |) in
+                            let γ2_1 :=
+                              M.SubPointer.get_struct_record_field (|
+                                γ0_1,
+                                "revm::journaled_state::JournalEntry::StorageChange",
+                                "key"
+                              |) in
+                            let γ2_2 :=
+                              M.SubPointer.get_struct_record_field (|
+                                γ0_1,
+                                "revm::journaled_state::JournalEntry::StorageChange",
+                                "had_value"
+                              |) in
+                            let __arg1_0 := M.alloc (| γ2_0 |) in
+                            let __arg1_1 := M.alloc (| γ2_1 |) in
+                            let __arg1_2 := M.alloc (| γ2_2 |) in
+                            M.alloc (|
+                              LogicalOp.and (|
+                                LogicalOp.and (|
+                                  M.call_closure (|
+                                    M.get_trait_method (|
+                                      "core::cmp::PartialEq",
+                                      Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [ Ty.path "alloy_primitives::bits::address::Address" ],
+                                      [
+                                        Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [ Ty.path "alloy_primitives::bits::address::Address" ]
+                                      ],
+                                      "eq",
+                                      []
+                                    |),
+                                    [ __self_0; __arg1_0 ]
+                                  |),
+                                  ltac:(M.monadic
+                                    (M.call_closure (|
+                                      M.get_trait_method (|
+                                        "core::cmp::PartialEq",
+                                        Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "ruint::Uint")
+                                              [ Value.Integer 256; Value.Integer 4 ]
+                                              []
+                                          ],
+                                        [
+                                          Ty.apply
+                                            (Ty.path "&")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "ruint::Uint")
+                                                [ Value.Integer 256; Value.Integer 4 ]
+                                                []
+                                            ]
+                                        ],
+                                        "eq",
+                                        []
+                                      |),
+                                      [ __self_1; __arg1_1 ]
+                                    |)))
+                                |),
+                                ltac:(M.monadic
+                                  (M.call_closure (|
+                                    M.get_trait_method (|
+                                      "core::cmp::PartialEq",
+                                      Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "core::option::Option")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "ruint::Uint")
+                                                [ Value.Integer 256; Value.Integer 4 ]
+                                                []
+                                            ]
+                                        ],
+                                      [
+                                        Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "core::option::Option")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "ruint::Uint")
+                                                  [ Value.Integer 256; Value.Integer 4 ]
+                                                  []
+                                              ]
+                                          ]
+                                      ],
+                                      "eq",
+                                      []
+                                    |),
+                                    [ __self_2; __arg1_2 ]
                                   |)))
                               |)
                             |)));
@@ -10963,31 +11051,49 @@ Module journaled_state.
                                   M.call_closure (|
                                     M.get_trait_method (|
                                       "core::cmp::PartialEq",
-                                      Ty.path "alloy_primitives::bits::address::Address",
-                                      [ Ty.path "alloy_primitives::bits::address::Address" ],
+                                      Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [ Ty.path "alloy_primitives::bits::address::Address" ],
+                                      [
+                                        Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [ Ty.path "alloy_primitives::bits::address::Address" ]
+                                      ],
                                       "eq",
                                       []
                                     |),
-                                    [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                    [ __self_0; __arg1_0 ]
                                   |),
                                   ltac:(M.monadic
                                     (M.call_closure (|
                                       M.get_trait_method (|
                                         "core::cmp::PartialEq",
                                         Ty.apply
-                                          (Ty.path "ruint::Uint")
-                                          [ Value.Integer 256; Value.Integer 4 ]
-                                          [],
+                                          (Ty.path "&")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "ruint::Uint")
+                                              [ Value.Integer 256; Value.Integer 4 ]
+                                              []
+                                          ],
                                         [
                                           Ty.apply
-                                            (Ty.path "ruint::Uint")
-                                            [ Value.Integer 256; Value.Integer 4 ]
+                                            (Ty.path "&")
                                             []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "ruint::Uint")
+                                                [ Value.Integer 256; Value.Integer 4 ]
+                                                []
+                                            ]
                                         ],
                                         "eq",
                                         []
                                       |),
-                                      [ M.read (| __self_1 |); M.read (| __arg1_1 |) ]
+                                      [ __self_1; __arg1_1 ]
                                     |)))
                                 |),
                                 ltac:(M.monadic
@@ -10995,19 +11101,29 @@ Module journaled_state.
                                     M.get_trait_method (|
                                       "core::cmp::PartialEq",
                                       Ty.apply
-                                        (Ty.path "ruint::Uint")
-                                        [ Value.Integer 256; Value.Integer 4 ]
-                                        [],
+                                        (Ty.path "&")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "ruint::Uint")
+                                            [ Value.Integer 256; Value.Integer 4 ]
+                                            []
+                                        ],
                                       [
                                         Ty.apply
-                                          (Ty.path "ruint::Uint")
-                                          [ Value.Integer 256; Value.Integer 4 ]
+                                          (Ty.path "&")
                                           []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "ruint::Uint")
+                                              [ Value.Integer 256; Value.Integer 4 ]
+                                              []
+                                          ]
                                       ],
                                       "eq",
                                       []
                                     |),
-                                    [ M.read (| __self_2 |); M.read (| __arg1_2 |) ]
+                                    [ __self_2; __arg1_2 ]
                                   |)))
                               |)
                             |)));
@@ -11035,12 +11151,20 @@ Module journaled_state.
                               M.call_closure (|
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
-                                  Ty.path "alloy_primitives::bits::address::Address",
-                                  [ Ty.path "alloy_primitives::bits::address::Address" ],
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.path "alloy_primitives::bits::address::Address" ],
+                                  [
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.path "alloy_primitives::bits::address::Address" ]
+                                  ],
                                   "eq",
                                   []
                                 |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                [ __self_0; __arg1_0 ]
                               |)
                             |)));
                         fun γ =>
@@ -11069,17 +11193,6 @@ Module journaled_state.
         (* Trait polymorphic types *) []
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_revm_journaled_state_JournalEntry.
-  
-  Module Impl_core_marker_StructuralEq_for_revm_journaled_state_JournalEntry.
-    Definition Self : Ty.t := Ty.path "revm::journaled_state::JournalEntry".
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::marker::StructuralEq"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [].
-  End Impl_core_marker_StructuralEq_for_revm_journaled_state_JournalEntry.
   
   Module Impl_core_cmp_Eq_for_revm_journaled_state_JournalEntry.
     Definition Self : Ty.t := Ty.path "revm::journaled_state::JournalEntry".
@@ -11144,7 +11257,7 @@ Module journaled_state.
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
           M.read (|
-            let~ __self_tag :=
+            let~ __self_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -11158,7 +11271,7 @@ Module journaled_state.
               M.alloc (|
                 M.call_closure (|
                   M.get_trait_method (| "core::hash::Hash", Ty.path "isize", [], "hash", [ __H ] |),
-                  [ __self_tag; M.read (| state |) ]
+                  [ __self_discr; M.read (| state |) ]
                 |)
               |) in
             M.match_operator (|
@@ -11607,23 +11720,19 @@ Module journaled_state.
               M.read (| f |);
               M.read (| Value.String "JournalCheckpoint" |);
               M.read (| Value.String "log_i" |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.SubPointer.get_struct_record_field (|
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "revm::journaled_state::JournalCheckpoint",
+                "log_i"
+              |);
+              M.read (| Value.String "journal_i" |);
+              M.alloc (|
+                M.SubPointer.get_struct_record_field (|
                   M.read (| self |),
                   "revm::journaled_state::JournalCheckpoint",
-                  "log_i"
-                |));
-              M.read (| Value.String "journal_i" |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.alloc (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "revm::journaled_state::JournalCheckpoint",
-                    "journal_i"
-                  |)
-                |))
+                  "journal_i"
+                |)
+              |)
             ]
           |)))
       | _, _, _ => M.impossible
@@ -11738,17 +11847,6 @@ Module journaled_state.
         (* Trait polymorphic types *) []
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_revm_journaled_state_JournalCheckpoint.
-  
-  Module Impl_core_marker_StructuralEq_for_revm_journaled_state_JournalCheckpoint.
-    Definition Self : Ty.t := Ty.path "revm::journaled_state::JournalCheckpoint".
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::marker::StructuralEq"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [].
-  End Impl_core_marker_StructuralEq_for_revm_journaled_state_JournalCheckpoint.
   
   Module Impl_core_cmp_Eq_for_revm_journaled_state_JournalCheckpoint.
     Definition Self : Ty.t := Ty.path "revm::journaled_state::JournalCheckpoint".

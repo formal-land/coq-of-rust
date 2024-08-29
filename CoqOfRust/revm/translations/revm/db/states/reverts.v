@@ -106,15 +106,13 @@ Module db.
                 [
                   M.read (| f |);
                   M.read (| Value.String "Reverts" |);
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.alloc (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        M.read (| self |),
-                        "revm::db::states::reverts::Reverts",
-                        0
-                      |)
-                    |))
+                  M.alloc (|
+                    M.SubPointer.get_struct_tuple_field (|
+                      M.read (| self |),
+                      "revm::db::states::reverts::Reverts",
+                      0
+                    |)
+                  |)
                 ]
               |)))
           | _, _, _ => M.impossible
@@ -263,17 +261,6 @@ Module db.
             (* Trait polymorphic types *) []
             (* Instance *) [ ("eq", InstanceField.Method eq) ].
       End Impl_core_cmp_PartialEq_for_revm_db_states_reverts_Reverts.
-      
-      Module Impl_core_marker_StructuralEq_for_revm_db_states_reverts_Reverts.
-        Definition Self : Ty.t := Ty.path "revm::db::states::reverts::Reverts".
-        
-        Axiom Implements :
-          M.IsTraitInstance
-            "core::marker::StructuralEq"
-            Self
-            (* Trait polymorphic types *) []
-            (* Instance *) [].
-      End Impl_core_marker_StructuralEq_for_revm_db_states_reverts_Reverts.
       
       Module Impl_core_cmp_Eq_for_revm_db_states_reverts_Reverts.
         Definition Self : Ty.t := Ty.path "revm::db::states::reverts::Reverts".
@@ -1752,39 +1739,31 @@ Module db.
                   M.read (| f |);
                   M.read (| Value.String "AccountRevert" |);
                   M.read (| Value.String "account" |);
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "revm::db::states::reverts::AccountRevert",
-                      "account"
-                    |));
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "revm::db::states::reverts::AccountRevert",
+                    "account"
+                  |);
                   M.read (| Value.String "storage" |);
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "revm::db::states::reverts::AccountRevert",
-                      "storage"
-                    |));
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "revm::db::states::reverts::AccountRevert",
+                    "storage"
+                  |);
                   M.read (| Value.String "previous_status" |);
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.SubPointer.get_struct_record_field (|
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "revm::db::states::reverts::AccountRevert",
+                    "previous_status"
+                  |);
+                  M.read (| Value.String "wipe_storage" |);
+                  M.alloc (|
+                    M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
                       "revm::db::states::reverts::AccountRevert",
-                      "previous_status"
-                    |));
-                  M.read (| Value.String "wipe_storage" |);
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.alloc (|
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "revm::db::states::reverts::AccountRevert",
-                        "wipe_storage"
-                      |)
-                    |))
+                      "wipe_storage"
+                    |)
+                  |)
                 ]
               |)))
           | _, _, _ => M.impossible
@@ -1938,17 +1917,6 @@ Module db.
             (* Trait polymorphic types *) []
             (* Instance *) [ ("eq", InstanceField.Method eq) ].
       End Impl_core_cmp_PartialEq_for_revm_db_states_reverts_AccountRevert.
-      
-      Module Impl_core_marker_StructuralEq_for_revm_db_states_reverts_AccountRevert.
-        Definition Self : Ty.t := Ty.path "revm::db::states::reverts::AccountRevert".
-        
-        Axiom Implements :
-          M.IsTraitInstance
-            "core::marker::StructuralEq"
-            Self
-            (* Trait polymorphic types *) []
-            (* Instance *) [].
-      End Impl_core_marker_StructuralEq_for_revm_db_states_reverts_AccountRevert.
       
       Module Impl_core_cmp_Eq_for_revm_db_states_reverts_AccountRevert.
         Definition Self : Ty.t := Ty.path "revm::db::states::reverts::AccountRevert".
@@ -3104,11 +3072,7 @@ Module db.
                               "debug_tuple_field1_finish",
                               []
                             |),
-                            [
-                              M.read (| f |);
-                              M.read (| Value.String "RevertTo" |);
-                              (* Unsize *) M.pointer_coercion __self_0
-                            ]
+                            [ M.read (| f |); M.read (| Value.String "RevertTo" |); __self_0 ]
                           |)
                         |)))
                   ]
@@ -3147,7 +3111,7 @@ Module db.
               (let self := M.alloc (| self |) in
               let other := M.alloc (| other |) in
               M.read (|
-                let~ __self_tag :=
+                let~ __self_discr :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_function (|
@@ -3157,7 +3121,7 @@ Module db.
                       [ M.read (| self |) ]
                     |)
                   |) in
-                let~ __arg1_tag :=
+                let~ __arg1_discr :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_function (|
@@ -3169,7 +3133,7 @@ Module db.
                   |) in
                 M.alloc (|
                   LogicalOp.and (|
-                    BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)),
+                    BinOp.Pure.eq (M.read (| __self_discr |)) (M.read (| __arg1_discr |)),
                     ltac:(M.monadic
                       (M.read (|
                         M.match_operator (|
@@ -3199,12 +3163,20 @@ Module db.
                                   M.call_closure (|
                                     M.get_trait_method (|
                                       "core::cmp::PartialEq",
-                                      Ty.path "revm_primitives::state::AccountInfo",
-                                      [ Ty.path "revm_primitives::state::AccountInfo" ],
+                                      Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [ Ty.path "revm_primitives::state::AccountInfo" ],
+                                      [
+                                        Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [ Ty.path "revm_primitives::state::AccountInfo" ]
+                                      ],
                                       "eq",
                                       []
                                     |),
-                                    [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                    [ __self_0; __arg1_0 ]
                                   |)
                                 |)));
                             fun γ => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
@@ -3224,17 +3196,6 @@ Module db.
             (* Trait polymorphic types *) []
             (* Instance *) [ ("eq", InstanceField.Method eq) ].
       End Impl_core_cmp_PartialEq_for_revm_db_states_reverts_AccountInfoRevert.
-      
-      Module Impl_core_marker_StructuralEq_for_revm_db_states_reverts_AccountInfoRevert.
-        Definition Self : Ty.t := Ty.path "revm::db::states::reverts::AccountInfoRevert".
-        
-        Axiom Implements :
-          M.IsTraitInstance
-            "core::marker::StructuralEq"
-            Self
-            (* Trait polymorphic types *) []
-            (* Instance *) [].
-      End Impl_core_marker_StructuralEq_for_revm_db_states_reverts_AccountInfoRevert.
       
       Module Impl_core_cmp_Eq_for_revm_db_states_reverts_AccountInfoRevert.
         Definition Self : Ty.t := Ty.path "revm::db::states::reverts::AccountInfoRevert".
@@ -3278,7 +3239,7 @@ Module db.
               (let self := M.alloc (| self |) in
               let state := M.alloc (| state |) in
               M.read (|
-                let~ __self_tag :=
+                let~ __self_discr :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_function (|
@@ -3298,7 +3259,7 @@ Module db.
                         "hash",
                         [ __H ]
                       |),
-                      [ __self_tag; M.read (| state |) ]
+                      [ __self_discr; M.read (| state |) ]
                     |)
                   |) in
                 M.match_operator (|
@@ -3421,11 +3382,7 @@ Module db.
                               "debug_tuple_field1_finish",
                               []
                             |),
-                            [
-                              M.read (| f |);
-                              M.read (| Value.String "Some" |);
-                              (* Unsize *) M.pointer_coercion __self_0
-                            ]
+                            [ M.read (| f |); M.read (| Value.String "Some" |); __self_0 ]
                           |)
                         |)));
                     fun γ =>
@@ -3493,7 +3450,7 @@ Module db.
               (let self := M.alloc (| self |) in
               let other := M.alloc (| other |) in
               M.read (|
-                let~ __self_tag :=
+                let~ __self_discr :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_function (|
@@ -3503,7 +3460,7 @@ Module db.
                       [ M.read (| self |) ]
                     |)
                   |) in
-                let~ __arg1_tag :=
+                let~ __arg1_discr :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_function (|
@@ -3515,7 +3472,7 @@ Module db.
                   |) in
                 M.alloc (|
                   LogicalOp.and (|
-                    BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)),
+                    BinOp.Pure.eq (M.read (| __self_discr |)) (M.read (| __arg1_discr |)),
                     ltac:(M.monadic
                       (M.read (|
                         M.match_operator (|
@@ -3546,19 +3503,29 @@ Module db.
                                     M.get_trait_method (|
                                       "core::cmp::PartialEq",
                                       Ty.apply
-                                        (Ty.path "ruint::Uint")
-                                        [ Value.Integer 256; Value.Integer 4 ]
-                                        [],
+                                        (Ty.path "&")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "ruint::Uint")
+                                            [ Value.Integer 256; Value.Integer 4 ]
+                                            []
+                                        ],
                                       [
                                         Ty.apply
-                                          (Ty.path "ruint::Uint")
-                                          [ Value.Integer 256; Value.Integer 4 ]
+                                          (Ty.path "&")
                                           []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "ruint::Uint")
+                                              [ Value.Integer 256; Value.Integer 4 ]
+                                              []
+                                          ]
                                       ],
                                       "eq",
                                       []
                                     |),
-                                    [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                    [ __self_0; __arg1_0 ]
                                   |)
                                 |)));
                             fun γ => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
@@ -3578,17 +3545,6 @@ Module db.
             (* Trait polymorphic types *) []
             (* Instance *) [ ("eq", InstanceField.Method eq) ].
       End Impl_core_cmp_PartialEq_for_revm_db_states_reverts_RevertToSlot.
-      
-      Module Impl_core_marker_StructuralEq_for_revm_db_states_reverts_RevertToSlot.
-        Definition Self : Ty.t := Ty.path "revm::db::states::reverts::RevertToSlot".
-        
-        Axiom Implements :
-          M.IsTraitInstance
-            "core::marker::StructuralEq"
-            Self
-            (* Trait polymorphic types *) []
-            (* Instance *) [].
-      End Impl_core_marker_StructuralEq_for_revm_db_states_reverts_RevertToSlot.
       
       Module Impl_core_cmp_Eq_for_revm_db_states_reverts_RevertToSlot.
         Definition Self : Ty.t := Ty.path "revm::db::states::reverts::RevertToSlot".
@@ -3632,7 +3588,7 @@ Module db.
               (let self := M.alloc (| self |) in
               let state := M.alloc (| state |) in
               M.read (|
-                let~ __self_tag :=
+                let~ __self_discr :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_function (|
@@ -3652,7 +3608,7 @@ Module db.
                         "hash",
                         [ __H ]
                       |),
-                      [ __self_tag; M.read (| state |) ]
+                      [ __self_discr; M.read (| state |) ]
                     |)
                   |) in
                 M.match_operator (|

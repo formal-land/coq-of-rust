@@ -35,31 +35,25 @@ Module bytecode.
                   M.read (| f |);
                   M.read (| Value.String "TypesSection" |);
                   M.read (| Value.String "inputs" |);
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "revm_primitives::bytecode::eof::types_section::TypesSection",
-                      "inputs"
-                    |));
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "revm_primitives::bytecode::eof::types_section::TypesSection",
+                    "inputs"
+                  |);
                   M.read (| Value.String "outputs" |);
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.SubPointer.get_struct_record_field (|
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "revm_primitives::bytecode::eof::types_section::TypesSection",
+                    "outputs"
+                  |);
+                  M.read (| Value.String "max_stack_size" |);
+                  M.alloc (|
+                    M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
                       "revm_primitives::bytecode::eof::types_section::TypesSection",
-                      "outputs"
-                    |));
-                  M.read (| Value.String "max_stack_size" |);
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.alloc (|
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "revm_primitives::bytecode::eof::types_section::TypesSection",
-                        "max_stack_size"
-                      |)
-                    |))
+                      "max_stack_size"
+                    |)
+                  |)
                 ]
               |)))
           | _, _, _ => M.impossible
@@ -326,18 +320,6 @@ Module bytecode.
             (* Instance *) [ ("eq", InstanceField.Method eq) ].
       End Impl_core_cmp_PartialEq_for_revm_primitives_bytecode_eof_types_section_TypesSection.
       
-      Module Impl_core_marker_StructuralEq_for_revm_primitives_bytecode_eof_types_section_TypesSection.
-        Definition Self : Ty.t :=
-          Ty.path "revm_primitives::bytecode::eof::types_section::TypesSection".
-        
-        Axiom Implements :
-          M.IsTraitInstance
-            "core::marker::StructuralEq"
-            Self
-            (* Trait polymorphic types *) []
-            (* Instance *) [].
-      End Impl_core_marker_StructuralEq_for_revm_primitives_bytecode_eof_types_section_TypesSection.
-      
       Module Impl_core_cmp_Eq_for_revm_primitives_bytecode_eof_types_section_TypesSection.
         Definition Self : Ty.t :=
           Ty.path "revm_primitives::bytecode::eof::types_section::TypesSection".
@@ -499,22 +481,20 @@ Module bytecode.
                       |),
                       [
                         M.read (| buffer |);
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.alloc (|
-                            M.call_closure (|
-                              M.get_associated_function (| Ty.path "u16", "to_be_bytes", [] |),
-                              [
-                                M.read (|
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
-                                    "revm_primitives::bytecode::eof::types_section::TypesSection",
-                                    "max_stack_size"
-                                  |)
+                        M.alloc (|
+                          M.call_closure (|
+                            M.get_associated_function (| Ty.path "u16", "to_be_bytes", [] |),
+                            [
+                              M.read (|
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "revm_primitives::bytecode::eof::types_section::TypesSection",
+                                  "max_stack_size"
                                 |)
-                              ]
-                            |)
-                          |))
+                              |)
+                            ]
+                          |)
+                        |)
                       ]
                     |)
                   |) in

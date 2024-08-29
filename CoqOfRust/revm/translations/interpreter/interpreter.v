@@ -59,106 +59,78 @@ Module interpreter.
               |) in
             let~ values :=
               M.alloc (|
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.alloc (|
-                    Value.Array
-                      [
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "revm_interpreter::interpreter::Interpreter",
-                            "instruction_pointer"
-                          |));
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "revm_interpreter::interpreter::Interpreter",
-                            "gas"
-                          |));
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "revm_interpreter::interpreter::Interpreter",
-                            "contract"
-                          |));
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "revm_interpreter::interpreter::Interpreter",
-                            "instruction_result"
-                          |));
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "revm_interpreter::interpreter::Interpreter",
-                            "bytecode"
-                          |));
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "revm_interpreter::interpreter::Interpreter",
-                            "is_eof"
-                          |));
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "revm_interpreter::interpreter::Interpreter",
-                            "is_eof_init"
-                          |));
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "revm_interpreter::interpreter::Interpreter",
-                            "shared_memory"
-                          |));
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "revm_interpreter::interpreter::Interpreter",
-                            "stack"
-                          |));
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "revm_interpreter::interpreter::Interpreter",
-                            "function_stack"
-                          |));
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "revm_interpreter::interpreter::Interpreter",
-                            "return_data_buffer"
-                          |));
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "revm_interpreter::interpreter::Interpreter",
-                            "is_static"
-                          |));
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.alloc (|
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "revm_interpreter::interpreter::Interpreter",
-                              "next_action"
-                            |)
-                          |))
-                      ]
-                  |))
+                M.alloc (|
+                  Value.Array
+                    [
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "revm_interpreter::interpreter::Interpreter",
+                        "instruction_pointer"
+                      |);
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "revm_interpreter::interpreter::Interpreter",
+                        "gas"
+                      |);
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "revm_interpreter::interpreter::Interpreter",
+                        "contract"
+                      |);
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "revm_interpreter::interpreter::Interpreter",
+                        "instruction_result"
+                      |);
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "revm_interpreter::interpreter::Interpreter",
+                        "bytecode"
+                      |);
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "revm_interpreter::interpreter::Interpreter",
+                        "is_eof"
+                      |);
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "revm_interpreter::interpreter::Interpreter",
+                        "is_eof_init"
+                      |);
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "revm_interpreter::interpreter::Interpreter",
+                        "shared_memory"
+                      |);
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "revm_interpreter::interpreter::Interpreter",
+                        "stack"
+                      |);
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "revm_interpreter::interpreter::Interpreter",
+                        "function_stack"
+                      |);
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "revm_interpreter::interpreter::Interpreter",
+                        "return_data_buffer"
+                      |);
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "revm_interpreter::interpreter::Interpreter",
+                        "is_static"
+                      |);
+                      M.alloc (|
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "revm_interpreter::interpreter::Interpreter",
+                          "next_action"
+                        |)
+                      |)
+                    ]
+                |)
               |) in
             M.alloc (|
               M.call_closure (|
@@ -170,7 +142,7 @@ Module interpreter.
                 [
                   M.read (| f |);
                   M.read (| Value.String "Interpreter" |);
-                  (* Unsize *) M.pointer_coercion (M.read (| names |));
+                  M.read (| names |);
                   M.read (| values |)
                 ]
               |)
@@ -339,31 +311,25 @@ Module interpreter.
               M.read (| f |);
               M.read (| Value.String "InterpreterResult" |);
               M.read (| Value.String "result" |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "revm_interpreter::interpreter::InterpreterResult",
-                  "result"
-                |));
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "revm_interpreter::interpreter::InterpreterResult",
+                "result"
+              |);
               M.read (| Value.String "output" |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.SubPointer.get_struct_record_field (|
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "revm_interpreter::interpreter::InterpreterResult",
+                "output"
+              |);
+              M.read (| Value.String "gas" |);
+              M.alloc (|
+                M.SubPointer.get_struct_record_field (|
                   M.read (| self |),
                   "revm_interpreter::interpreter::InterpreterResult",
-                  "output"
-                |));
-              M.read (| Value.String "gas" |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.alloc (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "revm_interpreter::interpreter::InterpreterResult",
-                    "gas"
-                  |)
-                |))
+                  "gas"
+                |)
+              |)
             ]
           |)))
       | _, _, _ => M.impossible
@@ -477,17 +443,6 @@ Module interpreter.
         (* Trait polymorphic types *) []
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_revm_interpreter_interpreter_InterpreterResult.
-  
-  Module Impl_core_marker_StructuralEq_for_revm_interpreter_interpreter_InterpreterResult.
-    Definition Self : Ty.t := Ty.path "revm_interpreter::interpreter::InterpreterResult".
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::marker::StructuralEq"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [].
-  End Impl_core_marker_StructuralEq_for_revm_interpreter_interpreter_InterpreterResult.
   
   Module Impl_core_cmp_Eq_for_revm_interpreter_interpreter_InterpreterResult.
     Definition Self : Ty.t := Ty.path "revm_interpreter::interpreter::InterpreterResult".
@@ -607,37 +562,30 @@ Module interpreter.
                                   []
                                 |),
                                 [
-                                  (* Unsize *)
-                                  M.pointer_coercion
-                                    (M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.read (|
-                                            Value.String "Contract is not execution ready "
-                                          |)
-                                        ]
-                                    |));
-                                  (* Unsize *)
-                                  M.pointer_coercion
-                                    (M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.call_closure (|
-                                            M.get_associated_function (|
-                                              Ty.path "core::fmt::rt::Argument",
-                                              "new_debug",
-                                              [ Ty.path "revm_primitives::bytecode::Bytecode" ]
-                                            |),
-                                            [
-                                              M.SubPointer.get_struct_record_field (|
-                                                contract,
-                                                "revm_interpreter::interpreter::contract::Contract",
-                                                "bytecode"
-                                              |)
-                                            ]
-                                          |)
-                                        ]
-                                    |))
+                                  M.alloc (|
+                                    Value.Array
+                                      [ M.read (| Value.String "Contract is not execution ready " |)
+                                      ]
+                                  |);
+                                  M.alloc (|
+                                    Value.Array
+                                      [
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path "core::fmt::rt::Argument",
+                                            "new_debug",
+                                            [ Ty.path "revm_primitives::bytecode::Bytecode" ]
+                                          |),
+                                          [
+                                            M.SubPointer.get_struct_record_field (|
+                                              contract,
+                                              "revm_interpreter::interpreter::contract::Contract",
+                                              "bytecode"
+                                            |)
+                                          ]
+                                        |)
+                                      ]
+                                  |)
                                 ]
                               |)
                             ]
@@ -1517,17 +1465,15 @@ Module interpreter.
                                     []
                                   |),
                                   [
-                                    (* Unsize *)
-                                    M.pointer_coercion
-                                      (M.alloc (|
-                                        Value.Array
-                                          [
-                                            M.read (|
-                                              Value.String
-                                                "Fatal external error in insert_create_outcome"
-                                            |)
-                                          ]
-                                      |))
+                                    M.alloc (|
+                                      Value.Array
+                                        [
+                                          M.read (|
+                                            Value.String
+                                              "Fatal external error in insert_create_outcome"
+                                          |)
+                                        ]
+                                    |)
                                   ]
                                 |)
                               ]
@@ -2040,17 +1986,15 @@ Module interpreter.
                                     []
                                   |),
                                   [
-                                    (* Unsize *)
-                                    M.pointer_coercion
-                                      (M.alloc (|
-                                        Value.Array
-                                          [
-                                            M.read (|
-                                              Value.String
-                                                "Fatal external error in insert_eofcreate_outcome"
-                                            |)
-                                          ]
-                                      |))
+                                    M.alloc (|
+                                      Value.Array
+                                        [
+                                          M.read (|
+                                            Value.String
+                                              "Fatal external error in insert_eofcreate_outcome"
+                                          |)
+                                        ]
+                                    |)
                                   ]
                                 |)
                               ]
@@ -2761,17 +2705,15 @@ Module interpreter.
                                     []
                                   |),
                                   [
-                                    (* Unsize *)
-                                    M.pointer_coercion
-                                      (M.alloc (|
-                                        Value.Array
-                                          [
-                                            M.read (|
-                                              Value.String
-                                                "Fatal external error in insert_call_outcome"
-                                            |)
-                                          ]
-                                      |))
+                                    M.alloc (|
+                                      Value.Array
+                                        [
+                                          M.read (|
+                                            Value.String
+                                              "Fatal external error in insert_call_outcome"
+                                          |)
+                                        ]
+                                    |)
                                   ]
                                 |)
                               ]

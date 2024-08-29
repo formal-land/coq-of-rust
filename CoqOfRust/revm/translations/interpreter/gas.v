@@ -75,31 +75,25 @@ Module gas.
               M.read (| f |);
               M.read (| Value.String "Gas" |);
               M.read (| Value.String "limit" |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "revm_interpreter::gas::Gas",
-                  "limit"
-                |));
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "revm_interpreter::gas::Gas",
+                "limit"
+              |);
               M.read (| Value.String "remaining" |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.SubPointer.get_struct_record_field (|
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "revm_interpreter::gas::Gas",
+                "remaining"
+              |);
+              M.read (| Value.String "refunded" |);
+              M.alloc (|
+                M.SubPointer.get_struct_record_field (|
                   M.read (| self |),
                   "revm_interpreter::gas::Gas",
-                  "remaining"
-                |));
-              M.read (| Value.String "refunded" |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.alloc (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "revm_interpreter::gas::Gas",
-                    "refunded"
-                  |)
-                |))
+                  "refunded"
+                |)
+              |)
             ]
           |)))
       | _, _, _ => M.impossible
@@ -251,17 +245,6 @@ Module gas.
         (* Trait polymorphic types *) []
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_revm_interpreter_gas_Gas.
-  
-  Module Impl_core_marker_StructuralEq_for_revm_interpreter_gas_Gas.
-    Definition Self : Ty.t := Ty.path "revm_interpreter::gas::Gas".
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::marker::StructuralEq"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [].
-  End Impl_core_marker_StructuralEq_for_revm_interpreter_gas_Gas.
   
   Module Impl_core_cmp_Eq_for_revm_interpreter_gas_Gas.
     Definition Self : Ty.t := Ty.path "revm_interpreter::gas::Gas".

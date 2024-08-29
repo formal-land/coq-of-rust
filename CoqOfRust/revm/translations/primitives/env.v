@@ -110,31 +110,25 @@ Module env.
               M.read (| f |);
               M.read (| Value.String "Env" |);
               M.read (| Value.String "cfg" |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "revm_primitives::env::Env",
-                  "cfg"
-                |));
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "revm_primitives::env::Env",
+                "cfg"
+              |);
               M.read (| Value.String "block" |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.SubPointer.get_struct_record_field (|
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "revm_primitives::env::Env",
+                "block"
+              |);
+              M.read (| Value.String "tx" |);
+              M.alloc (|
+                M.SubPointer.get_struct_record_field (|
                   M.read (| self |),
                   "revm_primitives::env::Env",
-                  "block"
-                |));
-              M.read (| Value.String "tx" |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.alloc (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "revm_primitives::env::Env",
-                    "tx"
-                  |)
-                |))
+                  "tx"
+                |)
+              |)
             ]
           |)))
       | _, _, _ => M.impossible
@@ -304,17 +298,6 @@ Module env.
         (* Trait polymorphic types *) []
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_revm_primitives_env_Env.
-  
-  Module Impl_core_marker_StructuralEq_for_revm_primitives_env_Env.
-    Definition Self : Ty.t := Ty.path "revm_primitives::env::Env".
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::marker::StructuralEq"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [].
-  End Impl_core_marker_StructuralEq_for_revm_primitives_env_Env.
   
   Module Impl_core_cmp_Eq_for_revm_primitives_env_Env.
     Definition Self : Ty.t := Ty.path "revm_primitives::env::Env".
@@ -3848,39 +3831,31 @@ Module env.
               M.read (| f |);
               M.read (| Value.String "CfgEnv" |);
               M.read (| Value.String "chain_id" |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "revm_primitives::env::CfgEnv",
-                  "chain_id"
-                |));
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "revm_primitives::env::CfgEnv",
+                "chain_id"
+              |);
               M.read (| Value.String "kzg_settings" |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "revm_primitives::env::CfgEnv",
-                  "kzg_settings"
-                |));
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "revm_primitives::env::CfgEnv",
+                "kzg_settings"
+              |);
               M.read (| Value.String "perf_analyse_created_bytecodes" |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.SubPointer.get_struct_record_field (|
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "revm_primitives::env::CfgEnv",
+                "perf_analyse_created_bytecodes"
+              |);
+              M.read (| Value.String "limit_contract_code_size" |);
+              M.alloc (|
+                M.SubPointer.get_struct_record_field (|
                   M.read (| self |),
                   "revm_primitives::env::CfgEnv",
-                  "perf_analyse_created_bytecodes"
-                |));
-              M.read (| Value.String "limit_contract_code_size" |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.alloc (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "revm_primitives::env::CfgEnv",
-                    "limit_contract_code_size"
-                  |)
-                |))
+                  "limit_contract_code_size"
+                |)
+              |)
             ]
           |)))
       | _, _, _ => M.impossible
@@ -3893,17 +3868,6 @@ Module env.
         (* Trait polymorphic types *) []
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Debug_for_revm_primitives_env_CfgEnv.
-  
-  Module Impl_core_marker_StructuralEq_for_revm_primitives_env_CfgEnv.
-    Definition Self : Ty.t := Ty.path "revm_primitives::env::CfgEnv".
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::marker::StructuralEq"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [].
-  End Impl_core_marker_StructuralEq_for_revm_primitives_env_CfgEnv.
   
   Module Impl_core_cmp_Eq_for_revm_primitives_env_CfgEnv.
     Definition Self : Ty.t := Ty.path "revm_primitives::env::CfgEnv".
@@ -4522,71 +4486,53 @@ Module env.
               |) in
             let~ values :=
               M.alloc (|
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.alloc (|
-                    Value.Array
-                      [
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "revm_primitives::env::BlockEnv",
-                            "number"
-                          |));
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "revm_primitives::env::BlockEnv",
-                            "coinbase"
-                          |));
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "revm_primitives::env::BlockEnv",
-                            "timestamp"
-                          |));
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "revm_primitives::env::BlockEnv",
-                            "gas_limit"
-                          |));
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "revm_primitives::env::BlockEnv",
-                            "basefee"
-                          |));
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "revm_primitives::env::BlockEnv",
-                            "difficulty"
-                          |));
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "revm_primitives::env::BlockEnv",
-                            "prevrandao"
-                          |));
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.alloc (|
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "revm_primitives::env::BlockEnv",
-                              "blob_excess_gas_and_price"
-                            |)
-                          |))
-                      ]
-                  |))
+                M.alloc (|
+                  Value.Array
+                    [
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "revm_primitives::env::BlockEnv",
+                        "number"
+                      |);
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "revm_primitives::env::BlockEnv",
+                        "coinbase"
+                      |);
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "revm_primitives::env::BlockEnv",
+                        "timestamp"
+                      |);
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "revm_primitives::env::BlockEnv",
+                        "gas_limit"
+                      |);
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "revm_primitives::env::BlockEnv",
+                        "basefee"
+                      |);
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "revm_primitives::env::BlockEnv",
+                        "difficulty"
+                      |);
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "revm_primitives::env::BlockEnv",
+                        "prevrandao"
+                      |);
+                      M.alloc (|
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "revm_primitives::env::BlockEnv",
+                          "blob_excess_gas_and_price"
+                        |)
+                      |)
+                    ]
+                |)
               |) in
             M.alloc (|
               M.call_closure (|
@@ -4598,7 +4544,7 @@ Module env.
                 [
                   M.read (| f |);
                   M.read (| Value.String "BlockEnv" |);
-                  (* Unsize *) M.pointer_coercion (M.read (| names |));
+                  M.read (| names |);
                   M.read (| values |)
                 ]
               |)
@@ -4887,17 +4833,6 @@ Module env.
         (* Trait polymorphic types *) []
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_revm_primitives_env_BlockEnv.
-  
-  Module Impl_core_marker_StructuralEq_for_revm_primitives_env_BlockEnv.
-    Definition Self : Ty.t := Ty.path "revm_primitives::env::BlockEnv".
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::marker::StructuralEq"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [].
-  End Impl_core_marker_StructuralEq_for_revm_primitives_env_BlockEnv.
   
   Module Impl_core_cmp_Eq_for_revm_primitives_env_BlockEnv.
     Definition Self : Ty.t := Ty.path "revm_primitives::env::BlockEnv".
@@ -5880,113 +5815,83 @@ Module env.
               |) in
             let~ values :=
               M.alloc (|
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.alloc (|
-                    Value.Array
-                      [
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "revm_primitives::env::TxEnv",
-                            "caller"
-                          |));
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "revm_primitives::env::TxEnv",
-                            "gas_limit"
-                          |));
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "revm_primitives::env::TxEnv",
-                            "gas_price"
-                          |));
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "revm_primitives::env::TxEnv",
-                            "transact_to"
-                          |));
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "revm_primitives::env::TxEnv",
-                            "value"
-                          |));
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "revm_primitives::env::TxEnv",
-                            "data"
-                          |));
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "revm_primitives::env::TxEnv",
-                            "nonce"
-                          |));
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "revm_primitives::env::TxEnv",
-                            "chain_id"
-                          |));
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "revm_primitives::env::TxEnv",
-                            "access_list"
-                          |));
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "revm_primitives::env::TxEnv",
-                            "gas_priority_fee"
-                          |));
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "revm_primitives::env::TxEnv",
-                            "blob_hashes"
-                          |));
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "revm_primitives::env::TxEnv",
-                            "max_fee_per_blob_gas"
-                          |));
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "revm_primitives::env::TxEnv",
-                            "eof_initcodes"
-                          |));
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.alloc (|
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "revm_primitives::env::TxEnv",
-                              "eof_initcodes_hashed"
-                            |)
-                          |))
-                      ]
-                  |))
+                M.alloc (|
+                  Value.Array
+                    [
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "revm_primitives::env::TxEnv",
+                        "caller"
+                      |);
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "revm_primitives::env::TxEnv",
+                        "gas_limit"
+                      |);
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "revm_primitives::env::TxEnv",
+                        "gas_price"
+                      |);
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "revm_primitives::env::TxEnv",
+                        "transact_to"
+                      |);
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "revm_primitives::env::TxEnv",
+                        "value"
+                      |);
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "revm_primitives::env::TxEnv",
+                        "data"
+                      |);
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "revm_primitives::env::TxEnv",
+                        "nonce"
+                      |);
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "revm_primitives::env::TxEnv",
+                        "chain_id"
+                      |);
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "revm_primitives::env::TxEnv",
+                        "access_list"
+                      |);
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "revm_primitives::env::TxEnv",
+                        "gas_priority_fee"
+                      |);
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "revm_primitives::env::TxEnv",
+                        "blob_hashes"
+                      |);
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "revm_primitives::env::TxEnv",
+                        "max_fee_per_blob_gas"
+                      |);
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "revm_primitives::env::TxEnv",
+                        "eof_initcodes"
+                      |);
+                      M.alloc (|
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "revm_primitives::env::TxEnv",
+                          "eof_initcodes_hashed"
+                        |)
+                      |)
+                    ]
+                |)
               |) in
             M.alloc (|
               M.call_closure (|
@@ -5998,7 +5903,7 @@ Module env.
                 [
                   M.read (| f |);
                   M.read (| Value.String "TxEnv" |);
-                  (* Unsize *) M.pointer_coercion (M.read (| names |));
+                  M.read (| names |);
                   M.read (| values |)
                 ]
               |)
@@ -6513,17 +6418,6 @@ Module env.
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_revm_primitives_env_TxEnv.
   
-  Module Impl_core_marker_StructuralEq_for_revm_primitives_env_TxEnv.
-    Definition Self : Ty.t := Ty.path "revm_primitives::env::TxEnv".
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::marker::StructuralEq"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [].
-  End Impl_core_marker_StructuralEq_for_revm_primitives_env_TxEnv.
-  
   Module Impl_core_cmp_Eq_for_revm_primitives_env_TxEnv.
     Definition Self : Ty.t := Ty.path "revm_primitives::env::TxEnv".
     
@@ -6975,23 +6869,19 @@ Module env.
               M.read (| f |);
               M.read (| Value.String "BlobExcessGasAndPrice" |);
               M.read (| Value.String "excess_blob_gas" |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.SubPointer.get_struct_record_field (|
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "revm_primitives::env::BlobExcessGasAndPrice",
+                "excess_blob_gas"
+              |);
+              M.read (| Value.String "blob_gasprice" |);
+              M.alloc (|
+                M.SubPointer.get_struct_record_field (|
                   M.read (| self |),
                   "revm_primitives::env::BlobExcessGasAndPrice",
-                  "excess_blob_gas"
-                |));
-              M.read (| Value.String "blob_gasprice" |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.alloc (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "revm_primitives::env::BlobExcessGasAndPrice",
-                    "blob_gasprice"
-                  |)
-                |))
+                  "blob_gasprice"
+                |)
+              |)
             ]
           |)))
       | _, _, _ => M.impossible
@@ -7069,17 +6959,6 @@ Module env.
         (* Trait polymorphic types *) []
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_revm_primitives_env_BlobExcessGasAndPrice.
-  
-  Module Impl_core_marker_StructuralEq_for_revm_primitives_env_BlobExcessGasAndPrice.
-    Definition Self : Ty.t := Ty.path "revm_primitives::env::BlobExcessGasAndPrice".
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::marker::StructuralEq"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [].
-  End Impl_core_marker_StructuralEq_for_revm_primitives_env_BlobExcessGasAndPrice.
   
   Module Impl_core_cmp_Eq_for_revm_primitives_env_BlobExcessGasAndPrice.
     Definition Self : Ty.t := Ty.path "revm_primitives::env::BlobExcessGasAndPrice".
@@ -7320,11 +7199,7 @@ Module env.
                           "debug_tuple_field1_finish",
                           []
                         |),
-                        [
-                          M.read (| f |);
-                          M.read (| Value.String "Call" |);
-                          (* Unsize *) M.pointer_coercion __self_0
-                        ]
+                        [ M.read (| f |); M.read (| Value.String "Call" |); __self_0 ]
                       |)
                     |)));
                 fun γ =>
@@ -7378,7 +7253,7 @@ Module env.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ __self_tag :=
+            let~ __self_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -7388,7 +7263,7 @@ Module env.
                   [ M.read (| self |) ]
                 |)
               |) in
-            let~ __arg1_tag :=
+            let~ __arg1_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -7400,7 +7275,7 @@ Module env.
               |) in
             M.alloc (|
               LogicalOp.and (|
-                BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)),
+                BinOp.Pure.eq (M.read (| __self_discr |)) (M.read (| __arg1_discr |)),
                 ltac:(M.monadic
                   (M.read (|
                     M.match_operator (|
@@ -7430,12 +7305,20 @@ Module env.
                               M.call_closure (|
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
-                                  Ty.path "alloy_primitives::bits::address::Address",
-                                  [ Ty.path "alloy_primitives::bits::address::Address" ],
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.path "alloy_primitives::bits::address::Address" ],
+                                  [
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.path "alloy_primitives::bits::address::Address" ]
+                                  ],
                                   "eq",
                                   []
                                 |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                [ __self_0; __arg1_0 ]
                               |)
                             |)));
                         fun γ => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
@@ -7455,17 +7338,6 @@ Module env.
         (* Trait polymorphic types *) []
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_revm_primitives_env_TransactTo.
-  
-  Module Impl_core_marker_StructuralEq_for_revm_primitives_env_TransactTo.
-    Definition Self : Ty.t := Ty.path "revm_primitives::env::TransactTo".
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::marker::StructuralEq"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [].
-  End Impl_core_marker_StructuralEq_for_revm_primitives_env_TransactTo.
   
   Module Impl_core_cmp_Eq_for_revm_primitives_env_TransactTo.
     Definition Self : Ty.t := Ty.path "revm_primitives::env::TransactTo".
@@ -7509,7 +7381,7 @@ Module env.
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
           M.read (|
-            let~ __self_tag :=
+            let~ __self_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -7523,7 +7395,7 @@ Module env.
               M.alloc (|
                 M.call_closure (|
                   M.get_trait_method (| "core::hash::Hash", Ty.path "isize", [], "hash", [ __H ] |),
-                  [ __self_tag; M.read (| state |) ]
+                  [ __self_discr; M.read (| state |) ]
                 |)
               |) in
             M.match_operator (|
@@ -7773,7 +7645,7 @@ Module env.
                           M.read (| f |);
                           M.read (| Value.String "Create2" |);
                           M.read (| Value.String "salt" |);
-                          (* Unsize *) M.pointer_coercion __self_0
+                          __self_0
                         ]
                       |)
                     |)))
@@ -7790,17 +7662,6 @@ Module env.
         (* Trait polymorphic types *) []
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Debug_for_revm_primitives_env_CreateScheme.
-  
-  Module Impl_core_marker_StructuralEq_for_revm_primitives_env_CreateScheme.
-    Definition Self : Ty.t := Ty.path "revm_primitives::env::CreateScheme".
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::marker::StructuralEq"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [].
-  End Impl_core_marker_StructuralEq_for_revm_primitives_env_CreateScheme.
   
   Module Impl_core_cmp_Eq_for_revm_primitives_env_CreateScheme.
     Definition Self : Ty.t := Ty.path "revm_primitives::env::CreateScheme".
@@ -7855,7 +7716,7 @@ Module env.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ __self_tag :=
+            let~ __self_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -7865,7 +7726,7 @@ Module env.
                   [ M.read (| self |) ]
                 |)
               |) in
-            let~ __arg1_tag :=
+            let~ __arg1_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -7877,7 +7738,7 @@ Module env.
               |) in
             M.alloc (|
               LogicalOp.and (|
-                BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)),
+                BinOp.Pure.eq (M.read (| __self_discr |)) (M.read (| __arg1_discr |)),
                 ltac:(M.monadic
                   (M.read (|
                     M.match_operator (|
@@ -7908,19 +7769,29 @@ Module env.
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply
-                                    (Ty.path "ruint::Uint")
-                                    [ Value.Integer 256; Value.Integer 4 ]
-                                    [],
+                                    (Ty.path "&")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "ruint::Uint")
+                                        [ Value.Integer 256; Value.Integer 4 ]
+                                        []
+                                    ],
                                   [
                                     Ty.apply
-                                      (Ty.path "ruint::Uint")
-                                      [ Value.Integer 256; Value.Integer 4 ]
+                                      (Ty.path "&")
                                       []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "ruint::Uint")
+                                          [ Value.Integer 256; Value.Integer 4 ]
+                                          []
+                                      ]
                                   ],
                                   "eq",
                                   []
                                 |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                [ __self_0; __arg1_0 ]
                               |)
                             |)));
                         fun γ => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
@@ -7952,7 +7823,7 @@ Module env.
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
           M.read (|
-            let~ __self_tag :=
+            let~ __self_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -7966,7 +7837,7 @@ Module env.
               M.alloc (|
                 M.call_closure (|
                   M.get_trait_method (| "core::hash::Hash", Ty.path "isize", [], "hash", [ __H ] |),
-                  [ __self_tag; M.read (| state |) ]
+                  [ __self_discr; M.read (| state |) ]
                 |)
               |) in
             M.match_operator (|
@@ -8141,17 +8012,6 @@ Module env.
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Debug_for_revm_primitives_env_AnalysisKind.
   
-  Module Impl_core_marker_StructuralEq_for_revm_primitives_env_AnalysisKind.
-    Definition Self : Ty.t := Ty.path "revm_primitives::env::AnalysisKind".
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::marker::StructuralEq"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [].
-  End Impl_core_marker_StructuralEq_for_revm_primitives_env_AnalysisKind.
-  
   Module Impl_core_cmp_Eq_for_revm_primitives_env_AnalysisKind.
     Definition Self : Ty.t := Ty.path "revm_primitives::env::AnalysisKind".
     
@@ -8200,7 +8060,7 @@ Module env.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ __self_tag :=
+            let~ __self_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -8210,7 +8070,7 @@ Module env.
                   [ M.read (| self |) ]
                 |)
               |) in
-            let~ __arg1_tag :=
+            let~ __arg1_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -8220,7 +8080,7 @@ Module env.
                   [ M.read (| other |) ]
                 |)
               |) in
-            M.alloc (| BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)) |)
+            M.alloc (| BinOp.Pure.eq (M.read (| __self_discr |)) (M.read (| __arg1_discr |)) |)
           |)))
       | _, _, _ => M.impossible
       end.
@@ -8244,7 +8104,7 @@ Module env.
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
           M.read (|
-            let~ __self_tag :=
+            let~ __self_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -8257,7 +8117,7 @@ Module env.
             M.alloc (|
               M.call_closure (|
                 M.get_trait_method (| "core::hash::Hash", Ty.path "isize", [], "hash", [ __H ] |),
-                [ __self_tag; M.read (| state |) ]
+                [ __self_discr; M.read (| state |) ]
               |)
             |)
           |)))
