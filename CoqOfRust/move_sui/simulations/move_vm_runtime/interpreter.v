@@ -229,18 +229,6 @@ Module Frame.
   }
 End Frame.
 
-(* NOTE: State to be designed: Z * Locals * Interpreter *)
-Definition State := (Z * Locals.t * Interpreter.t).
-
-(* NOTE: this function is of `impl Frame` (but doesn't involve `Frame` item?) *)
-Definition execute_instruction (pc : Z) 
-  (locals : Locals.t) (ty_args : list Type.t)
-  (function : Function.t) (resolver : Resolver.t)
-  (interpreter : Interpreter.t) (* (gas_meter : GasMeter.t) *) (* NOTE: We ignore gas since it's never implemented *)
-  (instruction : Bytecode.t)
-  : MS? State string PartialVMResult.t InstrRet.t . (* := *) 
-  
-  Admitted.
 (* 
     fn execute_instruction(
         pc: &mut u16,
@@ -293,30 +281,30 @@ Definition execute_instruction (pc : Z)
             }
             Bytecode::LdU8(int_const) => {
                 gas_meter.charge_simple_instr(S::LdU8)?;
-                interpreter.operand_stack.push(Value::u8(*int_const))?;
+                interpreter.operand_stack.push(Value::u8(*int_const))?; //*)
             }
             Bytecode::LdU16(int_const) => {
                 gas_meter.charge_simple_instr(S::LdU16)?;
-                interpreter.operand_stack.push(Value::u16(*int_const))?;
+                interpreter.operand_stack.push(Value::u16(*int_const))?; //*)
             }
             Bytecode::LdU32(int_const) => {
                 gas_meter.charge_simple_instr(S::LdU32)?;
-                interpreter.operand_stack.push(Value::u32(*int_const))?;
+                interpreter.operand_stack.push(Value::u32(*int_const))?; //*)
             }
             Bytecode::LdU64(int_const) => {
                 gas_meter.charge_simple_instr(S::LdU64)?;
-                interpreter.operand_stack.push(Value::u64(*int_const))?;
+                interpreter.operand_stack.push(Value::u64(*int_const))?; //*)
             }
             Bytecode::LdU128(int_const) => {
                 gas_meter.charge_simple_instr(S::LdU128)?;
-                interpreter.operand_stack.push(Value::u128(**int_const))?;
+                interpreter.operand_stack.push(Value::u128(**int_const))?; //*)
             }
             Bytecode::LdU256(int_const) => {
                 gas_meter.charge_simple_instr(S::LdU256)?;
-                interpreter.operand_stack.push(Value::u256(**int_const))?;
+                interpreter.operand_stack.push(Value::u256(**int_const))?; //*)
             }
             Bytecode::LdConst(idx) => {
-                let constant = resolver.constant_at(*idx);
+                let constant = resolver.constant_at(*idx); //*)
                 gas_meter.charge_ld_const(NumBytes::new(constant.data.len() as u64))?;
 
                 let val = Value::deserialize_constant(constant).ok_or_else(|| {
@@ -339,7 +327,7 @@ Definition execute_instruction (pc : Z)
             }
             Bytecode::CopyLoc(idx) => {
                 // TODO(Gas): We should charge gas before copying the value.
-                let local = locals.copy_loc(*idx as usize)?;
+                let local = locals.copy_loc(*idx as usize)?; //*)
                 gas_meter.charge_copy_loc(&local)?;
                 interpreter.operand_stack.push(local)?;
             }
@@ -368,10 +356,10 @@ Definition execute_instruction (pc : Z)
                 )?;
             }
             Bytecode::Call(idx) => {
-                return Ok(InstrRet::ExitCode(ExitCode::Call(*idx)));
+                return Ok(InstrRet::ExitCode(ExitCode::Call(*idx))); //*)
             }
             Bytecode::CallGeneric(idx) => {
-                return Ok(InstrRet::ExitCode(ExitCode::CallGeneric(*idx)));
+                return Ok(InstrRet::ExitCode(ExitCode::CallGeneric(*idx))); //*)
             }
             Bytecode::MutBorrowLoc(idx) | Bytecode::ImmBorrowLoc(idx) => {
                 let instr = match instruction {
@@ -381,7 +369,7 @@ Definition execute_instruction (pc : Z)
                 gas_meter.charge_simple_instr(instr)?;
                 interpreter
                     .operand_stack
-                    .push(locals.borrow_loc(*idx as usize)?)?;
+                    .push(locals.borrow_loc(*idx as usize)?)?; //*)
             }
             Bytecode::ImmBorrowField(fh_idx) | Bytecode::MutBorrowField(fh_idx) => {
                 let instr = match instruction {
@@ -392,7 +380,7 @@ Definition execute_instruction (pc : Z)
 
                 let reference = interpreter.operand_stack.pop_as::<StructRef>()?;
 
-                let offset = resolver.field_offset(*fh_idx);
+                let offset = resolver.field_offset(*fh_idx); //*)
                 let field_ref = reference.borrow_field(offset)?;
                 interpreter.operand_stack.push(field_ref)?;
             }
@@ -405,13 +393,13 @@ Definition execute_instruction (pc : Z)
 
                 let reference = interpreter.operand_stack.pop_as::<StructRef>()?;
 
-                let offset = resolver.field_instantiation_offset(*fi_idx);
+                let offset = resolver.field_instantiation_offset(*fi_idx); //*)
                 let field_ref = reference.borrow_field(offset)?;
                 interpreter.operand_stack.push(field_ref)?;
             }
             Bytecode::Pack(sd_idx) => {
-                let field_count = resolver.field_count(*sd_idx);
-                let struct_type = resolver.get_struct_type(*sd_idx);
+                let field_count = resolver.field_count(*sd_idx); //*)
+                let struct_type = resolver.get_struct_type(*sd_idx); //*)
                 Self::check_depth_of_type(resolver, &struct_type)?;
                 gas_meter.charge_pack(
                     false,
@@ -423,8 +411,8 @@ Definition execute_instruction (pc : Z)
                     .push(Value::struct_(Struct::pack(args)))?;
             }
             Bytecode::PackGeneric(si_idx) => {
-                let field_count = resolver.field_instantiation_count(*si_idx);
-                let ty = resolver.instantiate_generic_type(*si_idx, ty_args)?;
+                let field_count = resolver.field_instantiation_count(*si_idx); //*)
+                let ty = resolver.instantiate_generic_type(*si_idx, ty_args)?; //*)
                 Self::check_depth_of_type(resolver, &ty)?;
                 gas_meter.charge_pack(
                     true,
@@ -633,19 +621,19 @@ Definition execute_instruction (pc : Z)
                 gas_meter.charge_simple_instr(S::Nop)?;
             }
             Bytecode::VecPack(si, num) => {
-                let ty = resolver.instantiate_single_type(*si, ty_args)?;
+                let ty = resolver.instantiate_single_type(*si, ty_args)?; //*)
                 Self::check_depth_of_type(resolver, &ty)?;
                 gas_meter.charge_vec_pack(
                     make_ty!(&ty),
-                    interpreter.operand_stack.last_n(*num as usize)?,
+                    interpreter.operand_stack.last_n(*num as usize)?, //*)
                 )?;
-                let elements = interpreter.operand_stack.popn(*num as u16)?;
+                let elements = interpreter.operand_stack.popn(*num as u16)?; //*)
                 let value = Vector::pack(&ty, elements)?;
                 interpreter.operand_stack.push(value)?;
             }
             Bytecode::VecLen(si) => {
                 let vec_ref = interpreter.operand_stack.pop_as::<VectorRef>()?;
-                let ty = &resolver.instantiate_single_type(*si, ty_args)?;
+                let ty = &resolver.instantiate_single_type(*si, ty_args)?; //*)
                 gas_meter.charge_vec_len(TypeWithLoader {
                     ty,
                     loader: resolver.loader(),
@@ -656,7 +644,7 @@ Definition execute_instruction (pc : Z)
             Bytecode::VecImmBorrow(si) => {
                 let idx = interpreter.operand_stack.pop_as::<u64>()? as usize;
                 let vec_ref = interpreter.operand_stack.pop_as::<VectorRef>()?;
-                let ty = resolver.instantiate_single_type(*si, ty_args)?;
+                let ty = resolver.instantiate_single_type(*si, ty_args)?; //*)
                 let res = vec_ref.borrow_elem(idx, &ty);
                 gas_meter.charge_vec_borrow(false, make_ty!(&ty), res.is_ok())?;
                 interpreter.operand_stack.push(res?)?;
@@ -664,7 +652,7 @@ Definition execute_instruction (pc : Z)
             Bytecode::VecMutBorrow(si) => {
                 let idx = interpreter.operand_stack.pop_as::<u64>()? as usize;
                 let vec_ref = interpreter.operand_stack.pop_as::<VectorRef>()?;
-                let ty = &resolver.instantiate_single_type(*si, ty_args)?;
+                let ty = &resolver.instantiate_single_type(*si, ty_args)?; //*)
                 let res = vec_ref.borrow_elem(idx, ty);
                 gas_meter.charge_vec_borrow(true, make_ty!(ty), res.is_ok())?;
                 interpreter.operand_stack.push(res?)?;
@@ -672,23 +660,23 @@ Definition execute_instruction (pc : Z)
             Bytecode::VecPushBack(si) => {
                 let elem = interpreter.operand_stack.pop()?;
                 let vec_ref = interpreter.operand_stack.pop_as::<VectorRef>()?;
-                let ty = &resolver.instantiate_single_type(*si, ty_args)?;
+                let ty = &resolver.instantiate_single_type(*si, ty_args)?; //*)
                 gas_meter.charge_vec_push_back(make_ty!(ty), &elem)?;
                 vec_ref.push_back(elem, ty, interpreter.runtime_limits_config().vector_len_max)?;
             }
             Bytecode::VecPopBack(si) => {
                 let vec_ref = interpreter.operand_stack.pop_as::<VectorRef>()?;
-                let ty = &resolver.instantiate_single_type(*si, ty_args)?;
+                let ty = &resolver.instantiate_single_type(*si, ty_args)?; //*)
                 let res = vec_ref.pop(ty);
                 gas_meter.charge_vec_pop_back(make_ty!(ty), res.as_ref().ok())?;
                 interpreter.operand_stack.push(res?)?;
             }
             Bytecode::VecUnpack(si, num) => {
                 let vec_val = interpreter.operand_stack.pop_as::<Vector>()?;
-                let ty = &resolver.instantiate_single_type(*si, ty_args)?;
+                let ty = &resolver.instantiate_single_type(*si, ty_args)?; //*)
                 gas_meter.charge_vec_unpack(
                     make_ty!(ty),
-                    NumArgs::new(*num),
+                    NumArgs::new(*num), //*)
                     vec_val.elem_views(),
                 )?;
                 let elements = vec_val.unpack(ty, *num)?;
@@ -700,7 +688,7 @@ Definition execute_instruction (pc : Z)
                 let idx2 = interpreter.operand_stack.pop_as::<u64>()? as usize;
                 let idx1 = interpreter.operand_stack.pop_as::<u64>()? as usize;
                 let vec_ref = interpreter.operand_stack.pop_as::<VectorRef>()?;
-                let ty = &resolver.instantiate_single_type(*si, ty_args)?;
+                let ty = &resolver.instantiate_single_type(*si, ty_args)?; //*)
                 gas_meter.charge_vec_swap(make_ty!(ty))?;
                 vec_ref.swap(idx1, idx2, ty)?;
             }
@@ -709,3 +697,17 @@ Definition execute_instruction (pc : Z)
         Ok(InstrRet::Ok)
     }
 *)
+
+(* NOTE: State designed for `execute_instruction` *)
+Definition State := (Z * Locals.t * Interpreter.t).
+
+(* NOTE: this function is of `impl Frame` (but doesn't involve `Frame` item?) *)
+Definition execute_instruction (pc : Z) 
+  (locals : Locals.t) (ty_args : list Type.t)
+  (function : Function.t) (resolver : Resolver.t)
+  (interpreter : Interpreter.t) (* (gas_meter : GasMeter.t) *) (* NOTE: We ignore gas since it's never implemented *)
+  (instruction : Bytecode.t)
+  : MS? State string PartialVMResult.t InstrRet.t :=
+  match instruction with
+  | _ => returnS? $ Result.Ok InstrRet.Ok
+  end.
