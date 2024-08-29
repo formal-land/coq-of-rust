@@ -700,11 +700,11 @@ Module iter.
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
-                let~ fun :=
+                let~ fun_ :=
                   M.copy (|
                     M.get_constant (| "core::iter::adapters::filter::next_chunk_discriminant" |)
                   |) in
-                M.alloc (| M.call_closure (| M.read (| fun |), [ M.read (| self |) ] |) |)
+                M.alloc (| M.call_closure (| M.read (| fun_ |), [ M.read (| self |) ] |) |)
               |)))
           | _, _, _ => M.impossible
           end.

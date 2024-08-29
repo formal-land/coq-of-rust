@@ -295,11 +295,11 @@ Module vec.
           ltac:(M.monadic
             (let iterator := M.alloc (| iterator |) in
             M.read (|
-              let~ fun :=
+              let~ fun_ :=
                 M.copy (|
                   M.get_constant (| "alloc::vec::in_place_collect::from_iter_discriminant" |)
                 |) in
-              M.alloc (| M.call_closure (| M.read (| fun |), [ M.read (| iterator |) ] |) |)
+              M.alloc (| M.call_closure (| M.read (| fun_ |), [ M.read (| iterator |) ] |) |)
             |)))
         | _, _, _ => M.impossible
         end.
