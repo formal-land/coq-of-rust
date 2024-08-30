@@ -11,6 +11,10 @@ Import simulations.M.Notations.
 
 (* NOTE(STUB): Only implement if necessary *)
 
+Module Locals.
+  Inductive t : Set := .
+End Locals.
+
 Module AccountAddress.
   Inductive t : Set := .
 End AccountAddress.
@@ -23,9 +27,9 @@ Module ContainerRef.
   Inductive t : Set := .
 End ContainerRef.
 
-Module IndexRef.
+Module IndexedRef.
   Inductive t : Set := .
-End IndexRef.
+End IndexedRef.
 
 (* **************** *)
 
@@ -69,12 +73,3 @@ End ValueImpl.
 Module Value.
   Record t := { a0 : ValueImpl.t }.
 End Value.
-(* 
-/// The operand stack.
-struct Stack {
-    value: Vec<Value>,
-}
-*)
-Module Stack.
-  Record t := { value : list Value.t }.
-End Stack.

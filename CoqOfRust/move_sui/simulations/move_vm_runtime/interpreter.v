@@ -6,11 +6,13 @@ Import simulations.M.Notations.
 
 Require CoqOfRust.move_sui.simulations.move_binary_format.file_format.
 Module Bytecode := file_format.Bytecode.
-Module FunctionHandleIndex := file_format.FunctionHandleIndex
+Module FunctionHandleIndex := file_format.FunctionHandleIndex.
+Module FunctionInstantiationIndex := file_format.FunctionInstantiationIndex.
 
-Require CoqOfRsut.move_sui.simulations.move_vm_types.values.value_impl.
-Module Stack := value_impl.Stack.
-Module Locals := value_impl.Locals.
+Require CoqOfRust.move_sui.simulations.move_vm_types.lib.
+Require CoqOfRust.move_sui.simulations.move_vm_types.values.values_impl.
+Module Locals := values_impl.Locals.
+Module Value := values_impl.Value.
 
 Require CoqOfRust.move_sui.simulations.move_binary_format.errors.
 Module PartialVMResult := errors.PartialVMResult.
@@ -20,16 +22,18 @@ Require CoqOfRust.move_sui.simulations.move_vm_runtime.loader.
 Module Function := loader.Function.
 Module Resolver := loader.Resolver.
 
+Require CoqOfRust.move_sui.simulations.move_core_types.vm_status.
+Module StatusCode := vm_status.StatusCode.
+
 (* TODO(progress):
-- (FOCUS)Implement `Stack`'s `push` and `pop` operations
+- (FOCUS) Implement `Stack`'s `push` and `pop` operations
 - Write the basic framework for that function
 *)
 
 (* NOTE(STUB): only implement if necessary *)
-Module Type.
+Module _Type.
   Inductive t : Set := .
-End Type.
-
+End _Type.
 
 (* **************** *)
 
@@ -173,7 +177,6 @@ Module ExitCode.
   .
 End ExitCode.
 
-
 (* 
 enum InstrRet {
     Ok,
@@ -189,6 +192,92 @@ Module InstrRet.
   .
 End InstrRet.
 
+
+(* // TODO Determine stack size limits based on gas limit
+const OPERAND_STACK_SIZE_LIMIT: usize = 1024;
+const CALL_STACK_SIZE_LIMIT: usize = 1024; *)
+
+Definition OPERAND_STACK_SIZE_LIMIT : Z := 1024.
+Definition CALL_STACK_SIZE_LIMIT : Z := 1024.
+
+(* /// The operand stack.
+struct Stack {
+    value: Vec<Value>,
+} *)
+Module Stack.
+  Record t := { value : list Value.t }.
+  (* 
+  impl Stack {
+
+      /// Pop a `Value` of a given type off the stack. Abort if the value is not of the given
+      /// type or if the stack is empty.
+      fn pop_as<T>(&mut self) -> PartialVMResult<T>
+      where
+          Value: VMValueCast<T>,
+      {
+          self.pop()?.value_as()
+      }
+
+      /// Pop n values off the stack.
+      fn popn(&mut self, n: u16) -> PartialVMResult<Vec<Value>> {
+          let remaining_stack_size = self
+              .value
+              .len()
+              .checked_sub(n as usize)
+              .ok_or_else(|| PartialVMError::new(StatusCode::EMPTY_VALUE_STACK))?;
+          let args = self.value.split_off(remaining_stack_size);
+          Ok(args)
+      }
+
+      fn last_n(&self, n: usize) -> PartialVMResult<impl ExactSizeIterator<Item = &Value>> {
+          if self.value.len() < n {
+              return Err(PartialVMError::new(StatusCode::EMPTY_VALUE_STACK)
+                  .with_message("Failed to get last n arguments on the argument stack".to_string()));
+          }
+          Ok(self.value[(self.value.len() - n)..].iter())
+      }
+  }
+  *)
+  Module Impl_Stack.
+    Definition Self : Set := move_sui.simulations.move_vm_runtime.interpreter.Stack.t.
+
+    (* TODO: finish below *)
+    (* 
+    /// Create a new empty operand stack.
+    fn new() -> Self {
+        Stack { value: vec![] }
+    }
+    *)
+    Definition new : Set. Admitted.
+
+    (* 
+    /// Push a `Value` on the stack if the max stack size has not been reached. Abort execution
+    /// otherwise.
+    fn push(&mut self, value: Value) -> PartialVMResult<()> {
+        if self.value.len() < OPERAND_STACK_SIZE_LIMIT {
+            self.value.push(value);
+            Ok(())
+        } else {
+            Err(PartialVMError::new(StatusCode::EXECUTION_STACK_OVERFLOW))
+        }
+    }
+    *)
+    (* TODO: correctly design the state for this function *)
+    Definition push (value : Value.t) : MS? Self string (PartialVMResult.t unit). Admitted.
+
+    (* 
+    /// Pop a `Value` off the stack or abort execution if the stack is empty.
+    fn pop(&mut self) -> PartialVMResult<Value> {
+        self.value
+            .pop()
+            .ok_or_else(|| PartialVMError::new(StatusCode::EMPTY_VALUE_STACK))
+    }
+    *)
+    Definition pop : MS? Self string (PartialVMResult.t Value.t). Admitted.
+
+
+  End Impl_Stack.
+End Stack.
 
 (* 
 /// `Interpreter` instances can execute Move functions.
@@ -225,8 +314,8 @@ Module Frame.
     pc : Z;
     locals : Locals.t;
     function : Function.t;
-    ty_args : list Type.t;
-  }
+    ty_args : list _Type.t;
+  }.
 End Frame.
 
 (* 
@@ -252,14 +341,7 @@ End Frame.
         }
 
         match instruction {
-            Bytecode::Pop => {
-                let popped_val = interpreter.operand_stack.pop()?;
-                gas_meter.charge_pop(popped_val)?;
-            }
-            Bytecode::Ret => {
-                gas_meter.charge_simple_instr(S::Ret)?;
-                return Ok(InstrRet::ExitCode(ExitCode::Return));
-            }
+
             Bytecode::BrTrue(offset) => {
                 gas_meter.charge_simple_instr(S::BrTrue)?;
                 if interpreter.operand_stack.pop_as::<bool>()? {
@@ -701,13 +783,41 @@ End Frame.
 (* NOTE: State designed for `execute_instruction` *)
 Definition State := (Z * Locals.t * Interpreter.t).
 
-(* NOTE: this function is of `impl Frame` (but doesn't involve `Frame` item?) *)
-Definition execute_instruction (pc : Z) 
-  (locals : Locals.t) (ty_args : list Type.t)
+(* NOTE: This function is for debugging purpose *)
+Definition debug_execute_instruction (pc : Z) 
+  (locals : Locals.t) (ty_args : list _Type.t)
   (function : Function.t) (resolver : Resolver.t)
   (interpreter : Interpreter.t) (* (gas_meter : GasMeter.t) *) (* NOTE: We ignore gas since it's never implemented *)
   (instruction : Bytecode.t)
-  : MS? State string PartialVMResult.t InstrRet.t :=
+  : MS? State string (PartialVMResult.t InstrRet.t) :=
   match instruction with
+  (* fill debugging content here *)
+
+
+
+  | _ => returnS? $ Result.Ok InstrRet.Ok
+  end.
+
+(* NOTE: this function is of `impl Frame` (but doesn't involve `Frame` item?) *)
+Definition execute_instruction (pc : Z) 
+  (locals : Locals.t) (ty_args : list _Type.t)
+  (function : Function.t) (resolver : Resolver.t)
+  (interpreter : Interpreter.t) (* (gas_meter : GasMeter.t) *) (* NOTE: We ignore gas since it's never implemented *)
+  (instruction : Bytecode.t)
+  : MS? State string (PartialVMResult.t InstrRet.t) :=
+  match instruction with
+  (* 
+  Bytecode::Pop => {
+    let popped_val = interpreter.operand_stack.pop()?;
+    gas_meter.charge_pop(popped_val)?;
+  }
+  *)
+
+  (* 
+  Bytecode::Ret => {
+    gas_meter.charge_simple_instr(S::Ret)?;
+    return Ok(InstrRet::ExitCode(ExitCode::Return));
+  }
+  *)
   | _ => returnS? $ Result.Ok InstrRet.Ok
   end.

@@ -44,8 +44,8 @@ Module Loader.
     (* NOTE: Should we ignore the `RwLock`? *)
     (* module_cache : RwLock<ModuleCache>; *)
     (* type_cache : RwLock<TypeCache>; *)
-    natives : NativeFunctions;
-    vm_config : VMConfig;
+    natives : NativeFunctions.t;
+    vm_config : VMConfig.t;
   }.
 End Loader.
 
