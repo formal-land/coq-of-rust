@@ -25,6 +25,8 @@ Require CoqOfRust.move_sui.simulations.move_core_types.vm_status.
 Module StatusCode := vm_status.StatusCode.
 
 (* TODO(progress):
+- Define Lens for State -> Interpreter
+- Define Lens for Interpreter -> Stack
 - Write the basic framework for that function
 *)
 
@@ -239,7 +241,6 @@ Module Stack.
   Module Impl_Stack.
     Definition Self : Set := move_sui.simulations.move_vm_runtime.interpreter.Stack.t.
 
-    (* TODO: finish below *)
     (* 
     /// Create a new empty operand stack.
     fn new() -> Self {
@@ -808,6 +809,13 @@ Definition debug_execute_instruction (pc : Z)
   : MS? State string (PartialVMResult.t InstrRet.t) :=
   match instruction with
   (* fill debugging content here *)
+  (* 
+  Bytecode::Pop => {
+    let popped_val = interpreter.operand_stack.pop()?;
+    gas_meter.charge_pop(popped_val)?;
+  }
+  *)
+  | Bytecode.Pop => returnS? $ Result.Ok InstrRet.Ok
 
 
 
@@ -821,6 +829,7 @@ Definition execute_instruction (pc : Z)
   (interpreter : Interpreter.t) (* (gas_meter : GasMeter.t) *) (* NOTE: We ignore gas since it's never implemented *)
   (instruction : Bytecode.t)
   : MS? State string (PartialVMResult.t InstrRet.t) :=
+  letS? '(pc, locals, interpreter) := readS? in
   match instruction with
   (* 
   Bytecode::Pop => {
