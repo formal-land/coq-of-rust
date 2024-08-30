@@ -9,7 +9,6 @@ Module Bytecode := file_format.Bytecode.
 Module FunctionHandleIndex := file_format.FunctionHandleIndex.
 Module FunctionInstantiationIndex := file_format.FunctionInstantiationIndex.
 
-Require CoqOfRust.move_sui.simulations.move_vm_types.lib.
 Require CoqOfRust.move_sui.simulations.move_vm_types.values.values_impl.
 Module Locals := values_impl.Locals.
 Module Value := values_impl.Value.
@@ -248,7 +247,7 @@ Module Stack.
         Stack { value: vec![] }
     }
     *)
-    Definition new : Set. Admitted.
+    Definition new : Self := Build_t [].
 
     (* 
     /// Push a `Value` on the stack if the max stack size has not been reached. Abort execution
@@ -262,8 +261,16 @@ Module Stack.
         }
     }
     *)
-    (* TODO: correctly design the state for this function *)
-    Definition push (value : Value.t) : MS? Self string (PartialVMResult.t unit). Admitted.
+    Definition push (value : Value.t) : MS? Self string (PartialVMResult.t unit) :=
+      letS? self := readS? in
+      let '(Build_t self_value) := self in
+      if (Z.of_nat $ List.length self_value) <? OPERAND_STACK_SIZE_LIMIT
+      then 
+        (* We push at the end of the list *)
+        letS? _ := writeS? $ self <| Stack.value := List.app self_value [value] |> in
+        returnS? $ Result.Ok tt
+      else returnS? $ Result.Err $ 
+        PartialVMError.Impl_PartialVMError.new StatusCode.EXECUTION_STACK_OVERFLOW.
 
     (* 
     /// Pop a `Value` off the stack or abort execution if the stack is empty.
@@ -274,7 +281,6 @@ Module Stack.
     }
     *)
     Definition pop : MS? Self string (PartialVMResult.t Value.t). Admitted.
-
 
   End Impl_Stack.
 End Stack.

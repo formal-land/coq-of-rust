@@ -5,7 +5,6 @@ Require Import CoqOfRust.lib.lib.
 Import simulations.M.Notations.
 
 (* TODO(progress): 
-- Implement `push` and `pop` for `Stack`
 - Implement `Locals`
 *)
 
