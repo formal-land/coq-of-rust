@@ -25,7 +25,6 @@ Require CoqOfRust.move_sui.simulations.move_core_types.vm_status.
 Module StatusCode := vm_status.StatusCode.
 
 (* TODO(progress):
-- (FOCUS) Implement `Stack`'s `push` and `pop` operations
 - Write the basic framework for that function
 *)
 
@@ -280,8 +279,19 @@ Module Stack.
             .ok_or_else(|| PartialVMError::new(StatusCode::EMPTY_VALUE_STACK))
     }
     *)
-    Definition pop : MS? Self string (PartialVMResult.t Value.t). Admitted.
-
+    Definition pop : MS? Self string (PartialVMResult.t Value.t) :=
+      letS? self := readS? in
+      (* We check manually if we can pop an element *)
+      let '(Build_t self_value) := self in 
+      let self_value := List.rev self_value in
+      match self_value with
+      | x :: xs => 
+        let self_value := List.rev xs in
+        letS? _ := writeS? self <| Stack.value := self_value |> in
+        returnS? $ Result.Ok x
+      | _ => returnS? $ Result.Err $ 
+        PartialVMError.Impl_PartialVMError.new StatusCode.EMPTY_VALUE_STACK
+      end.
   End Impl_Stack.
 End Stack.
 
