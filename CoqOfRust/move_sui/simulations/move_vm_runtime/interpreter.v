@@ -32,7 +32,7 @@ Module StatusCode := vm_status.StatusCode.
 
 (* NOTE(STUB): only implement if necessary *)
 Module _Type.
-  Inductive t : Set := .
+  Parameter t : Set.
 End _Type.
 
 (* **************** *)

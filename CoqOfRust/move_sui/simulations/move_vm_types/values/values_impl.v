@@ -9,25 +9,24 @@ Import simulations.M.Notations.
 *)
 
 (* NOTE(STUB): Only implement if necessary *)
-
 Module Locals.
-  Inductive t : Set := .
+  Parameter t : Set.
 End Locals.
 
 Module AccountAddress.
-  Inductive t : Set := .
+  Parameter t : Set.
 End AccountAddress.
 
 Module Container.
-  Inductive t : Set := .
+  Parameter t : Set.
 End Container.
 
 Module ContainerRef.
-  Inductive t : Set := .
+  Parameter t : Set.
 End ContainerRef.
 
 Module IndexedRef.
-  Inductive t : Set := .
+  Parameter t : Set.
 End IndexedRef.
 
 (* **************** *)
@@ -70,5 +69,5 @@ End ValueImpl.
 
 (* pub struct Value(ValueImpl); *)
 Module Value.
-  Record t := { a0 : ValueImpl.t }.
+  Definition t : Set := ValueImpl.t.
 End Value.

@@ -10,26 +10,24 @@ Module CompiledModule := file_format.CompiledModule.
 
 (* NOTE(STUB): only implement if necessary *)
 Module Function.
-  Inductive t : Set := .
+  Parameter t : Set.
 End Function.
 
 Module ModuleCache.
-  Inductive t : Set := .
+  Parameter t : Set.
 End ModuleCache.
 
 Module TypeCache.
-  Inductive t : Set := .
+  Parameter t : Set.
 End TypeCache.
 
 Module NativeFunctions.
-  Inductive t : Set := .
+  Parameter t : Set.
 End NativeFunctions.
 
 Module VMConfig.
-  Inductive t : Set := .
+  Parameter t : Set.
 End VMConfig.
-
-(* **************** *)
 
 (* 
 pub(crate) struct Loader {
@@ -50,7 +48,7 @@ Module Loader.
 End Loader.
 
 Module LoadedModule.
-  Inductive t : Set := .
+  Parameter t : Set.
 End LoadedModule.
 
 (* **************** *)
