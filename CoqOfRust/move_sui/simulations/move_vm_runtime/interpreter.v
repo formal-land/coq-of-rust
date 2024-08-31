@@ -25,10 +25,13 @@ Require CoqOfRust.move_sui.simulations.move_core_types.vm_status.
 Module StatusCode := vm_status.StatusCode.
 
 (* TODO(progress):
-- Define Lens for State -> Interpreter
-- Define Lens for Interpreter -> Stack
+- Implement `Callstack` for Interpreter
+- Implement `Interpreter::binop_int`
 - Write the basic framework for that function
 *)
+
+(* NOTE: In the future when lens are more frequently defined, we might want to stub the lens into 
+  corresponded types where only smallstate or the opposite is the exact type *)
 
 (* NOTE(STUB): only implement if necessary *)
 Module _Type.
@@ -316,6 +319,19 @@ Module Interpreter.
     (* call_stack : CallStack.t; *)
     (* runtime_limits_config : VMRuntimeLimitsConfig.t; *)
   }.
+
+  Module Lens.
+    (* Definition State := (Z * Locals.t * Interpreter.t). *)
+    Definition lens_state_self : Lens.t (Z * Locals.t * t) t :={|
+      Lens.read state := let '(_, _, self) := state in self;
+      Lens.write state self := let '(a, b, _) := state in (a, b, self);
+    |}.
+
+    Definition lens_self_stack : Lens.t t Stack.t := {|
+      Lens.read self := self.(operand_stack);
+      Lens.write self stack := self <| Interpreter.operand_stack := stack |>;
+    |}.
+  End Lens.
 End Interpreter.
 
 (* 
@@ -348,31 +364,8 @@ End Frame.
     ) -> PartialVMResult<InstrRet> {
         use SimpleInstruction as S;
 
-        macro_rules! make_ty {
-            ($ty: expr) => {
-                TypeWithLoader {
-                    ty: $ty,
-                    loader: resolver.loader(),
-                }
-            };
-        }
-
         match instruction {
 
-            Bytecode::BrTrue(offset) => {
-                gas_meter.charge_simple_instr(S::BrTrue)?;
-                if interpreter.operand_stack.pop_as::<bool>()? {
-                    *pc = *offset;
-                    return Ok(InstrRet::Branch);
-                }
-            }
-            Bytecode::BrFalse(offset) => {
-                gas_meter.charge_simple_instr(S::BrFalse)?;
-                if !interpreter.operand_stack.pop_as::<bool>()? {
-                    *pc = *offset;
-                    return Ok(InstrRet::Branch);
-                }
-            }
             Bytecode::Branch(offset) => {
                 gas_meter.charge_simple_instr(S::Branch)?;
                 *pc = *offset;
@@ -815,7 +808,9 @@ Definition debug_execute_instruction (pc : Z)
     gas_meter.charge_pop(popped_val)?;
   }
   *)
-  | Bytecode.Pop => returnS? $ Result.Ok InstrRet.Ok
+  | Bytecode.Pop => 
+  
+  returnS? $ Result.Ok InstrRet.Ok
 
 
 
@@ -830,6 +825,16 @@ Definition execute_instruction (pc : Z)
   (instruction : Bytecode.t)
   : MS? State string (PartialVMResult.t InstrRet.t) :=
   letS? '(pc, locals, interpreter) := readS? in
+  (* NOTE: We ignore the macro since it' only used for charging gas
+  macro_rules! make_ty {
+      ($ty: expr) => {
+          TypeWithLoader {
+              ty: $ty,
+              loader: resolver.loader(),
+          }
+      };
+  }
+  *)
   match instruction with
   (* 
   Bytecode::Pop => {
@@ -837,6 +842,7 @@ Definition execute_instruction (pc : Z)
     gas_meter.charge_pop(popped_val)?;
   }
   *)
+  | Bytecode.Pop => returnS? $ Result.Ok InstrRet.Ok
 
   (* 
   Bytecode::Ret => {
@@ -844,5 +850,26 @@ Definition execute_instruction (pc : Z)
     return Ok(InstrRet::ExitCode(ExitCode::Return));
   }
   *)
-  | _ => returnS? $ Result.Ok InstrRet.Ok
+  | Bytecode.Ret => returnS? $ Result.Ok InstrRet.Ok
+
+  (* 
+  Bytecode::BrTrue(offset) => {
+      gas_meter.charge_simple_instr(S::BrTrue)?;
+      if interpreter.operand_stack.pop_as::<bool>()? {
+          *pc = *offset;
+          return Ok(InstrRet::Branch);
+      }
+  }
+  *)
+  | Bytecode.BrTrue offset => returnS? $ Result.Ok InstrRet.Ok
+
+  (* 
+  Bytecode::BrFalse(offset) => {
+      gas_meter.charge_simple_instr(S::BrFalse)?;
+      if !interpreter.operand_stack.pop_as::<bool>()? {
+          *pc = *offset;
+          return Ok(InstrRet::Branch);
+      }
+  }
+  *)
   end.
