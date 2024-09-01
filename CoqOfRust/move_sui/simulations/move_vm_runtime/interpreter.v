@@ -27,6 +27,7 @@ Module StatusCode := vm_status.StatusCode.
 (* TODO(progress):
 - Implement `Callstack` for Interpreter
 - Implement `Interpreter::binop_int`
+- Implement `Stack::pop_as`
 - Write the basic framework for that function
 *)
 
@@ -802,16 +803,8 @@ Definition debug_execute_instruction (pc : Z)
   : MS? State string (PartialVMResult.t InstrRet.t) :=
   match instruction with
   (* fill debugging content here *)
-  (* 
-  Bytecode::Pop => {
-    let popped_val = interpreter.operand_stack.pop()?;
-    gas_meter.charge_pop(popped_val)?;
-  }
-  *)
-  | Bytecode.Pop => 
-  
-  returnS? $ Result.Ok InstrRet.Ok
 
+  | Bytecode.Ret => returnS? $ Result.Ok $ InstrRet.ExitCode ExitCode.Return
 
 
   | _ => returnS? $ Result.Ok InstrRet.Ok
@@ -842,7 +835,10 @@ Definition execute_instruction (pc : Z)
     gas_meter.charge_pop(popped_val)?;
   }
   *)
-  | Bytecode.Pop => returnS? $ Result.Ok InstrRet.Ok
+  | Bytecode.Pop => 
+    letS?? popped_val := liftS? Interpreter.Lens.lens_state_self (
+      liftS? Interpreter.Lens.lens_self_stack Stack.Impl_Stack.pop) in 
+    returnS? $ Result.Ok InstrRet.Ok
 
   (* 
   Bytecode::Ret => {
@@ -850,7 +846,9 @@ Definition execute_instruction (pc : Z)
     return Ok(InstrRet::ExitCode(ExitCode::Return));
   }
   *)
-  | Bytecode.Ret => returnS? $ Result.Ok InstrRet.Ok
+  | Bytecode.Ret => returnS? $ Result.Ok $ InstrRet.ExitCode ExitCode.Return
+
+  (* TODO: Finish below *)
 
   (* 
   Bytecode::BrTrue(offset) => {
