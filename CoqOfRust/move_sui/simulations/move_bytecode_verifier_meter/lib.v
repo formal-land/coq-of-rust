@@ -11,13 +11,6 @@ Module PartialVMError := errors.PartialVMError.
 Require CoqOfRust.move_sui.simulations.move_core_types.vm_status.
 Module StatusCode := vm_status.StatusCode.
 
-(* TODO(progress):
-- Investigate the exact function chains from `verify_instr` 
-  - Explain when will other verify functions use `verify_instr`
-  - Examine further if `DummyMeter` can be safely replaced by `BoundMeter`
-  - Carefully check where does `DummyMeter` apply and what properties or functions are being accessed
- *)
-
 (* NOTE: 
 - We can restructure the `Meter` into a large module, since its content are pretty few.
   Currently we implement the structs as the following tree:

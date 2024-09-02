@@ -9,10 +9,6 @@ Require Import CoqOfRust.core.simulations.eq.
 Require CoqOfRust.move_sui.simulations.move_core_types.vm_status.
 Module StatusCode := vm_status.StatusCode.
 
-(* TODO(misc tasks):
-- See if we need to handle the `?` and debugs with `panic` monad. See NOTEs everywhere
-*)
-
 (* NOTE(MUTUAL DEPENDENCY ISSUE): This is just a stub to fill in needed information
   to use else where. When other files are using this type, they should have to
   extract the `StatusCode` and construct the actual PartialVMError by themselves. *)
@@ -1286,8 +1282,6 @@ Module CompiledModule.
         let ability := List.nth (Z.to_nat idx) constraints default_ability in
         Result.Ok ability
 
-      (* NOTE: belows are cases that are slightly more complicated,
-          since they involves `?`... *)
       | SignatureToken.Vector ty => 
       let abilities_result := abilities self ty constraints in
         match abilities_result with
@@ -1327,7 +1321,6 @@ Module CompiledModule.
           | Result.Ok  type_arguments =>
               AbilitySet.Impl_AbilitySet.polymorphic_abilities
                 declared_abilities is_phantom_list type_arguments
-          (* NOTE: maybe handle with a panic? *)
           | Result.Err err            => Result.Err err
           end
       end.

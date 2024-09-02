@@ -49,14 +49,14 @@ Module AbstractStack := move_abstract_stack.lib.AbstractStack.
 Require CoqOfRust.move_sui.simulations.move_bytecode_verifier_meter.lib.
 Module Scope := move_bytecode_verifier_meter.lib.Scope.
 (* NOTE: For now we just simplify `Meter` to the actual `BoundMeter` struct
-   since it's the only implementation that contains useful logic *)
+   since it's the only implementation that contains useful logic 
+   To modify the actual instance of `Meter`, we might need to:
+   1. Create a separate file `include.v`
+   2. Import dependencides in that `include` file
+   3. Define the `Meter` instance as the instance you want
+   4. Import the `include`'s instance into this file
+   *)
 Module Meter := move_bytecode_verifier_meter.lib.Meter.BoundMeter.
-
-(* TODO(progress):
-  - Integrate the new monad into this simulation:
-    - Check `safe_unwrap_err` propagation
-    - Check for sole `if` clauses, `Err`s has been *correctly* propagated to the end
-*)
 
 (* DRAFT: template for adding trait parameters *)
 (* Definition test_0 : forall (A : Set), { _ : Set @ Meter.Trait A } -> A -> Set. Admitted. *)
