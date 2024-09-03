@@ -94,17 +94,6 @@ Module ops.
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
     End Impl_core_cmp_PartialEq_for_core_ops_range_RangeFull.
     
-    Module Impl_core_marker_StructuralEq_for_core_ops_range_RangeFull.
-      Definition Self : Ty.t := Ty.path "core::ops::range::RangeFull".
-      
-      Axiom Implements :
-        M.IsTraitInstance
-          "core::marker::StructuralEq"
-          Self
-          (* Trait polymorphic types *) []
-          (* Instance *) [].
-    End Impl_core_marker_StructuralEq_for_core_ops_range_RangeFull.
-    
     Module Impl_core_cmp_Eq_for_core_ops_range_RangeFull.
       Definition Self : Ty.t := Ty.path "core::ops::range::RangeFull".
       
@@ -173,11 +162,7 @@ Module ops.
                 M.read (| fmt |);
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
-                  [
-                    (* Unsize *)
-                    M.pointer_coercion
-                      (M.alloc (| Value.Array [ M.read (| Value.String ".." |) ] |))
-                  ]
+                  [ M.alloc (| Value.Array [ M.read (| Value.String ".." |) ] |) ]
                 |)
               ]
             |)))
@@ -354,19 +339,6 @@ Module ops.
           (* Trait polymorphic types *) []
           (* Instance *) [ ("eq", InstanceField.Method (eq Idx)) ].
     End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_Idx_for_core_ops_range_Range_Idx.
-    
-    Module Impl_core_marker_StructuralEq_for_core_ops_range_Range_Idx.
-      Definition Self (Idx : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::ops::range::Range") [] [ Idx ].
-      
-      Axiom Implements :
-        forall (Idx : Ty.t),
-        M.IsTraitInstance
-          "core::marker::StructuralEq"
-          (Self Idx)
-          (* Trait polymorphic types *) []
-          (* Instance *) [].
-    End Impl_core_marker_StructuralEq_for_core_ops_range_Range_Idx.
     
     Module Impl_core_cmp_Eq_where_core_cmp_Eq_Idx_for_core_ops_range_Range_Idx.
       Definition Self (Idx : Ty.t) : Ty.t :=
@@ -588,11 +560,7 @@ Module ops.
                                     "new_const",
                                     []
                                   |),
-                                  [
-                                    (* Unsize *)
-                                    M.pointer_coercion
-                                      (M.alloc (| Value.Array [ M.read (| Value.String ".." |) ] |))
-                                  ]
+                                  [ M.alloc (| Value.Array [ M.read (| Value.String ".." |) ] |) ]
                                 |)
                               ]
                             |)
@@ -915,19 +883,6 @@ Module ops.
           (* Instance *) [ ("eq", InstanceField.Method (eq Idx)) ].
     End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_Idx_for_core_ops_range_RangeFrom_Idx.
     
-    Module Impl_core_marker_StructuralEq_for_core_ops_range_RangeFrom_Idx.
-      Definition Self (Idx : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::ops::range::RangeFrom") [] [ Idx ].
-      
-      Axiom Implements :
-        forall (Idx : Ty.t),
-        M.IsTraitInstance
-          "core::marker::StructuralEq"
-          (Self Idx)
-          (* Trait polymorphic types *) []
-          (* Instance *) [].
-    End Impl_core_marker_StructuralEq_for_core_ops_range_RangeFrom_Idx.
-    
     Module Impl_core_cmp_Eq_where_core_cmp_Eq_Idx_for_core_ops_range_RangeFrom_Idx.
       Definition Self (Idx : Ty.t) : Ty.t :=
         Ty.apply (Ty.path "core::ops::range::RangeFrom") [] [ Idx ].
@@ -1129,11 +1084,7 @@ Module ops.
                                     "new_const",
                                     []
                                   |),
-                                  [
-                                    (* Unsize *)
-                                    M.pointer_coercion
-                                      (M.alloc (| Value.Array [ M.read (| Value.String ".." |) ] |))
-                                  ]
+                                  [ M.alloc (| Value.Array [ M.read (| Value.String ".." |) ] |) ]
                                 |)
                               ]
                             |)
@@ -1355,19 +1306,6 @@ Module ops.
           (* Instance *) [ ("eq", InstanceField.Method (eq Idx)) ].
     End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_Idx_for_core_ops_range_RangeTo_Idx.
     
-    Module Impl_core_marker_StructuralEq_for_core_ops_range_RangeTo_Idx.
-      Definition Self (Idx : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::ops::range::RangeTo") [] [ Idx ].
-      
-      Axiom Implements :
-        forall (Idx : Ty.t),
-        M.IsTraitInstance
-          "core::marker::StructuralEq"
-          (Self Idx)
-          (* Trait polymorphic types *) []
-          (* Instance *) [].
-    End Impl_core_marker_StructuralEq_for_core_ops_range_RangeTo_Idx.
-    
     Module Impl_core_cmp_Eq_where_core_cmp_Eq_Idx_for_core_ops_range_RangeTo_Idx.
       Definition Self (Idx : Ty.t) : Ty.t :=
         Ty.apply (Ty.path "core::ops::range::RangeTo") [] [ Idx ].
@@ -1489,11 +1427,7 @@ Module ops.
                                     "new_const",
                                     []
                                   |),
-                                  [
-                                    (* Unsize *)
-                                    M.pointer_coercion
-                                      (M.alloc (| Value.Array [ M.read (| Value.String ".." |) ] |))
-                                  ]
+                                  [ M.alloc (| Value.Array [ M.read (| Value.String ".." |) ] |) ]
                                 |)
                               ]
                             |)
@@ -1840,19 +1774,6 @@ Module ops.
           (* Instance *) [ ("eq", InstanceField.Method (eq Idx)) ].
     End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_Idx_for_core_ops_range_RangeInclusive_Idx.
     
-    Module Impl_core_marker_StructuralEq_for_core_ops_range_RangeInclusive_Idx.
-      Definition Self (Idx : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ Idx ].
-      
-      Axiom Implements :
-        forall (Idx : Ty.t),
-        M.IsTraitInstance
-          "core::marker::StructuralEq"
-          (Self Idx)
-          (* Trait polymorphic types *) []
-          (* Instance *) [].
-    End Impl_core_marker_StructuralEq_for_core_ops_range_RangeInclusive_Idx.
-    
     Module Impl_core_cmp_Eq_where_core_cmp_Eq_Idx_for_core_ops_range_RangeInclusive_Idx.
       Definition Self (Idx : Ty.t) : Ty.t :=
         Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ Idx ].
@@ -1975,7 +1896,7 @@ Module ops.
       Definition new (Idx : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self Idx in
         match ε, τ, α with
-        | [ host ], [], [ start; end_ ] =>
+        | [], [], [ start; end_ ] =>
           ltac:(M.monadic
             (let start := M.alloc (| start |) in
             let end_ := M.alloc (| end_ |) in
@@ -2001,7 +1922,7 @@ Module ops.
       Definition start (Idx : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self Idx in
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.SubPointer.get_struct_record_field (|
@@ -2024,7 +1945,7 @@ Module ops.
       Definition end_ (Idx : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self Idx in
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.SubPointer.get_struct_record_field (|
@@ -2052,7 +1973,7 @@ Module ops.
           : M :=
         let Self : Ty.t := Self Idx in
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.Tuple
@@ -2172,7 +2093,7 @@ Module ops.
       *)
       Definition into_slice_range (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -2363,13 +2284,7 @@ Module ops.
                                     "new_const",
                                     []
                                   |),
-                                  [
-                                    (* Unsize *)
-                                    M.pointer_coercion
-                                      (M.alloc (|
-                                        Value.Array [ M.read (| Value.String "..=" |) ]
-                                      |))
-                                  ]
+                                  [ M.alloc (| Value.Array [ M.read (| Value.String "..=" |) ] |) ]
                                 |)
                               ]
                             |)
@@ -2552,12 +2467,10 @@ Module ops.
                                               []
                                             |),
                                             [
-                                              (* Unsize *)
-                                              M.pointer_coercion
-                                                (M.alloc (|
-                                                  Value.Array
-                                                    [ M.read (| Value.String " (exhausted)" |) ]
-                                                |))
+                                              M.alloc (|
+                                                Value.Array
+                                                  [ M.read (| Value.String " (exhausted)" |) ]
+                                              |)
                                             ]
                                           |)
                                         ]
@@ -2747,19 +2660,6 @@ Module ops.
           (* Instance *) [ ("eq", InstanceField.Method (eq Idx)) ].
     End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_Idx_for_core_ops_range_RangeToInclusive_Idx.
     
-    Module Impl_core_marker_StructuralEq_for_core_ops_range_RangeToInclusive_Idx.
-      Definition Self (Idx : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::ops::range::RangeToInclusive") [] [ Idx ].
-      
-      Axiom Implements :
-        forall (Idx : Ty.t),
-        M.IsTraitInstance
-          "core::marker::StructuralEq"
-          (Self Idx)
-          (* Trait polymorphic types *) []
-          (* Instance *) [].
-    End Impl_core_marker_StructuralEq_for_core_ops_range_RangeToInclusive_Idx.
-    
     Module Impl_core_cmp_Eq_where_core_cmp_Eq_Idx_for_core_ops_range_RangeToInclusive_Idx.
       Definition Self (Idx : Ty.t) : Ty.t :=
         Ty.apply (Ty.path "core::ops::range::RangeToInclusive") [] [ Idx ].
@@ -2881,13 +2781,7 @@ Module ops.
                                     "new_const",
                                     []
                                   |),
-                                  [
-                                    (* Unsize *)
-                                    M.pointer_coercion
-                                      (M.alloc (|
-                                        Value.Array [ M.read (| Value.String "..=" |) ]
-                                      |))
-                                  ]
+                                  [ M.alloc (| Value.Array [ M.read (| Value.String "..=" |) ] |) ]
                                 |)
                               ]
                             |)
@@ -3222,11 +3116,7 @@ Module ops.
                             "debug_tuple_field1_finish",
                             []
                           |),
-                          [
-                            M.read (| f |);
-                            M.read (| Value.String "Included" |);
-                            (* Unsize *) M.pointer_coercion __self_0
-                          ]
+                          [ M.read (| f |); M.read (| Value.String "Included" |); __self_0 ]
                         |)
                       |)));
                   fun γ =>
@@ -3246,11 +3136,7 @@ Module ops.
                             "debug_tuple_field1_finish",
                             []
                           |),
-                          [
-                            M.read (| f |);
-                            M.read (| Value.String "Excluded" |);
-                            (* Unsize *) M.pointer_coercion __self_0
-                          ]
+                          [ M.read (| f |); M.read (| Value.String "Excluded" |); __self_0 ]
                         |)
                       |)));
                   fun γ =>
@@ -3294,7 +3180,7 @@ Module ops.
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
             M.read (|
-              let~ __self_tag :=
+              let~ __self_discr :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -3314,7 +3200,7 @@ Module ops.
                       "hash",
                       [ __H ]
                     |),
-                    [ __self_tag; M.read (| state |) ]
+                    [ __self_discr; M.read (| state |) ]
                   |)
                 |) in
               M.match_operator (|
@@ -3392,7 +3278,7 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ __self_tag :=
+              let~ __self_discr :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -3402,7 +3288,7 @@ Module ops.
                     [ M.read (| self |) ]
                   |)
                 |) in
-              let~ __arg1_tag :=
+              let~ __arg1_discr :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -3414,7 +3300,7 @@ Module ops.
                 |) in
               M.alloc (|
                 LogicalOp.and (|
-                  BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)),
+                  BinOp.Pure.eq (M.read (| __self_discr |)) (M.read (| __arg1_discr |)),
                   ltac:(M.monadic
                     (M.read (|
                       M.match_operator (|
@@ -3444,12 +3330,12 @@ Module ops.
                                 M.call_closure (|
                                   M.get_trait_method (|
                                     "core::cmp::PartialEq",
-                                    T,
-                                    [ T ],
+                                    Ty.apply (Ty.path "&") [] [ T ],
+                                    [ Ty.apply (Ty.path "&") [] [ T ] ],
                                     "eq",
                                     []
                                   |),
-                                  [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                  [ __self_0; __arg1_0 ]
                                 |)
                               |)));
                           fun γ =>
@@ -3476,12 +3362,12 @@ Module ops.
                                 M.call_closure (|
                                   M.get_trait_method (|
                                     "core::cmp::PartialEq",
-                                    T,
-                                    [ T ],
+                                    Ty.apply (Ty.path "&") [] [ T ],
+                                    [ Ty.apply (Ty.path "&") [] [ T ] ],
                                     "eq",
                                     []
                                   |),
-                                  [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                  [ __self_0; __arg1_0 ]
                                 |)
                               |)));
                           fun γ => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
@@ -3502,18 +3388,6 @@ Module ops.
           (* Trait polymorphic types *) []
           (* Instance *) [ ("eq", InstanceField.Method (eq T)) ].
     End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_T_for_core_ops_range_Bound_T.
-    
-    Module Impl_core_marker_StructuralEq_for_core_ops_range_Bound_T.
-      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::ops::range::Bound") [] [ T ].
-      
-      Axiom Implements :
-        forall (T : Ty.t),
-        M.IsTraitInstance
-          "core::marker::StructuralEq"
-          (Self T)
-          (* Trait polymorphic types *) []
-          (* Instance *) [].
-    End Impl_core_marker_StructuralEq_for_core_ops_range_Bound_T.
     
     Module Impl_core_cmp_Eq_where_core_cmp_Eq_T_for_core_ops_range_Bound_T.
       Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::ops::range::Bound") [] [ T ].

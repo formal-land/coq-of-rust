@@ -3108,9 +3108,8 @@ Module str.
     
     (*
         fn clone_into(&self, target: &mut String) {
-            let mut b = mem::take(target).into_bytes();
-            self.as_bytes().clone_into(&mut b);
-            *target = unsafe { String::from_utf8_unchecked(b) }
+            target.clear();
+            target.push_str(self);
         }
     *)
     Definition clone_into (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -3120,48 +3119,21 @@ Module str.
           (let self := M.alloc (| self |) in
           let target := M.alloc (| target |) in
           M.read (|
-            let~ b :=
+            let~ _ :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.path "alloc::string::String", "into_bytes", [] |),
-                  [
-                    M.call_closure (|
-                      M.get_function (| "core::mem::take", [ Ty.path "alloc::string::String" ] |),
-                      [ M.read (| target |) ]
-                    |)
-                  ]
+                  M.get_associated_function (| Ty.path "alloc::string::String", "clear", [] |),
+                  [ M.read (| target |) ]
                 |)
               |) in
             let~ _ :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (|
-                    "alloc::borrow::ToOwned",
-                    Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
-                    [],
-                    "clone_into",
-                    []
-                  |),
-                  [
-                    M.call_closure (|
-                      M.get_associated_function (| Ty.path "str", "as_bytes", [] |),
-                      [ M.read (| self |) ]
-                    |);
-                    b
-                  ]
+                  M.get_associated_function (| Ty.path "alloc::string::String", "push_str", [] |),
+                  [ M.read (| target |); M.read (| self |) ]
                 |)
               |) in
-            M.write (|
-              M.read (| target |),
-              M.call_closure (|
-                M.get_associated_function (|
-                  Ty.path "alloc::string::String",
-                  "from_utf8_unchecked",
-                  []
-                |),
-                [ M.read (| b |) ]
-              |)
-            |)
+            M.alloc (| Value.Tuple [] |)
           |)))
       | _, _, _ => M.impossible
       end.
@@ -3217,7 +3189,7 @@ Module str.
       M.IsAssociatedFunction Self "into_boxed_bytes" into_boxed_bytes.
     
     (*
-        pub fn replace<'a, P: Pattern<'a>>(&'a self, from: P, to: &str) -> String {
+        pub fn replace<P: Pattern>(&self, from: P, to: &str) -> String {
             let mut result = String::new();
             let mut last_end = 0;
             for (start, part) in self.match_indices(from) {
@@ -3409,7 +3381,7 @@ Module str.
     Axiom AssociatedFunction_replace : M.IsAssociatedFunction Self "replace" replace.
     
     (*
-        pub fn replacen<'a, P: Pattern<'a>>(&'a self, pat: P, to: &str, count: usize) -> String {
+        pub fn replacen<P: Pattern>(&self, pat: P, to: &str, count: usize) -> String {
             // Hope to reduce the times of re-allocation
             let mut result = String::with_capacity(32);
             let mut last_end = 0;
@@ -3640,14 +3612,16 @@ Module str.
             // Safety: We have written only valid ASCII to our vec
             let mut s = unsafe { String::from_utf8_unchecked(out) };
     
-            for (i, c) in rest[..].char_indices() {
+            for (i, c) in rest.char_indices() {
                 if c == 'Σ' {
                     // Σ maps to σ, except at the end of a word where it maps to ς.
                     // This is the only conditional (contextual) but language-independent mapping
                     // in `SpecialCasing.txt`,
                     // so hard-code it rather than have a generic "condition" mechanism.
                     // See https://github.com/rust-lang/rust/issues/26035
-                    map_uppercase_sigma(rest, i, &mut s)
+                    let out_len = self.len() - rest.len();
+                    let sigma_lowercase = map_uppercase_sigma(&self, i + out_len);
+                    s.push(sigma_lowercase);
                 } else {
                     match conversions::to_lower(c) {
                         [a, '\0', _] => s.push(a),
@@ -3665,13 +3639,13 @@ Module str.
             }
             return s;
     
-            fn map_uppercase_sigma(from: &str, i: usize, to: &mut String) {
+            fn map_uppercase_sigma(from: &str, i: usize) -> char {
                 // See https://www.unicode.org/versions/Unicode7.0.0/ch03.pdf#G33992
                 // for the definition of `Final_Sigma`.
                 debug_assert!('Σ'.len_utf8() == 2);
                 let is_word_final = case_ignorable_then_cased(from[..i].chars().rev())
                     && !case_ignorable_then_cased(from[i + 2..].chars());
-                to.push_str(if is_word_final { "ς" } else { "σ" });
+                if is_word_final { 'ς' } else { 'σ' }
             }
     
             fn case_ignorable_then_cased<I: Iterator<Item = char>>(iter: I) -> bool {
@@ -3763,21 +3737,7 @@ Module str.
                             [
                               M.call_closure (|
                                 M.get_associated_function (| Ty.path "str", "char_indices", [] |),
-                                [
-                                  M.call_closure (|
-                                    M.get_trait_method (|
-                                      "core::ops::index::Index",
-                                      Ty.path "str",
-                                      [ Ty.path "core::ops::range::RangeFull" ],
-                                      "index",
-                                      []
-                                    |),
-                                    [
-                                      M.read (| rest |);
-                                      Value.StructTuple "core::ops::range::RangeFull" []
-                                    ]
-                                  |)
-                                ]
+                                [ M.read (| rest |) ]
                               |)
                             ]
                           |)
@@ -3844,16 +3804,56 @@ Module str.
                                                         M.read (| γ |),
                                                         Value.Bool true
                                                       |) in
-                                                    M.alloc (|
-                                                      M.call_closure (|
-                                                        M.get_associated_function (|
-                                                          Self,
-                                                          "map_uppercase_sigma.to_lowercase",
-                                                          []
-                                                        |),
-                                                        [ M.read (| rest |); M.read (| i |); s ]
-                                                      |)
-                                                    |)));
+                                                    let~ out_len :=
+                                                      M.alloc (|
+                                                        BinOp.Wrap.sub
+                                                          Integer.Usize
+                                                          (M.call_closure (|
+                                                            M.get_associated_function (|
+                                                              Ty.path "str",
+                                                              "len",
+                                                              []
+                                                            |),
+                                                            [ M.read (| self |) ]
+                                                          |))
+                                                          (M.call_closure (|
+                                                            M.get_associated_function (|
+                                                              Ty.path "str",
+                                                              "len",
+                                                              []
+                                                            |),
+                                                            [ M.read (| rest |) ]
+                                                          |))
+                                                      |) in
+                                                    let~ sigma_lowercase :=
+                                                      M.alloc (|
+                                                        M.call_closure (|
+                                                          M.get_associated_function (|
+                                                            Self,
+                                                            "map_uppercase_sigma.to_lowercase",
+                                                            []
+                                                          |),
+                                                          [
+                                                            M.read (| self |);
+                                                            BinOp.Wrap.add
+                                                              Integer.Usize
+                                                              (M.read (| i |))
+                                                              (M.read (| out_len |))
+                                                          ]
+                                                        |)
+                                                      |) in
+                                                    let~ _ :=
+                                                      M.alloc (|
+                                                        M.call_closure (|
+                                                          M.get_associated_function (|
+                                                            Ty.path "alloc::string::String",
+                                                            "push",
+                                                            []
+                                                          |),
+                                                          [ s; M.read (| sigma_lowercase |) ]
+                                                        |)
+                                                      |) in
+                                                    M.alloc (| Value.Tuple [] |)));
                                                 fun γ =>
                                                   ltac:(M.monadic
                                                     (M.match_operator (|

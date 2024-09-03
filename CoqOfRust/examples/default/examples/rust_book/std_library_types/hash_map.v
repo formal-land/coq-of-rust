@@ -223,38 +223,34 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (| Value.String "Calling Daniel: " |);
-                                      M.read (| Value.String "
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (| Value.String "Calling Daniel: " |);
+                                    M.read (| Value.String "
 " |)
-                                    ]
-                                |));
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path "core::fmt::rt::Argument",
-                                          "new_display",
-                                          [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
-                                        |),
-                                        [
-                                          M.alloc (|
-                                            M.call_closure (|
-                                              M.get_function (| "hash_map::call", [] |),
-                                              [ M.read (| number |) ]
-                                            |)
+                                  ]
+                              |);
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "core::fmt::rt::Argument",
+                                        "new_display",
+                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                                      |),
+                                      [
+                                        M.alloc (|
+                                          M.call_closure (|
+                                            M.get_function (| "hash_map::call", [] |),
+                                            [ M.read (| number |) ]
                                           |)
-                                        ]
-                                      |)
-                                    ]
-                                |))
+                                        |)
+                                      ]
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -275,13 +271,11 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [ M.read (| Value.String "Don't have Daniel's number.
+                              M.alloc (|
+                                Value.Array
+                                  [ M.read (| Value.String "Don't have Daniel's number.
 " |) ]
-                                |))
+                              |)
                             ]
                           |)
                         ]
@@ -346,38 +340,34 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (| Value.String "Calling Ashley: " |);
-                                      M.read (| Value.String "
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (| Value.String "Calling Ashley: " |);
+                                    M.read (| Value.String "
 " |)
-                                    ]
-                                |));
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path "core::fmt::rt::Argument",
-                                          "new_display",
-                                          [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
-                                        |),
-                                        [
-                                          M.alloc (|
-                                            M.call_closure (|
-                                              M.get_function (| "hash_map::call", [] |),
-                                              [ M.read (| number |) ]
-                                            |)
+                                  ]
+                              |);
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "core::fmt::rt::Argument",
+                                        "new_display",
+                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                                      |),
+                                      [
+                                        M.alloc (|
+                                          M.call_closure (|
+                                            M.get_function (| "hash_map::call", [] |),
+                                            [ M.read (| number |) ]
                                           |)
-                                        ]
-                                      |)
-                                    ]
-                                |))
+                                        |)
+                                      ]
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -398,13 +388,11 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [ M.read (| Value.String "Don't have Ashley's number.
+                              M.alloc (|
+                                Value.Array
+                                  [ M.read (| Value.String "Don't have Ashley's number.
 " |) ]
-                                |))
+                              |)
                             ]
                           |)
                         ]
@@ -524,65 +512,61 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                               []
                                             |),
                                             [
-                                              (* Unsize *)
-                                              M.pointer_coercion
-                                                (M.alloc (|
-                                                  Value.Array
-                                                    [
-                                                      M.read (| Value.String "Calling " |);
-                                                      M.read (| Value.String ": " |);
-                                                      M.read (| Value.String "
+                                              M.alloc (|
+                                                Value.Array
+                                                  [
+                                                    M.read (| Value.String "Calling " |);
+                                                    M.read (| Value.String ": " |);
+                                                    M.read (| Value.String "
 " |)
-                                                    ]
-                                                |));
-                                              (* Unsize *)
-                                              M.pointer_coercion
-                                                (M.alloc (|
-                                                  Value.Array
-                                                    [
-                                                      M.call_closure (|
-                                                        M.get_associated_function (|
-                                                          Ty.path "core::fmt::rt::Argument",
-                                                          "new_display",
-                                                          [
-                                                            Ty.apply
-                                                              (Ty.path "&")
-                                                              []
-                                                              [
-                                                                Ty.apply
-                                                                  (Ty.path "&")
-                                                                  []
-                                                                  [ Ty.path "str" ]
-                                                              ]
-                                                          ]
-                                                        |),
-                                                        [ contact ]
-                                                      |);
-                                                      M.call_closure (|
-                                                        M.get_associated_function (|
-                                                          Ty.path "core::fmt::rt::Argument",
-                                                          "new_display",
-                                                          [
-                                                            Ty.apply
-                                                              (Ty.path "&")
-                                                              []
-                                                              [ Ty.path "str" ]
-                                                          ]
-                                                        |),
+                                                  ]
+                                              |);
+                                              M.alloc (|
+                                                Value.Array
+                                                  [
+                                                    M.call_closure (|
+                                                      M.get_associated_function (|
+                                                        Ty.path "core::fmt::rt::Argument",
+                                                        "new_display",
                                                         [
-                                                          M.alloc (|
-                                                            M.call_closure (|
-                                                              M.get_function (|
-                                                                "hash_map::call",
+                                                          Ty.apply
+                                                            (Ty.path "&")
+                                                            []
+                                                            [
+                                                              Ty.apply
+                                                                (Ty.path "&")
                                                                 []
-                                                              |),
-                                                              [ M.read (| number |) ]
-                                                            |)
-                                                          |)
+                                                                [ Ty.path "str" ]
+                                                            ]
                                                         ]
-                                                      |)
-                                                    ]
-                                                |))
+                                                      |),
+                                                      [ contact ]
+                                                    |);
+                                                    M.call_closure (|
+                                                      M.get_associated_function (|
+                                                        Ty.path "core::fmt::rt::Argument",
+                                                        "new_display",
+                                                        [
+                                                          Ty.apply
+                                                            (Ty.path "&")
+                                                            []
+                                                            [ Ty.path "str" ]
+                                                        ]
+                                                      |),
+                                                      [
+                                                        M.alloc (|
+                                                          M.call_closure (|
+                                                            M.get_function (|
+                                                              "hash_map::call",
+                                                              []
+                                                            |),
+                                                            [ M.read (| number |) ]
+                                                          |)
+                                                        |)
+                                                      ]
+                                                    |)
+                                                  ]
+                                              |)
                                             ]
                                           |)
                                         ]

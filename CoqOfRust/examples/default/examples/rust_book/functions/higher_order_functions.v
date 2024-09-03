@@ -65,18 +65,15 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
                     [
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.read (|
-                                Value.String
-                                  "Find the sum of all the squared odd numbers under 1000
+                      M.alloc (|
+                        Value.Array
+                          [
+                            M.read (|
+                              Value.String "Find the sum of all the squared odd numbers under 1000
 "
-                              |)
-                            ]
-                        |))
+                            |)
+                          ]
+                      |)
                     ]
                   |)
                 ]
@@ -217,31 +214,27 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                     [
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.read (| Value.String "imperative style: " |);
-                              M.read (| Value.String "
+                      M.alloc (|
+                        Value.Array
+                          [
+                            M.read (| Value.String "imperative style: " |);
+                            M.read (| Value.String "
 " |)
-                            ]
-                        |));
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::rt::Argument",
-                                  "new_display",
-                                  [ Ty.path "u32" ]
-                                |),
-                                [ acc ]
-                              |)
-                            ]
-                        |))
+                          ]
+                      |);
+                      M.alloc (|
+                        Value.Array
+                          [
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.path "core::fmt::rt::Argument",
+                                "new_display",
+                                [ Ty.path "u32" ]
+                              |),
+                              [ acc ]
+                            |)
+                          ]
+                      |)
                     ]
                   |)
                 ]
@@ -418,31 +411,27 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                     [
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.read (| Value.String "functional style: " |);
-                              M.read (| Value.String "
+                      M.alloc (|
+                        Value.Array
+                          [
+                            M.read (| Value.String "functional style: " |);
+                            M.read (| Value.String "
 " |)
-                            ]
-                        |));
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::rt::Argument",
-                                  "new_display",
-                                  [ Ty.path "u32" ]
-                                |),
-                                [ sum_of_squared_odd_numbers ]
-                              |)
-                            ]
-                        |))
+                          ]
+                      |);
+                      M.alloc (|
+                        Value.Array
+                          [
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.path "core::fmt::rt::Argument",
+                                "new_display",
+                                [ Ty.path "u32" ]
+                              |),
+                              [ sum_of_squared_odd_numbers ]
+                            |)
+                          ]
+                      |)
                     ]
                   |)
                 ]

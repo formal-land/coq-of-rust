@@ -408,12 +408,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 [
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
-                    [
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (| Value.Array [ M.read (| Value.String "`mkdir a`
-" |) ] |))
-                    ]
+                    [ M.alloc (| Value.Array [ M.read (| Value.String "`mkdir a`
+" |) ] |) ]
                   |)
                 ]
               |)
@@ -448,40 +444,35 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [ M.read (| Value.String "! " |); M.read (| Value.String "
-" |)
-                                    ]
-                                |));
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path "core::fmt::rt::Argument",
-                                          "new_debug",
-                                          [ Ty.path "std::io::error::ErrorKind" ]
-                                        |),
-                                        [
-                                          M.alloc (|
-                                            M.call_closure (|
-                                              M.get_associated_function (|
-                                                Ty.path "std::io::error::Error",
-                                                "kind",
-                                                []
-                                              |),
-                                              [ why ]
-                                            |)
+                              M.alloc (|
+                                Value.Array
+                                  [ M.read (| Value.String "! " |); M.read (| Value.String "
+" |) ]
+                              |);
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "core::fmt::rt::Argument",
+                                        "new_debug",
+                                        [ Ty.path "std::io::error::ErrorKind" ]
+                                      |),
+                                      [
+                                        M.alloc (|
+                                          M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.path "std::io::error::Error",
+                                              "kind",
+                                              []
+                                            |),
+                                            [ why ]
                                           |)
-                                        ]
-                                      |)
-                                    ]
-                                |))
+                                        |)
+                                      ]
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -504,12 +495,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
                     [
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array [ M.read (| Value.String "`echo hello > a/b.txt`
+                      M.alloc (|
+                        Value.Array [ M.read (| Value.String "`echo hello > a/b.txt`
 " |) ]
-                        |))
+                      |)
                     ]
                   |)
                 ]
@@ -567,42 +556,38 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                 []
                                               |),
                                               [
-                                                (* Unsize *)
-                                                M.pointer_coercion
-                                                  (M.alloc (|
-                                                    Value.Array
-                                                      [
-                                                        M.read (| Value.String "! " |);
-                                                        M.read (| Value.String "
+                                                M.alloc (|
+                                                  Value.Array
+                                                    [
+                                                      M.read (| Value.String "! " |);
+                                                      M.read (| Value.String "
 " |)
-                                                      ]
-                                                  |));
-                                                (* Unsize *)
-                                                M.pointer_coercion
-                                                  (M.alloc (|
-                                                    Value.Array
-                                                      [
-                                                        M.call_closure (|
-                                                          M.get_associated_function (|
-                                                            Ty.path "core::fmt::rt::Argument",
-                                                            "new_debug",
-                                                            [ Ty.path "std::io::error::ErrorKind" ]
-                                                          |),
-                                                          [
-                                                            M.alloc (|
-                                                              M.call_closure (|
-                                                                M.get_associated_function (|
-                                                                  Ty.path "std::io::error::Error",
-                                                                  "kind",
-                                                                  []
-                                                                |),
-                                                                [ why ]
-                                                              |)
+                                                    ]
+                                                |);
+                                                M.alloc (|
+                                                  Value.Array
+                                                    [
+                                                      M.call_closure (|
+                                                        M.get_associated_function (|
+                                                          Ty.path "core::fmt::rt::Argument",
+                                                          "new_debug",
+                                                          [ Ty.path "std::io::error::ErrorKind" ]
+                                                        |),
+                                                        [
+                                                          M.alloc (|
+                                                            M.call_closure (|
+                                                              M.get_associated_function (|
+                                                                Ty.path "std::io::error::Error",
+                                                                "kind",
+                                                                []
+                                                              |),
+                                                              [ why ]
                                                             |)
-                                                          ]
-                                                        |)
-                                                      ]
-                                                  |))
+                                                          |)
+                                                        ]
+                                                      |)
+                                                    ]
+                                                |)
                                               ]
                                             |)
                                           ]
@@ -626,14 +611,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 [
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
-                    [
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array [ M.read (| Value.String "`mkdir -p a/c/d`
-" |) ]
-                        |))
-                    ]
+                    [ M.alloc (| Value.Array [ M.read (| Value.String "`mkdir -p a/c/d`
+" |) ] |) ]
                   |)
                 ]
               |)
@@ -683,42 +662,38 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                 []
                                               |),
                                               [
-                                                (* Unsize *)
-                                                M.pointer_coercion
-                                                  (M.alloc (|
-                                                    Value.Array
-                                                      [
-                                                        M.read (| Value.String "! " |);
-                                                        M.read (| Value.String "
+                                                M.alloc (|
+                                                  Value.Array
+                                                    [
+                                                      M.read (| Value.String "! " |);
+                                                      M.read (| Value.String "
 " |)
-                                                      ]
-                                                  |));
-                                                (* Unsize *)
-                                                M.pointer_coercion
-                                                  (M.alloc (|
-                                                    Value.Array
-                                                      [
-                                                        M.call_closure (|
-                                                          M.get_associated_function (|
-                                                            Ty.path "core::fmt::rt::Argument",
-                                                            "new_debug",
-                                                            [ Ty.path "std::io::error::ErrorKind" ]
-                                                          |),
-                                                          [
-                                                            M.alloc (|
-                                                              M.call_closure (|
-                                                                M.get_associated_function (|
-                                                                  Ty.path "std::io::error::Error",
-                                                                  "kind",
-                                                                  []
-                                                                |),
-                                                                [ why ]
-                                                              |)
+                                                    ]
+                                                |);
+                                                M.alloc (|
+                                                  Value.Array
+                                                    [
+                                                      M.call_closure (|
+                                                        M.get_associated_function (|
+                                                          Ty.path "core::fmt::rt::Argument",
+                                                          "new_debug",
+                                                          [ Ty.path "std::io::error::ErrorKind" ]
+                                                        |),
+                                                        [
+                                                          M.alloc (|
+                                                            M.call_closure (|
+                                                              M.get_associated_function (|
+                                                                Ty.path "std::io::error::Error",
+                                                                "kind",
+                                                                []
+                                                              |),
+                                                              [ why ]
                                                             |)
-                                                          ]
-                                                        |)
-                                                      ]
-                                                  |))
+                                                          |)
+                                                        ]
+                                                      |)
+                                                    ]
+                                                |)
                                               ]
                                             |)
                                           ]
@@ -742,14 +717,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 [
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
-                    [
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array [ M.read (| Value.String "`touch a/c/e.txt`
-" |) ]
-                        |))
-                    ]
+                    [ M.alloc (| Value.Array [ M.read (| Value.String "`touch a/c/e.txt`
+" |) ] |) ]
                   |)
                 ]
               |)
@@ -805,42 +774,38 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                 []
                                               |),
                                               [
-                                                (* Unsize *)
-                                                M.pointer_coercion
-                                                  (M.alloc (|
-                                                    Value.Array
-                                                      [
-                                                        M.read (| Value.String "! " |);
-                                                        M.read (| Value.String "
+                                                M.alloc (|
+                                                  Value.Array
+                                                    [
+                                                      M.read (| Value.String "! " |);
+                                                      M.read (| Value.String "
 " |)
-                                                      ]
-                                                  |));
-                                                (* Unsize *)
-                                                M.pointer_coercion
-                                                  (M.alloc (|
-                                                    Value.Array
-                                                      [
-                                                        M.call_closure (|
-                                                          M.get_associated_function (|
-                                                            Ty.path "core::fmt::rt::Argument",
-                                                            "new_debug",
-                                                            [ Ty.path "std::io::error::ErrorKind" ]
-                                                          |),
-                                                          [
-                                                            M.alloc (|
-                                                              M.call_closure (|
-                                                                M.get_associated_function (|
-                                                                  Ty.path "std::io::error::Error",
-                                                                  "kind",
-                                                                  []
-                                                                |),
-                                                                [ why ]
-                                                              |)
+                                                    ]
+                                                |);
+                                                M.alloc (|
+                                                  Value.Array
+                                                    [
+                                                      M.call_closure (|
+                                                        M.get_associated_function (|
+                                                          Ty.path "core::fmt::rt::Argument",
+                                                          "new_debug",
+                                                          [ Ty.path "std::io::error::ErrorKind" ]
+                                                        |),
+                                                        [
+                                                          M.alloc (|
+                                                            M.call_closure (|
+                                                              M.get_associated_function (|
+                                                                Ty.path "std::io::error::Error",
+                                                                "kind",
+                                                                []
+                                                              |),
+                                                              [ why ]
                                                             |)
-                                                          ]
-                                                        |)
-                                                      ]
-                                                  |))
+                                                          |)
+                                                        ]
+                                                      |)
+                                                    ]
+                                                |)
                                               ]
                                             |)
                                           ]
@@ -865,12 +830,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
                     [
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array [ M.read (| Value.String "`ln -s ../b.txt a/c/b.txt`
+                      M.alloc (|
+                        Value.Array [ M.read (| Value.String "`ln -s ../b.txt a/c/b.txt`
 " |) ]
-                        |))
+                      |)
                     ]
                   |)
                 ]
@@ -942,47 +905,43 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                           []
                                                         |),
                                                         [
-                                                          (* Unsize *)
-                                                          M.pointer_coercion
-                                                            (M.alloc (|
-                                                              Value.Array
-                                                                [
-                                                                  M.read (| Value.String "! " |);
-                                                                  M.read (| Value.String "
+                                                          M.alloc (|
+                                                            Value.Array
+                                                              [
+                                                                M.read (| Value.String "! " |);
+                                                                M.read (| Value.String "
 " |)
-                                                                ]
-                                                            |));
-                                                          (* Unsize *)
-                                                          M.pointer_coercion
-                                                            (M.alloc (|
-                                                              Value.Array
-                                                                [
-                                                                  M.call_closure (|
-                                                                    M.get_associated_function (|
-                                                                      Ty.path
-                                                                        "core::fmt::rt::Argument",
-                                                                      "new_debug",
-                                                                      [
-                                                                        Ty.path
-                                                                          "std::io::error::ErrorKind"
-                                                                      ]
-                                                                    |),
+                                                              ]
+                                                          |);
+                                                          M.alloc (|
+                                                            Value.Array
+                                                              [
+                                                                M.call_closure (|
+                                                                  M.get_associated_function (|
+                                                                    Ty.path
+                                                                      "core::fmt::rt::Argument",
+                                                                    "new_debug",
                                                                     [
-                                                                      M.alloc (|
-                                                                        M.call_closure (|
-                                                                          M.get_associated_function (|
-                                                                            Ty.path
-                                                                              "std::io::error::Error",
-                                                                            "kind",
-                                                                            []
-                                                                          |),
-                                                                          [ why ]
-                                                                        |)
-                                                                      |)
+                                                                      Ty.path
+                                                                        "std::io::error::ErrorKind"
                                                                     ]
-                                                                  |)
-                                                                ]
-                                                            |))
+                                                                  |),
+                                                                  [
+                                                                    M.alloc (|
+                                                                      M.call_closure (|
+                                                                        M.get_associated_function (|
+                                                                          Ty.path
+                                                                            "std::io::error::Error",
+                                                                          "kind",
+                                                                          []
+                                                                        |),
+                                                                        [ why ]
+                                                                      |)
+                                                                    |)
+                                                                  ]
+                                                                |)
+                                                              ]
+                                                          |)
                                                         ]
                                                       |)
                                                     ]
@@ -1010,12 +969,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 [
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
-                    [
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (| Value.Array [ M.read (| Value.String "`cat a/c/b.txt`
-" |) ] |))
-                    ]
+                    [ M.alloc (| Value.Array [ M.read (| Value.String "`cat a/c/b.txt`
+" |) ] |) ]
                   |)
                 ]
               |)
@@ -1056,40 +1011,35 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [ M.read (| Value.String "! " |); M.read (| Value.String "
-" |)
-                                    ]
-                                |));
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path "core::fmt::rt::Argument",
-                                          "new_debug",
-                                          [ Ty.path "std::io::error::ErrorKind" ]
-                                        |),
-                                        [
-                                          M.alloc (|
-                                            M.call_closure (|
-                                              M.get_associated_function (|
-                                                Ty.path "std::io::error::Error",
-                                                "kind",
-                                                []
-                                              |),
-                                              [ why ]
-                                            |)
+                              M.alloc (|
+                                Value.Array
+                                  [ M.read (| Value.String "! " |); M.read (| Value.String "
+" |) ]
+                              |);
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "core::fmt::rt::Argument",
+                                        "new_debug",
+                                        [ Ty.path "std::io::error::ErrorKind" ]
+                                      |),
+                                      [
+                                        M.alloc (|
+                                          M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.path "std::io::error::Error",
+                                              "kind",
+                                              []
+                                            |),
+                                            [ why ]
                                           |)
-                                        ]
-                                      |)
-                                    ]
-                                |))
+                                        |)
+                                      ]
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -1113,29 +1063,24 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [ M.read (| Value.String "> " |); M.read (| Value.String "
-" |)
-                                    ]
-                                |));
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path "core::fmt::rt::Argument",
-                                          "new_display",
-                                          [ Ty.path "alloc::string::String" ]
-                                        |),
-                                        [ s ]
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [ M.read (| Value.String "> " |); M.read (| Value.String "
+" |) ]
+                              |);
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "core::fmt::rt::Argument",
+                                        "new_display",
+                                        [ Ty.path "alloc::string::String" ]
+                                      |),
+                                      [ s ]
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -1152,12 +1097,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 [
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
-                    [
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (| Value.Array [ M.read (| Value.String "`ls a`
-" |) ] |))
-                    ]
+                    [ M.alloc (| Value.Array [ M.read (| Value.String "`ls a`
+" |) ] |) ]
                   |)
                 ]
               |)
@@ -1192,40 +1133,35 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [ M.read (| Value.String "! " |); M.read (| Value.String "
-" |)
-                                    ]
-                                |));
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path "core::fmt::rt::Argument",
-                                          "new_debug",
-                                          [ Ty.path "std::io::error::ErrorKind" ]
-                                        |),
-                                        [
-                                          M.alloc (|
-                                            M.call_closure (|
-                                              M.get_associated_function (|
-                                                Ty.path "std::io::error::Error",
-                                                "kind",
-                                                []
-                                              |),
-                                              [ why ]
-                                            |)
+                              M.alloc (|
+                                Value.Array
+                                  [ M.read (| Value.String "! " |); M.read (| Value.String "
+" |) ]
+                              |);
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "core::fmt::rt::Argument",
+                                        "new_debug",
+                                        [ Ty.path "std::io::error::ErrorKind" ]
+                                      |),
+                                      [
+                                        M.alloc (|
+                                          M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.path "std::io::error::Error",
+                                              "kind",
+                                              []
+                                            |),
+                                            [ why ]
                                           |)
-                                        ]
-                                      |)
-                                    ]
-                                |))
+                                        |)
+                                      ]
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -1304,64 +1240,58 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                         []
                                                       |),
                                                       [
-                                                        (* Unsize *)
-                                                        M.pointer_coercion
-                                                          (M.alloc (|
-                                                            Value.Array
-                                                              [
-                                                                M.read (| Value.String "> " |);
-                                                                M.read (| Value.String "
+                                                        M.alloc (|
+                                                          Value.Array
+                                                            [
+                                                              M.read (| Value.String "> " |);
+                                                              M.read (| Value.String "
 " |)
-                                                              ]
-                                                          |));
-                                                        (* Unsize *)
-                                                        M.pointer_coercion
-                                                          (M.alloc (|
-                                                            Value.Array
-                                                              [
-                                                                M.call_closure (|
-                                                                  M.get_associated_function (|
-                                                                    Ty.path
-                                                                      "core::fmt::rt::Argument",
-                                                                    "new_debug",
-                                                                    [ Ty.path "std::path::PathBuf" ]
-                                                                  |),
-                                                                  [
-                                                                    M.alloc (|
-                                                                      M.call_closure (|
-                                                                        M.get_associated_function (|
-                                                                          Ty.path
-                                                                            "std::fs::DirEntry",
-                                                                          "path",
-                                                                          []
-                                                                        |),
-                                                                        [
-                                                                          M.alloc (|
-                                                                            M.call_closure (|
-                                                                              M.get_associated_function (|
-                                                                                Ty.apply
-                                                                                  (Ty.path
-                                                                                    "core::result::Result")
-                                                                                  []
-                                                                                  [
-                                                                                    Ty.path
-                                                                                      "std::fs::DirEntry";
-                                                                                    Ty.path
-                                                                                      "std::io::error::Error"
-                                                                                  ],
-                                                                                "unwrap",
+                                                            ]
+                                                        |);
+                                                        M.alloc (|
+                                                          Value.Array
+                                                            [
+                                                              M.call_closure (|
+                                                                M.get_associated_function (|
+                                                                  Ty.path "core::fmt::rt::Argument",
+                                                                  "new_debug",
+                                                                  [ Ty.path "std::path::PathBuf" ]
+                                                                |),
+                                                                [
+                                                                  M.alloc (|
+                                                                    M.call_closure (|
+                                                                      M.get_associated_function (|
+                                                                        Ty.path "std::fs::DirEntry",
+                                                                        "path",
+                                                                        []
+                                                                      |),
+                                                                      [
+                                                                        M.alloc (|
+                                                                          M.call_closure (|
+                                                                            M.get_associated_function (|
+                                                                              Ty.apply
+                                                                                (Ty.path
+                                                                                  "core::result::Result")
                                                                                 []
-                                                                              |),
-                                                                              [ M.read (| path |) ]
-                                                                            |)
+                                                                                [
+                                                                                  Ty.path
+                                                                                    "std::fs::DirEntry";
+                                                                                  Ty.path
+                                                                                    "std::io::error::Error"
+                                                                                ],
+                                                                              "unwrap",
+                                                                              []
+                                                                            |),
+                                                                            [ M.read (| path |) ]
                                                                           |)
-                                                                        ]
-                                                                      |)
+                                                                        |)
+                                                                      ]
                                                                     |)
-                                                                  ]
-                                                                |)
-                                                              ]
-                                                          |))
+                                                                  |)
+                                                                ]
+                                                              |)
+                                                            ]
+                                                        |)
                                                       ]
                                                     |)
                                                   ]
@@ -1385,12 +1315,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 [
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
-                    [
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (| Value.Array [ M.read (| Value.String "`rm a/c/e.txt`
-" |) ] |))
-                    ]
+                    [ M.alloc (| Value.Array [ M.read (| Value.String "`rm a/c/e.txt`
+" |) ] |) ]
                   |)
                 ]
               |)
@@ -1440,42 +1366,38 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                 []
                                               |),
                                               [
-                                                (* Unsize *)
-                                                M.pointer_coercion
-                                                  (M.alloc (|
-                                                    Value.Array
-                                                      [
-                                                        M.read (| Value.String "! " |);
-                                                        M.read (| Value.String "
+                                                M.alloc (|
+                                                  Value.Array
+                                                    [
+                                                      M.read (| Value.String "! " |);
+                                                      M.read (| Value.String "
 " |)
-                                                      ]
-                                                  |));
-                                                (* Unsize *)
-                                                M.pointer_coercion
-                                                  (M.alloc (|
-                                                    Value.Array
-                                                      [
-                                                        M.call_closure (|
-                                                          M.get_associated_function (|
-                                                            Ty.path "core::fmt::rt::Argument",
-                                                            "new_debug",
-                                                            [ Ty.path "std::io::error::ErrorKind" ]
-                                                          |),
-                                                          [
-                                                            M.alloc (|
-                                                              M.call_closure (|
-                                                                M.get_associated_function (|
-                                                                  Ty.path "std::io::error::Error",
-                                                                  "kind",
-                                                                  []
-                                                                |),
-                                                                [ why ]
-                                                              |)
+                                                    ]
+                                                |);
+                                                M.alloc (|
+                                                  Value.Array
+                                                    [
+                                                      M.call_closure (|
+                                                        M.get_associated_function (|
+                                                          Ty.path "core::fmt::rt::Argument",
+                                                          "new_debug",
+                                                          [ Ty.path "std::io::error::ErrorKind" ]
+                                                        |),
+                                                        [
+                                                          M.alloc (|
+                                                            M.call_closure (|
+                                                              M.get_associated_function (|
+                                                                Ty.path "std::io::error::Error",
+                                                                "kind",
+                                                                []
+                                                              |),
+                                                              [ why ]
                                                             |)
-                                                          ]
-                                                        |)
-                                                      ]
-                                                  |))
+                                                          |)
+                                                        ]
+                                                      |)
+                                                    ]
+                                                |)
                                               ]
                                             |)
                                           ]
@@ -1499,12 +1421,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 [
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
-                    [
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (| Value.Array [ M.read (| Value.String "`rmdir a/c/d`
-" |) ] |))
-                    ]
+                    [ M.alloc (| Value.Array [ M.read (| Value.String "`rmdir a/c/d`
+" |) ] |) ]
                   |)
                 ]
               |)
@@ -1554,42 +1472,38 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                 []
                                               |),
                                               [
-                                                (* Unsize *)
-                                                M.pointer_coercion
-                                                  (M.alloc (|
-                                                    Value.Array
-                                                      [
-                                                        M.read (| Value.String "! " |);
-                                                        M.read (| Value.String "
+                                                M.alloc (|
+                                                  Value.Array
+                                                    [
+                                                      M.read (| Value.String "! " |);
+                                                      M.read (| Value.String "
 " |)
-                                                      ]
-                                                  |));
-                                                (* Unsize *)
-                                                M.pointer_coercion
-                                                  (M.alloc (|
-                                                    Value.Array
-                                                      [
-                                                        M.call_closure (|
-                                                          M.get_associated_function (|
-                                                            Ty.path "core::fmt::rt::Argument",
-                                                            "new_debug",
-                                                            [ Ty.path "std::io::error::ErrorKind" ]
-                                                          |),
-                                                          [
-                                                            M.alloc (|
-                                                              M.call_closure (|
-                                                                M.get_associated_function (|
-                                                                  Ty.path "std::io::error::Error",
-                                                                  "kind",
-                                                                  []
-                                                                |),
-                                                                [ why ]
-                                                              |)
+                                                    ]
+                                                |);
+                                                M.alloc (|
+                                                  Value.Array
+                                                    [
+                                                      M.call_closure (|
+                                                        M.get_associated_function (|
+                                                          Ty.path "core::fmt::rt::Argument",
+                                                          "new_debug",
+                                                          [ Ty.path "std::io::error::ErrorKind" ]
+                                                        |),
+                                                        [
+                                                          M.alloc (|
+                                                            M.call_closure (|
+                                                              M.get_associated_function (|
+                                                                Ty.path "std::io::error::Error",
+                                                                "kind",
+                                                                []
+                                                              |),
+                                                              [ why ]
                                                             |)
-                                                          ]
-                                                        |)
-                                                      ]
-                                                  |))
+                                                          |)
+                                                        ]
+                                                      |)
+                                                    ]
+                                                |)
                                               ]
                                             |)
                                           ]

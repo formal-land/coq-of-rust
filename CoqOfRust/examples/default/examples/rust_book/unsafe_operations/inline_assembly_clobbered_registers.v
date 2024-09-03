@@ -62,7 +62,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               [
                 M.call_closure (|
                   M.get_function (| "core::str::converts::from_utf8", [] |),
-                  [ (* Unsize *) M.pointer_coercion name_buf ]
+                  [ name_buf ]
                 |)
               ]
             |)
@@ -76,31 +76,27 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                     [
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.read (| Value.String "CPU Manufacturer ID: " |);
-                              M.read (| Value.String "
+                      M.alloc (|
+                        Value.Array
+                          [
+                            M.read (| Value.String "CPU Manufacturer ID: " |);
+                            M.read (| Value.String "
 " |)
-                            ]
-                        |));
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::rt::Argument",
-                                  "new_display",
-                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
-                                |),
-                                [ name ]
-                              |)
-                            ]
-                        |))
+                          ]
+                      |);
+                      M.alloc (|
+                        Value.Array
+                          [
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.path "core::fmt::rt::Argument",
+                                "new_display",
+                                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                              |),
+                              [ name ]
+                            |)
+                          ]
+                      |)
                     ]
                   |)
                 ]

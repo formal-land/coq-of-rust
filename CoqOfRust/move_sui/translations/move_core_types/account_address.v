@@ -105,17 +105,6 @@ Module account_address.
         (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
   End Impl_core_cmp_PartialOrd_for_move_core_types_account_address_AccountAddress.
   
-  Module Impl_core_marker_StructuralEq_for_move_core_types_account_address_AccountAddress.
-    Definition Self : Ty.t := Ty.path "move_core_types::account_address::AccountAddress".
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::marker::StructuralEq"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [].
-  End Impl_core_marker_StructuralEq_for_move_core_types_account_address_AccountAddress.
-  
   Module Impl_core_cmp_Eq_for_move_core_types_account_address_AccountAddress.
     Definition Self : Ty.t := Ty.path "move_core_types::account_address::AccountAddress".
     
@@ -528,13 +517,11 @@ Module account_address.
             "move_core_types::account_address::to_canonical_display::HexDisplay"
             [
               ("data",
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.SubPointer.get_struct_tuple_field (|
-                    M.read (| self |),
-                    "move_core_types::account_address::AccountAddress",
-                    0
-                  |)));
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "move_core_types::account_address::AccountAddress",
+                  0
+                |));
               ("with_prefix", M.read (| with_prefix |))
             ]))
       | _, _, _ => M.impossible
@@ -669,13 +656,11 @@ Module account_address.
               []
             |),
             [
-              (* Unsize *)
-              M.pointer_coercion
-                (M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "move_core_types::account_address::AccountAddress",
-                  0
-                |))
+              M.SubPointer.get_struct_tuple_field (|
+                M.read (| self |),
+                "move_core_types::account_address::AccountAddress",
+                0
+              |)
             ]
           |)))
       | _, _, _ => M.impossible
@@ -1012,51 +997,56 @@ Module account_address.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.read (|
-            let~ res :=
-              M.alloc (|
-                M.call_closure (|
-                  M.get_function (| "alloc::fmt::format", [] |),
-                  [
+          M.call_closure (|
+            M.get_function (| "core::hint::must_use", [ Ty.path "alloc::string::String" ] |),
+            [
+              M.read (|
+                let~ res :=
+                  M.alloc (|
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                      M.get_function (| "alloc::fmt::format", [] |),
                       [
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.alloc (| Value.Array [ M.read (| Value.String "0x" |) ] |));
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.alloc (|
-                            Value.Array
-                              [
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "core::fmt::rt::Argument",
-                                    "new_display",
-                                    [ Ty.path "alloc::string::String" ]
-                                  |),
-                                  [
-                                    M.alloc (|
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path
-                                            "move_core_types::account_address::AccountAddress",
-                                          "short_str_lossless",
-                                          []
-                                        |),
-                                        [ M.read (| self |) ]
+                        M.call_closure (|
+                          M.get_associated_function (|
+                            Ty.path "core::fmt::Arguments",
+                            "new_v1",
+                            []
+                          |),
+                          [
+                            M.alloc (| Value.Array [ M.read (| Value.String "0x" |) ] |);
+                            M.alloc (|
+                              Value.Array
+                                [
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_display",
+                                      [ Ty.path "alloc::string::String" ]
+                                    |),
+                                    [
+                                      M.alloc (|
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path
+                                              "move_core_types::account_address::AccountAddress",
+                                            "short_str_lossless",
+                                            []
+                                          |),
+                                          [ M.read (| self |) ]
+                                        |)
                                       |)
-                                    |)
-                                  ]
-                                |)
-                              ]
-                          |))
+                                    ]
+                                  |)
+                                ]
+                            |)
+                          ]
+                        |)
                       ]
                     |)
-                  ]
-                |)
-              |) in
-            res
+                  |) in
+                res
+              |)
+            ]
           |)))
       | _, _, _ => M.impossible
       end.
@@ -1169,45 +1159,52 @@ Module account_address.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.read (|
-            let~ res :=
-              M.alloc (|
-                M.call_closure (|
-                  M.get_function (| "alloc::fmt::format", [] |),
-                  [
+          M.call_closure (|
+            M.get_function (| "core::hint::must_use", [ Ty.path "alloc::string::String" ] |),
+            [
+              M.read (|
+                let~ res :=
+                  M.alloc (|
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                      M.get_function (| "alloc::fmt::format", [] |),
                       [
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.alloc (| Value.Array [ M.read (| Value.String "" |) ] |));
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.alloc (|
-                            Value.Array
-                              [
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "core::fmt::rt::Argument",
-                                    "new_lower_hex",
-                                    [
-                                      Ty.apply
-                                        (Ty.path "&")
-                                        []
-                                        [ Ty.path "move_core_types::account_address::AccountAddress"
-                                        ]
-                                    ]
-                                  |),
-                                  [ self ]
-                                |)
-                              ]
-                          |))
+                        M.call_closure (|
+                          M.get_associated_function (|
+                            Ty.path "core::fmt::Arguments",
+                            "new_v1",
+                            []
+                          |),
+                          [
+                            M.alloc (| Value.Array [ M.read (| Value.String "" |) ] |);
+                            M.alloc (|
+                              Value.Array
+                                [
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_lower_hex",
+                                      [
+                                        Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [
+                                            Ty.path
+                                              "move_core_types::account_address::AccountAddress"
+                                          ]
+                                      ]
+                                    |),
+                                    [ self ]
+                                  |)
+                                ]
+                            |)
+                          ]
+                        |)
                       ]
                     |)
-                  ]
-                |)
-              |) in
-            res
+                  |) in
+                res
+              |)
+            ]
           |)))
       | _, _, _ => M.impossible
       end.
@@ -1369,13 +1366,11 @@ Module account_address.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          (* Unsize *)
-          M.pointer_coercion
-            (M.SubPointer.get_struct_tuple_field (|
-              M.read (| self |),
-              "move_core_types::account_address::AccountAddress",
-              0
-            |))))
+          M.SubPointer.get_struct_tuple_field (|
+            M.read (| self |),
+            "move_core_types::account_address::AccountAddress",
+            0
+          |)))
       | _, _, _ => M.impossible
       end.
     
@@ -1448,28 +1443,25 @@ Module account_address.
               M.call_closure (|
                 M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                 [
-                  (* Unsize *)
-                  M.pointer_coercion (M.alloc (| Value.Array [ M.read (| Value.String "" |) ] |));
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.alloc (|
-                      Value.Array
-                        [
-                          M.call_closure (|
-                            M.get_associated_function (|
-                              Ty.path "core::fmt::rt::Argument",
-                              "new_lower_hex",
-                              [
-                                Ty.apply
-                                  (Ty.path "&")
-                                  []
-                                  [ Ty.path "move_core_types::account_address::AccountAddress" ]
-                              ]
-                            |),
-                            [ self ]
-                          |)
-                        ]
-                    |))
+                  M.alloc (| Value.Array [ M.read (| Value.String "" |) ] |);
+                  M.alloc (|
+                    Value.Array
+                      [
+                        M.call_closure (|
+                          M.get_associated_function (|
+                            Ty.path "core::fmt::rt::Argument",
+                            "new_lower_hex",
+                            [
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.path "move_core_types::account_address::AccountAddress" ]
+                            ]
+                          |),
+                          [ self ]
+                        |)
+                      ]
+                  |)
                 ]
               |)
             ]
@@ -1506,28 +1498,25 @@ Module account_address.
               M.call_closure (|
                 M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                 [
-                  (* Unsize *)
-                  M.pointer_coercion (M.alloc (| Value.Array [ M.read (| Value.String "" |) ] |));
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.alloc (|
-                      Value.Array
-                        [
-                          M.call_closure (|
-                            M.get_associated_function (|
-                              Ty.path "core::fmt::rt::Argument",
-                              "new_lower_hex",
-                              [
-                                Ty.apply
-                                  (Ty.path "&")
-                                  []
-                                  [ Ty.path "move_core_types::account_address::AccountAddress" ]
-                              ]
-                            |),
-                            [ self ]
-                          |)
-                        ]
-                    |))
+                  M.alloc (| Value.Array [ M.read (| Value.String "" |) ] |);
+                  M.alloc (|
+                    Value.Array
+                      [
+                        M.call_closure (|
+                          M.get_associated_function (|
+                            Ty.path "core::fmt::rt::Argument",
+                            "new_lower_hex",
+                            [
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.path "move_core_types::account_address::AccountAddress" ]
+                            ]
+                          |),
+                          [ self ]
+                        |)
+                      ]
+                  |)
                 ]
               |)
             ]
@@ -1618,11 +1607,9 @@ Module account_address.
                                             []
                                           |),
                                           [
-                                            (* Unsize *)
-                                            M.pointer_coercion
-                                              (M.alloc (|
-                                                Value.Array [ M.read (| Value.String "0x" |) ]
-                                              |))
+                                            M.alloc (|
+                                              Value.Array [ M.read (| Value.String "0x" |) ]
+                                            |)
                                           ]
                                         |)
                                       ]
@@ -1782,62 +1769,56 @@ Module account_address.
                                                             []
                                                           |),
                                                           [
-                                                            (* Unsize *)
-                                                            M.pointer_coercion
-                                                              (M.alloc (|
-                                                                Value.Array
-                                                                  [ M.read (| Value.String "" |) ]
-                                                              |));
-                                                            (* Unsize *)
-                                                            M.pointer_coercion
-                                                              (M.alloc (|
-                                                                Value.Array
-                                                                  [
-                                                                    M.call_closure (|
-                                                                      M.get_associated_function (|
-                                                                        Ty.path
-                                                                          "core::fmt::rt::Argument",
-                                                                        "new_lower_hex",
-                                                                        [
-                                                                          Ty.apply
-                                                                            (Ty.path "&")
-                                                                            []
-                                                                            [ Ty.path "u8" ]
-                                                                        ]
-                                                                      |),
-                                                                      [ byte ]
-                                                                    |)
-                                                                  ]
-                                                              |));
-                                                            (* Unsize *)
-                                                            M.pointer_coercion
-                                                              (M.alloc (|
-                                                                Value.Array
-                                                                  [
-                                                                    M.call_closure (|
-                                                                      M.get_associated_function (|
-                                                                        Ty.path
-                                                                          "core::fmt::rt::Placeholder",
-                                                                        "new",
-                                                                        []
-                                                                      |),
+                                                            M.alloc (|
+                                                              Value.Array
+                                                                [ M.read (| Value.String "" |) ]
+                                                            |);
+                                                            M.alloc (|
+                                                              Value.Array
+                                                                [
+                                                                  M.call_closure (|
+                                                                    M.get_associated_function (|
+                                                                      Ty.path
+                                                                        "core::fmt::rt::Argument",
+                                                                      "new_lower_hex",
                                                                       [
-                                                                        Value.Integer 0;
-                                                                        Value.UnicodeChar 32;
-                                                                        Value.StructTuple
-                                                                          "core::fmt::rt::Alignment::Unknown"
-                                                                          [];
-                                                                        Value.Integer 8;
-                                                                        Value.StructTuple
-                                                                          "core::fmt::rt::Count::Implied"
-                                                                          [];
-                                                                        Value.StructTuple
-                                                                          "core::fmt::rt::Count::Is"
-                                                                          [ Value.Integer 2 ]
+                                                                        Ty.apply
+                                                                          (Ty.path "&")
+                                                                          []
+                                                                          [ Ty.path "u8" ]
                                                                       ]
-                                                                    |)
-                                                                  ]
-                                                              |));
+                                                                    |),
+                                                                    [ byte ]
+                                                                  |)
+                                                                ]
+                                                            |);
+                                                            M.alloc (|
+                                                              Value.Array
+                                                                [
+                                                                  M.call_closure (|
+                                                                    M.get_associated_function (|
+                                                                      Ty.path
+                                                                        "core::fmt::rt::Placeholder",
+                                                                      "new",
+                                                                      []
+                                                                    |),
+                                                                    [
+                                                                      Value.Integer 0;
+                                                                      Value.UnicodeChar 32;
+                                                                      Value.StructTuple
+                                                                        "core::fmt::rt::Alignment::Unknown"
+                                                                        [];
+                                                                      Value.Integer 8;
+                                                                      Value.StructTuple
+                                                                        "core::fmt::rt::Count::Implied"
+                                                                        [];
+                                                                      Value.StructTuple
+                                                                        "core::fmt::rt::Count::Is"
+                                                                        [ Value.Integer 2 ]
+                                                                    ]
+                                                                  |)
+                                                                ]
+                                                            |);
                                                             M.call_closure (|
                                                               M.get_associated_function (|
                                                                 Ty.path "core::fmt::rt::UnsafeArg",
@@ -2004,11 +1985,9 @@ Module account_address.
                                             []
                                           |),
                                           [
-                                            (* Unsize *)
-                                            M.pointer_coercion
-                                              (M.alloc (|
-                                                Value.Array [ M.read (| Value.String "0x" |) ]
-                                              |))
+                                            M.alloc (|
+                                              Value.Array [ M.read (| Value.String "0x" |) ]
+                                            |)
                                           ]
                                         |)
                                       ]
@@ -2168,62 +2147,56 @@ Module account_address.
                                                             []
                                                           |),
                                                           [
-                                                            (* Unsize *)
-                                                            M.pointer_coercion
-                                                              (M.alloc (|
-                                                                Value.Array
-                                                                  [ M.read (| Value.String "" |) ]
-                                                              |));
-                                                            (* Unsize *)
-                                                            M.pointer_coercion
-                                                              (M.alloc (|
-                                                                Value.Array
-                                                                  [
-                                                                    M.call_closure (|
-                                                                      M.get_associated_function (|
-                                                                        Ty.path
-                                                                          "core::fmt::rt::Argument",
-                                                                        "new_upper_hex",
-                                                                        [
-                                                                          Ty.apply
-                                                                            (Ty.path "&")
-                                                                            []
-                                                                            [ Ty.path "u8" ]
-                                                                        ]
-                                                                      |),
-                                                                      [ byte ]
-                                                                    |)
-                                                                  ]
-                                                              |));
-                                                            (* Unsize *)
-                                                            M.pointer_coercion
-                                                              (M.alloc (|
-                                                                Value.Array
-                                                                  [
-                                                                    M.call_closure (|
-                                                                      M.get_associated_function (|
-                                                                        Ty.path
-                                                                          "core::fmt::rt::Placeholder",
-                                                                        "new",
-                                                                        []
-                                                                      |),
+                                                            M.alloc (|
+                                                              Value.Array
+                                                                [ M.read (| Value.String "" |) ]
+                                                            |);
+                                                            M.alloc (|
+                                                              Value.Array
+                                                                [
+                                                                  M.call_closure (|
+                                                                    M.get_associated_function (|
+                                                                      Ty.path
+                                                                        "core::fmt::rt::Argument",
+                                                                      "new_upper_hex",
                                                                       [
-                                                                        Value.Integer 0;
-                                                                        Value.UnicodeChar 32;
-                                                                        Value.StructTuple
-                                                                          "core::fmt::rt::Alignment::Unknown"
-                                                                          [];
-                                                                        Value.Integer 8;
-                                                                        Value.StructTuple
-                                                                          "core::fmt::rt::Count::Implied"
-                                                                          [];
-                                                                        Value.StructTuple
-                                                                          "core::fmt::rt::Count::Is"
-                                                                          [ Value.Integer 2 ]
+                                                                        Ty.apply
+                                                                          (Ty.path "&")
+                                                                          []
+                                                                          [ Ty.path "u8" ]
                                                                       ]
-                                                                    |)
-                                                                  ]
-                                                              |));
+                                                                    |),
+                                                                    [ byte ]
+                                                                  |)
+                                                                ]
+                                                            |);
+                                                            M.alloc (|
+                                                              Value.Array
+                                                                [
+                                                                  M.call_closure (|
+                                                                    M.get_associated_function (|
+                                                                      Ty.path
+                                                                        "core::fmt::rt::Placeholder",
+                                                                      "new",
+                                                                      []
+                                                                    |),
+                                                                    [
+                                                                      Value.Integer 0;
+                                                                      Value.UnicodeChar 32;
+                                                                      Value.StructTuple
+                                                                        "core::fmt::rt::Alignment::Unknown"
+                                                                        [];
+                                                                      Value.Integer 8;
+                                                                      Value.StructTuple
+                                                                        "core::fmt::rt::Count::Implied"
+                                                                        [];
+                                                                      Value.StructTuple
+                                                                        "core::fmt::rt::Count::Is"
+                                                                        [ Value.Integer 2 ]
+                                                                    ]
+                                                                  |)
+                                                                ]
+                                                            |);
                                                             M.call_closure (|
                                                               M.get_associated_function (|
                                                                 Ty.path "core::fmt::rt::UnsafeArg",
@@ -2462,13 +2435,11 @@ Module account_address.
               []
             |),
             [
-              (* Unsize *)
-              M.pointer_coercion
-                (M.SubPointer.get_struct_tuple_field (|
-                  addr,
-                  "move_core_types::account_address::AccountAddress",
-                  0
-                |))
+              M.SubPointer.get_struct_tuple_field (|
+                addr,
+                "move_core_types::account_address::AccountAddress",
+                0
+              |)
             ]
           |)))
       | _, _, _ => M.impossible
@@ -2504,13 +2475,11 @@ Module account_address.
               []
             |),
             [
-              (* Unsize *)
-              M.pointer_coercion
-                (M.SubPointer.get_struct_tuple_field (|
-                  M.read (| addr |),
-                  "move_core_types::account_address::AccountAddress",
-                  0
-                |))
+              M.SubPointer.get_struct_tuple_field (|
+                M.read (| addr |),
+                "move_core_types::account_address::AccountAddress",
+                0
+              |)
             ]
           |)))
       | _, _, _ => M.impossible
@@ -3276,33 +3245,29 @@ Module account_address.
               M.call_closure (|
                 M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                 [
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.alloc (|
-                      Value.Array
-                        [
-                          M.read (|
-                            Value.String
-                              "Unable to parse AccountAddress (must be hex string of length "
-                          |);
-                          M.read (| Value.String ")" |)
-                        ]
-                    |));
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.alloc (|
-                      Value.Array
-                        [
-                          M.call_closure (|
-                            M.get_associated_function (|
-                              Ty.path "core::fmt::rt::Argument",
-                              "new_display",
-                              [ Ty.path "usize" ]
-                            |),
-                            [ M.get_constant (| "move_core_types::account_address::LENGTH" |) ]
-                          |)
-                        ]
-                    |))
+                  M.alloc (|
+                    Value.Array
+                      [
+                        M.read (|
+                          Value.String
+                            "Unable to parse AccountAddress (must be hex string of length "
+                        |);
+                        M.read (| Value.String ")" |)
+                      ]
+                  |);
+                  M.alloc (|
+                    Value.Array
+                      [
+                        M.call_closure (|
+                          M.get_associated_function (|
+                            Ty.path "core::fmt::rt::Argument",
+                            "new_display",
+                            [ Ty.path "usize" ]
+                          |),
+                          [ M.get_constant (| "move_core_types::account_address::LENGTH" |) ]
+                        |)
+                      ]
+                  |)
                 ]
               |)
             ]

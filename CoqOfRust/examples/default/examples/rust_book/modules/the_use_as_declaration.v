@@ -19,13 +19,8 @@ Definition function (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                 [
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
-                    [
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array [ M.read (| Value.String "called `function()`
-" |) ]
-                        |))
+                    [ M.alloc (| Value.Array [ M.read (| Value.String "called `function()`
+" |) ] |)
                     ]
                   |)
                 ]
@@ -64,13 +59,11 @@ Module deeply.
                           []
                         |),
                         [
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.alloc (|
-                              Value.Array
-                                [ M.read (| Value.String "called `deeply::nested::function()`
+                          M.alloc (|
+                            Value.Array
+                              [ M.read (| Value.String "called `deeply::nested::function()`
 " |) ]
-                            |))
+                          |)
                         ]
                       |)
                     ]
@@ -128,12 +121,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 [
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
-                    [
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (| Value.Array [ M.read (| Value.String "Entering block
-" |) ] |))
-                    ]
+                    [ M.alloc (| Value.Array [ M.read (| Value.String "Entering block
+" |) ] |) ]
                   |)
                 ]
               |)
@@ -159,12 +148,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         "new_const",
                         []
                       |),
-                      [
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.alloc (| Value.Array [ M.read (| Value.String "Leaving block
-" |) ] |))
-                      ]
+                      [ M.alloc (| Value.Array [ M.read (| Value.String "Leaving block
+" |) ] |) ]
                     |)
                   ]
                 |)

@@ -210,29 +210,25 @@ Module opcode.
                                 []
                               |),
                               [
-                                (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                    Value.Array
-                                      [
-                                        M.read (|
-                                          Value.String
-                                            "internal error: entered unreachable code: we already converted the table to boxed variant"
-                                        |)
-                                      ]
-                                  |));
-                                (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::rt::Argument",
-                                        "none",
-                                        []
-                                      |),
+                                M.alloc (|
+                                  Value.Array
+                                    [
+                                      M.read (|
+                                        Value.String
+                                          "internal error: entered unreachable code: we already converted the table to boxed variant"
+                                      |)
+                                    ]
+                                |);
+                                M.alloc (|
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "none",
                                       []
-                                    |)
-                                  |))
+                                    |),
+                                    []
+                                  |)
+                                |)
                               ]
                             |)
                           ]
@@ -255,32 +251,30 @@ Module opcode.
                           M.read (| table |),
                           M.alloc (| M.rust_cast (M.read (| opcode |)) |)
                         |),
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.call_closure (|
-                            M.get_associated_function (|
-                              Ty.apply
-                                (Ty.path "alloc::boxed::Box")
-                                []
-                                [
-                                  Ty.apply
-                                    (Ty.path "alloc::boxed::Box")
-                                    []
-                                    [
-                                      Ty.dyn
-                                        [
-                                          ("existential predicate with variables", []);
-                                          ("existential predicate with variables", [])
-                                        ];
-                                      Ty.path "alloc::alloc::Global"
-                                    ];
-                                  Ty.path "alloc::alloc::Global"
-                                ],
-                              "new",
+                        M.call_closure (|
+                          M.get_associated_function (|
+                            Ty.apply
+                              (Ty.path "alloc::boxed::Box")
                               []
-                            |),
-                            [ M.read (| instruction |) ]
-                          |))
+                              [
+                                Ty.apply
+                                  (Ty.path "alloc::boxed::Box")
+                                  []
+                                  [
+                                    Ty.dyn
+                                      [
+                                        ("existential predicate with variables", []);
+                                        ("existential predicate with variables", [])
+                                      ];
+                                    Ty.path "alloc::alloc::Global"
+                                  ];
+                                Ty.path "alloc::alloc::Global"
+                              ],
+                            "new",
+                            []
+                          |),
+                          [ M.read (| instruction |) ]
+                        |)
                       |) in
                     M.alloc (| Value.Tuple [] |)))
               ]
@@ -352,30 +346,28 @@ Module opcode.
                           M.read (| table |),
                           M.alloc (| M.rust_cast (M.read (| opcode |)) |)
                         |),
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.call_closure (|
-                            M.get_associated_function (|
-                              Ty.apply
-                                (Ty.path "alloc::boxed::Box")
-                                []
-                                [
-                                  Ty.function
-                                    [
-                                      Ty.apply
-                                        (Ty.path "&mut")
-                                        []
-                                        [ Ty.path "revm_interpreter::interpreter::Interpreter" ];
-                                      Ty.apply (Ty.path "&mut") [] [ H ]
-                                    ]
-                                    (Ty.tuple []);
-                                  Ty.path "alloc::alloc::Global"
-                                ],
-                              "new",
+                        M.call_closure (|
+                          M.get_associated_function (|
+                            Ty.apply
+                              (Ty.path "alloc::boxed::Box")
                               []
-                            |),
-                            [ M.read (| instruction |) ]
-                          |))
+                              [
+                                Ty.function
+                                  [
+                                    Ty.apply
+                                      (Ty.path "&mut")
+                                      []
+                                      [ Ty.path "revm_interpreter::interpreter::Interpreter" ];
+                                    Ty.apply (Ty.path "&mut") [] [ H ]
+                                  ]
+                                  (Ty.tuple []);
+                                Ty.path "alloc::alloc::Global"
+                              ],
+                            "new",
+                            []
+                          |),
+                          [ M.read (| instruction |) ]
+                        |)
                       |) in
                     M.alloc (| Value.Tuple [] |)))
               ]
@@ -470,51 +462,47 @@ Module opcode.
                                               fun γ =>
                                                 ltac:(M.monadic
                                                   (let i := M.copy (| γ |) in
-                                                  (* Unsize *)
-                                                  M.pointer_coercion
-                                                    (M.read (|
-                                                      let~ instruction :=
-                                                        M.alloc (|
-                                                          (* Unsize *)
-                                                          M.pointer_coercion
-                                                            (M.call_closure (|
-                                                              M.get_associated_function (|
-                                                                Ty.apply
-                                                                  (Ty.path "alloc::boxed::Box")
-                                                                  []
-                                                                  [
-                                                                    Ty.function
-                                                                      [
-                                                                        Ty.apply
-                                                                          (Ty.path "&mut")
-                                                                          []
-                                                                          [
-                                                                            Ty.path
-                                                                              "revm_interpreter::interpreter::Interpreter"
-                                                                          ];
-                                                                        Ty.apply
-                                                                          (Ty.path "&mut")
-                                                                          []
-                                                                          [ H ]
-                                                                      ]
-                                                                      (Ty.tuple []);
-                                                                    Ty.path "alloc::alloc::Global"
-                                                                  ],
-                                                                "new",
-                                                                []
-                                                              |),
+                                                  M.read (|
+                                                    let~ instruction :=
+                                                      M.alloc (|
+                                                        M.call_closure (|
+                                                          M.get_associated_function (|
+                                                            Ty.apply
+                                                              (Ty.path "alloc::boxed::Box")
+                                                              []
                                                               [
-                                                                M.read (|
-                                                                  M.SubPointer.get_array_field (|
-                                                                    M.read (| table |),
-                                                                    i
-                                                                  |)
-                                                                |)
-                                                              ]
-                                                            |))
-                                                        |) in
-                                                      instruction
-                                                    |))))
+                                                                Ty.function
+                                                                  [
+                                                                    Ty.apply
+                                                                      (Ty.path "&mut")
+                                                                      []
+                                                                      [
+                                                                        Ty.path
+                                                                          "revm_interpreter::interpreter::Interpreter"
+                                                                      ];
+                                                                    Ty.apply
+                                                                      (Ty.path "&mut")
+                                                                      []
+                                                                      [ H ]
+                                                                  ]
+                                                                  (Ty.tuple []);
+                                                                Ty.path "alloc::alloc::Global"
+                                                              ],
+                                                            "new",
+                                                            []
+                                                          |),
+                                                          [
+                                                            M.read (|
+                                                              M.SubPointer.get_array_field (|
+                                                                M.read (| table |),
+                                                                i
+                                                              |)
+                                                            |)
+                                                          ]
+                                                        |)
+                                                      |) in
+                                                    instruction
+                                                  |)))
                                             ]
                                           |)
                                         | _ => M.impossible (||)
@@ -826,15 +814,13 @@ Module opcode.
             [
               M.read (| f |);
               M.read (| Value.String "OpCodeError" |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.alloc (|
-                  M.SubPointer.get_struct_tuple_field (|
-                    M.read (| self |),
-                    "revm_interpreter::opcode::OpCodeError",
-                    0
-                  |)
-                |))
+              M.alloc (|
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "revm_interpreter::opcode::OpCodeError",
+                  0
+                |)
+              |)
             ]
           |)))
       | _, _, _ => M.impossible
@@ -894,17 +880,6 @@ Module opcode.
         (* Trait polymorphic types *) []
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_revm_interpreter_opcode_OpCodeError.
-  
-  Module Impl_core_marker_StructuralEq_for_revm_interpreter_opcode_OpCodeError.
-    Definition Self : Ty.t := Ty.path "revm_interpreter::opcode::OpCodeError".
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::marker::StructuralEq"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [].
-  End Impl_core_marker_StructuralEq_for_revm_interpreter_opcode_OpCodeError.
   
   Module Impl_core_cmp_Eq_for_revm_interpreter_opcode_OpCodeError.
     Definition Self : Ty.t := Ty.path "revm_interpreter::opcode::OpCodeError".
@@ -1041,15 +1016,13 @@ Module opcode.
             [
               M.read (| f |);
               M.read (| Value.String "OpCode" |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.alloc (|
-                  M.SubPointer.get_struct_tuple_field (|
-                    M.read (| self |),
-                    "revm_interpreter::opcode::OpCode",
-                    0
-                  |)
-                |))
+              M.alloc (|
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "revm_interpreter::opcode::OpCode",
+                  0
+                |)
+              |)
             ]
           |)))
       | _, _, _ => M.impossible
@@ -1136,17 +1109,6 @@ Module opcode.
         (* Trait polymorphic types *) []
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_revm_interpreter_opcode_OpCode.
-  
-  Module Impl_core_marker_StructuralEq_for_revm_interpreter_opcode_OpCode.
-    Definition Self : Ty.t := Ty.path "revm_interpreter::opcode::OpCode".
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::marker::StructuralEq"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [].
-  End Impl_core_marker_StructuralEq_for_revm_interpreter_opcode_OpCode.
   
   Module Impl_core_cmp_Eq_for_revm_interpreter_opcode_OpCode.
     Definition Self : Ty.t := Ty.path "revm_interpreter::opcode::OpCode".
@@ -1375,54 +1337,48 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (| Value.String "UNKNOWN(0x" |);
-                                      M.read (| Value.String ")" |)
-                                    ]
-                                |));
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path "core::fmt::rt::Argument",
-                                          "new_upper_hex",
-                                          [ Ty.path "u8" ]
-                                        |),
-                                        [ n ]
-                                      |)
-                                    ]
-                                |));
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path "core::fmt::rt::Placeholder",
-                                          "new",
-                                          []
-                                        |),
-                                        [
-                                          Value.Integer 0;
-                                          Value.UnicodeChar 32;
-                                          Value.StructTuple "core::fmt::rt::Alignment::Unknown" [];
-                                          Value.Integer 8;
-                                          Value.StructTuple "core::fmt::rt::Count::Implied" [];
-                                          Value.StructTuple
-                                            "core::fmt::rt::Count::Is"
-                                            [ Value.Integer 2 ]
-                                        ]
-                                      |)
-                                    ]
-                                |));
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (| Value.String "UNKNOWN(0x" |);
+                                    M.read (| Value.String ")" |)
+                                  ]
+                              |);
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "core::fmt::rt::Argument",
+                                        "new_upper_hex",
+                                        [ Ty.path "u8" ]
+                                      |),
+                                      [ n ]
+                                    |)
+                                  ]
+                              |);
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "core::fmt::rt::Placeholder",
+                                        "new",
+                                        []
+                                      |),
+                                      [
+                                        Value.Integer 0;
+                                        Value.UnicodeChar 32;
+                                        Value.StructTuple "core::fmt::rt::Alignment::Unknown" [];
+                                        Value.Integer 8;
+                                        Value.StructTuple "core::fmt::rt::Count::Implied" [];
+                                        Value.StructTuple
+                                          "core::fmt::rt::Count::Is"
+                                          [ Value.Integer 2 ]
+                                      ]
+                                    |)
+                                  ]
+                              |);
                               M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::rt::UnsafeArg",
@@ -2177,11 +2133,9 @@ Module opcode.
                                 []
                               |),
                               [
-                                (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                    Value.Array [ M.read (| Value.String "opcode not found" |) ]
-                                  |))
+                                M.alloc (|
+                                  Value.Array [ M.read (| Value.String "opcode not found" |) ]
+                                |)
                               ]
                             |)
                           ]
@@ -4376,17 +4330,6 @@ Module opcode.
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_revm_interpreter_opcode_OpCodeInfo.
   
-  Module Impl_core_marker_StructuralEq_for_revm_interpreter_opcode_OpCodeInfo.
-    Definition Self : Ty.t := Ty.path "revm_interpreter::opcode::OpCodeInfo".
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::marker::StructuralEq"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [].
-  End Impl_core_marker_StructuralEq_for_revm_interpreter_opcode_OpCodeInfo.
-  
   Module Impl_core_cmp_Eq_for_revm_interpreter_opcode_OpCodeInfo.
     Definition Self : Ty.t := Ty.path "revm_interpreter::opcode::OpCodeInfo".
     
@@ -5195,93 +5138,81 @@ Module opcode.
                                         |)
                                       |);
                                       M.read (| Value.String "name" |);
-                                      (* Unsize *)
-                                      M.pointer_coercion
-                                        (M.alloc (|
-                                          M.call_closure (|
-                                            M.get_associated_function (|
-                                              Ty.path "revm_interpreter::opcode::OpCodeInfo",
-                                              "name",
-                                              []
-                                            |),
-                                            [ M.read (| self |) ]
-                                          |)
-                                        |))
+                                      M.alloc (|
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path "revm_interpreter::opcode::OpCodeInfo",
+                                            "name",
+                                            []
+                                          |),
+                                          [ M.read (| self |) ]
+                                        |)
+                                      |)
                                     ]
                                   |);
                                   M.read (| Value.String "inputs" |);
-                                  (* Unsize *)
-                                  M.pointer_coercion
-                                    (M.alloc (|
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path "revm_interpreter::opcode::OpCodeInfo",
-                                          "inputs",
-                                          []
-                                        |),
-                                        [ M.read (| self |) ]
-                                      |)
-                                    |))
+                                  M.alloc (|
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "revm_interpreter::opcode::OpCodeInfo",
+                                        "inputs",
+                                        []
+                                      |),
+                                      [ M.read (| self |) ]
+                                    |)
+                                  |)
                                 ]
                               |);
                               M.read (| Value.String "outputs" |);
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.path "revm_interpreter::opcode::OpCodeInfo",
-                                      "outputs",
-                                      []
-                                    |),
-                                    [ M.read (| self |) ]
-                                  |)
-                                |))
+                              M.alloc (|
+                                M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.path "revm_interpreter::opcode::OpCodeInfo",
+                                    "outputs",
+                                    []
+                                  |),
+                                  [ M.read (| self |) ]
+                                |)
+                              |)
                             ]
                           |);
                           M.read (| Value.String "not_eof" |);
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.alloc (|
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "revm_interpreter::opcode::OpCodeInfo",
-                                  "is_disabled_in_eof",
-                                  []
-                                |),
-                                [ M.read (| self |) ]
-                              |)
-                            |))
+                          M.alloc (|
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.path "revm_interpreter::opcode::OpCodeInfo",
+                                "is_disabled_in_eof",
+                                []
+                              |),
+                              [ M.read (| self |) ]
+                            |)
+                          |)
                         ]
                       |);
                       M.read (| Value.String "terminating" |);
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          M.call_closure (|
-                            M.get_associated_function (|
-                              Ty.path "revm_interpreter::opcode::OpCodeInfo",
-                              "is_terminating",
-                              []
-                            |),
-                            [ M.read (| self |) ]
-                          |)
-                        |))
+                      M.alloc (|
+                        M.call_closure (|
+                          M.get_associated_function (|
+                            Ty.path "revm_interpreter::opcode::OpCodeInfo",
+                            "is_terminating",
+                            []
+                          |),
+                          [ M.read (| self |) ]
+                        |)
+                      |)
                     ]
                   |);
                   M.read (| Value.String "immediate_size" |);
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.alloc (|
-                      M.call_closure (|
-                        M.get_associated_function (|
-                          Ty.path "revm_interpreter::opcode::OpCodeInfo",
-                          "immediate_size",
-                          []
-                        |),
-                        [ M.read (| self |) ]
-                      |)
-                    |))
+                  M.alloc (|
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.path "revm_interpreter::opcode::OpCodeInfo",
+                        "immediate_size",
+                        []
+                      |),
+                      [ M.read (| self |) ]
+                    |)
+                  |)
                 ]
               |)
             ]
@@ -5350,12 +5281,10 @@ Module opcode.
                                   []
                                 |),
                                 [
-                                  (* Unsize *)
-                                  M.pointer_coercion
-                                    (M.alloc (|
-                                      Value.Array
-                                        [ M.read (| Value.String "opcode name is too long" |) ]
-                                    |))
+                                  M.alloc (|
+                                    Value.Array
+                                      [ M.read (| Value.String "opcode name is too long" |) ]
+                                  |)
                                 ]
                               |)
                             ]
@@ -6134,16 +6063,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -6213,16 +6140,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -6285,16 +6210,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -6357,16 +6280,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -6429,16 +6350,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -6501,16 +6420,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -6573,16 +6490,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -6645,16 +6560,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -6717,16 +6630,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -6789,16 +6700,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -6861,16 +6770,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -6933,16 +6840,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -7005,16 +6910,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -7077,16 +6980,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -7149,16 +7050,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -7221,16 +7120,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -7293,16 +7190,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -7365,16 +7260,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -7437,16 +7330,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -7509,16 +7400,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -7581,16 +7470,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -7653,16 +7540,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -7725,16 +7610,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -7797,16 +7680,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -7869,16 +7750,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -7941,16 +7820,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -8013,16 +7890,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -8085,16 +7960,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -8157,16 +8030,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -8229,16 +8100,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -8301,16 +8170,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -8373,16 +8240,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -8445,16 +8310,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -8517,16 +8380,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -8589,16 +8450,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -8661,16 +8520,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -8740,16 +8597,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -8819,16 +8674,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -8891,16 +8744,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -8970,16 +8821,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -9049,16 +8898,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -9121,16 +8968,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -9193,16 +9038,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -9272,16 +9115,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -9344,16 +9185,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -9416,16 +9255,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -9488,16 +9325,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -9560,16 +9395,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -9632,16 +9465,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -9704,16 +9535,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -9776,16 +9605,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -9848,16 +9675,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -9920,16 +9745,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -9992,16 +9815,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -10064,16 +9885,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -10136,16 +9955,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -10208,16 +10025,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -10280,16 +10095,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -10352,16 +10165,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -10424,16 +10235,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -10496,16 +10305,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -10575,16 +10382,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -10654,16 +10459,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -10733,16 +10536,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -10805,16 +10606,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -10884,16 +10683,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -10956,16 +10753,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -11028,16 +10823,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -11100,16 +10893,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -11172,16 +10963,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -11244,16 +11033,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -11323,16 +11110,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -11402,16 +11187,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -11481,16 +11264,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -11560,16 +11341,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -11639,16 +11418,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -11718,16 +11495,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -11797,16 +11572,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -11876,16 +11649,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -11955,16 +11726,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -12034,16 +11803,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -12113,16 +11880,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -12192,16 +11957,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -12271,16 +12034,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -12350,16 +12111,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -12429,16 +12188,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -12508,16 +12265,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -12587,16 +12342,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -12666,16 +12419,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -12745,16 +12496,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -12824,16 +12573,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -12903,16 +12650,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -12982,16 +12727,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -13061,16 +12804,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -13140,16 +12881,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -13219,16 +12958,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -13298,16 +13035,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -13377,16 +13112,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -13456,16 +13189,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -13535,16 +13266,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -13614,16 +13343,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -13693,16 +13420,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -13772,16 +13497,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -13844,16 +13567,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -13916,16 +13637,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -13988,16 +13707,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -14060,16 +13777,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -14132,16 +13847,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -14204,16 +13917,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -14276,16 +13987,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -14348,16 +14057,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -14420,16 +14127,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -14492,16 +14197,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -14564,16 +14267,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -14636,16 +14337,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -14708,16 +14407,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -14780,16 +14477,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -14852,16 +14547,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -14924,16 +14617,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -14996,16 +14687,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -15068,16 +14757,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -15140,16 +14827,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -15212,16 +14897,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -15284,16 +14967,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -15356,16 +15037,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -15428,16 +15107,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -15500,16 +15177,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -15572,16 +15247,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -15644,16 +15317,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -15716,16 +15387,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -15788,16 +15457,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -15860,16 +15527,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -15932,16 +15597,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -16004,16 +15667,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -16076,16 +15737,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -16148,16 +15807,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -16220,16 +15877,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -16292,16 +15947,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -16364,16 +16017,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -16436,16 +16087,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -16508,16 +16157,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -16587,16 +16234,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -16659,16 +16304,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -16731,16 +16374,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -16817,16 +16458,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -16896,16 +16535,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -16975,16 +16612,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -17054,16 +16689,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -17133,16 +16766,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -17219,16 +16850,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -17298,16 +16927,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -17377,16 +17004,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -17456,16 +17081,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -17535,16 +17158,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -17607,16 +17228,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -17693,16 +17312,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -17772,16 +17389,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -17851,16 +17466,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -17930,16 +17543,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -18009,16 +17620,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -18088,16 +17697,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -18167,16 +17774,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -18239,16 +17844,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -18311,16 +17914,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -18383,16 +17984,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -18462,16 +18061,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -18534,16 +18131,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -18613,16 +18208,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -18692,16 +18285,14 @@ Module opcode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "opcodes must be sorted in ascending order"
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "opcodes must be sorted in ascending order"
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -18761,946 +18352,924 @@ Module opcode.
               [
                 ("key", Value.Integer 12913932095322966823);
                 ("disps",
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.alloc (|
-                      Value.Array
-                        [
-                          Value.Tuple [ Value.Integer 0; Value.Integer 27 ];
-                          Value.Tuple [ Value.Integer 0; Value.Integer 3 ];
-                          Value.Tuple [ Value.Integer 0; Value.Integer 155 ];
-                          Value.Tuple [ Value.Integer 0; Value.Integer 0 ];
-                          Value.Tuple [ Value.Integer 0; Value.Integer 153 ];
-                          Value.Tuple [ Value.Integer 26; Value.Integer 134 ];
-                          Value.Tuple [ Value.Integer 0; Value.Integer 135 ];
-                          Value.Tuple [ Value.Integer 0; Value.Integer 123 ];
-                          Value.Tuple [ Value.Integer 2; Value.Integer 3 ];
-                          Value.Tuple [ Value.Integer 0; Value.Integer 70 ];
-                          Value.Tuple [ Value.Integer 0; Value.Integer 0 ];
-                          Value.Tuple [ Value.Integer 0; Value.Integer 100 ];
-                          Value.Tuple [ Value.Integer 0; Value.Integer 4 ];
-                          Value.Tuple [ Value.Integer 0; Value.Integer 111 ];
-                          Value.Tuple [ Value.Integer 2; Value.Integer 33 ];
-                          Value.Tuple [ Value.Integer 0; Value.Integer 0 ];
-                          Value.Tuple [ Value.Integer 1; Value.Integer 154 ];
-                          Value.Tuple [ Value.Integer 0; Value.Integer 8 ];
-                          Value.Tuple [ Value.Integer 1; Value.Integer 49 ];
-                          Value.Tuple [ Value.Integer 0; Value.Integer 1 ];
-                          Value.Tuple [ Value.Integer 7; Value.Integer 29 ];
-                          Value.Tuple [ Value.Integer 39; Value.Integer 151 ];
-                          Value.Tuple [ Value.Integer 2; Value.Integer 77 ];
-                          Value.Tuple [ Value.Integer 0; Value.Integer 55 ];
-                          Value.Tuple [ Value.Integer 0; Value.Integer 17 ];
-                          Value.Tuple [ Value.Integer 0; Value.Integer 75 ];
-                          Value.Tuple [ Value.Integer 15; Value.Integer 42 ];
-                          Value.Tuple [ Value.Integer 0; Value.Integer 2 ];
-                          Value.Tuple [ Value.Integer 0; Value.Integer 3 ];
-                          Value.Tuple [ Value.Integer 2; Value.Integer 32 ];
-                          Value.Tuple [ Value.Integer 0; Value.Integer 5 ];
-                          Value.Tuple [ Value.Integer 1; Value.Integer 18 ];
-                          Value.Tuple [ Value.Integer 0; Value.Integer 2 ];
-                          Value.Tuple [ Value.Integer 69; Value.Integer 21 ]
-                        ]
-                    |)));
+                  M.alloc (|
+                    Value.Array
+                      [
+                        Value.Tuple [ Value.Integer 0; Value.Integer 27 ];
+                        Value.Tuple [ Value.Integer 0; Value.Integer 3 ];
+                        Value.Tuple [ Value.Integer 0; Value.Integer 155 ];
+                        Value.Tuple [ Value.Integer 0; Value.Integer 0 ];
+                        Value.Tuple [ Value.Integer 0; Value.Integer 153 ];
+                        Value.Tuple [ Value.Integer 26; Value.Integer 134 ];
+                        Value.Tuple [ Value.Integer 0; Value.Integer 135 ];
+                        Value.Tuple [ Value.Integer 0; Value.Integer 123 ];
+                        Value.Tuple [ Value.Integer 2; Value.Integer 3 ];
+                        Value.Tuple [ Value.Integer 0; Value.Integer 70 ];
+                        Value.Tuple [ Value.Integer 0; Value.Integer 0 ];
+                        Value.Tuple [ Value.Integer 0; Value.Integer 100 ];
+                        Value.Tuple [ Value.Integer 0; Value.Integer 4 ];
+                        Value.Tuple [ Value.Integer 0; Value.Integer 111 ];
+                        Value.Tuple [ Value.Integer 2; Value.Integer 33 ];
+                        Value.Tuple [ Value.Integer 0; Value.Integer 0 ];
+                        Value.Tuple [ Value.Integer 1; Value.Integer 154 ];
+                        Value.Tuple [ Value.Integer 0; Value.Integer 8 ];
+                        Value.Tuple [ Value.Integer 1; Value.Integer 49 ];
+                        Value.Tuple [ Value.Integer 0; Value.Integer 1 ];
+                        Value.Tuple [ Value.Integer 7; Value.Integer 29 ];
+                        Value.Tuple [ Value.Integer 39; Value.Integer 151 ];
+                        Value.Tuple [ Value.Integer 2; Value.Integer 77 ];
+                        Value.Tuple [ Value.Integer 0; Value.Integer 55 ];
+                        Value.Tuple [ Value.Integer 0; Value.Integer 17 ];
+                        Value.Tuple [ Value.Integer 0; Value.Integer 75 ];
+                        Value.Tuple [ Value.Integer 15; Value.Integer 42 ];
+                        Value.Tuple [ Value.Integer 0; Value.Integer 2 ];
+                        Value.Tuple [ Value.Integer 0; Value.Integer 3 ];
+                        Value.Tuple [ Value.Integer 2; Value.Integer 32 ];
+                        Value.Tuple [ Value.Integer 0; Value.Integer 5 ];
+                        Value.Tuple [ Value.Integer 1; Value.Integer 18 ];
+                        Value.Tuple [ Value.Integer 0; Value.Integer 2 ];
+                        Value.Tuple [ Value.Integer 69; Value.Integer 21 ]
+                      ]
+                  |));
                 ("entries",
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.alloc (|
-                      Value.Array
-                        [
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "RETURN" |);
-                              M.read (| M.get_constant (| "revm_interpreter::opcode::RETURN" |) |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "PUSH15" |);
-                              M.read (| M.get_constant (| "revm_interpreter::opcode::PUSH15" |) |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "SWAP6" |);
-                              M.read (| M.get_constant (| "revm_interpreter::opcode::SWAP6" |) |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "PUSH27" |);
-                              M.read (| M.get_constant (| "revm_interpreter::opcode::PUSH27" |) |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "JUMPDEST" |);
-                              M.read (| M.get_constant (| "revm_interpreter::opcode::JUMPDEST" |) |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "TIMESTAMP" |);
-                              M.read (|
-                                M.get_constant (| "revm_interpreter::opcode::TIMESTAMP" |)
-                              |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "PUSH7" |);
-                              M.read (| M.get_constant (| "revm_interpreter::opcode::PUSH7" |) |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "SELFDESTRUCT" |);
-                              M.read (|
-                                M.get_constant (| "revm_interpreter::opcode::SELFDESTRUCT" |)
-                              |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "ISZERO" |);
-                              M.read (| M.get_constant (| "revm_interpreter::opcode::ISZERO" |) |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "SLOAD" |);
-                              M.read (| M.get_constant (| "revm_interpreter::opcode::SLOAD" |) |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "SWAP1" |);
-                              M.read (| M.get_constant (| "revm_interpreter::opcode::SWAP1" |) |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "PUSH20" |);
-                              M.read (| M.get_constant (| "revm_interpreter::opcode::PUSH20" |) |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "RETURNDATACOPY" |);
-                              M.read (|
-                                M.get_constant (| "revm_interpreter::opcode::RETURNDATACOPY" |)
-                              |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "EXTSCALL" |);
-                              M.read (| M.get_constant (| "revm_interpreter::opcode::EXTSCALL" |) |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "JUMPI" |);
-                              M.read (| M.get_constant (| "revm_interpreter::opcode::JUMPI" |) |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "DATASIZE" |);
-                              M.read (| M.get_constant (| "revm_interpreter::opcode::DATASIZE" |) |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "DUP15" |);
-                              M.read (| M.get_constant (| "revm_interpreter::opcode::DUP15" |) |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "SWAP10" |);
-                              M.read (| M.get_constant (| "revm_interpreter::opcode::SWAP10" |) |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "DUP1" |);
-                              M.read (| M.get_constant (| "revm_interpreter::opcode::DUP1" |) |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "PUSH30" |);
-                              M.read (| M.get_constant (| "revm_interpreter::opcode::PUSH30" |) |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "CREATE2" |);
-                              M.read (| M.get_constant (| "revm_interpreter::opcode::CREATE2" |) |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "LOG3" |);
-                              M.read (| M.get_constant (| "revm_interpreter::opcode::LOG3" |) |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "CALL" |);
-                              M.read (| M.get_constant (| "revm_interpreter::opcode::CALL" |) |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "DUP9" |);
-                              M.read (| M.get_constant (| "revm_interpreter::opcode::DUP9" |) |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "BLOCKHASH" |);
-                              M.read (|
-                                M.get_constant (| "revm_interpreter::opcode::BLOCKHASH" |)
-                              |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "BLOBHASH" |);
-                              M.read (| M.get_constant (| "revm_interpreter::opcode::BLOBHASH" |) |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "LOG1" |);
-                              M.read (| M.get_constant (| "revm_interpreter::opcode::LOG1" |) |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "SWAP2" |);
-                              M.read (| M.get_constant (| "revm_interpreter::opcode::SWAP2" |) |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "EQ" |);
-                              M.read (| M.get_constant (| "revm_interpreter::opcode::EQ" |) |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "MCOPY" |);
-                              M.read (| M.get_constant (| "revm_interpreter::opcode::MCOPY" |) |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "RJUMP" |);
-                              M.read (| M.get_constant (| "revm_interpreter::opcode::RJUMP" |) |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "GAS" |);
-                              M.read (| M.get_constant (| "revm_interpreter::opcode::GAS" |) |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "LOG0" |);
-                              M.read (| M.get_constant (| "revm_interpreter::opcode::LOG0" |) |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "EXTCODEHASH" |);
-                              M.read (|
-                                M.get_constant (| "revm_interpreter::opcode::EXTCODEHASH" |)
-                              |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "PUSH12" |);
-                              M.read (| M.get_constant (| "revm_interpreter::opcode::PUSH12" |) |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "CALLDATACOPY" |);
-                              M.read (|
-                                M.get_constant (| "revm_interpreter::opcode::CALLDATACOPY" |)
-                              |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "RETURNDATALOAD" |);
-                              M.read (|
-                                M.get_constant (| "revm_interpreter::opcode::RETURNDATALOAD" |)
-                              |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "PUSH17" |);
-                              M.read (| M.get_constant (| "revm_interpreter::opcode::PUSH17" |) |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "BASEFEE" |);
-                              M.read (| M.get_constant (| "revm_interpreter::opcode::BASEFEE" |) |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "MLOAD" |);
-                              M.read (| M.get_constant (| "revm_interpreter::opcode::MLOAD" |) |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "TXCREATE" |);
-                              M.read (| M.get_constant (| "revm_interpreter::opcode::TXCREATE" |) |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "SWAP15" |);
-                              M.read (| M.get_constant (| "revm_interpreter::opcode::SWAP15" |) |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "SMOD" |);
-                              M.read (| M.get_constant (| "revm_interpreter::opcode::SMOD" |) |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "EOFCREATE" |);
-                              M.read (|
-                                M.get_constant (| "revm_interpreter::opcode::EOFCREATE" |)
-                              |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "DUP10" |);
-                              M.read (| M.get_constant (| "revm_interpreter::opcode::DUP10" |) |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "ADDMOD" |);
-                              M.read (| M.get_constant (| "revm_interpreter::opcode::ADDMOD" |) |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "RJUMPI" |);
-                              M.read (| M.get_constant (| "revm_interpreter::opcode::RJUMPI" |) |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "GASPRICE" |);
-                              M.read (| M.get_constant (| "revm_interpreter::opcode::GASPRICE" |) |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "PUSH23" |);
-                              M.read (| M.get_constant (| "revm_interpreter::opcode::PUSH23" |) |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "DUP12" |);
-                              M.read (| M.get_constant (| "revm_interpreter::opcode::DUP12" |) |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "DUP7" |);
-                              M.read (| M.get_constant (| "revm_interpreter::opcode::DUP7" |) |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "EXTCALL" |);
-                              M.read (| M.get_constant (| "revm_interpreter::opcode::EXTCALL" |) |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "LT" |);
-                              M.read (| M.get_constant (| "revm_interpreter::opcode::LT" |) |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "PUSH3" |);
-                              M.read (| M.get_constant (| "revm_interpreter::opcode::PUSH3" |) |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "SDIV" |);
-                              M.read (| M.get_constant (| "revm_interpreter::opcode::SDIV" |) |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "EXTCODESIZE" |);
-                              M.read (|
-                                M.get_constant (| "revm_interpreter::opcode::EXTCODESIZE" |)
-                              |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "SWAP4" |);
-                              M.read (| M.get_constant (| "revm_interpreter::opcode::SWAP4" |) |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "CALLDATALOAD" |);
-                              M.read (|
-                                M.get_constant (| "revm_interpreter::opcode::CALLDATALOAD" |)
-                              |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "PUSH13" |);
-                              M.read (| M.get_constant (| "revm_interpreter::opcode::PUSH13" |) |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "JUMP" |);
-                              M.read (| M.get_constant (| "revm_interpreter::opcode::JUMP" |) |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "DUP6" |);
-                              M.read (| M.get_constant (| "revm_interpreter::opcode::DUP6" |) |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "MOD" |);
-                              M.read (| M.get_constant (| "revm_interpreter::opcode::MOD" |) |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "INVALID" |);
-                              M.read (| M.get_constant (| "revm_interpreter::opcode::INVALID" |) |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "PUSH31" |);
-                              M.read (| M.get_constant (| "revm_interpreter::opcode::PUSH31" |) |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "PUSH29" |);
-                              M.read (| M.get_constant (| "revm_interpreter::opcode::PUSH29" |) |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "DUP8" |);
-                              M.read (| M.get_constant (| "revm_interpreter::opcode::DUP8" |) |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "CALLER" |);
-                              M.read (| M.get_constant (| "revm_interpreter::opcode::CALLER" |) |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "PUSH25" |);
-                              M.read (| M.get_constant (| "revm_interpreter::opcode::PUSH25" |) |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "PUSH2" |);
-                              M.read (| M.get_constant (| "revm_interpreter::opcode::PUSH2" |) |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "SWAP16" |);
-                              M.read (| M.get_constant (| "revm_interpreter::opcode::SWAP16" |) |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "SWAP14" |);
-                              M.read (| M.get_constant (| "revm_interpreter::opcode::SWAP14" |) |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "PUSH14" |);
-                              M.read (| M.get_constant (| "revm_interpreter::opcode::PUSH14" |) |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "DUPN" |);
-                              M.read (| M.get_constant (| "revm_interpreter::opcode::DUPN" |) |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "DATALOADN" |);
-                              M.read (|
-                                M.get_constant (| "revm_interpreter::opcode::DATALOADN" |)
-                              |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "CHAINID" |);
-                              M.read (| M.get_constant (| "revm_interpreter::opcode::CHAINID" |) |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "PUSH10" |);
-                              M.read (| M.get_constant (| "revm_interpreter::opcode::PUSH10" |) |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "PUSH9" |);
-                              M.read (| M.get_constant (| "revm_interpreter::opcode::PUSH9" |) |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "DUP3" |);
-                              M.read (| M.get_constant (| "revm_interpreter::opcode::DUP3" |) |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "EXCHANGE" |);
-                              M.read (| M.get_constant (| "revm_interpreter::opcode::EXCHANGE" |) |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "DUP2" |);
-                              M.read (| M.get_constant (| "revm_interpreter::opcode::DUP2" |) |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "EXTCODECOPY" |);
-                              M.read (|
-                                M.get_constant (| "revm_interpreter::opcode::EXTCODECOPY" |)
-                              |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "MULMOD" |);
-                              M.read (| M.get_constant (| "revm_interpreter::opcode::MULMOD" |) |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "PUSH11" |);
-                              M.read (| M.get_constant (| "revm_interpreter::opcode::PUSH11" |) |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "ORIGIN" |);
-                              M.read (| M.get_constant (| "revm_interpreter::opcode::ORIGIN" |) |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "POP" |);
-                              M.read (| M.get_constant (| "revm_interpreter::opcode::POP" |) |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "SWAP13" |);
-                              M.read (| M.get_constant (| "revm_interpreter::opcode::SWAP13" |) |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "AND" |);
-                              M.read (| M.get_constant (| "revm_interpreter::opcode::AND" |) |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "PUSH21" |);
-                              M.read (| M.get_constant (| "revm_interpreter::opcode::PUSH21" |) |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "PUSH16" |);
-                              M.read (| M.get_constant (| "revm_interpreter::opcode::PUSH16" |) |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "TSTORE" |);
-                              M.read (| M.get_constant (| "revm_interpreter::opcode::TSTORE" |) |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "TLOAD" |);
-                              M.read (| M.get_constant (| "revm_interpreter::opcode::TLOAD" |) |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "DIFFICULTY" |);
-                              M.read (|
-                                M.get_constant (| "revm_interpreter::opcode::DIFFICULTY" |)
-                              |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "DUP5" |);
-                              M.read (| M.get_constant (| "revm_interpreter::opcode::DUP5" |) |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "DUP11" |);
-                              M.read (| M.get_constant (| "revm_interpreter::opcode::DUP11" |) |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "CALLF" |);
-                              M.read (| M.get_constant (| "revm_interpreter::opcode::CALLF" |) |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "MUL" |);
-                              M.read (| M.get_constant (| "revm_interpreter::opcode::MUL" |) |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "SHL" |);
-                              M.read (| M.get_constant (| "revm_interpreter::opcode::SHL" |) |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "PUSH6" |);
-                              M.read (| M.get_constant (| "revm_interpreter::opcode::PUSH6" |) |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "GASLIMIT" |);
-                              M.read (| M.get_constant (| "revm_interpreter::opcode::GASLIMIT" |) |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "PUSH28" |);
-                              M.read (| M.get_constant (| "revm_interpreter::opcode::PUSH28" |) |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "CREATE" |);
-                              M.read (| M.get_constant (| "revm_interpreter::opcode::CREATE" |) |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "CALLVALUE" |);
-                              M.read (|
-                                M.get_constant (| "revm_interpreter::opcode::CALLVALUE" |)
-                              |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "DATALOAD" |);
-                              M.read (| M.get_constant (| "revm_interpreter::opcode::DATALOAD" |) |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "PUSH4" |);
-                              M.read (| M.get_constant (| "revm_interpreter::opcode::PUSH4" |) |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "RETURNCONTRACT" |);
-                              M.read (|
-                                M.get_constant (| "revm_interpreter::opcode::RETURNCONTRACT" |)
-                              |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "JUMPF" |);
-                              M.read (| M.get_constant (| "revm_interpreter::opcode::JUMPF" |) |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "DATACOPY" |);
-                              M.read (| M.get_constant (| "revm_interpreter::opcode::DATACOPY" |) |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "KECCAK256" |);
-                              M.read (|
-                                M.get_constant (| "revm_interpreter::opcode::KECCAK256" |)
-                              |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "RJUMPV" |);
-                              M.read (| M.get_constant (| "revm_interpreter::opcode::RJUMPV" |) |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "BYTE" |);
-                              M.read (| M.get_constant (| "revm_interpreter::opcode::BYTE" |) |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "SGT" |);
-                              M.read (| M.get_constant (| "revm_interpreter::opcode::SGT" |) |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "RETF" |);
-                              M.read (| M.get_constant (| "revm_interpreter::opcode::RETF" |) |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "PUSH22" |);
-                              M.read (| M.get_constant (| "revm_interpreter::opcode::PUSH22" |) |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "MSIZE" |);
-                              M.read (| M.get_constant (| "revm_interpreter::opcode::MSIZE" |) |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "DUP14" |);
-                              M.read (| M.get_constant (| "revm_interpreter::opcode::DUP14" |) |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "REVERT" |);
-                              M.read (| M.get_constant (| "revm_interpreter::opcode::REVERT" |) |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "MSTORE8" |);
-                              M.read (| M.get_constant (| "revm_interpreter::opcode::MSTORE8" |) |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "PUSH5" |);
-                              M.read (| M.get_constant (| "revm_interpreter::opcode::PUSH5" |) |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "SUB" |);
-                              M.read (| M.get_constant (| "revm_interpreter::opcode::SUB" |) |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "SWAP5" |);
-                              M.read (| M.get_constant (| "revm_interpreter::opcode::SWAP5" |) |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "PUSH32" |);
-                              M.read (| M.get_constant (| "revm_interpreter::opcode::PUSH32" |) |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "SWAP11" |);
-                              M.read (| M.get_constant (| "revm_interpreter::opcode::SWAP11" |) |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "SHR" |);
-                              M.read (| M.get_constant (| "revm_interpreter::opcode::SHR" |) |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "SWAP3" |);
-                              M.read (| M.get_constant (| "revm_interpreter::opcode::SWAP3" |) |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "NUMBER" |);
-                              M.read (| M.get_constant (| "revm_interpreter::opcode::NUMBER" |) |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "PC" |);
-                              M.read (| M.get_constant (| "revm_interpreter::opcode::PC" |) |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "PUSH8" |);
-                              M.read (| M.get_constant (| "revm_interpreter::opcode::PUSH8" |) |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "PUSH0" |);
-                              M.read (| M.get_constant (| "revm_interpreter::opcode::PUSH0" |) |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "MSTORE" |);
-                              M.read (| M.get_constant (| "revm_interpreter::opcode::MSTORE" |) |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "DUP16" |);
-                              M.read (| M.get_constant (| "revm_interpreter::opcode::DUP16" |) |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "BALANCE" |);
-                              M.read (| M.get_constant (| "revm_interpreter::opcode::BALANCE" |) |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "ADD" |);
-                              M.read (| M.get_constant (| "revm_interpreter::opcode::ADD" |) |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "PUSH19" |);
-                              M.read (| M.get_constant (| "revm_interpreter::opcode::PUSH19" |) |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "STOP" |);
-                              M.read (| M.get_constant (| "revm_interpreter::opcode::STOP" |) |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "BLOBBASEFEE" |);
-                              M.read (|
-                                M.get_constant (| "revm_interpreter::opcode::BLOBBASEFEE" |)
-                              |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "GT" |);
-                              M.read (| M.get_constant (| "revm_interpreter::opcode::GT" |) |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "DIV" |);
-                              M.read (| M.get_constant (| "revm_interpreter::opcode::DIV" |) |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "PUSH26" |);
-                              M.read (| M.get_constant (| "revm_interpreter::opcode::PUSH26" |) |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "NOT" |);
-                              M.read (| M.get_constant (| "revm_interpreter::opcode::NOT" |) |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "OR" |);
-                              M.read (| M.get_constant (| "revm_interpreter::opcode::OR" |) |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "ADDRESS" |);
-                              M.read (| M.get_constant (| "revm_interpreter::opcode::ADDRESS" |) |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "SWAPN" |);
-                              M.read (| M.get_constant (| "revm_interpreter::opcode::SWAPN" |) |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "SAR" |);
-                              M.read (| M.get_constant (| "revm_interpreter::opcode::SAR" |) |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "CALLDATASIZE" |);
-                              M.read (|
-                                M.get_constant (| "revm_interpreter::opcode::CALLDATASIZE" |)
-                              |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "DELEGATECALL" |);
-                              M.read (|
-                                M.get_constant (| "revm_interpreter::opcode::DELEGATECALL" |)
-                              |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "EXFCALL" |);
-                              M.read (| M.get_constant (| "revm_interpreter::opcode::EXFCALL" |) |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "PUSH18" |);
-                              M.read (| M.get_constant (| "revm_interpreter::opcode::PUSH18" |) |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "CODESIZE" |);
-                              M.read (| M.get_constant (| "revm_interpreter::opcode::CODESIZE" |) |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "DUP13" |);
-                              M.read (| M.get_constant (| "revm_interpreter::opcode::DUP13" |) |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "SWAP12" |);
-                              M.read (| M.get_constant (| "revm_interpreter::opcode::SWAP12" |) |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "SIGNEXTEND" |);
-                              M.read (|
-                                M.get_constant (| "revm_interpreter::opcode::SIGNEXTEND" |)
-                              |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "CALLCODE" |);
-                              M.read (| M.get_constant (| "revm_interpreter::opcode::CALLCODE" |) |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "SWAP7" |);
-                              M.read (| M.get_constant (| "revm_interpreter::opcode::SWAP7" |) |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "XOR" |);
-                              M.read (| M.get_constant (| "revm_interpreter::opcode::XOR" |) |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "SLT" |);
-                              M.read (| M.get_constant (| "revm_interpreter::opcode::SLT" |) |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "CODECOPY" |);
-                              M.read (| M.get_constant (| "revm_interpreter::opcode::CODECOPY" |) |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "LOG4" |);
-                              M.read (| M.get_constant (| "revm_interpreter::opcode::LOG4" |) |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "COINBASE" |);
-                              M.read (| M.get_constant (| "revm_interpreter::opcode::COINBASE" |) |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "PUSH1" |);
-                              M.read (| M.get_constant (| "revm_interpreter::opcode::PUSH1" |) |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "STATICCALL" |);
-                              M.read (|
-                                M.get_constant (| "revm_interpreter::opcode::STATICCALL" |)
-                              |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "LOG2" |);
-                              M.read (| M.get_constant (| "revm_interpreter::opcode::LOG2" |) |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "SSTORE" |);
-                              M.read (| M.get_constant (| "revm_interpreter::opcode::SSTORE" |) |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "RETURNDATASIZE" |);
-                              M.read (|
-                                M.get_constant (| "revm_interpreter::opcode::RETURNDATASIZE" |)
-                              |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "SWAP9" |);
-                              M.read (| M.get_constant (| "revm_interpreter::opcode::SWAP9" |) |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "DUP4" |);
-                              M.read (| M.get_constant (| "revm_interpreter::opcode::DUP4" |) |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "EXP" |);
-                              M.read (| M.get_constant (| "revm_interpreter::opcode::EXP" |) |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "SELFBALANCE" |);
-                              M.read (|
-                                M.get_constant (| "revm_interpreter::opcode::SELFBALANCE" |)
-                              |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "PUSH24" |);
-                              M.read (| M.get_constant (| "revm_interpreter::opcode::PUSH24" |) |)
-                            ];
-                          Value.Tuple
-                            [
-                              M.read (| Value.String "SWAP8" |);
-                              M.read (| M.get_constant (| "revm_interpreter::opcode::SWAP8" |) |)
-                            ]
-                        ]
-                    |)))
+                  M.alloc (|
+                    Value.Array
+                      [
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "RETURN" |);
+                            M.read (| M.get_constant (| "revm_interpreter::opcode::RETURN" |) |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "PUSH15" |);
+                            M.read (| M.get_constant (| "revm_interpreter::opcode::PUSH15" |) |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "SWAP6" |);
+                            M.read (| M.get_constant (| "revm_interpreter::opcode::SWAP6" |) |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "PUSH27" |);
+                            M.read (| M.get_constant (| "revm_interpreter::opcode::PUSH27" |) |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "JUMPDEST" |);
+                            M.read (| M.get_constant (| "revm_interpreter::opcode::JUMPDEST" |) |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "TIMESTAMP" |);
+                            M.read (| M.get_constant (| "revm_interpreter::opcode::TIMESTAMP" |) |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "PUSH7" |);
+                            M.read (| M.get_constant (| "revm_interpreter::opcode::PUSH7" |) |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "SELFDESTRUCT" |);
+                            M.read (|
+                              M.get_constant (| "revm_interpreter::opcode::SELFDESTRUCT" |)
+                            |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "ISZERO" |);
+                            M.read (| M.get_constant (| "revm_interpreter::opcode::ISZERO" |) |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "SLOAD" |);
+                            M.read (| M.get_constant (| "revm_interpreter::opcode::SLOAD" |) |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "SWAP1" |);
+                            M.read (| M.get_constant (| "revm_interpreter::opcode::SWAP1" |) |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "PUSH20" |);
+                            M.read (| M.get_constant (| "revm_interpreter::opcode::PUSH20" |) |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "RETURNDATACOPY" |);
+                            M.read (|
+                              M.get_constant (| "revm_interpreter::opcode::RETURNDATACOPY" |)
+                            |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "EXTSCALL" |);
+                            M.read (| M.get_constant (| "revm_interpreter::opcode::EXTSCALL" |) |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "JUMPI" |);
+                            M.read (| M.get_constant (| "revm_interpreter::opcode::JUMPI" |) |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "DATASIZE" |);
+                            M.read (| M.get_constant (| "revm_interpreter::opcode::DATASIZE" |) |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "DUP15" |);
+                            M.read (| M.get_constant (| "revm_interpreter::opcode::DUP15" |) |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "SWAP10" |);
+                            M.read (| M.get_constant (| "revm_interpreter::opcode::SWAP10" |) |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "DUP1" |);
+                            M.read (| M.get_constant (| "revm_interpreter::opcode::DUP1" |) |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "PUSH30" |);
+                            M.read (| M.get_constant (| "revm_interpreter::opcode::PUSH30" |) |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "CREATE2" |);
+                            M.read (| M.get_constant (| "revm_interpreter::opcode::CREATE2" |) |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "LOG3" |);
+                            M.read (| M.get_constant (| "revm_interpreter::opcode::LOG3" |) |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "CALL" |);
+                            M.read (| M.get_constant (| "revm_interpreter::opcode::CALL" |) |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "DUP9" |);
+                            M.read (| M.get_constant (| "revm_interpreter::opcode::DUP9" |) |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "BLOCKHASH" |);
+                            M.read (| M.get_constant (| "revm_interpreter::opcode::BLOCKHASH" |) |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "BLOBHASH" |);
+                            M.read (| M.get_constant (| "revm_interpreter::opcode::BLOBHASH" |) |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "LOG1" |);
+                            M.read (| M.get_constant (| "revm_interpreter::opcode::LOG1" |) |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "SWAP2" |);
+                            M.read (| M.get_constant (| "revm_interpreter::opcode::SWAP2" |) |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "EQ" |);
+                            M.read (| M.get_constant (| "revm_interpreter::opcode::EQ" |) |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "MCOPY" |);
+                            M.read (| M.get_constant (| "revm_interpreter::opcode::MCOPY" |) |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "RJUMP" |);
+                            M.read (| M.get_constant (| "revm_interpreter::opcode::RJUMP" |) |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "GAS" |);
+                            M.read (| M.get_constant (| "revm_interpreter::opcode::GAS" |) |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "LOG0" |);
+                            M.read (| M.get_constant (| "revm_interpreter::opcode::LOG0" |) |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "EXTCODEHASH" |);
+                            M.read (|
+                              M.get_constant (| "revm_interpreter::opcode::EXTCODEHASH" |)
+                            |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "PUSH12" |);
+                            M.read (| M.get_constant (| "revm_interpreter::opcode::PUSH12" |) |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "CALLDATACOPY" |);
+                            M.read (|
+                              M.get_constant (| "revm_interpreter::opcode::CALLDATACOPY" |)
+                            |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "RETURNDATALOAD" |);
+                            M.read (|
+                              M.get_constant (| "revm_interpreter::opcode::RETURNDATALOAD" |)
+                            |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "PUSH17" |);
+                            M.read (| M.get_constant (| "revm_interpreter::opcode::PUSH17" |) |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "BASEFEE" |);
+                            M.read (| M.get_constant (| "revm_interpreter::opcode::BASEFEE" |) |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "MLOAD" |);
+                            M.read (| M.get_constant (| "revm_interpreter::opcode::MLOAD" |) |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "TXCREATE" |);
+                            M.read (| M.get_constant (| "revm_interpreter::opcode::TXCREATE" |) |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "SWAP15" |);
+                            M.read (| M.get_constant (| "revm_interpreter::opcode::SWAP15" |) |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "SMOD" |);
+                            M.read (| M.get_constant (| "revm_interpreter::opcode::SMOD" |) |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "EOFCREATE" |);
+                            M.read (| M.get_constant (| "revm_interpreter::opcode::EOFCREATE" |) |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "DUP10" |);
+                            M.read (| M.get_constant (| "revm_interpreter::opcode::DUP10" |) |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "ADDMOD" |);
+                            M.read (| M.get_constant (| "revm_interpreter::opcode::ADDMOD" |) |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "RJUMPI" |);
+                            M.read (| M.get_constant (| "revm_interpreter::opcode::RJUMPI" |) |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "GASPRICE" |);
+                            M.read (| M.get_constant (| "revm_interpreter::opcode::GASPRICE" |) |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "PUSH23" |);
+                            M.read (| M.get_constant (| "revm_interpreter::opcode::PUSH23" |) |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "DUP12" |);
+                            M.read (| M.get_constant (| "revm_interpreter::opcode::DUP12" |) |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "DUP7" |);
+                            M.read (| M.get_constant (| "revm_interpreter::opcode::DUP7" |) |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "EXTCALL" |);
+                            M.read (| M.get_constant (| "revm_interpreter::opcode::EXTCALL" |) |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "LT" |);
+                            M.read (| M.get_constant (| "revm_interpreter::opcode::LT" |) |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "PUSH3" |);
+                            M.read (| M.get_constant (| "revm_interpreter::opcode::PUSH3" |) |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "SDIV" |);
+                            M.read (| M.get_constant (| "revm_interpreter::opcode::SDIV" |) |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "EXTCODESIZE" |);
+                            M.read (|
+                              M.get_constant (| "revm_interpreter::opcode::EXTCODESIZE" |)
+                            |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "SWAP4" |);
+                            M.read (| M.get_constant (| "revm_interpreter::opcode::SWAP4" |) |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "CALLDATALOAD" |);
+                            M.read (|
+                              M.get_constant (| "revm_interpreter::opcode::CALLDATALOAD" |)
+                            |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "PUSH13" |);
+                            M.read (| M.get_constant (| "revm_interpreter::opcode::PUSH13" |) |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "JUMP" |);
+                            M.read (| M.get_constant (| "revm_interpreter::opcode::JUMP" |) |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "DUP6" |);
+                            M.read (| M.get_constant (| "revm_interpreter::opcode::DUP6" |) |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "MOD" |);
+                            M.read (| M.get_constant (| "revm_interpreter::opcode::MOD" |) |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "INVALID" |);
+                            M.read (| M.get_constant (| "revm_interpreter::opcode::INVALID" |) |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "PUSH31" |);
+                            M.read (| M.get_constant (| "revm_interpreter::opcode::PUSH31" |) |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "PUSH29" |);
+                            M.read (| M.get_constant (| "revm_interpreter::opcode::PUSH29" |) |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "DUP8" |);
+                            M.read (| M.get_constant (| "revm_interpreter::opcode::DUP8" |) |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "CALLER" |);
+                            M.read (| M.get_constant (| "revm_interpreter::opcode::CALLER" |) |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "PUSH25" |);
+                            M.read (| M.get_constant (| "revm_interpreter::opcode::PUSH25" |) |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "PUSH2" |);
+                            M.read (| M.get_constant (| "revm_interpreter::opcode::PUSH2" |) |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "SWAP16" |);
+                            M.read (| M.get_constant (| "revm_interpreter::opcode::SWAP16" |) |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "SWAP14" |);
+                            M.read (| M.get_constant (| "revm_interpreter::opcode::SWAP14" |) |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "PUSH14" |);
+                            M.read (| M.get_constant (| "revm_interpreter::opcode::PUSH14" |) |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "DUPN" |);
+                            M.read (| M.get_constant (| "revm_interpreter::opcode::DUPN" |) |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "DATALOADN" |);
+                            M.read (| M.get_constant (| "revm_interpreter::opcode::DATALOADN" |) |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "CHAINID" |);
+                            M.read (| M.get_constant (| "revm_interpreter::opcode::CHAINID" |) |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "PUSH10" |);
+                            M.read (| M.get_constant (| "revm_interpreter::opcode::PUSH10" |) |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "PUSH9" |);
+                            M.read (| M.get_constant (| "revm_interpreter::opcode::PUSH9" |) |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "DUP3" |);
+                            M.read (| M.get_constant (| "revm_interpreter::opcode::DUP3" |) |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "EXCHANGE" |);
+                            M.read (| M.get_constant (| "revm_interpreter::opcode::EXCHANGE" |) |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "DUP2" |);
+                            M.read (| M.get_constant (| "revm_interpreter::opcode::DUP2" |) |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "EXTCODECOPY" |);
+                            M.read (|
+                              M.get_constant (| "revm_interpreter::opcode::EXTCODECOPY" |)
+                            |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "MULMOD" |);
+                            M.read (| M.get_constant (| "revm_interpreter::opcode::MULMOD" |) |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "PUSH11" |);
+                            M.read (| M.get_constant (| "revm_interpreter::opcode::PUSH11" |) |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "ORIGIN" |);
+                            M.read (| M.get_constant (| "revm_interpreter::opcode::ORIGIN" |) |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "POP" |);
+                            M.read (| M.get_constant (| "revm_interpreter::opcode::POP" |) |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "SWAP13" |);
+                            M.read (| M.get_constant (| "revm_interpreter::opcode::SWAP13" |) |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "AND" |);
+                            M.read (| M.get_constant (| "revm_interpreter::opcode::AND" |) |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "PUSH21" |);
+                            M.read (| M.get_constant (| "revm_interpreter::opcode::PUSH21" |) |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "PUSH16" |);
+                            M.read (| M.get_constant (| "revm_interpreter::opcode::PUSH16" |) |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "TSTORE" |);
+                            M.read (| M.get_constant (| "revm_interpreter::opcode::TSTORE" |) |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "TLOAD" |);
+                            M.read (| M.get_constant (| "revm_interpreter::opcode::TLOAD" |) |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "DIFFICULTY" |);
+                            M.read (| M.get_constant (| "revm_interpreter::opcode::DIFFICULTY" |) |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "DUP5" |);
+                            M.read (| M.get_constant (| "revm_interpreter::opcode::DUP5" |) |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "DUP11" |);
+                            M.read (| M.get_constant (| "revm_interpreter::opcode::DUP11" |) |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "CALLF" |);
+                            M.read (| M.get_constant (| "revm_interpreter::opcode::CALLF" |) |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "MUL" |);
+                            M.read (| M.get_constant (| "revm_interpreter::opcode::MUL" |) |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "SHL" |);
+                            M.read (| M.get_constant (| "revm_interpreter::opcode::SHL" |) |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "PUSH6" |);
+                            M.read (| M.get_constant (| "revm_interpreter::opcode::PUSH6" |) |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "GASLIMIT" |);
+                            M.read (| M.get_constant (| "revm_interpreter::opcode::GASLIMIT" |) |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "PUSH28" |);
+                            M.read (| M.get_constant (| "revm_interpreter::opcode::PUSH28" |) |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "CREATE" |);
+                            M.read (| M.get_constant (| "revm_interpreter::opcode::CREATE" |) |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "CALLVALUE" |);
+                            M.read (| M.get_constant (| "revm_interpreter::opcode::CALLVALUE" |) |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "DATALOAD" |);
+                            M.read (| M.get_constant (| "revm_interpreter::opcode::DATALOAD" |) |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "PUSH4" |);
+                            M.read (| M.get_constant (| "revm_interpreter::opcode::PUSH4" |) |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "RETURNCONTRACT" |);
+                            M.read (|
+                              M.get_constant (| "revm_interpreter::opcode::RETURNCONTRACT" |)
+                            |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "JUMPF" |);
+                            M.read (| M.get_constant (| "revm_interpreter::opcode::JUMPF" |) |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "DATACOPY" |);
+                            M.read (| M.get_constant (| "revm_interpreter::opcode::DATACOPY" |) |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "KECCAK256" |);
+                            M.read (| M.get_constant (| "revm_interpreter::opcode::KECCAK256" |) |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "RJUMPV" |);
+                            M.read (| M.get_constant (| "revm_interpreter::opcode::RJUMPV" |) |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "BYTE" |);
+                            M.read (| M.get_constant (| "revm_interpreter::opcode::BYTE" |) |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "SGT" |);
+                            M.read (| M.get_constant (| "revm_interpreter::opcode::SGT" |) |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "RETF" |);
+                            M.read (| M.get_constant (| "revm_interpreter::opcode::RETF" |) |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "PUSH22" |);
+                            M.read (| M.get_constant (| "revm_interpreter::opcode::PUSH22" |) |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "MSIZE" |);
+                            M.read (| M.get_constant (| "revm_interpreter::opcode::MSIZE" |) |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "DUP14" |);
+                            M.read (| M.get_constant (| "revm_interpreter::opcode::DUP14" |) |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "REVERT" |);
+                            M.read (| M.get_constant (| "revm_interpreter::opcode::REVERT" |) |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "MSTORE8" |);
+                            M.read (| M.get_constant (| "revm_interpreter::opcode::MSTORE8" |) |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "PUSH5" |);
+                            M.read (| M.get_constant (| "revm_interpreter::opcode::PUSH5" |) |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "SUB" |);
+                            M.read (| M.get_constant (| "revm_interpreter::opcode::SUB" |) |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "SWAP5" |);
+                            M.read (| M.get_constant (| "revm_interpreter::opcode::SWAP5" |) |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "PUSH32" |);
+                            M.read (| M.get_constant (| "revm_interpreter::opcode::PUSH32" |) |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "SWAP11" |);
+                            M.read (| M.get_constant (| "revm_interpreter::opcode::SWAP11" |) |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "SHR" |);
+                            M.read (| M.get_constant (| "revm_interpreter::opcode::SHR" |) |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "SWAP3" |);
+                            M.read (| M.get_constant (| "revm_interpreter::opcode::SWAP3" |) |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "NUMBER" |);
+                            M.read (| M.get_constant (| "revm_interpreter::opcode::NUMBER" |) |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "PC" |);
+                            M.read (| M.get_constant (| "revm_interpreter::opcode::PC" |) |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "PUSH8" |);
+                            M.read (| M.get_constant (| "revm_interpreter::opcode::PUSH8" |) |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "PUSH0" |);
+                            M.read (| M.get_constant (| "revm_interpreter::opcode::PUSH0" |) |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "MSTORE" |);
+                            M.read (| M.get_constant (| "revm_interpreter::opcode::MSTORE" |) |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "DUP16" |);
+                            M.read (| M.get_constant (| "revm_interpreter::opcode::DUP16" |) |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "BALANCE" |);
+                            M.read (| M.get_constant (| "revm_interpreter::opcode::BALANCE" |) |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "ADD" |);
+                            M.read (| M.get_constant (| "revm_interpreter::opcode::ADD" |) |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "PUSH19" |);
+                            M.read (| M.get_constant (| "revm_interpreter::opcode::PUSH19" |) |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "STOP" |);
+                            M.read (| M.get_constant (| "revm_interpreter::opcode::STOP" |) |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "BLOBBASEFEE" |);
+                            M.read (|
+                              M.get_constant (| "revm_interpreter::opcode::BLOBBASEFEE" |)
+                            |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "GT" |);
+                            M.read (| M.get_constant (| "revm_interpreter::opcode::GT" |) |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "DIV" |);
+                            M.read (| M.get_constant (| "revm_interpreter::opcode::DIV" |) |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "PUSH26" |);
+                            M.read (| M.get_constant (| "revm_interpreter::opcode::PUSH26" |) |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "NOT" |);
+                            M.read (| M.get_constant (| "revm_interpreter::opcode::NOT" |) |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "OR" |);
+                            M.read (| M.get_constant (| "revm_interpreter::opcode::OR" |) |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "ADDRESS" |);
+                            M.read (| M.get_constant (| "revm_interpreter::opcode::ADDRESS" |) |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "SWAPN" |);
+                            M.read (| M.get_constant (| "revm_interpreter::opcode::SWAPN" |) |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "SAR" |);
+                            M.read (| M.get_constant (| "revm_interpreter::opcode::SAR" |) |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "CALLDATASIZE" |);
+                            M.read (|
+                              M.get_constant (| "revm_interpreter::opcode::CALLDATASIZE" |)
+                            |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "DELEGATECALL" |);
+                            M.read (|
+                              M.get_constant (| "revm_interpreter::opcode::DELEGATECALL" |)
+                            |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "EXFCALL" |);
+                            M.read (| M.get_constant (| "revm_interpreter::opcode::EXFCALL" |) |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "PUSH18" |);
+                            M.read (| M.get_constant (| "revm_interpreter::opcode::PUSH18" |) |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "CODESIZE" |);
+                            M.read (| M.get_constant (| "revm_interpreter::opcode::CODESIZE" |) |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "DUP13" |);
+                            M.read (| M.get_constant (| "revm_interpreter::opcode::DUP13" |) |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "SWAP12" |);
+                            M.read (| M.get_constant (| "revm_interpreter::opcode::SWAP12" |) |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "SIGNEXTEND" |);
+                            M.read (| M.get_constant (| "revm_interpreter::opcode::SIGNEXTEND" |) |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "CALLCODE" |);
+                            M.read (| M.get_constant (| "revm_interpreter::opcode::CALLCODE" |) |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "SWAP7" |);
+                            M.read (| M.get_constant (| "revm_interpreter::opcode::SWAP7" |) |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "XOR" |);
+                            M.read (| M.get_constant (| "revm_interpreter::opcode::XOR" |) |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "SLT" |);
+                            M.read (| M.get_constant (| "revm_interpreter::opcode::SLT" |) |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "CODECOPY" |);
+                            M.read (| M.get_constant (| "revm_interpreter::opcode::CODECOPY" |) |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "LOG4" |);
+                            M.read (| M.get_constant (| "revm_interpreter::opcode::LOG4" |) |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "COINBASE" |);
+                            M.read (| M.get_constant (| "revm_interpreter::opcode::COINBASE" |) |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "PUSH1" |);
+                            M.read (| M.get_constant (| "revm_interpreter::opcode::PUSH1" |) |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "STATICCALL" |);
+                            M.read (| M.get_constant (| "revm_interpreter::opcode::STATICCALL" |) |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "LOG2" |);
+                            M.read (| M.get_constant (| "revm_interpreter::opcode::LOG2" |) |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "SSTORE" |);
+                            M.read (| M.get_constant (| "revm_interpreter::opcode::SSTORE" |) |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "RETURNDATASIZE" |);
+                            M.read (|
+                              M.get_constant (| "revm_interpreter::opcode::RETURNDATASIZE" |)
+                            |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "SWAP9" |);
+                            M.read (| M.get_constant (| "revm_interpreter::opcode::SWAP9" |) |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "DUP4" |);
+                            M.read (| M.get_constant (| "revm_interpreter::opcode::DUP4" |) |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "EXP" |);
+                            M.read (| M.get_constant (| "revm_interpreter::opcode::EXP" |) |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "SELFBALANCE" |);
+                            M.read (|
+                              M.get_constant (| "revm_interpreter::opcode::SELFBALANCE" |)
+                            |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "PUSH24" |);
+                            M.read (| M.get_constant (| "revm_interpreter::opcode::PUSH24" |) |)
+                          ];
+                        Value.Tuple
+                          [
+                            M.read (| Value.String "SWAP8" |);
+                            M.read (| M.get_constant (| "revm_interpreter::opcode::SWAP8" |) |)
+                          ]
+                      ]
+                  |))
               ]
           |)
         |))).

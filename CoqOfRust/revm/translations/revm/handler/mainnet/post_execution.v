@@ -1301,52 +1301,48 @@ Module handler.
                                                             []
                                                           |),
                                                           [
-                                                            (* Unsize *)
-                                                            M.pointer_coercion
-                                                              (M.alloc (|
-                                                                Value.Array
-                                                                  [
-                                                                    M.read (|
-                                                                      Value.String
-                                                                        "Encountered unexpected internal return flag: "
-                                                                    |);
-                                                                    M.read (|
-                                                                      Value.String
-                                                                        " with instruction result: "
-                                                                    |)
-                                                                  ]
-                                                              |));
-                                                            (* Unsize *)
-                                                            M.pointer_coercion
-                                                              (M.alloc (|
-                                                                Value.Array
-                                                                  [
-                                                                    M.call_closure (|
-                                                                      M.get_associated_function (|
+                                                            M.alloc (|
+                                                              Value.Array
+                                                                [
+                                                                  M.read (|
+                                                                    Value.String
+                                                                      "Encountered unexpected internal return flag: "
+                                                                  |);
+                                                                  M.read (|
+                                                                    Value.String
+                                                                      " with instruction result: "
+                                                                  |)
+                                                                ]
+                                                            |);
+                                                            M.alloc (|
+                                                              Value.Array
+                                                                [
+                                                                  M.call_closure (|
+                                                                    M.get_associated_function (|
+                                                                      Ty.path
+                                                                        "core::fmt::rt::Argument",
+                                                                      "new_debug",
+                                                                      [
                                                                         Ty.path
-                                                                          "core::fmt::rt::Argument",
-                                                                        "new_debug",
-                                                                        [
-                                                                          Ty.path
-                                                                            "revm_interpreter::instruction_result::SuccessOrHalt"
-                                                                        ]
-                                                                      |),
-                                                                      [ flag ]
-                                                                    |);
-                                                                    M.call_closure (|
-                                                                      M.get_associated_function (|
+                                                                          "revm_interpreter::instruction_result::SuccessOrHalt"
+                                                                      ]
+                                                                    |),
+                                                                    [ flag ]
+                                                                  |);
+                                                                  M.call_closure (|
+                                                                    M.get_associated_function (|
+                                                                      Ty.path
+                                                                        "core::fmt::rt::Argument",
+                                                                      "new_debug",
+                                                                      [
                                                                         Ty.path
-                                                                          "core::fmt::rt::Argument",
-                                                                        "new_debug",
-                                                                        [
-                                                                          Ty.path
-                                                                            "revm_interpreter::interpreter::InterpreterResult"
-                                                                        ]
-                                                                      |),
-                                                                      [ instruction_result ]
-                                                                    |)
-                                                                  ]
-                                                              |))
+                                                                          "revm_interpreter::interpreter::InterpreterResult"
+                                                                      ]
+                                                                    |),
+                                                                    [ instruction_result ]
+                                                                  |)
+                                                                ]
+                                                            |)
                                                           ]
                                                         |)
                                                       ]

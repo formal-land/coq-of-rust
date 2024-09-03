@@ -37,17 +37,6 @@ Module collections.
             (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
       End Impl_core_fmt_Debug_for_alloc_collections_btree_set_val_SetValZST.
       
-      Module Impl_core_marker_StructuralEq_for_alloc_collections_btree_set_val_SetValZST.
-        Definition Self : Ty.t := Ty.path "alloc::collections::btree::set_val::SetValZST".
-        
-        Axiom Implements :
-          M.IsTraitInstance
-            "core::marker::StructuralEq"
-            Self
-            (* Trait polymorphic types *) []
-            (* Instance *) [].
-      End Impl_core_marker_StructuralEq_for_alloc_collections_btree_set_val_SetValZST.
-      
       Module Impl_core_cmp_Eq_for_alloc_collections_btree_set_val_SetValZST.
         Definition Self : Ty.t := Ty.path "alloc::collections::btree::set_val::SetValZST".
         

@@ -258,28 +258,24 @@ Module precompile.
                       Value.StructTuple
                         "revm_primitives::precompile::Precompile::Stateful"
                         [
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.call_closure (|
-                              M.get_trait_method (|
-                                "core::clone::Clone",
-                                Ty.apply
-                                  (Ty.path "alloc::sync::Arc")
-                                  []
-                                  [
-                                    Ty.dyn
-                                      [
-                                        ("revm_primitives::precompile::StatefulPrecompile::Trait",
-                                          [])
-                                      ];
-                                    Ty.path "alloc::alloc::Global"
-                                  ],
-                                [],
-                                "clone",
+                          M.call_closure (|
+                            M.get_trait_method (|
+                              "core::clone::Clone",
+                              Ty.apply
+                                (Ty.path "alloc::sync::Arc")
                                 []
-                              |),
-                              [ M.read (| __self_0 |) ]
-                            |))
+                                [
+                                  Ty.dyn
+                                    [ ("revm_primitives::precompile::StatefulPrecompile::Trait", [])
+                                    ];
+                                  Ty.path "alloc::alloc::Global"
+                                ],
+                              [],
+                              "clone",
+                              []
+                            |),
+                            [ M.read (| __self_0 |) ]
+                          |)
                         ]
                     |)));
                 fun γ =>
@@ -296,28 +292,26 @@ Module precompile.
                       Value.StructTuple
                         "revm_primitives::precompile::Precompile::StatefulMut"
                         [
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.call_closure (|
-                              M.get_trait_method (|
-                                "core::clone::Clone",
-                                Ty.apply
-                                  (Ty.path "alloc::boxed::Box")
-                                  []
-                                  [
-                                    Ty.dyn
-                                      [
-                                        ("revm_primitives::precompile::StatefulPrecompileMut::Trait",
-                                          [])
-                                      ];
-                                    Ty.path "alloc::alloc::Global"
-                                  ],
-                                [],
-                                "clone",
+                          M.call_closure (|
+                            M.get_trait_method (|
+                              "core::clone::Clone",
+                              Ty.apply
+                                (Ty.path "alloc::boxed::Box")
                                 []
-                              |),
-                              [ M.read (| __self_0 |) ]
-                            |))
+                                [
+                                  Ty.dyn
+                                    [
+                                      ("revm_primitives::precompile::StatefulPrecompileMut::Trait",
+                                        [])
+                                    ];
+                                  Ty.path "alloc::alloc::Global"
+                                ],
+                              [],
+                              "clone",
+                              []
+                            |),
+                            [ M.read (| __self_0 |) ]
+                          |)
                         ]
                     |)))
               ]
@@ -426,9 +420,7 @@ Module precompile.
       | [], [], [ p ] =>
         ltac:(M.monadic
           (let p := M.alloc (| p |) in
-          Value.StructTuple
-            "revm_primitives::precompile::Precompile::Stateful"
-            [ (* Unsize *) M.pointer_coercion (M.read (| p |)) ]))
+          Value.StructTuple "revm_primitives::precompile::Precompile::Stateful" [ M.read (| p |) ]))
       | _, _, _ => M.impossible
       end.
     
@@ -465,7 +457,7 @@ Module precompile.
           (let p := M.alloc (| p |) in
           Value.StructTuple
             "revm_primitives::precompile::Precompile::StatefulMut"
-            [ (* Unsize *) M.pointer_coercion (M.read (| p |)) ]))
+            [ M.read (| p |) ]))
       | _, _, _ => M.impossible
       end.
     
@@ -616,16 +608,14 @@ Module precompile.
           Value.StructTuple
             "revm_primitives::precompile::Precompile::Stateful"
             [
-              (* Unsize *)
-              M.pointer_coercion
-                (M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.apply (Ty.path "alloc::sync::Arc") [] [ P; Ty.path "alloc::alloc::Global" ],
-                    "new",
-                    []
-                  |),
-                  [ M.read (| p |) ]
-                |))
+              M.call_closure (|
+                M.get_associated_function (|
+                  Ty.apply (Ty.path "alloc::sync::Arc") [] [ P; Ty.path "alloc::alloc::Global" ],
+                  "new",
+                  []
+                |),
+                [ M.read (| p |) ]
+              |)
             ]))
       | _, _, _ => M.impossible
       end.
@@ -645,16 +635,14 @@ Module precompile.
           Value.StructTuple
             "revm_primitives::precompile::Precompile::StatefulMut"
             [
-              (* Unsize *)
-              M.pointer_coercion
-                (M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.apply (Ty.path "alloc::boxed::Box") [] [ P; Ty.path "alloc::alloc::Global" ],
-                    "new",
-                    []
-                  |),
-                  [ M.read (| p |) ]
-                |))
+              M.call_closure (|
+                M.get_associated_function (|
+                  Ty.apply (Ty.path "alloc::boxed::Box") [] [ P; Ty.path "alloc::alloc::Global" ],
+                  "new",
+                  []
+                |),
+                [ M.read (| p |) ]
+              |)
             ]))
       | _, _, _ => M.impossible
       end.
@@ -1328,11 +1316,7 @@ Module precompile.
                           "debug_tuple_field1_finish",
                           []
                         |),
-                        [
-                          M.read (| f |);
-                          M.read (| Value.String "Other" |);
-                          (* Unsize *) M.pointer_coercion __self_0
-                        ]
+                        [ M.read (| f |); M.read (| Value.String "Other" |); __self_0 ]
                       |)
                     |)))
               ]
@@ -1371,7 +1355,7 @@ Module precompile.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ __self_tag :=
+            let~ __self_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -1381,7 +1365,7 @@ Module precompile.
                   [ M.read (| self |) ]
                 |)
               |) in
-            let~ __arg1_tag :=
+            let~ __arg1_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -1393,7 +1377,7 @@ Module precompile.
               |) in
             M.alloc (|
               LogicalOp.and (|
-                BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)),
+                BinOp.Pure.eq (M.read (| __self_discr |)) (M.read (| __arg1_discr |)),
                 ltac:(M.monadic
                   (M.read (|
                     M.match_operator (|
@@ -1423,12 +1407,12 @@ Module precompile.
                               M.call_closure (|
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
-                                  Ty.path "alloc::string::String",
-                                  [ Ty.path "alloc::string::String" ],
+                                  Ty.apply (Ty.path "&") [] [ Ty.path "alloc::string::String" ],
+                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "alloc::string::String" ] ],
                                   "eq",
                                   []
                                 |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                [ __self_0; __arg1_0 ]
                               |)
                             |)));
                         fun γ => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
@@ -1448,17 +1432,6 @@ Module precompile.
         (* Trait polymorphic types *) []
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_revm_primitives_precompile_PrecompileError.
-  
-  Module Impl_core_marker_StructuralEq_for_revm_primitives_precompile_PrecompileError.
-    Definition Self : Ty.t := Ty.path "revm_primitives::precompile::PrecompileError".
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::marker::StructuralEq"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [].
-  End Impl_core_marker_StructuralEq_for_revm_primitives_precompile_PrecompileError.
   
   Module Impl_core_cmp_Eq_for_revm_primitives_precompile_PrecompileError.
     Definition Self : Ty.t := Ty.path "revm_primitives::precompile::PrecompileError".
@@ -1502,7 +1475,7 @@ Module precompile.
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
           M.read (|
-            let~ __self_tag :=
+            let~ __self_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -1516,7 +1489,7 @@ Module precompile.
               M.alloc (|
                 M.call_closure (|
                   M.get_trait_method (| "core::hash::Hash", Ty.path "isize", [], "hash", [ __H ] |),
-                  [ __self_tag; M.read (| state |) ]
+                  [ __self_discr; M.read (| state |) ]
                 |)
               |) in
             M.match_operator (|

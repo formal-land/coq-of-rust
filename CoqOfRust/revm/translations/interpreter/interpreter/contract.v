@@ -190,57 +190,43 @@ Module interpreter.
                 |) in
               let~ values :=
                 M.alloc (|
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.alloc (|
-                      Value.Array
-                        [
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "revm_interpreter::interpreter::contract::Contract",
-                              "input"
-                            |));
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "revm_interpreter::interpreter::contract::Contract",
-                              "bytecode"
-                            |));
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "revm_interpreter::interpreter::contract::Contract",
-                              "hash"
-                            |));
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "revm_interpreter::interpreter::contract::Contract",
-                              "target_address"
-                            |));
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "revm_interpreter::interpreter::contract::Contract",
-                              "caller"
-                            |));
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.alloc (|
-                              M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
-                                "revm_interpreter::interpreter::contract::Contract",
-                                "call_value"
-                              |)
-                            |))
-                        ]
-                    |))
+                  M.alloc (|
+                    Value.Array
+                      [
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "revm_interpreter::interpreter::contract::Contract",
+                          "input"
+                        |);
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "revm_interpreter::interpreter::contract::Contract",
+                          "bytecode"
+                        |);
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "revm_interpreter::interpreter::contract::Contract",
+                          "hash"
+                        |);
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "revm_interpreter::interpreter::contract::Contract",
+                          "target_address"
+                        |);
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "revm_interpreter::interpreter::contract::Contract",
+                          "caller"
+                        |);
+                        M.alloc (|
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "revm_interpreter::interpreter::contract::Contract",
+                            "call_value"
+                          |)
+                        |)
+                      ]
+                  |)
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -252,7 +238,7 @@ Module interpreter.
                   [
                     M.read (| f |);
                     M.read (| Value.String "Contract" |);
-                    (* Unsize *) M.pointer_coercion (M.read (| names |));
+                    M.read (| names |);
                     M.read (| values |)
                   ]
                 |)

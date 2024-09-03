@@ -89,23 +89,19 @@ Module iter.
                   M.read (| f |);
                   M.read (| Value.String "Enumerate" |);
                   M.read (| Value.String "iter" |);
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.SubPointer.get_struct_record_field (|
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::iter::adapters::enumerate::Enumerate",
+                    "iter"
+                  |);
+                  M.read (| Value.String "count" |);
+                  M.alloc (|
+                    M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
                       "core::iter::adapters::enumerate::Enumerate",
-                      "iter"
-                    |));
-                  M.read (| Value.String "count" |);
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.alloc (|
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::iter::adapters::enumerate::Enumerate",
-                        "count"
-                      |)
-                    |))
+                      "count"
+                    |)
+                  |)
                 ]
               |)))
           | _, _, _ => M.impossible
@@ -601,7 +597,7 @@ Module iter.
           end.
         
         (*
-            fn advance_by(&mut self, n: usize) -> Result<(), NonZeroUsize> {
+            fn advance_by(&mut self, n: usize) -> Result<(), NonZero<usize>> {
                 let remaining = self.iter.advance_by(n);
                 let advanced = match remaining {
                     Ok(()) => n,
@@ -673,7 +669,10 @@ Module iter.
                                 (M.read (| n |))
                                 (M.call_closure (|
                                   M.get_associated_function (|
-                                    Ty.path "core::num::nonzero::NonZeroUsize",
+                                    Ty.apply
+                                      (Ty.path "core::num::nonzero::NonZero")
+                                      []
+                                      [ Ty.path "usize" ],
                                     "get",
                                     []
                                   |),
@@ -1244,7 +1243,7 @@ Module iter.
           end.
         
         (*
-            fn advance_back_by(&mut self, n: usize) -> Result<(), NonZeroUsize> {
+            fn advance_back_by(&mut self, n: usize) -> Result<(), NonZero<usize>> {
                 // we do not need to update the count since that only tallies the number of items
                 // consumed from the front. consuming items from the back can never reduce that.
                 self.iter.advance_back_by(n)
@@ -1499,22 +1498,22 @@ Module iter.
         Definition Self (I : Ty.t) : Ty.t :=
           Ty.apply (Ty.path "core::iter::adapters::enumerate::Enumerate") [] [ I ].
         
-        (*     const EXPAND_BY: Option<NonZeroUsize> = I::EXPAND_BY; *)
+        (*     const EXPAND_BY: Option<NonZero<usize>> = I::EXPAND_BY; *)
         (* Ty.apply
           (Ty.path "core::option::Option")
           []
-          [ Ty.path "core::num::nonzero::NonZeroUsize" ] *)
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ] *)
         Definition value_EXPAND_BY (I : Ty.t) : Value.t :=
           let Self : Ty.t := Self I in
           M.run
             ltac:(M.monadic
               (M.get_constant (| "core::iter::traits::marker::InPlaceIterable::EXPAND_BY" |))).
         
-        (*     const MERGE_BY: Option<NonZeroUsize> = I::MERGE_BY; *)
+        (*     const MERGE_BY: Option<NonZero<usize>> = I::MERGE_BY; *)
         (* Ty.apply
           (Ty.path "core::option::Option")
           []
-          [ Ty.path "core::num::nonzero::NonZeroUsize" ] *)
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ] *)
         Definition value_MERGE_BY (I : Ty.t) : Value.t :=
           let Self : Ty.t := Self I in
           M.run

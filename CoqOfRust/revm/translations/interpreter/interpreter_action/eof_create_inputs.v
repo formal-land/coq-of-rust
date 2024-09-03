@@ -48,57 +48,43 @@ Module interpreter_action.
                 |) in
               let~ values :=
                 M.alloc (|
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.alloc (|
-                      Value.Array
-                        [
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInput",
-                              "caller"
-                            |));
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInput",
-                              "created_address"
-                            |));
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInput",
-                              "value"
-                            |));
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInput",
-                              "eof_init_code"
-                            |));
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInput",
-                              "gas_limit"
-                            |));
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.alloc (|
-                              M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
-                                "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInput",
-                                "return_memory_range"
-                              |)
-                            |))
-                        ]
-                    |))
+                  M.alloc (|
+                    Value.Array
+                      [
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInput",
+                          "caller"
+                        |);
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInput",
+                          "created_address"
+                        |);
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInput",
+                          "value"
+                        |);
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInput",
+                          "eof_init_code"
+                        |);
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInput",
+                          "gas_limit"
+                        |);
+                        M.alloc (|
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInput",
+                            "return_memory_range"
+                          |)
+                        |)
+                      ]
+                  |)
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -110,7 +96,7 @@ Module interpreter_action.
                   [
                     M.read (| f |);
                     M.read (| Value.String "EOFCreateInput" |);
-                    (* Unsize *) M.pointer_coercion (M.read (| names |));
+                    M.read (| names |);
                     M.read (| values |)
                   ]
                 |)
@@ -514,18 +500,6 @@ Module interpreter_action.
           (* Trait polymorphic types *) []
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
     End Impl_core_cmp_PartialEq_for_revm_interpreter_interpreter_action_eof_create_inputs_EOFCreateInput.
-    
-    Module Impl_core_marker_StructuralEq_for_revm_interpreter_interpreter_action_eof_create_inputs_EOFCreateInput.
-      Definition Self : Ty.t :=
-        Ty.path "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInput".
-      
-      Axiom Implements :
-        M.IsTraitInstance
-          "core::marker::StructuralEq"
-          Self
-          (* Trait polymorphic types *) []
-          (* Instance *) [].
-    End Impl_core_marker_StructuralEq_for_revm_interpreter_interpreter_action_eof_create_inputs_EOFCreateInput.
     
     Module Impl_core_cmp_Eq_for_revm_interpreter_interpreter_action_eof_create_inputs_EOFCreateInput.
       Definition Self : Ty.t :=

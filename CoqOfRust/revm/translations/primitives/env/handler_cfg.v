@@ -68,15 +68,13 @@ Module env.
                 M.read (| f |);
                 M.read (| Value.String "HandlerCfg" |);
                 M.read (| Value.String "spec_id" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.alloc (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "revm_primitives::env::handler_cfg::HandlerCfg",
-                      "spec_id"
-                    |)
-                  |))
+                M.alloc (|
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "revm_primitives::env::handler_cfg::HandlerCfg",
+                    "spec_id"
+                  |)
+                |)
               ]
             |)))
         | _, _, _ => M.impossible
@@ -89,17 +87,6 @@ Module env.
           (* Trait polymorphic types *) []
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Debug_for_revm_primitives_env_handler_cfg_HandlerCfg.
-    
-    Module Impl_core_marker_StructuralEq_for_revm_primitives_env_handler_cfg_HandlerCfg.
-      Definition Self : Ty.t := Ty.path "revm_primitives::env::handler_cfg::HandlerCfg".
-      
-      Axiom Implements :
-        M.IsTraitInstance
-          "core::marker::StructuralEq"
-          Self
-          (* Trait polymorphic types *) []
-          (* Instance *) [].
-    End Impl_core_marker_StructuralEq_for_revm_primitives_env_handler_cfg_HandlerCfg.
     
     Module Impl_core_cmp_Eq_for_revm_primitives_env_handler_cfg_HandlerCfg.
       Definition Self : Ty.t := Ty.path "revm_primitives::env::handler_cfg::HandlerCfg".
@@ -411,23 +398,19 @@ Module env.
                 M.read (| f |);
                 M.read (| Value.String "CfgEnvWithHandlerCfg" |);
                 M.read (| Value.String "cfg_env" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.SubPointer.get_struct_record_field (|
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "revm_primitives::env::handler_cfg::CfgEnvWithHandlerCfg",
+                  "cfg_env"
+                |);
+                M.read (| Value.String "handler_cfg" |);
+                M.alloc (|
+                  M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
                     "revm_primitives::env::handler_cfg::CfgEnvWithHandlerCfg",
-                    "cfg_env"
-                  |));
-                M.read (| Value.String "handler_cfg" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.alloc (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "revm_primitives::env::handler_cfg::CfgEnvWithHandlerCfg",
-                      "handler_cfg"
-                    |)
-                  |))
+                    "handler_cfg"
+                  |)
+                |)
               ]
             |)))
         | _, _, _ => M.impossible
@@ -440,17 +423,6 @@ Module env.
           (* Trait polymorphic types *) []
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Debug_for_revm_primitives_env_handler_cfg_CfgEnvWithHandlerCfg.
-    
-    Module Impl_core_marker_StructuralEq_for_revm_primitives_env_handler_cfg_CfgEnvWithHandlerCfg.
-      Definition Self : Ty.t := Ty.path "revm_primitives::env::handler_cfg::CfgEnvWithHandlerCfg".
-      
-      Axiom Implements :
-        M.IsTraitInstance
-          "core::marker::StructuralEq"
-          Self
-          (* Trait polymorphic types *) []
-          (* Instance *) [].
-    End Impl_core_marker_StructuralEq_for_revm_primitives_env_handler_cfg_CfgEnvWithHandlerCfg.
     
     Module Impl_core_cmp_Eq_for_revm_primitives_env_handler_cfg_CfgEnvWithHandlerCfg.
       Definition Self : Ty.t := Ty.path "revm_primitives::env::handler_cfg::CfgEnvWithHandlerCfg".
@@ -787,23 +759,19 @@ Module env.
                 M.read (| f |);
                 M.read (| Value.String "EnvWithHandlerCfg" |);
                 M.read (| Value.String "env" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.SubPointer.get_struct_record_field (|
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "revm_primitives::env::handler_cfg::EnvWithHandlerCfg",
+                  "env"
+                |);
+                M.read (| Value.String "handler_cfg" |);
+                M.alloc (|
+                  M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
                     "revm_primitives::env::handler_cfg::EnvWithHandlerCfg",
-                    "env"
-                  |));
-                M.read (| Value.String "handler_cfg" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.alloc (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "revm_primitives::env::handler_cfg::EnvWithHandlerCfg",
-                      "handler_cfg"
-                    |)
-                  |))
+                    "handler_cfg"
+                  |)
+                |)
               ]
             |)))
         | _, _, _ => M.impossible
@@ -864,17 +832,6 @@ Module env.
           (* Trait polymorphic types *) []
           (* Instance *) [ ("default", InstanceField.Method default) ].
     End Impl_core_default_Default_for_revm_primitives_env_handler_cfg_EnvWithHandlerCfg.
-    
-    Module Impl_core_marker_StructuralEq_for_revm_primitives_env_handler_cfg_EnvWithHandlerCfg.
-      Definition Self : Ty.t := Ty.path "revm_primitives::env::handler_cfg::EnvWithHandlerCfg".
-      
-      Axiom Implements :
-        M.IsTraitInstance
-          "core::marker::StructuralEq"
-          Self
-          (* Trait polymorphic types *) []
-          (* Instance *) [].
-    End Impl_core_marker_StructuralEq_for_revm_primitives_env_handler_cfg_EnvWithHandlerCfg.
     
     Module Impl_core_cmp_Eq_for_revm_primitives_env_handler_cfg_EnvWithHandlerCfg.
       Definition Self : Ty.t := Ty.path "revm_primitives::env::handler_cfg::EnvWithHandlerCfg".

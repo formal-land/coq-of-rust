@@ -301,110 +301,116 @@ Module bound.
                                                           []
                                                       ]
                                                     |);
-                                                    M.read (|
-                                                      let~ res :=
-                                                        M.alloc (|
-                                                          M.call_closure (|
-                                                            M.get_function (|
-                                                              "alloc::fmt::format",
-                                                              []
-                                                            |),
-                                                            [
+                                                    M.call_closure (|
+                                                      M.get_function (|
+                                                        "core::hint::must_use",
+                                                        [ Ty.path "alloc::string::String" ]
+                                                      |),
+                                                      [
+                                                        M.read (|
+                                                          let~ res :=
+                                                            M.alloc (|
                                                               M.call_closure (|
-                                                                M.get_associated_function (|
-                                                                  Ty.path "core::fmt::Arguments",
-                                                                  "new_v1",
+                                                                M.get_function (|
+                                                                  "alloc::fmt::format",
                                                                   []
                                                                 |),
                                                                 [
-                                                                  (* Unsize *)
-                                                                  M.pointer_coercion
-                                                                    (M.alloc (|
-                                                                      Value.Array
-                                                                        [
-                                                                          M.read (|
-                                                                            Value.String
-                                                                              "program too complex (in `"
-                                                                          |);
-                                                                          M.read (|
-                                                                            Value.String "` with `"
-                                                                          |);
-                                                                          M.read (|
-                                                                            Value.String
-                                                                              " current + "
-                                                                          |);
-                                                                          M.read (|
-                                                                            Value.String " new > "
-                                                                          |);
-                                                                          M.read (|
-                                                                            Value.String " max`)"
-                                                                          |)
-                                                                        ]
-                                                                    |));
-                                                                  (* Unsize *)
-                                                                  M.pointer_coercion
-                                                                    (M.alloc (|
-                                                                      Value.Array
-                                                                        [
-                                                                          M.call_closure (|
-                                                                            M.get_associated_function (|
-                                                                              Ty.path
-                                                                                "core::fmt::rt::Argument",
-                                                                              "new_display",
-                                                                              [
+                                                                  M.call_closure (|
+                                                                    M.get_associated_function (|
+                                                                      Ty.path
+                                                                        "core::fmt::Arguments",
+                                                                      "new_v1",
+                                                                      []
+                                                                    |),
+                                                                    [
+                                                                      M.alloc (|
+                                                                        Value.Array
+                                                                          [
+                                                                            M.read (|
+                                                                              Value.String
+                                                                                "program too complex (in `"
+                                                                            |);
+                                                                            M.read (|
+                                                                              Value.String
+                                                                                "` with `"
+                                                                            |);
+                                                                            M.read (|
+                                                                              Value.String
+                                                                                " current + "
+                                                                            |);
+                                                                            M.read (|
+                                                                              Value.String " new > "
+                                                                            |);
+                                                                            M.read (|
+                                                                              Value.String " max`)"
+                                                                            |)
+                                                                          ]
+                                                                      |);
+                                                                      M.alloc (|
+                                                                        Value.Array
+                                                                          [
+                                                                            M.call_closure (|
+                                                                              M.get_associated_function (|
                                                                                 Ty.path
-                                                                                  "alloc::string::String"
+                                                                                  "core::fmt::rt::Argument",
+                                                                                "new_display",
+                                                                                [
+                                                                                  Ty.path
+                                                                                    "alloc::string::String"
+                                                                                ]
+                                                                              |),
+                                                                              [
+                                                                                M.SubPointer.get_struct_record_field (|
+                                                                                  M.read (| self |),
+                                                                                  "move_bytecode_verifier_meter::bound::Bounds",
+                                                                                  "name"
+                                                                                |)
                                                                               ]
-                                                                            |),
-                                                                            [
-                                                                              M.SubPointer.get_struct_record_field (|
-                                                                                M.read (| self |),
-                                                                                "move_bytecode_verifier_meter::bound::Bounds",
-                                                                                "name"
-                                                                              |)
-                                                                            ]
-                                                                          |);
-                                                                          M.call_closure (|
-                                                                            M.get_associated_function (|
-                                                                              Ty.path
-                                                                                "core::fmt::rt::Argument",
-                                                                              "new_display",
-                                                                              [ Ty.path "u128" ]
-                                                                            |),
-                                                                            [
-                                                                              M.SubPointer.get_struct_record_field (|
-                                                                                M.read (| self |),
-                                                                                "move_bytecode_verifier_meter::bound::Bounds",
-                                                                                "units"
-                                                                              |)
-                                                                            ]
-                                                                          |);
-                                                                          M.call_closure (|
-                                                                            M.get_associated_function (|
-                                                                              Ty.path
-                                                                                "core::fmt::rt::Argument",
-                                                                              "new_display",
-                                                                              [ Ty.path "u128" ]
-                                                                            |),
-                                                                            [ units ]
-                                                                          |);
-                                                                          M.call_closure (|
-                                                                            M.get_associated_function (|
-                                                                              Ty.path
-                                                                                "core::fmt::rt::Argument",
-                                                                              "new_display",
-                                                                              [ Ty.path "u128" ]
-                                                                            |),
-                                                                            [ max ]
-                                                                          |)
-                                                                        ]
-                                                                    |))
+                                                                            |);
+                                                                            M.call_closure (|
+                                                                              M.get_associated_function (|
+                                                                                Ty.path
+                                                                                  "core::fmt::rt::Argument",
+                                                                                "new_display",
+                                                                                [ Ty.path "u128" ]
+                                                                              |),
+                                                                              [
+                                                                                M.SubPointer.get_struct_record_field (|
+                                                                                  M.read (| self |),
+                                                                                  "move_bytecode_verifier_meter::bound::Bounds",
+                                                                                  "units"
+                                                                                |)
+                                                                              ]
+                                                                            |);
+                                                                            M.call_closure (|
+                                                                              M.get_associated_function (|
+                                                                                Ty.path
+                                                                                  "core::fmt::rt::Argument",
+                                                                                "new_display",
+                                                                                [ Ty.path "u128" ]
+                                                                              |),
+                                                                              [ units ]
+                                                                            |);
+                                                                            M.call_closure (|
+                                                                              M.get_associated_function (|
+                                                                                Ty.path
+                                                                                  "core::fmt::rt::Argument",
+                                                                                "new_display",
+                                                                                [ Ty.path "u128" ]
+                                                                              |),
+                                                                              [ max ]
+                                                                            |)
+                                                                          ]
+                                                                      |)
+                                                                    ]
+                                                                  |)
                                                                 ]
                                                               |)
-                                                            ]
-                                                          |)
-                                                        |) in
-                                                      res
+                                                            |) in
+                                                          res
+                                                        |)
+                                                      ]
                                                     |)
                                                   ]
                                                 |)
@@ -623,12 +629,10 @@ Module bound.
                                 []
                               |),
                               [
-                                (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                    Value.Array
-                                      [ M.read (| Value.String "transaction scope unsupported." |) ]
-                                  |))
+                                M.alloc (|
+                                  Value.Array
+                                    [ M.read (| Value.String "transaction scope unsupported." |) ]
+                                |)
                               ]
                             |)
                           ]
@@ -716,12 +720,10 @@ Module bound.
                                 []
                               |),
                               [
-                                (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                    Value.Array
-                                      [ M.read (| Value.String "transaction scope unsupported." |) ]
-                                  |))
+                                M.alloc (|
+                                  Value.Array
+                                    [ M.read (| Value.String "transaction scope unsupported." |) ]
+                                |)
                               ]
                             |)
                           ]

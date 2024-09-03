@@ -89,23 +89,19 @@ Module iter.
                   M.read (| f |);
                   M.read (| Value.String "Take" |);
                   M.read (| Value.String "iter" |);
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.SubPointer.get_struct_record_field (|
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::iter::adapters::take::Take",
+                    "iter"
+                  |);
+                  M.read (| Value.String "n" |);
+                  M.alloc (|
+                    M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
                       "core::iter::adapters::take::Take",
-                      "iter"
-                    |));
-                  M.read (| Value.String "n" |);
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.alloc (|
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::iter::adapters::take::Take",
-                        "n"
-                      |)
-                    |))
+                      "n"
+                    |)
+                  |)
                 ]
               |)))
           | _, _, _ => M.impossible
@@ -732,7 +728,7 @@ Module iter.
           end.
         
         (*
-            fn advance_by(&mut self, n: usize) -> Result<(), NonZeroUsize> {
+            fn advance_by(&mut self, n: usize) -> Result<(), NonZero<usize>> {
                 let min = self.n.min(n);
                 let rem = match self.iter.advance_by(min) {
                     Ok(()) => 0,
@@ -740,7 +736,7 @@ Module iter.
                 };
                 let advanced = min - rem;
                 self.n -= advanced;
-                NonZeroUsize::new(n - advanced).map_or(Ok(()), Err)
+                NonZero::new(n - advanced).map_or(Ok(()), Err)
             }
         *)
         Definition advance_by
@@ -816,7 +812,10 @@ Module iter.
                             M.alloc (|
                               M.call_closure (|
                                 M.get_associated_function (|
-                                  Ty.path "core::num::nonzero::NonZeroUsize",
+                                  Ty.apply
+                                    (Ty.path "core::num::nonzero::NonZero")
+                                    []
+                                    [ Ty.path "usize" ],
                                   "get",
                                   []
                                 |),
@@ -847,25 +846,35 @@ Module iter.
                       Ty.apply
                         (Ty.path "core::option::Option")
                         []
-                        [ Ty.path "core::num::nonzero::NonZeroUsize" ],
+                        [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ],
                       "map_or",
                       [
                         Ty.apply
                           (Ty.path "core::result::Result")
                           []
-                          [ Ty.tuple []; Ty.path "core::num::nonzero::NonZeroUsize" ];
+                          [
+                            Ty.tuple [];
+                            Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ]
+                          ];
                         Ty.function
-                          [ Ty.path "core::num::nonzero::NonZeroUsize" ]
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ]
+                          ]
                           (Ty.apply
                             (Ty.path "core::result::Result")
                             []
-                            [ Ty.tuple []; Ty.path "core::num::nonzero::NonZeroUsize" ])
+                            [
+                              Ty.tuple [];
+                              Ty.apply
+                                (Ty.path "core::num::nonzero::NonZero")
+                                []
+                                [ Ty.path "usize" ]
+                            ])
                       ]
                     |),
                     [
                       M.call_closure (|
                         M.get_associated_function (|
-                          Ty.path "core::num::nonzero::NonZeroUsize",
+                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                           "new",
                           []
                         |),
@@ -948,22 +957,22 @@ Module iter.
         Definition Self (I : Ty.t) : Ty.t :=
           Ty.apply (Ty.path "core::iter::adapters::take::Take") [] [ I ].
         
-        (*     const EXPAND_BY: Option<NonZeroUsize> = I::EXPAND_BY; *)
+        (*     const EXPAND_BY: Option<NonZero<usize>> = I::EXPAND_BY; *)
         (* Ty.apply
           (Ty.path "core::option::Option")
           []
-          [ Ty.path "core::num::nonzero::NonZeroUsize" ] *)
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ] *)
         Definition value_EXPAND_BY (I : Ty.t) : Value.t :=
           let Self : Ty.t := Self I in
           M.run
             ltac:(M.monadic
               (M.get_constant (| "core::iter::traits::marker::InPlaceIterable::EXPAND_BY" |))).
         
-        (*     const MERGE_BY: Option<NonZeroUsize> = I::MERGE_BY; *)
+        (*     const MERGE_BY: Option<NonZero<usize>> = I::MERGE_BY; *)
         (* Ty.apply
           (Ty.path "core::option::Option")
           []
-          [ Ty.path "core::num::nonzero::NonZeroUsize" ] *)
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ] *)
         Definition value_MERGE_BY (I : Ty.t) : Value.t :=
           let Self : Ty.t := Self I in
           M.run
@@ -1631,7 +1640,7 @@ Module iter.
           end.
         
         (*
-            fn advance_back_by(&mut self, n: usize) -> Result<(), NonZeroUsize> {
+            fn advance_back_by(&mut self, n: usize) -> Result<(), NonZero<usize>> {
                 // The amount by which the inner iterator needs to be shortened for it to be
                 // at most as long as the take() amount.
                 let trim_inner = self.iter.len().saturating_sub(self.n);
@@ -1647,7 +1656,7 @@ Module iter.
                 let advanced_by_inner = advance_by - remainder;
                 let advanced_by = advanced_by_inner - trim_inner;
                 self.n -= advanced_by;
-                NonZeroUsize::new(n - advanced_by).map_or(Ok(()), Err)
+                NonZero::new(n - advanced_by).map_or(Ok(()), Err)
             }
         *)
         Definition advance_back_by
@@ -1745,7 +1754,10 @@ Module iter.
                             M.alloc (|
                               M.call_closure (|
                                 M.get_associated_function (|
-                                  Ty.path "core::num::nonzero::NonZeroUsize",
+                                  Ty.apply
+                                    (Ty.path "core::num::nonzero::NonZero")
+                                    []
+                                    [ Ty.path "usize" ],
                                   "get",
                                   []
                                 |),
@@ -1783,25 +1795,35 @@ Module iter.
                       Ty.apply
                         (Ty.path "core::option::Option")
                         []
-                        [ Ty.path "core::num::nonzero::NonZeroUsize" ],
+                        [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ],
                       "map_or",
                       [
                         Ty.apply
                           (Ty.path "core::result::Result")
                           []
-                          [ Ty.tuple []; Ty.path "core::num::nonzero::NonZeroUsize" ];
+                          [
+                            Ty.tuple [];
+                            Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ]
+                          ];
                         Ty.function
-                          [ Ty.path "core::num::nonzero::NonZeroUsize" ]
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ]
+                          ]
                           (Ty.apply
                             (Ty.path "core::result::Result")
                             []
-                            [ Ty.tuple []; Ty.path "core::num::nonzero::NonZeroUsize" ])
+                            [
+                              Ty.tuple [];
+                              Ty.apply
+                                (Ty.path "core::num::nonzero::NonZero")
+                                []
+                                [ Ty.path "usize" ]
+                            ])
                       ]
                     |),
                     [
                       M.call_closure (|
                         M.get_associated_function (|
-                          Ty.path "core::num::nonzero::NonZeroUsize",
+                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                           "new",
                           []
                         |),
@@ -2390,6 +2412,258 @@ Module iter.
               ("spec_for_each", InstanceField.Method (spec_for_each I))
             ].
       End Impl_core_iter_adapters_take_SpecTake_where_core_iter_traits_iterator_Iterator_I_where_core_iter_adapters_zip_TrustedRandomAccess_I_for_core_iter_adapters_take_Take_I.
+      
+      Module Impl_core_iter_traits_double_ended_DoubleEndedIterator_where_core_clone_Clone_T_for_core_iter_adapters_take_Take_core_iter_sources_repeat_Repeat_T.
+        Definition Self (T : Ty.t) : Ty.t :=
+          Ty.apply
+            (Ty.path "core::iter::adapters::take::Take")
+            []
+            [ Ty.apply (Ty.path "core::iter::sources::repeat::Repeat") [] [ T ] ].
+        
+        (*
+            fn next_back(&mut self) -> Option<Self::Item> {
+                self.next()
+            }
+        *)
+        Definition next_back (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          let Self : Ty.t := Self T in
+          match ε, τ, α with
+          | [], [], [ self ] =>
+            ltac:(M.monadic
+              (let self := M.alloc (| self |) in
+              M.call_closure (|
+                M.get_trait_method (|
+                  "core::iter::traits::iterator::Iterator",
+                  Ty.apply
+                    (Ty.path "core::iter::adapters::take::Take")
+                    []
+                    [ Ty.apply (Ty.path "core::iter::sources::repeat::Repeat") [] [ T ] ],
+                  [],
+                  "next",
+                  []
+                |),
+                [ M.read (| self |) ]
+              |)))
+          | _, _, _ => M.impossible
+          end.
+        
+        (*
+            fn nth_back(&mut self, n: usize) -> Option<Self::Item> {
+                self.nth(n)
+            }
+        *)
+        Definition nth_back (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          let Self : Ty.t := Self T in
+          match ε, τ, α with
+          | [], [], [ self; n ] =>
+            ltac:(M.monadic
+              (let self := M.alloc (| self |) in
+              let n := M.alloc (| n |) in
+              M.call_closure (|
+                M.get_trait_method (|
+                  "core::iter::traits::iterator::Iterator",
+                  Ty.apply
+                    (Ty.path "core::iter::adapters::take::Take")
+                    []
+                    [ Ty.apply (Ty.path "core::iter::sources::repeat::Repeat") [] [ T ] ],
+                  [],
+                  "nth",
+                  []
+                |),
+                [ M.read (| self |); M.read (| n |) ]
+              |)))
+          | _, _, _ => M.impossible
+          end.
+        
+        (*
+            fn try_rfold<Acc, Fold, R>(&mut self, init: Acc, fold: Fold) -> R
+            where
+                Self: Sized,
+                Fold: FnMut(Acc, Self::Item) -> R,
+                R: Try<Output = Acc>,
+            {
+                self.try_fold(init, fold)
+            }
+        *)
+        Definition try_rfold (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          let Self : Ty.t := Self T in
+          match ε, τ, α with
+          | [], [ Acc; Fold; R ], [ self; init; fold ] =>
+            ltac:(M.monadic
+              (let self := M.alloc (| self |) in
+              let init := M.alloc (| init |) in
+              let fold := M.alloc (| fold |) in
+              M.call_closure (|
+                M.get_trait_method (|
+                  "core::iter::traits::iterator::Iterator",
+                  Ty.apply
+                    (Ty.path "core::iter::adapters::take::Take")
+                    []
+                    [ Ty.apply (Ty.path "core::iter::sources::repeat::Repeat") [] [ T ] ],
+                  [],
+                  "try_fold",
+                  [ Acc; Fold; R ]
+                |),
+                [ M.read (| self |); M.read (| init |); M.read (| fold |) ]
+              |)))
+          | _, _, _ => M.impossible
+          end.
+        
+        (*
+            fn rfold<Acc, Fold>(self, init: Acc, fold: Fold) -> Acc
+            where
+                Self: Sized,
+                Fold: FnMut(Acc, Self::Item) -> Acc,
+            {
+                self.fold(init, fold)
+            }
+        *)
+        Definition rfold (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          let Self : Ty.t := Self T in
+          match ε, τ, α with
+          | [], [ Acc; Fold ], [ self; init; fold ] =>
+            ltac:(M.monadic
+              (let self := M.alloc (| self |) in
+              let init := M.alloc (| init |) in
+              let fold := M.alloc (| fold |) in
+              M.call_closure (|
+                M.get_trait_method (|
+                  "core::iter::traits::iterator::Iterator",
+                  Ty.apply
+                    (Ty.path "core::iter::adapters::take::Take")
+                    []
+                    [ Ty.apply (Ty.path "core::iter::sources::repeat::Repeat") [] [ T ] ],
+                  [],
+                  "fold",
+                  [ Acc; Fold ]
+                |),
+                [ M.read (| self |); M.read (| init |); M.read (| fold |) ]
+              |)))
+          | _, _, _ => M.impossible
+          end.
+        
+        (*
+            fn advance_back_by(&mut self, n: usize) -> Result<(), NonZero<usize>> {
+                self.advance_by(n)
+            }
+        *)
+        Definition advance_back_by
+            (T : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          let Self : Ty.t := Self T in
+          match ε, τ, α with
+          | [], [], [ self; n ] =>
+            ltac:(M.monadic
+              (let self := M.alloc (| self |) in
+              let n := M.alloc (| n |) in
+              M.call_closure (|
+                M.get_trait_method (|
+                  "core::iter::traits::iterator::Iterator",
+                  Ty.apply
+                    (Ty.path "core::iter::adapters::take::Take")
+                    []
+                    [ Ty.apply (Ty.path "core::iter::sources::repeat::Repeat") [] [ T ] ],
+                  [],
+                  "advance_by",
+                  []
+                |),
+                [ M.read (| self |); M.read (| n |) ]
+              |)))
+          | _, _, _ => M.impossible
+          end.
+        
+        Axiom Implements :
+          forall (T : Ty.t),
+          M.IsTraitInstance
+            "core::iter::traits::double_ended::DoubleEndedIterator"
+            (Self T)
+            (* Trait polymorphic types *) []
+            (* Instance *)
+            [
+              ("next_back", InstanceField.Method (next_back T));
+              ("nth_back", InstanceField.Method (nth_back T));
+              ("try_rfold", InstanceField.Method (try_rfold T));
+              ("rfold", InstanceField.Method (rfold T));
+              ("advance_back_by", InstanceField.Method (advance_back_by T))
+            ].
+      End Impl_core_iter_traits_double_ended_DoubleEndedIterator_where_core_clone_Clone_T_for_core_iter_adapters_take_Take_core_iter_sources_repeat_Repeat_T.
+      
+      Module Impl_core_iter_traits_exact_size_ExactSizeIterator_where_core_clone_Clone_T_for_core_iter_adapters_take_Take_core_iter_sources_repeat_Repeat_T.
+        Definition Self (T : Ty.t) : Ty.t :=
+          Ty.apply
+            (Ty.path "core::iter::adapters::take::Take")
+            []
+            [ Ty.apply (Ty.path "core::iter::sources::repeat::Repeat") [] [ T ] ].
+        
+        (*
+            fn len(&self) -> usize {
+                self.n
+            }
+        *)
+        Definition len (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          let Self : Ty.t := Self T in
+          match ε, τ, α with
+          | [], [], [ self ] =>
+            ltac:(M.monadic
+              (let self := M.alloc (| self |) in
+              M.read (|
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::iter::adapters::take::Take",
+                  "n"
+                |)
+              |)))
+          | _, _, _ => M.impossible
+          end.
+        
+        Axiom Implements :
+          forall (T : Ty.t),
+          M.IsTraitInstance
+            "core::iter::traits::exact_size::ExactSizeIterator"
+            (Self T)
+            (* Trait polymorphic types *) []
+            (* Instance *) [ ("len", InstanceField.Method (len T)) ].
+      End Impl_core_iter_traits_exact_size_ExactSizeIterator_where_core_clone_Clone_T_for_core_iter_adapters_take_Take_core_iter_sources_repeat_Repeat_T.
+      
+      Module Impl_core_iter_traits_exact_size_ExactSizeIterator_where_core_ops_function_FnMut_F_Tuple__for_core_iter_adapters_take_Take_core_iter_sources_repeat_with_RepeatWith_F.
+        Definition Self (F A : Ty.t) : Ty.t :=
+          Ty.apply
+            (Ty.path "core::iter::adapters::take::Take")
+            []
+            [ Ty.apply (Ty.path "core::iter::sources::repeat_with::RepeatWith") [] [ F ] ].
+        
+        (*
+            fn len(&self) -> usize {
+                self.n
+            }
+        *)
+        Definition len (F A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          let Self : Ty.t := Self F A in
+          match ε, τ, α with
+          | [], [], [ self ] =>
+            ltac:(M.monadic
+              (let self := M.alloc (| self |) in
+              M.read (|
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::iter::adapters::take::Take",
+                  "n"
+                |)
+              |)))
+          | _, _, _ => M.impossible
+          end.
+        
+        Axiom Implements :
+          forall (F A : Ty.t),
+          M.IsTraitInstance
+            "core::iter::traits::exact_size::ExactSizeIterator"
+            (Self F A)
+            (* Trait polymorphic types *) []
+            (* Instance *) [ ("len", InstanceField.Method (len F A)) ].
+      End Impl_core_iter_traits_exact_size_ExactSizeIterator_where_core_ops_function_FnMut_F_Tuple__for_core_iter_adapters_take_Take_core_iter_sources_repeat_with_RepeatWith_F.
     End take.
   End adapters.
 End iter.

@@ -326,17 +326,15 @@ Module str.
                                                                       []
                                                                     |),
                                                                     [
-                                                                      (* Unsize *)
-                                                                      M.pointer_coercion
-                                                                        (M.alloc (|
-                                                                          Value.Array
-                                                                            [
-                                                                              M.read (|
-                                                                                Value.String
-                                                                                  "The first search step from Searcher must include the first character"
-                                                                              |)
-                                                                            ]
-                                                                        |))
+                                                                      M.alloc (|
+                                                                        Value.Array
+                                                                          [
+                                                                            M.read (|
+                                                                              Value.String
+                                                                                "The first search step from Searcher must include the first character"
+                                                                            |)
+                                                                          ]
+                                                                      |)
                                                                     ]
                                                                   |)
                                                                 ]
@@ -533,17 +531,15 @@ Module str.
                                                                       []
                                                                     |),
                                                                     [
-                                                                      (* Unsize *)
-                                                                      M.pointer_coercion
-                                                                        (M.alloc (|
-                                                                          Value.Array
-                                                                            [
-                                                                              M.read (|
-                                                                                Value.String
-                                                                                  "The first search step from ReverseSearcher must include the last character"
-                                                                              |)
-                                                                            ]
-                                                                        |))
+                                                                      M.alloc (|
+                                                                        Value.Array
+                                                                          [
+                                                                            M.read (|
+                                                                              Value.String
+                                                                                "The first search step from ReverseSearcher must include the last character"
+                                                                            |)
+                                                                          ]
+                                                                      |)
                                                                     ]
                                                                   |)
                                                                 ]
@@ -663,17 +659,6 @@ Module str.
           (* Instance *) [ ("clone", InstanceField.Method clone) ].
     End Impl_core_clone_Clone_for_core_str_pattern_SearchStep.
     
-    Module Impl_core_marker_StructuralEq_for_core_str_pattern_SearchStep.
-      Definition Self : Ty.t := Ty.path "core::str::pattern::SearchStep".
-      
-      Axiom Implements :
-        M.IsTraitInstance
-          "core::marker::StructuralEq"
-          Self
-          (* Trait polymorphic types *) []
-          (* Instance *) [].
-    End Impl_core_marker_StructuralEq_for_core_str_pattern_SearchStep.
-    
     Module Impl_core_cmp_Eq_for_core_str_pattern_SearchStep.
       Definition Self : Ty.t := Ty.path "core::str::pattern::SearchStep".
       
@@ -727,7 +712,7 @@ Module str.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ __self_tag :=
+              let~ __self_discr :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -737,7 +722,7 @@ Module str.
                     [ M.read (| self |) ]
                   |)
                 |) in
-              let~ __arg1_tag :=
+              let~ __arg1_discr :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -749,7 +734,7 @@ Module str.
                 |) in
               M.alloc (|
                 LogicalOp.and (|
-                  BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)),
+                  BinOp.Pure.eq (M.read (| __self_discr |)) (M.read (| __arg1_discr |)),
                   ltac:(M.monadic
                     (M.read (|
                       M.match_operator (|
@@ -791,13 +776,27 @@ Module str.
                               let __arg1_1 := M.alloc (| γ2_1 |) in
                               M.alloc (|
                                 LogicalOp.and (|
-                                  BinOp.Pure.eq
-                                    (M.read (| M.read (| __self_0 |) |))
-                                    (M.read (| M.read (| __arg1_0 |) |)),
+                                  M.call_closure (|
+                                    M.get_trait_method (|
+                                      "core::cmp::PartialEq",
+                                      Ty.apply (Ty.path "&") [] [ Ty.path "usize" ],
+                                      [ Ty.apply (Ty.path "&") [] [ Ty.path "usize" ] ],
+                                      "eq",
+                                      []
+                                    |),
+                                    [ __self_0; __arg1_0 ]
+                                  |),
                                   ltac:(M.monadic
-                                    (BinOp.Pure.eq
-                                      (M.read (| M.read (| __self_1 |) |))
-                                      (M.read (| M.read (| __arg1_1 |) |))))
+                                    (M.call_closure (|
+                                      M.get_trait_method (|
+                                        "core::cmp::PartialEq",
+                                        Ty.apply (Ty.path "&") [] [ Ty.path "usize" ],
+                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "usize" ] ],
+                                        "eq",
+                                        []
+                                      |),
+                                      [ __self_1; __arg1_1 ]
+                                    |)))
                                 |)
                               |)));
                           fun γ =>
@@ -836,13 +835,27 @@ Module str.
                               let __arg1_1 := M.alloc (| γ2_1 |) in
                               M.alloc (|
                                 LogicalOp.and (|
-                                  BinOp.Pure.eq
-                                    (M.read (| M.read (| __self_0 |) |))
-                                    (M.read (| M.read (| __arg1_0 |) |)),
+                                  M.call_closure (|
+                                    M.get_trait_method (|
+                                      "core::cmp::PartialEq",
+                                      Ty.apply (Ty.path "&") [] [ Ty.path "usize" ],
+                                      [ Ty.apply (Ty.path "&") [] [ Ty.path "usize" ] ],
+                                      "eq",
+                                      []
+                                    |),
+                                    [ __self_0; __arg1_0 ]
+                                  |),
                                   ltac:(M.monadic
-                                    (BinOp.Pure.eq
-                                      (M.read (| M.read (| __self_1 |) |))
-                                      (M.read (| M.read (| __arg1_1 |) |))))
+                                    (M.call_closure (|
+                                      M.get_trait_method (|
+                                        "core::cmp::PartialEq",
+                                        Ty.apply (Ty.path "&") [] [ Ty.path "usize" ],
+                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "usize" ] ],
+                                        "eq",
+                                        []
+                                      |),
+                                      [ __self_1; __arg1_1 ]
+                                    |)))
                                 |)
                               |)));
                           fun γ => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
@@ -904,8 +917,8 @@ Module str.
                           [
                             M.read (| f |);
                             M.read (| Value.String "Match" |);
-                            (* Unsize *) M.pointer_coercion (M.read (| __self_0 |));
-                            (* Unsize *) M.pointer_coercion __self_1
+                            M.read (| __self_0 |);
+                            __self_1
                           ]
                         |)
                       |)));
@@ -936,8 +949,8 @@ Module str.
                           [
                             M.read (| f |);
                             M.read (| Value.String "Reject" |);
-                            (* Unsize *) M.pointer_coercion (M.read (| __self_0 |));
-                            (* Unsize *) M.pointer_coercion __self_1
+                            M.read (| __self_0 |);
+                            __self_1
                           ]
                         |)
                       |)));
@@ -1342,7 +1355,7 @@ Module str.
             ("finger", Ty.path "usize");
             ("finger_back", Ty.path "usize");
             ("needle", Ty.path "char");
-            ("utf8_size", Ty.path "usize");
+            ("utf8_size", Ty.path "u8");
             ("utf8_encoded", Ty.apply (Ty.path "array") [ Value.Integer 4 ] [ Ty.path "u8" ])
           ];
       } *)
@@ -1411,7 +1424,7 @@ Module str.
                   |));
                 ("utf8_size",
                   M.call_closure (|
-                    M.get_trait_method (| "core::clone::Clone", Ty.path "usize", [], "clone", [] |),
+                    M.get_trait_method (| "core::clone::Clone", Ty.path "u8", [], "clone", [] |),
                     [
                       M.SubPointer.get_struct_record_field (|
                         M.read (| self |),
@@ -1476,57 +1489,43 @@ Module str.
                 |) in
               let~ values :=
                 M.alloc (|
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.alloc (|
-                      Value.Array
-                        [
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "core::str::pattern::CharSearcher",
-                              "haystack"
-                            |));
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "core::str::pattern::CharSearcher",
-                              "finger"
-                            |));
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "core::str::pattern::CharSearcher",
-                              "finger_back"
-                            |));
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "core::str::pattern::CharSearcher",
-                              "needle"
-                            |));
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "core::str::pattern::CharSearcher",
-                              "utf8_size"
-                            |));
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.alloc (|
-                              M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
-                                "core::str::pattern::CharSearcher",
-                                "utf8_encoded"
-                              |)
-                            |))
-                        ]
-                    |))
+                  M.alloc (|
+                    Value.Array
+                      [
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::str::pattern::CharSearcher",
+                          "haystack"
+                        |);
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::str::pattern::CharSearcher",
+                          "finger"
+                        |);
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::str::pattern::CharSearcher",
+                          "finger_back"
+                        |);
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::str::pattern::CharSearcher",
+                          "needle"
+                        |);
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::str::pattern::CharSearcher",
+                          "utf8_size"
+                        |);
+                        M.alloc (|
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::str::pattern::CharSearcher",
+                            "utf8_encoded"
+                          |)
+                        |)
+                      ]
+                  |)
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -1538,7 +1537,7 @@ Module str.
                   [
                     M.read (| f |);
                     M.read (| Value.String "CharSearcher" |);
-                    (* Unsize *) M.pointer_coercion (M.read (| names |));
+                    M.read (| names |);
                     M.read (| values |)
                   ]
                 |)
@@ -1554,6 +1553,43 @@ Module str.
           (* Trait polymorphic types *) []
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Debug_for_core_str_pattern_CharSearcher.
+    
+    Module Impl_core_str_pattern_CharSearcher.
+      Definition Self : Ty.t := Ty.path "core::str::pattern::CharSearcher".
+      
+      (*
+          fn utf8_size(&self) -> usize {
+              self.utf8_size.into()
+          }
+      *)
+      Definition utf8_size (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            M.call_closure (|
+              M.get_trait_method (|
+                "core::convert::Into",
+                Ty.path "u8",
+                [ Ty.path "usize" ],
+                "into",
+                []
+              |),
+              [
+                M.read (|
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::str::pattern::CharSearcher",
+                    "utf8_size"
+                  |)
+                |)
+              ]
+            |)))
+        | _, _, _ => M.impossible
+        end.
+      
+      Axiom AssociatedFunction_utf8_size : M.IsAssociatedFunction Self "utf8_size" utf8_size.
+    End Impl_core_str_pattern_CharSearcher.
     
     Module Impl_core_str_pattern_Searcher_for_core_str_pattern_CharSearcher.
       Definition Self : Ty.t := Ty.path "core::str::pattern::CharSearcher".
@@ -1806,7 +1842,7 @@ Module str.
                   let bytes = self.haystack.as_bytes().get(self.finger..self.finger_back)?;
                   // the last byte of the utf8 encoded needle
                   // SAFETY: we have an invariant that `utf8_size < 5`
-                  let last_byte = unsafe { *self.utf8_encoded.get_unchecked(self.utf8_size - 1) };
+                  let last_byte = unsafe { *self.utf8_encoded.get_unchecked(self.utf8_size() - 1) };
                   if let Some(index) = memchr::memchr(last_byte, bytes) {
                       // The new finger is the index of the byte we found,
                       // plus one, since we memchr'd for the last byte of the character.
@@ -1826,10 +1862,10 @@ Module str.
                       // find something. When we find something the `finger` will be set
                       // to a UTF8 boundary.
                       self.finger += index + 1;
-                      if self.finger >= self.utf8_size {
-                          let found_char = self.finger - self.utf8_size;
+                      if self.finger >= self.utf8_size() {
+                          let found_char = self.finger - self.utf8_size();
                           if let Some(slice) = self.haystack.as_bytes().get(found_char..self.finger) {
-                              if slice == &self.utf8_encoded[0..self.utf8_size] {
+                              if slice == &self.utf8_encoded[0..self.utf8_size()] {
                                   return Some((found_char, self.finger));
                               }
                           }
@@ -1985,21 +2021,20 @@ Module str.
                                 [ Ty.path "usize" ]
                               |),
                               [
-                                (* Unsize *)
-                                M.pointer_coercion
-                                  (M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
-                                    "core::str::pattern::CharSearcher",
-                                    "utf8_encoded"
-                                  |));
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::str::pattern::CharSearcher",
+                                  "utf8_encoded"
+                                |);
                                 BinOp.Wrap.sub
                                   Integer.Usize
-                                  (M.read (|
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.read (| self |),
-                                      "core::str::pattern::CharSearcher",
-                                      "utf8_size"
-                                    |)
+                                  (M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::str::pattern::CharSearcher",
+                                      "utf8_size",
+                                      []
+                                    |),
+                                    [ M.read (| self |) ]
                                   |))
                                   (Value.Integer 1)
                               ]
@@ -2057,12 +2092,13 @@ Module str.
                                                     "finger"
                                                   |)
                                                 |))
-                                                (M.read (|
-                                                  M.SubPointer.get_struct_record_field (|
-                                                    M.read (| self |),
-                                                    "core::str::pattern::CharSearcher",
-                                                    "utf8_size"
-                                                  |)
+                                                (M.call_closure (|
+                                                  M.get_associated_function (|
+                                                    Ty.path "core::str::pattern::CharSearcher",
+                                                    "utf8_size",
+                                                    []
+                                                  |),
+                                                  [ M.read (| self |) ]
                                                 |))
                                             |)) in
                                         let _ :=
@@ -2081,12 +2117,13 @@ Module str.
                                                   "finger"
                                                 |)
                                               |))
-                                              (M.read (|
-                                                M.SubPointer.get_struct_record_field (|
-                                                  M.read (| self |),
-                                                  "core::str::pattern::CharSearcher",
-                                                  "utf8_size"
-                                                |)
+                                              (M.call_closure (|
+                                                M.get_associated_function (|
+                                                  Ty.path "core::str::pattern::CharSearcher",
+                                                  "utf8_size",
+                                                  []
+                                                |),
+                                                [ M.read (| self |) ]
                                               |))
                                           |) in
                                         M.match_operator (|
@@ -2216,12 +2253,15 @@ Module str.
                                                                             ("start",
                                                                               Value.Integer 0);
                                                                             ("end_",
-                                                                              M.read (|
-                                                                                M.SubPointer.get_struct_record_field (|
-                                                                                  M.read (| self |),
-                                                                                  "core::str::pattern::CharSearcher",
-                                                                                  "utf8_size"
-                                                                                |)
+                                                                              M.call_closure (|
+                                                                                M.get_associated_function (|
+                                                                                  Ty.path
+                                                                                    "core::str::pattern::CharSearcher",
+                                                                                  "utf8_size",
+                                                                                  []
+                                                                                |),
+                                                                                [ M.read (| self |)
+                                                                                ]
                                                                               |))
                                                                           ]
                                                                       ]
@@ -2542,7 +2582,7 @@ Module str.
                   let bytes = haystack.get(self.finger..self.finger_back)?;
                   // the last byte of the utf8 encoded needle
                   // SAFETY: we have an invariant that `utf8_size < 5`
-                  let last_byte = unsafe { *self.utf8_encoded.get_unchecked(self.utf8_size - 1) };
+                  let last_byte = unsafe { *self.utf8_encoded.get_unchecked(self.utf8_size() - 1) };
                   if let Some(index) = memchr::memrchr(last_byte, bytes) {
                       // we searched a slice that was offset by self.finger,
                       // add self.finger to recoup the original index
@@ -2553,14 +2593,14 @@ Module str.
                       // char in the paradigm of reverse iteration). For
                       // multibyte chars we need to skip down by the number of more
                       // bytes they have than ASCII
-                      let shift = self.utf8_size - 1;
+                      let shift = self.utf8_size() - 1;
                       if index >= shift {
                           let found_char = index - shift;
-                          if let Some(slice) = haystack.get(found_char..(found_char + self.utf8_size)) {
-                              if slice == &self.utf8_encoded[0..self.utf8_size] {
+                          if let Some(slice) = haystack.get(found_char..(found_char + self.utf8_size())) {
+                              if slice == &self.utf8_encoded[0..self.utf8_size()] {
                                   // move finger to before the character found (i.e., at its start index)
                                   self.finger_back = found_char;
-                                  return Some((self.finger_back, self.finger_back + self.utf8_size));
+                                  return Some((self.finger_back, self.finger_back + self.utf8_size()));
                               }
                           }
                       }
@@ -2732,21 +2772,20 @@ Module str.
                                     [ Ty.path "usize" ]
                                   |),
                                   [
-                                    (* Unsize *)
-                                    M.pointer_coercion
-                                      (M.SubPointer.get_struct_record_field (|
-                                        M.read (| self |),
-                                        "core::str::pattern::CharSearcher",
-                                        "utf8_encoded"
-                                      |));
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "core::str::pattern::CharSearcher",
+                                      "utf8_encoded"
+                                    |);
                                     BinOp.Wrap.sub
                                       Integer.Usize
-                                      (M.read (|
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.read (| self |),
-                                          "core::str::pattern::CharSearcher",
-                                          "utf8_size"
-                                        |)
+                                      (M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.path "core::str::pattern::CharSearcher",
+                                          "utf8_size",
+                                          []
+                                        |),
+                                        [ M.read (| self |) ]
                                       |))
                                       (Value.Integer 1)
                                   ]
@@ -2788,12 +2827,13 @@ Module str.
                                       M.alloc (|
                                         BinOp.Wrap.sub
                                           Integer.Usize
-                                          (M.read (|
-                                            M.SubPointer.get_struct_record_field (|
-                                              M.read (| self |),
-                                              "core::str::pattern::CharSearcher",
-                                              "utf8_size"
-                                            |)
+                                          (M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.path "core::str::pattern::CharSearcher",
+                                              "utf8_size",
+                                              []
+                                            |),
+                                            [ M.read (| self |) ]
                                           |))
                                           (Value.Integer 1)
                                       |) in
@@ -2855,12 +2895,14 @@ Module str.
                                                                     BinOp.Wrap.add
                                                                       Integer.Usize
                                                                       (M.read (| found_char |))
-                                                                      (M.read (|
-                                                                        M.SubPointer.get_struct_record_field (|
-                                                                          M.read (| self |),
-                                                                          "core::str::pattern::CharSearcher",
-                                                                          "utf8_size"
-                                                                        |)
+                                                                      (M.call_closure (|
+                                                                        M.get_associated_function (|
+                                                                          Ty.path
+                                                                            "core::str::pattern::CharSearcher",
+                                                                          "utf8_size",
+                                                                          []
+                                                                        |),
+                                                                        [ M.read (| self |) ]
                                                                       |)))
                                                                 ]
                                                             ]
@@ -2941,14 +2983,18 @@ Module str.
                                                                                     Value.Integer
                                                                                       0);
                                                                                   ("end_",
-                                                                                    M.read (|
-                                                                                      M.SubPointer.get_struct_record_field (|
+                                                                                    M.call_closure (|
+                                                                                      M.get_associated_function (|
+                                                                                        Ty.path
+                                                                                          "core::str::pattern::CharSearcher",
+                                                                                        "utf8_size",
+                                                                                        []
+                                                                                      |),
+                                                                                      [
                                                                                         M.read (|
                                                                                           self
-                                                                                        |),
-                                                                                        "core::str::pattern::CharSearcher",
-                                                                                        "utf8_size"
-                                                                                      |)
+                                                                                        |)
+                                                                                      ]
                                                                                     |))
                                                                                 ]
                                                                             ]
@@ -2998,14 +3044,18 @@ Module str.
                                                                                     "finger_back"
                                                                                   |)
                                                                                 |))
-                                                                                (M.read (|
-                                                                                  M.SubPointer.get_struct_record_field (|
+                                                                                (M.call_closure (|
+                                                                                  M.get_associated_function (|
+                                                                                    Ty.path
+                                                                                      "core::str::pattern::CharSearcher",
+                                                                                    "utf8_size",
+                                                                                    []
+                                                                                  |),
+                                                                                  [
                                                                                     M.read (|
                                                                                       self
-                                                                                    |),
-                                                                                    "core::str::pattern::CharSearcher",
-                                                                                    "utf8_size"
-                                                                                  |)
+                                                                                    |)
+                                                                                  ]
                                                                                 |))
                                                                             ]
                                                                         ]
@@ -3098,13 +3148,18 @@ Module str.
     Module Impl_core_str_pattern_Pattern_for_char.
       Definition Self : Ty.t := Ty.path "char".
       
-      (*     type Searcher = CharSearcher<'a>; *)
+      (*     type Searcher<'a> = CharSearcher<'a>; *)
       Definition _Searcher : Ty.t := Ty.path "core::str::pattern::CharSearcher".
       
       (*
-          fn into_searcher(self, haystack: &'a str) -> Self::Searcher {
+          fn into_searcher(self, haystack: &str) -> Self::Searcher<'_> {
               let mut utf8_encoded = [0; 4];
-              let utf8_size = self.encode_utf8(&mut utf8_encoded).len();
+              let utf8_size = self
+                  .encode_utf8(&mut utf8_encoded)
+                  .len()
+                  .try_into()
+                  .expect("char len should be less than 255");
+      
               CharSearcher {
                   haystack,
                   finger: 0,
@@ -3126,12 +3181,36 @@ Module str.
               let~ utf8_size :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "str", "len", [] |),
+                    M.get_associated_function (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.path "u8"; Ty.path "core::num::error::TryFromIntError" ],
+                      "expect",
+                      []
+                    |),
                     [
                       M.call_closure (|
-                        M.get_associated_function (| Ty.path "char", "encode_utf8", [] |),
-                        [ M.read (| self |); (* Unsize *) M.pointer_coercion utf8_encoded ]
-                      |)
+                        M.get_trait_method (|
+                          "core::convert::TryInto",
+                          Ty.path "usize",
+                          [ Ty.path "u8" ],
+                          "try_into",
+                          []
+                        |),
+                        [
+                          M.call_closure (|
+                            M.get_associated_function (| Ty.path "str", "len", [] |),
+                            [
+                              M.call_closure (|
+                                M.get_associated_function (| Ty.path "char", "encode_utf8", [] |),
+                                [ M.read (| self |); utf8_encoded ]
+                              |)
+                            ]
+                          |)
+                        ]
+                      |);
+                      M.read (| Value.String "char len should be less than 255" |)
                     ]
                   |)
                 |) in
@@ -3156,7 +3235,7 @@ Module str.
         end.
       
       (*
-          fn is_contained_in(self, haystack: &'a str) -> bool {
+          fn is_contained_in(self, haystack: &str) -> bool {
               if (self as u32) < 128 {
                   haystack.as_bytes().contains(&(self as u8))
               } else {
@@ -3214,7 +3293,7 @@ Module str.
                           [
                             M.call_closure (|
                               M.get_associated_function (| Ty.path "char", "encode_utf8", [] |),
-                              [ M.read (| self |); (* Unsize *) M.pointer_coercion buffer ]
+                              [ M.read (| self |); buffer ]
                             |);
                             M.read (| haystack |)
                           ]
@@ -3227,7 +3306,7 @@ Module str.
         end.
       
       (*
-          fn is_prefix_of(self, haystack: &'a str) -> bool {
+          fn is_prefix_of(self, haystack: &str) -> bool {
               self.encode_utf8(&mut [0u8; 4]).is_prefix_of(haystack)
           }
       *)
@@ -3248,11 +3327,7 @@ Module str.
               [
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "char", "encode_utf8", [] |),
-                  [
-                    M.read (| self |);
-                    (* Unsize *)
-                    M.pointer_coercion (M.alloc (| repeat (| Value.Integer 0, Value.Integer 4 |) |))
-                  ]
+                  [ M.read (| self |); M.alloc (| repeat (| Value.Integer 0, Value.Integer 4 |) |) ]
                 |);
                 M.read (| haystack |)
               ]
@@ -3261,7 +3336,7 @@ Module str.
         end.
       
       (*
-          fn strip_prefix_of(self, haystack: &'a str) -> Option<&'a str> {
+          fn strip_prefix_of(self, haystack: &str) -> Option<&str> {
               self.encode_utf8(&mut [0u8; 4]).strip_prefix_of(haystack)
           }
       *)
@@ -3282,11 +3357,7 @@ Module str.
               [
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "char", "encode_utf8", [] |),
-                  [
-                    M.read (| self |);
-                    (* Unsize *)
-                    M.pointer_coercion (M.alloc (| repeat (| Value.Integer 0, Value.Integer 4 |) |))
-                  ]
+                  [ M.read (| self |); M.alloc (| repeat (| Value.Integer 0, Value.Integer 4 |) |) ]
                 |);
                 M.read (| haystack |)
               ]
@@ -3295,9 +3366,9 @@ Module str.
         end.
       
       (*
-          fn is_suffix_of(self, haystack: &'a str) -> bool
+          fn is_suffix_of<'a>(self, haystack: &'a str) -> bool
           where
-              Self::Searcher: ReverseSearcher<'a>,
+              Self::Searcher<'a>: ReverseSearcher<'a>,
           {
               self.encode_utf8(&mut [0u8; 4]).is_suffix_of(haystack)
           }
@@ -3319,11 +3390,7 @@ Module str.
               [
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "char", "encode_utf8", [] |),
-                  [
-                    M.read (| self |);
-                    (* Unsize *)
-                    M.pointer_coercion (M.alloc (| repeat (| Value.Integer 0, Value.Integer 4 |) |))
-                  ]
+                  [ M.read (| self |); M.alloc (| repeat (| Value.Integer 0, Value.Integer 4 |) |) ]
                 |);
                 M.read (| haystack |)
               ]
@@ -3332,9 +3399,9 @@ Module str.
         end.
       
       (*
-          fn strip_suffix_of(self, haystack: &'a str) -> Option<&'a str>
+          fn strip_suffix_of<'a>(self, haystack: &'a str) -> Option<&'a str>
           where
-              Self::Searcher: ReverseSearcher<'a>,
+              Self::Searcher<'a>: ReverseSearcher<'a>,
           {
               self.encode_utf8(&mut [0u8; 4]).strip_suffix_of(haystack)
           }
@@ -3356,11 +3423,7 @@ Module str.
               [
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "char", "encode_utf8", [] |),
-                  [
-                    M.read (| self |);
-                    (* Unsize *)
-                    M.pointer_coercion (M.alloc (| repeat (| Value.Integer 0, Value.Integer 4 |) |))
-                  ]
+                  [ M.read (| self |); M.alloc (| repeat (| Value.Integer 0, Value.Integer 4 |) |) ]
                 |);
                 M.read (| haystack |)
               ]
@@ -3460,7 +3523,7 @@ Module str.
                       "iter",
                       []
                     |),
-                    [ (* Unsize *) M.pointer_coercion (M.read (| self |)) ]
+                    [ M.read (| self |) ]
                   |)
                 |);
                 M.closure
@@ -3530,7 +3593,7 @@ Module str.
                       "iter",
                       []
                     |),
-                    [ (* Unsize *) M.pointer_coercion (M.read (| M.read (| self |) |)) ]
+                    [ M.read (| M.read (| self |) |) ]
                   |)
                 |);
                 M.closure
@@ -3747,31 +3810,25 @@ Module str.
                 M.read (| f |);
                 M.read (| Value.String "MultiCharEqSearcher" |);
                 M.read (| Value.String "char_eq" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::str::pattern::MultiCharEqSearcher",
-                    "char_eq"
-                  |));
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::str::pattern::MultiCharEqSearcher",
+                  "char_eq"
+                |);
                 M.read (| Value.String "haystack" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.SubPointer.get_struct_record_field (|
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::str::pattern::MultiCharEqSearcher",
+                  "haystack"
+                |);
+                M.read (| Value.String "char_indices" |);
+                M.alloc (|
+                  M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
                     "core::str::pattern::MultiCharEqSearcher",
-                    "haystack"
-                  |));
-                M.read (| Value.String "char_indices" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.alloc (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::str::pattern::MultiCharEqSearcher",
-                      "char_indices"
-                    |)
-                  |))
+                    "char_indices"
+                  |)
+                |)
               ]
             |)))
         | _, _, _ => M.impossible
@@ -3790,12 +3847,12 @@ Module str.
       Definition Self (C : Ty.t) : Ty.t :=
         Ty.apply (Ty.path "core::str::pattern::MultiCharEqPattern") [] [ C ].
       
-      (*     type Searcher = MultiCharEqSearcher<'a, C>; *)
+      (*     type Searcher<'a> = MultiCharEqSearcher<'a, C>; *)
       Definition _Searcher (C : Ty.t) : Ty.t :=
         Ty.apply (Ty.path "core::str::pattern::MultiCharEqSearcher") [] [ C ].
       
       (*
-          fn into_searcher(self, haystack: &'a str) -> MultiCharEqSearcher<'a, C> {
+          fn into_searcher(self, haystack: &str) -> MultiCharEqSearcher<'_, C> {
               MultiCharEqSearcher { haystack, char_eq: self.0, char_indices: haystack.char_indices() }
           }
       *)
@@ -4378,15 +4435,13 @@ Module str.
               [
                 M.read (| f |);
                 M.read (| Value.String "CharArraySearcher" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.alloc (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      M.read (| self |),
-                      "core::str::pattern::CharArraySearcher",
-                      0
-                    |)
-                  |))
+                M.alloc (|
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.read (| self |),
+                    "core::str::pattern::CharArraySearcher",
+                    0
+                  |)
+                |)
               ]
             |)))
         | _, _, _ => M.impossible
@@ -4481,15 +4536,13 @@ Module str.
               [
                 M.read (| f |);
                 M.read (| Value.String "CharArrayRefSearcher" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.alloc (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      M.read (| self |),
-                      "core::str::pattern::CharArrayRefSearcher",
-                      0
-                    |)
-                  |))
+                M.alloc (|
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.read (| self |),
+                    "core::str::pattern::CharArrayRefSearcher",
+                    0
+                  |)
+                |)
               ]
             |)))
         | _, _, _ => M.impossible
@@ -4507,12 +4560,12 @@ Module str.
     Module Impl_core_str_pattern_Pattern_for_array_N_char.
       Definition Self (N : Value.t) : Ty.t := Ty.apply (Ty.path "array") [ N ] [ Ty.path "char" ].
       
-      (*         type Searcher = $t; *)
+      (*         type Searcher<$a> = $t; *)
       Definition _Searcher (N : Value.t) : Ty.t :=
         Ty.apply (Ty.path "core::str::pattern::CharArraySearcher") [ N ] [].
       
       (*
-              fn into_searcher(self, haystack: &'a str) -> $t {
+              fn into_searcher<$a>(self, haystack: &$a str) -> $t {
                   ($smap)(($pmap)(self).into_searcher(haystack))
               }
       *)
@@ -4554,7 +4607,7 @@ Module str.
         end.
       
       (*
-              fn is_contained_in(self, haystack: &'a str) -> bool {
+              fn is_contained_in<$a>(self, haystack: &$a str) -> bool {
                   ($pmap)(self).is_contained_in(haystack)
               }
       *)
@@ -4590,7 +4643,7 @@ Module str.
         end.
       
       (*
-              fn is_prefix_of(self, haystack: &'a str) -> bool {
+              fn is_prefix_of<$a>(self, haystack: &$a str) -> bool {
                   ($pmap)(self).is_prefix_of(haystack)
               }
       *)
@@ -4626,7 +4679,7 @@ Module str.
         end.
       
       (*
-              fn strip_prefix_of(self, haystack: &'a str) -> Option<&'a str> {
+              fn strip_prefix_of<$a>(self, haystack: &$a str) -> Option<&$a str> {
                   ($pmap)(self).strip_prefix_of(haystack)
               }
       *)
@@ -4662,9 +4715,9 @@ Module str.
         end.
       
       (*
-              fn is_suffix_of(self, haystack: &'a str) -> bool
+              fn is_suffix_of<$a>(self, haystack: &$a str) -> bool
               where
-                  $t: ReverseSearcher<'a>,
+                  $t: ReverseSearcher<$a>,
               {
                   ($pmap)(self).is_suffix_of(haystack)
               }
@@ -4701,9 +4754,9 @@ Module str.
         end.
       
       (*
-              fn strip_suffix_of(self, haystack: &'a str) -> Option<&'a str>
+              fn strip_suffix_of<$a>(self, haystack: &$a str) -> Option<&$a str>
               where
-                  $t: ReverseSearcher<'a>,
+                  $t: ReverseSearcher<$a>,
               {
                   ($pmap)(self).strip_suffix_of(haystack)
               }
@@ -5067,12 +5120,12 @@ Module str.
       Definition Self (N : Value.t) : Ty.t :=
         Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "array") [ N ] [ Ty.path "char" ] ].
       
-      (*         type Searcher = $t; *)
+      (*         type Searcher<$a> = $t; *)
       Definition _Searcher (N : Value.t) : Ty.t :=
         Ty.apply (Ty.path "core::str::pattern::CharArrayRefSearcher") [ N ] [].
       
       (*
-              fn into_searcher(self, haystack: &'a str) -> $t {
+              fn into_searcher<$a>(self, haystack: &$a str) -> $t {
                   ($smap)(($pmap)(self).into_searcher(haystack))
               }
       *)
@@ -5119,7 +5172,7 @@ Module str.
         end.
       
       (*
-              fn is_contained_in(self, haystack: &'a str) -> bool {
+              fn is_contained_in<$a>(self, haystack: &$a str) -> bool {
                   ($pmap)(self).is_contained_in(haystack)
               }
       *)
@@ -5160,7 +5213,7 @@ Module str.
         end.
       
       (*
-              fn is_prefix_of(self, haystack: &'a str) -> bool {
+              fn is_prefix_of<$a>(self, haystack: &$a str) -> bool {
                   ($pmap)(self).is_prefix_of(haystack)
               }
       *)
@@ -5201,7 +5254,7 @@ Module str.
         end.
       
       (*
-              fn strip_prefix_of(self, haystack: &'a str) -> Option<&'a str> {
+              fn strip_prefix_of<$a>(self, haystack: &$a str) -> Option<&$a str> {
                   ($pmap)(self).strip_prefix_of(haystack)
               }
       *)
@@ -5242,9 +5295,9 @@ Module str.
         end.
       
       (*
-              fn is_suffix_of(self, haystack: &'a str) -> bool
+              fn is_suffix_of<$a>(self, haystack: &$a str) -> bool
               where
-                  $t: ReverseSearcher<'a>,
+                  $t: ReverseSearcher<$a>,
               {
                   ($pmap)(self).is_suffix_of(haystack)
               }
@@ -5286,9 +5339,9 @@ Module str.
         end.
       
       (*
-              fn strip_suffix_of(self, haystack: &'a str) -> Option<&'a str>
+              fn strip_suffix_of<$a>(self, haystack: &$a str) -> Option<&$a str>
               where
-                  $t: ReverseSearcher<'a>,
+                  $t: ReverseSearcher<$a>,
               {
                   ($pmap)(self).strip_suffix_of(haystack)
               }
@@ -5763,15 +5816,13 @@ Module str.
               [
                 M.read (| f |);
                 M.read (| Value.String "CharSliceSearcher" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.alloc (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      M.read (| self |),
-                      "core::str::pattern::CharSliceSearcher",
-                      0
-                    |)
-                  |))
+                M.alloc (|
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.read (| self |),
+                    "core::str::pattern::CharSliceSearcher",
+                    0
+                  |)
+                |)
               ]
             |)))
         | _, _, _ => M.impossible
@@ -6064,11 +6115,11 @@ Module str.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "char" ] ].
       
-      (*         type Searcher = $t; *)
+      (*         type Searcher<$a> = $t; *)
       Definition _Searcher : Ty.t := Ty.path "core::str::pattern::CharSliceSearcher".
       
       (*
-              fn into_searcher(self, haystack: &'a str) -> $t {
+              fn into_searcher<$a>(self, haystack: &$a str) -> $t {
                   ($smap)(($pmap)(self).into_searcher(haystack))
               }
       *)
@@ -6109,7 +6160,7 @@ Module str.
         end.
       
       (*
-              fn is_contained_in(self, haystack: &'a str) -> bool {
+              fn is_contained_in<$a>(self, haystack: &$a str) -> bool {
                   ($pmap)(self).is_contained_in(haystack)
               }
       *)
@@ -6140,7 +6191,7 @@ Module str.
         end.
       
       (*
-              fn is_prefix_of(self, haystack: &'a str) -> bool {
+              fn is_prefix_of<$a>(self, haystack: &$a str) -> bool {
                   ($pmap)(self).is_prefix_of(haystack)
               }
       *)
@@ -6171,7 +6222,7 @@ Module str.
         end.
       
       (*
-              fn strip_prefix_of(self, haystack: &'a str) -> Option<&'a str> {
+              fn strip_prefix_of<$a>(self, haystack: &$a str) -> Option<&$a str> {
                   ($pmap)(self).strip_prefix_of(haystack)
               }
       *)
@@ -6202,9 +6253,9 @@ Module str.
         end.
       
       (*
-              fn is_suffix_of(self, haystack: &'a str) -> bool
+              fn is_suffix_of<$a>(self, haystack: &$a str) -> bool
               where
-                  $t: ReverseSearcher<'a>,
+                  $t: ReverseSearcher<$a>,
               {
                   ($pmap)(self).is_suffix_of(haystack)
               }
@@ -6236,9 +6287,9 @@ Module str.
         end.
       
       (*
-              fn strip_suffix_of(self, haystack: &'a str) -> Option<&'a str>
+              fn strip_suffix_of<$a>(self, haystack: &$a str) -> Option<&$a str>
               where
-                  $t: ReverseSearcher<'a>,
+                  $t: ReverseSearcher<$a>,
               {
                   ($pmap)(self).strip_suffix_of(haystack)
               }
@@ -6388,31 +6439,27 @@ Module str.
                           |)
                         |);
                         M.read (| Value.String "haystack" |);
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.SubPointer.get_struct_record_field (|
-                            M.SubPointer.get_struct_tuple_field (|
-                              M.read (| self |),
-                              "core::str::pattern::CharPredicateSearcher",
-                              0
-                            |),
-                            "core::str::pattern::MultiCharEqSearcher",
-                            "haystack"
-                          |))
+                        M.SubPointer.get_struct_record_field (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            M.read (| self |),
+                            "core::str::pattern::CharPredicateSearcher",
+                            0
+                          |),
+                          "core::str::pattern::MultiCharEqSearcher",
+                          "haystack"
+                        |)
                       ]
                     |);
                     M.read (| Value.String "char_indices" |);
-                    (* Unsize *)
-                    M.pointer_coercion
-                      (M.SubPointer.get_struct_record_field (|
-                        M.SubPointer.get_struct_tuple_field (|
-                          M.read (| self |),
-                          "core::str::pattern::CharPredicateSearcher",
-                          0
-                        |),
-                        "core::str::pattern::MultiCharEqSearcher",
-                        "char_indices"
-                      |))
+                    M.SubPointer.get_struct_record_field (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        M.read (| self |),
+                        "core::str::pattern::CharPredicateSearcher",
+                        0
+                      |),
+                      "core::str::pattern::MultiCharEqSearcher",
+                      "char_indices"
+                    |)
                   ]
                 |)
               ]
@@ -6702,12 +6749,12 @@ Module str.
     Module Impl_core_str_pattern_Pattern_where_core_ops_function_FnMut_F_Tuple_char__for_F.
       Definition Self (F : Ty.t) : Ty.t := F.
       
-      (*         type Searcher = $t; *)
+      (*         type Searcher<$a> = $t; *)
       Definition _Searcher (F : Ty.t) : Ty.t :=
         Ty.apply (Ty.path "core::str::pattern::CharPredicateSearcher") [] [ F ].
       
       (*
-              fn into_searcher(self, haystack: &'a str) -> $t {
+              fn into_searcher<$a>(self, haystack: &$a str) -> $t {
                   ($smap)(($pmap)(self).into_searcher(haystack))
               }
       *)
@@ -6746,7 +6793,7 @@ Module str.
         end.
       
       (*
-              fn is_contained_in(self, haystack: &'a str) -> bool {
+              fn is_contained_in<$a>(self, haystack: &$a str) -> bool {
                   ($pmap)(self).is_contained_in(haystack)
               }
       *)
@@ -6779,7 +6826,7 @@ Module str.
         end.
       
       (*
-              fn is_prefix_of(self, haystack: &'a str) -> bool {
+              fn is_prefix_of<$a>(self, haystack: &$a str) -> bool {
                   ($pmap)(self).is_prefix_of(haystack)
               }
       *)
@@ -6812,7 +6859,7 @@ Module str.
         end.
       
       (*
-              fn strip_prefix_of(self, haystack: &'a str) -> Option<&'a str> {
+              fn strip_prefix_of<$a>(self, haystack: &$a str) -> Option<&$a str> {
                   ($pmap)(self).strip_prefix_of(haystack)
               }
       *)
@@ -6845,9 +6892,9 @@ Module str.
         end.
       
       (*
-              fn is_suffix_of(self, haystack: &'a str) -> bool
+              fn is_suffix_of<$a>(self, haystack: &$a str) -> bool
               where
-                  $t: ReverseSearcher<'a>,
+                  $t: ReverseSearcher<$a>,
               {
                   ($pmap)(self).is_suffix_of(haystack)
               }
@@ -6881,9 +6928,9 @@ Module str.
         end.
       
       (*
-              fn strip_suffix_of(self, haystack: &'a str) -> Option<&'a str>
+              fn strip_suffix_of<$a>(self, haystack: &$a str) -> Option<&$a str>
               where
-                  $t: ReverseSearcher<'a>,
+                  $t: ReverseSearcher<$a>,
               {
                   ($pmap)(self).strip_suffix_of(haystack)
               }
@@ -6938,11 +6985,11 @@ Module str.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ].
       
-      (*         type Searcher = $t; *)
+      (*         type Searcher<$a> = $t; *)
       Definition _Searcher : Ty.t := Ty.path "core::str::pattern::StrSearcher".
       
       (*
-              fn into_searcher(self, haystack: &'a str) -> $t {
+              fn into_searcher<$a>(self, haystack: &$a str) -> $t {
                   ($smap)(($pmap)(self).into_searcher(haystack))
               }
       *)
@@ -7051,7 +7098,7 @@ Module str.
         end.
       
       (*
-              fn is_contained_in(self, haystack: &'a str) -> bool {
+              fn is_contained_in<$a>(self, haystack: &$a str) -> bool {
                   ($pmap)(self).is_contained_in(haystack)
               }
       *)
@@ -7122,7 +7169,7 @@ Module str.
         end.
       
       (*
-              fn is_prefix_of(self, haystack: &'a str) -> bool {
+              fn is_prefix_of<$a>(self, haystack: &$a str) -> bool {
                   ($pmap)(self).is_prefix_of(haystack)
               }
       *)
@@ -7193,7 +7240,7 @@ Module str.
         end.
       
       (*
-              fn strip_prefix_of(self, haystack: &'a str) -> Option<&'a str> {
+              fn strip_prefix_of<$a>(self, haystack: &$a str) -> Option<&$a str> {
                   ($pmap)(self).strip_prefix_of(haystack)
               }
       *)
@@ -7264,9 +7311,9 @@ Module str.
         end.
       
       (*
-              fn is_suffix_of(self, haystack: &'a str) -> bool
+              fn is_suffix_of<$a>(self, haystack: &$a str) -> bool
               where
-                  $t: ReverseSearcher<'a>,
+                  $t: ReverseSearcher<$a>,
               {
                   ($pmap)(self).is_suffix_of(haystack)
               }
@@ -7338,9 +7385,9 @@ Module str.
         end.
       
       (*
-              fn strip_suffix_of(self, haystack: &'a str) -> Option<&'a str>
+              fn strip_suffix_of<$a>(self, haystack: &$a str) -> Option<&$a str>
               where
-                  $t: ReverseSearcher<'a>,
+                  $t: ReverseSearcher<$a>,
               {
                   ($pmap)(self).strip_suffix_of(haystack)
               }
@@ -7431,11 +7478,11 @@ Module str.
     Module Impl_core_str_pattern_Pattern_for_ref__str.
       Definition Self : Ty.t := Ty.apply (Ty.path "&") [] [ Ty.path "str" ].
       
-      (*     type Searcher = StrSearcher<'a, 'b>; *)
+      (*     type Searcher<'a> = StrSearcher<'a, 'b>; *)
       Definition _Searcher : Ty.t := Ty.path "core::str::pattern::StrSearcher".
       
       (*
-          fn into_searcher(self, haystack: &'a str) -> StrSearcher<'a, 'b> {
+          fn into_searcher(self, haystack: &str) -> StrSearcher<'_, 'b> {
               StrSearcher::new(haystack, self)
           }
       *)
@@ -7453,7 +7500,7 @@ Module str.
         end.
       
       (*
-          fn is_prefix_of(self, haystack: &'a str) -> bool {
+          fn is_prefix_of(self, haystack: &str) -> bool {
               haystack.as_bytes().starts_with(self.as_bytes())
           }
       *)
@@ -7484,7 +7531,7 @@ Module str.
         end.
       
       (*
-          fn is_contained_in(self, haystack: &'a str) -> bool {
+          fn is_contained_in(self, haystack: &str) -> bool {
               if self.len() == 0 {
                   return true;
               }
@@ -7748,7 +7795,7 @@ Module str.
         end.
       
       (*
-          fn strip_prefix_of(self, haystack: &'a str) -> Option<&'a str> {
+          fn strip_prefix_of(self, haystack: &str) -> Option<&str> {
               if self.is_prefix_of(haystack) {
                   // SAFETY: prefix was just verified to exist.
                   unsafe { Some(haystack.get_unchecked(self.as_bytes().len()..)) }
@@ -7837,7 +7884,10 @@ Module str.
         end.
       
       (*
-          fn is_suffix_of(self, haystack: &'a str) -> bool {
+          fn is_suffix_of<'a>(self, haystack: &'a str) -> bool
+          where
+              Self::Searcher<'a>: ReverseSearcher<'a>,
+          {
               haystack.as_bytes().ends_with(self.as_bytes())
           }
       *)
@@ -7868,7 +7918,10 @@ Module str.
         end.
       
       (*
-          fn strip_suffix_of(self, haystack: &'a str) -> Option<&'a str> {
+          fn strip_suffix_of<'a>(self, haystack: &'a str) -> Option<&'a str>
+          where
+              Self::Searcher<'a>: ReverseSearcher<'a>,
+          {
               if self.is_suffix_of(haystack) {
                   let i = haystack.len() - self.as_bytes().len();
                   // SAFETY: suffix was just verified to exist.
@@ -8085,31 +8138,25 @@ Module str.
                 M.read (| f |);
                 M.read (| Value.String "StrSearcher" |);
                 M.read (| Value.String "haystack" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::str::pattern::StrSearcher",
-                    "haystack"
-                  |));
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::str::pattern::StrSearcher",
+                  "haystack"
+                |);
                 M.read (| Value.String "needle" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.SubPointer.get_struct_record_field (|
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::str::pattern::StrSearcher",
+                  "needle"
+                |);
+                M.read (| Value.String "searcher" |);
+                M.alloc (|
+                  M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
                     "core::str::pattern::StrSearcher",
-                    "needle"
-                  |));
-                M.read (| Value.String "searcher" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.alloc (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::str::pattern::StrSearcher",
-                      "searcher"
-                    |)
-                  |))
+                    "searcher"
+                  |)
+                |)
               ]
             |)))
         | _, _, _ => M.impossible
@@ -8254,11 +8301,7 @@ Module str.
                             "debug_tuple_field1_finish",
                             []
                           |),
-                          [
-                            M.read (| f |);
-                            M.read (| Value.String "Empty" |);
-                            (* Unsize *) M.pointer_coercion __self_0
-                          ]
+                          [ M.read (| f |); M.read (| Value.String "Empty" |); __self_0 ]
                         |)
                       |)));
                   fun γ =>
@@ -8278,11 +8321,7 @@ Module str.
                             "debug_tuple_field1_finish",
                             []
                           |),
-                          [
-                            M.read (| f |);
-                            M.read (| Value.String "TwoWay" |);
-                            (* Unsize *) M.pointer_coercion __self_0
-                          ]
+                          [ M.read (| f |); M.read (| Value.String "TwoWay" |); __self_0 ]
                         |)
                       |)))
                 ]
@@ -8413,47 +8452,37 @@ Module str.
                 M.read (| f |);
                 M.read (| Value.String "EmptyNeedle" |);
                 M.read (| Value.String "position" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::str::pattern::EmptyNeedle",
-                    "position"
-                  |));
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::str::pattern::EmptyNeedle",
+                  "position"
+                |);
                 M.read (| Value.String "end" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::str::pattern::EmptyNeedle",
-                    "end"
-                  |));
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::str::pattern::EmptyNeedle",
+                  "end"
+                |);
                 M.read (| Value.String "is_match_fw" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::str::pattern::EmptyNeedle",
-                    "is_match_fw"
-                  |));
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::str::pattern::EmptyNeedle",
+                  "is_match_fw"
+                |);
                 M.read (| Value.String "is_match_bw" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.SubPointer.get_struct_record_field (|
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::str::pattern::EmptyNeedle",
+                  "is_match_bw"
+                |);
+                M.read (| Value.String "is_finished" |);
+                M.alloc (|
+                  M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
                     "core::str::pattern::EmptyNeedle",
-                    "is_match_bw"
-                  |));
-                M.read (| Value.String "is_finished" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.alloc (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::str::pattern::EmptyNeedle",
-                      "is_finished"
-                    |)
-                  |))
+                    "is_finished"
+                  |)
+                |)
               ]
             |)))
         | _, _, _ => M.impossible
@@ -10298,71 +10327,53 @@ Module str.
                 |) in
               let~ values :=
                 M.alloc (|
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.alloc (|
-                      Value.Array
-                        [
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "core::str::pattern::TwoWaySearcher",
-                              "crit_pos"
-                            |));
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "core::str::pattern::TwoWaySearcher",
-                              "crit_pos_back"
-                            |));
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "core::str::pattern::TwoWaySearcher",
-                              "period"
-                            |));
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "core::str::pattern::TwoWaySearcher",
-                              "byteset"
-                            |));
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "core::str::pattern::TwoWaySearcher",
-                              "position"
-                            |));
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "core::str::pattern::TwoWaySearcher",
-                              "end"
-                            |));
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "core::str::pattern::TwoWaySearcher",
-                              "memory"
-                            |));
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.alloc (|
-                              M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
-                                "core::str::pattern::TwoWaySearcher",
-                                "memory_back"
-                              |)
-                            |))
-                        ]
-                    |))
+                  M.alloc (|
+                    Value.Array
+                      [
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::str::pattern::TwoWaySearcher",
+                          "crit_pos"
+                        |);
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::str::pattern::TwoWaySearcher",
+                          "crit_pos_back"
+                        |);
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::str::pattern::TwoWaySearcher",
+                          "period"
+                        |);
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::str::pattern::TwoWaySearcher",
+                          "byteset"
+                        |);
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::str::pattern::TwoWaySearcher",
+                          "position"
+                        |);
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::str::pattern::TwoWaySearcher",
+                          "end"
+                        |);
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::str::pattern::TwoWaySearcher",
+                          "memory"
+                        |);
+                        M.alloc (|
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::str::pattern::TwoWaySearcher",
+                            "memory_back"
+                          |)
+                        |)
+                      ]
+                  |)
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -10374,7 +10385,7 @@ Module str.
                   [
                     M.read (| f |);
                     M.read (| Value.String "TwoWaySearcher" |);
-                    (* Unsize *) M.pointer_coercion (M.read (| names |));
+                    M.read (| names |);
                     M.read (| values |)
                   ]
                 |)
@@ -13653,8 +13664,7 @@ Module str.
     
         use crate::ops::BitAnd;
         use crate::simd::cmp::SimdPartialEq;
-        use crate::simd::mask8x16 as Mask;
-        use crate::simd::u8x16 as Block;
+        use crate::simd::{mask8x16 as Mask, u8x16 as Block};
     
         let first_probe = needle[0];
         let last_byte_offset = needle.len() - 1;

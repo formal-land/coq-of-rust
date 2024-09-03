@@ -739,43 +739,41 @@ Module interpreter.
                         [ Ty.path "alloc::alloc::Global" ]
                       |),
                       [
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.read (|
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.apply
-                                  (Ty.path "alloc::boxed::Box")
-                                  []
-                                  [
-                                    Ty.apply
-                                      (Ty.path "array")
-                                      [ Value.Integer 1 ]
-                                      [ Ty.path "revm_primitives::bytecode::eof::Eof" ];
-                                    Ty.path "alloc::alloc::Global"
-                                  ],
-                                "new",
+                        M.read (|
+                          M.call_closure (|
+                            M.get_associated_function (|
+                              Ty.apply
+                                (Ty.path "alloc::boxed::Box")
                                 []
-                              |),
-                              [
-                                M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.call_closure (|
-                                        M.get_trait_method (|
-                                          "core::clone::Clone",
-                                          Ty.path "revm_primitives::bytecode::eof::Eof",
-                                          [],
-                                          "clone",
-                                          []
-                                        |),
-                                        [ M.read (| eof |) ]
-                                      |)
-                                    ]
-                                |)
-                              ]
-                            |)
-                          |))
+                                [
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer 1 ]
+                                    [ Ty.path "revm_primitives::bytecode::eof::Eof" ];
+                                  Ty.path "alloc::alloc::Global"
+                                ],
+                              "new",
+                              []
+                            |),
+                            [
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.call_closure (|
+                                      M.get_trait_method (|
+                                        "core::clone::Clone",
+                                        Ty.path "revm_primitives::bytecode::eof::Eof",
+                                        [],
+                                        "clone",
+                                        []
+                                      |),
+                                      [ M.read (| eof |) ]
+                                    |)
+                                  ]
+                              |)
+                            ]
+                          |)
+                        |)
                       ]
                     |)
                   |) in
@@ -1462,27 +1460,25 @@ Module interpreter.
                         [ Ty.path "alloc::alloc::Global" ]
                       |),
                       [
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.read (|
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.apply
-                                  (Ty.path "alloc::boxed::Box")
-                                  []
-                                  [
-                                    Ty.apply
-                                      (Ty.path "array")
-                                      [ Value.Integer 1 ]
-                                      [ Ty.path "usize" ];
-                                    Ty.path "alloc::alloc::Global"
-                                  ],
-                                "new",
+                        M.read (|
+                          M.call_closure (|
+                            M.get_associated_function (|
+                              Ty.apply
+                                (Ty.path "alloc::boxed::Box")
                                 []
-                              |),
-                              [ M.alloc (| Value.Array [ Value.Integer 0 ] |) ]
-                            |)
-                          |))
+                                [
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer 1 ]
+                                    [ Ty.path "usize" ];
+                                  Ty.path "alloc::alloc::Global"
+                                ],
+                              "new",
+                              []
+                            |),
+                            [ M.alloc (| Value.Array [ Value.Integer 0 ] |) ]
+                          |)
+                        |)
                       ]
                     |)
                   |) in
@@ -2014,11 +2010,7 @@ Module interpreter.
                             "debug_tuple_field1_finish",
                             []
                           |),
-                          [
-                            M.read (| f |);
-                            M.read (| Value.String "Decode" |);
-                            (* Unsize *) M.pointer_coercion __self_0
-                          ]
+                          [ M.read (| f |); M.read (| Value.String "Decode" |); __self_0 ]
                         |)
                       |)));
                   fun γ =>
@@ -2038,11 +2030,7 @@ Module interpreter.
                             "debug_tuple_field1_finish",
                             []
                           |),
-                          [
-                            M.read (| f |);
-                            M.read (| Value.String "Validation" |);
-                            (* Unsize *) M.pointer_coercion __self_0
-                          ]
+                          [ M.read (| f |); M.read (| Value.String "Validation" |); __self_0 ]
                         |)
                       |)))
                 ]
@@ -2070,7 +2058,7 @@ Module interpreter.
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
             M.read (|
-              let~ __self_tag :=
+              let~ __self_discr :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -2090,7 +2078,7 @@ Module interpreter.
                       "hash",
                       [ __H ]
                     |),
-                    [ __self_tag; M.read (| state |) ]
+                    [ __self_discr; M.read (| state |) ]
                   |)
                 |) in
               M.match_operator (|
@@ -2176,7 +2164,7 @@ Module interpreter.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ __self_tag :=
+              let~ __self_discr :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -2186,7 +2174,7 @@ Module interpreter.
                     [ M.read (| self |) ]
                   |)
                 |) in
-              let~ __arg1_tag :=
+              let~ __arg1_discr :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -2198,7 +2186,7 @@ Module interpreter.
                 |) in
               M.alloc (|
                 LogicalOp.and (|
-                  BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)),
+                  BinOp.Pure.eq (M.read (| __self_discr |)) (M.read (| __arg1_discr |)),
                   ltac:(M.monadic
                     (M.read (|
                       M.match_operator (|
@@ -2228,12 +2216,20 @@ Module interpreter.
                                 M.call_closure (|
                                   M.get_trait_method (|
                                     "core::cmp::PartialEq",
-                                    Ty.path "revm_primitives::bytecode::eof::EofDecodeError",
-                                    [ Ty.path "revm_primitives::bytecode::eof::EofDecodeError" ],
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.path "revm_primitives::bytecode::eof::EofDecodeError" ],
+                                    [
+                                      Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [ Ty.path "revm_primitives::bytecode::eof::EofDecodeError" ]
+                                    ],
                                     "eq",
                                     []
                                   |),
-                                  [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                  [ __self_0; __arg1_0 ]
                                 |)
                               |)));
                           fun γ =>
@@ -2260,16 +2256,26 @@ Module interpreter.
                                 M.call_closure (|
                                   M.get_trait_method (|
                                     "core::cmp::PartialEq",
-                                    Ty.path
-                                      "revm_interpreter::interpreter::analysis::EofValidationError",
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [
+                                        Ty.path
+                                          "revm_interpreter::interpreter::analysis::EofValidationError"
+                                      ],
                                     [
-                                      Ty.path
-                                        "revm_interpreter::interpreter::analysis::EofValidationError"
+                                      Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [
+                                          Ty.path
+                                            "revm_interpreter::interpreter::analysis::EofValidationError"
+                                        ]
                                     ],
                                     "eq",
                                     []
                                   |),
-                                  [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                  [ __self_0; __arg1_0 ]
                                 |)
                               |)));
                           fun γ =>
@@ -2298,17 +2304,6 @@ Module interpreter.
           (* Trait polymorphic types *) []
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
     End Impl_core_cmp_PartialEq_for_revm_interpreter_interpreter_analysis_EofError.
-    
-    Module Impl_core_marker_StructuralEq_for_revm_interpreter_interpreter_analysis_EofError.
-      Definition Self : Ty.t := Ty.path "revm_interpreter::interpreter::analysis::EofError".
-      
-      Axiom Implements :
-        M.IsTraitInstance
-          "core::marker::StructuralEq"
-          Self
-          (* Trait polymorphic types *) []
-          (* Instance *) [].
-    End Impl_core_marker_StructuralEq_for_revm_interpreter_interpreter_analysis_EofError.
     
     Module Impl_core_cmp_Eq_for_revm_interpreter_interpreter_analysis_EofError.
       Definition Self : Ty.t := Ty.path "revm_interpreter::interpreter::analysis::EofError".
@@ -2359,7 +2354,7 @@ Module interpreter.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ __self_tag :=
+              let~ __self_discr :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -2369,7 +2364,7 @@ Module interpreter.
                     [ M.read (| self |) ]
                   |)
                 |) in
-              let~ __arg1_tag :=
+              let~ __arg1_discr :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -2458,7 +2453,7 @@ Module interpreter.
                             "partial_cmp",
                             []
                           |),
-                          [ __self_tag; __arg1_tag ]
+                          [ __self_discr; __arg1_discr ]
                         |)
                       |)))
                 ]
@@ -2486,7 +2481,7 @@ Module interpreter.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ __self_tag :=
+              let~ __self_discr :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -2496,7 +2491,7 @@ Module interpreter.
                     [ M.read (| self |) ]
                   |)
                 |) in
-              let~ __arg1_tag :=
+              let~ __arg1_discr :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -2510,7 +2505,7 @@ Module interpreter.
                 M.alloc (|
                   M.call_closure (|
                     M.get_trait_method (| "core::cmp::Ord", Ty.path "isize", [], "cmp", [] |),
-                    [ __self_tag; __arg1_tag ]
+                    [ __self_discr; __arg1_discr ]
                   |)
                 |),
                 [
@@ -3199,7 +3194,7 @@ Module interpreter.
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
             M.read (|
-              let~ __self_tag :=
+              let~ __self_discr :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -3212,7 +3207,7 @@ Module interpreter.
               M.alloc (|
                 M.call_closure (|
                   M.get_trait_method (| "core::hash::Hash", Ty.path "isize", [], "hash", [ __H ] |),
-                  [ __self_tag; M.read (| state |) ]
+                  [ __self_discr; M.read (| state |) ]
                 |)
               |)
             |)))
@@ -3251,7 +3246,7 @@ Module interpreter.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ __self_tag :=
+              let~ __self_discr :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -3261,7 +3256,7 @@ Module interpreter.
                     [ M.read (| self |) ]
                   |)
                 |) in
-              let~ __arg1_tag :=
+              let~ __arg1_discr :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -3271,7 +3266,7 @@ Module interpreter.
                     [ M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)) |)
+              M.alloc (| BinOp.Pure.eq (M.read (| __self_discr |)) (M.read (| __arg1_discr |)) |)
             |)))
         | _, _, _ => M.impossible
         end.
@@ -3283,18 +3278,6 @@ Module interpreter.
           (* Trait polymorphic types *) []
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
     End Impl_core_cmp_PartialEq_for_revm_interpreter_interpreter_analysis_EofValidationError.
-    
-    Module Impl_core_marker_StructuralEq_for_revm_interpreter_interpreter_analysis_EofValidationError.
-      Definition Self : Ty.t :=
-        Ty.path "revm_interpreter::interpreter::analysis::EofValidationError".
-      
-      Axiom Implements :
-        M.IsTraitInstance
-          "core::marker::StructuralEq"
-          Self
-          (* Trait polymorphic types *) []
-          (* Instance *) [].
-    End Impl_core_marker_StructuralEq_for_revm_interpreter_interpreter_analysis_EofValidationError.
     
     Module Impl_core_cmp_Eq_for_revm_interpreter_interpreter_analysis_EofValidationError.
       Definition Self : Ty.t :=
@@ -3335,7 +3318,7 @@ Module interpreter.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ __self_tag :=
+              let~ __self_discr :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -3345,7 +3328,7 @@ Module interpreter.
                     [ M.read (| self |) ]
                   |)
                 |) in
-              let~ __arg1_tag :=
+              let~ __arg1_discr :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -3364,7 +3347,7 @@ Module interpreter.
                     "partial_cmp",
                     []
                   |),
-                  [ __self_tag; __arg1_tag ]
+                  [ __self_discr; __arg1_discr ]
                 |)
               |)
             |)))
@@ -3391,7 +3374,7 @@ Module interpreter.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ __self_tag :=
+              let~ __self_discr :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -3401,7 +3384,7 @@ Module interpreter.
                     [ M.read (| self |) ]
                   |)
                 |) in
-              let~ __arg1_tag :=
+              let~ __arg1_discr :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -3414,7 +3397,7 @@ Module interpreter.
               M.alloc (|
                 M.call_closure (|
                   M.get_trait_method (| "core::cmp::Ord", Ty.path "isize", [], "cmp", [] |),
-                  [ __self_tag; __arg1_tag ]
+                  [ __self_discr; __arg1_discr ]
                 |)
               |)
             |)))
@@ -4560,48 +4543,43 @@ Module interpreter.
                                                                   [ Ty.path "alloc::alloc::Global" ]
                                                                 |),
                                                                 [
-                                                                  (* Unsize *)
-                                                                  M.pointer_coercion
-                                                                    (M.read (|
-                                                                      M.call_closure (|
-                                                                        M.get_associated_function (|
-                                                                          Ty.apply
-                                                                            (Ty.path
-                                                                              "alloc::boxed::Box")
-                                                                            []
-                                                                            [
-                                                                              Ty.apply
-                                                                                (Ty.path "array")
-                                                                                [ Value.Integer 1 ]
-                                                                                [ Ty.path "isize" ];
-                                                                              Ty.path
-                                                                                "alloc::alloc::Global"
-                                                                            ],
-                                                                          "new",
+                                                                  M.read (|
+                                                                    M.call_closure (|
+                                                                      M.get_associated_function (|
+                                                                        Ty.apply
+                                                                          (Ty.path
+                                                                            "alloc::boxed::Box")
                                                                           []
-                                                                        |),
-                                                                        [
-                                                                          M.alloc (|
-                                                                            Value.Array
-                                                                              [
-                                                                                BinOp.Wrap.add
+                                                                          [
+                                                                            Ty.apply
+                                                                              (Ty.path "array")
+                                                                              [ Value.Integer 1 ]
+                                                                              [ Ty.path "isize" ];
+                                                                            Ty.path
+                                                                              "alloc::alloc::Global"
+                                                                          ],
+                                                                        "new",
+                                                                        []
+                                                                      |),
+                                                                      [
+                                                                        M.alloc (|
+                                                                          Value.Array
+                                                                            [
+                                                                              BinOp.Wrap.add
+                                                                                Integer.Isize
+                                                                                (BinOp.Wrap.add
                                                                                   Integer.Isize
-                                                                                  (BinOp.Wrap.add
-                                                                                    Integer.Isize
-                                                                                    (M.read (|
-                                                                                      offset
-                                                                                    |))
-                                                                                    (Value.Integer
-                                                                                      3))
-                                                                                  (M.rust_cast
-                                                                                    (M.read (|
-                                                                                      i
-                                                                                    |)))
-                                                                              ]
-                                                                          |)
-                                                                        ]
-                                                                      |)
-                                                                    |))
+                                                                                  (M.read (|
+                                                                                    offset
+                                                                                  |))
+                                                                                  (Value.Integer 3))
+                                                                                (M.rust_cast
+                                                                                  (M.read (| i |)))
+                                                                            ]
+                                                                        |)
+                                                                      ]
+                                                                    |)
+                                                                  |)
                                                                 ]
                                                               |)
                                                             |) in
@@ -6898,39 +6876,31 @@ Module interpreter.
                   M.read (| f |);
                   M.read (| Value.String "InstructionInfo" |);
                   M.read (| Value.String "is_immediate" |);
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "revm_interpreter::interpreter::analysis::validate_eof_code::InstructionInfo",
-                      "is_immediate"
-                    |));
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "revm_interpreter::interpreter::analysis::validate_eof_code::InstructionInfo",
+                    "is_immediate"
+                  |);
                   M.read (| Value.String "is_jumpdest" |);
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "revm_interpreter::interpreter::analysis::validate_eof_code::InstructionInfo",
-                      "is_jumpdest"
-                    |));
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "revm_interpreter::interpreter::analysis::validate_eof_code::InstructionInfo",
+                    "is_jumpdest"
+                  |);
                   M.read (| Value.String "smallest" |);
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.SubPointer.get_struct_record_field (|
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "revm_interpreter::interpreter::analysis::validate_eof_code::InstructionInfo",
+                    "smallest"
+                  |);
+                  M.read (| Value.String "biggest" |);
+                  M.alloc (|
+                    M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
                       "revm_interpreter::interpreter::analysis::validate_eof_code::InstructionInfo",
-                      "smallest"
-                    |));
-                  M.read (| Value.String "biggest" |);
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.alloc (|
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "revm_interpreter::interpreter::analysis::validate_eof_code::InstructionInfo",
-                        "biggest"
-                      |)
-                    |))
+                      "biggest"
+                    |)
+                  |)
                 ]
               |)))
           | _, _, _ => M.impossible

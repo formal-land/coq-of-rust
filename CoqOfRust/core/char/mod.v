@@ -53,7 +53,7 @@ Module char.
   *)
   Definition from_u32 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     match ε, τ, α with
-    | [ host ], [], [ i ] =>
+    | [], [], [ i ] =>
       ltac:(M.monadic
         (let i := M.alloc (| i |) in
         M.call_closure (|
@@ -73,7 +73,7 @@ Module char.
   *)
   Definition from_u32_unchecked (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     match ε, τ, α with
-    | [ host ], [], [ i ] =>
+    | [], [], [ i ] =>
       ltac:(M.monadic
         (let i := M.alloc (| i |) in
         M.call_closure (|
@@ -93,7 +93,7 @@ Module char.
   *)
   Definition from_digit (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     match ε, τ, α with
-    | [ host ], [], [ num; radix ] =>
+    | [], [], [ num; radix ] =>
       ltac:(M.monadic
         (let num := M.alloc (| num |) in
         let radix := M.alloc (| radix |) in
@@ -173,15 +173,13 @@ Module char.
             [
               M.read (| f |);
               M.read (| Value.String "EscapeUnicode" |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.alloc (|
-                  M.SubPointer.get_struct_tuple_field (|
-                    M.read (| self |),
-                    "core::char::EscapeUnicode",
-                    0
-                  |)
-                |))
+              M.alloc (|
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "core::char::EscapeUnicode",
+                  0
+                |)
+              |)
             ]
           |)))
       | _, _, _ => M.impossible
@@ -199,47 +197,27 @@ Module char.
     Definition Self : Ty.t := Ty.path "core::char::EscapeUnicode".
     
     (*
-        fn new(chr: char) -> Self {
-            let mut data = [ascii::Char::Null; 10];
-            let range = escape::escape_unicode_into(&mut data, chr);
-            Self(escape::EscapeIterInner::new(data, range))
+        const fn new(c: char) -> Self {
+            Self(escape::EscapeIterInner::unicode(c))
         }
     *)
     Definition new (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [], [], [ chr ] =>
+      | [], [], [ c ] =>
         ltac:(M.monadic
-          (let chr := M.alloc (| chr |) in
-          M.read (|
-            let~ data :=
-              M.alloc (|
-                repeat (|
-                  Value.StructTuple "core::ascii::ascii_char::AsciiChar::Null" [],
-                  Value.Integer 10
-                |)
-              |) in
-            let~ range :=
-              M.alloc (|
-                M.call_closure (|
-                  M.get_function (| "core::escape::escape_unicode_into", [] |),
-                  [ data; M.read (| chr |) ]
-                |)
-              |) in
-            M.alloc (|
-              Value.StructTuple
-                "core::char::EscapeUnicode"
-                [
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "core::escape::EscapeIterInner") [ Value.Integer 10 ] [],
-                      "new",
-                      []
-                    |),
-                    [ M.read (| data |); M.read (| range |) ]
-                  |)
-                ]
-            |)
-          |)))
+          (let c := M.alloc (| c |) in
+          Value.StructTuple
+            "core::char::EscapeUnicode"
+            [
+              M.call_closure (|
+                M.get_associated_function (|
+                  Ty.apply (Ty.path "core::escape::EscapeIterInner") [ Value.Integer 10 ] [],
+                  "unicode",
+                  []
+                |),
+                [ M.read (| c |) ]
+              |)
+            ]))
       | _, _, _ => M.impossible
       end.
     
@@ -392,7 +370,7 @@ Module char.
       end.
     
     (*
-        fn advance_by(&mut self, n: usize) -> Result<(), NonZeroUsize> {
+        fn advance_by(&mut self, n: usize) -> Result<(), NonZero<usize>> {
             self.0.advance_by(n)
         }
     *)
@@ -597,15 +575,13 @@ Module char.
             [
               M.read (| f |);
               M.read (| Value.String "EscapeDefault" |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.alloc (|
-                  M.SubPointer.get_struct_tuple_field (|
-                    M.read (| self |),
-                    "core::char::EscapeDefault",
-                    0
-                  |)
-                |))
+              M.alloc (|
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "core::char::EscapeDefault",
+                  0
+                |)
+              |)
             ]
           |)))
       | _, _, _ => M.impossible
@@ -623,99 +599,94 @@ Module char.
     Definition Self : Ty.t := Ty.path "core::char::EscapeDefault".
     
     (*
-        fn printable(chr: ascii::Char) -> Self {
-            let data = [chr];
-            Self(escape::EscapeIterInner::from_array(data))
+        const fn printable(c: ascii::Char) -> Self {
+            Self(escape::EscapeIterInner::ascii(c.to_u8()))
         }
     *)
     Definition printable (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [], [], [ chr ] =>
+      | [], [], [ c ] =>
         ltac:(M.monadic
-          (let chr := M.alloc (| chr |) in
-          M.read (|
-            let~ data := M.alloc (| Value.Array [ M.read (| chr |) ] |) in
-            M.alloc (|
-              Value.StructTuple
-                "core::char::EscapeDefault"
+          (let c := M.alloc (| c |) in
+          Value.StructTuple
+            "core::char::EscapeDefault"
+            [
+              M.call_closure (|
+                M.get_associated_function (|
+                  Ty.apply (Ty.path "core::escape::EscapeIterInner") [ Value.Integer 10 ] [],
+                  "ascii",
+                  []
+                |),
                 [
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "core::escape::EscapeIterInner") [ Value.Integer 10 ] [],
-                      "from_array",
+                      Ty.path "core::ascii::ascii_char::AsciiChar",
+                      "to_u8",
                       []
                     |),
-                    [ M.read (| data |) ]
+                    [ M.read (| c |) ]
                   |)
                 ]
-            |)
-          |)))
+              |)
+            ]))
       | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_printable : M.IsAssociatedFunction Self "printable" printable.
     
     (*
-        fn backslash(chr: ascii::Char) -> Self {
-            let data = [ascii::Char::ReverseSolidus, chr];
-            Self(escape::EscapeIterInner::from_array(data))
+        const fn backslash(c: ascii::Char) -> Self {
+            Self(escape::EscapeIterInner::backslash(c))
         }
     *)
     Definition backslash (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [], [], [ chr ] =>
+      | [], [], [ c ] =>
         ltac:(M.monadic
-          (let chr := M.alloc (| chr |) in
-          M.read (|
-            let~ data :=
-              M.alloc (|
-                Value.Array
-                  [
-                    Value.StructTuple "core::ascii::ascii_char::AsciiChar::ReverseSolidus" [];
-                    M.read (| chr |)
-                  ]
-              |) in
-            M.alloc (|
-              Value.StructTuple
-                "core::char::EscapeDefault"
-                [
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "core::escape::EscapeIterInner") [ Value.Integer 10 ] [],
-                      "from_array",
-                      []
-                    |),
-                    [ M.read (| data |) ]
-                  |)
-                ]
-            |)
-          |)))
+          (let c := M.alloc (| c |) in
+          Value.StructTuple
+            "core::char::EscapeDefault"
+            [
+              M.call_closure (|
+                M.get_associated_function (|
+                  Ty.apply (Ty.path "core::escape::EscapeIterInner") [ Value.Integer 10 ] [],
+                  "backslash",
+                  []
+                |),
+                [ M.read (| c |) ]
+              |)
+            ]))
       | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_backslash : M.IsAssociatedFunction Self "backslash" backslash.
     
     (*
-        fn from_unicode(esc: EscapeUnicode) -> Self {
-            Self(esc.0)
+        const fn unicode(c: char) -> Self {
+            Self(escape::EscapeIterInner::unicode(c))
         }
     *)
-    Definition from_unicode (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition unicode (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [], [], [ esc ] =>
+      | [], [], [ c ] =>
         ltac:(M.monadic
-          (let esc := M.alloc (| esc |) in
+          (let c := M.alloc (| c |) in
           Value.StructTuple
             "core::char::EscapeDefault"
             [
-              M.read (|
-                M.SubPointer.get_struct_tuple_field (| esc, "core::char::EscapeUnicode", 0 |)
+              M.call_closure (|
+                M.get_associated_function (|
+                  Ty.apply (Ty.path "core::escape::EscapeIterInner") [ Value.Integer 10 ] [],
+                  "unicode",
+                  []
+                |),
+                [ M.read (| c |) ]
               |)
             ]))
       | _, _, _ => M.impossible
       end.
     
-    Axiom AssociatedFunction_from_unicode : M.IsAssociatedFunction Self "from_unicode" from_unicode.
+    Axiom AssociatedFunction_unicode : M.IsAssociatedFunction Self "unicode" unicode.
   End Impl_core_char_EscapeDefault.
   
   Module Impl_core_iter_traits_iterator_Iterator_for_core_char_EscapeDefault.
@@ -864,7 +835,7 @@ Module char.
       end.
     
     (*
-        fn advance_by(&mut self, n: usize) -> Result<(), NonZeroUsize> {
+        fn advance_by(&mut self, n: usize) -> Result<(), NonZero<usize>> {
             self.0.advance_by(n)
         }
     *)
@@ -1069,15 +1040,13 @@ Module char.
             [
               M.read (| f |);
               M.read (| Value.String "EscapeDebug" |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.alloc (|
-                  M.SubPointer.get_struct_tuple_field (|
-                    M.read (| self |),
-                    "core::char::EscapeDebug",
-                    0
-                  |)
-                |))
+              M.alloc (|
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "core::char::EscapeDebug",
+                  0
+                |)
+              |)
             ]
           |)))
       | _, _, _ => M.impossible
@@ -1227,11 +1196,7 @@ Module char.
                           "debug_tuple_field1_finish",
                           []
                         |),
-                        [
-                          M.read (| f |);
-                          M.read (| Value.String "Bytes" |);
-                          (* Unsize *) M.pointer_coercion __self_0
-                        ]
+                        [ M.read (| f |); M.read (| Value.String "Bytes" |); __self_0 ]
                       |)
                     |)));
                 fun γ =>
@@ -1251,11 +1216,7 @@ Module char.
                           "debug_tuple_field1_finish",
                           []
                         |),
-                        [
-                          M.read (| f |);
-                          M.read (| Value.String "Char" |);
-                          (* Unsize *) M.pointer_coercion __self_0
-                        ]
+                        [ M.read (| f |); M.read (| Value.String "Char" |); __self_0 ]
                       |)
                     |)))
               ]
@@ -1276,7 +1237,7 @@ Module char.
     Definition Self : Ty.t := Ty.path "core::char::EscapeDebug".
     
     (*
-        fn printable(chr: char) -> Self {
+        const fn printable(chr: char) -> Self {
             Self(EscapeDebugInner::Char(chr))
         }
     *)
@@ -1294,78 +1255,70 @@ Module char.
     Axiom AssociatedFunction_printable : M.IsAssociatedFunction Self "printable" printable.
     
     (*
-        fn backslash(chr: ascii::Char) -> Self {
-            let data = [ascii::Char::ReverseSolidus, chr];
-            let iter = escape::EscapeIterInner::from_array(data);
-            Self(EscapeDebugInner::Bytes(iter))
+        const fn backslash(c: ascii::Char) -> Self {
+            Self(EscapeDebugInner::Bytes(escape::EscapeIterInner::backslash(c)))
         }
     *)
     Definition backslash (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [], [], [ chr ] =>
+      | [], [], [ c ] =>
         ltac:(M.monadic
-          (let chr := M.alloc (| chr |) in
-          M.read (|
-            let~ data :=
-              M.alloc (|
-                Value.Array
-                  [
-                    Value.StructTuple "core::ascii::ascii_char::AsciiChar::ReverseSolidus" [];
-                    M.read (| chr |)
-                  ]
-              |) in
-            let~ iter :=
-              M.alloc (|
-                M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.apply (Ty.path "core::escape::EscapeIterInner") [ Value.Integer 10 ] [],
-                    "from_array",
-                    []
-                  |),
-                  [ M.read (| data |) ]
-                |)
-              |) in
-            M.alloc (|
-              Value.StructTuple
-                "core::char::EscapeDebug"
-                [ Value.StructTuple "core::char::EscapeDebugInner::Bytes" [ M.read (| iter |) ] ]
-            |)
-          |)))
-      | _, _, _ => M.impossible
-      end.
-    
-    Axiom AssociatedFunction_backslash : M.IsAssociatedFunction Self "backslash" backslash.
-    
-    (*
-        fn from_unicode(esc: EscapeUnicode) -> Self {
-            Self(EscapeDebugInner::Bytes(esc.0))
-        }
-    *)
-    Definition from_unicode (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      match ε, τ, α with
-      | [], [], [ esc ] =>
-        ltac:(M.monadic
-          (let esc := M.alloc (| esc |) in
+          (let c := M.alloc (| c |) in
           Value.StructTuple
             "core::char::EscapeDebug"
             [
               Value.StructTuple
                 "core::char::EscapeDebugInner::Bytes"
                 [
-                  M.read (|
-                    M.SubPointer.get_struct_tuple_field (| esc, "core::char::EscapeUnicode", 0 |)
+                  M.call_closure (|
+                    M.get_associated_function (|
+                      Ty.apply (Ty.path "core::escape::EscapeIterInner") [ Value.Integer 10 ] [],
+                      "backslash",
+                      []
+                    |),
+                    [ M.read (| c |) ]
                   |)
                 ]
             ]))
       | _, _, _ => M.impossible
       end.
     
-    Axiom AssociatedFunction_from_unicode : M.IsAssociatedFunction Self "from_unicode" from_unicode.
+    Axiom AssociatedFunction_backslash : M.IsAssociatedFunction Self "backslash" backslash.
+    
+    (*
+        const fn unicode(c: char) -> Self {
+            Self(EscapeDebugInner::Bytes(escape::EscapeIterInner::unicode(c)))
+        }
+    *)
+    Definition unicode (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ c ] =>
+        ltac:(M.monadic
+          (let c := M.alloc (| c |) in
+          Value.StructTuple
+            "core::char::EscapeDebug"
+            [
+              Value.StructTuple
+                "core::char::EscapeDebugInner::Bytes"
+                [
+                  M.call_closure (|
+                    M.get_associated_function (|
+                      Ty.apply (Ty.path "core::escape::EscapeIterInner") [ Value.Integer 10 ] [],
+                      "unicode",
+                      []
+                    |),
+                    [ M.read (| c |) ]
+                  |)
+                ]
+            ]))
+      | _, _, _ => M.impossible
+      end.
+    
+    Axiom AssociatedFunction_unicode : M.IsAssociatedFunction Self "unicode" unicode.
     
     (*
         fn clear(&mut self) {
-            let bytes = escape::EscapeIterInner::from_array([]);
-            self.0 = EscapeDebugInner::Bytes(bytes);
+            self.0 = EscapeDebugInner::Bytes(escape::EscapeIterInner::empty());
         }
     *)
     Definition clear (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -1374,17 +1327,6 @@ Module char.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
-            let~ bytes :=
-              M.alloc (|
-                M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.apply (Ty.path "core::escape::EscapeIterInner") [ Value.Integer 10 ] [],
-                    "from_array",
-                    []
-                  |),
-                  [ Value.Array [] ]
-                |)
-              |) in
             let~ _ :=
               M.write (|
                 M.SubPointer.get_struct_tuple_field (|
@@ -1392,7 +1334,18 @@ Module char.
                   "core::char::EscapeDebug",
                   0
                 |),
-                Value.StructTuple "core::char::EscapeDebugInner::Bytes" [ M.read (| bytes |) ]
+                Value.StructTuple
+                  "core::char::EscapeDebugInner::Bytes"
+                  [
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::escape::EscapeIterInner") [ Value.Integer 10 ] [],
+                        "empty",
+                        []
+                      |),
+                      []
+                    |)
+                  ]
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
@@ -1761,7 +1714,7 @@ Module char.
   Module Impl_core_fmt_Debug_for_core_char_ToLowercase.
     Definition Self : Ty.t := Ty.path "core::char::ToLowercase".
     
-    (* Debug *)
+    (*         Debug *)
     Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
       | [], [], [ self; f ] =>
@@ -1777,15 +1730,13 @@ Module char.
             [
               M.read (| f |);
               M.read (| Value.String "ToLowercase" |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.alloc (|
-                  M.SubPointer.get_struct_tuple_field (|
-                    M.read (| self |),
-                    "core::char::ToLowercase",
-                    0
-                  |)
-                |))
+              M.alloc (|
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "core::char::ToLowercase",
+                  0
+                |)
+              |)
             ]
           |)))
       | _, _, _ => M.impossible
@@ -1802,7 +1753,7 @@ Module char.
   Module Impl_core_clone_Clone_for_core_char_ToLowercase.
     Definition Self : Ty.t := Ty.path "core::char::ToLowercase".
     
-    (* Clone *)
+    (*         Clone *)
     Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
       | [], [], [ self ] =>
@@ -1842,13 +1793,13 @@ Module char.
   Module Impl_core_iter_traits_iterator_Iterator_for_core_char_ToLowercase.
     Definition Self : Ty.t := Ty.path "core::char::ToLowercase".
     
-    (*     type Item = char; *)
+    (*             type Item = char; *)
     Definition _Item : Ty.t := Ty.path "char".
     
     (*
-        fn next(&mut self) -> Option<char> {
-            self.0.next()
-        }
+                fn next(&mut self) -> Option<char> {
+                    self.0.next()
+                }
     *)
     Definition next (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
@@ -1875,9 +1826,9 @@ Module char.
       end.
     
     (*
-        fn size_hint(&self) -> (usize, Option<usize>) {
-            self.0.size_hint()
-        }
+                fn size_hint(&self) -> (usize, Option<usize>) {
+                    self.0.size_hint()
+                }
     *)
     Definition size_hint (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
@@ -1903,6 +1854,157 @@ Module char.
       | _, _, _ => M.impossible
       end.
     
+    (*
+                fn fold<Acc, Fold>(self, init: Acc, fold: Fold) -> Acc
+                where
+                    Fold: FnMut(Acc, Self::Item) -> Acc,
+                {
+                    self.0.fold(init, fold)
+                }
+    *)
+    Definition fold (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ Acc; Fold ], [ self; init; fold ] =>
+        ltac:(M.monadic
+          (let self := M.alloc (| self |) in
+          let init := M.alloc (| init |) in
+          let fold := M.alloc (| fold |) in
+          M.call_closure (|
+            M.get_trait_method (|
+              "core::iter::traits::iterator::Iterator",
+              Ty.path "core::char::CaseMappingIter",
+              [],
+              "fold",
+              [ Acc; Fold ]
+            |),
+            [
+              M.read (|
+                M.SubPointer.get_struct_tuple_field (| self, "core::char::ToLowercase", 0 |)
+              |);
+              M.read (| init |);
+              M.read (| fold |)
+            ]
+          |)))
+      | _, _, _ => M.impossible
+      end.
+    
+    (*
+                fn count(self) -> usize {
+                    self.0.count()
+                }
+    *)
+    Definition count (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
+        ltac:(M.monadic
+          (let self := M.alloc (| self |) in
+          M.call_closure (|
+            M.get_trait_method (|
+              "core::iter::traits::iterator::Iterator",
+              Ty.path "core::char::CaseMappingIter",
+              [],
+              "count",
+              []
+            |),
+            [
+              M.read (|
+                M.SubPointer.get_struct_tuple_field (| self, "core::char::ToLowercase", 0 |)
+              |)
+            ]
+          |)))
+      | _, _, _ => M.impossible
+      end.
+    
+    (*
+                fn last(self) -> Option<Self::Item> {
+                    self.0.last()
+                }
+    *)
+    Definition last (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
+        ltac:(M.monadic
+          (let self := M.alloc (| self |) in
+          M.call_closure (|
+            M.get_trait_method (|
+              "core::iter::traits::iterator::Iterator",
+              Ty.path "core::char::CaseMappingIter",
+              [],
+              "last",
+              []
+            |),
+            [
+              M.read (|
+                M.SubPointer.get_struct_tuple_field (| self, "core::char::ToLowercase", 0 |)
+              |)
+            ]
+          |)))
+      | _, _, _ => M.impossible
+      end.
+    
+    (*
+                fn advance_by(&mut self, n: usize) -> Result<(), NonZero<usize>> {
+                    self.0.advance_by(n)
+                }
+    *)
+    Definition advance_by (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; n ] =>
+        ltac:(M.monadic
+          (let self := M.alloc (| self |) in
+          let n := M.alloc (| n |) in
+          M.call_closure (|
+            M.get_trait_method (|
+              "core::iter::traits::iterator::Iterator",
+              Ty.path "core::char::CaseMappingIter",
+              [],
+              "advance_by",
+              []
+            |),
+            [
+              M.SubPointer.get_struct_tuple_field (|
+                M.read (| self |),
+                "core::char::ToLowercase",
+                0
+              |);
+              M.read (| n |)
+            ]
+          |)))
+      | _, _, _ => M.impossible
+      end.
+    
+    (*
+                unsafe fn __iterator_get_unchecked(&mut self, idx: usize) -> Self::Item {
+                    // SAFETY: just forwarding requirements to caller
+                    unsafe { self.0.__iterator_get_unchecked(idx) }
+                }
+    *)
+    Definition __iterator_get_unchecked (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; idx ] =>
+        ltac:(M.monadic
+          (let self := M.alloc (| self |) in
+          let idx := M.alloc (| idx |) in
+          M.call_closure (|
+            M.get_trait_method (|
+              "core::iter::traits::iterator::Iterator",
+              Ty.path "core::char::CaseMappingIter",
+              [],
+              "__iterator_get_unchecked",
+              []
+            |),
+            [
+              M.SubPointer.get_struct_tuple_field (|
+                M.read (| self |),
+                "core::char::ToLowercase",
+                0
+              |);
+              M.read (| idx |)
+            ]
+          |)))
+      | _, _, _ => M.impossible
+      end.
+    
     Axiom Implements :
       M.IsTraitInstance
         "core::iter::traits::iterator::Iterator"
@@ -1912,7 +2014,12 @@ Module char.
         [
           ("Item", InstanceField.Ty _Item);
           ("next", InstanceField.Method next);
-          ("size_hint", InstanceField.Method size_hint)
+          ("size_hint", InstanceField.Method size_hint);
+          ("fold", InstanceField.Method fold);
+          ("count", InstanceField.Method count);
+          ("last", InstanceField.Method last);
+          ("advance_by", InstanceField.Method advance_by);
+          ("__iterator_get_unchecked", InstanceField.Method __iterator_get_unchecked)
         ].
   End Impl_core_iter_traits_iterator_Iterator_for_core_char_ToLowercase.
   
@@ -1920,9 +2027,9 @@ Module char.
     Definition Self : Ty.t := Ty.path "core::char::ToLowercase".
     
     (*
-        fn next_back(&mut self) -> Option<char> {
-            self.0.next_back()
-        }
+                fn next_back(&mut self) -> Option<char> {
+                    self.0.next_back()
+                }
     *)
     Definition next_back (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
@@ -1948,12 +2055,82 @@ Module char.
       | _, _, _ => M.impossible
       end.
     
+    (*
+                fn rfold<Acc, Fold>(self, init: Acc, rfold: Fold) -> Acc
+                where
+                    Fold: FnMut(Acc, Self::Item) -> Acc,
+                {
+                    self.0.rfold(init, rfold)
+                }
+    *)
+    Definition rfold (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ Acc; Fold ], [ self; init; rfold ] =>
+        ltac:(M.monadic
+          (let self := M.alloc (| self |) in
+          let init := M.alloc (| init |) in
+          let rfold := M.alloc (| rfold |) in
+          M.call_closure (|
+            M.get_trait_method (|
+              "core::iter::traits::double_ended::DoubleEndedIterator",
+              Ty.path "core::char::CaseMappingIter",
+              [],
+              "rfold",
+              [ Acc; Fold ]
+            |),
+            [
+              M.read (|
+                M.SubPointer.get_struct_tuple_field (| self, "core::char::ToLowercase", 0 |)
+              |);
+              M.read (| init |);
+              M.read (| rfold |)
+            ]
+          |)))
+      | _, _, _ => M.impossible
+      end.
+    
+    (*
+                fn advance_back_by(&mut self, n: usize) -> Result<(), NonZero<usize>> {
+                    self.0.advance_back_by(n)
+                }
+    *)
+    Definition advance_back_by (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; n ] =>
+        ltac:(M.monadic
+          (let self := M.alloc (| self |) in
+          let n := M.alloc (| n |) in
+          M.call_closure (|
+            M.get_trait_method (|
+              "core::iter::traits::double_ended::DoubleEndedIterator",
+              Ty.path "core::char::CaseMappingIter",
+              [],
+              "advance_back_by",
+              []
+            |),
+            [
+              M.SubPointer.get_struct_tuple_field (|
+                M.read (| self |),
+                "core::char::ToLowercase",
+                0
+              |);
+              M.read (| n |)
+            ]
+          |)))
+      | _, _, _ => M.impossible
+      end.
+    
     Axiom Implements :
       M.IsTraitInstance
         "core::iter::traits::double_ended::DoubleEndedIterator"
         Self
         (* Trait polymorphic types *) []
-        (* Instance *) [ ("next_back", InstanceField.Method next_back) ].
+        (* Instance *)
+        [
+          ("next_back", InstanceField.Method next_back);
+          ("rfold", InstanceField.Method rfold);
+          ("advance_back_by", InstanceField.Method advance_back_by)
+        ].
   End Impl_core_iter_traits_double_ended_DoubleEndedIterator_for_core_char_ToLowercase.
   
   Module Impl_core_iter_traits_marker_FusedIterator_for_core_char_ToLowercase.
@@ -1970,13 +2147,153 @@ Module char.
   Module Impl_core_iter_traits_exact_size_ExactSizeIterator_for_core_char_ToLowercase.
     Definition Self : Ty.t := Ty.path "core::char::ToLowercase".
     
+    (*
+                fn len(&self) -> usize {
+                    self.0.len()
+                }
+    *)
+    Definition len (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
+        ltac:(M.monadic
+          (let self := M.alloc (| self |) in
+          M.call_closure (|
+            M.get_trait_method (|
+              "core::iter::traits::exact_size::ExactSizeIterator",
+              Ty.path "core::char::CaseMappingIter",
+              [],
+              "len",
+              []
+            |),
+            [
+              M.SubPointer.get_struct_tuple_field (|
+                M.read (| self |),
+                "core::char::ToLowercase",
+                0
+              |)
+            ]
+          |)))
+      | _, _, _ => M.impossible
+      end.
+    
+    (*
+                fn is_empty(&self) -> bool {
+                    self.0.is_empty()
+                }
+    *)
+    Definition is_empty (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
+        ltac:(M.monadic
+          (let self := M.alloc (| self |) in
+          M.call_closure (|
+            M.get_trait_method (|
+              "core::iter::traits::exact_size::ExactSizeIterator",
+              Ty.path "core::char::CaseMappingIter",
+              [],
+              "is_empty",
+              []
+            |),
+            [
+              M.SubPointer.get_struct_tuple_field (|
+                M.read (| self |),
+                "core::char::ToLowercase",
+                0
+              |)
+            ]
+          |)))
+      | _, _, _ => M.impossible
+      end.
+    
     Axiom Implements :
       M.IsTraitInstance
         "core::iter::traits::exact_size::ExactSizeIterator"
         Self
         (* Trait polymorphic types *) []
-        (* Instance *) [].
+        (* Instance *)
+        [ ("len", InstanceField.Method len); ("is_empty", InstanceField.Method is_empty) ].
   End Impl_core_iter_traits_exact_size_ExactSizeIterator_for_core_char_ToLowercase.
+  
+  Module Impl_core_iter_traits_marker_TrustedLen_for_core_char_ToLowercase.
+    Definition Self : Ty.t := Ty.path "core::char::ToLowercase".
+    
+    Axiom Implements :
+      M.IsTraitInstance
+        "core::iter::traits::marker::TrustedLen"
+        Self
+        (* Trait polymorphic types *) []
+        (* Instance *) [].
+  End Impl_core_iter_traits_marker_TrustedLen_for_core_char_ToLowercase.
+  
+  Module Impl_core_iter_adapters_zip_TrustedRandomAccessNoCoerce_for_core_char_ToLowercase.
+    Definition Self : Ty.t := Ty.path "core::char::ToLowercase".
+    
+    (*             const MAY_HAVE_SIDE_EFFECT: bool = false; *)
+    (* Ty.path "bool" *)
+    Definition value_MAY_HAVE_SIDE_EFFECT : Value.t :=
+      M.run ltac:(M.monadic (M.alloc (| Value.Bool false |))).
+    
+    Axiom Implements :
+      M.IsTraitInstance
+        "core::iter::adapters::zip::TrustedRandomAccessNoCoerce"
+        Self
+        (* Trait polymorphic types *) []
+        (* Instance *)
+        [ ("value_MAY_HAVE_SIDE_EFFECT", InstanceField.Constant value_MAY_HAVE_SIDE_EFFECT) ].
+  End Impl_core_iter_adapters_zip_TrustedRandomAccessNoCoerce_for_core_char_ToLowercase.
+  
+  Module Impl_core_iter_adapters_zip_TrustedRandomAccess_for_core_char_ToLowercase.
+    Definition Self : Ty.t := Ty.path "core::char::ToLowercase".
+    
+    Axiom Implements :
+      M.IsTraitInstance
+        "core::iter::adapters::zip::TrustedRandomAccess"
+        Self
+        (* Trait polymorphic types *) []
+        (* Instance *) [].
+  End Impl_core_iter_adapters_zip_TrustedRandomAccess_for_core_char_ToLowercase.
+  
+  Module Impl_core_fmt_Display_for_core_char_ToLowercase.
+    Definition Self : Ty.t := Ty.path "core::char::ToLowercase".
+    
+    (*
+                fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+                    fmt::Display::fmt(&self.0, f)
+                }
+    *)
+    Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; f ] =>
+        ltac:(M.monadic
+          (let self := M.alloc (| self |) in
+          let f := M.alloc (| f |) in
+          M.call_closure (|
+            M.get_trait_method (|
+              "core::fmt::Display",
+              Ty.path "core::char::CaseMappingIter",
+              [],
+              "fmt",
+              []
+            |),
+            [
+              M.SubPointer.get_struct_tuple_field (|
+                M.read (| self |),
+                "core::char::ToLowercase",
+                0
+              |);
+              M.read (| f |)
+            ]
+          |)))
+      | _, _, _ => M.impossible
+      end.
+    
+    Axiom Implements :
+      M.IsTraitInstance
+        "core::fmt::Display"
+        Self
+        (* Trait polymorphic types *) []
+        (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
+  End Impl_core_fmt_Display_for_core_char_ToLowercase.
   
   (* StructTuple
     {
@@ -1989,7 +2306,7 @@ Module char.
   Module Impl_core_fmt_Debug_for_core_char_ToUppercase.
     Definition Self : Ty.t := Ty.path "core::char::ToUppercase".
     
-    (* Debug *)
+    (*         Debug *)
     Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
       | [], [], [ self; f ] =>
@@ -2005,15 +2322,13 @@ Module char.
             [
               M.read (| f |);
               M.read (| Value.String "ToUppercase" |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.alloc (|
-                  M.SubPointer.get_struct_tuple_field (|
-                    M.read (| self |),
-                    "core::char::ToUppercase",
-                    0
-                  |)
-                |))
+              M.alloc (|
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "core::char::ToUppercase",
+                  0
+                |)
+              |)
             ]
           |)))
       | _, _, _ => M.impossible
@@ -2030,7 +2345,7 @@ Module char.
   Module Impl_core_clone_Clone_for_core_char_ToUppercase.
     Definition Self : Ty.t := Ty.path "core::char::ToUppercase".
     
-    (* Clone *)
+    (*         Clone *)
     Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
       | [], [], [ self ] =>
@@ -2070,13 +2385,13 @@ Module char.
   Module Impl_core_iter_traits_iterator_Iterator_for_core_char_ToUppercase.
     Definition Self : Ty.t := Ty.path "core::char::ToUppercase".
     
-    (*     type Item = char; *)
+    (*             type Item = char; *)
     Definition _Item : Ty.t := Ty.path "char".
     
     (*
-        fn next(&mut self) -> Option<char> {
-            self.0.next()
-        }
+                fn next(&mut self) -> Option<char> {
+                    self.0.next()
+                }
     *)
     Definition next (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
@@ -2103,9 +2418,9 @@ Module char.
       end.
     
     (*
-        fn size_hint(&self) -> (usize, Option<usize>) {
-            self.0.size_hint()
-        }
+                fn size_hint(&self) -> (usize, Option<usize>) {
+                    self.0.size_hint()
+                }
     *)
     Definition size_hint (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
@@ -2131,6 +2446,157 @@ Module char.
       | _, _, _ => M.impossible
       end.
     
+    (*
+                fn fold<Acc, Fold>(self, init: Acc, fold: Fold) -> Acc
+                where
+                    Fold: FnMut(Acc, Self::Item) -> Acc,
+                {
+                    self.0.fold(init, fold)
+                }
+    *)
+    Definition fold (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ Acc; Fold ], [ self; init; fold ] =>
+        ltac:(M.monadic
+          (let self := M.alloc (| self |) in
+          let init := M.alloc (| init |) in
+          let fold := M.alloc (| fold |) in
+          M.call_closure (|
+            M.get_trait_method (|
+              "core::iter::traits::iterator::Iterator",
+              Ty.path "core::char::CaseMappingIter",
+              [],
+              "fold",
+              [ Acc; Fold ]
+            |),
+            [
+              M.read (|
+                M.SubPointer.get_struct_tuple_field (| self, "core::char::ToUppercase", 0 |)
+              |);
+              M.read (| init |);
+              M.read (| fold |)
+            ]
+          |)))
+      | _, _, _ => M.impossible
+      end.
+    
+    (*
+                fn count(self) -> usize {
+                    self.0.count()
+                }
+    *)
+    Definition count (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
+        ltac:(M.monadic
+          (let self := M.alloc (| self |) in
+          M.call_closure (|
+            M.get_trait_method (|
+              "core::iter::traits::iterator::Iterator",
+              Ty.path "core::char::CaseMappingIter",
+              [],
+              "count",
+              []
+            |),
+            [
+              M.read (|
+                M.SubPointer.get_struct_tuple_field (| self, "core::char::ToUppercase", 0 |)
+              |)
+            ]
+          |)))
+      | _, _, _ => M.impossible
+      end.
+    
+    (*
+                fn last(self) -> Option<Self::Item> {
+                    self.0.last()
+                }
+    *)
+    Definition last (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
+        ltac:(M.monadic
+          (let self := M.alloc (| self |) in
+          M.call_closure (|
+            M.get_trait_method (|
+              "core::iter::traits::iterator::Iterator",
+              Ty.path "core::char::CaseMappingIter",
+              [],
+              "last",
+              []
+            |),
+            [
+              M.read (|
+                M.SubPointer.get_struct_tuple_field (| self, "core::char::ToUppercase", 0 |)
+              |)
+            ]
+          |)))
+      | _, _, _ => M.impossible
+      end.
+    
+    (*
+                fn advance_by(&mut self, n: usize) -> Result<(), NonZero<usize>> {
+                    self.0.advance_by(n)
+                }
+    *)
+    Definition advance_by (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; n ] =>
+        ltac:(M.monadic
+          (let self := M.alloc (| self |) in
+          let n := M.alloc (| n |) in
+          M.call_closure (|
+            M.get_trait_method (|
+              "core::iter::traits::iterator::Iterator",
+              Ty.path "core::char::CaseMappingIter",
+              [],
+              "advance_by",
+              []
+            |),
+            [
+              M.SubPointer.get_struct_tuple_field (|
+                M.read (| self |),
+                "core::char::ToUppercase",
+                0
+              |);
+              M.read (| n |)
+            ]
+          |)))
+      | _, _, _ => M.impossible
+      end.
+    
+    (*
+                unsafe fn __iterator_get_unchecked(&mut self, idx: usize) -> Self::Item {
+                    // SAFETY: just forwarding requirements to caller
+                    unsafe { self.0.__iterator_get_unchecked(idx) }
+                }
+    *)
+    Definition __iterator_get_unchecked (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; idx ] =>
+        ltac:(M.monadic
+          (let self := M.alloc (| self |) in
+          let idx := M.alloc (| idx |) in
+          M.call_closure (|
+            M.get_trait_method (|
+              "core::iter::traits::iterator::Iterator",
+              Ty.path "core::char::CaseMappingIter",
+              [],
+              "__iterator_get_unchecked",
+              []
+            |),
+            [
+              M.SubPointer.get_struct_tuple_field (|
+                M.read (| self |),
+                "core::char::ToUppercase",
+                0
+              |);
+              M.read (| idx |)
+            ]
+          |)))
+      | _, _, _ => M.impossible
+      end.
+    
     Axiom Implements :
       M.IsTraitInstance
         "core::iter::traits::iterator::Iterator"
@@ -2140,7 +2606,12 @@ Module char.
         [
           ("Item", InstanceField.Ty _Item);
           ("next", InstanceField.Method next);
-          ("size_hint", InstanceField.Method size_hint)
+          ("size_hint", InstanceField.Method size_hint);
+          ("fold", InstanceField.Method fold);
+          ("count", InstanceField.Method count);
+          ("last", InstanceField.Method last);
+          ("advance_by", InstanceField.Method advance_by);
+          ("__iterator_get_unchecked", InstanceField.Method __iterator_get_unchecked)
         ].
   End Impl_core_iter_traits_iterator_Iterator_for_core_char_ToUppercase.
   
@@ -2148,9 +2619,9 @@ Module char.
     Definition Self : Ty.t := Ty.path "core::char::ToUppercase".
     
     (*
-        fn next_back(&mut self) -> Option<char> {
-            self.0.next_back()
-        }
+                fn next_back(&mut self) -> Option<char> {
+                    self.0.next_back()
+                }
     *)
     Definition next_back (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
@@ -2176,12 +2647,82 @@ Module char.
       | _, _, _ => M.impossible
       end.
     
+    (*
+                fn rfold<Acc, Fold>(self, init: Acc, rfold: Fold) -> Acc
+                where
+                    Fold: FnMut(Acc, Self::Item) -> Acc,
+                {
+                    self.0.rfold(init, rfold)
+                }
+    *)
+    Definition rfold (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ Acc; Fold ], [ self; init; rfold ] =>
+        ltac:(M.monadic
+          (let self := M.alloc (| self |) in
+          let init := M.alloc (| init |) in
+          let rfold := M.alloc (| rfold |) in
+          M.call_closure (|
+            M.get_trait_method (|
+              "core::iter::traits::double_ended::DoubleEndedIterator",
+              Ty.path "core::char::CaseMappingIter",
+              [],
+              "rfold",
+              [ Acc; Fold ]
+            |),
+            [
+              M.read (|
+                M.SubPointer.get_struct_tuple_field (| self, "core::char::ToUppercase", 0 |)
+              |);
+              M.read (| init |);
+              M.read (| rfold |)
+            ]
+          |)))
+      | _, _, _ => M.impossible
+      end.
+    
+    (*
+                fn advance_back_by(&mut self, n: usize) -> Result<(), NonZero<usize>> {
+                    self.0.advance_back_by(n)
+                }
+    *)
+    Definition advance_back_by (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; n ] =>
+        ltac:(M.monadic
+          (let self := M.alloc (| self |) in
+          let n := M.alloc (| n |) in
+          M.call_closure (|
+            M.get_trait_method (|
+              "core::iter::traits::double_ended::DoubleEndedIterator",
+              Ty.path "core::char::CaseMappingIter",
+              [],
+              "advance_back_by",
+              []
+            |),
+            [
+              M.SubPointer.get_struct_tuple_field (|
+                M.read (| self |),
+                "core::char::ToUppercase",
+                0
+              |);
+              M.read (| n |)
+            ]
+          |)))
+      | _, _, _ => M.impossible
+      end.
+    
     Axiom Implements :
       M.IsTraitInstance
         "core::iter::traits::double_ended::DoubleEndedIterator"
         Self
         (* Trait polymorphic types *) []
-        (* Instance *) [ ("next_back", InstanceField.Method next_back) ].
+        (* Instance *)
+        [
+          ("next_back", InstanceField.Method next_back);
+          ("rfold", InstanceField.Method rfold);
+          ("advance_back_by", InstanceField.Method advance_back_by)
+        ].
   End Impl_core_iter_traits_double_ended_DoubleEndedIterator_for_core_char_ToUppercase.
   
   Module Impl_core_iter_traits_marker_FusedIterator_for_core_char_ToUppercase.
@@ -2198,1181 +2739,59 @@ Module char.
   Module Impl_core_iter_traits_exact_size_ExactSizeIterator_for_core_char_ToUppercase.
     Definition Self : Ty.t := Ty.path "core::char::ToUppercase".
     
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::iter::traits::exact_size::ExactSizeIterator"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [].
-  End Impl_core_iter_traits_exact_size_ExactSizeIterator_for_core_char_ToUppercase.
-  
-  (*
-  Enum CaseMappingIter
-  {
-    const_params := [];
-    ty_params := [];
-    variants :=
-      [
-        {
-          name := "Three";
-          item := StructTuple [ Ty.path "char"; Ty.path "char"; Ty.path "char" ];
-          discriminant := None;
-        };
-        {
-          name := "Two";
-          item := StructTuple [ Ty.path "char"; Ty.path "char" ];
-          discriminant := None;
-        };
-        {
-          name := "One";
-          item := StructTuple [ Ty.path "char" ];
-          discriminant := None;
-        };
-        {
-          name := "Zero";
-          item := StructTuple [];
-          discriminant := None;
-        }
-      ];
-  }
-  *)
-  
-  Module Impl_core_fmt_Debug_for_core_char_CaseMappingIter.
-    Definition Self : Ty.t := Ty.path "core::char::CaseMappingIter".
-    
-    (* Debug *)
-    Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      match ε, τ, α with
-      | [], [], [ self; f ] =>
-        ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let f := M.alloc (| f |) in
-          M.read (|
-            M.match_operator (|
-              self,
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let γ1_0 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ,
-                        "core::char::CaseMappingIter::Three",
-                        0
-                      |) in
-                    let γ1_1 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ,
-                        "core::char::CaseMappingIter::Three",
-                        1
-                      |) in
-                    let γ1_2 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ,
-                        "core::char::CaseMappingIter::Three",
-                        2
-                      |) in
-                    let __self_0 := M.alloc (| γ1_0 |) in
-                    let __self_1 := M.alloc (| γ1_1 |) in
-                    let __self_2 := M.alloc (| γ1_2 |) in
-                    M.alloc (|
-                      M.call_closure (|
-                        M.get_associated_function (|
-                          Ty.path "core::fmt::Formatter",
-                          "debug_tuple_field3_finish",
-                          []
-                        |),
-                        [
-                          M.read (| f |);
-                          M.read (| Value.String "Three" |);
-                          (* Unsize *) M.pointer_coercion (M.read (| __self_0 |));
-                          (* Unsize *) M.pointer_coercion (M.read (| __self_1 |));
-                          (* Unsize *) M.pointer_coercion __self_2
-                        ]
-                      |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let γ1_0 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ,
-                        "core::char::CaseMappingIter::Two",
-                        0
-                      |) in
-                    let γ1_1 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ,
-                        "core::char::CaseMappingIter::Two",
-                        1
-                      |) in
-                    let __self_0 := M.alloc (| γ1_0 |) in
-                    let __self_1 := M.alloc (| γ1_1 |) in
-                    M.alloc (|
-                      M.call_closure (|
-                        M.get_associated_function (|
-                          Ty.path "core::fmt::Formatter",
-                          "debug_tuple_field2_finish",
-                          []
-                        |),
-                        [
-                          M.read (| f |);
-                          M.read (| Value.String "Two" |);
-                          (* Unsize *) M.pointer_coercion (M.read (| __self_0 |));
-                          (* Unsize *) M.pointer_coercion __self_1
-                        ]
-                      |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let γ1_0 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ,
-                        "core::char::CaseMappingIter::One",
-                        0
-                      |) in
-                    let __self_0 := M.alloc (| γ1_0 |) in
-                    M.alloc (|
-                      M.call_closure (|
-                        M.get_associated_function (|
-                          Ty.path "core::fmt::Formatter",
-                          "debug_tuple_field1_finish",
-                          []
-                        |),
-                        [
-                          M.read (| f |);
-                          M.read (| Value.String "One" |);
-                          (* Unsize *) M.pointer_coercion __self_0
-                        ]
-                      |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ := M.is_struct_tuple (| γ, "core::char::CaseMappingIter::Zero" |) in
-                    M.alloc (|
-                      M.call_closure (|
-                        M.get_associated_function (|
-                          Ty.path "core::fmt::Formatter",
-                          "write_str",
-                          []
-                        |),
-                        [ M.read (| f |); M.read (| Value.String "Zero" |) ]
-                      |)
-                    |)))
-              ]
-            |)
-          |)))
-      | _, _, _ => M.impossible
-      end.
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::fmt::Debug"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
-  End Impl_core_fmt_Debug_for_core_char_CaseMappingIter.
-  
-  Module Impl_core_clone_Clone_for_core_char_CaseMappingIter.
-    Definition Self : Ty.t := Ty.path "core::char::CaseMappingIter".
-    
-    (* Clone *)
-    Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    (*
+                fn len(&self) -> usize {
+                    self.0.len()
+                }
+    *)
+    Definition len (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.read (|
-            M.match_operator (|
-              self,
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let γ1_0 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ,
-                        "core::char::CaseMappingIter::Three",
-                        0
-                      |) in
-                    let γ1_1 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ,
-                        "core::char::CaseMappingIter::Three",
-                        1
-                      |) in
-                    let γ1_2 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ,
-                        "core::char::CaseMappingIter::Three",
-                        2
-                      |) in
-                    let __self_0 := M.alloc (| γ1_0 |) in
-                    let __self_1 := M.alloc (| γ1_1 |) in
-                    let __self_2 := M.alloc (| γ1_2 |) in
-                    M.alloc (|
-                      Value.StructTuple
-                        "core::char::CaseMappingIter::Three"
-                        [
-                          M.call_closure (|
-                            M.get_trait_method (|
-                              "core::clone::Clone",
-                              Ty.path "char",
-                              [],
-                              "clone",
-                              []
-                            |),
-                            [ M.read (| __self_0 |) ]
-                          |);
-                          M.call_closure (|
-                            M.get_trait_method (|
-                              "core::clone::Clone",
-                              Ty.path "char",
-                              [],
-                              "clone",
-                              []
-                            |),
-                            [ M.read (| __self_1 |) ]
-                          |);
-                          M.call_closure (|
-                            M.get_trait_method (|
-                              "core::clone::Clone",
-                              Ty.path "char",
-                              [],
-                              "clone",
-                              []
-                            |),
-                            [ M.read (| __self_2 |) ]
-                          |)
-                        ]
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let γ1_0 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ,
-                        "core::char::CaseMappingIter::Two",
-                        0
-                      |) in
-                    let γ1_1 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ,
-                        "core::char::CaseMappingIter::Two",
-                        1
-                      |) in
-                    let __self_0 := M.alloc (| γ1_0 |) in
-                    let __self_1 := M.alloc (| γ1_1 |) in
-                    M.alloc (|
-                      Value.StructTuple
-                        "core::char::CaseMappingIter::Two"
-                        [
-                          M.call_closure (|
-                            M.get_trait_method (|
-                              "core::clone::Clone",
-                              Ty.path "char",
-                              [],
-                              "clone",
-                              []
-                            |),
-                            [ M.read (| __self_0 |) ]
-                          |);
-                          M.call_closure (|
-                            M.get_trait_method (|
-                              "core::clone::Clone",
-                              Ty.path "char",
-                              [],
-                              "clone",
-                              []
-                            |),
-                            [ M.read (| __self_1 |) ]
-                          |)
-                        ]
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let γ1_0 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ,
-                        "core::char::CaseMappingIter::One",
-                        0
-                      |) in
-                    let __self_0 := M.alloc (| γ1_0 |) in
-                    M.alloc (|
-                      Value.StructTuple
-                        "core::char::CaseMappingIter::One"
-                        [
-                          M.call_closure (|
-                            M.get_trait_method (|
-                              "core::clone::Clone",
-                              Ty.path "char",
-                              [],
-                              "clone",
-                              []
-                            |),
-                            [ M.read (| __self_0 |) ]
-                          |)
-                        ]
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ := M.is_struct_tuple (| γ, "core::char::CaseMappingIter::Zero" |) in
-                    M.alloc (| Value.StructTuple "core::char::CaseMappingIter::Zero" [] |)))
-              ]
-            |)
-          |)))
-      | _, _, _ => M.impossible
-      end.
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::clone::Clone"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [ ("clone", InstanceField.Method clone) ].
-  End Impl_core_clone_Clone_for_core_char_CaseMappingIter.
-  
-  Module Impl_core_char_CaseMappingIter.
-    Definition Self : Ty.t := Ty.path "core::char::CaseMappingIter".
-    
-    (*
-        fn new(chars: [char; 3]) -> CaseMappingIter {
-            if chars[2] == '\0' {
-                if chars[1] == '\0' {
-                    CaseMappingIter::One(chars[0]) // Including if chars[0] == '\0'
-                } else {
-                    CaseMappingIter::Two(chars[0], chars[1])
-                }
-            } else {
-                CaseMappingIter::Three(chars[0], chars[1], chars[2])
-            }
-        }
-    *)
-    Definition new (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      match ε, τ, α with
-      | [], [], [ chars ] =>
-        ltac:(M.monadic
-          (let chars := M.alloc (| chars |) in
-          M.read (|
-            M.match_operator (|
-              M.alloc (| Value.Tuple [] |),
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ :=
-                      M.use
-                        (M.alloc (|
-                          BinOp.Pure.eq
-                            (M.read (|
-                              M.SubPointer.get_array_field (|
-                                chars,
-                                M.alloc (| Value.Integer 2 |)
-                              |)
-                            |))
-                            (Value.UnicodeChar 0)
-                        |)) in
-                    let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                    M.match_operator (|
-                      M.alloc (| Value.Tuple [] |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ :=
-                              M.use
-                                (M.alloc (|
-                                  BinOp.Pure.eq
-                                    (M.read (|
-                                      M.SubPointer.get_array_field (|
-                                        chars,
-                                        M.alloc (| Value.Integer 1 |)
-                                      |)
-                                    |))
-                                    (Value.UnicodeChar 0)
-                                |)) in
-                            let _ :=
-                              M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            M.alloc (|
-                              Value.StructTuple
-                                "core::char::CaseMappingIter::One"
-                                [
-                                  M.read (|
-                                    M.SubPointer.get_array_field (|
-                                      chars,
-                                      M.alloc (| Value.Integer 0 |)
-                                    |)
-                                  |)
-                                ]
-                            |)));
-                        fun γ =>
-                          ltac:(M.monadic
-                            (M.alloc (|
-                              Value.StructTuple
-                                "core::char::CaseMappingIter::Two"
-                                [
-                                  M.read (|
-                                    M.SubPointer.get_array_field (|
-                                      chars,
-                                      M.alloc (| Value.Integer 0 |)
-                                    |)
-                                  |);
-                                  M.read (|
-                                    M.SubPointer.get_array_field (|
-                                      chars,
-                                      M.alloc (| Value.Integer 1 |)
-                                    |)
-                                  |)
-                                ]
-                            |)))
-                      ]
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (M.alloc (|
-                      Value.StructTuple
-                        "core::char::CaseMappingIter::Three"
-                        [
-                          M.read (|
-                            M.SubPointer.get_array_field (| chars, M.alloc (| Value.Integer 0 |) |)
-                          |);
-                          M.read (|
-                            M.SubPointer.get_array_field (| chars, M.alloc (| Value.Integer 1 |) |)
-                          |);
-                          M.read (|
-                            M.SubPointer.get_array_field (| chars, M.alloc (| Value.Integer 2 |) |)
-                          |)
-                        ]
-                    |)))
-              ]
-            |)
-          |)))
-      | _, _, _ => M.impossible
-      end.
-    
-    Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
-  End Impl_core_char_CaseMappingIter.
-  
-  Module Impl_core_iter_traits_iterator_Iterator_for_core_char_CaseMappingIter.
-    Definition Self : Ty.t := Ty.path "core::char::CaseMappingIter".
-    
-    (*     type Item = char; *)
-    Definition _Item : Ty.t := Ty.path "char".
-    
-    (*
-        fn next(&mut self) -> Option<char> {
-            match *self {
-                CaseMappingIter::Three(a, b, c) => {
-                    *self = CaseMappingIter::Two(b, c);
-                    Some(a)
-                }
-                CaseMappingIter::Two(b, c) => {
-                    *self = CaseMappingIter::One(c);
-                    Some(b)
-                }
-                CaseMappingIter::One(c) => {
-                    *self = CaseMappingIter::Zero;
-                    Some(c)
-                }
-                CaseMappingIter::Zero => None,
-            }
-        }
-    *)
-    Definition next (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      match ε, τ, α with
-      | [], [], [ self ] =>
-        ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          M.read (|
-            M.match_operator (|
-              M.read (| self |),
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ0_0 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ,
-                        "core::char::CaseMappingIter::Three",
-                        0
-                      |) in
-                    let γ0_1 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ,
-                        "core::char::CaseMappingIter::Three",
-                        1
-                      |) in
-                    let γ0_2 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ,
-                        "core::char::CaseMappingIter::Three",
-                        2
-                      |) in
-                    let a := M.copy (| γ0_0 |) in
-                    let b := M.copy (| γ0_1 |) in
-                    let c := M.copy (| γ0_2 |) in
-                    let~ _ :=
-                      M.write (|
-                        M.read (| self |),
-                        Value.StructTuple
-                          "core::char::CaseMappingIter::Two"
-                          [ M.read (| b |); M.read (| c |) ]
-                      |) in
-                    M.alloc (|
-                      Value.StructTuple "core::option::Option::Some" [ M.read (| a |) ]
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ0_0 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ,
-                        "core::char::CaseMappingIter::Two",
-                        0
-                      |) in
-                    let γ0_1 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ,
-                        "core::char::CaseMappingIter::Two",
-                        1
-                      |) in
-                    let b := M.copy (| γ0_0 |) in
-                    let c := M.copy (| γ0_1 |) in
-                    let~ _ :=
-                      M.write (|
-                        M.read (| self |),
-                        Value.StructTuple "core::char::CaseMappingIter::One" [ M.read (| c |) ]
-                      |) in
-                    M.alloc (|
-                      Value.StructTuple "core::option::Option::Some" [ M.read (| b |) ]
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ0_0 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ,
-                        "core::char::CaseMappingIter::One",
-                        0
-                      |) in
-                    let c := M.copy (| γ0_0 |) in
-                    let~ _ :=
-                      M.write (|
-                        M.read (| self |),
-                        Value.StructTuple "core::char::CaseMappingIter::Zero" []
-                      |) in
-                    M.alloc (|
-                      Value.StructTuple "core::option::Option::Some" [ M.read (| c |) ]
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let _ := M.is_struct_tuple (| γ, "core::char::CaseMappingIter::Zero" |) in
-                    M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
-              ]
-            |)
-          |)))
-      | _, _, _ => M.impossible
-      end.
-    
-    (*
-        fn size_hint(&self) -> (usize, Option<usize>) {
-            let size = match self {
-                CaseMappingIter::Three(..) => 3,
-                CaseMappingIter::Two(..) => 2,
-                CaseMappingIter::One(_) => 1,
-                CaseMappingIter::Zero => 0,
-            };
-            (size, Some(size))
-        }
-    *)
-    Definition size_hint (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      match ε, τ, α with
-      | [], [], [ self ] =>
-        ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          M.read (|
-            let~ size :=
-              M.copy (|
-                M.match_operator (|
-                  self,
-                  [
-                    fun γ =>
-                      ltac:(M.monadic
-                        (let γ := M.read (| γ |) in
-                        let _ := M.is_struct_tuple (| γ, "core::char::CaseMappingIter::Three" |) in
-                        M.alloc (| Value.Integer 3 |)));
-                    fun γ =>
-                      ltac:(M.monadic
-                        (let γ := M.read (| γ |) in
-                        let _ := M.is_struct_tuple (| γ, "core::char::CaseMappingIter::Two" |) in
-                        M.alloc (| Value.Integer 2 |)));
-                    fun γ =>
-                      ltac:(M.monadic
-                        (let γ := M.read (| γ |) in
-                        let γ1_0 :=
-                          M.SubPointer.get_struct_tuple_field (|
-                            γ,
-                            "core::char::CaseMappingIter::One",
-                            0
-                          |) in
-                        M.alloc (| Value.Integer 1 |)));
-                    fun γ =>
-                      ltac:(M.monadic
-                        (let γ := M.read (| γ |) in
-                        let _ := M.is_struct_tuple (| γ, "core::char::CaseMappingIter::Zero" |) in
-                        M.alloc (| Value.Integer 0 |)))
-                  ]
-                |)
-              |) in
-            M.alloc (|
-              Value.Tuple
-                [
-                  M.read (| size |);
-                  Value.StructTuple "core::option::Option::Some" [ M.read (| size |) ]
-                ]
-            |)
-          |)))
-      | _, _, _ => M.impossible
-      end.
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::iter::traits::iterator::Iterator"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *)
-        [
-          ("Item", InstanceField.Ty _Item);
-          ("next", InstanceField.Method next);
-          ("size_hint", InstanceField.Method size_hint)
-        ].
-  End Impl_core_iter_traits_iterator_Iterator_for_core_char_CaseMappingIter.
-  
-  Module Impl_core_iter_traits_double_ended_DoubleEndedIterator_for_core_char_CaseMappingIter.
-    Definition Self : Ty.t := Ty.path "core::char::CaseMappingIter".
-    
-    (*
-        fn next_back(&mut self) -> Option<char> {
-            match *self {
-                CaseMappingIter::Three(a, b, c) => {
-                    *self = CaseMappingIter::Two(a, b);
-                    Some(c)
-                }
-                CaseMappingIter::Two(b, c) => {
-                    *self = CaseMappingIter::One(b);
-                    Some(c)
-                }
-                CaseMappingIter::One(c) => {
-                    *self = CaseMappingIter::Zero;
-                    Some(c)
-                }
-                CaseMappingIter::Zero => None,
-            }
-        }
-    *)
-    Definition next_back (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      match ε, τ, α with
-      | [], [], [ self ] =>
-        ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          M.read (|
-            M.match_operator (|
-              M.read (| self |),
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ0_0 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ,
-                        "core::char::CaseMappingIter::Three",
-                        0
-                      |) in
-                    let γ0_1 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ,
-                        "core::char::CaseMappingIter::Three",
-                        1
-                      |) in
-                    let γ0_2 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ,
-                        "core::char::CaseMappingIter::Three",
-                        2
-                      |) in
-                    let a := M.copy (| γ0_0 |) in
-                    let b := M.copy (| γ0_1 |) in
-                    let c := M.copy (| γ0_2 |) in
-                    let~ _ :=
-                      M.write (|
-                        M.read (| self |),
-                        Value.StructTuple
-                          "core::char::CaseMappingIter::Two"
-                          [ M.read (| a |); M.read (| b |) ]
-                      |) in
-                    M.alloc (|
-                      Value.StructTuple "core::option::Option::Some" [ M.read (| c |) ]
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ0_0 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ,
-                        "core::char::CaseMappingIter::Two",
-                        0
-                      |) in
-                    let γ0_1 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ,
-                        "core::char::CaseMappingIter::Two",
-                        1
-                      |) in
-                    let b := M.copy (| γ0_0 |) in
-                    let c := M.copy (| γ0_1 |) in
-                    let~ _ :=
-                      M.write (|
-                        M.read (| self |),
-                        Value.StructTuple "core::char::CaseMappingIter::One" [ M.read (| b |) ]
-                      |) in
-                    M.alloc (|
-                      Value.StructTuple "core::option::Option::Some" [ M.read (| c |) ]
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ0_0 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ,
-                        "core::char::CaseMappingIter::One",
-                        0
-                      |) in
-                    let c := M.copy (| γ0_0 |) in
-                    let~ _ :=
-                      M.write (|
-                        M.read (| self |),
-                        Value.StructTuple "core::char::CaseMappingIter::Zero" []
-                      |) in
-                    M.alloc (|
-                      Value.StructTuple "core::option::Option::Some" [ M.read (| c |) ]
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let _ := M.is_struct_tuple (| γ, "core::char::CaseMappingIter::Zero" |) in
-                    M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
-              ]
-            |)
-          |)))
-      | _, _, _ => M.impossible
-      end.
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::iter::traits::double_ended::DoubleEndedIterator"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [ ("next_back", InstanceField.Method next_back) ].
-  End Impl_core_iter_traits_double_ended_DoubleEndedIterator_for_core_char_CaseMappingIter.
-  
-  Module Impl_core_fmt_Display_for_core_char_CaseMappingIter.
-    Definition Self : Ty.t := Ty.path "core::char::CaseMappingIter".
-    
-    (*
-        fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-            match *self {
-                CaseMappingIter::Three(a, b, c) => {
-                    f.write_char(a)?;
-                    f.write_char(b)?;
-                    f.write_char(c)
-                }
-                CaseMappingIter::Two(b, c) => {
-                    f.write_char(b)?;
-                    f.write_char(c)
-                }
-                CaseMappingIter::One(c) => f.write_char(c),
-                CaseMappingIter::Zero => Ok(()),
-            }
-        }
-    *)
-    Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      match ε, τ, α with
-      | [], [], [ self; f ] =>
-        ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let f := M.alloc (| f |) in
-          M.catch_return (|
-            ltac:(M.monadic
-              (M.read (|
-                M.match_operator (|
-                  M.read (| self |),
-                  [
-                    fun γ =>
-                      ltac:(M.monadic
-                        (let γ0_0 :=
-                          M.SubPointer.get_struct_tuple_field (|
-                            γ,
-                            "core::char::CaseMappingIter::Three",
-                            0
-                          |) in
-                        let γ0_1 :=
-                          M.SubPointer.get_struct_tuple_field (|
-                            γ,
-                            "core::char::CaseMappingIter::Three",
-                            1
-                          |) in
-                        let γ0_2 :=
-                          M.SubPointer.get_struct_tuple_field (|
-                            γ,
-                            "core::char::CaseMappingIter::Three",
-                            2
-                          |) in
-                        let a := M.copy (| γ0_0 |) in
-                        let b := M.copy (| γ0_1 |) in
-                        let c := M.copy (| γ0_2 |) in
-                        let~ _ :=
-                          M.match_operator (|
-                            M.alloc (|
-                              M.call_closure (|
-                                M.get_trait_method (|
-                                  "core::ops::try_trait::Try",
-                                  Ty.apply
-                                    (Ty.path "core::result::Result")
-                                    []
-                                    [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                                  [],
-                                  "branch",
-                                  []
-                                |),
-                                [
-                                  M.call_closure (|
-                                    M.get_trait_method (|
-                                      "core::fmt::Write",
-                                      Ty.path "core::fmt::Formatter",
-                                      [],
-                                      "write_char",
-                                      []
-                                    |),
-                                    [ M.read (| f |); M.read (| a |) ]
-                                  |)
-                                ]
-                              |)
-                            |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let γ0_0 :=
-                                    M.SubPointer.get_struct_tuple_field (|
-                                      γ,
-                                      "core::ops::control_flow::ControlFlow::Break",
-                                      0
-                                    |) in
-                                  let residual := M.copy (| γ0_0 |) in
-                                  M.alloc (|
-                                    M.never_to_any (|
-                                      M.read (|
-                                        M.return_ (|
-                                          M.call_closure (|
-                                            M.get_trait_method (|
-                                              "core::ops::try_trait::FromResidual",
-                                              Ty.apply
-                                                (Ty.path "core::result::Result")
-                                                []
-                                                [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                                              [
-                                                Ty.apply
-                                                  (Ty.path "core::result::Result")
-                                                  []
-                                                  [
-                                                    Ty.path "core::convert::Infallible";
-                                                    Ty.path "core::fmt::Error"
-                                                  ]
-                                              ],
-                                              "from_residual",
-                                              []
-                                            |),
-                                            [ M.read (| residual |) ]
-                                          |)
-                                        |)
-                                      |)
-                                    |)
-                                  |)));
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let γ0_0 :=
-                                    M.SubPointer.get_struct_tuple_field (|
-                                      γ,
-                                      "core::ops::control_flow::ControlFlow::Continue",
-                                      0
-                                    |) in
-                                  let val := M.copy (| γ0_0 |) in
-                                  val))
-                            ]
-                          |) in
-                        let~ _ :=
-                          M.match_operator (|
-                            M.alloc (|
-                              M.call_closure (|
-                                M.get_trait_method (|
-                                  "core::ops::try_trait::Try",
-                                  Ty.apply
-                                    (Ty.path "core::result::Result")
-                                    []
-                                    [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                                  [],
-                                  "branch",
-                                  []
-                                |),
-                                [
-                                  M.call_closure (|
-                                    M.get_trait_method (|
-                                      "core::fmt::Write",
-                                      Ty.path "core::fmt::Formatter",
-                                      [],
-                                      "write_char",
-                                      []
-                                    |),
-                                    [ M.read (| f |); M.read (| b |) ]
-                                  |)
-                                ]
-                              |)
-                            |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let γ0_0 :=
-                                    M.SubPointer.get_struct_tuple_field (|
-                                      γ,
-                                      "core::ops::control_flow::ControlFlow::Break",
-                                      0
-                                    |) in
-                                  let residual := M.copy (| γ0_0 |) in
-                                  M.alloc (|
-                                    M.never_to_any (|
-                                      M.read (|
-                                        M.return_ (|
-                                          M.call_closure (|
-                                            M.get_trait_method (|
-                                              "core::ops::try_trait::FromResidual",
-                                              Ty.apply
-                                                (Ty.path "core::result::Result")
-                                                []
-                                                [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                                              [
-                                                Ty.apply
-                                                  (Ty.path "core::result::Result")
-                                                  []
-                                                  [
-                                                    Ty.path "core::convert::Infallible";
-                                                    Ty.path "core::fmt::Error"
-                                                  ]
-                                              ],
-                                              "from_residual",
-                                              []
-                                            |),
-                                            [ M.read (| residual |) ]
-                                          |)
-                                        |)
-                                      |)
-                                    |)
-                                  |)));
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let γ0_0 :=
-                                    M.SubPointer.get_struct_tuple_field (|
-                                      γ,
-                                      "core::ops::control_flow::ControlFlow::Continue",
-                                      0
-                                    |) in
-                                  let val := M.copy (| γ0_0 |) in
-                                  val))
-                            ]
-                          |) in
-                        M.alloc (|
-                          M.call_closure (|
-                            M.get_trait_method (|
-                              "core::fmt::Write",
-                              Ty.path "core::fmt::Formatter",
-                              [],
-                              "write_char",
-                              []
-                            |),
-                            [ M.read (| f |); M.read (| c |) ]
-                          |)
-                        |)));
-                    fun γ =>
-                      ltac:(M.monadic
-                        (let γ0_0 :=
-                          M.SubPointer.get_struct_tuple_field (|
-                            γ,
-                            "core::char::CaseMappingIter::Two",
-                            0
-                          |) in
-                        let γ0_1 :=
-                          M.SubPointer.get_struct_tuple_field (|
-                            γ,
-                            "core::char::CaseMappingIter::Two",
-                            1
-                          |) in
-                        let b := M.copy (| γ0_0 |) in
-                        let c := M.copy (| γ0_1 |) in
-                        let~ _ :=
-                          M.match_operator (|
-                            M.alloc (|
-                              M.call_closure (|
-                                M.get_trait_method (|
-                                  "core::ops::try_trait::Try",
-                                  Ty.apply
-                                    (Ty.path "core::result::Result")
-                                    []
-                                    [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                                  [],
-                                  "branch",
-                                  []
-                                |),
-                                [
-                                  M.call_closure (|
-                                    M.get_trait_method (|
-                                      "core::fmt::Write",
-                                      Ty.path "core::fmt::Formatter",
-                                      [],
-                                      "write_char",
-                                      []
-                                    |),
-                                    [ M.read (| f |); M.read (| b |) ]
-                                  |)
-                                ]
-                              |)
-                            |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let γ0_0 :=
-                                    M.SubPointer.get_struct_tuple_field (|
-                                      γ,
-                                      "core::ops::control_flow::ControlFlow::Break",
-                                      0
-                                    |) in
-                                  let residual := M.copy (| γ0_0 |) in
-                                  M.alloc (|
-                                    M.never_to_any (|
-                                      M.read (|
-                                        M.return_ (|
-                                          M.call_closure (|
-                                            M.get_trait_method (|
-                                              "core::ops::try_trait::FromResidual",
-                                              Ty.apply
-                                                (Ty.path "core::result::Result")
-                                                []
-                                                [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                                              [
-                                                Ty.apply
-                                                  (Ty.path "core::result::Result")
-                                                  []
-                                                  [
-                                                    Ty.path "core::convert::Infallible";
-                                                    Ty.path "core::fmt::Error"
-                                                  ]
-                                              ],
-                                              "from_residual",
-                                              []
-                                            |),
-                                            [ M.read (| residual |) ]
-                                          |)
-                                        |)
-                                      |)
-                                    |)
-                                  |)));
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let γ0_0 :=
-                                    M.SubPointer.get_struct_tuple_field (|
-                                      γ,
-                                      "core::ops::control_flow::ControlFlow::Continue",
-                                      0
-                                    |) in
-                                  let val := M.copy (| γ0_0 |) in
-                                  val))
-                            ]
-                          |) in
-                        M.alloc (|
-                          M.call_closure (|
-                            M.get_trait_method (|
-                              "core::fmt::Write",
-                              Ty.path "core::fmt::Formatter",
-                              [],
-                              "write_char",
-                              []
-                            |),
-                            [ M.read (| f |); M.read (| c |) ]
-                          |)
-                        |)));
-                    fun γ =>
-                      ltac:(M.monadic
-                        (let γ0_0 :=
-                          M.SubPointer.get_struct_tuple_field (|
-                            γ,
-                            "core::char::CaseMappingIter::One",
-                            0
-                          |) in
-                        let c := M.copy (| γ0_0 |) in
-                        M.alloc (|
-                          M.call_closure (|
-                            M.get_trait_method (|
-                              "core::fmt::Write",
-                              Ty.path "core::fmt::Formatter",
-                              [],
-                              "write_char",
-                              []
-                            |),
-                            [ M.read (| f |); M.read (| c |) ]
-                          |)
-                        |)));
-                    fun γ =>
-                      ltac:(M.monadic
-                        (let _ := M.is_struct_tuple (| γ, "core::char::CaseMappingIter::Zero" |) in
-                        M.alloc (|
-                          Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ]
-                        |)))
-                  ]
-                |)
-              |)))
-          |)))
-      | _, _, _ => M.impossible
-      end.
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::fmt::Display"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
-  End Impl_core_fmt_Display_for_core_char_CaseMappingIter.
-  
-  Module Impl_core_fmt_Display_for_core_char_ToLowercase.
-    Definition Self : Ty.t := Ty.path "core::char::ToLowercase".
-    
-    (*
-        fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-            fmt::Display::fmt(&self.0, f)
-        }
-    *)
-    Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      match ε, τ, α with
-      | [], [], [ self; f ] =>
-        ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let f := M.alloc (| f |) in
           M.call_closure (|
             M.get_trait_method (|
-              "core::fmt::Display",
+              "core::iter::traits::exact_size::ExactSizeIterator",
               Ty.path "core::char::CaseMappingIter",
               [],
-              "fmt",
+              "len",
               []
             |),
             [
               M.SubPointer.get_struct_tuple_field (|
                 M.read (| self |),
-                "core::char::ToLowercase",
+                "core::char::ToUppercase",
                 0
-              |);
-              M.read (| f |)
+              |)
+            ]
+          |)))
+      | _, _, _ => M.impossible
+      end.
+    
+    (*
+                fn is_empty(&self) -> bool {
+                    self.0.is_empty()
+                }
+    *)
+    Definition is_empty (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
+        ltac:(M.monadic
+          (let self := M.alloc (| self |) in
+          M.call_closure (|
+            M.get_trait_method (|
+              "core::iter::traits::exact_size::ExactSizeIterator",
+              Ty.path "core::char::CaseMappingIter",
+              [],
+              "is_empty",
+              []
+            |),
+            [
+              M.SubPointer.get_struct_tuple_field (|
+                M.read (| self |),
+                "core::char::ToUppercase",
+                0
+              |)
             ]
           |)))
       | _, _, _ => M.impossible
@@ -3380,19 +2799,59 @@ Module char.
     
     Axiom Implements :
       M.IsTraitInstance
-        "core::fmt::Display"
+        "core::iter::traits::exact_size::ExactSizeIterator"
         Self
         (* Trait polymorphic types *) []
-        (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
-  End Impl_core_fmt_Display_for_core_char_ToLowercase.
+        (* Instance *)
+        [ ("len", InstanceField.Method len); ("is_empty", InstanceField.Method is_empty) ].
+  End Impl_core_iter_traits_exact_size_ExactSizeIterator_for_core_char_ToUppercase.
+  
+  Module Impl_core_iter_traits_marker_TrustedLen_for_core_char_ToUppercase.
+    Definition Self : Ty.t := Ty.path "core::char::ToUppercase".
+    
+    Axiom Implements :
+      M.IsTraitInstance
+        "core::iter::traits::marker::TrustedLen"
+        Self
+        (* Trait polymorphic types *) []
+        (* Instance *) [].
+  End Impl_core_iter_traits_marker_TrustedLen_for_core_char_ToUppercase.
+  
+  Module Impl_core_iter_adapters_zip_TrustedRandomAccessNoCoerce_for_core_char_ToUppercase.
+    Definition Self : Ty.t := Ty.path "core::char::ToUppercase".
+    
+    (*             const MAY_HAVE_SIDE_EFFECT: bool = false; *)
+    (* Ty.path "bool" *)
+    Definition value_MAY_HAVE_SIDE_EFFECT : Value.t :=
+      M.run ltac:(M.monadic (M.alloc (| Value.Bool false |))).
+    
+    Axiom Implements :
+      M.IsTraitInstance
+        "core::iter::adapters::zip::TrustedRandomAccessNoCoerce"
+        Self
+        (* Trait polymorphic types *) []
+        (* Instance *)
+        [ ("value_MAY_HAVE_SIDE_EFFECT", InstanceField.Constant value_MAY_HAVE_SIDE_EFFECT) ].
+  End Impl_core_iter_adapters_zip_TrustedRandomAccessNoCoerce_for_core_char_ToUppercase.
+  
+  Module Impl_core_iter_adapters_zip_TrustedRandomAccess_for_core_char_ToUppercase.
+    Definition Self : Ty.t := Ty.path "core::char::ToUppercase".
+    
+    Axiom Implements :
+      M.IsTraitInstance
+        "core::iter::adapters::zip::TrustedRandomAccess"
+        Self
+        (* Trait polymorphic types *) []
+        (* Instance *) [].
+  End Impl_core_iter_adapters_zip_TrustedRandomAccess_for_core_char_ToUppercase.
   
   Module Impl_core_fmt_Display_for_core_char_ToUppercase.
     Definition Self : Ty.t := Ty.path "core::char::ToUppercase".
     
     (*
-        fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-            fmt::Display::fmt(&self.0, f)
-        }
+                fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+                    fmt::Display::fmt(&self.0, f)
+                }
     *)
     Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
@@ -3430,6 +2889,926 @@ Module char.
   
   (* StructTuple
     {
+      name := "CaseMappingIter";
+      const_params := [];
+      ty_params := [];
+      fields :=
+        [ Ty.apply (Ty.path "core::array::iter::IntoIter") [ Value.Integer 3 ] [ Ty.path "char" ] ];
+    } *)
+  
+  Module Impl_core_fmt_Debug_for_core_char_CaseMappingIter.
+    Definition Self : Ty.t := Ty.path "core::char::CaseMappingIter".
+    
+    (* Debug *)
+    Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; f ] =>
+        ltac:(M.monadic
+          (let self := M.alloc (| self |) in
+          let f := M.alloc (| f |) in
+          M.call_closure (|
+            M.get_associated_function (|
+              Ty.path "core::fmt::Formatter",
+              "debug_tuple_field1_finish",
+              []
+            |),
+            [
+              M.read (| f |);
+              M.read (| Value.String "CaseMappingIter" |);
+              M.alloc (|
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "core::char::CaseMappingIter",
+                  0
+                |)
+              |)
+            ]
+          |)))
+      | _, _, _ => M.impossible
+      end.
+    
+    Axiom Implements :
+      M.IsTraitInstance
+        "core::fmt::Debug"
+        Self
+        (* Trait polymorphic types *) []
+        (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
+  End Impl_core_fmt_Debug_for_core_char_CaseMappingIter.
+  
+  Module Impl_core_clone_Clone_for_core_char_CaseMappingIter.
+    Definition Self : Ty.t := Ty.path "core::char::CaseMappingIter".
+    
+    (* Clone *)
+    Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
+        ltac:(M.monadic
+          (let self := M.alloc (| self |) in
+          Value.StructTuple
+            "core::char::CaseMappingIter"
+            [
+              M.call_closure (|
+                M.get_trait_method (|
+                  "core::clone::Clone",
+                  Ty.apply
+                    (Ty.path "core::array::iter::IntoIter")
+                    [ Value.Integer 3 ]
+                    [ Ty.path "char" ],
+                  [],
+                  "clone",
+                  []
+                |),
+                [
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.read (| self |),
+                    "core::char::CaseMappingIter",
+                    0
+                  |)
+                ]
+              |)
+            ]))
+      | _, _, _ => M.impossible
+      end.
+    
+    Axiom Implements :
+      M.IsTraitInstance
+        "core::clone::Clone"
+        Self
+        (* Trait polymorphic types *) []
+        (* Instance *) [ ("clone", InstanceField.Method clone) ].
+  End Impl_core_clone_Clone_for_core_char_CaseMappingIter.
+  
+  Module Impl_core_char_CaseMappingIter.
+    Definition Self : Ty.t := Ty.path "core::char::CaseMappingIter".
+    
+    (*
+        fn new(chars: [char; 3]) -> CaseMappingIter {
+            let mut iter = chars.into_iter();
+            if chars[2] == '\0' {
+                iter.next_back();
+                if chars[1] == '\0' {
+                    iter.next_back();
+    
+                    // Deliberately don't check `chars[0]`,
+                    // as '\0' lowercases to itself
+                }
+            }
+            CaseMappingIter(iter)
+        }
+    *)
+    Definition new (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ chars ] =>
+        ltac:(M.monadic
+          (let chars := M.alloc (| chars |) in
+          M.read (|
+            let~ iter :=
+              M.alloc (|
+                M.call_closure (|
+                  M.get_trait_method (|
+                    "core::iter::traits::collect::IntoIterator",
+                    Ty.apply (Ty.path "array") [ Value.Integer 3 ] [ Ty.path "char" ],
+                    [],
+                    "into_iter",
+                    []
+                  |),
+                  [ M.read (| chars |) ]
+                |)
+              |) in
+            let~ _ :=
+              M.match_operator (|
+                M.alloc (| Value.Tuple [] |),
+                [
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ :=
+                        M.use
+                          (M.alloc (|
+                            BinOp.Pure.eq
+                              (M.read (|
+                                M.SubPointer.get_array_field (|
+                                  chars,
+                                  M.alloc (| Value.Integer 2 |)
+                                |)
+                              |))
+                              (Value.UnicodeChar 0)
+                          |)) in
+                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let~ _ :=
+                        M.alloc (|
+                          M.call_closure (|
+                            M.get_trait_method (|
+                              "core::iter::traits::double_ended::DoubleEndedIterator",
+                              Ty.apply
+                                (Ty.path "core::array::iter::IntoIter")
+                                [ Value.Integer 3 ]
+                                [ Ty.path "char" ],
+                              [],
+                              "next_back",
+                              []
+                            |),
+                            [ iter ]
+                          |)
+                        |) in
+                      M.match_operator (|
+                        M.alloc (| Value.Tuple [] |),
+                        [
+                          fun γ =>
+                            ltac:(M.monadic
+                              (let γ :=
+                                M.use
+                                  (M.alloc (|
+                                    BinOp.Pure.eq
+                                      (M.read (|
+                                        M.SubPointer.get_array_field (|
+                                          chars,
+                                          M.alloc (| Value.Integer 1 |)
+                                        |)
+                                      |))
+                                      (Value.UnicodeChar 0)
+                                  |)) in
+                              let _ :=
+                                M.is_constant_or_break_match (|
+                                  M.read (| γ |),
+                                  Value.Bool true
+                                |) in
+                              let~ _ :=
+                                M.alloc (|
+                                  M.call_closure (|
+                                    M.get_trait_method (|
+                                      "core::iter::traits::double_ended::DoubleEndedIterator",
+                                      Ty.apply
+                                        (Ty.path "core::array::iter::IntoIter")
+                                        [ Value.Integer 3 ]
+                                        [ Ty.path "char" ],
+                                      [],
+                                      "next_back",
+                                      []
+                                    |),
+                                    [ iter ]
+                                  |)
+                                |) in
+                              M.alloc (| Value.Tuple [] |)));
+                          fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                        ]
+                      |)));
+                  fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                ]
+              |) in
+            M.alloc (| Value.StructTuple "core::char::CaseMappingIter" [ M.read (| iter |) ] |)
+          |)))
+      | _, _, _ => M.impossible
+      end.
+    
+    Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
+  End Impl_core_char_CaseMappingIter.
+  
+  Module Impl_core_iter_traits_iterator_Iterator_for_core_char_CaseMappingIter.
+    Definition Self : Ty.t := Ty.path "core::char::CaseMappingIter".
+    
+    (*     type Item = char; *)
+    Definition _Item : Ty.t := Ty.path "char".
+    
+    (*
+        fn next(&mut self) -> Option<char> {
+            self.0.next()
+        }
+    *)
+    Definition next (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
+        ltac:(M.monadic
+          (let self := M.alloc (| self |) in
+          M.call_closure (|
+            M.get_trait_method (|
+              "core::iter::traits::iterator::Iterator",
+              Ty.apply
+                (Ty.path "core::array::iter::IntoIter")
+                [ Value.Integer 3 ]
+                [ Ty.path "char" ],
+              [],
+              "next",
+              []
+            |),
+            [
+              M.SubPointer.get_struct_tuple_field (|
+                M.read (| self |),
+                "core::char::CaseMappingIter",
+                0
+              |)
+            ]
+          |)))
+      | _, _, _ => M.impossible
+      end.
+    
+    (*
+        fn size_hint(&self) -> (usize, Option<usize>) {
+            self.0.size_hint()
+        }
+    *)
+    Definition size_hint (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
+        ltac:(M.monadic
+          (let self := M.alloc (| self |) in
+          M.call_closure (|
+            M.get_trait_method (|
+              "core::iter::traits::iterator::Iterator",
+              Ty.apply
+                (Ty.path "core::array::iter::IntoIter")
+                [ Value.Integer 3 ]
+                [ Ty.path "char" ],
+              [],
+              "size_hint",
+              []
+            |),
+            [
+              M.SubPointer.get_struct_tuple_field (|
+                M.read (| self |),
+                "core::char::CaseMappingIter",
+                0
+              |)
+            ]
+          |)))
+      | _, _, _ => M.impossible
+      end.
+    
+    (*
+        fn fold<Acc, Fold>(self, init: Acc, fold: Fold) -> Acc
+        where
+            Fold: FnMut(Acc, Self::Item) -> Acc,
+        {
+            self.0.fold(init, fold)
+        }
+    *)
+    Definition fold (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ Acc; Fold ], [ self; init; fold ] =>
+        ltac:(M.monadic
+          (let self := M.alloc (| self |) in
+          let init := M.alloc (| init |) in
+          let fold := M.alloc (| fold |) in
+          M.call_closure (|
+            M.get_trait_method (|
+              "core::iter::traits::iterator::Iterator",
+              Ty.apply
+                (Ty.path "core::array::iter::IntoIter")
+                [ Value.Integer 3 ]
+                [ Ty.path "char" ],
+              [],
+              "fold",
+              [ Acc; Fold ]
+            |),
+            [
+              M.read (|
+                M.SubPointer.get_struct_tuple_field (| self, "core::char::CaseMappingIter", 0 |)
+              |);
+              M.read (| init |);
+              M.read (| fold |)
+            ]
+          |)))
+      | _, _, _ => M.impossible
+      end.
+    
+    (*
+        fn count(self) -> usize {
+            self.0.count()
+        }
+    *)
+    Definition count (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
+        ltac:(M.monadic
+          (let self := M.alloc (| self |) in
+          M.call_closure (|
+            M.get_trait_method (|
+              "core::iter::traits::iterator::Iterator",
+              Ty.apply
+                (Ty.path "core::array::iter::IntoIter")
+                [ Value.Integer 3 ]
+                [ Ty.path "char" ],
+              [],
+              "count",
+              []
+            |),
+            [
+              M.read (|
+                M.SubPointer.get_struct_tuple_field (| self, "core::char::CaseMappingIter", 0 |)
+              |)
+            ]
+          |)))
+      | _, _, _ => M.impossible
+      end.
+    
+    (*
+        fn last(self) -> Option<Self::Item> {
+            self.0.last()
+        }
+    *)
+    Definition last (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
+        ltac:(M.monadic
+          (let self := M.alloc (| self |) in
+          M.call_closure (|
+            M.get_trait_method (|
+              "core::iter::traits::iterator::Iterator",
+              Ty.apply
+                (Ty.path "core::array::iter::IntoIter")
+                [ Value.Integer 3 ]
+                [ Ty.path "char" ],
+              [],
+              "last",
+              []
+            |),
+            [
+              M.read (|
+                M.SubPointer.get_struct_tuple_field (| self, "core::char::CaseMappingIter", 0 |)
+              |)
+            ]
+          |)))
+      | _, _, _ => M.impossible
+      end.
+    
+    (*
+        fn advance_by(&mut self, n: usize) -> Result<(), NonZero<usize>> {
+            self.0.advance_by(n)
+        }
+    *)
+    Definition advance_by (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; n ] =>
+        ltac:(M.monadic
+          (let self := M.alloc (| self |) in
+          let n := M.alloc (| n |) in
+          M.call_closure (|
+            M.get_trait_method (|
+              "core::iter::traits::iterator::Iterator",
+              Ty.apply
+                (Ty.path "core::array::iter::IntoIter")
+                [ Value.Integer 3 ]
+                [ Ty.path "char" ],
+              [],
+              "advance_by",
+              []
+            |),
+            [
+              M.SubPointer.get_struct_tuple_field (|
+                M.read (| self |),
+                "core::char::CaseMappingIter",
+                0
+              |);
+              M.read (| n |)
+            ]
+          |)))
+      | _, _, _ => M.impossible
+      end.
+    
+    (*
+        unsafe fn __iterator_get_unchecked(&mut self, idx: usize) -> Self::Item {
+            // SAFETY: just forwarding requirements to caller
+            unsafe { self.0.__iterator_get_unchecked(idx) }
+        }
+    *)
+    Definition __iterator_get_unchecked (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; idx ] =>
+        ltac:(M.monadic
+          (let self := M.alloc (| self |) in
+          let idx := M.alloc (| idx |) in
+          M.call_closure (|
+            M.get_trait_method (|
+              "core::iter::traits::iterator::Iterator",
+              Ty.apply
+                (Ty.path "core::array::iter::IntoIter")
+                [ Value.Integer 3 ]
+                [ Ty.path "char" ],
+              [],
+              "__iterator_get_unchecked",
+              []
+            |),
+            [
+              M.SubPointer.get_struct_tuple_field (|
+                M.read (| self |),
+                "core::char::CaseMappingIter",
+                0
+              |);
+              M.read (| idx |)
+            ]
+          |)))
+      | _, _, _ => M.impossible
+      end.
+    
+    Axiom Implements :
+      M.IsTraitInstance
+        "core::iter::traits::iterator::Iterator"
+        Self
+        (* Trait polymorphic types *) []
+        (* Instance *)
+        [
+          ("Item", InstanceField.Ty _Item);
+          ("next", InstanceField.Method next);
+          ("size_hint", InstanceField.Method size_hint);
+          ("fold", InstanceField.Method fold);
+          ("count", InstanceField.Method count);
+          ("last", InstanceField.Method last);
+          ("advance_by", InstanceField.Method advance_by);
+          ("__iterator_get_unchecked", InstanceField.Method __iterator_get_unchecked)
+        ].
+  End Impl_core_iter_traits_iterator_Iterator_for_core_char_CaseMappingIter.
+  
+  Module Impl_core_iter_traits_double_ended_DoubleEndedIterator_for_core_char_CaseMappingIter.
+    Definition Self : Ty.t := Ty.path "core::char::CaseMappingIter".
+    
+    (*
+        fn next_back(&mut self) -> Option<char> {
+            self.0.next_back()
+        }
+    *)
+    Definition next_back (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
+        ltac:(M.monadic
+          (let self := M.alloc (| self |) in
+          M.call_closure (|
+            M.get_trait_method (|
+              "core::iter::traits::double_ended::DoubleEndedIterator",
+              Ty.apply
+                (Ty.path "core::array::iter::IntoIter")
+                [ Value.Integer 3 ]
+                [ Ty.path "char" ],
+              [],
+              "next_back",
+              []
+            |),
+            [
+              M.SubPointer.get_struct_tuple_field (|
+                M.read (| self |),
+                "core::char::CaseMappingIter",
+                0
+              |)
+            ]
+          |)))
+      | _, _, _ => M.impossible
+      end.
+    
+    (*
+        fn rfold<Acc, Fold>(self, init: Acc, rfold: Fold) -> Acc
+        where
+            Fold: FnMut(Acc, Self::Item) -> Acc,
+        {
+            self.0.rfold(init, rfold)
+        }
+    *)
+    Definition rfold (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ Acc; Fold ], [ self; init; rfold ] =>
+        ltac:(M.monadic
+          (let self := M.alloc (| self |) in
+          let init := M.alloc (| init |) in
+          let rfold := M.alloc (| rfold |) in
+          M.call_closure (|
+            M.get_trait_method (|
+              "core::iter::traits::double_ended::DoubleEndedIterator",
+              Ty.apply
+                (Ty.path "core::array::iter::IntoIter")
+                [ Value.Integer 3 ]
+                [ Ty.path "char" ],
+              [],
+              "rfold",
+              [ Acc; Fold ]
+            |),
+            [
+              M.read (|
+                M.SubPointer.get_struct_tuple_field (| self, "core::char::CaseMappingIter", 0 |)
+              |);
+              M.read (| init |);
+              M.read (| rfold |)
+            ]
+          |)))
+      | _, _, _ => M.impossible
+      end.
+    
+    (*
+        fn advance_back_by(&mut self, n: usize) -> Result<(), NonZero<usize>> {
+            self.0.advance_back_by(n)
+        }
+    *)
+    Definition advance_back_by (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; n ] =>
+        ltac:(M.monadic
+          (let self := M.alloc (| self |) in
+          let n := M.alloc (| n |) in
+          M.call_closure (|
+            M.get_trait_method (|
+              "core::iter::traits::double_ended::DoubleEndedIterator",
+              Ty.apply
+                (Ty.path "core::array::iter::IntoIter")
+                [ Value.Integer 3 ]
+                [ Ty.path "char" ],
+              [],
+              "advance_back_by",
+              []
+            |),
+            [
+              M.SubPointer.get_struct_tuple_field (|
+                M.read (| self |),
+                "core::char::CaseMappingIter",
+                0
+              |);
+              M.read (| n |)
+            ]
+          |)))
+      | _, _, _ => M.impossible
+      end.
+    
+    Axiom Implements :
+      M.IsTraitInstance
+        "core::iter::traits::double_ended::DoubleEndedIterator"
+        Self
+        (* Trait polymorphic types *) []
+        (* Instance *)
+        [
+          ("next_back", InstanceField.Method next_back);
+          ("rfold", InstanceField.Method rfold);
+          ("advance_back_by", InstanceField.Method advance_back_by)
+        ].
+  End Impl_core_iter_traits_double_ended_DoubleEndedIterator_for_core_char_CaseMappingIter.
+  
+  Module Impl_core_iter_traits_exact_size_ExactSizeIterator_for_core_char_CaseMappingIter.
+    Definition Self : Ty.t := Ty.path "core::char::CaseMappingIter".
+    
+    (*
+        fn len(&self) -> usize {
+            self.0.len()
+        }
+    *)
+    Definition len (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
+        ltac:(M.monadic
+          (let self := M.alloc (| self |) in
+          M.call_closure (|
+            M.get_trait_method (|
+              "core::iter::traits::exact_size::ExactSizeIterator",
+              Ty.apply
+                (Ty.path "core::array::iter::IntoIter")
+                [ Value.Integer 3 ]
+                [ Ty.path "char" ],
+              [],
+              "len",
+              []
+            |),
+            [
+              M.SubPointer.get_struct_tuple_field (|
+                M.read (| self |),
+                "core::char::CaseMappingIter",
+                0
+              |)
+            ]
+          |)))
+      | _, _, _ => M.impossible
+      end.
+    
+    (*
+        fn is_empty(&self) -> bool {
+            self.0.is_empty()
+        }
+    *)
+    Definition is_empty (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
+        ltac:(M.monadic
+          (let self := M.alloc (| self |) in
+          M.call_closure (|
+            M.get_trait_method (|
+              "core::iter::traits::exact_size::ExactSizeIterator",
+              Ty.apply
+                (Ty.path "core::array::iter::IntoIter")
+                [ Value.Integer 3 ]
+                [ Ty.path "char" ],
+              [],
+              "is_empty",
+              []
+            |),
+            [
+              M.SubPointer.get_struct_tuple_field (|
+                M.read (| self |),
+                "core::char::CaseMappingIter",
+                0
+              |)
+            ]
+          |)))
+      | _, _, _ => M.impossible
+      end.
+    
+    Axiom Implements :
+      M.IsTraitInstance
+        "core::iter::traits::exact_size::ExactSizeIterator"
+        Self
+        (* Trait polymorphic types *) []
+        (* Instance *)
+        [ ("len", InstanceField.Method len); ("is_empty", InstanceField.Method is_empty) ].
+  End Impl_core_iter_traits_exact_size_ExactSizeIterator_for_core_char_CaseMappingIter.
+  
+  Module Impl_core_iter_traits_marker_FusedIterator_for_core_char_CaseMappingIter.
+    Definition Self : Ty.t := Ty.path "core::char::CaseMappingIter".
+    
+    Axiom Implements :
+      M.IsTraitInstance
+        "core::iter::traits::marker::FusedIterator"
+        Self
+        (* Trait polymorphic types *) []
+        (* Instance *) [].
+  End Impl_core_iter_traits_marker_FusedIterator_for_core_char_CaseMappingIter.
+  
+  Module Impl_core_iter_traits_marker_TrustedLen_for_core_char_CaseMappingIter.
+    Definition Self : Ty.t := Ty.path "core::char::CaseMappingIter".
+    
+    Axiom Implements :
+      M.IsTraitInstance
+        "core::iter::traits::marker::TrustedLen"
+        Self
+        (* Trait polymorphic types *) []
+        (* Instance *) [].
+  End Impl_core_iter_traits_marker_TrustedLen_for_core_char_CaseMappingIter.
+  
+  Module Impl_core_iter_adapters_zip_TrustedRandomAccessNoCoerce_for_core_char_CaseMappingIter.
+    Definition Self : Ty.t := Ty.path "core::char::CaseMappingIter".
+    
+    (*     const MAY_HAVE_SIDE_EFFECT: bool = false; *)
+    (* Ty.path "bool" *)
+    Definition value_MAY_HAVE_SIDE_EFFECT : Value.t :=
+      M.run ltac:(M.monadic (M.alloc (| Value.Bool false |))).
+    
+    Axiom Implements :
+      M.IsTraitInstance
+        "core::iter::adapters::zip::TrustedRandomAccessNoCoerce"
+        Self
+        (* Trait polymorphic types *) []
+        (* Instance *)
+        [ ("value_MAY_HAVE_SIDE_EFFECT", InstanceField.Constant value_MAY_HAVE_SIDE_EFFECT) ].
+  End Impl_core_iter_adapters_zip_TrustedRandomAccessNoCoerce_for_core_char_CaseMappingIter.
+  
+  Module Impl_core_iter_adapters_zip_TrustedRandomAccess_for_core_char_CaseMappingIter.
+    Definition Self : Ty.t := Ty.path "core::char::CaseMappingIter".
+    
+    Axiom Implements :
+      M.IsTraitInstance
+        "core::iter::adapters::zip::TrustedRandomAccess"
+        Self
+        (* Trait polymorphic types *) []
+        (* Instance *) [].
+  End Impl_core_iter_adapters_zip_TrustedRandomAccess_for_core_char_CaseMappingIter.
+  
+  Module Impl_core_fmt_Display_for_core_char_CaseMappingIter.
+    Definition Self : Ty.t := Ty.path "core::char::CaseMappingIter".
+    
+    (*
+        fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+            for c in self.0.clone() {
+                f.write_char(c)?;
+            }
+            Ok(())
+        }
+    *)
+    Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; f ] =>
+        ltac:(M.monadic
+          (let self := M.alloc (| self |) in
+          let f := M.alloc (| f |) in
+          M.catch_return (|
+            ltac:(M.monadic
+              (M.read (|
+                let~ _ :=
+                  M.use
+                    (M.match_operator (|
+                      M.alloc (|
+                        M.call_closure (|
+                          M.get_trait_method (|
+                            "core::iter::traits::collect::IntoIterator",
+                            Ty.apply
+                              (Ty.path "core::array::iter::IntoIter")
+                              [ Value.Integer 3 ]
+                              [ Ty.path "char" ],
+                            [],
+                            "into_iter",
+                            []
+                          |),
+                          [
+                            M.call_closure (|
+                              M.get_trait_method (|
+                                "core::clone::Clone",
+                                Ty.apply
+                                  (Ty.path "core::array::iter::IntoIter")
+                                  [ Value.Integer 3 ]
+                                  [ Ty.path "char" ],
+                                [],
+                                "clone",
+                                []
+                              |),
+                              [
+                                M.SubPointer.get_struct_tuple_field (|
+                                  M.read (| self |),
+                                  "core::char::CaseMappingIter",
+                                  0
+                                |)
+                              ]
+                            |)
+                          ]
+                        |)
+                      |),
+                      [
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let iter := M.copy (| γ |) in
+                            M.loop (|
+                              ltac:(M.monadic
+                                (let~ _ :=
+                                  M.match_operator (|
+                                    M.alloc (|
+                                      M.call_closure (|
+                                        M.get_trait_method (|
+                                          "core::iter::traits::iterator::Iterator",
+                                          Ty.apply
+                                            (Ty.path "core::array::iter::IntoIter")
+                                            [ Value.Integer 3 ]
+                                            [ Ty.path "char" ],
+                                          [],
+                                          "next",
+                                          []
+                                        |),
+                                        [ iter ]
+                                      |)
+                                    |),
+                                    [
+                                      fun γ =>
+                                        ltac:(M.monadic
+                                          (let _ :=
+                                            M.is_struct_tuple (|
+                                              γ,
+                                              "core::option::Option::None"
+                                            |) in
+                                          M.alloc (|
+                                            M.never_to_any (| M.read (| M.break (||) |) |)
+                                          |)));
+                                      fun γ =>
+                                        ltac:(M.monadic
+                                          (let γ0_0 :=
+                                            M.SubPointer.get_struct_tuple_field (|
+                                              γ,
+                                              "core::option::Option::Some",
+                                              0
+                                            |) in
+                                          let c := M.copy (| γ0_0 |) in
+                                          let~ _ :=
+                                            M.match_operator (|
+                                              M.alloc (|
+                                                M.call_closure (|
+                                                  M.get_trait_method (|
+                                                    "core::ops::try_trait::Try",
+                                                    Ty.apply
+                                                      (Ty.path "core::result::Result")
+                                                      []
+                                                      [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                                                    [],
+                                                    "branch",
+                                                    []
+                                                  |),
+                                                  [
+                                                    M.call_closure (|
+                                                      M.get_trait_method (|
+                                                        "core::fmt::Write",
+                                                        Ty.path "core::fmt::Formatter",
+                                                        [],
+                                                        "write_char",
+                                                        []
+                                                      |),
+                                                      [ M.read (| f |); M.read (| c |) ]
+                                                    |)
+                                                  ]
+                                                |)
+                                              |),
+                                              [
+                                                fun γ =>
+                                                  ltac:(M.monadic
+                                                    (let γ0_0 :=
+                                                      M.SubPointer.get_struct_tuple_field (|
+                                                        γ,
+                                                        "core::ops::control_flow::ControlFlow::Break",
+                                                        0
+                                                      |) in
+                                                    let residual := M.copy (| γ0_0 |) in
+                                                    M.alloc (|
+                                                      M.never_to_any (|
+                                                        M.read (|
+                                                          M.return_ (|
+                                                            M.call_closure (|
+                                                              M.get_trait_method (|
+                                                                "core::ops::try_trait::FromResidual",
+                                                                Ty.apply
+                                                                  (Ty.path "core::result::Result")
+                                                                  []
+                                                                  [
+                                                                    Ty.tuple [];
+                                                                    Ty.path "core::fmt::Error"
+                                                                  ],
+                                                                [
+                                                                  Ty.apply
+                                                                    (Ty.path "core::result::Result")
+                                                                    []
+                                                                    [
+                                                                      Ty.path
+                                                                        "core::convert::Infallible";
+                                                                      Ty.path "core::fmt::Error"
+                                                                    ]
+                                                                ],
+                                                                "from_residual",
+                                                                []
+                                                              |),
+                                                              [ M.read (| residual |) ]
+                                                            |)
+                                                          |)
+                                                        |)
+                                                      |)
+                                                    |)));
+                                                fun γ =>
+                                                  ltac:(M.monadic
+                                                    (let γ0_0 :=
+                                                      M.SubPointer.get_struct_tuple_field (|
+                                                        γ,
+                                                        "core::ops::control_flow::ControlFlow::Continue",
+                                                        0
+                                                      |) in
+                                                    let val := M.copy (| γ0_0 |) in
+                                                    val))
+                                              ]
+                                            |) in
+                                          M.alloc (| Value.Tuple [] |)))
+                                    ]
+                                  |) in
+                                M.alloc (| Value.Tuple [] |)))
+                            |)))
+                      ]
+                    |)) in
+                M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
+              |)))
+          |)))
+      | _, _, _ => M.impossible
+      end.
+    
+    Axiom Implements :
+      M.IsTraitInstance
+        "core::fmt::Display"
+        Self
+        (* Trait polymorphic types *) []
+        (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
+  End Impl_core_fmt_Display_for_core_char_CaseMappingIter.
+  
+  (* StructTuple
+    {
       name := "TryFromCharError";
       const_params := [];
       ty_params := [];
@@ -3455,15 +3834,13 @@ Module char.
             [
               M.read (| f |);
               M.read (| Value.String "TryFromCharError" |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.alloc (|
-                  M.SubPointer.get_struct_tuple_field (|
-                    M.read (| self |),
-                    "core::char::TryFromCharError",
-                    0
-                  |)
-                |))
+              M.alloc (|
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "core::char::TryFromCharError",
+                  0
+                |)
+              |)
             ]
           |)))
       | _, _, _ => M.impossible
@@ -3560,17 +3937,6 @@ Module char.
         (* Trait polymorphic types *) []
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_core_char_TryFromCharError.
-  
-  Module Impl_core_marker_StructuralEq_for_core_char_TryFromCharError.
-    Definition Self : Ty.t := Ty.path "core::char::TryFromCharError".
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::marker::StructuralEq"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [].
-  End Impl_core_marker_StructuralEq_for_core_char_TryFromCharError.
   
   Module Impl_core_cmp_Eq_for_core_char_TryFromCharError.
     Definition Self : Ty.t := Ty.path "core::char::TryFromCharError".

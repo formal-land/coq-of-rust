@@ -106,23 +106,19 @@ Module task.
                 M.read (| f |);
                 M.read (| Value.String "RawWaker" |);
                 M.read (| Value.String "data" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.SubPointer.get_struct_record_field (|
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::task::wake::RawWaker",
+                  "data"
+                |);
+                M.read (| Value.String "vtable" |);
+                M.alloc (|
+                  M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
                     "core::task::wake::RawWaker",
-                    "data"
-                  |));
-                M.read (| Value.String "vtable" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.alloc (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::task::wake::RawWaker",
-                      "vtable"
-                    |)
-                  |))
+                    "vtable"
+                  |)
+                |)
               ]
             |)))
         | _, _, _ => M.impossible
@@ -146,7 +142,7 @@ Module task.
       *)
       Definition new (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ data; vtable ] =>
+        | [], [], [ data; vtable ] =>
           ltac:(M.monadic
             (let data := M.alloc (| data |) in
             let vtable := M.alloc (| vtable |) in
@@ -201,6 +197,37 @@ Module task.
         end.
       
       Axiom AssociatedFunction_vtable : M.IsAssociatedFunction Self "vtable" vtable.
+      
+      (*
+          const NOOP: RawWaker = {
+              const VTABLE: RawWakerVTable = RawWakerVTable::new(
+                  // Cloning just returns a new no-op raw waker
+                  |_| RawWaker::NOOP,
+                  // `wake` does nothing
+                  |_| {},
+                  // `wake_by_ref` does nothing
+                  |_| {},
+                  // Dropping does nothing as we don't allocate anything
+                  |_| {},
+              );
+              RawWaker::new(ptr::null(), &VTABLE)
+          };
+      *)
+      (* Ty.path "core::task::wake::RawWaker" *)
+      Definition value_NOOP : Value.t :=
+        M.run
+          ltac:(M.monadic
+            (M.alloc (|
+              M.call_closure (|
+                M.get_associated_function (| Ty.path "core::task::wake::RawWaker", "new", [] |),
+                [
+                  M.call_closure (| M.get_function (| "core::ptr::null", [ Ty.tuple [] ] |), [] |);
+                  M.get_constant (| "core::task::wake::NOOP::VTABLE" |)
+                ]
+              |)
+            |))).
+      
+      Axiom AssociatedConstant_value_NOOP : M.IsAssociatedConstant Self "value_NOOP" value_NOOP.
     End Impl_core_task_wake_RawWaker.
     
     (* StructRecord
@@ -400,39 +427,31 @@ Module task.
                 M.read (| f |);
                 M.read (| Value.String "RawWakerVTable" |);
                 M.read (| Value.String "clone" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::task::wake::RawWakerVTable",
-                    "clone"
-                  |));
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::task::wake::RawWakerVTable",
+                  "clone"
+                |);
                 M.read (| Value.String "wake" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::task::wake::RawWakerVTable",
-                    "wake"
-                  |));
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::task::wake::RawWakerVTable",
+                  "wake"
+                |);
                 M.read (| Value.String "wake_by_ref" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.SubPointer.get_struct_record_field (|
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::task::wake::RawWakerVTable",
+                  "wake_by_ref"
+                |);
+                M.read (| Value.String "drop" |);
+                M.alloc (|
+                  M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
                     "core::task::wake::RawWakerVTable",
-                    "wake_by_ref"
-                  |));
-                M.read (| Value.String "drop" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.alloc (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::task::wake::RawWakerVTable",
-                      "drop"
-                    |)
-                  |))
+                    "drop"
+                  |)
+                |)
               ]
             |)))
         | _, _, _ => M.impossible
@@ -461,7 +480,7 @@ Module task.
       *)
       Definition new (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ clone; wake; wake_by_ref; drop ] =>
+        | [], [], [ clone; wake; wake_by_ref; drop ] =>
           ltac:(M.monadic
             (let clone := M.alloc (| clone |) in
             let wake := M.alloc (| wake |) in
@@ -481,6 +500,97 @@ Module task.
       Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
     End Impl_core_task_wake_RawWakerVTable.
     
+    (*
+    Enum ExtData
+    {
+      const_params := [];
+      ty_params := [];
+      variants :=
+        [
+          {
+            name := "Some";
+            item :=
+              StructTuple
+                [ Ty.apply (Ty.path "&mut") [] [ Ty.dyn [ ("core::any::Any::Trait", []) ] ] ];
+            discriminant := None;
+          };
+          {
+            name := "None";
+            item := StructTuple [ Ty.tuple [] ];
+            discriminant := None;
+          }
+        ];
+    }
+    *)
+    
+    Module Impl_core_fmt_Debug_for_core_task_wake_ExtData.
+      Definition Self : Ty.t := Ty.path "core::task::wake::ExtData".
+      
+      (* Debug *)
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            let f := M.alloc (| f |) in
+            M.read (|
+              M.match_operator (|
+                self,
+                [
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ := M.read (| γ |) in
+                      let γ1_0 :=
+                        M.SubPointer.get_struct_tuple_field (|
+                          γ,
+                          "core::task::wake::ExtData::Some",
+                          0
+                        |) in
+                      let __self_0 := M.alloc (| γ1_0 |) in
+                      M.alloc (|
+                        M.call_closure (|
+                          M.get_associated_function (|
+                            Ty.path "core::fmt::Formatter",
+                            "debug_tuple_field1_finish",
+                            []
+                          |),
+                          [ M.read (| f |); M.read (| Value.String "Some" |); __self_0 ]
+                        |)
+                      |)));
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ := M.read (| γ |) in
+                      let γ1_0 :=
+                        M.SubPointer.get_struct_tuple_field (|
+                          γ,
+                          "core::task::wake::ExtData::None",
+                          0
+                        |) in
+                      let __self_0 := M.alloc (| γ1_0 |) in
+                      M.alloc (|
+                        M.call_closure (|
+                          M.get_associated_function (|
+                            Ty.path "core::fmt::Formatter",
+                            "debug_tuple_field1_finish",
+                            []
+                          |),
+                          [ M.read (| f |); M.read (| Value.String "None" |); __self_0 ]
+                        |)
+                      |)))
+                ]
+              |)
+            |)))
+        | _, _, _ => M.impossible
+        end.
+      
+      Axiom Implements :
+        M.IsTraitInstance
+          "core::fmt::Debug"
+          Self
+          (* Trait polymorphic types *) []
+          (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
+    End Impl_core_fmt_Debug_for_core_task_wake_ExtData.
+    
     (* StructRecord
       {
         name := "Context";
@@ -489,6 +599,12 @@ Module task.
         fields :=
           [
             ("waker", Ty.apply (Ty.path "&") [] [ Ty.path "core::task::wake::Waker" ]);
+            ("local_waker", Ty.apply (Ty.path "&") [] [ Ty.path "core::task::wake::LocalWaker" ]);
+            ("ext",
+              Ty.apply
+                (Ty.path "core::panic::unwind_safe::AssertUnwindSafe")
+                []
+                [ Ty.path "core::task::wake::ExtData" ]);
             ("_marker",
               Ty.apply
                 (Ty.path "core::marker::PhantomData")
@@ -511,21 +627,31 @@ Module task.
       
       (*
           pub const fn from_waker(waker: &'a Waker) -> Self {
-              Context { waker, _marker: PhantomData, _marker2: PhantomData }
+              ContextBuilder::from_waker(waker).build()
           }
       *)
       Definition from_waker (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ waker ] =>
+        | [], [], [ waker ] =>
           ltac:(M.monadic
             (let waker := M.alloc (| waker |) in
-            Value.StructRecord
-              "core::task::wake::Context"
+            M.call_closure (|
+              M.get_associated_function (|
+                Ty.path "core::task::wake::ContextBuilder",
+                "build",
+                []
+              |),
               [
-                ("waker", M.read (| waker |));
-                ("_marker", Value.StructTuple "core::marker::PhantomData" []);
-                ("_marker2", Value.StructTuple "core::marker::PhantomData" [])
-              ]))
+                M.call_closure (|
+                  M.get_associated_function (|
+                    Ty.path "core::task::wake::ContextBuilder",
+                    "from_waker",
+                    []
+                  |),
+                  [ M.read (| waker |) ]
+                |)
+              ]
+            |)))
         | _, _, _ => M.impossible
         end.
       
@@ -538,7 +664,7 @@ Module task.
       *)
       Definition waker (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -552,6 +678,87 @@ Module task.
         end.
       
       Axiom AssociatedFunction_waker : M.IsAssociatedFunction Self "waker" waker.
+      
+      (*
+          pub const fn local_waker(&self) -> &'a LocalWaker {
+              &self.local_waker
+          }
+      *)
+      Definition local_waker (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            M.read (|
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "core::task::wake::Context",
+                "local_waker"
+              |)
+            |)))
+        | _, _, _ => M.impossible
+        end.
+      
+      Axiom AssociatedFunction_local_waker : M.IsAssociatedFunction Self "local_waker" local_waker.
+      
+      (*
+          pub const fn ext(&mut self) -> &mut dyn Any {
+              // FIXME: this field makes Context extra-weird about unwind safety
+              // can we justify AssertUnwindSafe if we stabilize this? do we care?
+              match &mut self.ext.0 {
+                  ExtData::Some(data) => *data,
+                  ExtData::None(unit) => unit,
+              }
+          }
+      *)
+      Definition ext (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            M.read (|
+              M.match_operator (|
+                M.alloc (|
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::task::wake::Context",
+                      "ext"
+                    |),
+                    "core::panic::unwind_safe::AssertUnwindSafe",
+                    0
+                  |)
+                |),
+                [
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ := M.read (| γ |) in
+                      let γ1_0 :=
+                        M.SubPointer.get_struct_tuple_field (|
+                          γ,
+                          "core::task::wake::ExtData::Some",
+                          0
+                        |) in
+                      let data := M.alloc (| γ1_0 |) in
+                      M.alloc (| M.read (| M.read (| data |) |) |)));
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ := M.read (| γ |) in
+                      let γ1_0 :=
+                        M.SubPointer.get_struct_tuple_field (|
+                          γ,
+                          "core::task::wake::ExtData::None",
+                          0
+                        |) in
+                      let unit_ := M.alloc (| γ1_0 |) in
+                      M.alloc (| M.read (| unit_ |) |)))
+                ]
+              |)
+            |)))
+        | _, _, _ => M.impossible
+        end.
+      
+      Axiom AssociatedFunction_ext : M.IsAssociatedFunction Self "ext" ext.
     End Impl_core_task_wake_Context.
     
     Module Impl_core_fmt_Debug_for_core_task_wake_Context.
@@ -593,13 +800,11 @@ Module task.
                       |)
                     |);
                     M.read (| Value.String "waker" |);
-                    (* Unsize *)
-                    M.pointer_coercion
-                      (M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::task::wake::Context",
-                        "waker"
-                      |))
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::task::wake::Context",
+                      "waker"
+                    |)
                   ]
                 |)
               ]
@@ -614,6 +819,377 @@ Module task.
           (* Trait polymorphic types *) []
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Debug_for_core_task_wake_Context.
+    
+    (* StructRecord
+      {
+        name := "ContextBuilder";
+        const_params := [];
+        ty_params := [];
+        fields :=
+          [
+            ("waker", Ty.apply (Ty.path "&") [] [ Ty.path "core::task::wake::Waker" ]);
+            ("local_waker", Ty.apply (Ty.path "&") [] [ Ty.path "core::task::wake::LocalWaker" ]);
+            ("ext", Ty.path "core::task::wake::ExtData");
+            ("_marker",
+              Ty.apply
+                (Ty.path "core::marker::PhantomData")
+                []
+                [
+                  Ty.function
+                    [ Ty.apply (Ty.path "&") [] [ Ty.tuple [] ] ]
+                    (Ty.apply (Ty.path "&") [] [ Ty.tuple [] ])
+                ]);
+            ("_marker2",
+              Ty.apply
+                (Ty.path "core::marker::PhantomData")
+                []
+                [ Ty.apply (Ty.path "*mut") [] [ Ty.tuple [] ] ])
+          ];
+      } *)
+    
+    Module Impl_core_fmt_Debug_for_core_task_wake_ContextBuilder.
+      Definition Self : Ty.t := Ty.path "core::task::wake::ContextBuilder".
+      
+      (* Debug *)
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            let f := M.alloc (| f |) in
+            M.call_closure (|
+              M.get_associated_function (|
+                Ty.path "core::fmt::Formatter",
+                "debug_struct_field5_finish",
+                []
+              |),
+              [
+                M.read (| f |);
+                M.read (| Value.String "ContextBuilder" |);
+                M.read (| Value.String "waker" |);
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::task::wake::ContextBuilder",
+                  "waker"
+                |);
+                M.read (| Value.String "local_waker" |);
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::task::wake::ContextBuilder",
+                  "local_waker"
+                |);
+                M.read (| Value.String "ext" |);
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::task::wake::ContextBuilder",
+                  "ext"
+                |);
+                M.read (| Value.String "_marker" |);
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::task::wake::ContextBuilder",
+                  "_marker"
+                |);
+                M.read (| Value.String "_marker2" |);
+                M.alloc (|
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::task::wake::ContextBuilder",
+                    "_marker2"
+                  |)
+                |)
+              ]
+            |)))
+        | _, _, _ => M.impossible
+        end.
+      
+      Axiom Implements :
+        M.IsTraitInstance
+          "core::fmt::Debug"
+          Self
+          (* Trait polymorphic types *) []
+          (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
+    End Impl_core_fmt_Debug_for_core_task_wake_ContextBuilder.
+    
+    Module Impl_core_task_wake_ContextBuilder.
+      Definition Self : Ty.t := Ty.path "core::task::wake::ContextBuilder".
+      
+      (*
+          pub const fn from_waker(waker: &'a Waker) -> Self {
+              // SAFETY: LocalWaker is just Waker without thread safety
+              let local_waker = unsafe { transmute(waker) };
+              Self {
+                  waker: waker,
+                  local_waker,
+                  ext: ExtData::None(()),
+                  _marker: PhantomData,
+                  _marker2: PhantomData,
+              }
+          }
+      *)
+      Definition from_waker (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ waker ] =>
+          ltac:(M.monadic
+            (let waker := M.alloc (| waker |) in
+            M.read (|
+              let~ local_waker :=
+                M.alloc (|
+                  M.call_closure (|
+                    M.get_function (|
+                      "core::intrinsics::transmute",
+                      [
+                        Ty.apply (Ty.path "&") [] [ Ty.path "core::task::wake::Waker" ];
+                        Ty.apply (Ty.path "&") [] [ Ty.path "core::task::wake::LocalWaker" ]
+                      ]
+                    |),
+                    [ M.read (| waker |) ]
+                  |)
+                |) in
+              M.alloc (|
+                Value.StructRecord
+                  "core::task::wake::ContextBuilder"
+                  [
+                    ("waker", M.read (| waker |));
+                    ("local_waker", M.read (| local_waker |));
+                    ("ext", Value.StructTuple "core::task::wake::ExtData::None" [ Value.Tuple [] ]);
+                    ("_marker", Value.StructTuple "core::marker::PhantomData" []);
+                    ("_marker2", Value.StructTuple "core::marker::PhantomData" [])
+                  ]
+              |)
+            |)))
+        | _, _, _ => M.impossible
+        end.
+      
+      Axiom AssociatedFunction_from_waker : M.IsAssociatedFunction Self "from_waker" from_waker.
+      
+      (*
+          pub const fn from(cx: &'a mut Context<'_>) -> Self {
+              let ext = match &mut cx.ext.0 {
+                  ExtData::Some(ext) => ExtData::Some( *ext),
+                  ExtData::None(()) => ExtData::None(()),
+              };
+              Self {
+                  waker: cx.waker,
+                  local_waker: cx.local_waker,
+                  ext,
+                  _marker: PhantomData,
+                  _marker2: PhantomData,
+              }
+          }
+      *)
+      Definition from (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ cx ] =>
+          ltac:(M.monadic
+            (let cx := M.alloc (| cx |) in
+            M.read (|
+              let~ ext :=
+                M.copy (|
+                  M.match_operator (|
+                    M.alloc (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| cx |),
+                          "core::task::wake::Context",
+                          "ext"
+                        |),
+                        "core::panic::unwind_safe::AssertUnwindSafe",
+                        0
+                      |)
+                    |),
+                    [
+                      fun γ =>
+                        ltac:(M.monadic
+                          (let γ := M.read (| γ |) in
+                          let γ1_0 :=
+                            M.SubPointer.get_struct_tuple_field (|
+                              γ,
+                              "core::task::wake::ExtData::Some",
+                              0
+                            |) in
+                          let ext := M.alloc (| γ1_0 |) in
+                          M.alloc (|
+                            Value.StructTuple
+                              "core::task::wake::ExtData::Some"
+                              [ M.read (| M.read (| ext |) |) ]
+                          |)));
+                      fun γ =>
+                        ltac:(M.monadic
+                          (let γ := M.read (| γ |) in
+                          let γ1_0 :=
+                            M.SubPointer.get_struct_tuple_field (|
+                              γ,
+                              "core::task::wake::ExtData::None",
+                              0
+                            |) in
+                          M.alloc (|
+                            Value.StructTuple "core::task::wake::ExtData::None" [ Value.Tuple [] ]
+                          |)))
+                    ]
+                  |)
+                |) in
+              M.alloc (|
+                Value.StructRecord
+                  "core::task::wake::ContextBuilder"
+                  [
+                    ("waker",
+                      M.read (|
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| cx |),
+                          "core::task::wake::Context",
+                          "waker"
+                        |)
+                      |));
+                    ("local_waker",
+                      M.read (|
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| cx |),
+                          "core::task::wake::Context",
+                          "local_waker"
+                        |)
+                      |));
+                    ("ext", M.read (| ext |));
+                    ("_marker", Value.StructTuple "core::marker::PhantomData" []);
+                    ("_marker2", Value.StructTuple "core::marker::PhantomData" [])
+                  ]
+              |)
+            |)))
+        | _, _, _ => M.impossible
+        end.
+      
+      Axiom AssociatedFunction_from : M.IsAssociatedFunction Self "from" from.
+      
+      (*
+          pub const fn waker(self, waker: &'a Waker) -> Self {
+              Self { waker, ..self }
+          }
+      *)
+      Definition waker (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; waker ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            let waker := M.alloc (| waker |) in
+            M.struct_record_update (M.read (| self |)) [ ("waker", M.read (| waker |)) ]))
+        | _, _, _ => M.impossible
+        end.
+      
+      Axiom AssociatedFunction_waker : M.IsAssociatedFunction Self "waker" waker.
+      
+      (*
+          pub const fn local_waker(self, local_waker: &'a LocalWaker) -> Self {
+              Self { local_waker, ..self }
+          }
+      *)
+      Definition local_waker (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; local_waker ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            let local_waker := M.alloc (| local_waker |) in
+            M.struct_record_update
+              (M.read (| self |))
+              [ ("local_waker", M.read (| local_waker |)) ]))
+        | _, _, _ => M.impossible
+        end.
+      
+      Axiom AssociatedFunction_local_waker : M.IsAssociatedFunction Self "local_waker" local_waker.
+      
+      (*
+          pub const fn ext(self, data: &'a mut dyn Any) -> Self {
+              Self { ext: ExtData::Some(data), ..self }
+          }
+      *)
+      Definition ext (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; data ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            let data := M.alloc (| data |) in
+            M.struct_record_update
+              (M.read (| self |))
+              [ ("ext", Value.StructTuple "core::task::wake::ExtData::Some" [ M.read (| data |) ])
+              ]))
+        | _, _, _ => M.impossible
+        end.
+      
+      Axiom AssociatedFunction_ext : M.IsAssociatedFunction Self "ext" ext.
+      
+      (*
+          pub const fn build(self) -> Context<'a> {
+              let ContextBuilder { waker, local_waker, ext, _marker, _marker2 } = self;
+              Context { waker, local_waker, ext: AssertUnwindSafe(ext), _marker, _marker2 }
+          }
+      *)
+      Definition build (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            M.read (|
+              M.match_operator (|
+                self,
+                [
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ0_0 :=
+                        M.SubPointer.get_struct_record_field (|
+                          γ,
+                          "core::task::wake::ContextBuilder",
+                          "waker"
+                        |) in
+                      let γ0_1 :=
+                        M.SubPointer.get_struct_record_field (|
+                          γ,
+                          "core::task::wake::ContextBuilder",
+                          "local_waker"
+                        |) in
+                      let γ0_2 :=
+                        M.SubPointer.get_struct_record_field (|
+                          γ,
+                          "core::task::wake::ContextBuilder",
+                          "ext"
+                        |) in
+                      let γ0_3 :=
+                        M.SubPointer.get_struct_record_field (|
+                          γ,
+                          "core::task::wake::ContextBuilder",
+                          "_marker"
+                        |) in
+                      let γ0_4 :=
+                        M.SubPointer.get_struct_record_field (|
+                          γ,
+                          "core::task::wake::ContextBuilder",
+                          "_marker2"
+                        |) in
+                      let waker := M.copy (| γ0_0 |) in
+                      let local_waker := M.copy (| γ0_1 |) in
+                      let ext := M.copy (| γ0_2 |) in
+                      let _marker := M.copy (| γ0_3 |) in
+                      let _marker2 := M.copy (| γ0_4 |) in
+                      M.alloc (|
+                        Value.StructRecord
+                          "core::task::wake::Context"
+                          [
+                            ("waker", M.read (| waker |));
+                            ("local_waker", M.read (| local_waker |));
+                            ("ext",
+                              Value.StructTuple
+                                "core::panic::unwind_safe::AssertUnwindSafe"
+                                [ M.read (| ext |) ]);
+                            ("_marker", M.read (| _marker |));
+                            ("_marker2", M.read (| _marker2 |))
+                          ]
+                      |)))
+                ]
+              |)
+            |)))
+        | _, _, _ => M.impossible
+        end.
+      
+      Axiom AssociatedFunction_build : M.IsAssociatedFunction Self "build" build.
+    End Impl_core_task_wake_ContextBuilder.
     
     (* StructRecord
       {
@@ -663,16 +1239,14 @@ Module task.
           pub fn wake(self) {
               // The actual wakeup call is delegated through a virtual function call
               // to the implementation which is defined by the executor.
-              let wake = self.waker.vtable.wake;
-              let data = self.waker.data;
       
               // Don't call `drop` -- the waker will be consumed by `wake`.
-              crate::mem::forget(self);
+              let this = ManuallyDrop::new(self);
       
               // SAFETY: This is safe because `Waker::from_raw` is the only way
               // to initialize `wake` and `data` requiring the user to acknowledge
               // that the contract of `RawWaker` is upheld.
-              unsafe { (wake)(data) };
+              unsafe { (this.waker.vtable.wake)(this.waker.data) };
           }
       *)
       Definition wake (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -681,45 +1255,79 @@ Module task.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ wake :=
-                M.copy (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (|
-                      M.SubPointer.get_struct_record_field (|
-                        M.SubPointer.get_struct_record_field (|
-                          self,
-                          "core::task::wake::Waker",
-                          "waker"
-                        |),
-                        "core::task::wake::RawWaker",
-                        "vtable"
-                      |)
+              let~ this :=
+                M.alloc (|
+                  M.call_closure (|
+                    M.get_associated_function (|
+                      Ty.apply
+                        (Ty.path "core::mem::manually_drop::ManuallyDrop")
+                        []
+                        [ Ty.path "core::task::wake::Waker" ],
+                      "new",
+                      []
                     |),
-                    "core::task::wake::RawWakerVTable",
-                    "wake"
-                  |)
-                |) in
-              let~ data :=
-                M.copy (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.SubPointer.get_struct_record_field (|
-                      self,
-                      "core::task::wake::Waker",
-                      "waker"
-                    |),
-                    "core::task::wake::RawWaker",
-                    "data"
+                    [ M.read (| self |) ]
                   |)
                 |) in
               let~ _ :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_function (| "core::mem::forget", [ Ty.path "core::task::wake::Waker" ] |),
-                    [ M.read (| self |) ]
+                    M.read (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (|
+                          M.SubPointer.get_struct_record_field (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.call_closure (|
+                                M.get_trait_method (|
+                                  "core::ops::deref::Deref",
+                                  Ty.apply
+                                    (Ty.path "core::mem::manually_drop::ManuallyDrop")
+                                    []
+                                    [ Ty.path "core::task::wake::Waker" ],
+                                  [],
+                                  "deref",
+                                  []
+                                |),
+                                [ this ]
+                              |),
+                              "core::task::wake::Waker",
+                              "waker"
+                            |),
+                            "core::task::wake::RawWaker",
+                            "vtable"
+                          |)
+                        |),
+                        "core::task::wake::RawWakerVTable",
+                        "wake"
+                      |)
+                    |),
+                    [
+                      M.read (|
+                        M.SubPointer.get_struct_record_field (|
+                          M.SubPointer.get_struct_record_field (|
+                            M.call_closure (|
+                              M.get_trait_method (|
+                                "core::ops::deref::Deref",
+                                Ty.apply
+                                  (Ty.path "core::mem::manually_drop::ManuallyDrop")
+                                  []
+                                  [ Ty.path "core::task::wake::Waker" ],
+                                [],
+                                "deref",
+                                []
+                              |),
+                              [ this ]
+                            |),
+                            "core::task::wake::Waker",
+                            "waker"
+                          |),
+                          "core::task::wake::RawWaker",
+                          "data"
+                        |)
+                      |)
+                    ]
                   |)
                 |) in
-              let~ _ :=
-                M.alloc (| M.call_closure (| M.read (| wake |), [ M.read (| data |) ] |) |) in
               M.alloc (| Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible
@@ -780,7 +1388,11 @@ Module task.
       
       (*
           pub fn will_wake(&self, other: &Waker) -> bool {
-              self.waker == other.waker
+              // We optimize this by comparing vtable addresses instead of vtable contents.
+              // This is permitted since the function is documented as best-effort.
+              let RawWaker { data: a_data, vtable: a_vtable } = self.waker;
+              let RawWaker { data: b_data, vtable: b_vtable } = other.waker;
+              a_data == b_data && ptr::eq(a_vtable, b_vtable)
           }
       *)
       Definition will_wake (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -789,26 +1401,70 @@ Module task.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            M.call_closure (|
-              M.get_trait_method (|
-                "core::cmp::PartialEq",
-                Ty.path "core::task::wake::RawWaker",
-                [ Ty.path "core::task::wake::RawWaker" ],
-                "eq",
-                []
-              |),
-              [
+            M.read (|
+              M.match_operator (|
                 M.SubPointer.get_struct_record_field (|
                   M.read (| self |),
                   "core::task::wake::Waker",
                   "waker"
-                |);
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| other |),
-                  "core::task::wake::Waker",
-                  "waker"
-                |)
-              ]
+                |),
+                [
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ0_0 :=
+                        M.SubPointer.get_struct_record_field (|
+                          γ,
+                          "core::task::wake::RawWaker",
+                          "data"
+                        |) in
+                      let γ0_1 :=
+                        M.SubPointer.get_struct_record_field (|
+                          γ,
+                          "core::task::wake::RawWaker",
+                          "vtable"
+                        |) in
+                      let a_data := M.copy (| γ0_0 |) in
+                      let a_vtable := M.copy (| γ0_1 |) in
+                      M.match_operator (|
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| other |),
+                          "core::task::wake::Waker",
+                          "waker"
+                        |),
+                        [
+                          fun γ =>
+                            ltac:(M.monadic
+                              (let γ0_0 :=
+                                M.SubPointer.get_struct_record_field (|
+                                  γ,
+                                  "core::task::wake::RawWaker",
+                                  "data"
+                                |) in
+                              let γ0_1 :=
+                                M.SubPointer.get_struct_record_field (|
+                                  γ,
+                                  "core::task::wake::RawWaker",
+                                  "vtable"
+                                |) in
+                              let b_data := M.copy (| γ0_0 |) in
+                              let b_vtable := M.copy (| γ0_1 |) in
+                              M.alloc (|
+                                LogicalOp.and (|
+                                  BinOp.Pure.eq (M.read (| a_data |)) (M.read (| b_data |)),
+                                  ltac:(M.monadic
+                                    (M.call_closure (|
+                                      M.get_function (|
+                                        "core::ptr::eq",
+                                        [ Ty.path "core::task::wake::RawWakerVTable" ]
+                                      |),
+                                      [ M.read (| a_vtable |); M.read (| b_vtable |) ]
+                                    |)))
+                                |)
+                              |)))
+                        ]
+                      |)))
+                ]
+              |)
             |)))
         | _, _, _ => M.impossible
         end.
@@ -822,7 +1478,7 @@ Module task.
       *)
       Definition from_raw (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ waker ] =>
+        | [], [], [ waker ] =>
           ltac:(M.monadic
             (let waker := M.alloc (| waker |) in
             Value.StructRecord "core::task::wake::Waker" [ ("waker", M.read (| waker |)) ]))
@@ -832,29 +1488,15 @@ Module task.
       Axiom AssociatedFunction_from_raw : M.IsAssociatedFunction Self "from_raw" from_raw.
       
       (*
-          pub const fn noop() -> Waker {
-              const VTABLE: RawWakerVTable = RawWakerVTable::new(
-                  // Cloning just returns a new no-op raw waker
-                  |_| RAW,
-                  // `wake` does nothing
-                  |_| {},
-                  // `wake_by_ref` does nothing
-                  |_| {},
-                  // Dropping does nothing as we don't allocate anything
-                  |_| {},
-              );
-              const RAW: RawWaker = RawWaker::new(ptr::null(), &VTABLE);
-      
-              Waker { waker: RAW }
+          pub const fn noop() -> &'static Waker {
+              const WAKER: &Waker = &Waker { waker: RawWaker::NOOP };
+              WAKER
           }
       *)
       Definition noop (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [] =>
-          ltac:(M.monadic
-            (Value.StructRecord
-              "core::task::wake::Waker"
-              [ ("waker", M.read (| M.get_constant (| "core::task::wake::noop::RAW" |) |)) ]))
+        | [], [], [] =>
+          ltac:(M.monadic (M.read (| M.get_constant (| "core::task::wake::noop::WAKER" |) |)))
         | _, _, _ => M.impossible
         end.
       
@@ -1132,21 +1774,19 @@ Module task.
                               |)
                             |);
                             M.read (| Value.String "data" |);
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.SubPointer.get_struct_record_field (|
-                                M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
-                                  "core::task::wake::Waker",
-                                  "waker"
-                                |),
-                                "core::task::wake::RawWaker",
-                                "data"
-                              |))
+                            M.SubPointer.get_struct_record_field (|
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "core::task::wake::Waker",
+                                "waker"
+                              |),
+                              "core::task::wake::RawWaker",
+                              "data"
+                            |)
                           ]
                         |);
                         M.read (| Value.String "vtable" |);
-                        (* Unsize *) M.pointer_coercion vtable_ptr
+                        vtable_ptr
                       ]
                     |)
                   ]
@@ -1163,5 +1803,653 @@ Module task.
           (* Trait polymorphic types *) []
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Debug_for_core_task_wake_Waker.
+    
+    (* StructRecord
+      {
+        name := "LocalWaker";
+        const_params := [];
+        ty_params := [];
+        fields := [ ("waker", Ty.path "core::task::wake::RawWaker") ];
+      } *)
+    
+    Module Impl_core_marker_Unpin_for_core_task_wake_LocalWaker.
+      Definition Self : Ty.t := Ty.path "core::task::wake::LocalWaker".
+      
+      Axiom Implements :
+        M.IsTraitInstance
+          "core::marker::Unpin"
+          Self
+          (* Trait polymorphic types *) []
+          (* Instance *) [].
+    End Impl_core_marker_Unpin_for_core_task_wake_LocalWaker.
+    
+    Module Impl_core_task_wake_LocalWaker.
+      Definition Self : Ty.t := Ty.path "core::task::wake::LocalWaker".
+      
+      (*
+          pub fn wake(self) {
+              // The actual wakeup call is delegated through a virtual function call
+              // to the implementation which is defined by the executor.
+      
+              // Don't call `drop` -- the waker will be consumed by `wake`.
+              let this = ManuallyDrop::new(self);
+      
+              // SAFETY: This is safe because `Waker::from_raw` is the only way
+              // to initialize `wake` and `data` requiring the user to acknowledge
+              // that the contract of `RawWaker` is upheld.
+              unsafe { (this.waker.vtable.wake)(this.waker.data) };
+          }
+      *)
+      Definition wake (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            M.read (|
+              let~ this :=
+                M.alloc (|
+                  M.call_closure (|
+                    M.get_associated_function (|
+                      Ty.apply
+                        (Ty.path "core::mem::manually_drop::ManuallyDrop")
+                        []
+                        [ Ty.path "core::task::wake::LocalWaker" ],
+                      "new",
+                      []
+                    |),
+                    [ M.read (| self |) ]
+                  |)
+                |) in
+              let~ _ :=
+                M.alloc (|
+                  M.call_closure (|
+                    M.read (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (|
+                          M.SubPointer.get_struct_record_field (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.call_closure (|
+                                M.get_trait_method (|
+                                  "core::ops::deref::Deref",
+                                  Ty.apply
+                                    (Ty.path "core::mem::manually_drop::ManuallyDrop")
+                                    []
+                                    [ Ty.path "core::task::wake::LocalWaker" ],
+                                  [],
+                                  "deref",
+                                  []
+                                |),
+                                [ this ]
+                              |),
+                              "core::task::wake::LocalWaker",
+                              "waker"
+                            |),
+                            "core::task::wake::RawWaker",
+                            "vtable"
+                          |)
+                        |),
+                        "core::task::wake::RawWakerVTable",
+                        "wake"
+                      |)
+                    |),
+                    [
+                      M.read (|
+                        M.SubPointer.get_struct_record_field (|
+                          M.SubPointer.get_struct_record_field (|
+                            M.call_closure (|
+                              M.get_trait_method (|
+                                "core::ops::deref::Deref",
+                                Ty.apply
+                                  (Ty.path "core::mem::manually_drop::ManuallyDrop")
+                                  []
+                                  [ Ty.path "core::task::wake::LocalWaker" ],
+                                [],
+                                "deref",
+                                []
+                              |),
+                              [ this ]
+                            |),
+                            "core::task::wake::LocalWaker",
+                            "waker"
+                          |),
+                          "core::task::wake::RawWaker",
+                          "data"
+                        |)
+                      |)
+                    ]
+                  |)
+                |) in
+              M.alloc (| Value.Tuple [] |)
+            |)))
+        | _, _, _ => M.impossible
+        end.
+      
+      Axiom AssociatedFunction_wake : M.IsAssociatedFunction Self "wake" wake.
+      
+      (*
+          pub fn wake_by_ref(&self) {
+              // The actual wakeup call is delegated through a virtual function call
+              // to the implementation which is defined by the executor.
+      
+              // SAFETY: see `wake`
+              unsafe { (self.waker.vtable.wake_by_ref)(self.waker.data) }
+          }
+      *)
+      Definition wake_by_ref (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            M.call_closure (|
+              M.read (|
+                M.SubPointer.get_struct_record_field (|
+                  M.read (|
+                    M.SubPointer.get_struct_record_field (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::task::wake::LocalWaker",
+                        "waker"
+                      |),
+                      "core::task::wake::RawWaker",
+                      "vtable"
+                    |)
+                  |),
+                  "core::task::wake::RawWakerVTable",
+                  "wake_by_ref"
+                |)
+              |),
+              [
+                M.read (|
+                  M.SubPointer.get_struct_record_field (|
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::task::wake::LocalWaker",
+                      "waker"
+                    |),
+                    "core::task::wake::RawWaker",
+                    "data"
+                  |)
+                |)
+              ]
+            |)))
+        | _, _, _ => M.impossible
+        end.
+      
+      Axiom AssociatedFunction_wake_by_ref : M.IsAssociatedFunction Self "wake_by_ref" wake_by_ref.
+      
+      (*
+          pub fn will_wake(&self, other: &LocalWaker) -> bool {
+              // We optimize this by comparing vtable addresses instead of vtable contents.
+              // This is permitted since the function is documented as best-effort.
+              let RawWaker { data: a_data, vtable: a_vtable } = self.waker;
+              let RawWaker { data: b_data, vtable: b_vtable } = other.waker;
+              a_data == b_data && ptr::eq(a_vtable, b_vtable)
+          }
+      *)
+      Definition will_wake (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            let other := M.alloc (| other |) in
+            M.read (|
+              M.match_operator (|
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::task::wake::LocalWaker",
+                  "waker"
+                |),
+                [
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ0_0 :=
+                        M.SubPointer.get_struct_record_field (|
+                          γ,
+                          "core::task::wake::RawWaker",
+                          "data"
+                        |) in
+                      let γ0_1 :=
+                        M.SubPointer.get_struct_record_field (|
+                          γ,
+                          "core::task::wake::RawWaker",
+                          "vtable"
+                        |) in
+                      let a_data := M.copy (| γ0_0 |) in
+                      let a_vtable := M.copy (| γ0_1 |) in
+                      M.match_operator (|
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| other |),
+                          "core::task::wake::LocalWaker",
+                          "waker"
+                        |),
+                        [
+                          fun γ =>
+                            ltac:(M.monadic
+                              (let γ0_0 :=
+                                M.SubPointer.get_struct_record_field (|
+                                  γ,
+                                  "core::task::wake::RawWaker",
+                                  "data"
+                                |) in
+                              let γ0_1 :=
+                                M.SubPointer.get_struct_record_field (|
+                                  γ,
+                                  "core::task::wake::RawWaker",
+                                  "vtable"
+                                |) in
+                              let b_data := M.copy (| γ0_0 |) in
+                              let b_vtable := M.copy (| γ0_1 |) in
+                              M.alloc (|
+                                LogicalOp.and (|
+                                  BinOp.Pure.eq (M.read (| a_data |)) (M.read (| b_data |)),
+                                  ltac:(M.monadic
+                                    (M.call_closure (|
+                                      M.get_function (|
+                                        "core::ptr::eq",
+                                        [ Ty.path "core::task::wake::RawWakerVTable" ]
+                                      |),
+                                      [ M.read (| a_vtable |); M.read (| b_vtable |) ]
+                                    |)))
+                                |)
+                              |)))
+                        ]
+                      |)))
+                ]
+              |)
+            |)))
+        | _, _, _ => M.impossible
+        end.
+      
+      Axiom AssociatedFunction_will_wake : M.IsAssociatedFunction Self "will_wake" will_wake.
+      
+      (*
+          pub const unsafe fn from_raw(waker: RawWaker) -> LocalWaker {
+              Self { waker }
+          }
+      *)
+      Definition from_raw (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ waker ] =>
+          ltac:(M.monadic
+            (let waker := M.alloc (| waker |) in
+            Value.StructRecord "core::task::wake::LocalWaker" [ ("waker", M.read (| waker |)) ]))
+        | _, _, _ => M.impossible
+        end.
+      
+      Axiom AssociatedFunction_from_raw : M.IsAssociatedFunction Self "from_raw" from_raw.
+      
+      (*
+          pub const fn noop() -> &'static LocalWaker {
+              const WAKER: &LocalWaker = &LocalWaker { waker: RawWaker::NOOP };
+              WAKER
+          }
+      *)
+      Definition noop (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [] =>
+          ltac:(M.monadic (M.read (| M.get_constant (| "core::task::wake::noop::WAKER" |) |)))
+        | _, _, _ => M.impossible
+        end.
+      
+      Axiom AssociatedFunction_noop : M.IsAssociatedFunction Self "noop" noop.
+      
+      (*
+          pub fn as_raw(&self) -> &RawWaker {
+              &self.waker
+          }
+      *)
+      Definition as_raw (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            M.SubPointer.get_struct_record_field (|
+              M.read (| self |),
+              "core::task::wake::LocalWaker",
+              "waker"
+            |)))
+        | _, _, _ => M.impossible
+        end.
+      
+      Axiom AssociatedFunction_as_raw : M.IsAssociatedFunction Self "as_raw" as_raw.
+    End Impl_core_task_wake_LocalWaker.
+    
+    Module Impl_core_clone_Clone_for_core_task_wake_LocalWaker.
+      Definition Self : Ty.t := Ty.path "core::task::wake::LocalWaker".
+      
+      (*
+          fn clone(&self) -> Self {
+              LocalWaker {
+                  // SAFETY: This is safe because `Waker::from_raw` is the only way
+                  // to initialize `clone` and `data` requiring the user to acknowledge
+                  // that the contract of [`RawWaker`] is upheld.
+                  waker: unsafe { (self.waker.vtable.clone)(self.waker.data) },
+              }
+          }
+      *)
+      Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            Value.StructRecord
+              "core::task::wake::LocalWaker"
+              [
+                ("waker",
+                  M.call_closure (|
+                    M.read (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (|
+                          M.SubPointer.get_struct_record_field (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "core::task::wake::LocalWaker",
+                              "waker"
+                            |),
+                            "core::task::wake::RawWaker",
+                            "vtable"
+                          |)
+                        |),
+                        "core::task::wake::RawWakerVTable",
+                        "clone"
+                      |)
+                    |),
+                    [
+                      M.read (|
+                        M.SubPointer.get_struct_record_field (|
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::task::wake::LocalWaker",
+                            "waker"
+                          |),
+                          "core::task::wake::RawWaker",
+                          "data"
+                        |)
+                      |)
+                    ]
+                  |))
+              ]))
+        | _, _, _ => M.impossible
+        end.
+      
+      (*
+          fn clone_from(&mut self, source: &Self) {
+              if !self.will_wake(source) {
+                  *self = source.clone();
+              }
+          }
+      *)
+      Definition clone_from (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; source ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            let source := M.alloc (| source |) in
+            M.read (|
+              M.match_operator (|
+                M.alloc (| Value.Tuple [] |),
+                [
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ :=
+                        M.use
+                          (M.alloc (|
+                            UnOp.Pure.not
+                              (M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.path "core::task::wake::LocalWaker",
+                                  "will_wake",
+                                  []
+                                |),
+                                [ M.read (| self |); M.read (| source |) ]
+                              |))
+                          |)) in
+                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let~ _ :=
+                        M.write (|
+                          M.read (| self |),
+                          M.call_closure (|
+                            M.get_trait_method (|
+                              "core::clone::Clone",
+                              Ty.path "core::task::wake::LocalWaker",
+                              [],
+                              "clone",
+                              []
+                            |),
+                            [ M.read (| source |) ]
+                          |)
+                        |) in
+                      M.alloc (| Value.Tuple [] |)));
+                  fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                ]
+              |)
+            |)))
+        | _, _, _ => M.impossible
+        end.
+      
+      Axiom Implements :
+        M.IsTraitInstance
+          "core::clone::Clone"
+          Self
+          (* Trait polymorphic types *) []
+          (* Instance *)
+          [ ("clone", InstanceField.Method clone); ("clone_from", InstanceField.Method clone_from)
+          ].
+    End Impl_core_clone_Clone_for_core_task_wake_LocalWaker.
+    
+    Module Impl_core_convert_AsRef_core_task_wake_LocalWaker_for_core_task_wake_Waker.
+      Definition Self : Ty.t := Ty.path "core::task::wake::Waker".
+      
+      (*
+          fn as_ref(&self) -> &LocalWaker {
+              // SAFETY: LocalWaker is just Waker without thread safety
+              unsafe { transmute(self) }
+          }
+      *)
+      Definition as_ref (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            M.call_closure (|
+              M.get_function (|
+                "core::intrinsics::transmute",
+                [
+                  Ty.apply (Ty.path "&") [] [ Ty.path "core::task::wake::Waker" ];
+                  Ty.apply (Ty.path "&") [] [ Ty.path "core::task::wake::LocalWaker" ]
+                ]
+              |),
+              [ M.read (| self |) ]
+            |)))
+        | _, _, _ => M.impossible
+        end.
+      
+      Axiom Implements :
+        M.IsTraitInstance
+          "core::convert::AsRef"
+          Self
+          (* Trait polymorphic types *) [ (* T *) Ty.path "core::task::wake::LocalWaker" ]
+          (* Instance *) [ ("as_ref", InstanceField.Method as_ref) ].
+    End Impl_core_convert_AsRef_core_task_wake_LocalWaker_for_core_task_wake_Waker.
+    
+    Module Impl_core_ops_drop_Drop_for_core_task_wake_LocalWaker.
+      Definition Self : Ty.t := Ty.path "core::task::wake::LocalWaker".
+      
+      (*
+          fn drop(&mut self) {
+              // SAFETY: This is safe because `LocalWaker::from_raw` is the only way
+              // to initialize `drop` and `data` requiring the user to acknowledge
+              // that the contract of `RawWaker` is upheld.
+              unsafe { (self.waker.vtable.drop)(self.waker.data) }
+          }
+      *)
+      Definition drop (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            M.call_closure (|
+              M.read (|
+                M.SubPointer.get_struct_record_field (|
+                  M.read (|
+                    M.SubPointer.get_struct_record_field (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::task::wake::LocalWaker",
+                        "waker"
+                      |),
+                      "core::task::wake::RawWaker",
+                      "vtable"
+                    |)
+                  |),
+                  "core::task::wake::RawWakerVTable",
+                  "drop"
+                |)
+              |),
+              [
+                M.read (|
+                  M.SubPointer.get_struct_record_field (|
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::task::wake::LocalWaker",
+                      "waker"
+                    |),
+                    "core::task::wake::RawWaker",
+                    "data"
+                  |)
+                |)
+              ]
+            |)))
+        | _, _, _ => M.impossible
+        end.
+      
+      Axiom Implements :
+        M.IsTraitInstance
+          "core::ops::drop::Drop"
+          Self
+          (* Trait polymorphic types *) []
+          (* Instance *) [ ("drop", InstanceField.Method drop) ].
+    End Impl_core_ops_drop_Drop_for_core_task_wake_LocalWaker.
+    
+    Module Impl_core_fmt_Debug_for_core_task_wake_LocalWaker.
+      Definition Self : Ty.t := Ty.path "core::task::wake::LocalWaker".
+      
+      (*
+          fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+              let vtable_ptr = self.waker.vtable as *const RawWakerVTable;
+              f.debug_struct("LocalWaker")
+                  .field("data", &self.waker.data)
+                  .field("vtable", &vtable_ptr)
+                  .finish()
+          }
+      *)
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            let f := M.alloc (| f |) in
+            M.read (|
+              let~ vtable_ptr :=
+                M.copy (|
+                  M.use
+                    (M.alloc (|
+                      M.read (|
+                        M.SubPointer.get_struct_record_field (|
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::task::wake::LocalWaker",
+                            "waker"
+                          |),
+                          "core::task::wake::RawWaker",
+                          "vtable"
+                        |)
+                      |)
+                    |))
+                |) in
+              M.alloc (|
+                M.call_closure (|
+                  M.get_associated_function (|
+                    Ty.path "core::fmt::builders::DebugStruct",
+                    "finish",
+                    []
+                  |),
+                  [
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.path "core::fmt::builders::DebugStruct",
+                        "field",
+                        []
+                      |),
+                      [
+                        M.call_closure (|
+                          M.get_associated_function (|
+                            Ty.path "core::fmt::builders::DebugStruct",
+                            "field",
+                            []
+                          |),
+                          [
+                            M.alloc (|
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.path "core::fmt::Formatter",
+                                  "debug_struct",
+                                  []
+                                |),
+                                [ M.read (| f |); M.read (| Value.String "LocalWaker" |) ]
+                              |)
+                            |);
+                            M.read (| Value.String "data" |);
+                            M.SubPointer.get_struct_record_field (|
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "core::task::wake::LocalWaker",
+                                "waker"
+                              |),
+                              "core::task::wake::RawWaker",
+                              "data"
+                            |)
+                          ]
+                        |);
+                        M.read (| Value.String "vtable" |);
+                        vtable_ptr
+                      ]
+                    |)
+                  ]
+                |)
+              |)
+            |)))
+        | _, _, _ => M.impossible
+        end.
+      
+      Axiom Implements :
+        M.IsTraitInstance
+          "core::fmt::Debug"
+          Self
+          (* Trait polymorphic types *) []
+          (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
+    End Impl_core_fmt_Debug_for_core_task_wake_LocalWaker.
+    
+    Module Impl_core_marker_Send_for_core_task_wake_LocalWaker.
+      Definition Self : Ty.t := Ty.path "core::task::wake::LocalWaker".
+      
+      Axiom Implements :
+        M.IsTraitInstance
+          "core::marker::Send"
+          Self
+          (* Trait polymorphic types *) []
+          (* Instance *) [].
+    End Impl_core_marker_Send_for_core_task_wake_LocalWaker.
+    
+    Module Impl_core_marker_Sync_for_core_task_wake_LocalWaker.
+      Definition Self : Ty.t := Ty.path "core::task::wake::LocalWaker".
+      
+      Axiom Implements :
+        M.IsTraitInstance
+          "core::marker::Sync"
+          Self
+          (* Trait polymorphic types *) []
+          (* Instance *) [].
+    End Impl_core_marker_Sync_for_core_task_wake_LocalWaker.
   End wake.
 End task.

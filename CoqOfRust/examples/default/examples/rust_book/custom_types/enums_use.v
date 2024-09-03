@@ -89,13 +89,11 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [ M.read (| Value.String "The rich have lots of money!
+                              M.alloc (|
+                                Value.Array
+                                  [ M.read (| Value.String "The rich have lots of money!
 " |) ]
-                                |))
+                              |)
                             ]
                           |)
                         ]
@@ -117,13 +115,11 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [ M.read (| Value.String "The poor have no money...
+                              M.alloc (|
+                                Value.Array
+                                  [ M.read (| Value.String "The poor have no money...
 " |) ]
-                                |))
+                              |)
                             ]
                           |)
                         ]
@@ -150,12 +146,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             []
                           |),
                           [
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.alloc (|
-                                Value.Array [ M.read (| Value.String "Civilians work!
+                            M.alloc (|
+                              Value.Array [ M.read (| Value.String "Civilians work!
 " |) ]
-                              |))
+                            |)
                           ]
                         |)
                       ]
@@ -177,12 +171,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             []
                           |),
                           [
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.alloc (|
-                                Value.Array [ M.read (| Value.String "Soldiers fight!
+                            M.alloc (|
+                              Value.Array [ M.read (| Value.String "Soldiers fight!
 " |) ]
-                              |))
+                            |)
                           ]
                         |)
                       ]

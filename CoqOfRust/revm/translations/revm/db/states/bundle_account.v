@@ -162,39 +162,31 @@ Module db.
                   M.read (| f |);
                   M.read (| Value.String "BundleAccount" |);
                   M.read (| Value.String "info" |);
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "revm::db::states::bundle_account::BundleAccount",
-                      "info"
-                    |));
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "revm::db::states::bundle_account::BundleAccount",
+                    "info"
+                  |);
                   M.read (| Value.String "original_info" |);
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "revm::db::states::bundle_account::BundleAccount",
-                      "original_info"
-                    |));
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "revm::db::states::bundle_account::BundleAccount",
+                    "original_info"
+                  |);
                   M.read (| Value.String "storage" |);
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.SubPointer.get_struct_record_field (|
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "revm::db::states::bundle_account::BundleAccount",
+                    "storage"
+                  |);
+                  M.read (| Value.String "status" |);
+                  M.alloc (|
+                    M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
                       "revm::db::states::bundle_account::BundleAccount",
-                      "storage"
-                    |));
-                  M.read (| Value.String "status" |);
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.alloc (|
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "revm::db::states::bundle_account::BundleAccount",
-                        "status"
-                      |)
-                    |))
+                      "status"
+                    |)
+                  |)
                 ]
               |)))
           | _, _, _ => M.impossible
@@ -370,17 +362,6 @@ Module db.
             (* Trait polymorphic types *) []
             (* Instance *) [ ("eq", InstanceField.Method eq) ].
       End Impl_core_cmp_PartialEq_for_revm_db_states_bundle_account_BundleAccount.
-      
-      Module Impl_core_marker_StructuralEq_for_revm_db_states_bundle_account_BundleAccount.
-        Definition Self : Ty.t := Ty.path "revm::db::states::bundle_account::BundleAccount".
-        
-        Axiom Implements :
-          M.IsTraitInstance
-            "core::marker::StructuralEq"
-            Self
-            (* Trait polymorphic types *) []
-            (* Instance *) [].
-      End Impl_core_marker_StructuralEq_for_revm_db_states_bundle_account_BundleAccount.
       
       Module Impl_core_cmp_Eq_for_revm_db_states_bundle_account_BundleAccount.
         Definition Self : Ty.t := Ty.path "revm::db::states::bundle_account::BundleAccount".
@@ -2752,40 +2733,36 @@ Module db.
                                                   []
                                                 |),
                                                 [
-                                                  (* Unsize *)
-                                                  M.pointer_coercion
-                                                    (M.alloc (|
-                                                      Value.Array
-                                                        [
-                                                          M.read (|
-                                                            Value.String
-                                                              "internal error: entered unreachable code: Invalid state transfer to Changed from "
-                                                          |)
-                                                        ]
-                                                    |));
-                                                  (* Unsize *)
-                                                  M.pointer_coercion
-                                                    (M.alloc (|
-                                                      Value.Array
-                                                        [
-                                                          M.call_closure (|
-                                                            M.get_associated_function (|
-                                                              Ty.path "core::fmt::rt::Argument",
-                                                              "new_debug",
-                                                              [
-                                                                Ty.apply
-                                                                  (Ty.path "&mut")
-                                                                  []
-                                                                  [
-                                                                    Ty.path
-                                                                      "revm::db::states::bundle_account::BundleAccount"
-                                                                  ]
-                                                              ]
-                                                            |),
-                                                            [ self ]
-                                                          |)
-                                                        ]
-                                                    |))
+                                                  M.alloc (|
+                                                    Value.Array
+                                                      [
+                                                        M.read (|
+                                                          Value.String
+                                                            "internal error: entered unreachable code: Invalid state transfer to Changed from "
+                                                        |)
+                                                      ]
+                                                  |);
+                                                  M.alloc (|
+                                                    Value.Array
+                                                      [
+                                                        M.call_closure (|
+                                                          M.get_associated_function (|
+                                                            Ty.path "core::fmt::rt::Argument",
+                                                            "new_debug",
+                                                            [
+                                                              Ty.apply
+                                                                (Ty.path "&mut")
+                                                                []
+                                                                [
+                                                                  Ty.path
+                                                                    "revm::db::states::bundle_account::BundleAccount"
+                                                                ]
+                                                            ]
+                                                          |),
+                                                          [ self ]
+                                                        |)
+                                                      ]
+                                                  |)
                                                 ]
                                               |)
                                             ]
@@ -3112,40 +3089,36 @@ Module db.
                                                     []
                                                   |),
                                                   [
-                                                    (* Unsize *)
-                                                    M.pointer_coercion
-                                                      (M.alloc (|
-                                                        Value.Array
-                                                          [
-                                                            M.read (|
-                                                              Value.String
-                                                                "internal error: entered unreachable code: Invalid change to InMemoryChange from "
-                                                            |)
-                                                          ]
-                                                      |));
-                                                    (* Unsize *)
-                                                    M.pointer_coercion
-                                                      (M.alloc (|
-                                                        Value.Array
-                                                          [
-                                                            M.call_closure (|
-                                                              M.get_associated_function (|
-                                                                Ty.path "core::fmt::rt::Argument",
-                                                                "new_debug",
-                                                                [
-                                                                  Ty.apply
-                                                                    (Ty.path "&mut")
-                                                                    []
-                                                                    [
-                                                                      Ty.path
-                                                                        "revm::db::states::bundle_account::BundleAccount"
-                                                                    ]
-                                                                ]
-                                                              |),
-                                                              [ self ]
-                                                            |)
-                                                          ]
-                                                      |))
+                                                    M.alloc (|
+                                                      Value.Array
+                                                        [
+                                                          M.read (|
+                                                            Value.String
+                                                              "internal error: entered unreachable code: Invalid change to InMemoryChange from "
+                                                          |)
+                                                        ]
+                                                    |);
+                                                    M.alloc (|
+                                                      Value.Array
+                                                        [
+                                                          M.call_closure (|
+                                                            M.get_associated_function (|
+                                                              Ty.path "core::fmt::rt::Argument",
+                                                              "new_debug",
+                                                              [
+                                                                Ty.apply
+                                                                  (Ty.path "&mut")
+                                                                  []
+                                                                  [
+                                                                    Ty.path
+                                                                      "revm::db::states::bundle_account::BundleAccount"
+                                                                  ]
+                                                              ]
+                                                            |),
+                                                            [ self ]
+                                                          |)
+                                                        ]
+                                                    |)
                                                   ]
                                                 |)
                                               ]
@@ -3408,69 +3381,65 @@ Module db.
                                                     []
                                                   |),
                                                   [
-                                                    (* Unsize *)
-                                                    M.pointer_coercion
-                                                      (M.alloc (|
-                                                        Value.Array
-                                                          [
-                                                            M.read (|
-                                                              Value.String
-                                                                "internal error: entered unreachable code: Invalid transition to Destroyed account from: "
-                                                            |);
-                                                            M.read (| Value.String " to " |);
-                                                            M.read (| Value.String " " |)
-                                                          ]
-                                                      |));
-                                                    (* Unsize *)
-                                                    M.pointer_coercion
-                                                      (M.alloc (|
-                                                        Value.Array
-                                                          [
-                                                            M.call_closure (|
-                                                              M.get_associated_function (|
-                                                                Ty.path "core::fmt::rt::Argument",
-                                                                "new_debug",
-                                                                [
-                                                                  Ty.apply
-                                                                    (Ty.path "&mut")
-                                                                    []
-                                                                    [
-                                                                      Ty.path
-                                                                        "revm::db::states::bundle_account::BundleAccount"
-                                                                    ]
-                                                                ]
-                                                              |),
-                                                              [ self ]
-                                                            |);
-                                                            M.call_closure (|
-                                                              M.get_associated_function (|
-                                                                Ty.path "core::fmt::rt::Argument",
-                                                                "new_debug",
-                                                                [
-                                                                  Ty.apply
-                                                                    (Ty.path "core::option::Option")
-                                                                    []
-                                                                    [
-                                                                      Ty.path
-                                                                        "revm_primitives::state::AccountInfo"
-                                                                    ]
-                                                                ]
-                                                              |),
-                                                              [ updated_info ]
-                                                            |);
-                                                            M.call_closure (|
-                                                              M.get_associated_function (|
-                                                                Ty.path "core::fmt::rt::Argument",
-                                                                "new_debug",
-                                                                [
-                                                                  Ty.path
-                                                                    "revm::db::states::account_status::AccountStatus"
-                                                                ]
-                                                              |),
-                                                              [ updated_status ]
-                                                            |)
-                                                          ]
-                                                      |))
+                                                    M.alloc (|
+                                                      Value.Array
+                                                        [
+                                                          M.read (|
+                                                            Value.String
+                                                              "internal error: entered unreachable code: Invalid transition to Destroyed account from: "
+                                                          |);
+                                                          M.read (| Value.String " to " |);
+                                                          M.read (| Value.String " " |)
+                                                        ]
+                                                    |);
+                                                    M.alloc (|
+                                                      Value.Array
+                                                        [
+                                                          M.call_closure (|
+                                                            M.get_associated_function (|
+                                                              Ty.path "core::fmt::rt::Argument",
+                                                              "new_debug",
+                                                              [
+                                                                Ty.apply
+                                                                  (Ty.path "&mut")
+                                                                  []
+                                                                  [
+                                                                    Ty.path
+                                                                      "revm::db::states::bundle_account::BundleAccount"
+                                                                  ]
+                                                              ]
+                                                            |),
+                                                            [ self ]
+                                                          |);
+                                                          M.call_closure (|
+                                                            M.get_associated_function (|
+                                                              Ty.path "core::fmt::rt::Argument",
+                                                              "new_debug",
+                                                              [
+                                                                Ty.apply
+                                                                  (Ty.path "core::option::Option")
+                                                                  []
+                                                                  [
+                                                                    Ty.path
+                                                                      "revm_primitives::state::AccountInfo"
+                                                                  ]
+                                                              ]
+                                                            |),
+                                                            [ updated_info ]
+                                                          |);
+                                                          M.call_closure (|
+                                                            M.get_associated_function (|
+                                                              Ty.path "core::fmt::rt::Argument",
+                                                              "new_debug",
+                                                              [
+                                                                Ty.path
+                                                                  "revm::db::states::account_status::AccountStatus"
+                                                              ]
+                                                            |),
+                                                            [ updated_status ]
+                                                          |)
+                                                        ]
+                                                    |)
                                                   ]
                                                 |)
                                               ]
@@ -4475,41 +4444,37 @@ Module db.
                                                             []
                                                           |),
                                                           [
-                                                            (* Unsize *)
-                                                            M.pointer_coercion
-                                                              (M.alloc (|
-                                                                Value.Array
-                                                                  [
-                                                                    M.read (|
-                                                                      Value.String
-                                                                        "internal error: entered unreachable code: Invalid state transfer to DestroyedNew from "
-                                                                    |)
-                                                                  ]
-                                                              |));
-                                                            (* Unsize *)
-                                                            M.pointer_coercion
-                                                              (M.alloc (|
-                                                                Value.Array
-                                                                  [
-                                                                    M.call_closure (|
-                                                                      M.get_associated_function (|
-                                                                        Ty.path
-                                                                          "core::fmt::rt::Argument",
-                                                                        "new_debug",
-                                                                        [
-                                                                          Ty.apply
-                                                                            (Ty.path "&mut")
-                                                                            []
-                                                                            [
-                                                                              Ty.path
-                                                                                "revm::db::states::bundle_account::BundleAccount"
-                                                                            ]
-                                                                        ]
-                                                                      |),
-                                                                      [ self ]
-                                                                    |)
-                                                                  ]
-                                                              |))
+                                                            M.alloc (|
+                                                              Value.Array
+                                                                [
+                                                                  M.read (|
+                                                                    Value.String
+                                                                      "internal error: entered unreachable code: Invalid state transfer to DestroyedNew from "
+                                                                  |)
+                                                                ]
+                                                            |);
+                                                            M.alloc (|
+                                                              Value.Array
+                                                                [
+                                                                  M.call_closure (|
+                                                                    M.get_associated_function (|
+                                                                      Ty.path
+                                                                        "core::fmt::rt::Argument",
+                                                                      "new_debug",
+                                                                      [
+                                                                        Ty.apply
+                                                                          (Ty.path "&mut")
+                                                                          []
+                                                                          [
+                                                                            Ty.path
+                                                                              "revm::db::states::bundle_account::BundleAccount"
+                                                                          ]
+                                                                      ]
+                                                                    |),
+                                                                    [ self ]
+                                                                  |)
+                                                                ]
+                                                            |)
                                                           ]
                                                         |)
                                                       ]
@@ -4936,41 +4901,37 @@ Module db.
                                                             []
                                                           |),
                                                           [
-                                                            (* Unsize *)
-                                                            M.pointer_coercion
-                                                              (M.alloc (|
-                                                                Value.Array
-                                                                  [
-                                                                    M.read (|
-                                                                      Value.String
-                                                                        "internal error: entered unreachable code: Invalid state to DestroyedAgain from "
-                                                                    |)
-                                                                  ]
-                                                              |));
-                                                            (* Unsize *)
-                                                            M.pointer_coercion
-                                                              (M.alloc (|
-                                                                Value.Array
-                                                                  [
-                                                                    M.call_closure (|
-                                                                      M.get_associated_function (|
-                                                                        Ty.path
-                                                                          "core::fmt::rt::Argument",
-                                                                        "new_debug",
-                                                                        [
-                                                                          Ty.apply
-                                                                            (Ty.path "&mut")
-                                                                            []
-                                                                            [
-                                                                              Ty.path
-                                                                                "revm::db::states::bundle_account::BundleAccount"
-                                                                            ]
-                                                                        ]
-                                                                      |),
-                                                                      [ self ]
-                                                                    |)
-                                                                  ]
-                                                              |))
+                                                            M.alloc (|
+                                                              Value.Array
+                                                                [
+                                                                  M.read (|
+                                                                    Value.String
+                                                                      "internal error: entered unreachable code: Invalid state to DestroyedAgain from "
+                                                                  |)
+                                                                ]
+                                                            |);
+                                                            M.alloc (|
+                                                              Value.Array
+                                                                [
+                                                                  M.call_closure (|
+                                                                    M.get_associated_function (|
+                                                                      Ty.path
+                                                                        "core::fmt::rt::Argument",
+                                                                      "new_debug",
+                                                                      [
+                                                                        Ty.apply
+                                                                          (Ty.path "&mut")
+                                                                          []
+                                                                          [
+                                                                            Ty.path
+                                                                              "revm::db::states::bundle_account::BundleAccount"
+                                                                          ]
+                                                                      ]
+                                                                    |),
+                                                                    [ self ]
+                                                                  |)
+                                                                ]
+                                                            |)
                                                           ]
                                                         |)
                                                       ]

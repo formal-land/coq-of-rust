@@ -41,39 +41,31 @@ Module host.
               M.read (| f |);
               M.read (| Value.String "SStoreResult" |);
               M.read (| Value.String "original_value" |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "revm_interpreter::host::SStoreResult",
-                  "original_value"
-                |));
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "revm_interpreter::host::SStoreResult",
+                "original_value"
+              |);
               M.read (| Value.String "present_value" |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "revm_interpreter::host::SStoreResult",
-                  "present_value"
-                |));
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "revm_interpreter::host::SStoreResult",
+                "present_value"
+              |);
               M.read (| Value.String "new_value" |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.SubPointer.get_struct_record_field (|
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "revm_interpreter::host::SStoreResult",
+                "new_value"
+              |);
+              M.read (| Value.String "is_cold" |);
+              M.alloc (|
+                M.SubPointer.get_struct_record_field (|
                   M.read (| self |),
                   "revm_interpreter::host::SStoreResult",
-                  "new_value"
-                |));
-              M.read (| Value.String "is_cold" |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.alloc (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "revm_interpreter::host::SStoreResult",
-                    "is_cold"
-                  |)
-                |))
+                  "is_cold"
+                |)
+              |)
             ]
           |)))
       | _, _, _ => M.impossible
@@ -293,17 +285,6 @@ Module host.
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_revm_interpreter_host_SStoreResult.
   
-  Module Impl_core_marker_StructuralEq_for_revm_interpreter_host_SStoreResult.
-    Definition Self : Ty.t := Ty.path "revm_interpreter::host::SStoreResult".
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::marker::StructuralEq"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [].
-  End Impl_core_marker_StructuralEq_for_revm_interpreter_host_SStoreResult.
-  
   Module Impl_core_cmp_Eq_for_revm_interpreter_host_SStoreResult.
     Definition Self : Ty.t := Ty.path "revm_interpreter::host::SStoreResult".
     
@@ -370,23 +351,19 @@ Module host.
               M.read (| f |);
               M.read (| Value.String "LoadAccountResult" |);
               M.read (| Value.String "is_cold" |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.SubPointer.get_struct_record_field (|
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "revm_interpreter::host::LoadAccountResult",
+                "is_cold"
+              |);
+              M.read (| Value.String "is_empty" |);
+              M.alloc (|
+                M.SubPointer.get_struct_record_field (|
                   M.read (| self |),
                   "revm_interpreter::host::LoadAccountResult",
-                  "is_cold"
-                |));
-              M.read (| Value.String "is_empty" |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.alloc (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "revm_interpreter::host::LoadAccountResult",
-                    "is_empty"
-                  |)
-                |))
+                  "is_empty"
+                |)
+              |)
             ]
           |)))
       | _, _, _ => M.impossible
@@ -555,17 +532,6 @@ Module host.
         (* Trait polymorphic types *) []
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_revm_interpreter_host_LoadAccountResult.
-  
-  Module Impl_core_marker_StructuralEq_for_revm_interpreter_host_LoadAccountResult.
-    Definition Self : Ty.t := Ty.path "revm_interpreter::host::LoadAccountResult".
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::marker::StructuralEq"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [].
-  End Impl_core_marker_StructuralEq_for_revm_interpreter_host_LoadAccountResult.
   
   Module Impl_core_cmp_Eq_for_revm_interpreter_host_LoadAccountResult.
     Definition Self : Ty.t := Ty.path "revm_interpreter::host::LoadAccountResult".
@@ -767,39 +733,31 @@ Module host.
               M.read (| f |);
               M.read (| Value.String "SelfDestructResult" |);
               M.read (| Value.String "had_value" |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "revm_interpreter::host::SelfDestructResult",
-                  "had_value"
-                |));
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "revm_interpreter::host::SelfDestructResult",
+                "had_value"
+              |);
               M.read (| Value.String "target_exists" |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "revm_interpreter::host::SelfDestructResult",
-                  "target_exists"
-                |));
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "revm_interpreter::host::SelfDestructResult",
+                "target_exists"
+              |);
               M.read (| Value.String "is_cold" |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.SubPointer.get_struct_record_field (|
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "revm_interpreter::host::SelfDestructResult",
+                "is_cold"
+              |);
+              M.read (| Value.String "previously_destroyed" |);
+              M.alloc (|
+                M.SubPointer.get_struct_record_field (|
                   M.read (| self |),
                   "revm_interpreter::host::SelfDestructResult",
-                  "is_cold"
-                |));
-              M.read (| Value.String "previously_destroyed" |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.alloc (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "revm_interpreter::host::SelfDestructResult",
-                    "previously_destroyed"
-                  |)
-                |))
+                  "previously_destroyed"
+                |)
+              |)
             ]
           |)))
       | _, _, _ => M.impossible
@@ -913,17 +871,6 @@ Module host.
         (* Trait polymorphic types *) []
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_revm_interpreter_host_SelfDestructResult.
-  
-  Module Impl_core_marker_StructuralEq_for_revm_interpreter_host_SelfDestructResult.
-    Definition Self : Ty.t := Ty.path "revm_interpreter::host::SelfDestructResult".
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::marker::StructuralEq"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [].
-  End Impl_core_marker_StructuralEq_for_revm_interpreter_host_SelfDestructResult.
   
   Module Impl_core_cmp_Eq_for_revm_interpreter_host_SelfDestructResult.
     Definition Self : Ty.t := Ty.path "revm_interpreter::host::SelfDestructResult".

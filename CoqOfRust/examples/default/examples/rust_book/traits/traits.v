@@ -26,66 +26,62 @@ Module Animal.
                     M.call_closure (|
                       M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                       [
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.alloc (|
-                            Value.Array
-                              [
-                                M.read (| Value.String "" |);
-                                M.read (| Value.String " says " |);
-                                M.read (| Value.String "
+                        M.alloc (|
+                          Value.Array
+                            [
+                              M.read (| Value.String "" |);
+                              M.read (| Value.String " says " |);
+                              M.read (| Value.String "
 " |)
-                              ]
-                          |));
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.alloc (|
-                            Value.Array
-                              [
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "core::fmt::rt::Argument",
-                                    "new_display",
-                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
-                                  |),
-                                  [
-                                    M.alloc (|
-                                      M.call_closure (|
-                                        M.get_trait_method (|
-                                          "traits::Animal",
-                                          Self,
-                                          [],
-                                          "name",
-                                          []
-                                        |),
-                                        [ M.read (| self |) ]
-                                      |)
+                            ]
+                        |);
+                        M.alloc (|
+                          Value.Array
+                            [
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.path "core::fmt::rt::Argument",
+                                  "new_display",
+                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                                |),
+                                [
+                                  M.alloc (|
+                                    M.call_closure (|
+                                      M.get_trait_method (|
+                                        "traits::Animal",
+                                        Self,
+                                        [],
+                                        "name",
+                                        []
+                                      |),
+                                      [ M.read (| self |) ]
                                     |)
-                                  ]
-                                |);
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "core::fmt::rt::Argument",
-                                    "new_display",
-                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
-                                  |),
-                                  [
-                                    M.alloc (|
-                                      M.call_closure (|
-                                        M.get_trait_method (|
-                                          "traits::Animal",
-                                          Self,
-                                          [],
-                                          "noise",
-                                          []
-                                        |),
-                                        [ M.read (| self |) ]
-                                      |)
+                                  |)
+                                ]
+                              |);
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.path "core::fmt::rt::Argument",
+                                  "new_display",
+                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                                |),
+                                [
+                                  M.alloc (|
+                                    M.call_closure (|
+                                      M.get_trait_method (|
+                                        "traits::Animal",
+                                        Self,
+                                        [],
+                                        "noise",
+                                        []
+                                      |),
+                                      [ M.read (| self |) ]
                                     |)
-                                  ]
-                                |)
-                              ]
-                          |))
+                                  |)
+                                ]
+                              |)
+                            ]
+                        |)
                       ]
                     |)
                   ]
@@ -165,44 +161,40 @@ Module Impl_traits_Sheep.
                                 []
                               |),
                               [
-                                (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                    Value.Array
-                                      [
-                                        M.read (| Value.String "" |);
-                                        M.read (| Value.String " is already naked...
+                                M.alloc (|
+                                  Value.Array
+                                    [
+                                      M.read (| Value.String "" |);
+                                      M.read (| Value.String " is already naked...
 " |)
-                                      ]
-                                  |));
-                                (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                    Value.Array
-                                      [
-                                        M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.path "core::fmt::rt::Argument",
-                                            "new_display",
-                                            [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
-                                          |),
-                                          [
-                                            M.alloc (|
-                                              M.call_closure (|
-                                                M.get_trait_method (|
-                                                  "traits::Animal",
-                                                  Ty.path "traits::Sheep",
-                                                  [],
-                                                  "name",
-                                                  []
-                                                |),
-                                                [ M.read (| self |) ]
-                                              |)
+                                    ]
+                                |);
+                                M.alloc (|
+                                  Value.Array
+                                    [
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.path "core::fmt::rt::Argument",
+                                          "new_display",
+                                          [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                                        |),
+                                        [
+                                          M.alloc (|
+                                            M.call_closure (|
+                                              M.get_trait_method (|
+                                                "traits::Animal",
+                                                Ty.path "traits::Sheep",
+                                                [],
+                                                "name",
+                                                []
+                                              |),
+                                              [ M.read (| self |) ]
                                             |)
-                                          ]
-                                        |)
-                                      ]
-                                  |))
+                                          |)
+                                        ]
+                                      |)
+                                    ]
+                                |)
                               ]
                             |)
                           ]
@@ -225,37 +217,33 @@ Module Impl_traits_Sheep.
                                 []
                               |),
                               [
-                                (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                    Value.Array
-                                      [
-                                        M.read (| Value.String "" |);
-                                        M.read (| Value.String " gets a haircut!
+                                M.alloc (|
+                                  Value.Array
+                                    [
+                                      M.read (| Value.String "" |);
+                                      M.read (| Value.String " gets a haircut!
 " |)
-                                      ]
-                                  |));
-                                (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                    Value.Array
-                                      [
-                                        M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.path "core::fmt::rt::Argument",
-                                            "new_display",
-                                            [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
-                                          |),
-                                          [
-                                            M.SubPointer.get_struct_record_field (|
-                                              M.read (| self |),
-                                              "traits::Sheep",
-                                              "name"
-                                            |)
-                                          ]
-                                        |)
-                                      ]
-                                  |))
+                                    ]
+                                |);
+                                M.alloc (|
+                                  Value.Array
+                                    [
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.path "core::fmt::rt::Argument",
+                                          "new_display",
+                                          [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                                        |),
+                                        [
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.read (| self |),
+                                            "traits::Sheep",
+                                            "name"
+                                          |)
+                                        ]
+                                      |)
+                                    ]
+                                |)
                               ]
                             |)
                           ]
@@ -377,59 +365,55 @@ Module Impl_traits_Animal_for_traits_Sheep.
                     M.call_closure (|
                       M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                       [
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.alloc (|
-                            Value.Array
-                              [
-                                M.read (| Value.String "" |);
-                                M.read (| Value.String " pauses briefly... " |);
-                                M.read (| Value.String "
+                        M.alloc (|
+                          Value.Array
+                            [
+                              M.read (| Value.String "" |);
+                              M.read (| Value.String " pauses briefly... " |);
+                              M.read (| Value.String "
 " |)
-                              ]
-                          |));
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.alloc (|
-                            Value.Array
-                              [
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "core::fmt::rt::Argument",
-                                    "new_display",
-                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
-                                  |),
-                                  [
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.read (| self |),
-                                      "traits::Sheep",
-                                      "name"
+                            ]
+                        |);
+                        M.alloc (|
+                          Value.Array
+                            [
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.path "core::fmt::rt::Argument",
+                                  "new_display",
+                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                                |),
+                                [
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "traits::Sheep",
+                                    "name"
+                                  |)
+                                ]
+                              |);
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.path "core::fmt::rt::Argument",
+                                  "new_display",
+                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                                |),
+                                [
+                                  M.alloc (|
+                                    M.call_closure (|
+                                      M.get_trait_method (|
+                                        "traits::Animal",
+                                        Ty.path "traits::Sheep",
+                                        [],
+                                        "noise",
+                                        []
+                                      |),
+                                      [ M.read (| self |) ]
                                     |)
-                                  ]
-                                |);
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "core::fmt::rt::Argument",
-                                    "new_display",
-                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
-                                  |),
-                                  [
-                                    M.alloc (|
-                                      M.call_closure (|
-                                        M.get_trait_method (|
-                                          "traits::Animal",
-                                          Ty.path "traits::Sheep",
-                                          [],
-                                          "noise",
-                                          []
-                                        |),
-                                        [ M.read (| self |) ]
-                                      |)
-                                    |)
-                                  ]
-                                |)
-                              ]
-                          |))
+                                  |)
+                                ]
+                              |)
+                            ]
+                        |)
                       ]
                     |)
                   ]

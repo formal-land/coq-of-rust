@@ -369,7 +369,7 @@ Module Impl_core_cmp_PartialEq_for_erc1155_Error.
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
         M.read (|
-          let~ __self_tag :=
+          let~ __self_discr :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (|
@@ -379,7 +379,7 @@ Module Impl_core_cmp_PartialEq_for_erc1155_Error.
                 [ M.read (| self |) ]
               |)
             |) in
-          let~ __arg1_tag :=
+          let~ __arg1_discr :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (|
@@ -389,7 +389,7 @@ Module Impl_core_cmp_PartialEq_for_erc1155_Error.
                 [ M.read (| other |) ]
               |)
             |) in
-          M.alloc (| BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)) |)
+          M.alloc (| BinOp.Pure.eq (M.read (| __self_discr |)) (M.read (| __arg1_discr |)) |)
         |)))
     | _, _, _ => M.impossible
     end.
@@ -401,17 +401,6 @@ Module Impl_core_cmp_PartialEq_for_erc1155_Error.
       (* Trait polymorphic types *) []
       (* Instance *) [ ("eq", InstanceField.Method eq) ].
 End Impl_core_cmp_PartialEq_for_erc1155_Error.
-
-Module Impl_core_marker_StructuralEq_for_erc1155_Error.
-  Definition Self : Ty.t := Ty.path "erc1155::Error".
-  
-  Axiom Implements :
-    M.IsTraitInstance
-      "core::marker::StructuralEq"
-      Self
-      (* Trait polymorphic types *) []
-      (* Instance *) [].
-End Impl_core_marker_StructuralEq_for_erc1155_Error.
 
 Module Impl_core_cmp_Eq_for_erc1155_Error.
   Definition Self : Ty.t := Ty.path "erc1155::Error".
@@ -2823,29 +2812,21 @@ Module Impl_erc1155_Erc1155TokenReceiver_for_erc1155_Contract.
               M.call_closure (|
                 M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                 [
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.alloc (|
-                      Value.Array
-                        [
-                          M.read (|
-                            Value.String
-                              "not implemented: This smart contract does not accept token transfer."
-                          |)
-                        ]
-                    |));
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.alloc (|
-                      M.call_closure (|
-                        M.get_associated_function (|
-                          Ty.path "core::fmt::rt::Argument",
-                          "none",
-                          []
-                        |),
-                        []
-                      |)
-                    |))
+                  M.alloc (|
+                    Value.Array
+                      [
+                        M.read (|
+                          Value.String
+                            "not implemented: This smart contract does not accept token transfer."
+                        |)
+                      ]
+                  |);
+                  M.alloc (|
+                    M.call_closure (|
+                      M.get_associated_function (| Ty.path "core::fmt::rt::Argument", "none", [] |),
+                      []
+                    |)
+                  |)
                 ]
               |)
             ]
@@ -2894,29 +2875,21 @@ Module Impl_erc1155_Erc1155TokenReceiver_for_erc1155_Contract.
               M.call_closure (|
                 M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                 [
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.alloc (|
-                      Value.Array
-                        [
-                          M.read (|
-                            Value.String
-                              "not implemented: This smart contract does not accept batch token transfers."
-                          |)
-                        ]
-                    |));
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.alloc (|
-                      M.call_closure (|
-                        M.get_associated_function (|
-                          Ty.path "core::fmt::rt::Argument",
-                          "none",
-                          []
-                        |),
-                        []
-                      |)
-                    |))
+                  M.alloc (|
+                    Value.Array
+                      [
+                        M.read (|
+                          Value.String
+                            "not implemented: This smart contract does not accept batch token transfers."
+                        |)
+                      ]
+                  |);
+                  M.alloc (|
+                    M.call_closure (|
+                      M.get_associated_function (| Ty.path "core::fmt::rt::Argument", "none", [] |),
+                      []
+                    |)
+                  |)
                 ]
               |)
             ]

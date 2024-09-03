@@ -160,78 +160,58 @@ Module db.
                   |) in
                 let~ values :=
                   M.alloc (|
-                    (* Unsize *)
-                    M.pointer_coercion
-                      (M.alloc (|
-                        Value.Array
-                          [
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
-                                "revm::db::states::bundle_state::BundleBuilder",
-                                "states"
-                              |));
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
-                                "revm::db::states::bundle_state::BundleBuilder",
-                                "state_original"
-                              |));
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
-                                "revm::db::states::bundle_state::BundleBuilder",
-                                "state_present"
-                              |));
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
-                                "revm::db::states::bundle_state::BundleBuilder",
-                                "state_storage"
-                              |));
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
-                                "revm::db::states::bundle_state::BundleBuilder",
-                                "reverts"
-                              |));
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
-                                "revm::db::states::bundle_state::BundleBuilder",
-                                "revert_range"
-                              |));
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
-                                "revm::db::states::bundle_state::BundleBuilder",
-                                "revert_account"
-                              |));
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
-                                "revm::db::states::bundle_state::BundleBuilder",
-                                "revert_storage"
-                              |));
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.alloc (|
-                                M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
-                                  "revm::db::states::bundle_state::BundleBuilder",
-                                  "contracts"
-                                |)
-                              |))
-                          ]
-                      |))
+                    M.alloc (|
+                      Value.Array
+                        [
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "revm::db::states::bundle_state::BundleBuilder",
+                            "states"
+                          |);
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "revm::db::states::bundle_state::BundleBuilder",
+                            "state_original"
+                          |);
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "revm::db::states::bundle_state::BundleBuilder",
+                            "state_present"
+                          |);
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "revm::db::states::bundle_state::BundleBuilder",
+                            "state_storage"
+                          |);
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "revm::db::states::bundle_state::BundleBuilder",
+                            "reverts"
+                          |);
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "revm::db::states::bundle_state::BundleBuilder",
+                            "revert_range"
+                          |);
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "revm::db::states::bundle_state::BundleBuilder",
+                            "revert_account"
+                          |);
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "revm::db::states::bundle_state::BundleBuilder",
+                            "revert_storage"
+                          |);
+                          M.alloc (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "revm::db::states::bundle_state::BundleBuilder",
+                              "contracts"
+                            |)
+                          |)
+                        ]
+                    |)
                   |) in
                 M.alloc (|
                   M.call_closure (|
@@ -243,7 +223,7 @@ Module db.
                     [
                       M.read (| f |);
                       M.read (| Value.String "BundleBuilder" |);
-                      (* Unsize *) M.pointer_coercion (M.read (| names |));
+                      M.read (| names |);
                       M.read (| values |)
                     ]
                   |)
@@ -387,7 +367,7 @@ Module db.
               (let self := M.alloc (| self |) in
               let other := M.alloc (| other |) in
               M.read (|
-                let~ __self_tag :=
+                let~ __self_discr :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_function (|
@@ -397,7 +377,7 @@ Module db.
                       [ M.read (| self |) ]
                     |)
                   |) in
-                let~ __arg1_tag :=
+                let~ __arg1_discr :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_function (|
@@ -407,7 +387,7 @@ Module db.
                       [ M.read (| other |) ]
                     |)
                   |) in
-                M.alloc (| BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)) |)
+                M.alloc (| BinOp.Pure.eq (M.read (| __self_discr |)) (M.read (| __arg1_discr |)) |)
               |)))
           | _, _, _ => M.impossible
           end.
@@ -419,17 +399,6 @@ Module db.
             (* Trait polymorphic types *) []
             (* Instance *) [ ("eq", InstanceField.Method eq) ].
       End Impl_core_cmp_PartialEq_for_revm_db_states_bundle_state_OriginalValuesKnown.
-      
-      Module Impl_core_marker_StructuralEq_for_revm_db_states_bundle_state_OriginalValuesKnown.
-        Definition Self : Ty.t := Ty.path "revm::db::states::bundle_state::OriginalValuesKnown".
-        
-        Axiom Implements :
-          M.IsTraitInstance
-            "core::marker::StructuralEq"
-            Self
-            (* Trait polymorphic types *) []
-            (* Instance *) [].
-      End Impl_core_marker_StructuralEq_for_revm_db_states_bundle_state_OriginalValuesKnown.
       
       Module Impl_core_cmp_Eq_for_revm_db_states_bundle_state_OriginalValuesKnown.
         Definition Self : Ty.t := Ty.path "revm::db::states::bundle_state::OriginalValuesKnown".
@@ -468,7 +437,7 @@ Module db.
               (let self := M.alloc (| self |) in
               let other := M.alloc (| other |) in
               M.read (|
-                let~ __self_tag :=
+                let~ __self_discr :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_function (|
@@ -478,7 +447,7 @@ Module db.
                       [ M.read (| self |) ]
                     |)
                   |) in
-                let~ __arg1_tag :=
+                let~ __arg1_discr :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_function (|
@@ -497,7 +466,7 @@ Module db.
                       "partial_cmp",
                       []
                     |),
-                    [ __self_tag; __arg1_tag ]
+                    [ __self_discr; __arg1_discr ]
                   |)
                 |)
               |)))
@@ -523,7 +492,7 @@ Module db.
               (let self := M.alloc (| self |) in
               let other := M.alloc (| other |) in
               M.read (|
-                let~ __self_tag :=
+                let~ __self_discr :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_function (|
@@ -533,7 +502,7 @@ Module db.
                       [ M.read (| self |) ]
                     |)
                   |) in
-                let~ __arg1_tag :=
+                let~ __arg1_discr :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_function (|
@@ -546,7 +515,7 @@ Module db.
                 M.alloc (|
                   M.call_closure (|
                     M.get_trait_method (| "core::cmp::Ord", Ty.path "isize", [], "cmp", [] |),
-                    [ __self_tag; __arg1_tag ]
+                    [ __self_discr; __arg1_discr ]
                   |)
                 |)
               |)))
@@ -572,7 +541,7 @@ Module db.
               (let self := M.alloc (| self |) in
               let state := M.alloc (| state |) in
               M.read (|
-                let~ __self_tag :=
+                let~ __self_discr :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_function (|
@@ -591,7 +560,7 @@ Module db.
                       "hash",
                       [ __H ]
                     |),
-                    [ __self_tag; M.read (| state |) ]
+                    [ __self_discr; M.read (| state |) ]
                   |)
                 |)
               |)))
@@ -3956,47 +3925,37 @@ Module db.
                   M.read (| f |);
                   M.read (| Value.String "BundleState" |);
                   M.read (| Value.String "state" |);
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "revm::db::states::bundle_state::BundleState",
-                      "state"
-                    |));
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "revm::db::states::bundle_state::BundleState",
+                    "state"
+                  |);
                   M.read (| Value.String "contracts" |);
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "revm::db::states::bundle_state::BundleState",
-                      "contracts"
-                    |));
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "revm::db::states::bundle_state::BundleState",
+                    "contracts"
+                  |);
                   M.read (| Value.String "reverts" |);
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "revm::db::states::bundle_state::BundleState",
-                      "reverts"
-                    |));
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "revm::db::states::bundle_state::BundleState",
+                    "reverts"
+                  |);
                   M.read (| Value.String "state_size" |);
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.SubPointer.get_struct_record_field (|
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "revm::db::states::bundle_state::BundleState",
+                    "state_size"
+                  |);
+                  M.read (| Value.String "reverts_size" |);
+                  M.alloc (|
+                    M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
                       "revm::db::states::bundle_state::BundleState",
-                      "state_size"
-                    |));
-                  M.read (| Value.String "reverts_size" |);
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.alloc (|
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "revm::db::states::bundle_state::BundleState",
-                        "reverts_size"
-                      |)
-                    |))
+                      "reverts_size"
+                    |)
+                  |)
                 ]
               |)))
           | _, _, _ => M.impossible
@@ -4184,17 +4143,6 @@ Module db.
             (* Trait polymorphic types *) []
             (* Instance *) [ ("eq", InstanceField.Method eq) ].
       End Impl_core_cmp_PartialEq_for_revm_db_states_bundle_state_BundleState.
-      
-      Module Impl_core_marker_StructuralEq_for_revm_db_states_bundle_state_BundleState.
-        Definition Self : Ty.t := Ty.path "revm::db::states::bundle_state::BundleState".
-        
-        Axiom Implements :
-          M.IsTraitInstance
-            "core::marker::StructuralEq"
-            Self
-            (* Trait polymorphic types *) []
-            (* Instance *) [].
-      End Impl_core_marker_StructuralEq_for_revm_db_states_bundle_state_BundleState.
       
       Module Impl_core_cmp_Eq_for_revm_db_states_bundle_state_BundleState.
         Definition Self : Ty.t := Ty.path "revm::db::states::bundle_state::BundleState".

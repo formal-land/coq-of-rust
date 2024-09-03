@@ -63,17 +63,15 @@ Module evm.
                     |)
                   |);
                   M.read (| Value.String "evm context" |);
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.SubPointer.get_struct_record_field (|
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "revm::evm::Evm",
-                        "context"
-                      |),
-                      "revm::context::Context",
-                      "evm"
-                    |))
+                  M.SubPointer.get_struct_record_field (|
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "revm::evm::Evm",
+                      "context"
+                    |),
+                    "revm::context::Context",
+                    "evm"
+                  |)
                 ]
               |)
             ]
@@ -3582,29 +3580,25 @@ Module evm.
                                                   []
                                                 |),
                                                 [
-                                                  (* Unsize *)
-                                                  M.pointer_coercion
-                                                    (M.alloc (|
-                                                      Value.Array
-                                                        [
-                                                          M.read (|
-                                                            Value.String
-                                                              "internal error: entered unreachable code: InterpreterAction::None is not expected"
-                                                          |)
-                                                        ]
-                                                    |));
-                                                  (* Unsize *)
-                                                  M.pointer_coercion
-                                                    (M.alloc (|
-                                                      M.call_closure (|
-                                                        M.get_associated_function (|
-                                                          Ty.path "core::fmt::rt::Argument",
-                                                          "none",
-                                                          []
-                                                        |),
+                                                  M.alloc (|
+                                                    Value.Array
+                                                      [
+                                                        M.read (|
+                                                          Value.String
+                                                            "internal error: entered unreachable code: InterpreterAction::None is not expected"
+                                                        |)
+                                                      ]
+                                                  |);
+                                                  M.alloc (|
+                                                    M.call_closure (|
+                                                      M.get_associated_function (|
+                                                        Ty.path "core::fmt::rt::Argument",
+                                                        "none",
                                                         []
-                                                      |)
-                                                    |))
+                                                      |),
+                                                      []
+                                                    |)
+                                                  |)
                                                 ]
                                               |)
                                             ]

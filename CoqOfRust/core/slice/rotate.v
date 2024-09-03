@@ -14,7 +14,9 @@ Module slice.
             if (right == 0) || (left == 0) {
                 return;
             }
-            if (left + right < 24) || (mem::size_of::<T>() > mem::size_of::<[usize; 4]>()) {
+            if !cfg!(feature = "optimize_for_size")
+                && ((left + right < 24) || (mem::size_of::<T>() > mem::size_of::<[usize; 4]>()))
+            {
                 // Algorithm 1
                 // Microbenchmarks indicate that the average performance for random shifts is better all
                 // the way until about `left + right == 32`, but the worst case performance breaks even
@@ -101,7 +103,9 @@ Module slice.
                 }
                 return;
             // `T` is not a zero-sized type, so it's okay to divide by its size.
-            } else if cmp::min(left, right) <= mem::size_of::<BufType>() / mem::size_of::<T>() {
+            } else if !cfg!(feature = "optimize_for_size")
+                && cmp::min(left, right) <= mem::size_of::<BufType>() / mem::size_of::<T>()
+            {
                 // Algorithm 2
                 // The `[T; 0]` here is to ensure this is appropriately aligned for T
                 let mut rawarray = MaybeUninit::<(BufType, [T; 0])>::uninit();
@@ -243,31 +247,38 @@ Module slice.
                                   (let γ :=
                                     M.use
                                       (M.alloc (|
-                                        LogicalOp.or (|
-                                          BinOp.Pure.lt
-                                            (BinOp.Wrap.add
-                                              Integer.Usize
-                                              (M.read (| left |))
-                                              (M.read (| right |)))
-                                            (Value.Integer 24),
+                                        LogicalOp.and (|
+                                          UnOp.Pure.not (Value.Bool false),
                                           ltac:(M.monadic
-                                            (BinOp.Pure.gt
-                                              (M.call_closure (|
-                                                M.get_function (| "core::mem::size_of", [ T ] |),
-                                                []
-                                              |))
-                                              (M.call_closure (|
-                                                M.get_function (|
-                                                  "core::mem::size_of",
-                                                  [
-                                                    Ty.apply
-                                                      (Ty.path "array")
-                                                      [ Value.Integer 4 ]
-                                                      [ Ty.path "usize" ]
-                                                  ]
-                                                |),
-                                                []
-                                              |))))
+                                            (LogicalOp.or (|
+                                              BinOp.Pure.lt
+                                                (BinOp.Wrap.add
+                                                  Integer.Usize
+                                                  (M.read (| left |))
+                                                  (M.read (| right |)))
+                                                (Value.Integer 24),
+                                              ltac:(M.monadic
+                                                (BinOp.Pure.gt
+                                                  (M.call_closure (|
+                                                    M.get_function (|
+                                                      "core::mem::size_of",
+                                                      [ T ]
+                                                    |),
+                                                    []
+                                                  |))
+                                                  (M.call_closure (|
+                                                    M.get_function (|
+                                                      "core::mem::size_of",
+                                                      [
+                                                        Ty.apply
+                                                          (Ty.path "array")
+                                                          [ Value.Integer 4 ]
+                                                          [ Ty.path "usize" ]
+                                                      ]
+                                                    |),
+                                                    []
+                                                  |))))
+                                            |)))
                                         |)
                                       |)) in
                                   let _ :=
@@ -739,35 +750,39 @@ Module slice.
                                           (let γ :=
                                             M.use
                                               (M.alloc (|
-                                                BinOp.Pure.le
-                                                  (M.call_closure (|
-                                                    M.get_function (|
-                                                      "core::cmp::min",
-                                                      [ Ty.path "usize" ]
-                                                    |),
-                                                    [ M.read (| left |); M.read (| right |) ]
-                                                  |))
-                                                  (BinOp.Wrap.div
-                                                    Integer.Usize
-                                                    (M.call_closure (|
-                                                      M.get_function (|
-                                                        "core::mem::size_of",
-                                                        [
-                                                          Ty.apply
-                                                            (Ty.path "array")
-                                                            [ Value.Integer 32 ]
-                                                            [ Ty.path "usize" ]
-                                                        ]
-                                                      |),
-                                                      []
-                                                    |))
-                                                    (M.call_closure (|
-                                                      M.get_function (|
-                                                        "core::mem::size_of",
-                                                        [ T ]
-                                                      |),
-                                                      []
-                                                    |)))
+                                                LogicalOp.and (|
+                                                  UnOp.Pure.not (Value.Bool false),
+                                                  ltac:(M.monadic
+                                                    (BinOp.Pure.le
+                                                      (M.call_closure (|
+                                                        M.get_function (|
+                                                          "core::cmp::min",
+                                                          [ Ty.path "usize" ]
+                                                        |),
+                                                        [ M.read (| left |); M.read (| right |) ]
+                                                      |))
+                                                      (BinOp.Wrap.div
+                                                        Integer.Usize
+                                                        (M.call_closure (|
+                                                          M.get_function (|
+                                                            "core::mem::size_of",
+                                                            [
+                                                              Ty.apply
+                                                                (Ty.path "array")
+                                                                [ Value.Integer 32 ]
+                                                                [ Ty.path "usize" ]
+                                                            ]
+                                                          |),
+                                                          []
+                                                        |))
+                                                        (M.call_closure (|
+                                                          M.get_function (|
+                                                            "core::mem::size_of",
+                                                            [ T ]
+                                                          |),
+                                                          []
+                                                        |)))))
+                                                |)
                                               |)) in
                                           let _ :=
                                             M.is_constant_or_break_match (|

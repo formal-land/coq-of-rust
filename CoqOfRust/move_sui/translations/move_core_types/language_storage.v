@@ -35,7 +35,7 @@ Module language_storage.
                 []
               |),
               [
-                (* ClosureFnPointer(Normal) *)
+                (* ClosureFnPointer(Safe) *)
                 M.pointer_coercion
                   (M.closure
                     (fun γ =>
@@ -1536,11 +1536,7 @@ Module language_storage.
                           "debug_tuple_field1_finish",
                           []
                         |),
-                        [
-                          M.read (| f |);
-                          M.read (| Value.String "Vector" |);
-                          (* Unsize *) M.pointer_coercion __self_0
-                        ]
+                        [ M.read (| f |); M.read (| Value.String "Vector" |); __self_0 ]
                       |)
                     |)));
                 fun γ =>
@@ -1560,11 +1556,7 @@ Module language_storage.
                           "debug_tuple_field1_finish",
                           []
                         |),
-                        [
-                          M.read (| f |);
-                          M.read (| Value.String "Struct" |);
-                          (* Unsize *) M.pointer_coercion __self_0
-                        ]
+                        [ M.read (| f |); M.read (| Value.String "Struct" |); __self_0 ]
                       |)
                     |)));
                 fun γ =>
@@ -1657,7 +1649,7 @@ Module language_storage.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ __self_tag :=
+            let~ __self_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -1667,7 +1659,7 @@ Module language_storage.
                   [ M.read (| self |) ]
                 |)
               |) in
-            let~ __arg1_tag :=
+            let~ __arg1_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -1679,7 +1671,7 @@ Module language_storage.
               |) in
             M.alloc (|
               LogicalOp.and (|
-                BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)),
+                BinOp.Pure.eq (M.read (| __self_discr |)) (M.read (| __arg1_discr |)),
                 ltac:(M.monadic
                   (M.read (|
                     M.match_operator (|
@@ -1710,25 +1702,35 @@ Module language_storage.
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply
-                                    (Ty.path "alloc::boxed::Box")
+                                    (Ty.path "&")
                                     []
                                     [
-                                      Ty.path "move_core_types::language_storage::TypeTag";
-                                      Ty.path "alloc::alloc::Global"
+                                      Ty.apply
+                                        (Ty.path "alloc::boxed::Box")
+                                        []
+                                        [
+                                          Ty.path "move_core_types::language_storage::TypeTag";
+                                          Ty.path "alloc::alloc::Global"
+                                        ]
                                     ],
                                   [
                                     Ty.apply
-                                      (Ty.path "alloc::boxed::Box")
+                                      (Ty.path "&")
                                       []
                                       [
-                                        Ty.path "move_core_types::language_storage::TypeTag";
-                                        Ty.path "alloc::alloc::Global"
+                                        Ty.apply
+                                          (Ty.path "alloc::boxed::Box")
+                                          []
+                                          [
+                                            Ty.path "move_core_types::language_storage::TypeTag";
+                                            Ty.path "alloc::alloc::Global"
+                                          ]
                                       ]
                                   ],
                                   "eq",
                                   []
                                 |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                [ __self_0; __arg1_0 ]
                               |)
                             |)));
                         fun γ =>
@@ -1756,25 +1758,35 @@ Module language_storage.
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply
-                                    (Ty.path "alloc::boxed::Box")
+                                    (Ty.path "&")
                                     []
                                     [
-                                      Ty.path "move_core_types::language_storage::StructTag";
-                                      Ty.path "alloc::alloc::Global"
+                                      Ty.apply
+                                        (Ty.path "alloc::boxed::Box")
+                                        []
+                                        [
+                                          Ty.path "move_core_types::language_storage::StructTag";
+                                          Ty.path "alloc::alloc::Global"
+                                        ]
                                     ],
                                   [
                                     Ty.apply
-                                      (Ty.path "alloc::boxed::Box")
+                                      (Ty.path "&")
                                       []
                                       [
-                                        Ty.path "move_core_types::language_storage::StructTag";
-                                        Ty.path "alloc::alloc::Global"
+                                        Ty.apply
+                                          (Ty.path "alloc::boxed::Box")
+                                          []
+                                          [
+                                            Ty.path "move_core_types::language_storage::StructTag";
+                                            Ty.path "alloc::alloc::Global"
+                                          ]
                                       ]
                                   ],
                                   "eq",
                                   []
                                 |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                [ __self_0; __arg1_0 ]
                               |)
                             |)));
                         fun γ => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
@@ -1806,7 +1818,7 @@ Module language_storage.
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
           M.read (|
-            let~ __self_tag :=
+            let~ __self_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -1820,7 +1832,7 @@ Module language_storage.
               M.alloc (|
                 M.call_closure (|
                   M.get_trait_method (| "core::hash::Hash", Ty.path "isize", [], "hash", [ __H ] |),
-                  [ __self_tag; M.read (| state |) ]
+                  [ __self_discr; M.read (| state |) ]
                 |)
               |) in
             M.match_operator (|
@@ -1896,17 +1908,6 @@ Module language_storage.
         (* Trait polymorphic types *) []
         (* Instance *) [ ("hash", InstanceField.Method hash) ].
   End Impl_core_hash_Hash_for_move_core_types_language_storage_TypeTag.
-  
-  Module Impl_core_marker_StructuralEq_for_move_core_types_language_storage_TypeTag.
-    Definition Self : Ty.t := Ty.path "move_core_types::language_storage::TypeTag".
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::marker::StructuralEq"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [].
-  End Impl_core_marker_StructuralEq_for_move_core_types_language_storage_TypeTag.
   
   Module Impl_core_cmp_Eq_for_move_core_types_language_storage_TypeTag.
     Definition Self : Ty.t := Ty.path "move_core_types::language_storage::TypeTag".
@@ -2144,7 +2145,7 @@ Module language_storage.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ __self_tag :=
+            let~ __self_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -2154,7 +2155,7 @@ Module language_storage.
                   [ M.read (| self |) ]
                 |)
               |) in
-            let~ __arg1_tag :=
+            let~ __arg1_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -2270,7 +2271,7 @@ Module language_storage.
                           "partial_cmp",
                           []
                         |),
-                        [ __self_tag; __arg1_tag ]
+                        [ __self_discr; __arg1_discr ]
                       |)
                     |)))
               ]
@@ -2298,7 +2299,7 @@ Module language_storage.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ __self_tag :=
+            let~ __self_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -2308,7 +2309,7 @@ Module language_storage.
                   [ M.read (| self |) ]
                 |)
               |) in
-            let~ __arg1_tag :=
+            let~ __arg1_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -2322,7 +2323,7 @@ Module language_storage.
               M.alloc (|
                 M.call_closure (|
                   M.get_trait_method (| "core::cmp::Ord", Ty.path "isize", [], "cmp", [] |),
-                  [ __self_tag; __arg1_tag ]
+                  [ __self_discr; __arg1_discr ]
                 |)
               |),
               [
@@ -2830,39 +2831,31 @@ Module language_storage.
               M.read (| f |);
               M.read (| Value.String "StructTag" |);
               M.read (| Value.String "address" |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "move_core_types::language_storage::StructTag",
-                  "address"
-                |));
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "move_core_types::language_storage::StructTag",
+                "address"
+              |);
               M.read (| Value.String "module" |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "move_core_types::language_storage::StructTag",
-                  "module"
-                |));
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "move_core_types::language_storage::StructTag",
+                "module"
+              |);
               M.read (| Value.String "name" |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.SubPointer.get_struct_record_field (|
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "move_core_types::language_storage::StructTag",
+                "name"
+              |);
+              M.read (| Value.String "type_params" |);
+              M.alloc (|
+                M.SubPointer.get_struct_record_field (|
                   M.read (| self |),
                   "move_core_types::language_storage::StructTag",
-                  "name"
-                |));
-              M.read (| Value.String "type_params" |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.alloc (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "move_core_types::language_storage::StructTag",
-                    "type_params"
-                  |)
-                |))
+                  "type_params"
+                |)
+              |)
             ]
           |)))
       | _, _, _ => M.impossible
@@ -3122,17 +3115,6 @@ Module language_storage.
         (* Trait polymorphic types *) []
         (* Instance *) [ ("hash", InstanceField.Method hash) ].
   End Impl_core_hash_Hash_for_move_core_types_language_storage_StructTag.
-  
-  Module Impl_core_marker_StructuralEq_for_move_core_types_language_storage_StructTag.
-    Definition Self : Ty.t := Ty.path "move_core_types::language_storage::StructTag".
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::marker::StructuralEq"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [].
-  End Impl_core_marker_StructuralEq_for_move_core_types_language_storage_StructTag.
   
   Module Impl_core_cmp_Eq_for_move_core_types_language_storage_StructTag.
     Definition Self : Ty.t := Ty.path "move_core_types::language_storage::StructTag".
@@ -3639,35 +3621,33 @@ Module language_storage.
                     [ Ty.path "alloc::alloc::Global" ]
                   |),
                   [
-                    (* Unsize *)
-                    M.pointer_coercion
-                      (M.read (|
-                        M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.apply
-                              (Ty.path "alloc::boxed::Box")
-                              []
-                              [
-                                Ty.apply (Ty.path "array") [ Value.Integer 1 ] [ Ty.path "u8" ];
-                                Ty.path "alloc::alloc::Global"
-                              ],
-                            "new",
+                    M.read (|
+                      M.call_closure (|
+                        M.get_associated_function (|
+                          Ty.apply
+                            (Ty.path "alloc::boxed::Box")
                             []
-                          |),
-                          [
-                            M.alloc (|
-                              Value.Array
-                                [
-                                  M.read (|
-                                    M.get_constant (|
-                                      "move_core_types::language_storage::RESOURCE_TAG"
-                                    |)
+                            [
+                              Ty.apply (Ty.path "array") [ Value.Integer 1 ] [ Ty.path "u8" ];
+                              Ty.path "alloc::alloc::Global"
+                            ],
+                          "new",
+                          []
+                        |),
+                        [
+                          M.alloc (|
+                            Value.Array
+                              [
+                                M.read (|
+                                  M.get_constant (|
+                                    "move_core_types::language_storage::RESOURCE_TAG"
                                   |)
-                                ]
-                            |)
-                          ]
-                        |)
-                      |))
+                                |)
+                              ]
+                          |)
+                        ]
+                      |)
+                    |)
                   ]
                 |)
               |) in
@@ -4444,23 +4424,19 @@ Module language_storage.
               M.read (| f |);
               M.read (| Value.String "ResourceKey" |);
               M.read (| Value.String "address" |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.SubPointer.get_struct_record_field (|
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "move_core_types::language_storage::ResourceKey",
+                "address"
+              |);
+              M.read (| Value.String "type_" |);
+              M.alloc (|
+                M.SubPointer.get_struct_record_field (|
                   M.read (| self |),
                   "move_core_types::language_storage::ResourceKey",
-                  "address"
-                |));
-              M.read (| Value.String "type_" |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.alloc (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "move_core_types::language_storage::ResourceKey",
-                    "type_"
-                  |)
-                |))
+                  "type_"
+                |)
+              |)
             ]
           |)))
       | _, _, _ => M.impossible
@@ -4612,17 +4588,6 @@ Module language_storage.
         (* Trait polymorphic types *) []
         (* Instance *) [ ("hash", InstanceField.Method hash) ].
   End Impl_core_hash_Hash_for_move_core_types_language_storage_ResourceKey.
-  
-  Module Impl_core_marker_StructuralEq_for_move_core_types_language_storage_ResourceKey.
-    Definition Self : Ty.t := Ty.path "move_core_types::language_storage::ResourceKey".
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::marker::StructuralEq"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [].
-  End Impl_core_marker_StructuralEq_for_move_core_types_language_storage_ResourceKey.
   
   Module Impl_core_cmp_Eq_for_move_core_types_language_storage_ResourceKey.
     Definition Self : Ty.t := Ty.path "move_core_types::language_storage::ResourceKey".
@@ -4985,23 +4950,19 @@ Module language_storage.
               M.read (| f |);
               M.read (| Value.String "ModuleId" |);
               M.read (| Value.String "address" |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.SubPointer.get_struct_record_field (|
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "move_core_types::language_storage::ModuleId",
+                "address"
+              |);
+              M.read (| Value.String "name" |);
+              M.alloc (|
+                M.SubPointer.get_struct_record_field (|
                   M.read (| self |),
                   "move_core_types::language_storage::ModuleId",
-                  "address"
-                |));
-              M.read (| Value.String "name" |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.alloc (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "move_core_types::language_storage::ModuleId",
-                    "name"
-                  |)
-                |))
+                  "name"
+                |)
+              |)
             ]
           |)))
       | _, _, _ => M.impossible
@@ -5153,17 +5114,6 @@ Module language_storage.
         (* Trait polymorphic types *) []
         (* Instance *) [ ("hash", InstanceField.Method hash) ].
   End Impl_core_hash_Hash_for_move_core_types_language_storage_ModuleId.
-  
-  Module Impl_core_marker_StructuralEq_for_move_core_types_language_storage_ModuleId.
-    Definition Self : Ty.t := Ty.path "move_core_types::language_storage::ModuleId".
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::marker::StructuralEq"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [].
-  End Impl_core_marker_StructuralEq_for_move_core_types_language_storage_ModuleId.
   
   Module Impl_core_cmp_Eq_for_move_core_types_language_storage_ModuleId.
     Definition Self : Ty.t := Ty.path "move_core_types::language_storage::ModuleId".
@@ -5569,35 +5519,31 @@ Module language_storage.
                     [ Ty.path "alloc::alloc::Global" ]
                   |),
                   [
-                    (* Unsize *)
-                    M.pointer_coercion
-                      (M.read (|
-                        M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.apply
-                              (Ty.path "alloc::boxed::Box")
-                              []
-                              [
-                                Ty.apply (Ty.path "array") [ Value.Integer 1 ] [ Ty.path "u8" ];
-                                Ty.path "alloc::alloc::Global"
-                              ],
-                            "new",
+                    M.read (|
+                      M.call_closure (|
+                        M.get_associated_function (|
+                          Ty.apply
+                            (Ty.path "alloc::boxed::Box")
                             []
-                          |),
-                          [
-                            M.alloc (|
-                              Value.Array
-                                [
-                                  M.read (|
-                                    M.get_constant (|
-                                      "move_core_types::language_storage::CODE_TAG"
-                                    |)
-                                  |)
-                                ]
-                            |)
-                          ]
-                        |)
-                      |))
+                            [
+                              Ty.apply (Ty.path "array") [ Value.Integer 1 ] [ Ty.path "u8" ];
+                              Ty.path "alloc::alloc::Global"
+                            ],
+                          "new",
+                          []
+                        |),
+                        [
+                          M.alloc (|
+                            Value.Array
+                              [
+                                M.read (|
+                                  M.get_constant (| "move_core_types::language_storage::CODE_TAG" |)
+                                |)
+                              ]
+                          |)
+                        ]
+                      |)
+                    |)
                   ]
                 |)
               |) in
@@ -5732,74 +5678,79 @@ Module language_storage.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.read (|
-            let~ res :=
-              M.alloc (|
-                M.call_closure (|
-                  M.get_function (| "alloc::fmt::format", [] |),
-                  [
+          M.call_closure (|
+            M.get_function (| "core::hint::must_use", [ Ty.path "alloc::string::String" ] |),
+            [
+              M.read (|
+                let~ res :=
+                  M.alloc (|
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                      M.get_function (| "alloc::fmt::format", [] |),
                       [
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.alloc (|
-                            Value.Array
-                              [ M.read (| Value.String "0x" |); M.read (| Value.String "::" |) ]
-                          |));
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.alloc (|
-                            Value.Array
-                              [
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "core::fmt::rt::Argument",
-                                    "new_display",
-                                    [ Ty.path "alloc::string::String" ]
-                                  |),
-                                  [
-                                    M.alloc (|
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path
-                                            "move_core_types::account_address::AccountAddress",
-                                          "short_str_lossless",
-                                          []
-                                        |),
-                                        [
-                                          M.SubPointer.get_struct_record_field (|
-                                            M.read (| self |),
-                                            "move_core_types::language_storage::ModuleId",
-                                            "address"
-                                          |)
-                                        ]
+                        M.call_closure (|
+                          M.get_associated_function (|
+                            Ty.path "core::fmt::Arguments",
+                            "new_v1",
+                            []
+                          |),
+                          [
+                            M.alloc (|
+                              Value.Array
+                                [ M.read (| Value.String "0x" |); M.read (| Value.String "::" |) ]
+                            |);
+                            M.alloc (|
+                              Value.Array
+                                [
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_display",
+                                      [ Ty.path "alloc::string::String" ]
+                                    |),
+                                    [
+                                      M.alloc (|
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path
+                                              "move_core_types::account_address::AccountAddress",
+                                            "short_str_lossless",
+                                            []
+                                          |),
+                                          [
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.read (| self |),
+                                              "move_core_types::language_storage::ModuleId",
+                                              "address"
+                                            |)
+                                          ]
+                                        |)
                                       |)
-                                    |)
-                                  ]
-                                |);
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "core::fmt::rt::Argument",
-                                    "new_display",
-                                    [ Ty.path "move_core_types::identifier::Identifier" ]
-                                  |),
-                                  [
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.read (| self |),
-                                      "move_core_types::language_storage::ModuleId",
-                                      "name"
-                                    |)
-                                  ]
-                                |)
-                              ]
-                          |))
+                                    ]
+                                  |);
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_display",
+                                      [ Ty.path "move_core_types::identifier::Identifier" ]
+                                    |),
+                                    [
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (| self |),
+                                        "move_core_types::language_storage::ModuleId",
+                                        "name"
+                                      |)
+                                    ]
+                                  |)
+                                ]
+                            |)
+                          ]
+                        |)
                       ]
                     |)
-                  ]
-                |)
-              |) in
-            res
+                  |) in
+                res
+              |)
+            ]
           |)))
       | _, _, _ => M.impossible
       end.
@@ -5829,34 +5780,31 @@ Module language_storage.
               M.call_closure (|
                 M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                 [
-                  (* Unsize *)
-                  M.pointer_coercion (M.alloc (| Value.Array [ M.read (| Value.String "" |) ] |));
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.alloc (|
-                      Value.Array
-                        [
-                          M.call_closure (|
-                            M.get_associated_function (|
-                              Ty.path "core::fmt::rt::Argument",
-                              "new_display",
-                              [ Ty.associated ]
-                            |),
-                            [
-                              M.alloc (|
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "move_core_types::language_storage::ModuleId",
-                                    "to_canonical_display",
-                                    []
-                                  |),
-                                  [ M.read (| self |); Value.Bool false ]
-                                |)
+                  M.alloc (| Value.Array [ M.read (| Value.String "" |) ] |);
+                  M.alloc (|
+                    Value.Array
+                      [
+                        M.call_closure (|
+                          M.get_associated_function (|
+                            Ty.path "core::fmt::rt::Argument",
+                            "new_display",
+                            [ Ty.associated ]
+                          |),
+                          [
+                            M.alloc (|
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.path "move_core_types::language_storage::ModuleId",
+                                  "to_canonical_display",
+                                  []
+                                |),
+                                [ M.read (| self |); Value.Bool false ]
                               |)
-                            ]
-                          |)
-                        ]
-                    |))
+                            |)
+                          ]
+                        |)
+                      ]
+                  |)
                 ]
               |)
             ]
@@ -5935,77 +5883,73 @@ Module language_storage.
                                   []
                                 |),
                                 [
-                                  (* Unsize *)
-                                  M.pointer_coercion
-                                    (M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.read (| Value.String "0x" |);
-                                          M.read (| Value.String "::" |);
-                                          M.read (| Value.String "::" |)
-                                        ]
-                                    |));
-                                  (* Unsize *)
-                                  M.pointer_coercion
-                                    (M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.call_closure (|
-                                            M.get_associated_function (|
-                                              Ty.path "core::fmt::rt::Argument",
-                                              "new_display",
-                                              [ Ty.path "alloc::string::String" ]
-                                            |),
-                                            [
-                                              M.alloc (|
-                                                M.call_closure (|
-                                                  M.get_associated_function (|
-                                                    Ty.path
-                                                      "move_core_types::account_address::AccountAddress",
-                                                    "short_str_lossless",
-                                                    []
-                                                  |),
-                                                  [
-                                                    M.SubPointer.get_struct_record_field (|
-                                                      M.read (| self |),
-                                                      "move_core_types::language_storage::StructTag",
-                                                      "address"
-                                                    |)
-                                                  ]
-                                                |)
+                                  M.alloc (|
+                                    Value.Array
+                                      [
+                                        M.read (| Value.String "0x" |);
+                                        M.read (| Value.String "::" |);
+                                        M.read (| Value.String "::" |)
+                                      ]
+                                  |);
+                                  M.alloc (|
+                                    Value.Array
+                                      [
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path "core::fmt::rt::Argument",
+                                            "new_display",
+                                            [ Ty.path "alloc::string::String" ]
+                                          |),
+                                          [
+                                            M.alloc (|
+                                              M.call_closure (|
+                                                M.get_associated_function (|
+                                                  Ty.path
+                                                    "move_core_types::account_address::AccountAddress",
+                                                  "short_str_lossless",
+                                                  []
+                                                |),
+                                                [
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    M.read (| self |),
+                                                    "move_core_types::language_storage::StructTag",
+                                                    "address"
+                                                  |)
+                                                ]
                                               |)
-                                            ]
-                                          |);
-                                          M.call_closure (|
-                                            M.get_associated_function (|
-                                              Ty.path "core::fmt::rt::Argument",
-                                              "new_display",
-                                              [ Ty.path "move_core_types::identifier::Identifier" ]
-                                            |),
-                                            [
-                                              M.SubPointer.get_struct_record_field (|
-                                                M.read (| self |),
-                                                "move_core_types::language_storage::StructTag",
-                                                "module"
-                                              |)
-                                            ]
-                                          |);
-                                          M.call_closure (|
-                                            M.get_associated_function (|
-                                              Ty.path "core::fmt::rt::Argument",
-                                              "new_display",
-                                              [ Ty.path "move_core_types::identifier::Identifier" ]
-                                            |),
-                                            [
-                                              M.SubPointer.get_struct_record_field (|
-                                                M.read (| self |),
-                                                "move_core_types::language_storage::StructTag",
-                                                "name"
-                                              |)
-                                            ]
-                                          |)
-                                        ]
-                                    |))
+                                            |)
+                                          ]
+                                        |);
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path "core::fmt::rt::Argument",
+                                            "new_display",
+                                            [ Ty.path "move_core_types::identifier::Identifier" ]
+                                          |),
+                                          [
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.read (| self |),
+                                              "move_core_types::language_storage::StructTag",
+                                              "module"
+                                            |)
+                                          ]
+                                        |);
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path "core::fmt::rt::Argument",
+                                            "new_display",
+                                            [ Ty.path "move_core_types::identifier::Identifier" ]
+                                          |),
+                                          [
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.read (| self |),
+                                              "move_core_types::language_storage::StructTag",
+                                              "name"
+                                            |)
+                                          ]
+                                        |)
+                                      ]
+                                  |)
                                 ]
                               |)
                             ]
@@ -6144,11 +6088,9 @@ Module language_storage.
                                             []
                                           |),
                                           [
-                                            (* Unsize *)
-                                            M.pointer_coercion
-                                              (M.alloc (|
-                                                Value.Array [ M.read (| Value.String "<" |) ]
-                                              |))
+                                            M.alloc (|
+                                              Value.Array [ M.read (| Value.String "<" |) ]
+                                            |)
                                           ]
                                         |)
                                       ]
@@ -6237,34 +6179,30 @@ Module language_storage.
                                             []
                                           |),
                                           [
-                                            (* Unsize *)
-                                            M.pointer_coercion
-                                              (M.alloc (|
-                                                Value.Array [ M.read (| Value.String "" |) ]
-                                              |));
-                                            (* Unsize *)
-                                            M.pointer_coercion
-                                              (M.alloc (|
-                                                Value.Array
-                                                  [
-                                                    M.call_closure (|
-                                                      M.get_associated_function (|
-                                                        Ty.path "core::fmt::rt::Argument",
-                                                        "new_display",
-                                                        [
-                                                          Ty.apply
-                                                            (Ty.path "&")
-                                                            []
-                                                            [
-                                                              Ty.path
-                                                                "move_core_types::language_storage::TypeTag"
-                                                            ]
-                                                        ]
-                                                      |),
-                                                      [ first_ty ]
-                                                    |)
-                                                  ]
-                                              |))
+                                            M.alloc (|
+                                              Value.Array [ M.read (| Value.String "" |) ]
+                                            |);
+                                            M.alloc (|
+                                              Value.Array
+                                                [
+                                                  M.call_closure (|
+                                                    M.get_associated_function (|
+                                                      Ty.path "core::fmt::rt::Argument",
+                                                      "new_display",
+                                                      [
+                                                        Ty.apply
+                                                          (Ty.path "&")
+                                                          []
+                                                          [
+                                                            Ty.path
+                                                              "move_core_types::language_storage::TypeTag"
+                                                          ]
+                                                      ]
+                                                    |),
+                                                    [ first_ty ]
+                                                  |)
+                                                ]
+                                            |)
                                           ]
                                         |)
                                       ]
@@ -6486,40 +6424,36 @@ Module language_storage.
                                                                       []
                                                                     |),
                                                                     [
-                                                                      (* Unsize *)
-                                                                      M.pointer_coercion
-                                                                        (M.alloc (|
-                                                                          Value.Array
-                                                                            [
-                                                                              M.read (|
-                                                                                Value.String ", "
-                                                                              |)
-                                                                            ]
-                                                                        |));
-                                                                      (* Unsize *)
-                                                                      M.pointer_coercion
-                                                                        (M.alloc (|
-                                                                          Value.Array
-                                                                            [
-                                                                              M.call_closure (|
-                                                                                M.get_associated_function (|
-                                                                                  Ty.path
-                                                                                    "core::fmt::rt::Argument",
-                                                                                  "new_display",
-                                                                                  [
-                                                                                    Ty.apply
-                                                                                      (Ty.path "&")
-                                                                                      []
-                                                                                      [
-                                                                                        Ty.path
-                                                                                          "move_core_types::language_storage::TypeTag"
-                                                                                      ]
-                                                                                  ]
-                                                                                |),
-                                                                                [ ty ]
-                                                                              |)
-                                                                            ]
-                                                                        |))
+                                                                      M.alloc (|
+                                                                        Value.Array
+                                                                          [
+                                                                            M.read (|
+                                                                              Value.String ", "
+                                                                            |)
+                                                                          ]
+                                                                      |);
+                                                                      M.alloc (|
+                                                                        Value.Array
+                                                                          [
+                                                                            M.call_closure (|
+                                                                              M.get_associated_function (|
+                                                                                Ty.path
+                                                                                  "core::fmt::rt::Argument",
+                                                                                "new_display",
+                                                                                [
+                                                                                  Ty.apply
+                                                                                    (Ty.path "&")
+                                                                                    []
+                                                                                    [
+                                                                                      Ty.path
+                                                                                        "move_core_types::language_storage::TypeTag"
+                                                                                    ]
+                                                                                ]
+                                                                              |),
+                                                                              [ ty ]
+                                                                            |)
+                                                                          ]
+                                                                      |)
                                                                     ]
                                                                   |)
                                                                 ]
@@ -6623,11 +6557,9 @@ Module language_storage.
                                             []
                                           |),
                                           [
-                                            (* Unsize *)
-                                            M.pointer_coercion
-                                              (M.alloc (|
-                                                Value.Array [ M.read (| Value.String ">" |) ]
-                                              |))
+                                            M.alloc (|
+                                              Value.Array [ M.read (| Value.String ">" |) ]
+                                            |)
                                           ]
                                         |)
                                       ]
@@ -6760,38 +6692,34 @@ Module language_storage.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (| Value.Array [ M.read (| Value.String "" |) ] |));
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path "core::fmt::rt::Argument",
-                                          "new_display",
-                                          [
-                                            Ty.apply
-                                              (Ty.path "&")
-                                              []
-                                              [
-                                                Ty.apply
-                                                  (Ty.path "alloc::boxed::Box")
-                                                  []
-                                                  [
-                                                    Ty.path
-                                                      "move_core_types::language_storage::StructTag";
-                                                    Ty.path "alloc::alloc::Global"
-                                                  ]
-                                              ]
-                                          ]
-                                        |),
-                                        [ s ]
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (| Value.Array [ M.read (| Value.String "" |) ] |);
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "core::fmt::rt::Argument",
+                                        "new_display",
+                                        [
+                                          Ty.apply
+                                            (Ty.path "&")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "alloc::boxed::Box")
+                                                []
+                                                [
+                                                  Ty.path
+                                                    "move_core_types::language_storage::StructTag";
+                                                  Ty.path "alloc::alloc::Global"
+                                                ]
+                                            ]
+                                        ]
+                                      |),
+                                      [ s ]
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -6823,44 +6751,40 @@ Module language_storage.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (| Value.String "vector<" |);
-                                      M.read (| Value.String ">" |)
-                                    ]
-                                |));
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path "core::fmt::rt::Argument",
-                                          "new_display",
-                                          [
-                                            Ty.apply
-                                              (Ty.path "&")
-                                              []
-                                              [
-                                                Ty.apply
-                                                  (Ty.path "alloc::boxed::Box")
-                                                  []
-                                                  [
-                                                    Ty.path
-                                                      "move_core_types::language_storage::TypeTag";
-                                                    Ty.path "alloc::alloc::Global"
-                                                  ]
-                                              ]
-                                          ]
-                                        |),
-                                        [ ty ]
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (| Value.String "vector<" |);
+                                    M.read (| Value.String ">" |)
+                                  ]
+                              |);
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "core::fmt::rt::Argument",
+                                        "new_display",
+                                        [
+                                          Ty.apply
+                                            (Ty.path "&")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "alloc::boxed::Box")
+                                                []
+                                                [
+                                                  Ty.path
+                                                    "move_core_types::language_storage::TypeTag";
+                                                  Ty.path "alloc::alloc::Global"
+                                                ]
+                                            ]
+                                        ]
+                                      |),
+                                      [ ty ]
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -6886,11 +6810,7 @@ Module language_storage.
                               "new_const",
                               []
                             |),
-                            [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (| Value.Array [ M.read (| Value.String "u8" |) ] |))
-                            ]
+                            [ M.alloc (| Value.Array [ M.read (| Value.String "u8" |) ] |) ]
                           |)
                         ]
                       |)
@@ -6918,11 +6838,7 @@ Module language_storage.
                               "new_const",
                               []
                             |),
-                            [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (| Value.Array [ M.read (| Value.String "u16" |) ] |))
-                            ]
+                            [ M.alloc (| Value.Array [ M.read (| Value.String "u16" |) ] |) ]
                           |)
                         ]
                       |)
@@ -6950,11 +6866,7 @@ Module language_storage.
                               "new_const",
                               []
                             |),
-                            [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (| Value.Array [ M.read (| Value.String "u32" |) ] |))
-                            ]
+                            [ M.alloc (| Value.Array [ M.read (| Value.String "u32" |) ] |) ]
                           |)
                         ]
                       |)
@@ -6982,11 +6894,7 @@ Module language_storage.
                               "new_const",
                               []
                             |),
-                            [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (| Value.Array [ M.read (| Value.String "u64" |) ] |))
-                            ]
+                            [ M.alloc (| Value.Array [ M.read (| Value.String "u64" |) ] |) ]
                           |)
                         ]
                       |)
@@ -7014,11 +6922,7 @@ Module language_storage.
                               "new_const",
                               []
                             |),
-                            [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (| Value.Array [ M.read (| Value.String "u128" |) ] |))
-                            ]
+                            [ M.alloc (| Value.Array [ M.read (| Value.String "u128" |) ] |) ]
                           |)
                         ]
                       |)
@@ -7046,11 +6950,7 @@ Module language_storage.
                               "new_const",
                               []
                             |),
-                            [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (| Value.Array [ M.read (| Value.String "u256" |) ] |))
-                            ]
+                            [ M.alloc (| Value.Array [ M.read (| Value.String "u256" |) ] |) ]
                           |)
                         ]
                       |)
@@ -7078,11 +6978,7 @@ Module language_storage.
                               "new_const",
                               []
                             |),
-                            [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (| Value.Array [ M.read (| Value.String "address" |) ] |))
-                            ]
+                            [ M.alloc (| Value.Array [ M.read (| Value.String "address" |) ] |) ]
                           |)
                         ]
                       |)
@@ -7110,11 +7006,7 @@ Module language_storage.
                               "new_const",
                               []
                             |),
-                            [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (| Value.Array [ M.read (| Value.String "signer" |) ] |))
-                            ]
+                            [ M.alloc (| Value.Array [ M.read (| Value.String "signer" |) ] |) ]
                           |)
                         ]
                       |)
@@ -7142,11 +7034,7 @@ Module language_storage.
                               "new_const",
                               []
                             |),
-                            [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (| Value.Array [ M.read (| Value.String "bool" |) ] |))
-                            ]
+                            [ M.alloc (| Value.Array [ M.read (| Value.String "bool" |) ] |) ]
                           |)
                         ]
                       |)
@@ -7186,57 +7074,53 @@ Module language_storage.
               M.call_closure (|
                 M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                 [
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.alloc (|
-                      Value.Array [ M.read (| Value.String "0x" |); M.read (| Value.String "/" |) ]
-                    |));
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.alloc (|
-                      Value.Array
-                        [
-                          M.call_closure (|
-                            M.get_associated_function (|
-                              Ty.path "core::fmt::rt::Argument",
-                              "new_display",
-                              [ Ty.path "alloc::string::String" ]
-                            |),
-                            [
-                              M.alloc (|
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "move_core_types::account_address::AccountAddress",
-                                    "short_str_lossless",
-                                    []
-                                  |),
-                                  [
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.read (| self |),
-                                      "move_core_types::language_storage::ResourceKey",
-                                      "address"
-                                    |)
-                                  ]
-                                |)
+                  M.alloc (|
+                    Value.Array [ M.read (| Value.String "0x" |); M.read (| Value.String "/" |) ]
+                  |);
+                  M.alloc (|
+                    Value.Array
+                      [
+                        M.call_closure (|
+                          M.get_associated_function (|
+                            Ty.path "core::fmt::rt::Argument",
+                            "new_display",
+                            [ Ty.path "alloc::string::String" ]
+                          |),
+                          [
+                            M.alloc (|
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.path "move_core_types::account_address::AccountAddress",
+                                  "short_str_lossless",
+                                  []
+                                |),
+                                [
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "move_core_types::language_storage::ResourceKey",
+                                    "address"
+                                  |)
+                                ]
                               |)
-                            ]
-                          |);
-                          M.call_closure (|
-                            M.get_associated_function (|
-                              Ty.path "core::fmt::rt::Argument",
-                              "new_display",
-                              [ Ty.path "move_core_types::language_storage::StructTag" ]
-                            |),
-                            [
-                              M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
-                                "move_core_types::language_storage::ResourceKey",
-                                "type_"
-                              |)
-                            ]
-                          |)
-                        ]
-                    |))
+                            |)
+                          ]
+                        |);
+                        M.call_closure (|
+                          M.get_associated_function (|
+                            Ty.path "core::fmt::rt::Argument",
+                            "new_display",
+                            [ Ty.path "move_core_types::language_storage::StructTag" ]
+                          |),
+                          [
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "move_core_types::language_storage::ResourceKey",
+                              "type_"
+                            |)
+                          ]
+                        |)
+                      ]
+                  |)
                 ]
               |)
             ]

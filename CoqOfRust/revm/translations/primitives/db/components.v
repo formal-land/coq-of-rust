@@ -33,23 +33,19 @@ Module db.
                 M.read (| f |);
                 M.read (| Value.String "DatabaseComponents" |);
                 M.read (| Value.String "state" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.SubPointer.get_struct_record_field (|
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "revm_primitives::db::components::DatabaseComponents",
+                  "state"
+                |);
+                M.read (| Value.String "block_hash" |);
+                M.alloc (|
+                  M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
                     "revm_primitives::db::components::DatabaseComponents",
-                    "state"
-                  |));
-                M.read (| Value.String "block_hash" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.alloc (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "revm_primitives::db::components::DatabaseComponents",
-                      "block_hash"
-                    |)
-                  |))
+                    "block_hash"
+                  |)
+                |)
               ]
             |)))
         | _, _, _ => M.impossible
@@ -118,11 +114,7 @@ Module db.
                             "debug_tuple_field1_finish",
                             []
                           |),
-                          [
-                            M.read (| f |);
-                            M.read (| Value.String "State" |);
-                            (* Unsize *) M.pointer_coercion __self_0
-                          ]
+                          [ M.read (| f |); M.read (| Value.String "State" |); __self_0 ]
                         |)
                       |)));
                   fun γ =>
@@ -142,11 +134,7 @@ Module db.
                             "debug_tuple_field1_finish",
                             []
                           |),
-                          [
-                            M.read (| f |);
-                            M.read (| Value.String "BlockHash" |);
-                            (* Unsize *) M.pointer_coercion __self_0
-                          ]
+                          [ M.read (| f |); M.read (| Value.String "BlockHash" |); __self_0 ]
                         |)
                       |)))
                 ]

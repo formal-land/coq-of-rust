@@ -190,39 +190,31 @@ Module host.
                 M.read (| f |);
                 M.read (| Value.String "DummyHost" |);
                 M.read (| Value.String "env" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "revm_interpreter::host::dummy::DummyHost",
-                    "env"
-                  |));
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "revm_interpreter::host::dummy::DummyHost",
+                  "env"
+                |);
                 M.read (| Value.String "storage" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "revm_interpreter::host::dummy::DummyHost",
-                    "storage"
-                  |));
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "revm_interpreter::host::dummy::DummyHost",
+                  "storage"
+                |);
                 M.read (| Value.String "transient_storage" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.SubPointer.get_struct_record_field (|
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "revm_interpreter::host::dummy::DummyHost",
+                  "transient_storage"
+                |);
+                M.read (| Value.String "log" |);
+                M.alloc (|
+                  M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
                     "revm_interpreter::host::dummy::DummyHost",
-                    "transient_storage"
-                  |));
-                M.read (| Value.String "log" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.alloc (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "revm_interpreter::host::dummy::DummyHost",
-                      "log"
-                    |)
-                  |))
+                    "log"
+                  |)
+                |)
               ]
             |)))
         | _, _, _ => M.impossible
@@ -538,17 +530,6 @@ Module host.
           (* Trait polymorphic types *) []
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
     End Impl_core_cmp_PartialEq_for_revm_interpreter_host_dummy_DummyHost.
-    
-    Module Impl_core_marker_StructuralEq_for_revm_interpreter_host_dummy_DummyHost.
-      Definition Self : Ty.t := Ty.path "revm_interpreter::host::dummy::DummyHost".
-      
-      Axiom Implements :
-        M.IsTraitInstance
-          "core::marker::StructuralEq"
-          Self
-          (* Trait polymorphic types *) []
-          (* Instance *) [].
-    End Impl_core_marker_StructuralEq_for_revm_interpreter_host_dummy_DummyHost.
     
     Module Impl_core_cmp_Eq_for_revm_interpreter_host_dummy_DummyHost.
       Definition Self : Ty.t := Ty.path "revm_interpreter::host::dummy::DummyHost".
@@ -1355,16 +1336,11 @@ Module host.
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
                     [
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.read (|
-                                Value.String "Selfdestruct is not supported for this host"
-                              |)
-                            ]
-                        |))
+                      M.alloc (|
+                        Value.Array
+                          [ M.read (| Value.String "Selfdestruct is not supported for this host" |)
+                          ]
+                      |)
                     ]
                   |)
                 ]

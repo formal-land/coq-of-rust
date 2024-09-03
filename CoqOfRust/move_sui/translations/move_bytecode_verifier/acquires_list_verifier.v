@@ -481,53 +481,57 @@ Module acquires_list_verifier.
                                                                   []
                                                               ]
                                                             |);
-                                                            M.read (|
-                                                              let~ res :=
-                                                                M.alloc (|
-                                                                  M.call_closure (|
-                                                                    M.get_function (|
-                                                                      "alloc::fmt::format",
-                                                                      []
-                                                                    |),
-                                                                    [
+                                                            M.call_closure (|
+                                                              M.get_function (|
+                                                                "core::hint::must_use",
+                                                                [ Ty.path "alloc::string::String" ]
+                                                              |),
+                                                              [
+                                                                M.read (|
+                                                                  let~ res :=
+                                                                    M.alloc (|
                                                                       M.call_closure (|
-                                                                        M.get_associated_function (|
-                                                                          Ty.path
-                                                                            "core::fmt::Arguments",
-                                                                          "new_v1",
+                                                                        M.get_function (|
+                                                                          "alloc::fmt::format",
                                                                           []
                                                                         |),
                                                                         [
-                                                                          (* Unsize *)
-                                                                          M.pointer_coercion
-                                                                            (M.alloc (|
-                                                                              Value.Array
-                                                                                [
-                                                                                  M.read (|
-                                                                                    Value.String
-                                                                                      "crates/move-bytecode-verifier/src/acquires_list_verifier.rs:59 (none)"
-                                                                                  |)
-                                                                                ]
-                                                                            |));
-                                                                          (* Unsize *)
-                                                                          M.pointer_coercion
-                                                                            (M.alloc (|
-                                                                              M.call_closure (|
-                                                                                M.get_associated_function (|
-                                                                                  Ty.path
-                                                                                    "core::fmt::rt::Argument",
-                                                                                  "none",
+                                                                          M.call_closure (|
+                                                                            M.get_associated_function (|
+                                                                              Ty.path
+                                                                                "core::fmt::Arguments",
+                                                                              "new_v1",
+                                                                              []
+                                                                            |),
+                                                                            [
+                                                                              M.alloc (|
+                                                                                Value.Array
+                                                                                  [
+                                                                                    M.read (|
+                                                                                      Value.String
+                                                                                        "crates/move-bytecode-verifier/src/acquires_list_verifier.rs:59 (none)"
+                                                                                    |)
+                                                                                  ]
+                                                                              |);
+                                                                              M.alloc (|
+                                                                                M.call_closure (|
+                                                                                  M.get_associated_function (|
+                                                                                    Ty.path
+                                                                                      "core::fmt::rt::Argument",
+                                                                                    "none",
+                                                                                    []
+                                                                                  |),
                                                                                   []
-                                                                                |),
-                                                                                []
+                                                                                |)
                                                                               |)
-                                                                            |))
+                                                                            ]
+                                                                          |)
                                                                         ]
                                                                       |)
-                                                                    ]
-                                                                  |)
-                                                                |) in
-                                                              res
+                                                                    |) in
+                                                                  res
+                                                                |)
+                                                              ]
                                                             |)
                                                           ]
                                                         |)
@@ -561,35 +565,31 @@ Module acquires_list_verifier.
                                                                         []
                                                                       |),
                                                                       [
-                                                                        (* Unsize *)
-                                                                        M.pointer_coercion
-                                                                          (M.alloc (|
-                                                                            Value.Array
-                                                                              [
-                                                                                M.read (|
-                                                                                  Value.String ""
-                                                                                |)
-                                                                              ]
-                                                                          |));
-                                                                        (* Unsize *)
-                                                                        M.pointer_coercion
-                                                                          (M.alloc (|
-                                                                            Value.Array
-                                                                              [
-                                                                                M.call_closure (|
-                                                                                  M.get_associated_function (|
+                                                                        M.alloc (|
+                                                                          Value.Array
+                                                                            [
+                                                                              M.read (|
+                                                                                Value.String ""
+                                                                              |)
+                                                                            ]
+                                                                        |);
+                                                                        M.alloc (|
+                                                                          Value.Array
+                                                                            [
+                                                                              M.call_closure (|
+                                                                                M.get_associated_function (|
+                                                                                  Ty.path
+                                                                                    "core::fmt::rt::Argument",
+                                                                                  "new_debug",
+                                                                                  [
                                                                                     Ty.path
-                                                                                      "core::fmt::rt::Argument",
-                                                                                    "new_debug",
-                                                                                    [
-                                                                                      Ty.path
-                                                                                        "move_binary_format::errors::PartialVMError"
-                                                                                    ]
-                                                                                  |),
-                                                                                  [ err ]
-                                                                                |)
-                                                                              ]
-                                                                          |))
+                                                                                      "move_binary_format::errors::PartialVMError"
+                                                                                  ]
+                                                                                |),
+                                                                                [ err ]
+                                                                              |)
+                                                                            ]
+                                                                        |)
                                                                       ]
                                                                     |)
                                                                   ]
@@ -1002,53 +1002,58 @@ Module acquires_list_verifier.
                                                                     []
                                                                 ]
                                                               |);
-                                                              M.read (|
-                                                                let~ res :=
-                                                                  M.alloc (|
-                                                                    M.call_closure (|
-                                                                      M.get_function (|
-                                                                        "alloc::fmt::format",
-                                                                        []
-                                                                      |),
-                                                                      [
+                                                              M.call_closure (|
+                                                                M.get_function (|
+                                                                  "core::hint::must_use",
+                                                                  [ Ty.path "alloc::string::String"
+                                                                  ]
+                                                                |),
+                                                                [
+                                                                  M.read (|
+                                                                    let~ res :=
+                                                                      M.alloc (|
                                                                         M.call_closure (|
-                                                                          M.get_associated_function (|
-                                                                            Ty.path
-                                                                              "core::fmt::Arguments",
-                                                                            "new_v1",
+                                                                          M.get_function (|
+                                                                            "alloc::fmt::format",
                                                                             []
                                                                           |),
                                                                           [
-                                                                            (* Unsize *)
-                                                                            M.pointer_coercion
-                                                                              (M.alloc (|
-                                                                                Value.Array
-                                                                                  [
-                                                                                    M.read (|
-                                                                                      Value.String
-                                                                                        "crates/move-bytecode-verifier/src/acquires_list_verifier.rs:74 (none)"
-                                                                                    |)
-                                                                                  ]
-                                                                              |));
-                                                                            (* Unsize *)
-                                                                            M.pointer_coercion
-                                                                              (M.alloc (|
-                                                                                M.call_closure (|
-                                                                                  M.get_associated_function (|
-                                                                                    Ty.path
-                                                                                      "core::fmt::rt::Argument",
-                                                                                    "none",
+                                                                            M.call_closure (|
+                                                                              M.get_associated_function (|
+                                                                                Ty.path
+                                                                                  "core::fmt::Arguments",
+                                                                                "new_v1",
+                                                                                []
+                                                                              |),
+                                                                              [
+                                                                                M.alloc (|
+                                                                                  Value.Array
+                                                                                    [
+                                                                                      M.read (|
+                                                                                        Value.String
+                                                                                          "crates/move-bytecode-verifier/src/acquires_list_verifier.rs:74 (none)"
+                                                                                      |)
+                                                                                    ]
+                                                                                |);
+                                                                                M.alloc (|
+                                                                                  M.call_closure (|
+                                                                                    M.get_associated_function (|
+                                                                                      Ty.path
+                                                                                        "core::fmt::rt::Argument",
+                                                                                      "none",
+                                                                                      []
+                                                                                    |),
                                                                                     []
-                                                                                  |),
-                                                                                  []
+                                                                                  |)
                                                                                 |)
-                                                                              |))
+                                                                              ]
+                                                                            |)
                                                                           ]
                                                                         |)
-                                                                      ]
-                                                                    |)
-                                                                  |) in
-                                                                res
+                                                                      |) in
+                                                                    res
+                                                                  |)
+                                                                ]
                                                               |)
                                                             ]
                                                           |)
@@ -1082,35 +1087,31 @@ Module acquires_list_verifier.
                                                                           []
                                                                         |),
                                                                         [
-                                                                          (* Unsize *)
-                                                                          M.pointer_coercion
-                                                                            (M.alloc (|
-                                                                              Value.Array
-                                                                                [
-                                                                                  M.read (|
-                                                                                    Value.String ""
-                                                                                  |)
-                                                                                ]
-                                                                            |));
-                                                                          (* Unsize *)
-                                                                          M.pointer_coercion
-                                                                            (M.alloc (|
-                                                                              Value.Array
-                                                                                [
-                                                                                  M.call_closure (|
-                                                                                    M.get_associated_function (|
+                                                                          M.alloc (|
+                                                                            Value.Array
+                                                                              [
+                                                                                M.read (|
+                                                                                  Value.String ""
+                                                                                |)
+                                                                              ]
+                                                                          |);
+                                                                          M.alloc (|
+                                                                            Value.Array
+                                                                              [
+                                                                                M.call_closure (|
+                                                                                  M.get_associated_function (|
+                                                                                    Ty.path
+                                                                                      "core::fmt::rt::Argument",
+                                                                                    "new_debug",
+                                                                                    [
                                                                                       Ty.path
-                                                                                        "core::fmt::rt::Argument",
-                                                                                      "new_debug",
-                                                                                      [
-                                                                                        Ty.path
-                                                                                          "move_binary_format::errors::PartialVMError"
-                                                                                      ]
-                                                                                    |),
-                                                                                    [ err ]
-                                                                                  |)
-                                                                                ]
-                                                                            |))
+                                                                                        "move_binary_format::errors::PartialVMError"
+                                                                                    ]
+                                                                                  |),
+                                                                                  [ err ]
+                                                                                |)
+                                                                              ]
+                                                                          |)
                                                                         ]
                                                                       |)
                                                                     ]

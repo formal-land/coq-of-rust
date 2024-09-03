@@ -15,8 +15,8 @@ Module panicking.
           fn panic_impl(pi: &PanicInfo<'_>) -> !;
       }
   
-      let pi = PanicInfo::internal_constructor(
-          Some(&fmt),
+      let pi = PanicInfo::new(
+          fmt,
           Location::caller(),
           /* can_unwind */ true,
           /* force_no_backtrace */ false,
@@ -28,7 +28,7 @@ Module panicking.
   *)
   Definition panic_fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     match ε, τ, α with
-    | [ host ], [], [ fmt ] =>
+    | [], [], [ fmt ] =>
       ltac:(M.monadic
         (let fmt := M.alloc (| fmt |) in
         M.read (|
@@ -53,11 +53,11 @@ Module panicking.
               M.call_closure (|
                 M.get_associated_function (|
                   Ty.path "core::panic::panic_info::PanicInfo",
-                  "internal_constructor",
+                  "new",
                   []
                 |),
                 [
-                  Value.StructTuple "core::option::Option::Some" [ fmt ];
+                  M.read (| fmt |);
                   M.call_closure (|
                     M.get_associated_function (|
                       Ty.path "core::panic::location::Location",
@@ -106,8 +106,8 @@ Module panicking.
           }
   
           // PanicInfo with the `can_unwind` flag set to false forces an abort.
-          let pi = PanicInfo::internal_constructor(
-              Some(&fmt),
+          let pi = PanicInfo::new(
+              fmt,
               Location::caller(),
               /* can_unwind */ false,
               force_no_backtrace,
@@ -124,15 +124,12 @@ Module panicking.
           panic_fmt(fmt);
       }
   
-      // SAFETY: const panic does not care about unwinding
-      unsafe {
-          super::intrinsics::const_eval_select((fmt, force_no_backtrace), comptime, runtime);
-      }
+      super::intrinsics::const_eval_select((fmt, force_no_backtrace), comptime, runtime);
   }
   *)
   Definition panic_nounwind_fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     match ε, τ, α with
-    | [ host ], [], [ fmt; force_no_backtrace ] =>
+    | [], [], [ fmt; force_no_backtrace ] =>
       ltac:(M.monadic
         (let fmt := M.alloc (| fmt |) in
         let force_no_backtrace := M.alloc (| force_no_backtrace |) in
@@ -173,8 +170,8 @@ Module panicking.
             }
     
             // PanicInfo with the `can_unwind` flag set to false forces an abort.
-            let pi = PanicInfo::internal_constructor(
-                Some(&fmt),
+            let pi = PanicInfo::new(
+                fmt,
                 Location::caller(),
                 /* can_unwind */ false,
                 force_no_backtrace,
@@ -215,11 +212,11 @@ Module panicking.
                 M.call_closure (|
                   M.get_associated_function (|
                     Ty.path "core::panic::panic_info::PanicInfo",
-                    "internal_constructor",
+                    "new",
                     []
                   |),
                   [
-                    Value.StructTuple "core::option::Option::Some" [ fmt ];
+                    M.read (| fmt |);
                     M.call_closure (|
                       M.get_associated_function (|
                         Ty.path "core::panic::location::Location",
@@ -260,7 +257,7 @@ Module panicking.
     *)
     Definition comptime (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [ host ], [], [ fmt; _force_no_backtrace ] =>
+      | [], [], [ fmt; _force_no_backtrace ] =>
         ltac:(M.monadic
           (let fmt := M.alloc (| fmt |) in
           let _force_no_backtrace := M.alloc (| _force_no_backtrace |) in
@@ -276,18 +273,23 @@ Module panicking.
   
   (*
   pub const fn panic(expr: &'static str) -> ! {
-      // Use Arguments::new_v1 instead of format_args!("{expr}") to potentially
+      // Use Arguments::new_const instead of format_args!("{expr}") to potentially
       // reduce size overhead. The format_args! macro uses str's Display trait to
       // write expr, which calls Formatter::pad, which must accommodate string
       // truncation and padding (even though none is used here). Using
-      // Arguments::new_v1 may allow the compiler to omit Formatter::pad from the
+      // Arguments::new_const may allow the compiler to omit Formatter::pad from the
       // output binary, saving up to a few kilobytes.
+      // However, this optimization only works for `'static` strings: `new_const` also makes this
+      // message return `Some` from `Arguments::as_str`, which means it can become part of the panic
+      // payload without any allocation or copying. Shorter-lived strings would become invalid as
+      // stack frames get popped during unwinding, and couldn't be directly referenced from the
+      // payload.
       panic_fmt(fmt::Arguments::new_const(&[expr]));
   }
   *)
   Definition panic (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     match ε, τ, α with
-    | [ host ], [], [ expr ] =>
+    | [], [], [ expr ] =>
       ltac:(M.monadic
         (let expr := M.alloc (| expr |) in
         M.call_closure (|
@@ -295,7 +297,7 @@ Module panicking.
           [
             M.call_closure (|
               M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
-              [ (* Unsize *) M.pointer_coercion (M.alloc (| Value.Array [ M.read (| expr |) ] |)) ]
+              [ M.alloc (| Value.Array [ M.read (| expr |) ] |) ]
             |)
           ]
         |)))
@@ -304,6 +306,697 @@ Module panicking.
   
   Axiom Function_panic : M.IsFunction "core::panicking::panic" panic.
   
+  Module panic_const.
+    (*
+                    pub const fn $lang() -> ! {
+                        // Use Arguments::new_const instead of format_args!("{expr}") to potentially
+                        // reduce size overhead. The format_args! macro uses str's Display trait to
+                        // write expr, which calls Formatter::pad, which must accommodate string
+                        // truncation and padding (even though none is used here). Using
+                        // Arguments::new_const may allow the compiler to omit Formatter::pad from the
+                        // output binary, saving up to a few kilobytes.
+                        panic_fmt(fmt::Arguments::new_const(&[$message]));
+                    }
+    *)
+    Definition panic_const_add_overflow (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [] =>
+        ltac:(M.monadic
+          (M.call_closure (|
+            M.get_function (| "core::panicking::panic_fmt", [] |),
+            [
+              M.call_closure (|
+                M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
+                [
+                  M.alloc (|
+                    Value.Array [ M.read (| Value.String "attempt to add with overflow" |) ]
+                  |)
+                ]
+              |)
+            ]
+          |)))
+      | _, _, _ => M.impossible
+      end.
+    
+    Axiom Function_panic_const_add_overflow :
+      M.IsFunction
+        "core::panicking::panic_const::panic_const_add_overflow"
+        panic_const_add_overflow.
+    
+    (*
+                    pub const fn $lang() -> ! {
+                        // Use Arguments::new_const instead of format_args!("{expr}") to potentially
+                        // reduce size overhead. The format_args! macro uses str's Display trait to
+                        // write expr, which calls Formatter::pad, which must accommodate string
+                        // truncation and padding (even though none is used here). Using
+                        // Arguments::new_const may allow the compiler to omit Formatter::pad from the
+                        // output binary, saving up to a few kilobytes.
+                        panic_fmt(fmt::Arguments::new_const(&[$message]));
+                    }
+    *)
+    Definition panic_const_sub_overflow (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [] =>
+        ltac:(M.monadic
+          (M.call_closure (|
+            M.get_function (| "core::panicking::panic_fmt", [] |),
+            [
+              M.call_closure (|
+                M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
+                [
+                  M.alloc (|
+                    Value.Array [ M.read (| Value.String "attempt to subtract with overflow" |) ]
+                  |)
+                ]
+              |)
+            ]
+          |)))
+      | _, _, _ => M.impossible
+      end.
+    
+    Axiom Function_panic_const_sub_overflow :
+      M.IsFunction
+        "core::panicking::panic_const::panic_const_sub_overflow"
+        panic_const_sub_overflow.
+    
+    (*
+                    pub const fn $lang() -> ! {
+                        // Use Arguments::new_const instead of format_args!("{expr}") to potentially
+                        // reduce size overhead. The format_args! macro uses str's Display trait to
+                        // write expr, which calls Formatter::pad, which must accommodate string
+                        // truncation and padding (even though none is used here). Using
+                        // Arguments::new_const may allow the compiler to omit Formatter::pad from the
+                        // output binary, saving up to a few kilobytes.
+                        panic_fmt(fmt::Arguments::new_const(&[$message]));
+                    }
+    *)
+    Definition panic_const_mul_overflow (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [] =>
+        ltac:(M.monadic
+          (M.call_closure (|
+            M.get_function (| "core::panicking::panic_fmt", [] |),
+            [
+              M.call_closure (|
+                M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
+                [
+                  M.alloc (|
+                    Value.Array [ M.read (| Value.String "attempt to multiply with overflow" |) ]
+                  |)
+                ]
+              |)
+            ]
+          |)))
+      | _, _, _ => M.impossible
+      end.
+    
+    Axiom Function_panic_const_mul_overflow :
+      M.IsFunction
+        "core::panicking::panic_const::panic_const_mul_overflow"
+        panic_const_mul_overflow.
+    
+    (*
+                    pub const fn $lang() -> ! {
+                        // Use Arguments::new_const instead of format_args!("{expr}") to potentially
+                        // reduce size overhead. The format_args! macro uses str's Display trait to
+                        // write expr, which calls Formatter::pad, which must accommodate string
+                        // truncation and padding (even though none is used here). Using
+                        // Arguments::new_const may allow the compiler to omit Formatter::pad from the
+                        // output binary, saving up to a few kilobytes.
+                        panic_fmt(fmt::Arguments::new_const(&[$message]));
+                    }
+    *)
+    Definition panic_const_div_overflow (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [] =>
+        ltac:(M.monadic
+          (M.call_closure (|
+            M.get_function (| "core::panicking::panic_fmt", [] |),
+            [
+              M.call_closure (|
+                M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
+                [
+                  M.alloc (|
+                    Value.Array [ M.read (| Value.String "attempt to divide with overflow" |) ]
+                  |)
+                ]
+              |)
+            ]
+          |)))
+      | _, _, _ => M.impossible
+      end.
+    
+    Axiom Function_panic_const_div_overflow :
+      M.IsFunction
+        "core::panicking::panic_const::panic_const_div_overflow"
+        panic_const_div_overflow.
+    
+    (*
+                    pub const fn $lang() -> ! {
+                        // Use Arguments::new_const instead of format_args!("{expr}") to potentially
+                        // reduce size overhead. The format_args! macro uses str's Display trait to
+                        // write expr, which calls Formatter::pad, which must accommodate string
+                        // truncation and padding (even though none is used here). Using
+                        // Arguments::new_const may allow the compiler to omit Formatter::pad from the
+                        // output binary, saving up to a few kilobytes.
+                        panic_fmt(fmt::Arguments::new_const(&[$message]));
+                    }
+    *)
+    Definition panic_const_rem_overflow (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [] =>
+        ltac:(M.monadic
+          (M.call_closure (|
+            M.get_function (| "core::panicking::panic_fmt", [] |),
+            [
+              M.call_closure (|
+                M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
+                [
+                  M.alloc (|
+                    Value.Array
+                      [ M.read (| Value.String "attempt to calculate the remainder with overflow" |)
+                      ]
+                  |)
+                ]
+              |)
+            ]
+          |)))
+      | _, _, _ => M.impossible
+      end.
+    
+    Axiom Function_panic_const_rem_overflow :
+      M.IsFunction
+        "core::panicking::panic_const::panic_const_rem_overflow"
+        panic_const_rem_overflow.
+    
+    (*
+                    pub const fn $lang() -> ! {
+                        // Use Arguments::new_const instead of format_args!("{expr}") to potentially
+                        // reduce size overhead. The format_args! macro uses str's Display trait to
+                        // write expr, which calls Formatter::pad, which must accommodate string
+                        // truncation and padding (even though none is used here). Using
+                        // Arguments::new_const may allow the compiler to omit Formatter::pad from the
+                        // output binary, saving up to a few kilobytes.
+                        panic_fmt(fmt::Arguments::new_const(&[$message]));
+                    }
+    *)
+    Definition panic_const_neg_overflow (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [] =>
+        ltac:(M.monadic
+          (M.call_closure (|
+            M.get_function (| "core::panicking::panic_fmt", [] |),
+            [
+              M.call_closure (|
+                M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
+                [
+                  M.alloc (|
+                    Value.Array [ M.read (| Value.String "attempt to negate with overflow" |) ]
+                  |)
+                ]
+              |)
+            ]
+          |)))
+      | _, _, _ => M.impossible
+      end.
+    
+    Axiom Function_panic_const_neg_overflow :
+      M.IsFunction
+        "core::panicking::panic_const::panic_const_neg_overflow"
+        panic_const_neg_overflow.
+    
+    (*
+                    pub const fn $lang() -> ! {
+                        // Use Arguments::new_const instead of format_args!("{expr}") to potentially
+                        // reduce size overhead. The format_args! macro uses str's Display trait to
+                        // write expr, which calls Formatter::pad, which must accommodate string
+                        // truncation and padding (even though none is used here). Using
+                        // Arguments::new_const may allow the compiler to omit Formatter::pad from the
+                        // output binary, saving up to a few kilobytes.
+                        panic_fmt(fmt::Arguments::new_const(&[$message]));
+                    }
+    *)
+    Definition panic_const_shr_overflow (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [] =>
+        ltac:(M.monadic
+          (M.call_closure (|
+            M.get_function (| "core::panicking::panic_fmt", [] |),
+            [
+              M.call_closure (|
+                M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
+                [
+                  M.alloc (|
+                    Value.Array [ M.read (| Value.String "attempt to shift right with overflow" |) ]
+                  |)
+                ]
+              |)
+            ]
+          |)))
+      | _, _, _ => M.impossible
+      end.
+    
+    Axiom Function_panic_const_shr_overflow :
+      M.IsFunction
+        "core::panicking::panic_const::panic_const_shr_overflow"
+        panic_const_shr_overflow.
+    
+    (*
+                    pub const fn $lang() -> ! {
+                        // Use Arguments::new_const instead of format_args!("{expr}") to potentially
+                        // reduce size overhead. The format_args! macro uses str's Display trait to
+                        // write expr, which calls Formatter::pad, which must accommodate string
+                        // truncation and padding (even though none is used here). Using
+                        // Arguments::new_const may allow the compiler to omit Formatter::pad from the
+                        // output binary, saving up to a few kilobytes.
+                        panic_fmt(fmt::Arguments::new_const(&[$message]));
+                    }
+    *)
+    Definition panic_const_shl_overflow (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [] =>
+        ltac:(M.monadic
+          (M.call_closure (|
+            M.get_function (| "core::panicking::panic_fmt", [] |),
+            [
+              M.call_closure (|
+                M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
+                [
+                  M.alloc (|
+                    Value.Array [ M.read (| Value.String "attempt to shift left with overflow" |) ]
+                  |)
+                ]
+              |)
+            ]
+          |)))
+      | _, _, _ => M.impossible
+      end.
+    
+    Axiom Function_panic_const_shl_overflow :
+      M.IsFunction
+        "core::panicking::panic_const::panic_const_shl_overflow"
+        panic_const_shl_overflow.
+    
+    (*
+                    pub const fn $lang() -> ! {
+                        // Use Arguments::new_const instead of format_args!("{expr}") to potentially
+                        // reduce size overhead. The format_args! macro uses str's Display trait to
+                        // write expr, which calls Formatter::pad, which must accommodate string
+                        // truncation and padding (even though none is used here). Using
+                        // Arguments::new_const may allow the compiler to omit Formatter::pad from the
+                        // output binary, saving up to a few kilobytes.
+                        panic_fmt(fmt::Arguments::new_const(&[$message]));
+                    }
+    *)
+    Definition panic_const_div_by_zero (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [] =>
+        ltac:(M.monadic
+          (M.call_closure (|
+            M.get_function (| "core::panicking::panic_fmt", [] |),
+            [
+              M.call_closure (|
+                M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
+                [
+                  M.alloc (|
+                    Value.Array [ M.read (| Value.String "attempt to divide by zero" |) ]
+                  |)
+                ]
+              |)
+            ]
+          |)))
+      | _, _, _ => M.impossible
+      end.
+    
+    Axiom Function_panic_const_div_by_zero :
+      M.IsFunction "core::panicking::panic_const::panic_const_div_by_zero" panic_const_div_by_zero.
+    
+    (*
+                    pub const fn $lang() -> ! {
+                        // Use Arguments::new_const instead of format_args!("{expr}") to potentially
+                        // reduce size overhead. The format_args! macro uses str's Display trait to
+                        // write expr, which calls Formatter::pad, which must accommodate string
+                        // truncation and padding (even though none is used here). Using
+                        // Arguments::new_const may allow the compiler to omit Formatter::pad from the
+                        // output binary, saving up to a few kilobytes.
+                        panic_fmt(fmt::Arguments::new_const(&[$message]));
+                    }
+    *)
+    Definition panic_const_rem_by_zero (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [] =>
+        ltac:(M.monadic
+          (M.call_closure (|
+            M.get_function (| "core::panicking::panic_fmt", [] |),
+            [
+              M.call_closure (|
+                M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
+                [
+                  M.alloc (|
+                    Value.Array
+                      [
+                        M.read (|
+                          Value.String "attempt to calculate the remainder with a divisor of zero"
+                        |)
+                      ]
+                  |)
+                ]
+              |)
+            ]
+          |)))
+      | _, _, _ => M.impossible
+      end.
+    
+    Axiom Function_panic_const_rem_by_zero :
+      M.IsFunction "core::panicking::panic_const::panic_const_rem_by_zero" panic_const_rem_by_zero.
+    
+    (*
+                    pub const fn $lang() -> ! {
+                        // Use Arguments::new_const instead of format_args!("{expr}") to potentially
+                        // reduce size overhead. The format_args! macro uses str's Display trait to
+                        // write expr, which calls Formatter::pad, which must accommodate string
+                        // truncation and padding (even though none is used here). Using
+                        // Arguments::new_const may allow the compiler to omit Formatter::pad from the
+                        // output binary, saving up to a few kilobytes.
+                        panic_fmt(fmt::Arguments::new_const(&[$message]));
+                    }
+    *)
+    Definition panic_const_coroutine_resumed
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      match ε, τ, α with
+      | [], [], [] =>
+        ltac:(M.monadic
+          (M.call_closure (|
+            M.get_function (| "core::panicking::panic_fmt", [] |),
+            [
+              M.call_closure (|
+                M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
+                [
+                  M.alloc (|
+                    Value.Array [ M.read (| Value.String "coroutine resumed after completion" |) ]
+                  |)
+                ]
+              |)
+            ]
+          |)))
+      | _, _, _ => M.impossible
+      end.
+    
+    Axiom Function_panic_const_coroutine_resumed :
+      M.IsFunction
+        "core::panicking::panic_const::panic_const_coroutine_resumed"
+        panic_const_coroutine_resumed.
+    
+    (*
+                    pub const fn $lang() -> ! {
+                        // Use Arguments::new_const instead of format_args!("{expr}") to potentially
+                        // reduce size overhead. The format_args! macro uses str's Display trait to
+                        // write expr, which calls Formatter::pad, which must accommodate string
+                        // truncation and padding (even though none is used here). Using
+                        // Arguments::new_const may allow the compiler to omit Formatter::pad from the
+                        // output binary, saving up to a few kilobytes.
+                        panic_fmt(fmt::Arguments::new_const(&[$message]));
+                    }
+    *)
+    Definition panic_const_async_fn_resumed
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      match ε, τ, α with
+      | [], [], [] =>
+        ltac:(M.monadic
+          (M.call_closure (|
+            M.get_function (| "core::panicking::panic_fmt", [] |),
+            [
+              M.call_closure (|
+                M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
+                [
+                  M.alloc (|
+                    Value.Array [ M.read (| Value.String "`async fn` resumed after completion" |) ]
+                  |)
+                ]
+              |)
+            ]
+          |)))
+      | _, _, _ => M.impossible
+      end.
+    
+    Axiom Function_panic_const_async_fn_resumed :
+      M.IsFunction
+        "core::panicking::panic_const::panic_const_async_fn_resumed"
+        panic_const_async_fn_resumed.
+    
+    (*
+                    pub const fn $lang() -> ! {
+                        // Use Arguments::new_const instead of format_args!("{expr}") to potentially
+                        // reduce size overhead. The format_args! macro uses str's Display trait to
+                        // write expr, which calls Formatter::pad, which must accommodate string
+                        // truncation and padding (even though none is used here). Using
+                        // Arguments::new_const may allow the compiler to omit Formatter::pad from the
+                        // output binary, saving up to a few kilobytes.
+                        panic_fmt(fmt::Arguments::new_const(&[$message]));
+                    }
+    *)
+    Definition panic_const_async_gen_fn_resumed
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      match ε, τ, α with
+      | [], [], [] =>
+        ltac:(M.monadic
+          (M.call_closure (|
+            M.get_function (| "core::panicking::panic_fmt", [] |),
+            [
+              M.call_closure (|
+                M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
+                [
+                  M.alloc (|
+                    Value.Array
+                      [ M.read (| Value.String "`async gen fn` resumed after completion" |) ]
+                  |)
+                ]
+              |)
+            ]
+          |)))
+      | _, _, _ => M.impossible
+      end.
+    
+    Axiom Function_panic_const_async_gen_fn_resumed :
+      M.IsFunction
+        "core::panicking::panic_const::panic_const_async_gen_fn_resumed"
+        panic_const_async_gen_fn_resumed.
+    
+    (*
+                    pub const fn $lang() -> ! {
+                        // Use Arguments::new_const instead of format_args!("{expr}") to potentially
+                        // reduce size overhead. The format_args! macro uses str's Display trait to
+                        // write expr, which calls Formatter::pad, which must accommodate string
+                        // truncation and padding (even though none is used here). Using
+                        // Arguments::new_const may allow the compiler to omit Formatter::pad from the
+                        // output binary, saving up to a few kilobytes.
+                        panic_fmt(fmt::Arguments::new_const(&[$message]));
+                    }
+    *)
+    Definition panic_const_gen_fn_none (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [] =>
+        ltac:(M.monadic
+          (M.call_closure (|
+            M.get_function (| "core::panicking::panic_fmt", [] |),
+            [
+              M.call_closure (|
+                M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
+                [
+                  M.alloc (|
+                    Value.Array
+                      [
+                        M.read (|
+                          Value.String "`gen fn` should just keep returning `None` after completion"
+                        |)
+                      ]
+                  |)
+                ]
+              |)
+            ]
+          |)))
+      | _, _, _ => M.impossible
+      end.
+    
+    Axiom Function_panic_const_gen_fn_none :
+      M.IsFunction "core::panicking::panic_const::panic_const_gen_fn_none" panic_const_gen_fn_none.
+    
+    (*
+                    pub const fn $lang() -> ! {
+                        // Use Arguments::new_const instead of format_args!("{expr}") to potentially
+                        // reduce size overhead. The format_args! macro uses str's Display trait to
+                        // write expr, which calls Formatter::pad, which must accommodate string
+                        // truncation and padding (even though none is used here). Using
+                        // Arguments::new_const may allow the compiler to omit Formatter::pad from the
+                        // output binary, saving up to a few kilobytes.
+                        panic_fmt(fmt::Arguments::new_const(&[$message]));
+                    }
+    *)
+    Definition panic_const_coroutine_resumed_panic
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      match ε, τ, α with
+      | [], [], [] =>
+        ltac:(M.monadic
+          (M.call_closure (|
+            M.get_function (| "core::panicking::panic_fmt", [] |),
+            [
+              M.call_closure (|
+                M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
+                [
+                  M.alloc (|
+                    Value.Array [ M.read (| Value.String "coroutine resumed after panicking" |) ]
+                  |)
+                ]
+              |)
+            ]
+          |)))
+      | _, _, _ => M.impossible
+      end.
+    
+    Axiom Function_panic_const_coroutine_resumed_panic :
+      M.IsFunction
+        "core::panicking::panic_const::panic_const_coroutine_resumed_panic"
+        panic_const_coroutine_resumed_panic.
+    
+    (*
+                    pub const fn $lang() -> ! {
+                        // Use Arguments::new_const instead of format_args!("{expr}") to potentially
+                        // reduce size overhead. The format_args! macro uses str's Display trait to
+                        // write expr, which calls Formatter::pad, which must accommodate string
+                        // truncation and padding (even though none is used here). Using
+                        // Arguments::new_const may allow the compiler to omit Formatter::pad from the
+                        // output binary, saving up to a few kilobytes.
+                        panic_fmt(fmt::Arguments::new_const(&[$message]));
+                    }
+    *)
+    Definition panic_const_async_fn_resumed_panic
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      match ε, τ, α with
+      | [], [], [] =>
+        ltac:(M.monadic
+          (M.call_closure (|
+            M.get_function (| "core::panicking::panic_fmt", [] |),
+            [
+              M.call_closure (|
+                M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
+                [
+                  M.alloc (|
+                    Value.Array [ M.read (| Value.String "`async fn` resumed after panicking" |) ]
+                  |)
+                ]
+              |)
+            ]
+          |)))
+      | _, _, _ => M.impossible
+      end.
+    
+    Axiom Function_panic_const_async_fn_resumed_panic :
+      M.IsFunction
+        "core::panicking::panic_const::panic_const_async_fn_resumed_panic"
+        panic_const_async_fn_resumed_panic.
+    
+    (*
+                    pub const fn $lang() -> ! {
+                        // Use Arguments::new_const instead of format_args!("{expr}") to potentially
+                        // reduce size overhead. The format_args! macro uses str's Display trait to
+                        // write expr, which calls Formatter::pad, which must accommodate string
+                        // truncation and padding (even though none is used here). Using
+                        // Arguments::new_const may allow the compiler to omit Formatter::pad from the
+                        // output binary, saving up to a few kilobytes.
+                        panic_fmt(fmt::Arguments::new_const(&[$message]));
+                    }
+    *)
+    Definition panic_const_async_gen_fn_resumed_panic
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      match ε, τ, α with
+      | [], [], [] =>
+        ltac:(M.monadic
+          (M.call_closure (|
+            M.get_function (| "core::panicking::panic_fmt", [] |),
+            [
+              M.call_closure (|
+                M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
+                [
+                  M.alloc (|
+                    Value.Array
+                      [ M.read (| Value.String "`async gen fn` resumed after panicking" |) ]
+                  |)
+                ]
+              |)
+            ]
+          |)))
+      | _, _, _ => M.impossible
+      end.
+    
+    Axiom Function_panic_const_async_gen_fn_resumed_panic :
+      M.IsFunction
+        "core::panicking::panic_const::panic_const_async_gen_fn_resumed_panic"
+        panic_const_async_gen_fn_resumed_panic.
+    
+    (*
+                    pub const fn $lang() -> ! {
+                        // Use Arguments::new_const instead of format_args!("{expr}") to potentially
+                        // reduce size overhead. The format_args! macro uses str's Display trait to
+                        // write expr, which calls Formatter::pad, which must accommodate string
+                        // truncation and padding (even though none is used here). Using
+                        // Arguments::new_const may allow the compiler to omit Formatter::pad from the
+                        // output binary, saving up to a few kilobytes.
+                        panic_fmt(fmt::Arguments::new_const(&[$message]));
+                    }
+    *)
+    Definition panic_const_gen_fn_none_panic
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      match ε, τ, α with
+      | [], [], [] =>
+        ltac:(M.monadic
+          (M.call_closure (|
+            M.get_function (| "core::panicking::panic_fmt", [] |),
+            [
+              M.call_closure (|
+                M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
+                [
+                  M.alloc (|
+                    Value.Array
+                      [
+                        M.read (|
+                          Value.String "`gen fn` should just keep returning `None` after panicking"
+                        |)
+                      ]
+                  |)
+                ]
+              |)
+            ]
+          |)))
+      | _, _, _ => M.impossible
+      end.
+    
+    Axiom Function_panic_const_gen_fn_none_panic :
+      M.IsFunction
+        "core::panicking::panic_const::panic_const_gen_fn_none_panic"
+        panic_const_gen_fn_none_panic.
+  End panic_const.
+  
   (*
   pub const fn panic_nounwind(expr: &'static str) -> ! {
       panic_nounwind_fmt(fmt::Arguments::new_const(&[expr]), /* force_no_backtrace */ false);
@@ -311,7 +1004,7 @@ Module panicking.
   *)
   Definition panic_nounwind (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     match ε, τ, α with
-    | [ host ], [], [ expr ] =>
+    | [], [], [ expr ] =>
       ltac:(M.monadic
         (let expr := M.alloc (| expr |) in
         M.call_closure (|
@@ -319,7 +1012,7 @@ Module panicking.
           [
             M.call_closure (|
               M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
-              [ (* Unsize *) M.pointer_coercion (M.alloc (| Value.Array [ M.read (| expr |) ] |)) ]
+              [ M.alloc (| Value.Array [ M.read (| expr |) ] |) ]
             |);
             Value.Bool false
           ]
@@ -344,7 +1037,7 @@ Module panicking.
           [
             M.call_closure (|
               M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
-              [ (* Unsize *) M.pointer_coercion (M.alloc (| Value.Array [ M.read (| expr |) ] |)) ]
+              [ M.alloc (| Value.Array [ M.read (| expr |) ] |) ]
             |);
             Value.Bool true
           ]
@@ -356,35 +1049,13 @@ Module panicking.
     M.IsFunction "core::panicking::panic_nounwind_nobacktrace" panic_nounwind_nobacktrace.
   
   (*
-  pub const fn panic_str(expr: &str) -> ! {
-      panic_display(&expr);
-  }
-  *)
-  Definition panic_str (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-    match ε, τ, α with
-    | [ host ], [], [ expr ] =>
-      ltac:(M.monadic
-        (let expr := M.alloc (| expr |) in
-        M.call_closure (|
-          M.get_function (|
-            "core::panicking::panic_display",
-            [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
-          |),
-          [ expr ]
-        |)))
-    | _, _, _ => M.impossible
-    end.
-  
-  Axiom Function_panic_str : M.IsFunction "core::panicking::panic_str" panic_str.
-  
-  (*
   pub const fn panic_explicit() -> ! {
       panic_display(&"explicit panic");
   }
   *)
   Definition panic_explicit (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     match ε, τ, α with
-    | [ host ], [], [] =>
+    | [], [], [] =>
       ltac:(M.monadic
         (M.call_closure (|
           M.get_function (|
@@ -414,27 +1085,23 @@ Module panicking.
             M.call_closure (|
               M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
               [
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.alloc (|
-                    Value.Array
-                      [ M.read (| Value.String "internal error: entered unreachable code: " |) ]
-                  |));
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.alloc (|
-                    Value.Array
-                      [
-                        M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.path "core::fmt::rt::Argument",
-                            "new_display",
-                            [ T ]
-                          |),
-                          [ M.read (| x |) ]
-                        |)
-                      ]
-                  |))
+                M.alloc (|
+                  Value.Array
+                    [ M.read (| Value.String "internal error: entered unreachable code: " |) ]
+                |);
+                M.alloc (|
+                  Value.Array
+                    [
+                      M.call_closure (|
+                        M.get_associated_function (|
+                          Ty.path "core::fmt::rt::Argument",
+                          "new_display",
+                          [ T ]
+                        |),
+                        [ M.read (| x |) ]
+                      |)
+                    ]
+                |)
               ]
             |)
           ]
@@ -446,13 +1113,35 @@ Module panicking.
     M.IsFunction "core::panicking::unreachable_display" unreachable_display.
   
   (*
+  pub const fn panic_str_2015(expr: &str) -> ! {
+      panic_display(&expr);
+  }
+  *)
+  Definition panic_str_2015 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ expr ] =>
+      ltac:(M.monadic
+        (let expr := M.alloc (| expr |) in
+        M.call_closure (|
+          M.get_function (|
+            "core::panicking::panic_display",
+            [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+          |),
+          [ expr ]
+        |)))
+    | _, _, _ => M.impossible
+    end.
+  
+  Axiom Function_panic_str_2015 : M.IsFunction "core::panicking::panic_str_2015" panic_str_2015.
+  
+  (*
   pub const fn panic_display<T: fmt::Display>(x: &T) -> ! {
       panic_fmt(format_args!("{}", *x));
   }
   *)
   Definition panic_display (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     match ε, τ, α with
-    | [ host ], [ T ], [ x ] =>
+    | [], [ T ], [ x ] =>
       ltac:(M.monadic
         (let x := M.alloc (| x |) in
         M.call_closure (|
@@ -461,23 +1150,20 @@ Module panicking.
             M.call_closure (|
               M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
               [
-                (* Unsize *)
-                M.pointer_coercion (M.alloc (| Value.Array [ M.read (| Value.String "" |) ] |));
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.alloc (|
-                    Value.Array
-                      [
-                        M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.path "core::fmt::rt::Argument",
-                            "new_display",
-                            [ T ]
-                          |),
-                          [ M.read (| x |) ]
-                        |)
-                      ]
-                  |))
+                M.alloc (| Value.Array [ M.read (| Value.String "" |) ] |);
+                M.alloc (|
+                  Value.Array
+                    [
+                      M.call_closure (|
+                        M.get_associated_function (|
+                          Ty.path "core::fmt::rt::Argument",
+                          "new_display",
+                          [ T ]
+                        |),
+                        [ M.read (| x |) ]
+                      |)
+                    ]
+                |)
               ]
             |)
           ]
@@ -526,38 +1212,34 @@ Module panicking.
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                   [
-                    (* Unsize *)
-                    M.pointer_coercion
-                      (M.alloc (|
-                        Value.Array
-                          [
-                            M.read (| Value.String "index out of bounds: the len is " |);
-                            M.read (| Value.String " but the index is " |)
-                          ]
-                      |));
-                    (* Unsize *)
-                    M.pointer_coercion
-                      (M.alloc (|
-                        Value.Array
-                          [
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.path "core::fmt::rt::Argument",
-                                "new_display",
-                                [ Ty.path "usize" ]
-                              |),
-                              [ len ]
-                            |);
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.path "core::fmt::rt::Argument",
-                                "new_display",
-                                [ Ty.path "usize" ]
-                              |),
-                              [ index ]
-                            |)
-                          ]
-                      |))
+                    M.alloc (|
+                      Value.Array
+                        [
+                          M.read (| Value.String "index out of bounds: the len is " |);
+                          M.read (| Value.String " but the index is " |)
+                        ]
+                    |);
+                    M.alloc (|
+                      Value.Array
+                        [
+                          M.call_closure (|
+                            M.get_associated_function (|
+                              Ty.path "core::fmt::rt::Argument",
+                              "new_display",
+                              [ Ty.path "usize" ]
+                            |),
+                            [ len ]
+                          |);
+                          M.call_closure (|
+                            M.get_associated_function (|
+                              Ty.path "core::fmt::rt::Argument",
+                              "new_display",
+                              [ Ty.path "usize" ]
+                            |),
+                            [ index ]
+                          |)
+                        ]
+                    |)
                   ]
                 |)
               ]
@@ -622,78 +1304,72 @@ Module panicking.
                     []
                   |),
                   [
-                    (* Unsize *)
-                    M.pointer_coercion
-                      (M.alloc (|
-                        Value.Array
-                          [
-                            M.read (|
-                              Value.String
-                                "misaligned pointer dereference: address must be a multiple of "
-                            |);
-                            M.read (| Value.String " but is " |)
-                          ]
-                      |));
-                    (* Unsize *)
-                    M.pointer_coercion
-                      (M.alloc (|
-                        Value.Array
-                          [
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.path "core::fmt::rt::Argument",
-                                "new_lower_hex",
-                                [ Ty.path "usize" ]
-                              |),
-                              [ required ]
-                            |);
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.path "core::fmt::rt::Argument",
-                                "new_lower_hex",
-                                [ Ty.path "usize" ]
-                              |),
-                              [ found ]
-                            |)
-                          ]
-                      |));
-                    (* Unsize *)
-                    M.pointer_coercion
-                      (M.alloc (|
-                        Value.Array
-                          [
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.path "core::fmt::rt::Placeholder",
-                                "new",
-                                []
-                              |),
-                              [
-                                Value.Integer 0;
-                                Value.UnicodeChar 32;
-                                Value.StructTuple "core::fmt::rt::Alignment::Unknown" [];
-                                Value.Integer 4;
-                                Value.StructTuple "core::fmt::rt::Count::Implied" [];
-                                Value.StructTuple "core::fmt::rt::Count::Implied" []
-                              ]
-                            |);
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.path "core::fmt::rt::Placeholder",
-                                "new",
-                                []
-                              |),
-                              [
-                                Value.Integer 1;
-                                Value.UnicodeChar 32;
-                                Value.StructTuple "core::fmt::rt::Alignment::Unknown" [];
-                                Value.Integer 4;
-                                Value.StructTuple "core::fmt::rt::Count::Implied" [];
-                                Value.StructTuple "core::fmt::rt::Count::Implied" []
-                              ]
-                            |)
-                          ]
-                      |));
+                    M.alloc (|
+                      Value.Array
+                        [
+                          M.read (|
+                            Value.String
+                              "misaligned pointer dereference: address must be a multiple of "
+                          |);
+                          M.read (| Value.String " but is " |)
+                        ]
+                    |);
+                    M.alloc (|
+                      Value.Array
+                        [
+                          M.call_closure (|
+                            M.get_associated_function (|
+                              Ty.path "core::fmt::rt::Argument",
+                              "new_lower_hex",
+                              [ Ty.path "usize" ]
+                            |),
+                            [ required ]
+                          |);
+                          M.call_closure (|
+                            M.get_associated_function (|
+                              Ty.path "core::fmt::rt::Argument",
+                              "new_lower_hex",
+                              [ Ty.path "usize" ]
+                            |),
+                            [ found ]
+                          |)
+                        ]
+                    |);
+                    M.alloc (|
+                      Value.Array
+                        [
+                          M.call_closure (|
+                            M.get_associated_function (|
+                              Ty.path "core::fmt::rt::Placeholder",
+                              "new",
+                              []
+                            |),
+                            [
+                              Value.Integer 0;
+                              Value.UnicodeChar 32;
+                              Value.StructTuple "core::fmt::rt::Alignment::Unknown" [];
+                              Value.Integer 4;
+                              Value.StructTuple "core::fmt::rt::Count::Implied" [];
+                              Value.StructTuple "core::fmt::rt::Count::Implied" []
+                            ]
+                          |);
+                          M.call_closure (|
+                            M.get_associated_function (|
+                              Ty.path "core::fmt::rt::Placeholder",
+                              "new",
+                              []
+                            |),
+                            [
+                              Value.Integer 1;
+                              Value.UnicodeChar 32;
+                              Value.StructTuple "core::fmt::rt::Alignment::Unknown" [];
+                              Value.Integer 4;
+                              Value.StructTuple "core::fmt::rt::Count::Implied" [];
+                              Value.StructTuple "core::fmt::rt::Count::Implied" []
+                            ]
+                          |)
+                        ]
+                    |);
                     M.call_closure (|
                       M.get_associated_function (| Ty.path "core::fmt::rt::UnsafeArg", "new", [] |),
                       []
@@ -768,7 +1444,7 @@ Module panicking.
   *)
   Definition const_panic_fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     match ε, τ, α with
-    | [ host ], [], [ fmt ] =>
+    | [], [], [ fmt ] =>
       ltac:(M.monadic
         (let fmt := M.alloc (| fmt |) in
         M.read (|
@@ -919,12 +1595,7 @@ Module panicking.
         let args := M.alloc (| args |) in
         M.call_closure (|
           M.get_function (| "core::panicking::assert_failed_inner", [] |),
-          [
-            M.read (| kind |);
-            (* Unsize *) M.pointer_coercion left;
-            (* Unsize *) M.pointer_coercion right;
-            M.read (| args |)
-          ]
+          [ M.read (| kind |); left; right; M.read (| args |) ]
         |)))
     | _, _, _ => M.impossible
     end.
@@ -958,14 +1629,12 @@ Module panicking.
           M.get_function (| "core::panicking::assert_failed_inner", [] |),
           [
             Value.StructTuple "core::panicking::AssertKind::Match" [];
-            (* Unsize *) M.pointer_coercion left;
-            (* Unsize *)
-            M.pointer_coercion
-              (M.alloc (|
-                Value.StructTuple
-                  "core::panicking::assert_matches_failed::Pattern"
-                  [ M.read (| right |) ]
-              |));
+            left;
+            M.alloc (|
+              Value.StructTuple
+                "core::panicking::assert_matches_failed::Pattern"
+                [ M.read (| right |) ]
+            |);
             M.read (| args |)
           ]
         |)))
@@ -1098,68 +1767,64 @@ Module panicking.
                             []
                           |),
                           [
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.alloc (|
-                                Value.Array
-                                  [
-                                    M.read (| Value.String "assertion `left " |);
-                                    M.read (| Value.String " right` failed: " |);
-                                    M.read (| Value.String "
+                            M.alloc (|
+                              Value.Array
+                                [
+                                  M.read (| Value.String "assertion `left " |);
+                                  M.read (| Value.String " right` failed: " |);
+                                  M.read (| Value.String "
   left: " |);
-                                    M.read (| Value.String "
+                                  M.read (| Value.String "
  right: " |)
-                                  ]
-                              |));
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.alloc (|
-                                Value.Array
-                                  [
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::rt::Argument",
-                                        "new_display",
-                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
-                                      |),
-                                      [ op ]
-                                    |);
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::rt::Argument",
-                                        "new_display",
-                                        [ Ty.path "core::fmt::Arguments" ]
-                                      |),
-                                      [ args ]
-                                    |);
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::rt::Argument",
-                                        "new_debug",
-                                        [
-                                          Ty.apply
-                                            (Ty.path "&")
-                                            []
-                                            [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]
-                                        ]
-                                      |),
-                                      [ left ]
-                                    |);
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::rt::Argument",
-                                        "new_debug",
-                                        [
-                                          Ty.apply
-                                            (Ty.path "&")
-                                            []
-                                            [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]
-                                        ]
-                                      |),
-                                      [ right ]
-                                    |)
-                                  ]
-                              |))
+                                ]
+                            |);
+                            M.alloc (|
+                              Value.Array
+                                [
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_display",
+                                      [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                                    |),
+                                    [ op ]
+                                  |);
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_display",
+                                      [ Ty.path "core::fmt::Arguments" ]
+                                    |),
+                                    [ args ]
+                                  |);
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_debug",
+                                      [
+                                        Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]
+                                      ]
+                                    |),
+                                    [ left ]
+                                  |);
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_debug",
+                                      [
+                                        Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]
+                                      ]
+                                    |),
+                                    [ right ]
+                                  |)
+                                ]
+                            |)
                           ]
                         |)
                       ]
@@ -1179,59 +1844,55 @@ Module panicking.
                             []
                           |),
                           [
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.alloc (|
-                                Value.Array
-                                  [
-                                    M.read (| Value.String "assertion `left " |);
-                                    M.read (| Value.String " right` failed
+                            M.alloc (|
+                              Value.Array
+                                [
+                                  M.read (| Value.String "assertion `left " |);
+                                  M.read (| Value.String " right` failed
   left: " |);
-                                    M.read (| Value.String "
+                                  M.read (| Value.String "
  right: " |)
-                                  ]
-                              |));
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.alloc (|
-                                Value.Array
-                                  [
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::rt::Argument",
-                                        "new_display",
-                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
-                                      |),
-                                      [ op ]
-                                    |);
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::rt::Argument",
-                                        "new_debug",
-                                        [
-                                          Ty.apply
-                                            (Ty.path "&")
-                                            []
-                                            [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]
-                                        ]
-                                      |),
-                                      [ left ]
-                                    |);
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::rt::Argument",
-                                        "new_debug",
-                                        [
-                                          Ty.apply
-                                            (Ty.path "&")
-                                            []
-                                            [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]
-                                        ]
-                                      |),
-                                      [ right ]
-                                    |)
-                                  ]
-                              |))
+                                ]
+                            |);
+                            M.alloc (|
+                              Value.Array
+                                [
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_display",
+                                      [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                                    |),
+                                    [ op ]
+                                  |);
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_debug",
+                                      [
+                                        Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]
+                                      ]
+                                    |),
+                                    [ left ]
+                                  |);
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_debug",
+                                      [
+                                        Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]
+                                      ]
+                                    |),
+                                    [ right ]
+                                  |)
+                                ]
+                            |)
                           ]
                         |)
                       ]

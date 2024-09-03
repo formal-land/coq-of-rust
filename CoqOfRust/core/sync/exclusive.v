@@ -114,7 +114,7 @@ Module sync.
       Definition new (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
         match ε, τ, α with
-        | [ host ], [], [ t ] =>
+        | [], [], [ t ] =>
           ltac:(M.monadic
             (let t := M.alloc (| t |) in
             Value.StructRecord "core::sync::exclusive::Exclusive" [ ("inner", M.read (| t |)) ]))
@@ -133,7 +133,7 @@ Module sync.
       Definition into_inner (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -157,7 +157,7 @@ Module sync.
       Definition get_mut (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.SubPointer.get_struct_record_field (|
@@ -182,7 +182,7 @@ Module sync.
       Definition get_pin_mut (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -230,7 +230,7 @@ Module sync.
       Definition from_mut (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
         match ε, τ, α with
-        | [ host ], [], [ r ] =>
+        | [], [], [ r ] =>
           ltac:(M.monadic
             (let r := M.alloc (| r |) in
             M.rust_cast (M.read (| M.use (M.alloc (| M.read (| r |) |)) |))))
@@ -256,7 +256,7 @@ Module sync.
           : M :=
         let Self : Ty.t := Self T in
         match ε, τ, α with
-        | [ host ], [], [ r ] =>
+        | [], [], [ r ] =>
           ltac:(M.monadic
             (let r := M.alloc (| r |) in
             M.call_closure (|

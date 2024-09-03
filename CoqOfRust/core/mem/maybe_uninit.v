@@ -100,7 +100,7 @@ Module mem.
       Definition new (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
         match ε, τ, α with
-        | [ host ], [], [ val ] =>
+        | [], [], [ val ] =>
           ltac:(M.monadic
             (let val := M.alloc (| val |) in
             Value.StructRecord
@@ -131,7 +131,7 @@ Module mem.
       Definition uninit (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
         match ε, τ, α with
-        | [ host ], [], [] =>
+        | [], [], [] =>
           ltac:(M.monadic
             (Value.StructRecord
               "core::mem::maybe_uninit::MaybeUninit"
@@ -145,8 +145,7 @@ Module mem.
       
       (*
           pub const fn uninit_array<const N: usize>() -> [Self; N] {
-              // SAFETY: An uninitialized `[MaybeUninit<_>; LEN]` is valid.
-              unsafe { MaybeUninit::<[MaybeUninit<T>; N]>::uninit().assume_init() }
+              [const { MaybeUninit::uninit() }; N]
           }
       *)
       Definition uninit_array
@@ -157,40 +156,13 @@ Module mem.
           : M :=
         let Self : Ty.t := Self T in
         match ε, τ, α with
-        | [ N; host ], [], [] =>
+        | [ N ], [], [] =>
           ltac:(M.monadic
-            (M.call_closure (|
-              M.get_associated_function (|
-                Ty.apply
-                  (Ty.path "core::mem::maybe_uninit::MaybeUninit")
-                  []
-                  [
-                    Ty.apply
-                      (Ty.path "array")
-                      [ N ]
-                      [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ]
-                  ],
-                "assume_init",
-                []
+            (repeat (|
+              M.read (|
+                M.get_constant (| "core::mem::maybe_uninit::uninit_array_discriminant" |)
               |),
-              [
-                M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.apply
-                      (Ty.path "core::mem::maybe_uninit::MaybeUninit")
-                      []
-                      [
-                        Ty.apply
-                          (Ty.path "array")
-                          [ N ]
-                          [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ]
-                      ],
-                    "uninit",
-                    []
-                  |),
-                  []
-                |)
-              ]
+              N
             |)))
         | _, _, _ => M.impossible
         end.
@@ -210,7 +182,7 @@ Module mem.
       Definition zeroed (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
         match ε, τ, α with
-        | [ host ], [], [] =>
+        | [], [], [] =>
           ltac:(M.monadic
             (M.read (|
               let~ u :=
@@ -265,7 +237,7 @@ Module mem.
       Definition write (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
         match ε, τ, α with
-        | [ host ], [], [ self; val ] =>
+        | [], [], [ self; val ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let val := M.alloc (| val |) in
@@ -309,7 +281,7 @@ Module mem.
       Definition as_ptr (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.rust_cast (M.read (| M.use (M.alloc (| M.read (| self |) |)) |))))
@@ -329,7 +301,7 @@ Module mem.
       Definition as_mut_ptr (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.rust_cast (M.read (| M.use (M.alloc (| M.read (| self |) |)) |))))
@@ -353,7 +325,7 @@ Module mem.
       Definition assume_init (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -408,7 +380,7 @@ Module mem.
           : M :=
         let Self : Ty.t := Self T in
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -499,7 +471,7 @@ Module mem.
           : M :=
         let Self : Ty.t := Self T in
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -546,7 +518,7 @@ Module mem.
           : M :=
         let Self : Ty.t := Self T in
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -596,7 +568,7 @@ Module mem.
           : M :=
         let Self : Ty.t := Self T in
         match ε, τ, α with
-        | [ N; host ], [], [ array ] =>
+        | [ N ], [], [ array ] =>
           ltac:(M.monadic
             (let array := M.alloc (| array |) in
             M.read (|
@@ -650,7 +622,7 @@ Module mem.
           : M :=
         let Self : Ty.t := Self T in
         match ε, τ, α with
-        | [ host ], [], [ slice ] =>
+        | [], [], [ slice ] =>
           ltac:(M.monadic
             (let slice := M.alloc (| slice |) in
             M.rust_cast (M.read (| M.use (M.alloc (| M.read (| slice |) |)) |))))
@@ -676,7 +648,7 @@ Module mem.
           : M :=
         let Self : Ty.t := Self T in
         match ε, τ, α with
-        | [ host ], [], [ slice ] =>
+        | [], [], [ slice ] =>
           ltac:(M.monadic
             (let slice := M.alloc (| slice |) in
             M.rust_cast (M.read (| M.use (M.alloc (| M.read (| slice |) |)) |))))
@@ -700,7 +672,7 @@ Module mem.
           : M :=
         let Self : Ty.t := Self T in
         match ε, τ, α with
-        | [ host ], [], [ this ] =>
+        | [], [], [ this ] =>
           ltac:(M.monadic
             (let this := M.alloc (| this |) in
             M.rust_cast
@@ -735,7 +707,7 @@ Module mem.
           : M :=
         let Self : Ty.t := Self T in
         match ε, τ, α with
-        | [ host ], [], [ this ] =>
+        | [], [], [ this ] =>
           ltac:(M.monadic
             (let this := M.alloc (| this |) in
             M.rust_cast
@@ -758,7 +730,7 @@ Module mem.
         M.IsAssociatedFunction (Self T) "slice_as_mut_ptr" (slice_as_mut_ptr T).
       
       (*
-          pub fn write_slice<'a>(this: &'a mut [MaybeUninit<T>], src: &[T]) -> &'a mut [T]
+          pub fn copy_from_slice<'a>(this: &'a mut [MaybeUninit<T>], src: &[T]) -> &'a mut [T]
           where
               T: Copy,
           {
@@ -771,7 +743,12 @@ Module mem.
               unsafe { MaybeUninit::slice_assume_init_mut(this) }
           }
       *)
-      Definition write_slice (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition copy_from_slice
+          (T : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T in
         match ε, τ, α with
         | [], [], [ this; src ] =>
@@ -828,33 +805,17 @@ Module mem.
         | _, _, _ => M.impossible
         end.
       
-      Axiom AssociatedFunction_write_slice :
+      Axiom AssociatedFunction_copy_from_slice :
         forall (T : Ty.t),
-        M.IsAssociatedFunction (Self T) "write_slice" (write_slice T).
+        M.IsAssociatedFunction (Self T) "copy_from_slice" (copy_from_slice T).
       
       (*
-          pub fn write_slice_cloned<'a>(this: &'a mut [MaybeUninit<T>], src: &[T]) -> &'a mut [T]
+          pub fn clone_from_slice<'a>(this: &'a mut [MaybeUninit<T>], src: &[T]) -> &'a mut [T]
           where
               T: Clone,
           {
               // unlike copy_from_slice this does not call clone_from_slice on the slice
               // this is because `MaybeUninit<T: Clone>` does not implement Clone.
-      
-              struct Guard<'a, T> {
-                  slice: &'a mut [MaybeUninit<T>],
-                  initialized: usize,
-              }
-      
-              impl<'a, T> Drop for Guard<'a, T> {
-                  fn drop(&mut self) {
-                      let initialized_part = &mut self.slice[..self.initialized];
-                      // SAFETY: this raw slice will contain only initialized objects
-                      // that's why, it is allowed to drop it.
-                      unsafe {
-                          crate::ptr::drop_in_place(MaybeUninit::slice_assume_init_mut(initialized_part));
-                      }
-                  }
-              }
       
               assert_eq!(this.len(), src.len(), "destination and source slices have different lengths");
               // NOTE: We need to explicitly slice them to the same length
@@ -877,7 +838,7 @@ Module mem.
               unsafe { MaybeUninit::slice_assume_init_mut(this) }
           }
       *)
-      Definition write_slice_cloned
+      Definition clone_from_slice
           (T : Ty.t)
           (ε : list Value.t)
           (τ : list Ty.t)
@@ -973,17 +934,15 @@ Module mem.
                                                     []
                                                   |),
                                                   [
-                                                    (* Unsize *)
-                                                    M.pointer_coercion
-                                                      (M.alloc (|
-                                                        Value.Array
-                                                          [
-                                                            M.read (|
-                                                              Value.String
-                                                                "destination and source slices have different lengths"
-                                                            |)
-                                                          ]
-                                                      |))
+                                                    M.alloc (|
+                                                      Value.Array
+                                                        [
+                                                          M.read (|
+                                                            Value.String
+                                                              "destination and source slices have different lengths"
+                                                          |)
+                                                        ]
+                                                    |)
                                                   ]
                                                 |)
                                               ]
@@ -1031,7 +990,7 @@ Module mem.
               let~ guard :=
                 M.alloc (|
                   Value.StructRecord
-                    "core::mem::maybe_uninit::write_slice_cloned::Guard"
+                    "core::mem::maybe_uninit::Guard"
                     [ ("slice", M.read (| this |)); ("initialized", Value.Integer 0) ]
                 |) in
               let~ _ :=
@@ -1109,7 +1068,7 @@ Module mem.
                                                   M.read (|
                                                     M.SubPointer.get_struct_record_field (|
                                                       guard,
-                                                      "core::mem::maybe_uninit::write_slice_cloned::Guard",
+                                                      "core::mem::maybe_uninit::Guard",
                                                       "slice"
                                                     |)
                                                   |),
@@ -1137,7 +1096,7 @@ Module mem.
                                           let β :=
                                             M.SubPointer.get_struct_record_field (|
                                               guard,
-                                              "core::mem::maybe_uninit::write_slice_cloned::Guard",
+                                              "core::mem::maybe_uninit::Guard",
                                               "initialized"
                                             |) in
                                           M.write (|
@@ -1159,12 +1118,7 @@ Module mem.
                   M.call_closure (|
                     M.get_function (|
                       "core::mem::forget",
-                      [
-                        Ty.apply
-                          (Ty.path "core::mem::maybe_uninit::write_slice_cloned::Guard")
-                          []
-                          [ T ]
-                      ]
+                      [ Ty.apply (Ty.path "core::mem::maybe_uninit::Guard") [] [ T ] ]
                     |),
                     [ M.read (| guard |) ]
                   |)
@@ -1183,9 +1137,524 @@ Module mem.
         | _, _, _ => M.impossible
         end.
       
-      Axiom AssociatedFunction_write_slice_cloned :
+      Axiom AssociatedFunction_clone_from_slice :
         forall (T : Ty.t),
-        M.IsAssociatedFunction (Self T) "write_slice_cloned" (write_slice_cloned T).
+        M.IsAssociatedFunction (Self T) "clone_from_slice" (clone_from_slice T).
+      
+      (*
+          pub fn fill<'a>(this: &'a mut [MaybeUninit<T>], value: T) -> &'a mut [T]
+          where
+              T: Clone,
+          {
+              SpecFill::spec_fill(this, value);
+              // SAFETY: Valid elements have just been filled into `this` so it is initialized
+              unsafe { MaybeUninit::slice_assume_init_mut(this) }
+          }
+      *)
+      Definition fill (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        let Self : Ty.t := Self T in
+        match ε, τ, α with
+        | [], [], [ this; value ] =>
+          ltac:(M.monadic
+            (let this := M.alloc (| this |) in
+            let value := M.alloc (| value |) in
+            M.read (|
+              let~ _ :=
+                M.alloc (|
+                  M.call_closure (|
+                    M.get_trait_method (|
+                      "core::mem::maybe_uninit::SpecFill",
+                      Ty.apply
+                        (Ty.path "slice")
+                        []
+                        [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ],
+                      [ T ],
+                      "spec_fill",
+                      []
+                    |),
+                    [ M.read (| this |); M.read (| value |) ]
+                  |)
+                |) in
+              M.alloc (|
+                M.call_closure (|
+                  M.get_associated_function (|
+                    Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ],
+                    "slice_assume_init_mut",
+                    []
+                  |),
+                  [ M.read (| this |) ]
+                |)
+              |)
+            |)))
+        | _, _, _ => M.impossible
+        end.
+      
+      Axiom AssociatedFunction_fill :
+        forall (T : Ty.t),
+        M.IsAssociatedFunction (Self T) "fill" (fill T).
+      
+      (*
+          pub fn fill_with<'a, F>(this: &'a mut [MaybeUninit<T>], mut f: F) -> &'a mut [T]
+          where
+              F: FnMut() -> T,
+          {
+              let mut guard = Guard { slice: this, initialized: 0 };
+      
+              for element in guard.slice.iter_mut() {
+                  element.write(f());
+                  guard.initialized += 1;
+              }
+      
+              super::forget(guard);
+      
+              // SAFETY: Valid elements have just been written into `this` so it is initialized
+              unsafe { MaybeUninit::slice_assume_init_mut(this) }
+          }
+      *)
+      Definition fill_with (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        let Self : Ty.t := Self T in
+        match ε, τ, α with
+        | [], [ F ], [ this; f ] =>
+          ltac:(M.monadic
+            (let this := M.alloc (| this |) in
+            let f := M.alloc (| f |) in
+            M.read (|
+              let~ guard :=
+                M.alloc (|
+                  Value.StructRecord
+                    "core::mem::maybe_uninit::Guard"
+                    [ ("slice", M.read (| this |)); ("initialized", Value.Integer 0) ]
+                |) in
+              let~ _ :=
+                M.use
+                  (M.match_operator (|
+                    M.alloc (|
+                      M.call_closure (|
+                        M.get_trait_method (|
+                          "core::iter::traits::collect::IntoIterator",
+                          Ty.apply
+                            (Ty.path "core::slice::iter::IterMut")
+                            []
+                            [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ],
+                          [],
+                          "into_iter",
+                          []
+                        |),
+                        [
+                          M.call_closure (|
+                            M.get_associated_function (|
+                              Ty.apply
+                                (Ty.path "slice")
+                                []
+                                [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]
+                                ],
+                              "iter_mut",
+                              []
+                            |),
+                            [
+                              M.read (|
+                                M.SubPointer.get_struct_record_field (|
+                                  guard,
+                                  "core::mem::maybe_uninit::Guard",
+                                  "slice"
+                                |)
+                              |)
+                            ]
+                          |)
+                        ]
+                      |)
+                    |),
+                    [
+                      fun γ =>
+                        ltac:(M.monadic
+                          (let iter := M.copy (| γ |) in
+                          M.loop (|
+                            ltac:(M.monadic
+                              (let~ _ :=
+                                M.match_operator (|
+                                  M.alloc (|
+                                    M.call_closure (|
+                                      M.get_trait_method (|
+                                        "core::iter::traits::iterator::Iterator",
+                                        Ty.apply
+                                          (Ty.path "core::slice::iter::IterMut")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                              []
+                                              [ T ]
+                                          ],
+                                        [],
+                                        "next",
+                                        []
+                                      |),
+                                      [ iter ]
+                                    |)
+                                  |),
+                                  [
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (let _ :=
+                                          M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                                        M.alloc (|
+                                          M.never_to_any (| M.read (| M.break (||) |) |)
+                                        |)));
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (let γ0_0 :=
+                                          M.SubPointer.get_struct_tuple_field (|
+                                            γ,
+                                            "core::option::Option::Some",
+                                            0
+                                          |) in
+                                        let element := M.copy (| γ0_0 |) in
+                                        let~ _ :=
+                                          M.alloc (|
+                                            M.call_closure (|
+                                              M.get_associated_function (|
+                                                Ty.apply
+                                                  (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                                  []
+                                                  [ T ],
+                                                "write",
+                                                []
+                                              |),
+                                              [
+                                                M.read (| element |);
+                                                M.call_closure (|
+                                                  M.get_trait_method (|
+                                                    "core::ops::function::FnMut",
+                                                    F,
+                                                    [ Ty.tuple [] ],
+                                                    "call_mut",
+                                                    []
+                                                  |),
+                                                  [ f; Value.Tuple [] ]
+                                                |)
+                                              ]
+                                            |)
+                                          |) in
+                                        let~ _ :=
+                                          let β :=
+                                            M.SubPointer.get_struct_record_field (|
+                                              guard,
+                                              "core::mem::maybe_uninit::Guard",
+                                              "initialized"
+                                            |) in
+                                          M.write (|
+                                            β,
+                                            BinOp.Wrap.add
+                                              Integer.Usize
+                                              (M.read (| β |))
+                                              (Value.Integer 1)
+                                          |) in
+                                        M.alloc (| Value.Tuple [] |)))
+                                  ]
+                                |) in
+                              M.alloc (| Value.Tuple [] |)))
+                          |)))
+                    ]
+                  |)) in
+              let~ _ :=
+                M.alloc (|
+                  M.call_closure (|
+                    M.get_function (|
+                      "core::mem::forget",
+                      [ Ty.apply (Ty.path "core::mem::maybe_uninit::Guard") [] [ T ] ]
+                    |),
+                    [ M.read (| guard |) ]
+                  |)
+                |) in
+              M.alloc (|
+                M.call_closure (|
+                  M.get_associated_function (|
+                    Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ],
+                    "slice_assume_init_mut",
+                    []
+                  |),
+                  [ M.read (| this |) ]
+                |)
+              |)
+            |)))
+        | _, _, _ => M.impossible
+        end.
+      
+      Axiom AssociatedFunction_fill_with :
+        forall (T : Ty.t),
+        M.IsAssociatedFunction (Self T) "fill_with" (fill_with T).
+      
+      (*
+          pub fn fill_from<'a, I>(
+              this: &'a mut [MaybeUninit<T>],
+              it: I,
+          ) -> (&'a mut [T], &'a mut [MaybeUninit<T>])
+          where
+              I: IntoIterator<Item = T>,
+          {
+              let iter = it.into_iter();
+              let mut guard = Guard { slice: this, initialized: 0 };
+      
+              for (element, val) in guard.slice.iter_mut().zip(iter) {
+                  element.write(val);
+                  guard.initialized += 1;
+              }
+      
+              let initialized_len = guard.initialized;
+              super::forget(guard);
+      
+              // SAFETY: guard.initialized <= this.len()
+              let (initted, remainder) = unsafe { this.split_at_mut_unchecked(initialized_len) };
+      
+              // SAFETY: Valid elements have just been written into `init`, so that portion
+              // of `this` is initialized.
+              (unsafe { MaybeUninit::slice_assume_init_mut(initted) }, remainder)
+          }
+      *)
+      Definition fill_from (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        let Self : Ty.t := Self T in
+        match ε, τ, α with
+        | [], [ _ as I ], [ this; it ] =>
+          ltac:(M.monadic
+            (let this := M.alloc (| this |) in
+            let it := M.alloc (| it |) in
+            M.read (|
+              let~ iter :=
+                M.alloc (|
+                  M.call_closure (|
+                    M.get_trait_method (|
+                      "core::iter::traits::collect::IntoIterator",
+                      I,
+                      [],
+                      "into_iter",
+                      []
+                    |),
+                    [ M.read (| it |) ]
+                  |)
+                |) in
+              let~ guard :=
+                M.alloc (|
+                  Value.StructRecord
+                    "core::mem::maybe_uninit::Guard"
+                    [ ("slice", M.read (| this |)); ("initialized", Value.Integer 0) ]
+                |) in
+              let~ _ :=
+                M.use
+                  (M.match_operator (|
+                    M.alloc (|
+                      M.call_closure (|
+                        M.get_trait_method (|
+                          "core::iter::traits::collect::IntoIterator",
+                          Ty.apply
+                            (Ty.path "core::iter::adapters::zip::Zip")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "core::slice::iter::IterMut")
+                                []
+                                [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]
+                                ];
+                              Ty.associated
+                            ],
+                          [],
+                          "into_iter",
+                          []
+                        |),
+                        [
+                          M.call_closure (|
+                            M.get_trait_method (|
+                              "core::iter::traits::iterator::Iterator",
+                              Ty.apply
+                                (Ty.path "core::slice::iter::IterMut")
+                                []
+                                [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]
+                                ],
+                              [],
+                              "zip",
+                              [ Ty.associated ]
+                            |),
+                            [
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.apply
+                                    (Ty.path "slice")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                        []
+                                        [ T ]
+                                    ],
+                                  "iter_mut",
+                                  []
+                                |),
+                                [
+                                  M.read (|
+                                    M.SubPointer.get_struct_record_field (|
+                                      guard,
+                                      "core::mem::maybe_uninit::Guard",
+                                      "slice"
+                                    |)
+                                  |)
+                                ]
+                              |);
+                              M.read (| iter |)
+                            ]
+                          |)
+                        ]
+                      |)
+                    |),
+                    [
+                      fun γ =>
+                        ltac:(M.monadic
+                          (let iter := M.copy (| γ |) in
+                          M.loop (|
+                            ltac:(M.monadic
+                              (let~ _ :=
+                                M.match_operator (|
+                                  M.alloc (|
+                                    M.call_closure (|
+                                      M.get_trait_method (|
+                                        "core::iter::traits::iterator::Iterator",
+                                        Ty.apply
+                                          (Ty.path "core::iter::adapters::zip::Zip")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "core::slice::iter::IterMut")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                                  []
+                                                  [ T ]
+                                              ];
+                                            Ty.associated
+                                          ],
+                                        [],
+                                        "next",
+                                        []
+                                      |),
+                                      [ iter ]
+                                    |)
+                                  |),
+                                  [
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (let _ :=
+                                          M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                                        M.alloc (|
+                                          M.never_to_any (| M.read (| M.break (||) |) |)
+                                        |)));
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (let γ0_0 :=
+                                          M.SubPointer.get_struct_tuple_field (|
+                                            γ,
+                                            "core::option::Option::Some",
+                                            0
+                                          |) in
+                                        let γ1_0 := M.SubPointer.get_tuple_field (| γ0_0, 0 |) in
+                                        let γ1_1 := M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
+                                        let element := M.copy (| γ1_0 |) in
+                                        let val := M.copy (| γ1_1 |) in
+                                        let~ _ :=
+                                          M.alloc (|
+                                            M.call_closure (|
+                                              M.get_associated_function (|
+                                                Ty.apply
+                                                  (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                                  []
+                                                  [ T ],
+                                                "write",
+                                                []
+                                              |),
+                                              [ M.read (| element |); M.read (| val |) ]
+                                            |)
+                                          |) in
+                                        let~ _ :=
+                                          let β :=
+                                            M.SubPointer.get_struct_record_field (|
+                                              guard,
+                                              "core::mem::maybe_uninit::Guard",
+                                              "initialized"
+                                            |) in
+                                          M.write (|
+                                            β,
+                                            BinOp.Wrap.add
+                                              Integer.Usize
+                                              (M.read (| β |))
+                                              (Value.Integer 1)
+                                          |) in
+                                        M.alloc (| Value.Tuple [] |)))
+                                  ]
+                                |) in
+                              M.alloc (| Value.Tuple [] |)))
+                          |)))
+                    ]
+                  |)) in
+              let~ initialized_len :=
+                M.copy (|
+                  M.SubPointer.get_struct_record_field (|
+                    guard,
+                    "core::mem::maybe_uninit::Guard",
+                    "initialized"
+                  |)
+                |) in
+              let~ _ :=
+                M.alloc (|
+                  M.call_closure (|
+                    M.get_function (|
+                      "core::mem::forget",
+                      [ Ty.apply (Ty.path "core::mem::maybe_uninit::Guard") [] [ T ] ]
+                    |),
+                    [ M.read (| guard |) ]
+                  |)
+                |) in
+              M.match_operator (|
+                M.alloc (|
+                  M.call_closure (|
+                    M.get_associated_function (|
+                      Ty.apply
+                        (Ty.path "slice")
+                        []
+                        [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ],
+                      "split_at_mut_unchecked",
+                      []
+                    |),
+                    [ M.read (| this |); M.read (| initialized_len |) ]
+                  |)
+                |),
+                [
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                      let initted := M.copy (| γ0_0 |) in
+                      let remainder := M.copy (| γ0_1 |) in
+                      M.alloc (|
+                        Value.Tuple
+                          [
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ],
+                                "slice_assume_init_mut",
+                                []
+                              |),
+                              [ M.read (| initted |) ]
+                            |);
+                            M.read (| remainder |)
+                          ]
+                      |)))
+                ]
+              |)
+            |)))
+        | _, _, _ => M.impossible
+        end.
+      
+      Axiom AssociatedFunction_fill_from :
+        forall (T : Ty.t),
+        M.IsAssociatedFunction (Self T) "fill_from" (fill_from T).
       
       (*
           pub fn as_bytes(&self) -> &[MaybeUninit<u8>] {
@@ -1428,7 +1897,7 @@ Module mem.
           : M :=
         let Self : Ty.t := Self N T in
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -1477,7 +1946,7 @@ Module mem.
           : M :=
         let Self : Ty.t := Self N T in
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -1503,5 +1972,419 @@ Module mem.
         forall (N : Value.t) (T : Ty.t),
         M.IsAssociatedFunction (Self N T) "transpose" (transpose N T).
     End Impl_array_N_core_mem_maybe_uninit_MaybeUninit_T.
+    
+    (* StructRecord
+      {
+        name := "Guard";
+        const_params := [];
+        ty_params := [ "T" ];
+        fields :=
+          [
+            ("slice",
+              Ty.apply
+                (Ty.path "&mut")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "slice")
+                    []
+                    [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ]
+                ]);
+            ("initialized", Ty.path "usize")
+          ];
+      } *)
+    
+    Module Impl_core_ops_drop_Drop_for_core_mem_maybe_uninit_Guard_T.
+      Definition Self (T : Ty.t) : Ty.t :=
+        Ty.apply (Ty.path "core::mem::maybe_uninit::Guard") [] [ T ].
+      
+      (*
+          fn drop(&mut self) {
+              let initialized_part = &mut self.slice[..self.initialized];
+              // SAFETY: this raw sub-slice will contain only initialized objects.
+              unsafe {
+                  crate::ptr::drop_in_place(MaybeUninit::slice_assume_init_mut(initialized_part));
+              }
+          }
+      *)
+      Definition drop (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        let Self : Ty.t := Self T in
+        match ε, τ, α with
+        | [], [], [ self ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            M.read (|
+              let~ initialized_part :=
+                M.alloc (|
+                  M.call_closure (|
+                    M.get_trait_method (|
+                      "core::ops::index::IndexMut",
+                      Ty.apply
+                        (Ty.path "slice")
+                        []
+                        [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ],
+                      [ Ty.apply (Ty.path "core::ops::range::RangeTo") [] [ Ty.path "usize" ] ],
+                      "index_mut",
+                      []
+                    |),
+                    [
+                      M.read (|
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::mem::maybe_uninit::Guard",
+                          "slice"
+                        |)
+                      |);
+                      Value.StructRecord
+                        "core::ops::range::RangeTo"
+                        [
+                          ("end_",
+                            M.read (|
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "core::mem::maybe_uninit::Guard",
+                                "initialized"
+                              |)
+                            |))
+                        ]
+                    ]
+                  |)
+                |) in
+              let~ _ :=
+                M.alloc (|
+                  M.call_closure (|
+                    M.get_function (|
+                      "core::ptr::drop_in_place",
+                      [ Ty.apply (Ty.path "slice") [] [ T ] ]
+                    |),
+                    [
+                      M.call_closure (|
+                        M.get_associated_function (|
+                          Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ],
+                          "slice_assume_init_mut",
+                          []
+                        |),
+                        [ M.read (| initialized_part |) ]
+                      |)
+                    ]
+                  |)
+                |) in
+              M.alloc (| Value.Tuple [] |)
+            |)))
+        | _, _, _ => M.impossible
+        end.
+      
+      Axiom Implements :
+        forall (T : Ty.t),
+        M.IsTraitInstance
+          "core::ops::drop::Drop"
+          (Self T)
+          (* Trait polymorphic types *) []
+          (* Instance *) [ ("drop", InstanceField.Method (drop T)) ].
+    End Impl_core_ops_drop_Drop_for_core_mem_maybe_uninit_Guard_T.
+    
+    (* Trait *)
+    (* Empty module 'SpecFill' *)
+    
+    Module Impl_core_mem_maybe_uninit_SpecFill_where_core_clone_Clone_T_T_for_slice_core_mem_maybe_uninit_MaybeUninit_T.
+      Definition Self (T : Ty.t) : Ty.t :=
+        Ty.apply
+          (Ty.path "slice")
+          []
+          [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ].
+      
+      (*
+          default fn spec_fill(&mut self, value: T) {
+              let mut guard = Guard { slice: self, initialized: 0 };
+      
+              if let Some((last, elems)) = guard.slice.split_last_mut() {
+                  for el in elems {
+                      el.write(value.clone());
+                      guard.initialized += 1;
+                  }
+      
+                  last.write(value);
+              }
+              super::forget(guard);
+          }
+      *)
+      Definition spec_fill (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        let Self : Ty.t := Self T in
+        match ε, τ, α with
+        | [], [], [ self; value ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            let value := M.alloc (| value |) in
+            M.read (|
+              let~ guard :=
+                M.alloc (|
+                  Value.StructRecord
+                    "core::mem::maybe_uninit::Guard"
+                    [ ("slice", M.read (| self |)); ("initialized", Value.Integer 0) ]
+                |) in
+              let~ _ :=
+                M.match_operator (|
+                  M.alloc (| Value.Tuple [] |),
+                  [
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let γ :=
+                          M.alloc (|
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.apply
+                                  (Ty.path "slice")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                      []
+                                      [ T ]
+                                  ],
+                                "split_last_mut",
+                                []
+                              |),
+                              [
+                                M.read (|
+                                  M.SubPointer.get_struct_record_field (|
+                                    guard,
+                                    "core::mem::maybe_uninit::Guard",
+                                    "slice"
+                                  |)
+                                |)
+                              ]
+                            |)
+                          |) in
+                        let γ0_0 :=
+                          M.SubPointer.get_struct_tuple_field (|
+                            γ,
+                            "core::option::Option::Some",
+                            0
+                          |) in
+                        let γ1_0 := M.SubPointer.get_tuple_field (| γ0_0, 0 |) in
+                        let γ1_1 := M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
+                        let last := M.copy (| γ1_0 |) in
+                        let elems := M.copy (| γ1_1 |) in
+                        let~ _ :=
+                          M.use
+                            (M.match_operator (|
+                              M.alloc (|
+                                M.call_closure (|
+                                  M.get_trait_method (|
+                                    "core::iter::traits::collect::IntoIterator",
+                                    Ty.apply
+                                      (Ty.path "&mut")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "slice")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                              []
+                                              [ T ]
+                                          ]
+                                      ],
+                                    [],
+                                    "into_iter",
+                                    []
+                                  |),
+                                  [ M.read (| elems |) ]
+                                |)
+                              |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let iter := M.copy (| γ |) in
+                                    M.loop (|
+                                      ltac:(M.monadic
+                                        (let~ _ :=
+                                          M.match_operator (|
+                                            M.alloc (|
+                                              M.call_closure (|
+                                                M.get_trait_method (|
+                                                  "core::iter::traits::iterator::Iterator",
+                                                  Ty.apply
+                                                    (Ty.path "core::slice::iter::IterMut")
+                                                    []
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path
+                                                          "core::mem::maybe_uninit::MaybeUninit")
+                                                        []
+                                                        [ T ]
+                                                    ],
+                                                  [],
+                                                  "next",
+                                                  []
+                                                |),
+                                                [ iter ]
+                                              |)
+                                            |),
+                                            [
+                                              fun γ =>
+                                                ltac:(M.monadic
+                                                  (let _ :=
+                                                    M.is_struct_tuple (|
+                                                      γ,
+                                                      "core::option::Option::None"
+                                                    |) in
+                                                  M.alloc (|
+                                                    M.never_to_any (| M.read (| M.break (||) |) |)
+                                                  |)));
+                                              fun γ =>
+                                                ltac:(M.monadic
+                                                  (let γ0_0 :=
+                                                    M.SubPointer.get_struct_tuple_field (|
+                                                      γ,
+                                                      "core::option::Option::Some",
+                                                      0
+                                                    |) in
+                                                  let el := M.copy (| γ0_0 |) in
+                                                  let~ _ :=
+                                                    M.alloc (|
+                                                      M.call_closure (|
+                                                        M.get_associated_function (|
+                                                          Ty.apply
+                                                            (Ty.path
+                                                              "core::mem::maybe_uninit::MaybeUninit")
+                                                            []
+                                                            [ T ],
+                                                          "write",
+                                                          []
+                                                        |),
+                                                        [
+                                                          M.read (| el |);
+                                                          M.call_closure (|
+                                                            M.get_trait_method (|
+                                                              "core::clone::Clone",
+                                                              T,
+                                                              [],
+                                                              "clone",
+                                                              []
+                                                            |),
+                                                            [ value ]
+                                                          |)
+                                                        ]
+                                                      |)
+                                                    |) in
+                                                  let~ _ :=
+                                                    let β :=
+                                                      M.SubPointer.get_struct_record_field (|
+                                                        guard,
+                                                        "core::mem::maybe_uninit::Guard",
+                                                        "initialized"
+                                                      |) in
+                                                    M.write (|
+                                                      β,
+                                                      BinOp.Wrap.add
+                                                        Integer.Usize
+                                                        (M.read (| β |))
+                                                        (Value.Integer 1)
+                                                    |) in
+                                                  M.alloc (| Value.Tuple [] |)))
+                                            ]
+                                          |) in
+                                        M.alloc (| Value.Tuple [] |)))
+                                    |)))
+                              ]
+                            |)) in
+                        let~ _ :=
+                          M.alloc (|
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ],
+                                "write",
+                                []
+                              |),
+                              [ M.read (| last |); M.read (| value |) ]
+                            |)
+                          |) in
+                        M.alloc (| Value.Tuple [] |)));
+                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                  ]
+                |) in
+              let~ _ :=
+                M.alloc (|
+                  M.call_closure (|
+                    M.get_function (|
+                      "core::mem::forget",
+                      [ Ty.apply (Ty.path "core::mem::maybe_uninit::Guard") [] [ T ] ]
+                    |),
+                    [ M.read (| guard |) ]
+                  |)
+                |) in
+              M.alloc (| Value.Tuple [] |)
+            |)))
+        | _, _, _ => M.impossible
+        end.
+      
+      Axiom Implements :
+        forall (T : Ty.t),
+        M.IsTraitInstance
+          "core::mem::maybe_uninit::SpecFill"
+          (Self T)
+          (* Trait polymorphic types *) [ (* T *) T ]
+          (* Instance *) [ ("spec_fill", InstanceField.Method (spec_fill T)) ].
+    End Impl_core_mem_maybe_uninit_SpecFill_where_core_clone_Clone_T_T_for_slice_core_mem_maybe_uninit_MaybeUninit_T.
+    
+    Module Impl_core_mem_maybe_uninit_SpecFill_where_core_marker_Copy_T_T_for_slice_core_mem_maybe_uninit_MaybeUninit_T.
+      Definition Self (T : Ty.t) : Ty.t :=
+        Ty.apply
+          (Ty.path "slice")
+          []
+          [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ].
+      
+      (*
+          fn spec_fill(&mut self, value: T) {
+              self.fill(MaybeUninit::new(value));
+          }
+      *)
+      Definition spec_fill (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        let Self : Ty.t := Self T in
+        match ε, τ, α with
+        | [], [], [ self; value ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            let value := M.alloc (| value |) in
+            M.read (|
+              let~ _ :=
+                M.alloc (|
+                  M.call_closure (|
+                    M.get_associated_function (|
+                      Ty.apply
+                        (Ty.path "slice")
+                        []
+                        [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ],
+                      "fill",
+                      []
+                    |),
+                    [
+                      M.read (| self |);
+                      M.call_closure (|
+                        M.get_associated_function (|
+                          Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ],
+                          "new",
+                          []
+                        |),
+                        [ M.read (| value |) ]
+                      |)
+                    ]
+                  |)
+                |) in
+              M.alloc (| Value.Tuple [] |)
+            |)))
+        | _, _, _ => M.impossible
+        end.
+      
+      Axiom Implements :
+        forall (T : Ty.t),
+        M.IsTraitInstance
+          "core::mem::maybe_uninit::SpecFill"
+          (Self T)
+          (* Trait polymorphic types *) [ (* T *) T ]
+          (* Instance *) [ ("spec_fill", InstanceField.Method (spec_fill T)) ].
+    End Impl_core_mem_maybe_uninit_SpecFill_where_core_marker_Copy_T_T_for_slice_core_mem_maybe_uninit_MaybeUninit_T.
   End maybe_uninit.
 End mem.

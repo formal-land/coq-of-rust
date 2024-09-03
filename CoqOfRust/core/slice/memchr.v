@@ -37,7 +37,7 @@ Module slice.
     *)
     Definition contains_zero_byte (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [ host ], [], [ x ] =>
+      | [], [], [ x ] =>
         ltac:(M.monadic
           (let x := M.alloc (| x |) in
           BinOp.Pure.ne
@@ -71,7 +71,7 @@ Module slice.
     *)
     Definition memchr (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [ host ], [], [ x; text ] =>
+      | [], [], [ x; text ] =>
         ltac:(M.monadic
           (let x := M.alloc (| x |) in
           let text := M.alloc (| text |) in
@@ -151,7 +151,7 @@ Module slice.
     *)
     Definition memchr_naive (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [ host ], [], [ x; text ] =>
+      | [], [], [ x; text ] =>
         ltac:(M.monadic
           (let x := M.alloc (| x |) in
           let text := M.alloc (| text |) in
@@ -308,7 +308,7 @@ Module slice.
     *)
     Definition memchr_aligned (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [ host ], [], [ x; text ] =>
+      | [], [], [ x; text ] =>
         ltac:(M.monadic
           (let x := M.alloc (| x |) in
           let text := M.alloc (| text |) in

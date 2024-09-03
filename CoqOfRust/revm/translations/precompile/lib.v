@@ -157,31 +157,25 @@ Module Impl_core_fmt_Debug_for_revm_precompile_PrecompileOutput.
             M.read (| f |);
             M.read (| Value.String "PrecompileOutput" |);
             M.read (| Value.String "cost" |);
-            (* Unsize *)
-            M.pointer_coercion
-              (M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
-                "revm_precompile::PrecompileOutput",
-                "cost"
-              |));
+            M.SubPointer.get_struct_record_field (|
+              M.read (| self |),
+              "revm_precompile::PrecompileOutput",
+              "cost"
+            |);
             M.read (| Value.String "output" |);
-            (* Unsize *)
-            M.pointer_coercion
-              (M.SubPointer.get_struct_record_field (|
+            M.SubPointer.get_struct_record_field (|
+              M.read (| self |),
+              "revm_precompile::PrecompileOutput",
+              "output"
+            |);
+            M.read (| Value.String "logs" |);
+            M.alloc (|
+              M.SubPointer.get_struct_record_field (|
                 M.read (| self |),
                 "revm_precompile::PrecompileOutput",
-                "output"
-              |));
-            M.read (| Value.String "logs" |);
-            (* Unsize *)
-            M.pointer_coercion
-              (M.alloc (|
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "revm_precompile::PrecompileOutput",
-                  "logs"
-                |)
-              |))
+                "logs"
+              |)
+            |)
           ]
         |)))
     | _, _, _ => M.impossible
@@ -379,17 +373,6 @@ Module Impl_core_cmp_PartialEq_for_revm_precompile_PrecompileOutput.
       (* Trait polymorphic types *) []
       (* Instance *) [ ("eq", InstanceField.Method eq) ].
 End Impl_core_cmp_PartialEq_for_revm_precompile_PrecompileOutput.
-
-Module Impl_core_marker_StructuralEq_for_revm_precompile_PrecompileOutput.
-  Definition Self : Ty.t := Ty.path "revm_precompile::PrecompileOutput".
-  
-  Axiom Implements :
-    M.IsTraitInstance
-      "core::marker::StructuralEq"
-      Self
-      (* Trait polymorphic types *) []
-      (* Instance *) [].
-End Impl_core_marker_StructuralEq_for_revm_precompile_PrecompileOutput.
 
 Module Impl_core_cmp_Eq_for_revm_precompile_PrecompileOutput.
   Definition Self : Ty.t := Ty.path "revm_precompile::PrecompileOutput".
@@ -700,15 +683,13 @@ Module Impl_core_fmt_Debug_for_revm_precompile_Precompiles.
             M.read (| f |);
             M.read (| Value.String "Precompiles" |);
             M.read (| Value.String "inner" |);
-            (* Unsize *)
-            M.pointer_coercion
-              (M.alloc (|
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "revm_precompile::Precompiles",
-                  "inner"
-                |)
-              |))
+            M.alloc (|
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "revm_precompile::Precompiles",
+                "inner"
+              |)
+            |)
           ]
         |)))
     | _, _, _ => M.impossible
@@ -1979,22 +1960,18 @@ Module Impl_core_fmt_Debug_for_revm_precompile_PrecompileWithAddress.
           [
             M.read (| f |);
             M.read (| Value.String "PrecompileWithAddress" |);
-            (* Unsize *)
-            M.pointer_coercion
-              (M.SubPointer.get_struct_tuple_field (|
+            M.SubPointer.get_struct_tuple_field (|
+              M.read (| self |),
+              "revm_precompile::PrecompileWithAddress",
+              0
+            |);
+            M.alloc (|
+              M.SubPointer.get_struct_tuple_field (|
                 M.read (| self |),
                 "revm_precompile::PrecompileWithAddress",
-                0
-              |));
-            (* Unsize *)
-            M.pointer_coercion
-              (M.alloc (|
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "revm_precompile::PrecompileWithAddress",
-                  1
-                |)
-              |))
+                1
+              |)
+            |)
           ]
         |)))
     | _, _, _ => M.impossible
@@ -2253,7 +2230,7 @@ Module Impl_core_cmp_PartialEq_for_revm_precompile_PrecompileSpecId.
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
         M.read (|
-          let~ __self_tag :=
+          let~ __self_discr :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (|
@@ -2263,7 +2240,7 @@ Module Impl_core_cmp_PartialEq_for_revm_precompile_PrecompileSpecId.
                 [ M.read (| self |) ]
               |)
             |) in
-          let~ __arg1_tag :=
+          let~ __arg1_discr :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (|
@@ -2273,7 +2250,7 @@ Module Impl_core_cmp_PartialEq_for_revm_precompile_PrecompileSpecId.
                 [ M.read (| other |) ]
               |)
             |) in
-          M.alloc (| BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)) |)
+          M.alloc (| BinOp.Pure.eq (M.read (| __self_discr |)) (M.read (| __arg1_discr |)) |)
         |)))
     | _, _, _ => M.impossible
     end.
@@ -2285,17 +2262,6 @@ Module Impl_core_cmp_PartialEq_for_revm_precompile_PrecompileSpecId.
       (* Trait polymorphic types *) []
       (* Instance *) [ ("eq", InstanceField.Method eq) ].
 End Impl_core_cmp_PartialEq_for_revm_precompile_PrecompileSpecId.
-
-Module Impl_core_marker_StructuralEq_for_revm_precompile_PrecompileSpecId.
-  Definition Self : Ty.t := Ty.path "revm_precompile::PrecompileSpecId".
-  
-  Axiom Implements :
-    M.IsTraitInstance
-      "core::marker::StructuralEq"
-      Self
-      (* Trait polymorphic types *) []
-      (* Instance *) [].
-End Impl_core_marker_StructuralEq_for_revm_precompile_PrecompileSpecId.
 
 Module Impl_core_cmp_Eq_for_revm_precompile_PrecompileSpecId.
   Definition Self : Ty.t := Ty.path "revm_precompile::PrecompileSpecId".
@@ -2334,7 +2300,7 @@ Module Impl_core_hash_Hash_for_revm_precompile_PrecompileSpecId.
         (let self := M.alloc (| self |) in
         let state := M.alloc (| state |) in
         M.read (|
-          let~ __self_tag :=
+          let~ __self_discr :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (|
@@ -2347,7 +2313,7 @@ Module Impl_core_hash_Hash_for_revm_precompile_PrecompileSpecId.
           M.alloc (|
             M.call_closure (|
               M.get_trait_method (| "core::hash::Hash", Ty.path "isize", [], "hash", [ __H ] |),
-              [ __self_tag; M.read (| state |) ]
+              [ __self_discr; M.read (| state |) ]
             |)
           |)
         |)))
@@ -2373,7 +2339,7 @@ Module Impl_core_cmp_Ord_for_revm_precompile_PrecompileSpecId.
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
         M.read (|
-          let~ __self_tag :=
+          let~ __self_discr :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (|
@@ -2383,7 +2349,7 @@ Module Impl_core_cmp_Ord_for_revm_precompile_PrecompileSpecId.
                 [ M.read (| self |) ]
               |)
             |) in
-          let~ __arg1_tag :=
+          let~ __arg1_discr :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (|
@@ -2396,7 +2362,7 @@ Module Impl_core_cmp_Ord_for_revm_precompile_PrecompileSpecId.
           M.alloc (|
             M.call_closure (|
               M.get_trait_method (| "core::cmp::Ord", Ty.path "isize", [], "cmp", [] |),
-              [ __self_tag; __arg1_tag ]
+              [ __self_discr; __arg1_discr ]
             |)
           |)
         |)))
@@ -2422,7 +2388,7 @@ Module Impl_core_cmp_PartialOrd_for_revm_precompile_PrecompileSpecId.
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
         M.read (|
-          let~ __self_tag :=
+          let~ __self_discr :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (|
@@ -2432,7 +2398,7 @@ Module Impl_core_cmp_PartialOrd_for_revm_precompile_PrecompileSpecId.
                 [ M.read (| self |) ]
               |)
             |) in
-          let~ __arg1_tag :=
+          let~ __arg1_discr :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (|
@@ -2451,7 +2417,7 @@ Module Impl_core_cmp_PartialOrd_for_revm_precompile_PrecompileSpecId.
                 "partial_cmp",
                 []
               |),
-              [ __self_tag; __arg1_tag ]
+              [ __self_discr; __arg1_discr ]
             |)
           |)
         |)))

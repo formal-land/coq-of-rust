@@ -179,17 +179,6 @@ Module metadata.
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_move_core_types_metadata_Metadata.
   
-  Module Impl_core_marker_StructuralEq_for_move_core_types_metadata_Metadata.
-    Definition Self : Ty.t := Ty.path "move_core_types::metadata::Metadata".
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::marker::StructuralEq"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [].
-  End Impl_core_marker_StructuralEq_for_move_core_types_metadata_Metadata.
-  
   Module Impl_core_cmp_Eq_for_move_core_types_metadata_Metadata.
     Definition Self : Ty.t := Ty.path "move_core_types::metadata::Metadata".
     
@@ -248,23 +237,19 @@ Module metadata.
               M.read (| f |);
               M.read (| Value.String "Metadata" |);
               M.read (| Value.String "key" |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.SubPointer.get_struct_record_field (|
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "move_core_types::metadata::Metadata",
+                "key"
+              |);
+              M.read (| Value.String "value" |);
+              M.alloc (|
+                M.SubPointer.get_struct_record_field (|
                   M.read (| self |),
                   "move_core_types::metadata::Metadata",
-                  "key"
-                |));
-              M.read (| Value.String "value" |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.alloc (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "move_core_types::metadata::Metadata",
-                    "value"
-                  |)
-                |))
+                  "value"
+                |)
+              |)
             ]
           |)))
       | _, _, _ => M.impossible

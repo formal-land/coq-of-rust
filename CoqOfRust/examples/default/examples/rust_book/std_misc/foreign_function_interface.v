@@ -69,40 +69,36 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                     [
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.read (| Value.String "the square root of " |);
-                              M.read (| Value.String " is " |);
-                              M.read (| Value.String "
+                      M.alloc (|
+                        Value.Array
+                          [
+                            M.read (| Value.String "the square root of " |);
+                            M.read (| Value.String " is " |);
+                            M.read (| Value.String "
 " |)
-                            ]
-                        |));
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::rt::Argument",
-                                  "new_debug",
-                                  [ Ty.path "foreign_function_interface::Complex" ]
-                                |),
-                                [ z ]
-                              |);
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::rt::Argument",
-                                  "new_debug",
-                                  [ Ty.path "foreign_function_interface::Complex" ]
-                                |),
-                                [ z_sqrt ]
-                              |)
-                            ]
-                        |))
+                          ]
+                      |);
+                      M.alloc (|
+                        Value.Array
+                          [
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.path "core::fmt::rt::Argument",
+                                "new_debug",
+                                [ Ty.path "foreign_function_interface::Complex" ]
+                              |),
+                              [ z ]
+                            |);
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.path "core::fmt::rt::Argument",
+                                "new_debug",
+                                [ Ty.path "foreign_function_interface::Complex" ]
+                              |),
+                              [ z_sqrt ]
+                            |)
+                          ]
+                      |)
                     ]
                   |)
                 ]
@@ -118,47 +114,43 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                     [
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.read (| Value.String "cos(" |);
-                              M.read (| Value.String ") = " |);
-                              M.read (| Value.String "
+                      M.alloc (|
+                        Value.Array
+                          [
+                            M.read (| Value.String "cos(" |);
+                            M.read (| Value.String ") = " |);
+                            M.read (| Value.String "
 " |)
-                            ]
-                        |));
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::rt::Argument",
-                                  "new_debug",
-                                  [ Ty.path "foreign_function_interface::Complex" ]
-                                |),
-                                [ z ]
-                              |);
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::rt::Argument",
-                                  "new_debug",
-                                  [ Ty.path "foreign_function_interface::Complex" ]
-                                |),
-                                [
-                                  M.alloc (|
-                                    M.call_closure (|
-                                      M.get_function (| "foreign_function_interface::cos", [] |),
-                                      [ M.read (| z |) ]
-                                    |)
+                          ]
+                      |);
+                      M.alloc (|
+                        Value.Array
+                          [
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.path "core::fmt::rt::Argument",
+                                "new_debug",
+                                [ Ty.path "foreign_function_interface::Complex" ]
+                              |),
+                              [ z ]
+                            |);
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.path "core::fmt::rt::Argument",
+                                "new_debug",
+                                [ Ty.path "foreign_function_interface::Complex" ]
+                              |),
+                              [
+                                M.alloc (|
+                                  M.call_closure (|
+                                    M.get_function (| "foreign_function_interface::cos", [] |),
+                                    [ M.read (| z |) ]
                                   |)
-                                ]
-                              |)
-                            ]
-                        |))
+                                |)
+                              ]
+                            |)
+                          ]
+                      |)
                     ]
                   |)
                 ]
@@ -267,58 +259,54 @@ Module Impl_core_fmt_Debug_for_foreign_function_interface_Complex.
                             []
                           |),
                           [
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.alloc (|
-                                Value.Array
-                                  [
-                                    M.read (| Value.String "" |);
-                                    M.read (| Value.String "-" |);
-                                    M.read (| Value.String "i" |)
-                                  ]
-                              |));
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.alloc (|
-                                Value.Array
-                                  [
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::rt::Argument",
-                                        "new_display",
-                                        [ Ty.path "f32" ]
-                                      |),
-                                      [
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.read (| self |),
-                                          "foreign_function_interface::Complex",
-                                          "re"
-                                        |)
-                                      ]
-                                    |);
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::rt::Argument",
-                                        "new_display",
-                                        [ Ty.path "f32" ]
-                                      |),
-                                      [
-                                        M.alloc (|
-                                          UnOp.Panic.neg (|
-                                            Integer.Usize,
-                                            M.read (|
-                                              M.SubPointer.get_struct_record_field (|
-                                                M.read (| self |),
-                                                "foreign_function_interface::Complex",
-                                                "im"
-                                              |)
+                            M.alloc (|
+                              Value.Array
+                                [
+                                  M.read (| Value.String "" |);
+                                  M.read (| Value.String "-" |);
+                                  M.read (| Value.String "i" |)
+                                ]
+                            |);
+                            M.alloc (|
+                              Value.Array
+                                [
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_display",
+                                      [ Ty.path "f32" ]
+                                    |),
+                                    [
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (| self |),
+                                        "foreign_function_interface::Complex",
+                                        "re"
+                                      |)
+                                    ]
+                                  |);
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_display",
+                                      [ Ty.path "f32" ]
+                                    |),
+                                    [
+                                      M.alloc (|
+                                        UnOp.Panic.neg (|
+                                          Integer.Usize,
+                                          M.read (|
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.read (| self |),
+                                              "foreign_function_interface::Complex",
+                                              "im"
                                             |)
                                           |)
                                         |)
-                                      ]
-                                    |)
-                                  ]
-                              |))
+                                      |)
+                                    ]
+                                  |)
+                                ]
+                            |)
                           ]
                         |)
                       ]
@@ -342,51 +330,47 @@ Module Impl_core_fmt_Debug_for_foreign_function_interface_Complex.
                             []
                           |),
                           [
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.alloc (|
-                                Value.Array
-                                  [
-                                    M.read (| Value.String "" |);
-                                    M.read (| Value.String "+" |);
-                                    M.read (| Value.String "i" |)
-                                  ]
-                              |));
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.alloc (|
-                                Value.Array
-                                  [
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::rt::Argument",
-                                        "new_display",
-                                        [ Ty.path "f32" ]
-                                      |),
-                                      [
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.read (| self |),
-                                          "foreign_function_interface::Complex",
-                                          "re"
-                                        |)
-                                      ]
-                                    |);
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::rt::Argument",
-                                        "new_display",
-                                        [ Ty.path "f32" ]
-                                      |),
-                                      [
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.read (| self |),
-                                          "foreign_function_interface::Complex",
-                                          "im"
-                                        |)
-                                      ]
-                                    |)
-                                  ]
-                              |))
+                            M.alloc (|
+                              Value.Array
+                                [
+                                  M.read (| Value.String "" |);
+                                  M.read (| Value.String "+" |);
+                                  M.read (| Value.String "i" |)
+                                ]
+                            |);
+                            M.alloc (|
+                              Value.Array
+                                [
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_display",
+                                      [ Ty.path "f32" ]
+                                    |),
+                                    [
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (| self |),
+                                        "foreign_function_interface::Complex",
+                                        "re"
+                                      |)
+                                    ]
+                                  |);
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_display",
+                                      [ Ty.path "f32" ]
+                                    |),
+                                    [
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (| self |),
+                                        "foreign_function_interface::Complex",
+                                        "im"
+                                      |)
+                                    ]
+                                  |)
+                                ]
+                            |)
                           ]
                         |)
                       ]

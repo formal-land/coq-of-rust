@@ -114,39 +114,31 @@ Module num.
                   M.read (| f |);
                   M.read (| Value.String "Number" |);
                   M.read (| Value.String "exponent" |);
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::num::dec2flt::number::Number",
-                      "exponent"
-                    |));
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::num::dec2flt::number::Number",
+                    "exponent"
+                  |);
                   M.read (| Value.String "mantissa" |);
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::num::dec2flt::number::Number",
-                      "mantissa"
-                    |));
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::num::dec2flt::number::Number",
+                    "mantissa"
+                  |);
                   M.read (| Value.String "negative" |);
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.SubPointer.get_struct_record_field (|
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::num::dec2flt::number::Number",
+                    "negative"
+                  |);
+                  M.read (| Value.String "many_digits" |);
+                  M.alloc (|
+                    M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
                       "core::num::dec2flt::number::Number",
-                      "negative"
-                    |));
-                  M.read (| Value.String "many_digits" |);
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.alloc (|
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::num::dec2flt::number::Number",
-                        "many_digits"
-                      |)
-                    |))
+                      "many_digits"
+                    |)
+                  |)
                 ]
               |)))
           | _, _, _ => M.impossible
@@ -327,17 +319,6 @@ Module num.
             (* Trait polymorphic types *) []
             (* Instance *) [ ("eq", InstanceField.Method eq) ].
       End Impl_core_cmp_PartialEq_for_core_num_dec2flt_number_Number.
-      
-      Module Impl_core_marker_StructuralEq_for_core_num_dec2flt_number_Number.
-        Definition Self : Ty.t := Ty.path "core::num::dec2flt::number::Number".
-        
-        Axiom Implements :
-          M.IsTraitInstance
-            "core::marker::StructuralEq"
-            Self
-            (* Trait polymorphic types *) []
-            (* Instance *) [].
-      End Impl_core_marker_StructuralEq_for_core_num_dec2flt_number_Number.
       
       Module Impl_core_cmp_Eq_for_core_num_dec2flt_number_Number.
         Definition Self : Ty.t := Ty.path "core::num::dec2flt::number::Number".

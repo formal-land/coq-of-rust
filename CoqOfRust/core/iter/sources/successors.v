@@ -354,13 +354,11 @@ Module iter.
                         |)
                       |);
                       M.read (| Value.String "next" |);
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "core::iter::sources::successors::Successors",
-                          "next"
-                        |))
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::iter::sources::successors::Successors",
+                        "next"
+                      |)
                     ]
                   |)
                 ]

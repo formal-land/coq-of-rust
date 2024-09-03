@@ -80,31 +80,25 @@ Module state.
               M.read (| f |);
               M.read (| Value.String "Account" |);
               M.read (| Value.String "info" |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "revm_primitives::state::Account",
-                  "info"
-                |));
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "revm_primitives::state::Account",
+                "info"
+              |);
               M.read (| Value.String "storage" |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.SubPointer.get_struct_record_field (|
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "revm_primitives::state::Account",
+                "storage"
+              |);
+              M.read (| Value.String "status" |);
+              M.alloc (|
+                M.SubPointer.get_struct_record_field (|
                   M.read (| self |),
                   "revm_primitives::state::Account",
-                  "storage"
-                |));
-              M.read (| Value.String "status" |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.alloc (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "revm_primitives::state::Account",
-                    "status"
-                  |)
-                |))
+                  "status"
+                |)
+              |)
             ]
           |)))
       | _, _, _ => M.impossible
@@ -320,17 +314,6 @@ Module state.
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_revm_primitives_state_Account.
   
-  Module Impl_core_marker_StructuralEq_for_revm_primitives_state_Account.
-    Definition Self : Ty.t := Ty.path "revm_primitives::state::Account".
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::marker::StructuralEq"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [].
-  End Impl_core_marker_StructuralEq_for_revm_primitives_state_Account.
-  
   Module Impl_core_cmp_Eq_for_revm_primitives_state_Account.
     Definition Self : Ty.t := Ty.path "revm_primitives::state::Account".
     
@@ -458,15 +441,13 @@ Module state.
             [
               M.read (| f |);
               M.read (| Value.String "AccountStatus" |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.alloc (|
-                  M.SubPointer.get_struct_tuple_field (|
-                    M.read (| self |),
-                    "revm_primitives::state::AccountStatus",
-                    0
-                  |)
-                |))
+              M.alloc (|
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "revm_primitives::state::AccountStatus",
+                  0
+                |)
+              |)
             ]
           |)))
       | _, _, _ => M.impossible
@@ -569,17 +550,6 @@ Module state.
         (* Trait polymorphic types *) []
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_revm_primitives_state_AccountStatus.
-  
-  Module Impl_core_marker_StructuralEq_for_revm_primitives_state_AccountStatus.
-    Definition Self : Ty.t := Ty.path "revm_primitives::state::AccountStatus".
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::marker::StructuralEq"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [].
-  End Impl_core_marker_StructuralEq_for_revm_primitives_state_AccountStatus.
   
   Module Impl_core_cmp_Eq_for_revm_primitives_state_AccountStatus.
     Definition Self : Ty.t := Ty.path "revm_primitives::state::AccountStatus".
@@ -1392,23 +1362,19 @@ Module state.
               M.read (| f |);
               M.read (| Value.String "StorageSlot" |);
               M.read (| Value.String "previous_or_original_value" |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.SubPointer.get_struct_record_field (|
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "revm_primitives::state::StorageSlot",
+                "previous_or_original_value"
+              |);
+              M.read (| Value.String "present_value" |);
+              M.alloc (|
+                M.SubPointer.get_struct_record_field (|
                   M.read (| self |),
                   "revm_primitives::state::StorageSlot",
-                  "previous_or_original_value"
-                |));
-              M.read (| Value.String "present_value" |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.alloc (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "revm_primitives::state::StorageSlot",
-                    "present_value"
-                  |)
-                |))
+                  "present_value"
+                |)
+              |)
             ]
           |)))
       | _, _, _ => M.impossible
@@ -1601,17 +1567,6 @@ Module state.
         (* Trait polymorphic types *) []
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_revm_primitives_state_StorageSlot.
-  
-  Module Impl_core_marker_StructuralEq_for_revm_primitives_state_StorageSlot.
-    Definition Self : Ty.t := Ty.path "revm_primitives::state::StorageSlot".
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::marker::StructuralEq"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [].
-  End Impl_core_marker_StructuralEq_for_revm_primitives_state_StorageSlot.
   
   Module Impl_core_cmp_Eq_for_revm_primitives_state_StorageSlot.
     Definition Self : Ty.t := Ty.path "revm_primitives::state::StorageSlot".
@@ -1972,39 +1927,31 @@ Module state.
               M.read (| f |);
               M.read (| Value.String "AccountInfo" |);
               M.read (| Value.String "balance" |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "revm_primitives::state::AccountInfo",
-                  "balance"
-                |));
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "revm_primitives::state::AccountInfo",
+                "balance"
+              |);
               M.read (| Value.String "nonce" |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "revm_primitives::state::AccountInfo",
-                  "nonce"
-                |));
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "revm_primitives::state::AccountInfo",
+                "nonce"
+              |);
               M.read (| Value.String "code_hash" |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.SubPointer.get_struct_record_field (|
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "revm_primitives::state::AccountInfo",
+                "code_hash"
+              |);
+              M.read (| Value.String "code" |);
+              M.alloc (|
+                M.SubPointer.get_struct_record_field (|
                   M.read (| self |),
                   "revm_primitives::state::AccountInfo",
-                  "code_hash"
-                |));
-              M.read (| Value.String "code" |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.alloc (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "revm_primitives::state::AccountInfo",
-                    "code"
-                  |)
-                |))
+                  "code"
+                |)
+              |)
             ]
           |)))
       | _, _, _ => M.impossible
@@ -2017,17 +1964,6 @@ Module state.
         (* Trait polymorphic types *) []
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Debug_for_revm_primitives_state_AccountInfo.
-  
-  Module Impl_core_marker_StructuralEq_for_revm_primitives_state_AccountInfo.
-    Definition Self : Ty.t := Ty.path "revm_primitives::state::AccountInfo".
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::marker::StructuralEq"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [].
-  End Impl_core_marker_StructuralEq_for_revm_primitives_state_AccountInfo.
   
   Module Impl_core_cmp_Eq_for_revm_primitives_state_AccountInfo.
     Definition Self : Ty.t := Ty.path "revm_primitives::state::AccountInfo".

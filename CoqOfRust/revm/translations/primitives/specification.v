@@ -400,7 +400,7 @@ Module specification.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ __self_tag :=
+            let~ __self_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -410,7 +410,7 @@ Module specification.
                   [ M.read (| self |) ]
                 |)
               |) in
-            let~ __arg1_tag :=
+            let~ __arg1_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -420,7 +420,7 @@ Module specification.
                   [ M.read (| other |) ]
                 |)
               |) in
-            M.alloc (| BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)) |)
+            M.alloc (| BinOp.Pure.eq (M.read (| __self_discr |)) (M.read (| __arg1_discr |)) |)
           |)))
       | _, _, _ => M.impossible
       end.
@@ -432,17 +432,6 @@ Module specification.
         (* Trait polymorphic types *) []
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_revm_primitives_specification_SpecId.
-  
-  Module Impl_core_marker_StructuralEq_for_revm_primitives_specification_SpecId.
-    Definition Self : Ty.t := Ty.path "revm_primitives::specification::SpecId".
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::marker::StructuralEq"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [].
-  End Impl_core_marker_StructuralEq_for_revm_primitives_specification_SpecId.
   
   Module Impl_core_cmp_Eq_for_revm_primitives_specification_SpecId.
     Definition Self : Ty.t := Ty.path "revm_primitives::specification::SpecId".
@@ -481,7 +470,7 @@ Module specification.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ __self_tag :=
+            let~ __self_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -491,7 +480,7 @@ Module specification.
                   [ M.read (| self |) ]
                 |)
               |) in
-            let~ __arg1_tag :=
+            let~ __arg1_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -510,7 +499,7 @@ Module specification.
                   "partial_cmp",
                   []
                 |),
-                [ __self_tag; __arg1_tag ]
+                [ __self_discr; __arg1_discr ]
               |)
             |)
           |)))
@@ -536,7 +525,7 @@ Module specification.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ __self_tag :=
+            let~ __self_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -546,7 +535,7 @@ Module specification.
                   [ M.read (| self |) ]
                 |)
               |) in
-            let~ __arg1_tag :=
+            let~ __arg1_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -559,7 +548,7 @@ Module specification.
             M.alloc (|
               M.call_closure (|
                 M.get_trait_method (| "core::cmp::Ord", Ty.path "u8", [], "cmp", [] |),
-                [ __self_tag; __arg1_tag ]
+                [ __self_discr; __arg1_discr ]
               |)
             |)
           |)))
@@ -585,7 +574,7 @@ Module specification.
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
           M.read (|
-            let~ __self_tag :=
+            let~ __self_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -598,7 +587,7 @@ Module specification.
             M.alloc (|
               M.call_closure (|
                 M.get_trait_method (| "core::hash::Hash", Ty.path "u8", [], "hash", [ __H ] |),
-                [ __self_tag; M.read (| state |) ]
+                [ __self_discr; M.read (| state |) ]
               |)
             |)
           |)))
@@ -1407,17 +1396,6 @@ Module specification.
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_revm_primitives_specification_FrontierSpec.
   
-  Module Impl_core_marker_StructuralEq_for_revm_primitives_specification_FrontierSpec.
-    Definition Self : Ty.t := Ty.path "revm_primitives::specification::FrontierSpec".
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::marker::StructuralEq"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [].
-  End Impl_core_marker_StructuralEq_for_revm_primitives_specification_FrontierSpec.
-  
   Module Impl_core_cmp_Eq_for_revm_primitives_specification_FrontierSpec.
     Definition Self : Ty.t := Ty.path "revm_primitives::specification::FrontierSpec".
     
@@ -1646,17 +1624,6 @@ Module specification.
         (* Trait polymorphic types *) []
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_revm_primitives_specification_HomesteadSpec.
-  
-  Module Impl_core_marker_StructuralEq_for_revm_primitives_specification_HomesteadSpec.
-    Definition Self : Ty.t := Ty.path "revm_primitives::specification::HomesteadSpec".
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::marker::StructuralEq"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [].
-  End Impl_core_marker_StructuralEq_for_revm_primitives_specification_HomesteadSpec.
   
   Module Impl_core_cmp_Eq_for_revm_primitives_specification_HomesteadSpec.
     Definition Self : Ty.t := Ty.path "revm_primitives::specification::HomesteadSpec".
@@ -1887,17 +1854,6 @@ Module specification.
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_revm_primitives_specification_TangerineSpec.
   
-  Module Impl_core_marker_StructuralEq_for_revm_primitives_specification_TangerineSpec.
-    Definition Self : Ty.t := Ty.path "revm_primitives::specification::TangerineSpec".
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::marker::StructuralEq"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [].
-  End Impl_core_marker_StructuralEq_for_revm_primitives_specification_TangerineSpec.
-  
   Module Impl_core_cmp_Eq_for_revm_primitives_specification_TangerineSpec.
     Definition Self : Ty.t := Ty.path "revm_primitives::specification::TangerineSpec".
     
@@ -2126,17 +2082,6 @@ Module specification.
         (* Trait polymorphic types *) []
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_revm_primitives_specification_SpuriousDragonSpec.
-  
-  Module Impl_core_marker_StructuralEq_for_revm_primitives_specification_SpuriousDragonSpec.
-    Definition Self : Ty.t := Ty.path "revm_primitives::specification::SpuriousDragonSpec".
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::marker::StructuralEq"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [].
-  End Impl_core_marker_StructuralEq_for_revm_primitives_specification_SpuriousDragonSpec.
   
   Module Impl_core_cmp_Eq_for_revm_primitives_specification_SpuriousDragonSpec.
     Definition Self : Ty.t := Ty.path "revm_primitives::specification::SpuriousDragonSpec".
@@ -2369,17 +2314,6 @@ Module specification.
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_revm_primitives_specification_ByzantiumSpec.
   
-  Module Impl_core_marker_StructuralEq_for_revm_primitives_specification_ByzantiumSpec.
-    Definition Self : Ty.t := Ty.path "revm_primitives::specification::ByzantiumSpec".
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::marker::StructuralEq"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [].
-  End Impl_core_marker_StructuralEq_for_revm_primitives_specification_ByzantiumSpec.
-  
   Module Impl_core_cmp_Eq_for_revm_primitives_specification_ByzantiumSpec.
     Definition Self : Ty.t := Ty.path "revm_primitives::specification::ByzantiumSpec".
     
@@ -2608,17 +2542,6 @@ Module specification.
         (* Trait polymorphic types *) []
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_revm_primitives_specification_PetersburgSpec.
-  
-  Module Impl_core_marker_StructuralEq_for_revm_primitives_specification_PetersburgSpec.
-    Definition Self : Ty.t := Ty.path "revm_primitives::specification::PetersburgSpec".
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::marker::StructuralEq"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [].
-  End Impl_core_marker_StructuralEq_for_revm_primitives_specification_PetersburgSpec.
   
   Module Impl_core_cmp_Eq_for_revm_primitives_specification_PetersburgSpec.
     Definition Self : Ty.t := Ty.path "revm_primitives::specification::PetersburgSpec".
@@ -2851,17 +2774,6 @@ Module specification.
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_revm_primitives_specification_IstanbulSpec.
   
-  Module Impl_core_marker_StructuralEq_for_revm_primitives_specification_IstanbulSpec.
-    Definition Self : Ty.t := Ty.path "revm_primitives::specification::IstanbulSpec".
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::marker::StructuralEq"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [].
-  End Impl_core_marker_StructuralEq_for_revm_primitives_specification_IstanbulSpec.
-  
   Module Impl_core_cmp_Eq_for_revm_primitives_specification_IstanbulSpec.
     Definition Self : Ty.t := Ty.path "revm_primitives::specification::IstanbulSpec".
     
@@ -3090,17 +3002,6 @@ Module specification.
         (* Trait polymorphic types *) []
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_revm_primitives_specification_BerlinSpec.
-  
-  Module Impl_core_marker_StructuralEq_for_revm_primitives_specification_BerlinSpec.
-    Definition Self : Ty.t := Ty.path "revm_primitives::specification::BerlinSpec".
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::marker::StructuralEq"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [].
-  End Impl_core_marker_StructuralEq_for_revm_primitives_specification_BerlinSpec.
   
   Module Impl_core_cmp_Eq_for_revm_primitives_specification_BerlinSpec.
     Definition Self : Ty.t := Ty.path "revm_primitives::specification::BerlinSpec".
@@ -3331,17 +3232,6 @@ Module specification.
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_revm_primitives_specification_LondonSpec.
   
-  Module Impl_core_marker_StructuralEq_for_revm_primitives_specification_LondonSpec.
-    Definition Self : Ty.t := Ty.path "revm_primitives::specification::LondonSpec".
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::marker::StructuralEq"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [].
-  End Impl_core_marker_StructuralEq_for_revm_primitives_specification_LondonSpec.
-  
   Module Impl_core_cmp_Eq_for_revm_primitives_specification_LondonSpec.
     Definition Self : Ty.t := Ty.path "revm_primitives::specification::LondonSpec".
     
@@ -3570,17 +3460,6 @@ Module specification.
         (* Trait polymorphic types *) []
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_revm_primitives_specification_MergeSpec.
-  
-  Module Impl_core_marker_StructuralEq_for_revm_primitives_specification_MergeSpec.
-    Definition Self : Ty.t := Ty.path "revm_primitives::specification::MergeSpec".
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::marker::StructuralEq"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [].
-  End Impl_core_marker_StructuralEq_for_revm_primitives_specification_MergeSpec.
   
   Module Impl_core_cmp_Eq_for_revm_primitives_specification_MergeSpec.
     Definition Self : Ty.t := Ty.path "revm_primitives::specification::MergeSpec".
@@ -3811,17 +3690,6 @@ Module specification.
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_revm_primitives_specification_ShanghaiSpec.
   
-  Module Impl_core_marker_StructuralEq_for_revm_primitives_specification_ShanghaiSpec.
-    Definition Self : Ty.t := Ty.path "revm_primitives::specification::ShanghaiSpec".
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::marker::StructuralEq"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [].
-  End Impl_core_marker_StructuralEq_for_revm_primitives_specification_ShanghaiSpec.
-  
   Module Impl_core_cmp_Eq_for_revm_primitives_specification_ShanghaiSpec.
     Definition Self : Ty.t := Ty.path "revm_primitives::specification::ShanghaiSpec".
     
@@ -4050,17 +3918,6 @@ Module specification.
         (* Trait polymorphic types *) []
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_revm_primitives_specification_CancunSpec.
-  
-  Module Impl_core_marker_StructuralEq_for_revm_primitives_specification_CancunSpec.
-    Definition Self : Ty.t := Ty.path "revm_primitives::specification::CancunSpec".
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::marker::StructuralEq"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [].
-  End Impl_core_marker_StructuralEq_for_revm_primitives_specification_CancunSpec.
   
   Module Impl_core_cmp_Eq_for_revm_primitives_specification_CancunSpec.
     Definition Self : Ty.t := Ty.path "revm_primitives::specification::CancunSpec".
@@ -4291,17 +4148,6 @@ Module specification.
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_revm_primitives_specification_PragueSpec.
   
-  Module Impl_core_marker_StructuralEq_for_revm_primitives_specification_PragueSpec.
-    Definition Self : Ty.t := Ty.path "revm_primitives::specification::PragueSpec".
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::marker::StructuralEq"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [].
-  End Impl_core_marker_StructuralEq_for_revm_primitives_specification_PragueSpec.
-  
   Module Impl_core_cmp_Eq_for_revm_primitives_specification_PragueSpec.
     Definition Self : Ty.t := Ty.path "revm_primitives::specification::PragueSpec".
     
@@ -4530,17 +4376,6 @@ Module specification.
         (* Trait polymorphic types *) []
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_revm_primitives_specification_LatestSpec.
-  
-  Module Impl_core_marker_StructuralEq_for_revm_primitives_specification_LatestSpec.
-    Definition Self : Ty.t := Ty.path "revm_primitives::specification::LatestSpec".
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::marker::StructuralEq"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [].
-  End Impl_core_marker_StructuralEq_for_revm_primitives_specification_LatestSpec.
   
   Module Impl_core_cmp_Eq_for_revm_primitives_specification_LatestSpec.
     Definition Self : Ty.t := Ty.path "revm_primitives::specification::LatestSpec".

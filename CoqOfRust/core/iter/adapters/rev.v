@@ -72,15 +72,13 @@ Module iter.
                   M.read (| f |);
                   M.read (| Value.String "Rev" |);
                   M.read (| Value.String "iter" |);
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.alloc (|
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::iter::adapters::rev::Rev",
-                        "iter"
-                      |)
-                    |))
+                  M.alloc (|
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::iter::adapters::rev::Rev",
+                      "iter"
+                    |)
+                  |)
                 ]
               |)))
           | _, _, _ => M.impossible
@@ -187,7 +185,7 @@ Module iter.
           end.
         
         (*
-            fn advance_by(&mut self, n: usize) -> Result<(), NonZeroUsize> {
+            fn advance_by(&mut self, n: usize) -> Result<(), NonZero<usize>> {
                 self.iter.advance_back_by(n)
             }
         *)
@@ -422,7 +420,7 @@ Module iter.
           end.
         
         (*
-            fn advance_back_by(&mut self, n: usize) -> Result<(), NonZeroUsize> {
+            fn advance_back_by(&mut self, n: usize) -> Result<(), NonZero<usize>> {
                 self.iter.advance_by(n)
             }
         *)

@@ -153,13 +153,11 @@ Module collections.
                           [ M.read (| f |); M.read (| Value.String "IntoIter" |) ]
                         |)
                       |);
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "alloc::collections::vec_deque::into_iter::IntoIter",
-                          "inner"
-                        |))
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "alloc::collections::vec_deque::into_iter::IntoIter",
+                        "inner"
+                      |)
                     ]
                   |)
                 ]
@@ -258,7 +256,7 @@ Module collections.
           end.
         
         (*
-            fn advance_by(&mut self, n: usize) -> Result<(), NonZeroUsize> {
+            fn advance_by(&mut self, n: usize) -> Result<(), NonZero<usize>> {
                 let len = self.inner.len;
                 let rem = if len < n {
                     self.inner.clear();
@@ -267,7 +265,7 @@ Module collections.
                     self.inner.drain(..n);
                     0
                 };
-                NonZeroUsize::new(rem).map_or(Ok(()), Err)
+                NonZero::new(rem).map_or(Ok(()), Err)
             }
         *)
         Definition advance_by
@@ -370,25 +368,35 @@ Module collections.
                       Ty.apply
                         (Ty.path "core::option::Option")
                         []
-                        [ Ty.path "core::num::nonzero::NonZeroUsize" ],
+                        [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ],
                       "map_or",
                       [
                         Ty.apply
                           (Ty.path "core::result::Result")
                           []
-                          [ Ty.tuple []; Ty.path "core::num::nonzero::NonZeroUsize" ];
+                          [
+                            Ty.tuple [];
+                            Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ]
+                          ];
                         Ty.function
-                          [ Ty.path "core::num::nonzero::NonZeroUsize" ]
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ]
+                          ]
                           (Ty.apply
                             (Ty.path "core::result::Result")
                             []
-                            [ Ty.tuple []; Ty.path "core::num::nonzero::NonZeroUsize" ])
+                            [
+                              Ty.tuple [];
+                              Ty.apply
+                                (Ty.path "core::num::nonzero::NonZero")
+                                []
+                                [ Ty.path "usize" ]
+                            ])
                       ]
                     |),
                     [
                       M.call_closure (|
                         M.get_associated_function (|
-                          Ty.path "core::num::nonzero::NonZeroUsize",
+                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                           "new",
                           []
                         |),
@@ -787,6 +795,7 @@ Module collections.
             {
                 match self.try_fold(init, |b, item| Ok::<B, !>(f(b, item))) {
                     Ok(b) => b,
+                    #[cfg(bootstrap)]
                     Err(e) => match e {},
                 }
             }
@@ -876,19 +885,7 @@ Module collections.
                             0
                           |) in
                         let b := M.copy (| γ0_0 |) in
-                        b));
-                    fun γ =>
-                      ltac:(M.monadic
-                        (let γ0_0 :=
-                          M.SubPointer.get_struct_tuple_field (|
-                            γ,
-                            "core::result::Result::Err",
-                            0
-                          |) in
-                        let e := M.copy (| γ0_0 |) in
-                        M.alloc (|
-                          M.never_to_any (| M.read (| M.match_operator (| e, [] |) |) |)
-                        |)))
+                        b))
                   ]
                 |)
               |)))
@@ -927,7 +924,7 @@ Module collections.
             fn next_chunk<const N: usize>(
                 &mut self,
             ) -> Result<[Self::Item; N], array::IntoIter<Self::Item, N>> {
-                let mut raw_arr = MaybeUninit::uninit_array();
+                let mut raw_arr = [const { MaybeUninit::uninit() }; N];
                 let raw_arr_ptr = raw_arr.as_mut_ptr().cast();
                 let (head, tail) = self.inner.as_slices();
         
@@ -985,13 +982,13 @@ Module collections.
                   (M.read (|
                     let~ raw_arr :=
                       M.alloc (|
-                        M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ],
-                            "uninit_array",
-                            []
+                        repeat (|
+                          M.read (|
+                            M.get_constant (|
+                              "alloc::collections::vec_deque::into_iter::next_chunk_discriminant"
+                            |)
                           |),
-                          []
+                          N
                         |)
                       |) in
                     let~ raw_arr_ptr :=
@@ -1021,7 +1018,7 @@ Module collections.
                                 "as_mut_ptr",
                                 []
                               |),
-                              [ (* Unsize *) M.pointer_coercion raw_arr ]
+                              [ raw_arr ]
                             |)
                           ]
                         |)
@@ -1594,7 +1591,7 @@ Module collections.
           end.
         
         (*
-            fn advance_back_by(&mut self, n: usize) -> Result<(), NonZeroUsize> {
+            fn advance_back_by(&mut self, n: usize) -> Result<(), NonZero<usize>> {
                 let len = self.inner.len;
                 let rem = if len < n {
                     self.inner.clear();
@@ -1603,7 +1600,7 @@ Module collections.
                     self.inner.truncate(len - n);
                     0
                 };
-                NonZeroUsize::new(rem).map_or(Ok(()), Err)
+                NonZero::new(rem).map_or(Ok(()), Err)
             }
         *)
         Definition advance_back_by
@@ -1699,25 +1696,35 @@ Module collections.
                       Ty.apply
                         (Ty.path "core::option::Option")
                         []
-                        [ Ty.path "core::num::nonzero::NonZeroUsize" ],
+                        [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ],
                       "map_or",
                       [
                         Ty.apply
                           (Ty.path "core::result::Result")
                           []
-                          [ Ty.tuple []; Ty.path "core::num::nonzero::NonZeroUsize" ];
+                          [
+                            Ty.tuple [];
+                            Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ]
+                          ];
                         Ty.function
-                          [ Ty.path "core::num::nonzero::NonZeroUsize" ]
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ]
+                          ]
                           (Ty.apply
                             (Ty.path "core::result::Result")
                             []
-                            [ Ty.tuple []; Ty.path "core::num::nonzero::NonZeroUsize" ])
+                            [
+                              Ty.tuple [];
+                              Ty.apply
+                                (Ty.path "core::num::nonzero::NonZero")
+                                []
+                                [ Ty.path "usize" ]
+                            ])
                       ]
                     |),
                     [
                       M.call_closure (|
                         M.get_associated_function (|
-                          Ty.path "core::num::nonzero::NonZeroUsize",
+                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                           "new",
                           []
                         |),
@@ -2088,6 +2095,7 @@ Module collections.
             {
                 match self.try_rfold(init, |b, item| Ok::<B, !>(f(b, item))) {
                     Ok(b) => b,
+                    #[cfg(bootstrap)]
                     Err(e) => match e {},
                 }
             }
@@ -2177,19 +2185,7 @@ Module collections.
                             0
                           |) in
                         let b := M.copy (| γ0_0 |) in
-                        b));
-                    fun γ =>
-                      ltac:(M.monadic
-                        (let γ0_0 :=
-                          M.SubPointer.get_struct_tuple_field (|
-                            γ,
-                            "core::result::Result::Err",
-                            0
-                          |) in
-                        let e := M.copy (| γ0_0 |) in
-                        M.alloc (|
-                          M.never_to_any (| M.read (| M.match_operator (| e, [] |) |) |)
-                        |)))
+                        b))
                   ]
                 |)
               |)))

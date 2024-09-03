@@ -803,12 +803,10 @@ Module kzg_point_evaluation.
                 []
               |),
               [
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.call_closure (|
-                    M.get_function (| "revm_precompile::kzg_point_evaluation::as_array", [] |),
-                    [ M.read (| bytes |) ]
-                  |))
+                M.call_closure (|
+                  M.get_function (| "revm_precompile::kzg_point_evaluation::as_array", [] |),
+                  [ M.read (| bytes |) ]
+                |)
               ]
             |)
           ]
@@ -844,12 +842,10 @@ Module kzg_point_evaluation.
                 []
               |),
               [
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.call_closure (|
-                    M.get_function (| "revm_precompile::kzg_point_evaluation::as_array", [] |),
-                    [ M.read (| bytes |) ]
-                  |))
+                M.call_closure (|
+                  M.get_function (| "revm_precompile::kzg_point_evaluation::as_array", [] |),
+                  [ M.read (| bytes |) ]
+                |)
               ]
             |)
           ]

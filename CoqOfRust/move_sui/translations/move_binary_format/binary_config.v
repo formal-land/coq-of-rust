@@ -239,113 +239,83 @@ Module binary_config.
               |) in
             let~ values :=
               M.alloc (|
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.alloc (|
-                    Value.Array
-                      [
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "move_binary_format::binary_config::TableConfig",
-                            "module_handles"
-                          |));
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "move_binary_format::binary_config::TableConfig",
-                            "struct_handles"
-                          |));
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "move_binary_format::binary_config::TableConfig",
-                            "function_handles"
-                          |));
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "move_binary_format::binary_config::TableConfig",
-                            "function_instantiations"
-                          |));
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "move_binary_format::binary_config::TableConfig",
-                            "signatures"
-                          |));
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "move_binary_format::binary_config::TableConfig",
-                            "constant_pool"
-                          |));
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "move_binary_format::binary_config::TableConfig",
-                            "identifiers"
-                          |));
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "move_binary_format::binary_config::TableConfig",
-                            "address_identifiers"
-                          |));
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "move_binary_format::binary_config::TableConfig",
-                            "struct_defs"
-                          |));
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "move_binary_format::binary_config::TableConfig",
-                            "struct_def_instantiations"
-                          |));
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "move_binary_format::binary_config::TableConfig",
-                            "function_defs"
-                          |));
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "move_binary_format::binary_config::TableConfig",
-                            "field_handles"
-                          |));
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "move_binary_format::binary_config::TableConfig",
-                            "field_instantiations"
-                          |));
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.alloc (|
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "move_binary_format::binary_config::TableConfig",
-                              "friend_decls"
-                            |)
-                          |))
-                      ]
-                  |))
+                M.alloc (|
+                  Value.Array
+                    [
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "move_binary_format::binary_config::TableConfig",
+                        "module_handles"
+                      |);
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "move_binary_format::binary_config::TableConfig",
+                        "struct_handles"
+                      |);
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "move_binary_format::binary_config::TableConfig",
+                        "function_handles"
+                      |);
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "move_binary_format::binary_config::TableConfig",
+                        "function_instantiations"
+                      |);
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "move_binary_format::binary_config::TableConfig",
+                        "signatures"
+                      |);
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "move_binary_format::binary_config::TableConfig",
+                        "constant_pool"
+                      |);
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "move_binary_format::binary_config::TableConfig",
+                        "identifiers"
+                      |);
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "move_binary_format::binary_config::TableConfig",
+                        "address_identifiers"
+                      |);
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "move_binary_format::binary_config::TableConfig",
+                        "struct_defs"
+                      |);
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "move_binary_format::binary_config::TableConfig",
+                        "struct_def_instantiations"
+                      |);
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "move_binary_format::binary_config::TableConfig",
+                        "function_defs"
+                      |);
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "move_binary_format::binary_config::TableConfig",
+                        "field_handles"
+                      |);
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "move_binary_format::binary_config::TableConfig",
+                        "field_instantiations"
+                      |);
+                      M.alloc (|
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "move_binary_format::binary_config::TableConfig",
+                          "friend_decls"
+                        |)
+                      |)
+                    ]
+                |)
               |) in
             M.alloc (|
               M.call_closure (|
@@ -357,7 +327,7 @@ Module binary_config.
                 [
                   M.read (| f |);
                   M.read (| Value.String "TableConfig" |);
-                  (* Unsize *) M.pointer_coercion (M.read (| names |));
+                  M.read (| names |);
                   M.read (| values |)
                 ]
               |)
@@ -521,31 +491,25 @@ Module binary_config.
               M.read (| f |);
               M.read (| Value.String "BinaryConfig" |);
               M.read (| Value.String "max_binary_format_version" |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "move_binary_format::binary_config::BinaryConfig",
-                  "max_binary_format_version"
-                |));
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "move_binary_format::binary_config::BinaryConfig",
+                "max_binary_format_version"
+              |);
               M.read (| Value.String "check_no_extraneous_bytes" |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.SubPointer.get_struct_record_field (|
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "move_binary_format::binary_config::BinaryConfig",
+                "check_no_extraneous_bytes"
+              |);
+              M.read (| Value.String "table_config" |);
+              M.alloc (|
+                M.SubPointer.get_struct_record_field (|
                   M.read (| self |),
                   "move_binary_format::binary_config::BinaryConfig",
-                  "check_no_extraneous_bytes"
-                |));
-              M.read (| Value.String "table_config" |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.alloc (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "move_binary_format::binary_config::BinaryConfig",
-                    "table_config"
-                  |)
-                |))
+                  "table_config"
+                |)
+              |)
             ]
           |)))
       | _, _, _ => M.impossible

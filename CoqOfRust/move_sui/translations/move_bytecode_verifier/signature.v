@@ -4486,84 +4486,91 @@ Module signature.
                                                                                                 []
                                                                                             ]
                                                                                           |);
-                                                                                          M.read (|
-                                                                                            let~
-                                                                                                  res :=
-                                                                                              M.alloc (|
-                                                                                                M.call_closure (|
-                                                                                                  M.get_function (|
-                                                                                                    "alloc::fmt::format",
-                                                                                                    []
-                                                                                                  |),
-                                                                                                  [
+                                                                                          M.call_closure (|
+                                                                                            M.get_function (|
+                                                                                              "core::hint::must_use",
+                                                                                              [
+                                                                                                Ty.path
+                                                                                                  "alloc::string::String"
+                                                                                              ]
+                                                                                            |),
+                                                                                            [
+                                                                                              M.read (|
+                                                                                                let~
+                                                                                                      res :=
+                                                                                                  M.alloc (|
                                                                                                     M.call_closure (|
-                                                                                                      M.get_associated_function (|
-                                                                                                        Ty.path
-                                                                                                          "core::fmt::Arguments",
-                                                                                                        "new_v1",
+                                                                                                      M.get_function (|
+                                                                                                        "alloc::fmt::format",
                                                                                                         []
                                                                                                       |),
                                                                                                       [
-                                                                                                        (* Unsize *)
-                                                                                                        M.pointer_coercion
-                                                                                                          (M.alloc (|
-                                                                                                            Value.Array
-                                                                                                              [
-                                                                                                                M.read (|
-                                                                                                                  Value.String
-                                                                                                                    "expected 1 type token for vector operations, got "
-                                                                                                                |)
-                                                                                                              ]
-                                                                                                          |));
-                                                                                                        (* Unsize *)
-                                                                                                        M.pointer_coercion
-                                                                                                          (M.alloc (|
-                                                                                                            Value.Array
-                                                                                                              [
-                                                                                                                M.call_closure (|
-                                                                                                                  M.get_associated_function (|
-                                                                                                                    Ty.path
-                                                                                                                      "core::fmt::rt::Argument",
-                                                                                                                    "new_display",
-                                                                                                                    [
+                                                                                                        M.call_closure (|
+                                                                                                          M.get_associated_function (|
+                                                                                                            Ty.path
+                                                                                                              "core::fmt::Arguments",
+                                                                                                            "new_v1",
+                                                                                                            []
+                                                                                                          |),
+                                                                                                          [
+                                                                                                            M.alloc (|
+                                                                                                              Value.Array
+                                                                                                                [
+                                                                                                                  M.read (|
+                                                                                                                    Value.String
+                                                                                                                      "expected 1 type token for vector operations, got "
+                                                                                                                  |)
+                                                                                                                ]
+                                                                                                            |);
+                                                                                                            M.alloc (|
+                                                                                                              Value.Array
+                                                                                                                [
+                                                                                                                  M.call_closure (|
+                                                                                                                    M.get_associated_function (|
                                                                                                                       Ty.path
-                                                                                                                        "usize"
-                                                                                                                    ]
-                                                                                                                  |),
-                                                                                                                  [
-                                                                                                                    M.alloc (|
-                                                                                                                      M.call_closure (|
-                                                                                                                        M.get_associated_function (|
-                                                                                                                          Ty.apply
-                                                                                                                            (Ty.path
-                                                                                                                              "alloc::vec::Vec")
+                                                                                                                        "core::fmt::rt::Argument",
+                                                                                                                      "new_display",
+                                                                                                                      [
+                                                                                                                        Ty.path
+                                                                                                                          "usize"
+                                                                                                                      ]
+                                                                                                                    |),
+                                                                                                                    [
+                                                                                                                      M.alloc (|
+                                                                                                                        M.call_closure (|
+                                                                                                                          M.get_associated_function (|
+                                                                                                                            Ty.apply
+                                                                                                                              (Ty.path
+                                                                                                                                "alloc::vec::Vec")
+                                                                                                                              []
+                                                                                                                              [
+                                                                                                                                Ty.path
+                                                                                                                                  "move_binary_format::file_format::SignatureToken";
+                                                                                                                                Ty.path
+                                                                                                                                  "alloc::alloc::Global"
+                                                                                                                              ],
+                                                                                                                            "len",
                                                                                                                             []
-                                                                                                                            [
-                                                                                                                              Ty.path
-                                                                                                                                "move_binary_format::file_format::SignatureToken";
-                                                                                                                              Ty.path
-                                                                                                                                "alloc::alloc::Global"
-                                                                                                                            ],
-                                                                                                                          "len",
-                                                                                                                          []
-                                                                                                                        |),
-                                                                                                                        [
-                                                                                                                          M.read (|
-                                                                                                                            type_arguments
-                                                                                                                          |)
-                                                                                                                        ]
+                                                                                                                          |),
+                                                                                                                          [
+                                                                                                                            M.read (|
+                                                                                                                              type_arguments
+                                                                                                                            |)
+                                                                                                                          ]
+                                                                                                                        |)
                                                                                                                       |)
-                                                                                                                    |)
-                                                                                                                  ]
-                                                                                                                |)
-                                                                                                              ]
-                                                                                                          |))
+                                                                                                                    ]
+                                                                                                                  |)
+                                                                                                                ]
+                                                                                                            |)
+                                                                                                          ]
+                                                                                                        |)
                                                                                                       ]
                                                                                                     |)
-                                                                                                  ]
-                                                                                                |)
-                                                                                              |) in
-                                                                                            res
+                                                                                                  |) in
+                                                                                                res
+                                                                                              |)
+                                                                                            ]
                                                                                           |)
                                                                                         ]
                                                                                       |)
@@ -5263,65 +5270,72 @@ Module signature.
                                                                         [
                                                                           M.read (| err |);
                                                                           Value.UnicodeChar 32;
-                                                                          M.read (|
-                                                                            let~ res :=
-                                                                              M.alloc (|
-                                                                                M.call_closure (|
-                                                                                  M.get_function (|
-                                                                                    "alloc::fmt::format",
-                                                                                    []
-                                                                                  |),
-                                                                                  [
+                                                                          M.call_closure (|
+                                                                            M.get_function (|
+                                                                              "core::hint::must_use",
+                                                                              [
+                                                                                Ty.path
+                                                                                  "alloc::string::String"
+                                                                              ]
+                                                                            |),
+                                                                            [
+                                                                              M.read (|
+                                                                                let~ res :=
+                                                                                  M.alloc (|
                                                                                     M.call_closure (|
-                                                                                      M.get_associated_function (|
-                                                                                        Ty.path
-                                                                                          "core::fmt::Arguments",
-                                                                                        "new_v1",
+                                                                                      M.get_function (|
+                                                                                        "alloc::fmt::format",
                                                                                         []
                                                                                       |),
                                                                                       [
-                                                                                        (* Unsize *)
-                                                                                        M.pointer_coercion
-                                                                                          (M.alloc (|
-                                                                                            Value.Array
-                                                                                              [
-                                                                                                M.read (|
-                                                                                                  Value.String
-                                                                                                    "at offset "
-                                                                                                |);
-                                                                                                M.read (|
-                                                                                                  Value.String
-                                                                                                    " "
-                                                                                                |)
-                                                                                              ]
-                                                                                          |));
-                                                                                        (* Unsize *)
-                                                                                        M.pointer_coercion
-                                                                                          (M.alloc (|
-                                                                                            Value.Array
-                                                                                              [
-                                                                                                M.call_closure (|
-                                                                                                  M.get_associated_function (|
-                                                                                                    Ty.path
-                                                                                                      "core::fmt::rt::Argument",
-                                                                                                    "new_display",
-                                                                                                    [
+                                                                                        M.call_closure (|
+                                                                                          M.get_associated_function (|
+                                                                                            Ty.path
+                                                                                              "core::fmt::Arguments",
+                                                                                            "new_v1",
+                                                                                            []
+                                                                                          |),
+                                                                                          [
+                                                                                            M.alloc (|
+                                                                                              Value.Array
+                                                                                                [
+                                                                                                  M.read (|
+                                                                                                    Value.String
+                                                                                                      "at offset "
+                                                                                                  |);
+                                                                                                  M.read (|
+                                                                                                    Value.String
+                                                                                                      " "
+                                                                                                  |)
+                                                                                                ]
+                                                                                            |);
+                                                                                            M.alloc (|
+                                                                                              Value.Array
+                                                                                                [
+                                                                                                  M.call_closure (|
+                                                                                                    M.get_associated_function (|
                                                                                                       Ty.path
-                                                                                                        "usize"
+                                                                                                        "core::fmt::rt::Argument",
+                                                                                                      "new_display",
+                                                                                                      [
+                                                                                                        Ty.path
+                                                                                                          "usize"
+                                                                                                      ]
+                                                                                                    |),
+                                                                                                    [
+                                                                                                      offset
                                                                                                     ]
-                                                                                                  |),
-                                                                                                  [
-                                                                                                    offset
-                                                                                                  ]
-                                                                                                |)
-                                                                                              ]
-                                                                                          |))
+                                                                                                  |)
+                                                                                                ]
+                                                                                            |)
+                                                                                          ]
+                                                                                        |)
                                                                                       ]
                                                                                     |)
-                                                                                  ]
-                                                                                |)
-                                                                              |) in
-                                                                            res
+                                                                                  |) in
+                                                                                res
+                                                                              |)
+                                                                            ]
                                                                           |)
                                                                         ]
                                                                       |)))
@@ -8052,98 +8066,102 @@ Module signature.
                                                 []
                                             ]
                                           |);
-                                          M.read (|
-                                            let~ res :=
-                                              M.alloc (|
-                                                M.call_closure (|
-                                                  M.get_function (| "alloc::fmt::format", [] |),
-                                                  [
+                                          M.call_closure (|
+                                            M.get_function (|
+                                              "core::hint::must_use",
+                                              [ Ty.path "alloc::string::String" ]
+                                            |),
+                                            [
+                                              M.read (|
+                                                let~ res :=
+                                                  M.alloc (|
                                                     M.call_closure (|
-                                                      M.get_associated_function (|
-                                                        Ty.path "core::fmt::Arguments",
-                                                        "new_v1",
-                                                        []
-                                                      |),
+                                                      M.get_function (| "alloc::fmt::format", [] |),
                                                       [
-                                                        (* Unsize *)
-                                                        M.pointer_coercion
-                                                          (M.alloc (|
-                                                            Value.Array
-                                                              [
-                                                                M.read (|
-                                                                  Value.String "expected "
-                                                                |);
-                                                                M.read (|
-                                                                  Value.String
-                                                                    " type argument(s), got "
-                                                                |)
-                                                              ]
-                                                          |));
-                                                        (* Unsize *)
-                                                        M.pointer_coercion
-                                                          (M.alloc (|
-                                                            Value.Array
-                                                              [
-                                                                M.call_closure (|
-                                                                  M.get_associated_function (|
-                                                                    Ty.path
-                                                                      "core::fmt::rt::Argument",
-                                                                    "new_display",
-                                                                    [ Ty.path "usize" ]
-                                                                  |),
-                                                                  [
-                                                                    M.alloc (|
-                                                                      M.call_closure (|
-                                                                        M.get_trait_method (|
-                                                                          "core::iter::traits::exact_size::ExactSizeIterator",
-                                                                          impl_ExactSizeIterator_Item___AbilitySet_,
-                                                                          [],
-                                                                          "len",
-                                                                          []
-                                                                        |),
-                                                                        [ constraints ]
-                                                                      |)
-                                                                    |)
-                                                                  ]
-                                                                |);
-                                                                M.call_closure (|
-                                                                  M.get_associated_function (|
-                                                                    Ty.path
-                                                                      "core::fmt::rt::Argument",
-                                                                    "new_display",
-                                                                    [ Ty.path "usize" ]
-                                                                  |),
-                                                                  [
-                                                                    M.alloc (|
-                                                                      M.call_closure (|
-                                                                        M.get_associated_function (|
-                                                                          Ty.apply
-                                                                            (Ty.path "slice")
+                                                        M.call_closure (|
+                                                          M.get_associated_function (|
+                                                            Ty.path "core::fmt::Arguments",
+                                                            "new_v1",
+                                                            []
+                                                          |),
+                                                          [
+                                                            M.alloc (|
+                                                              Value.Array
+                                                                [
+                                                                  M.read (|
+                                                                    Value.String "expected "
+                                                                  |);
+                                                                  M.read (|
+                                                                    Value.String
+                                                                      " type argument(s), got "
+                                                                  |)
+                                                                ]
+                                                            |);
+                                                            M.alloc (|
+                                                              Value.Array
+                                                                [
+                                                                  M.call_closure (|
+                                                                    M.get_associated_function (|
+                                                                      Ty.path
+                                                                        "core::fmt::rt::Argument",
+                                                                      "new_display",
+                                                                      [ Ty.path "usize" ]
+                                                                    |),
+                                                                    [
+                                                                      M.alloc (|
+                                                                        M.call_closure (|
+                                                                          M.get_trait_method (|
+                                                                            "core::iter::traits::exact_size::ExactSizeIterator",
+                                                                            impl_ExactSizeIterator_Item___AbilitySet_,
+                                                                            [],
+                                                                            "len",
                                                                             []
-                                                                            [
-                                                                              Ty.path
-                                                                                "move_binary_format::file_format::SignatureToken"
-                                                                            ],
-                                                                          "len",
-                                                                          []
-                                                                        |),
-                                                                        [
-                                                                          M.read (|
-                                                                            type_arguments
-                                                                          |)
-                                                                        ]
+                                                                          |),
+                                                                          [ constraints ]
+                                                                        |)
                                                                       |)
-                                                                    |)
-                                                                  ]
-                                                                |)
-                                                              ]
-                                                          |))
+                                                                    ]
+                                                                  |);
+                                                                  M.call_closure (|
+                                                                    M.get_associated_function (|
+                                                                      Ty.path
+                                                                        "core::fmt::rt::Argument",
+                                                                      "new_display",
+                                                                      [ Ty.path "usize" ]
+                                                                    |),
+                                                                    [
+                                                                      M.alloc (|
+                                                                        M.call_closure (|
+                                                                          M.get_associated_function (|
+                                                                            Ty.apply
+                                                                              (Ty.path "slice")
+                                                                              []
+                                                                              [
+                                                                                Ty.path
+                                                                                  "move_binary_format::file_format::SignatureToken"
+                                                                              ],
+                                                                            "len",
+                                                                            []
+                                                                          |),
+                                                                          [
+                                                                            M.read (|
+                                                                              type_arguments
+                                                                            |)
+                                                                          ]
+                                                                        |)
+                                                                      |)
+                                                                    ]
+                                                                  |)
+                                                                ]
+                                                            |)
+                                                          ]
+                                                        |)
                                                       ]
                                                     |)
-                                                  ]
-                                                |)
-                                              |) in
-                                            res
+                                                  |) in
+                                                res
+                                              |)
+                                            ]
                                           |)
                                         ]
                                       |)
@@ -8425,99 +8443,107 @@ Module signature.
                                                                         []
                                                                     ]
                                                                   |);
-                                                                  M.read (|
-                                                                    let~ res :=
-                                                                      M.alloc (|
-                                                                        M.call_closure (|
-                                                                          M.get_function (|
-                                                                            "alloc::fmt::format",
-                                                                            []
-                                                                          |),
-                                                                          [
+                                                                  M.call_closure (|
+                                                                    M.get_function (|
+                                                                      "core::hint::must_use",
+                                                                      [
+                                                                        Ty.path
+                                                                          "alloc::string::String"
+                                                                      ]
+                                                                    |),
+                                                                    [
+                                                                      M.read (|
+                                                                        let~ res :=
+                                                                          M.alloc (|
                                                                             M.call_closure (|
-                                                                              M.get_associated_function (|
-                                                                                Ty.path
-                                                                                  "core::fmt::Arguments",
-                                                                                "new_v1",
+                                                                              M.get_function (|
+                                                                                "alloc::fmt::format",
                                                                                 []
                                                                               |),
                                                                               [
-                                                                                (* Unsize *)
-                                                                                M.pointer_coercion
-                                                                                  (M.alloc (|
-                                                                                    Value.Array
-                                                                                      [
-                                                                                        M.read (|
-                                                                                          Value.String
-                                                                                            "expected type with abilities "
-                                                                                        |);
-                                                                                        M.read (|
-                                                                                          Value.String
-                                                                                            " got type actual "
-                                                                                        |);
-                                                                                        M.read (|
-                                                                                          Value.String
-                                                                                            " with incompatible abilities "
-                                                                                        |)
-                                                                                      ]
-                                                                                  |));
-                                                                                (* Unsize *)
-                                                                                M.pointer_coercion
-                                                                                  (M.alloc (|
-                                                                                    Value.Array
-                                                                                      [
-                                                                                        M.call_closure (|
-                                                                                          M.get_associated_function (|
-                                                                                            Ty.path
-                                                                                              "core::fmt::rt::Argument",
-                                                                                            "new_debug",
-                                                                                            [
+                                                                                M.call_closure (|
+                                                                                  M.get_associated_function (|
+                                                                                    Ty.path
+                                                                                      "core::fmt::Arguments",
+                                                                                    "new_v1",
+                                                                                    []
+                                                                                  |),
+                                                                                  [
+                                                                                    M.alloc (|
+                                                                                      Value.Array
+                                                                                        [
+                                                                                          M.read (|
+                                                                                            Value.String
+                                                                                              "expected type with abilities "
+                                                                                          |);
+                                                                                          M.read (|
+                                                                                            Value.String
+                                                                                              " got type actual "
+                                                                                          |);
+                                                                                          M.read (|
+                                                                                            Value.String
+                                                                                              " with incompatible abilities "
+                                                                                          |)
+                                                                                        ]
+                                                                                    |);
+                                                                                    M.alloc (|
+                                                                                      Value.Array
+                                                                                        [
+                                                                                          M.call_closure (|
+                                                                                            M.get_associated_function (|
                                                                                               Ty.path
-                                                                                                "move_binary_format::file_format::AbilitySet"
-                                                                                            ]
-                                                                                          |),
-                                                                                          [
-                                                                                            constraint
-                                                                                          ]
-                                                                                        |);
-                                                                                        M.call_closure (|
-                                                                                          M.get_associated_function (|
-                                                                                            Ty.path
-                                                                                              "core::fmt::rt::Argument",
-                                                                                            "new_debug",
+                                                                                                "core::fmt::rt::Argument",
+                                                                                              "new_debug",
+                                                                                              [
+                                                                                                Ty.path
+                                                                                                  "move_binary_format::file_format::AbilitySet"
+                                                                                              ]
+                                                                                            |),
                                                                                             [
-                                                                                              Ty.apply
-                                                                                                (Ty.path
-                                                                                                  "&")
-                                                                                                []
-                                                                                                [
-                                                                                                  Ty.path
-                                                                                                    "move_binary_format::file_format::SignatureToken"
-                                                                                                ]
+                                                                                              constraint
                                                                                             ]
-                                                                                          |),
-                                                                                          [ ty ]
-                                                                                        |);
-                                                                                        M.call_closure (|
-                                                                                          M.get_associated_function (|
-                                                                                            Ty.path
-                                                                                              "core::fmt::rt::Argument",
-                                                                                            "new_debug",
-                                                                                            [
+                                                                                          |);
+                                                                                          M.call_closure (|
+                                                                                            M.get_associated_function (|
                                                                                               Ty.path
-                                                                                                "move_binary_format::file_format::AbilitySet"
+                                                                                                "core::fmt::rt::Argument",
+                                                                                              "new_debug",
+                                                                                              [
+                                                                                                Ty.apply
+                                                                                                  (Ty.path
+                                                                                                    "&")
+                                                                                                  []
+                                                                                                  [
+                                                                                                    Ty.path
+                                                                                                      "move_binary_format::file_format::SignatureToken"
+                                                                                                  ]
+                                                                                              ]
+                                                                                            |),
+                                                                                            [ ty ]
+                                                                                          |);
+                                                                                          M.call_closure (|
+                                                                                            M.get_associated_function (|
+                                                                                              Ty.path
+                                                                                                "core::fmt::rt::Argument",
+                                                                                              "new_debug",
+                                                                                              [
+                                                                                                Ty.path
+                                                                                                  "move_binary_format::file_format::AbilitySet"
+                                                                                              ]
+                                                                                            |),
+                                                                                            [ given
                                                                                             ]
-                                                                                          |),
-                                                                                          [ given ]
-                                                                                        |)
-                                                                                      ]
-                                                                                  |))
+                                                                                          |)
+                                                                                        ]
+                                                                                    |)
+                                                                                  ]
+                                                                                |)
                                                                               ]
                                                                             |)
-                                                                          ]
-                                                                        |)
-                                                                      |) in
-                                                                    res
+                                                                          |) in
+                                                                        res
+                                                                      |)
+                                                                    ]
                                                                   |)
                                                                 ]
                                                               |)

@@ -3,6 +3,26 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module str.
   Module lossy.
+    Module Impl_slice_u8.
+      Definition Self : Ty.t := Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ].
+      
+      (*
+          pub fn utf8_chunks(&self) -> Utf8Chunks<'_> {
+              Utf8Chunks { source: self }
+          }
+      *)
+      Definition utf8_chunks (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            Value.StructRecord "core::str::lossy::Utf8Chunks" [ ("source", M.read (| self |)) ]))
+        | _, _, _ => M.impossible
+        end.
+      
+      Axiom AssociatedFunction_utf8_chunks : M.IsAssociatedFunction Self "utf8_chunks" utf8_chunks.
+    End Impl_slice_u8.
+    
     (* StructRecord
       {
         name := "Utf8Chunk";
@@ -94,23 +114,19 @@ Module str.
                 M.read (| f |);
                 M.read (| Value.String "Utf8Chunk" |);
                 M.read (| Value.String "valid" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.SubPointer.get_struct_record_field (|
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::str::lossy::Utf8Chunk",
+                  "valid"
+                |);
+                M.read (| Value.String "invalid" |);
+                M.alloc (|
+                  M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
                     "core::str::lossy::Utf8Chunk",
-                    "valid"
-                  |));
-                M.read (| Value.String "invalid" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.alloc (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::str::lossy::Utf8Chunk",
-                      "invalid"
-                    |)
-                  |))
+                    "invalid"
+                  |)
+                |)
               ]
             |)))
         | _, _, _ => M.impossible
@@ -201,17 +217,6 @@ Module str.
           (* Trait polymorphic types *) []
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
     End Impl_core_cmp_PartialEq_for_core_str_lossy_Utf8Chunk.
-    
-    Module Impl_core_marker_StructuralEq_for_core_str_lossy_Utf8Chunk.
-      Definition Self : Ty.t := Ty.path "core::str::lossy::Utf8Chunk".
-      
-      Axiom Implements :
-        M.IsTraitInstance
-          "core::marker::StructuralEq"
-          Self
-          (* Trait polymorphic types *) []
-          (* Instance *) [].
-    End Impl_core_marker_StructuralEq_for_core_str_lossy_Utf8Chunk.
     
     Module Impl_core_cmp_Eq_for_core_str_lossy_Utf8Chunk.
       Definition Self : Ty.t := Ty.path "core::str::lossy::Utf8Chunk".
@@ -314,7 +319,7 @@ Module str.
           fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
               f.write_char('"')?;
       
-              for chunk in Utf8Chunks::new(self.0) {
+              for chunk in self.0.utf8_chunks() {
                   // Valid part.
                   // Here we partially parse UTF-8 again which is suboptimal.
                   {
@@ -446,8 +451,8 @@ Module str.
                             [
                               M.call_closure (|
                                 M.get_associated_function (|
-                                  Ty.path "core::str::lossy::Utf8Chunks",
-                                  "new",
+                                  Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+                                  "utf8_chunks",
                                   []
                                 |),
                                 [
@@ -1258,72 +1263,65 @@ Module str.
                                                                                       []
                                                                                     |),
                                                                                     [
-                                                                                      (* Unsize *)
-                                                                                      M.pointer_coercion
-                                                                                        (M.alloc (|
-                                                                                          Value.Array
-                                                                                            [
-                                                                                              M.read (|
-                                                                                                Value.String
-                                                                                                  "\x"
-                                                                                              |)
-                                                                                            ]
-                                                                                        |));
-                                                                                      (* Unsize *)
-                                                                                      M.pointer_coercion
-                                                                                        (M.alloc (|
-                                                                                          Value.Array
-                                                                                            [
-                                                                                              M.call_closure (|
-                                                                                                M.get_associated_function (|
-                                                                                                  Ty.path
-                                                                                                    "core::fmt::rt::Argument",
-                                                                                                  "new_upper_hex",
-                                                                                                  [
-                                                                                                    Ty.path
-                                                                                                      "u8"
-                                                                                                  ]
-                                                                                                |),
-                                                                                                [ b
-                                                                                                ]
-                                                                                              |)
-                                                                                            ]
-                                                                                        |));
-                                                                                      (* Unsize *)
-                                                                                      M.pointer_coercion
-                                                                                        (M.alloc (|
-                                                                                          Value.Array
-                                                                                            [
-                                                                                              M.call_closure (|
-                                                                                                M.get_associated_function (|
-                                                                                                  Ty.path
-                                                                                                    "core::fmt::rt::Placeholder",
-                                                                                                  "new",
-                                                                                                  []
-                                                                                                |),
+                                                                                      M.alloc (|
+                                                                                        Value.Array
+                                                                                          [
+                                                                                            M.read (|
+                                                                                              Value.String
+                                                                                                "\x"
+                                                                                            |)
+                                                                                          ]
+                                                                                      |);
+                                                                                      M.alloc (|
+                                                                                        Value.Array
+                                                                                          [
+                                                                                            M.call_closure (|
+                                                                                              M.get_associated_function (|
+                                                                                                Ty.path
+                                                                                                  "core::fmt::rt::Argument",
+                                                                                                "new_upper_hex",
                                                                                                 [
-                                                                                                  Value.Integer
-                                                                                                    0;
-                                                                                                  Value.UnicodeChar
-                                                                                                    32;
-                                                                                                  Value.StructTuple
-                                                                                                    "core::fmt::rt::Alignment::Unknown"
-                                                                                                    [];
-                                                                                                  Value.Integer
-                                                                                                    8;
-                                                                                                  Value.StructTuple
-                                                                                                    "core::fmt::rt::Count::Implied"
-                                                                                                    [];
-                                                                                                  Value.StructTuple
-                                                                                                    "core::fmt::rt::Count::Is"
-                                                                                                    [
-                                                                                                      Value.Integer
-                                                                                                        2
-                                                                                                    ]
+                                                                                                  Ty.path
+                                                                                                    "u8"
                                                                                                 ]
-                                                                                              |)
-                                                                                            ]
-                                                                                        |));
+                                                                                              |),
+                                                                                              [ b ]
+                                                                                            |)
+                                                                                          ]
+                                                                                      |);
+                                                                                      M.alloc (|
+                                                                                        Value.Array
+                                                                                          [
+                                                                                            M.call_closure (|
+                                                                                              M.get_associated_function (|
+                                                                                                Ty.path
+                                                                                                  "core::fmt::rt::Placeholder",
+                                                                                                "new",
+                                                                                                []
+                                                                                              |),
+                                                                                              [
+                                                                                                Value.Integer
+                                                                                                  0;
+                                                                                                Value.UnicodeChar
+                                                                                                  32;
+                                                                                                Value.StructTuple
+                                                                                                  "core::fmt::rt::Alignment::Unknown"
+                                                                                                  [];
+                                                                                                Value.Integer
+                                                                                                  8;
+                                                                                                Value.StructTuple
+                                                                                                  "core::fmt::rt::Count::Implied"
+                                                                                                  [];
+                                                                                                Value.StructTuple
+                                                                                                  "core::fmt::rt::Count::Is"
+                                                                                                  [
+                                                                                                    Value.Integer
+                                                                                                      2
+                                                                                                  ]
+                                                                                              ]
+                                                                                            |)
+                                                                                          ]
+                                                                                      |);
                                                                                       M.call_closure (|
                                                                                         M.get_associated_function (|
                                                                                           Ty.path
@@ -1497,22 +1495,6 @@ Module str.
     
     Module Impl_core_str_lossy_Utf8Chunks.
       Definition Self : Ty.t := Ty.path "core::str::lossy::Utf8Chunks".
-      
-      (*
-          pub fn new(bytes: &'a [u8]) -> Self {
-              Self { source: bytes }
-          }
-      *)
-      Definition new (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        match ε, τ, α with
-        | [], [], [ bytes ] =>
-          ltac:(M.monadic
-            (let bytes := M.alloc (| bytes |) in
-            Value.StructRecord "core::str::lossy::Utf8Chunks" [ ("source", M.read (| bytes |)) ]))
-        | _, _, _ => M.impossible
-        end.
-      
-      Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
       
       (*
           pub fn debug(&self) -> Debug<'_> {
@@ -2411,18 +2393,16 @@ Module str.
                       |)
                     |);
                     M.read (| Value.String "source" |);
-                    (* Unsize *)
-                    M.pointer_coercion
-                      (M.alloc (|
-                        M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.path "core::str::lossy::Utf8Chunks",
-                            "debug",
-                            []
-                          |),
-                          [ M.read (| self |) ]
-                        |)
-                      |))
+                    M.alloc (|
+                      M.call_closure (|
+                        M.get_associated_function (|
+                          Ty.path "core::str::lossy::Utf8Chunks",
+                          "debug",
+                          []
+                        |),
+                        [ M.read (| self |) ]
+                      |)
+                    |)
                   ]
                 |)
               ]

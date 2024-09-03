@@ -52,9 +52,7 @@ Module ascii.
   
   (*
   pub fn escape_default(c: u8) -> EscapeDefault {
-      let mut data = [Char::Null; 4];
-      let range = escape::escape_ascii_into(&mut data, c);
-      EscapeDefault(escape::EscapeIterInner::new(data, range))
+      EscapeDefault::new(c)
   }
   *)
   Definition escape_default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -62,40 +60,100 @@ Module ascii.
     | [], [], [ c ] =>
       ltac:(M.monadic
         (let c := M.alloc (| c |) in
-        M.read (|
-          let~ data :=
-            M.alloc (|
-              repeat (|
-                Value.StructTuple "core::ascii::ascii_char::AsciiChar::Null" [],
-                Value.Integer 4
-              |)
-            |) in
-          let~ range :=
-            M.alloc (|
-              M.call_closure (|
-                M.get_function (| "core::escape::escape_ascii_into", [] |),
-                [ data; M.read (| c |) ]
-              |)
-            |) in
-          M.alloc (|
-            Value.StructTuple
-              "core::ascii::EscapeDefault"
-              [
-                M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.apply (Ty.path "core::escape::EscapeIterInner") [ Value.Integer 4 ] [],
-                    "new",
-                    []
-                  |),
-                  [ M.read (| data |); M.read (| range |) ]
-                |)
-              ]
-          |)
+        M.call_closure (|
+          M.get_associated_function (| Ty.path "core::ascii::EscapeDefault", "new", [] |),
+          [ M.read (| c |) ]
         |)))
     | _, _, _ => M.impossible
     end.
   
   Axiom Function_escape_default : M.IsFunction "core::ascii::escape_default" escape_default.
+  
+  Module Impl_core_ascii_EscapeDefault.
+    Definition Self : Ty.t := Ty.path "core::ascii::EscapeDefault".
+    
+    (*
+        pub(crate) const fn new(c: u8) -> Self {
+            Self(escape::EscapeIterInner::ascii(c))
+        }
+    *)
+    Definition new (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ c ] =>
+        ltac:(M.monadic
+          (let c := M.alloc (| c |) in
+          Value.StructTuple
+            "core::ascii::EscapeDefault"
+            [
+              M.call_closure (|
+                M.get_associated_function (|
+                  Ty.apply (Ty.path "core::escape::EscapeIterInner") [ Value.Integer 4 ] [],
+                  "ascii",
+                  []
+                |),
+                [ M.read (| c |) ]
+              |)
+            ]))
+      | _, _, _ => M.impossible
+      end.
+    
+    Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
+    
+    (*
+        pub(crate) fn empty() -> Self {
+            Self(escape::EscapeIterInner::empty())
+        }
+    *)
+    Definition empty (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [] =>
+        ltac:(M.monadic
+          (Value.StructTuple
+            "core::ascii::EscapeDefault"
+            [
+              M.call_closure (|
+                M.get_associated_function (|
+                  Ty.apply (Ty.path "core::escape::EscapeIterInner") [ Value.Integer 4 ] [],
+                  "empty",
+                  []
+                |),
+                []
+              |)
+            ]))
+      | _, _, _ => M.impossible
+      end.
+    
+    Axiom AssociatedFunction_empty : M.IsAssociatedFunction Self "empty" empty.
+    
+    (*
+        pub(crate) fn as_str(&self) -> &str {
+            self.0.as_str()
+        }
+    *)
+    Definition as_str (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
+        ltac:(M.monadic
+          (let self := M.alloc (| self |) in
+          M.call_closure (|
+            M.get_associated_function (|
+              Ty.apply (Ty.path "core::escape::EscapeIterInner") [ Value.Integer 4 ] [],
+              "as_str",
+              []
+            |),
+            [
+              M.SubPointer.get_struct_tuple_field (|
+                M.read (| self |),
+                "core::ascii::EscapeDefault",
+                0
+              |)
+            ]
+          |)))
+      | _, _, _ => M.impossible
+      end.
+    
+    Axiom AssociatedFunction_as_str : M.IsAssociatedFunction Self "as_str" as_str.
+  End Impl_core_ascii_EscapeDefault.
   
   Module Impl_core_iter_traits_iterator_Iterator_for_core_ascii_EscapeDefault.
     Definition Self : Ty.t := Ty.path "core::ascii::EscapeDefault".
@@ -211,7 +269,7 @@ Module ascii.
       end.
     
     (*
-        fn advance_by(&mut self, n: usize) -> Result<(), NonZeroUsize> {
+        fn advance_by(&mut self, n: usize) -> Result<(), NonZero<usize>> {
             self.0.advance_by(n)
         }
     *)
@@ -286,7 +344,7 @@ Module ascii.
       end.
     
     (*
-        fn advance_back_by(&mut self, n: usize) -> Result<(), NonZeroUsize> {
+        fn advance_back_by(&mut self, n: usize) -> Result<(), NonZero<usize>> {
             self.0.advance_back_by(n)
         }
     *)

@@ -44,12 +44,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
                     [
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array [ M.read (| Value.String "Let's count until infinity!
+                      M.alloc (|
+                        Value.Array [ M.read (| Value.String "Let's count until infinity!
 " |) ]
-                        |))
+                      |)
                     ]
                   |)
                 ]
@@ -87,12 +85,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                           []
                                         |),
                                         [
-                                          (* Unsize *)
-                                          M.pointer_coercion
-                                            (M.alloc (|
-                                              Value.Array [ M.read (| Value.String "three
+                                          M.alloc (|
+                                            Value.Array [ M.read (| Value.String "three
 " |) ]
-                                            |))
+                                          |)
                                         ]
                                       |)
                                     ]
@@ -119,28 +115,24 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           []
                         |),
                         [
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.alloc (|
-                              Value.Array
-                                [ M.read (| Value.String "" |); M.read (| Value.String "
+                          M.alloc (|
+                            Value.Array
+                              [ M.read (| Value.String "" |); M.read (| Value.String "
 " |) ]
-                            |));
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.alloc (|
-                              Value.Array
-                                [
-                                  M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.path "core::fmt::rt::Argument",
-                                      "new_display",
-                                      [ Ty.path "u32" ]
-                                    |),
-                                    [ count ]
-                                  |)
-                                ]
-                            |))
+                          |);
+                          M.alloc (|
+                            Value.Array
+                              [
+                                M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.path "core::fmt::rt::Argument",
+                                    "new_display",
+                                    [ Ty.path "u32" ]
+                                  |),
+                                  [ count ]
+                                |)
+                              ]
+                          |)
                         ]
                       |)
                     ]
@@ -171,13 +163,11 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                         []
                                       |),
                                       [
-                                        (* Unsize *)
-                                        M.pointer_coercion
-                                          (M.alloc (|
-                                            Value.Array
-                                              [ M.read (| Value.String "OK, that's enough
+                                        M.alloc (|
+                                          Value.Array
+                                            [ M.read (| Value.String "OK, that's enough
 " |) ]
-                                          |))
+                                        |)
                                       ]
                                     |)
                                   ]

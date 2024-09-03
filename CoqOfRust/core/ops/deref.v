@@ -111,6 +111,33 @@ Module ops.
     End Impl_core_ops_deref_DerefMut_where_core_marker_Sized_T_for_ref_mut_T.
     
     (* Trait *)
+    (* Empty module 'DerefPure' *)
+    
+    Module Impl_core_ops_deref_DerefPure_where_core_marker_Sized_T_for_ref__T.
+      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "&") [] [ T ].
+      
+      Axiom Implements :
+        forall (T : Ty.t),
+        M.IsTraitInstance
+          "core::ops::deref::DerefPure"
+          (Self T)
+          (* Trait polymorphic types *) []
+          (* Instance *) [].
+    End Impl_core_ops_deref_DerefPure_where_core_marker_Sized_T_for_ref__T.
+    
+    Module Impl_core_ops_deref_DerefPure_where_core_marker_Sized_T_for_ref_mut_T.
+      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "&mut") [] [ T ].
+      
+      Axiom Implements :
+        forall (T : Ty.t),
+        M.IsTraitInstance
+          "core::ops::deref::DerefPure"
+          (Self T)
+          (* Trait polymorphic types *) []
+          (* Instance *) [].
+    End Impl_core_ops_deref_DerefPure_where_core_marker_Sized_T_for_ref_mut_T.
+    
+    (* Trait *)
     (* Empty module 'Receiver' *)
     
     Module Impl_core_ops_deref_Receiver_where_core_marker_Sized_T_for_ref__T.

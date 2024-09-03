@@ -30,15 +30,13 @@ Module Impl_core_fmt_Debug_where_core_fmt_Debug_T_for_scoping_rules_lifetimes_bo
           [
             M.read (| f |);
             M.read (| Value.String "Ref" |);
-            (* Unsize *)
-            M.pointer_coercion
-              (M.alloc (|
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "scoping_rules_lifetimes_bounds::Ref",
-                  0
-                |)
-              |))
+            M.alloc (|
+              M.SubPointer.get_struct_tuple_field (|
+                M.read (| self |),
+                "scoping_rules_lifetimes_bounds::Ref",
+                0
+              |)
+            |)
           ]
         |)))
     | _, _, _ => M.impossible
@@ -76,31 +74,27 @@ Definition print (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                     [
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.read (| Value.String "`print`: t is " |);
-                              M.read (| Value.String "
+                      M.alloc (|
+                        Value.Array
+                          [
+                            M.read (| Value.String "`print`: t is " |);
+                            M.read (| Value.String "
 " |)
-                            ]
-                        |));
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::rt::Argument",
-                                  "new_debug",
-                                  [ T ]
-                                |),
-                                [ t ]
-                              |)
-                            ]
-                        |))
+                          ]
+                      |);
+                      M.alloc (|
+                        Value.Array
+                          [
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.path "core::fmt::rt::Argument",
+                                "new_debug",
+                                [ T ]
+                              |),
+                              [ t ]
+                            |)
+                          ]
+                      |)
                     ]
                   |)
                 ]
@@ -137,31 +131,27 @@ Definition print_ref (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : 
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                     [
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.read (| Value.String "`print_ref`: t is " |);
-                              M.read (| Value.String "
+                      M.alloc (|
+                        Value.Array
+                          [
+                            M.read (| Value.String "`print_ref`: t is " |);
+                            M.read (| Value.String "
 " |)
-                            ]
-                        |));
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::rt::Argument",
-                                  "new_debug",
-                                  [ Ty.apply (Ty.path "&") [] [ T ] ]
-                                |),
-                                [ t ]
-                              |)
-                            ]
-                        |))
+                          ]
+                      |);
+                      M.alloc (|
+                        Value.Array
+                          [
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.path "core::fmt::rt::Argument",
+                                "new_debug",
+                                [ Ty.apply (Ty.path "&") [] [ T ] ]
+                              |),
+                              [ t ]
+                            |)
+                          ]
+                      |)
                     ]
                   |)
                 ]

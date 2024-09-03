@@ -80,8 +80,8 @@ pub(crate) fn compile_type<'a>(
             consts: vec![],
             tys: vec![compile_type(env, generics, ty)],
         }),
-        TyKind::RawPtr(rustc_middle::ty::TypeAndMut { ty, mutbl }) => {
-            let ptr_name = match mutbl {
+        TyKind::RawPtr(ty, mutability) => {
+            let ptr_name = match mutability {
                 rustc_hir::Mutability::Mut => "*mut",
                 rustc_hir::Mutability::Not => "*const",
             };
@@ -93,7 +93,9 @@ pub(crate) fn compile_type<'a>(
             })
         }
         TyKind::Ref(_, ty, mutbl) => CoqType::make_ref(mutbl, compile_type(env, generics, ty)),
-        TyKind::FnPtr(fn_sig) => compile_poly_fn_sig(env, generics, fn_sig),
+        TyKind::FnPtr(fn_sig, fn_header) => {
+            compile_poly_fn_sig(env, generics, &fn_sig.with(*fn_header))
+        }
         TyKind::Dynamic(existential_predicates, _, _) => {
             let traits = existential_predicates
                 .iter()
@@ -145,7 +147,7 @@ pub(crate) fn compile_type<'a>(
                 return Rc::new(CoqType::Var("Self".to_string()));
             }
 
-            let type_param = generics.type_param(param, env.tcx);
+            let type_param = generics.type_param(*param, env.tcx);
 
             Rc::new(CoqType::Var(compile_generic_param(env, type_param.def_id)))
         }

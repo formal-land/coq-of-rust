@@ -3185,62 +3185,69 @@ Module limits.
                                                                                                 []
                                                                                             ]
                                                                                           |);
-                                                                                          M.read (|
-                                                                                            let~
-                                                                                                  res :=
-                                                                                              M.alloc (|
-                                                                                                M.call_closure (|
-                                                                                                  M.get_function (|
-                                                                                                    "alloc::fmt::format",
-                                                                                                    []
-                                                                                                  |),
-                                                                                                  [
+                                                                                          M.call_closure (|
+                                                                                            M.get_function (|
+                                                                                              "core::hint::must_use",
+                                                                                              [
+                                                                                                Ty.path
+                                                                                                  "alloc::string::String"
+                                                                                              ]
+                                                                                            |),
+                                                                                            [
+                                                                                              M.read (|
+                                                                                                let~
+                                                                                                      res :=
+                                                                                                  M.alloc (|
                                                                                                     M.call_closure (|
-                                                                                                      M.get_associated_function (|
-                                                                                                        Ty.path
-                                                                                                          "core::fmt::Arguments",
-                                                                                                        "new_v1",
+                                                                                                      M.get_function (|
+                                                                                                        "alloc::fmt::format",
                                                                                                         []
                                                                                                       |),
                                                                                                       [
-                                                                                                        (* Unsize *)
-                                                                                                        M.pointer_coercion
-                                                                                                          (M.alloc (|
-                                                                                                            Value.Array
-                                                                                                              [
-                                                                                                                M.read (|
-                                                                                                                  Value.String
-                                                                                                                    "vector size limit is "
-                                                                                                                |)
-                                                                                                              ]
-                                                                                                          |));
-                                                                                                        (* Unsize *)
-                                                                                                        M.pointer_coercion
-                                                                                                          (M.alloc (|
-                                                                                                            Value.Array
-                                                                                                              [
-                                                                                                                M.call_closure (|
-                                                                                                                  M.get_associated_function (|
-                                                                                                                    Ty.path
-                                                                                                                      "core::fmt::rt::Argument",
-                                                                                                                    "new_display",
-                                                                                                                    [
+                                                                                                        M.call_closure (|
+                                                                                                          M.get_associated_function (|
+                                                                                                            Ty.path
+                                                                                                              "core::fmt::Arguments",
+                                                                                                            "new_v1",
+                                                                                                            []
+                                                                                                          |),
+                                                                                                          [
+                                                                                                            M.alloc (|
+                                                                                                              Value.Array
+                                                                                                                [
+                                                                                                                  M.read (|
+                                                                                                                    Value.String
+                                                                                                                      "vector size limit is "
+                                                                                                                  |)
+                                                                                                                ]
+                                                                                                            |);
+                                                                                                            M.alloc (|
+                                                                                                              Value.Array
+                                                                                                                [
+                                                                                                                  M.call_closure (|
+                                                                                                                    M.get_associated_function (|
                                                                                                                       Ty.path
-                                                                                                                        "u64"
+                                                                                                                        "core::fmt::rt::Argument",
+                                                                                                                      "new_display",
+                                                                                                                      [
+                                                                                                                        Ty.path
+                                                                                                                          "u64"
+                                                                                                                      ]
+                                                                                                                    |),
+                                                                                                                    [
+                                                                                                                      lim
                                                                                                                     ]
-                                                                                                                  |),
-                                                                                                                  [
-                                                                                                                    lim
-                                                                                                                  ]
-                                                                                                                |)
-                                                                                                              ]
-                                                                                                          |))
+                                                                                                                  |)
+                                                                                                                ]
+                                                                                                            |)
+                                                                                                          ]
+                                                                                                        |)
                                                                                                       ]
                                                                                                     |)
-                                                                                                  ]
-                                                                                                |)
-                                                                                              |) in
-                                                                                            res
+                                                                                                  |) in
+                                                                                                res
+                                                                                              |)
+                                                                                            ]
                                                                                           |)
                                                                                         ]
                                                                                       |)

@@ -484,17 +484,6 @@ Module file_format_common.
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Debug_for_move_binary_format_file_format_common_TableType.
   
-  Module Impl_core_marker_StructuralEq_for_move_binary_format_file_format_common_TableType.
-    Definition Self : Ty.t := Ty.path "move_binary_format::file_format_common::TableType".
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::marker::StructuralEq"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [].
-  End Impl_core_marker_StructuralEq_for_move_binary_format_file_format_common_TableType.
-  
   Module Impl_core_cmp_Eq_for_move_binary_format_file_format_common_TableType.
     Definition Self : Ty.t := Ty.path "move_binary_format::file_format_common::TableType".
     
@@ -532,7 +521,7 @@ Module file_format_common.
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
           M.read (|
-            let~ __self_tag :=
+            let~ __self_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -545,7 +534,7 @@ Module file_format_common.
             M.alloc (|
               M.call_closure (|
                 M.get_trait_method (| "core::hash::Hash", Ty.path "u8", [], "hash", [ __H ] |),
-                [ __self_tag; M.read (| state |) ]
+                [ __self_discr; M.read (| state |) ]
               |)
             |)
           |)))
@@ -582,7 +571,7 @@ Module file_format_common.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ __self_tag :=
+            let~ __self_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -592,7 +581,7 @@ Module file_format_common.
                   [ M.read (| self |) ]
                 |)
               |) in
-            let~ __arg1_tag :=
+            let~ __arg1_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -602,7 +591,7 @@ Module file_format_common.
                   [ M.read (| other |) ]
                 |)
               |) in
-            M.alloc (| BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)) |)
+            M.alloc (| BinOp.Pure.eq (M.read (| __self_discr |)) (M.read (| __arg1_discr |)) |)
           |)))
       | _, _, _ => M.impossible
       end.
@@ -2248,15 +2237,13 @@ Module file_format_common.
               M.read (| f |);
               M.read (| Value.String "BinaryData" |);
               M.read (| Value.String "_binary" |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.alloc (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "move_binary_format::file_format_common::BinaryData",
-                    "_binary"
-                  |)
-                |))
+              M.alloc (|
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "move_binary_format::file_format_common::BinaryData",
+                  "_binary"
+                |)
+              |)
             ]
           |)))
       | _, _, _ => M.impossible
@@ -2467,81 +2454,85 @@ Module file_format_common.
                                           [ Ty.path "alloc::string::String" ]
                                         |),
                                         [
-                                          M.read (|
-                                            let~ res :=
-                                              M.alloc (|
-                                                M.call_closure (|
-                                                  M.get_function (| "alloc::fmt::format", [] |),
-                                                  [
+                                          M.call_closure (|
+                                            M.get_function (|
+                                              "core::hint::must_use",
+                                              [ Ty.path "alloc::string::String" ]
+                                            |),
+                                            [
+                                              M.read (|
+                                                let~ res :=
+                                                  M.alloc (|
                                                     M.call_closure (|
-                                                      M.get_associated_function (|
-                                                        Ty.path "core::fmt::Arguments",
-                                                        "new_v1",
-                                                        []
-                                                      |),
+                                                      M.get_function (| "alloc::fmt::format", [] |),
                                                       [
-                                                        (* Unsize *)
-                                                        M.pointer_coercion
-                                                          (M.alloc (|
-                                                            Value.Array
-                                                              [
-                                                                M.read (|
-                                                                  Value.String "binary size ("
-                                                                |);
-                                                                M.read (|
-                                                                  Value.String
-                                                                    ") + 1 is greater than limit ("
-                                                                |);
-                                                                M.read (| Value.String ")" |)
-                                                              ]
-                                                          |));
-                                                        (* Unsize *)
-                                                        M.pointer_coercion
-                                                          (M.alloc (|
-                                                            Value.Array
-                                                              [
-                                                                M.call_closure (|
-                                                                  M.get_associated_function (|
-                                                                    Ty.path
-                                                                      "core::fmt::rt::Argument",
-                                                                    "new_display",
-                                                                    [ Ty.path "usize" ]
-                                                                  |),
-                                                                  [
-                                                                    M.alloc (|
-                                                                      M.call_closure (|
-                                                                        M.get_associated_function (|
-                                                                          Ty.path
-                                                                            "move_binary_format::file_format_common::BinaryData",
-                                                                          "len",
-                                                                          []
-                                                                        |),
-                                                                        [ M.read (| self |) ]
+                                                        M.call_closure (|
+                                                          M.get_associated_function (|
+                                                            Ty.path "core::fmt::Arguments",
+                                                            "new_v1",
+                                                            []
+                                                          |),
+                                                          [
+                                                            M.alloc (|
+                                                              Value.Array
+                                                                [
+                                                                  M.read (|
+                                                                    Value.String "binary size ("
+                                                                  |);
+                                                                  M.read (|
+                                                                    Value.String
+                                                                      ") + 1 is greater than limit ("
+                                                                  |);
+                                                                  M.read (| Value.String ")" |)
+                                                                ]
+                                                            |);
+                                                            M.alloc (|
+                                                              Value.Array
+                                                                [
+                                                                  M.call_closure (|
+                                                                    M.get_associated_function (|
+                                                                      Ty.path
+                                                                        "core::fmt::rt::Argument",
+                                                                      "new_display",
+                                                                      [ Ty.path "usize" ]
+                                                                    |),
+                                                                    [
+                                                                      M.alloc (|
+                                                                        M.call_closure (|
+                                                                          M.get_associated_function (|
+                                                                            Ty.path
+                                                                              "move_binary_format::file_format_common::BinaryData",
+                                                                            "len",
+                                                                            []
+                                                                          |),
+                                                                          [ M.read (| self |) ]
+                                                                        |)
                                                                       |)
-                                                                    |)
-                                                                  ]
-                                                                |);
-                                                                M.call_closure (|
-                                                                  M.get_associated_function (|
-                                                                    Ty.path
-                                                                      "core::fmt::rt::Argument",
-                                                                    "new_display",
-                                                                    [ Ty.path "usize" ]
-                                                                  |),
-                                                                  [
-                                                                    M.get_constant (|
-                                                                      "move_binary_format::file_format_common::BINARY_SIZE_LIMIT"
-                                                                    |)
-                                                                  ]
-                                                                |)
-                                                              ]
-                                                          |))
+                                                                    ]
+                                                                  |);
+                                                                  M.call_closure (|
+                                                                    M.get_associated_function (|
+                                                                      Ty.path
+                                                                        "core::fmt::rt::Argument",
+                                                                      "new_display",
+                                                                      [ Ty.path "usize" ]
+                                                                    |),
+                                                                    [
+                                                                      M.get_constant (|
+                                                                        "move_binary_format::file_format_common::BINARY_SIZE_LIMIT"
+                                                                      |)
+                                                                    ]
+                                                                  |)
+                                                                ]
+                                                            |)
+                                                          ]
+                                                        |)
                                                       ]
                                                     |)
-                                                  ]
-                                                |)
-                                              |) in
-                                            res
+                                                  |) in
+                                                res
+                                              |)
+                                            ]
                                           |)
                                         ]
                                       |)
@@ -2686,105 +2677,109 @@ Module file_format_common.
                                           [ Ty.path "alloc::string::String" ]
                                         |),
                                         [
-                                          M.read (|
-                                            let~ res :=
-                                              M.alloc (|
-                                                M.call_closure (|
-                                                  M.get_function (| "alloc::fmt::format", [] |),
-                                                  [
+                                          M.call_closure (|
+                                            M.get_function (|
+                                              "core::hint::must_use",
+                                              [ Ty.path "alloc::string::String" ]
+                                            |),
+                                            [
+                                              M.read (|
+                                                let~ res :=
+                                                  M.alloc (|
                                                     M.call_closure (|
-                                                      M.get_associated_function (|
-                                                        Ty.path "core::fmt::Arguments",
-                                                        "new_v1",
-                                                        []
-                                                      |),
+                                                      M.get_function (| "alloc::fmt::format", [] |),
                                                       [
-                                                        (* Unsize *)
-                                                        M.pointer_coercion
-                                                          (M.alloc (|
-                                                            Value.Array
-                                                              [
-                                                                M.read (|
-                                                                  Value.String "binary size ("
-                                                                |);
-                                                                M.read (| Value.String ") + " |);
-                                                                M.read (|
-                                                                  Value.String
-                                                                    " is greater than limit ("
-                                                                |);
-                                                                M.read (| Value.String ")" |)
-                                                              ]
-                                                          |));
-                                                        (* Unsize *)
-                                                        M.pointer_coercion
-                                                          (M.alloc (|
-                                                            Value.Array
-                                                              [
-                                                                M.call_closure (|
-                                                                  M.get_associated_function (|
-                                                                    Ty.path
-                                                                      "core::fmt::rt::Argument",
-                                                                    "new_display",
-                                                                    [ Ty.path "usize" ]
-                                                                  |),
-                                                                  [
-                                                                    M.alloc (|
-                                                                      M.call_closure (|
-                                                                        M.get_associated_function (|
-                                                                          Ty.path
-                                                                            "move_binary_format::file_format_common::BinaryData",
-                                                                          "len",
-                                                                          []
-                                                                        |),
-                                                                        [ M.read (| self |) ]
-                                                                      |)
-                                                                    |)
-                                                                  ]
-                                                                |);
-                                                                M.call_closure (|
-                                                                  M.get_associated_function (|
-                                                                    Ty.path
-                                                                      "core::fmt::rt::Argument",
-                                                                    "new_display",
-                                                                    [ Ty.path "usize" ]
-                                                                  |),
-                                                                  [
-                                                                    M.alloc (|
-                                                                      M.call_closure (|
-                                                                        M.get_associated_function (|
-                                                                          Ty.apply
-                                                                            (Ty.path "slice")
+                                                        M.call_closure (|
+                                                          M.get_associated_function (|
+                                                            Ty.path "core::fmt::Arguments",
+                                                            "new_v1",
+                                                            []
+                                                          |),
+                                                          [
+                                                            M.alloc (|
+                                                              Value.Array
+                                                                [
+                                                                  M.read (|
+                                                                    Value.String "binary size ("
+                                                                  |);
+                                                                  M.read (| Value.String ") + " |);
+                                                                  M.read (|
+                                                                    Value.String
+                                                                      " is greater than limit ("
+                                                                  |);
+                                                                  M.read (| Value.String ")" |)
+                                                                ]
+                                                            |);
+                                                            M.alloc (|
+                                                              Value.Array
+                                                                [
+                                                                  M.call_closure (|
+                                                                    M.get_associated_function (|
+                                                                      Ty.path
+                                                                        "core::fmt::rt::Argument",
+                                                                      "new_display",
+                                                                      [ Ty.path "usize" ]
+                                                                    |),
+                                                                    [
+                                                                      M.alloc (|
+                                                                        M.call_closure (|
+                                                                          M.get_associated_function (|
+                                                                            Ty.path
+                                                                              "move_binary_format::file_format_common::BinaryData",
+                                                                            "len",
                                                                             []
-                                                                            [ Ty.path "u8" ],
-                                                                          "len",
-                                                                          []
-                                                                        |),
-                                                                        [ M.read (| vec |) ]
+                                                                          |),
+                                                                          [ M.read (| self |) ]
+                                                                        |)
                                                                       |)
-                                                                    |)
-                                                                  ]
-                                                                |);
-                                                                M.call_closure (|
-                                                                  M.get_associated_function (|
-                                                                    Ty.path
-                                                                      "core::fmt::rt::Argument",
-                                                                    "new_display",
-                                                                    [ Ty.path "usize" ]
-                                                                  |),
-                                                                  [
-                                                                    M.get_constant (|
-                                                                      "move_binary_format::file_format_common::BINARY_SIZE_LIMIT"
-                                                                    |)
-                                                                  ]
-                                                                |)
-                                                              ]
-                                                          |))
+                                                                    ]
+                                                                  |);
+                                                                  M.call_closure (|
+                                                                    M.get_associated_function (|
+                                                                      Ty.path
+                                                                        "core::fmt::rt::Argument",
+                                                                      "new_display",
+                                                                      [ Ty.path "usize" ]
+                                                                    |),
+                                                                    [
+                                                                      M.alloc (|
+                                                                        M.call_closure (|
+                                                                          M.get_associated_function (|
+                                                                            Ty.apply
+                                                                              (Ty.path "slice")
+                                                                              []
+                                                                              [ Ty.path "u8" ],
+                                                                            "len",
+                                                                            []
+                                                                          |),
+                                                                          [ M.read (| vec |) ]
+                                                                        |)
+                                                                      |)
+                                                                    ]
+                                                                  |);
+                                                                  M.call_closure (|
+                                                                    M.get_associated_function (|
+                                                                      Ty.path
+                                                                        "core::fmt::rt::Argument",
+                                                                      "new_display",
+                                                                      [ Ty.path "usize" ]
+                                                                    |),
+                                                                    [
+                                                                      M.get_constant (|
+                                                                        "move_binary_format::file_format_common::BINARY_SIZE_LIMIT"
+                                                                      |)
+                                                                    ]
+                                                                  |)
+                                                                ]
+                                                            |)
+                                                          ]
+                                                        |)
                                                       ]
                                                     |)
-                                                  ]
-                                                |)
-                                              |) in
-                                            res
+                                                  |) in
+                                                res
+                                              |)
+                                            ]
                                           |)
                                         ]
                                       |)
@@ -3187,14 +3182,12 @@ Module file_format_common.
           |),
           [
             M.read (| binary |);
-            (* Unsize *)
-            M.pointer_coercion
-              (M.alloc (|
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "u16", "to_le_bytes", [] |),
-                  [ M.read (| value |) ]
-                |)
-              |))
+            M.alloc (|
+              M.call_closure (|
+                M.get_associated_function (| Ty.path "u16", "to_le_bytes", [] |),
+                [ M.read (| value |) ]
+              |)
+            |)
           ]
         |)))
     | _, _, _ => M.impossible
@@ -3222,14 +3215,12 @@ Module file_format_common.
           |),
           [
             M.read (| binary |);
-            (* Unsize *)
-            M.pointer_coercion
-              (M.alloc (|
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "u32", "to_le_bytes", [] |),
-                  [ M.read (| value |) ]
-                |)
-              |))
+            M.alloc (|
+              M.call_closure (|
+                M.get_associated_function (| Ty.path "u32", "to_le_bytes", [] |),
+                [ M.read (| value |) ]
+              |)
+            |)
           ]
         |)))
     | _, _, _ => M.impossible
@@ -3257,14 +3248,12 @@ Module file_format_common.
           |),
           [
             M.read (| binary |);
-            (* Unsize *)
-            M.pointer_coercion
-              (M.alloc (|
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "u64", "to_le_bytes", [] |),
-                  [ M.read (| value |) ]
-                |)
-              |))
+            M.alloc (|
+              M.call_closure (|
+                M.get_associated_function (| Ty.path "u64", "to_le_bytes", [] |),
+                [ M.read (| value |) ]
+              |)
+            |)
           ]
         |)))
     | _, _, _ => M.impossible
@@ -3292,14 +3281,12 @@ Module file_format_common.
           |),
           [
             M.read (| binary |);
-            (* Unsize *)
-            M.pointer_coercion
-              (M.alloc (|
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "u128", "to_le_bytes", [] |),
-                  [ M.read (| value |) ]
-                |)
-              |))
+            M.alloc (|
+              M.call_closure (|
+                M.get_associated_function (| Ty.path "u128", "to_le_bytes", [] |),
+                [ M.read (| value |) ]
+              |)
+            |)
           ]
         |)))
     | _, _, _ => M.impossible
@@ -3330,18 +3317,16 @@ Module file_format_common.
           |),
           [
             M.read (| binary |);
-            (* Unsize *)
-            M.pointer_coercion
-              (M.alloc (|
-                M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.path "move_core_types::u256::U256",
-                    "to_le_bytes",
-                    []
-                  |),
-                  [ M.read (| value |) ]
-                |)
-              |))
+            M.alloc (|
+              M.call_closure (|
+                M.get_associated_function (|
+                  Ty.path "move_core_types::u256::U256",
+                  "to_le_bytes",
+                  []
+                |),
+                [ M.read (| value |) ]
+              |)
+            |)
           ]
         |)))
     | _, _, _ => M.impossible
@@ -3397,7 +3382,7 @@ Module file_format_common.
                             "read_exact",
                             []
                           |),
-                          [ M.read (| cursor |); (* Unsize *) M.pointer_coercion buf ]
+                          [ M.read (| cursor |); buf ]
                         |)
                       ]
                     |)
@@ -3516,7 +3501,7 @@ Module file_format_common.
                             "read_exact",
                             []
                           |),
-                          [ M.read (| cursor |); (* Unsize *) M.pointer_coercion buf ]
+                          [ M.read (| cursor |); buf ]
                         |)
                       ]
                     |)
@@ -3702,17 +3687,15 @@ Module file_format_common.
                                                                   []
                                                                 |),
                                                                 [
-                                                                  (* Unsize *)
-                                                                  M.pointer_coercion
-                                                                    (M.alloc (|
-                                                                      Value.Array
-                                                                        [
-                                                                          M.read (|
-                                                                            Value.String
-                                                                              "invalid ULEB128 repr for usize"
-                                                                          |)
-                                                                        ]
-                                                                    |))
+                                                                  M.alloc (|
+                                                                    Value.Array
+                                                                      [
+                                                                        M.read (|
+                                                                          Value.String
+                                                                            "invalid ULEB128 repr for usize"
+                                                                        |)
+                                                                      ]
+                                                                  |)
                                                                 ]
                                                               |)
                                                             ]
@@ -3807,17 +3790,15 @@ Module file_format_common.
                                                                                   []
                                                                                 |),
                                                                                 [
-                                                                                  (* Unsize *)
-                                                                                  M.pointer_coercion
-                                                                                    (M.alloc (|
-                                                                                      Value.Array
-                                                                                        [
-                                                                                          M.read (|
-                                                                                            Value.String
-                                                                                              "invalid ULEB128 repr for usize"
-                                                                                          |)
-                                                                                        ]
-                                                                                    |))
+                                                                                  M.alloc (|
+                                                                                    Value.Array
+                                                                                      [
+                                                                                        M.read (|
+                                                                                          Value.String
+                                                                                            "invalid ULEB128 repr for usize"
+                                                                                        |)
+                                                                                      ]
+                                                                                  |)
                                                                                 ]
                                                                               |)
                                                                             ]
@@ -3908,16 +3889,11 @@ Module file_format_common.
                                     []
                                   |),
                                   [
-                                    (* Unsize *)
-                                    M.pointer_coercion
-                                      (M.alloc (|
-                                        Value.Array
-                                          [
-                                            M.read (|
-                                              Value.String "invalid ULEB128 repr for usize"
-                                            |)
-                                          ]
-                                      |))
+                                    M.alloc (|
+                                      Value.Array
+                                        [ M.read (| Value.String "invalid ULEB128 repr for usize" |)
+                                        ]
+                                    |)
                                   ]
                                 |)
                               ]

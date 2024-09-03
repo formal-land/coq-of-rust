@@ -256,17 +256,6 @@ Module sync.
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Debug_for_core_sync_atomic_Ordering.
     
-    Module Impl_core_marker_StructuralEq_for_core_sync_atomic_Ordering.
-      Definition Self : Ty.t := Ty.path "core::sync::atomic::Ordering".
-      
-      Axiom Implements :
-        M.IsTraitInstance
-          "core::marker::StructuralEq"
-          Self
-          (* Trait polymorphic types *) []
-          (* Instance *) [].
-    End Impl_core_marker_StructuralEq_for_core_sync_atomic_Ordering.
-    
     Module Impl_core_cmp_Eq_for_core_sync_atomic_Ordering.
       Definition Self : Ty.t := Ty.path "core::sync::atomic::Ordering".
       
@@ -315,7 +304,7 @@ Module sync.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ __self_tag :=
+              let~ __self_discr :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -325,7 +314,7 @@ Module sync.
                     [ M.read (| self |) ]
                   |)
                 |) in
-              let~ __arg1_tag :=
+              let~ __arg1_discr :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -335,7 +324,7 @@ Module sync.
                     [ M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)) |)
+              M.alloc (| BinOp.Pure.eq (M.read (| __self_discr |)) (M.read (| __arg1_discr |)) |)
             |)))
         | _, _, _ => M.impossible
         end.
@@ -359,7 +348,7 @@ Module sync.
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
             M.read (|
-              let~ __self_tag :=
+              let~ __self_discr :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -372,7 +361,7 @@ Module sync.
               M.alloc (|
                 M.call_closure (|
                   M.get_trait_method (| "core::hash::Hash", Ty.path "isize", [], "hash", [ __H ] |),
-                  [ __self_tag; M.read (| state |) ]
+                  [ __self_discr; M.read (| state |) ]
                 |)
               |)
             |)))
@@ -407,7 +396,7 @@ Module sync.
       *)
       Definition new (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ v ] =>
+        | [], [], [ v ] =>
           ltac:(M.monadic
             (let v := M.alloc (| v |) in
             Value.StructRecord
@@ -436,7 +425,7 @@ Module sync.
       *)
       Definition from_ptr (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ ptr ] =>
+        | [], [], [ ptr ] =>
           ltac:(M.monadic
             (let ptr := M.alloc (| ptr |) in
             M.call_closure (|
@@ -540,19 +529,19 @@ Module sync.
       
       (*
           pub const fn into_inner(self) -> bool {
-              self.v.into_inner() != 0
+              self.v.primitive_into_inner() != 0
           }
       *)
       Definition into_inner (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             BinOp.Pure.ne
               (M.call_closure (|
                 M.get_associated_function (|
                   Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u8" ],
-                  "into_inner",
+                  "primitive_into_inner",
                   []
                 |),
                 [
@@ -953,17 +942,15 @@ Module sync.
                                               []
                                             |),
                                             [
-                                              (* Unsize *)
-                                              M.pointer_coercion
-                                                (M.alloc (|
-                                                  Value.Array
-                                                    [
-                                                      M.read (|
-                                                        Value.String
-                                                          "there is no such thing as an acquire-release failure ordering"
-                                                      |)
-                                                    ]
-                                                |))
+                                              M.alloc (|
+                                                Value.Array
+                                                  [
+                                                    M.read (|
+                                                      Value.String
+                                                        "there is no such thing as an acquire-release failure ordering"
+                                                    |)
+                                                  ]
+                                              |)
                                             ]
                                           |)
                                         ]
@@ -1049,17 +1036,15 @@ Module sync.
                                               []
                                             |),
                                             [
-                                              (* Unsize *)
-                                              M.pointer_coercion
-                                                (M.alloc (|
-                                                  Value.Array
-                                                    [
-                                                      M.read (|
-                                                        Value.String
-                                                          "there is no such thing as a release failure ordering"
-                                                      |)
-                                                    ]
-                                                |))
+                                              M.alloc (|
+                                                Value.Array
+                                                  [
+                                                    M.read (|
+                                                      Value.String
+                                                        "there is no such thing as a release failure ordering"
+                                                    |)
+                                                  ]
+                                              |)
                                             ]
                                           |)
                                         ]
@@ -1577,7 +1562,7 @@ Module sync.
       *)
       Definition as_ptr (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -1760,7 +1745,7 @@ Module sync.
       Definition new (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
         match ε, τ, α with
-        | [ host ], [], [ p ] =>
+        | [], [], [ p ] =>
           ltac:(M.monadic
             (let p := M.alloc (| p |) in
             Value.StructRecord
@@ -1795,7 +1780,7 @@ Module sync.
       Definition from_ptr (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
         match ε, τ, α with
-        | [ host ], [], [ ptr ] =>
+        | [], [], [ ptr ] =>
           ltac:(M.monadic
             (let ptr := M.alloc (| ptr |) in
             M.call_closure (|
@@ -1850,7 +1835,6 @@ Module sync.
       
       (*
           pub fn from_mut(v: &mut *mut T) -> &mut Self {
-              use crate::mem::align_of;
               let [] = [(); align_of::<AtomicPtr<()>>() - align_of::<*mut ()>()];
               // SAFETY:
               //  - the mutable reference guarantees unique ownership.
@@ -1939,13 +1923,13 @@ Module sync.
       
       (*
           pub const fn into_inner(self) -> *mut T {
-              self.p.into_inner()
+              self.p.primitive_into_inner()
           }
       *)
       Definition into_inner (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -1954,7 +1938,7 @@ Module sync.
                   (Ty.path "core::cell::UnsafeCell")
                   []
                   [ Ty.apply (Ty.path "*mut") [] [ T ] ],
-                "into_inner",
+                "primitive_into_inner",
                 []
               |),
               [
@@ -2564,7 +2548,7 @@ Module sync.
       (*
           pub fn fetch_byte_add(&self, val: usize, order: Ordering) -> *mut T {
               // SAFETY: data races are prevented by atomic intrinsics.
-              unsafe { atomic_add(self.p.get(), core::ptr::invalid_mut(val), order).cast() }
+              unsafe { atomic_add(self.p.get(), core::ptr::without_provenance_mut(val), order).cast() }
           }
       *)
       Definition fetch_byte_add
@@ -2607,7 +2591,7 @@ Module sync.
                       ]
                     |);
                     M.call_closure (|
-                      M.get_function (| "core::ptr::invalid_mut", [ T ] |),
+                      M.get_function (| "core::ptr::without_provenance_mut", [ T ] |),
                       [ M.read (| val |) ]
                     |);
                     M.read (| order |)
@@ -2625,7 +2609,7 @@ Module sync.
       (*
           pub fn fetch_byte_sub(&self, val: usize, order: Ordering) -> *mut T {
               // SAFETY: data races are prevented by atomic intrinsics.
-              unsafe { atomic_sub(self.p.get(), core::ptr::invalid_mut(val), order).cast() }
+              unsafe { atomic_sub(self.p.get(), core::ptr::without_provenance_mut(val), order).cast() }
           }
       *)
       Definition fetch_byte_sub
@@ -2668,7 +2652,7 @@ Module sync.
                       ]
                     |);
                     M.call_closure (|
-                      M.get_function (| "core::ptr::invalid_mut", [ T ] |),
+                      M.get_function (| "core::ptr::without_provenance_mut", [ T ] |),
                       [ M.read (| val |) ]
                     |);
                     M.read (| order |)
@@ -2686,7 +2670,7 @@ Module sync.
       (*
           pub fn fetch_or(&self, val: usize, order: Ordering) -> *mut T {
               // SAFETY: data races are prevented by atomic intrinsics.
-              unsafe { atomic_or(self.p.get(), core::ptr::invalid_mut(val), order).cast() }
+              unsafe { atomic_or(self.p.get(), core::ptr::without_provenance_mut(val), order).cast() }
           }
       *)
       Definition fetch_or (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -2724,7 +2708,7 @@ Module sync.
                       ]
                     |);
                     M.call_closure (|
-                      M.get_function (| "core::ptr::invalid_mut", [ T ] |),
+                      M.get_function (| "core::ptr::without_provenance_mut", [ T ] |),
                       [ M.read (| val |) ]
                     |);
                     M.read (| order |)
@@ -2742,7 +2726,7 @@ Module sync.
       (*
           pub fn fetch_and(&self, val: usize, order: Ordering) -> *mut T {
               // SAFETY: data races are prevented by atomic intrinsics.
-              unsafe { atomic_and(self.p.get(), core::ptr::invalid_mut(val), order).cast() }
+              unsafe { atomic_and(self.p.get(), core::ptr::without_provenance_mut(val), order).cast() }
           }
       *)
       Definition fetch_and (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -2780,7 +2764,7 @@ Module sync.
                       ]
                     |);
                     M.call_closure (|
-                      M.get_function (| "core::ptr::invalid_mut", [ T ] |),
+                      M.get_function (| "core::ptr::without_provenance_mut", [ T ] |),
                       [ M.read (| val |) ]
                     |);
                     M.read (| order |)
@@ -2798,7 +2782,7 @@ Module sync.
       (*
           pub fn fetch_xor(&self, val: usize, order: Ordering) -> *mut T {
               // SAFETY: data races are prevented by atomic intrinsics.
-              unsafe { atomic_xor(self.p.get(), core::ptr::invalid_mut(val), order).cast() }
+              unsafe { atomic_xor(self.p.get(), core::ptr::without_provenance_mut(val), order).cast() }
           }
       *)
       Definition fetch_xor (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -2836,7 +2820,7 @@ Module sync.
                       ]
                     |);
                     M.call_closure (|
-                      M.get_function (| "core::ptr::invalid_mut", [ T ] |),
+                      M.get_function (| "core::ptr::without_provenance_mut", [ T ] |),
                       [ M.read (| val |) ]
                     |);
                     M.read (| order |)
@@ -2859,7 +2843,7 @@ Module sync.
       Definition as_ptr (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -3085,7 +3069,7 @@ Module sync.
       *)
       Definition new (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ v ] =>
+        | [], [], [ v ] =>
           ltac:(M.monadic
             (let v := M.alloc (| v |) in
             Value.StructRecord
@@ -3114,7 +3098,7 @@ Module sync.
       *)
       Definition from_ptr (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ ptr ] =>
+        | [], [], [ ptr ] =>
           ltac:(M.monadic
             (let ptr := M.alloc (| ptr |) in
             M.call_closure (|
@@ -3161,7 +3145,6 @@ Module sync.
       
       (*
                   pub fn from_mut(v: &mut $int_type) -> &mut Self {
-                      use crate::mem::align_of;
                       let [] = [(); align_of::<Self>() - align_of::<$int_type>()];
                       // SAFETY:
                       //  - the mutable reference guarantees unique ownership.
@@ -3212,7 +3195,6 @@ Module sync.
       
       (*
                   pub fn from_mut_slice(v: &mut [$int_type]) -> &mut [Self] {
-                      use crate::mem::align_of;
                       let [] = [(); align_of::<Self>() - align_of::<$int_type>()];
                       // SAFETY:
                       //  - the mutable reference guarantees unique ownership.
@@ -3246,18 +3228,18 @@ Module sync.
       
       (*
                   pub const fn into_inner(self) -> $int_type {
-                      self.v.into_inner()
+                      self.v.primitive_into_inner()
                   }
       *)
       Definition into_inner (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i8" ],
-                "into_inner",
+                "primitive_into_inner",
                 []
               |),
               [
@@ -4026,7 +4008,7 @@ Module sync.
       *)
       Definition as_ptr (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -4184,7 +4166,7 @@ Module sync.
       *)
       Definition new (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ v ] =>
+        | [], [], [ v ] =>
           ltac:(M.monadic
             (let v := M.alloc (| v |) in
             Value.StructRecord
@@ -4213,7 +4195,7 @@ Module sync.
       *)
       Definition from_ptr (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ ptr ] =>
+        | [], [], [ ptr ] =>
           ltac:(M.monadic
             (let ptr := M.alloc (| ptr |) in
             M.call_closure (|
@@ -4260,7 +4242,6 @@ Module sync.
       
       (*
                   pub fn from_mut(v: &mut $int_type) -> &mut Self {
-                      use crate::mem::align_of;
                       let [] = [(); align_of::<Self>() - align_of::<$int_type>()];
                       // SAFETY:
                       //  - the mutable reference guarantees unique ownership.
@@ -4311,7 +4292,6 @@ Module sync.
       
       (*
                   pub fn from_mut_slice(v: &mut [$int_type]) -> &mut [Self] {
-                      use crate::mem::align_of;
                       let [] = [(); align_of::<Self>() - align_of::<$int_type>()];
                       // SAFETY:
                       //  - the mutable reference guarantees unique ownership.
@@ -4345,18 +4325,18 @@ Module sync.
       
       (*
                   pub const fn into_inner(self) -> $int_type {
-                      self.v.into_inner()
+                      self.v.primitive_into_inner()
                   }
       *)
       Definition into_inner (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u8" ],
-                "into_inner",
+                "primitive_into_inner",
                 []
               |),
               [
@@ -5125,7 +5105,7 @@ Module sync.
       *)
       Definition as_ptr (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -5283,7 +5263,7 @@ Module sync.
       *)
       Definition new (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ v ] =>
+        | [], [], [ v ] =>
           ltac:(M.monadic
             (let v := M.alloc (| v |) in
             Value.StructRecord
@@ -5312,7 +5292,7 @@ Module sync.
       *)
       Definition from_ptr (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ ptr ] =>
+        | [], [], [ ptr ] =>
           ltac:(M.monadic
             (let ptr := M.alloc (| ptr |) in
             M.call_closure (|
@@ -5359,7 +5339,6 @@ Module sync.
       
       (*
                   pub fn from_mut(v: &mut $int_type) -> &mut Self {
-                      use crate::mem::align_of;
                       let [] = [(); align_of::<Self>() - align_of::<$int_type>()];
                       // SAFETY:
                       //  - the mutable reference guarantees unique ownership.
@@ -5410,7 +5389,6 @@ Module sync.
       
       (*
                   pub fn from_mut_slice(v: &mut [$int_type]) -> &mut [Self] {
-                      use crate::mem::align_of;
                       let [] = [(); align_of::<Self>() - align_of::<$int_type>()];
                       // SAFETY:
                       //  - the mutable reference guarantees unique ownership.
@@ -5444,18 +5422,18 @@ Module sync.
       
       (*
                   pub const fn into_inner(self) -> $int_type {
-                      self.v.into_inner()
+                      self.v.primitive_into_inner()
                   }
       *)
       Definition into_inner (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i16" ],
-                "into_inner",
+                "primitive_into_inner",
                 []
               |),
               [
@@ -6224,7 +6202,7 @@ Module sync.
       *)
       Definition as_ptr (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -6382,7 +6360,7 @@ Module sync.
       *)
       Definition new (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ v ] =>
+        | [], [], [ v ] =>
           ltac:(M.monadic
             (let v := M.alloc (| v |) in
             Value.StructRecord
@@ -6411,7 +6389,7 @@ Module sync.
       *)
       Definition from_ptr (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ ptr ] =>
+        | [], [], [ ptr ] =>
           ltac:(M.monadic
             (let ptr := M.alloc (| ptr |) in
             M.call_closure (|
@@ -6458,7 +6436,6 @@ Module sync.
       
       (*
                   pub fn from_mut(v: &mut $int_type) -> &mut Self {
-                      use crate::mem::align_of;
                       let [] = [(); align_of::<Self>() - align_of::<$int_type>()];
                       // SAFETY:
                       //  - the mutable reference guarantees unique ownership.
@@ -6509,7 +6486,6 @@ Module sync.
       
       (*
                   pub fn from_mut_slice(v: &mut [$int_type]) -> &mut [Self] {
-                      use crate::mem::align_of;
                       let [] = [(); align_of::<Self>() - align_of::<$int_type>()];
                       // SAFETY:
                       //  - the mutable reference guarantees unique ownership.
@@ -6543,18 +6519,18 @@ Module sync.
       
       (*
                   pub const fn into_inner(self) -> $int_type {
-                      self.v.into_inner()
+                      self.v.primitive_into_inner()
                   }
       *)
       Definition into_inner (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u16" ],
-                "into_inner",
+                "primitive_into_inner",
                 []
               |),
               [
@@ -7323,7 +7299,7 @@ Module sync.
       *)
       Definition as_ptr (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -7481,7 +7457,7 @@ Module sync.
       *)
       Definition new (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ v ] =>
+        | [], [], [ v ] =>
           ltac:(M.monadic
             (let v := M.alloc (| v |) in
             Value.StructRecord
@@ -7510,7 +7486,7 @@ Module sync.
       *)
       Definition from_ptr (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ ptr ] =>
+        | [], [], [ ptr ] =>
           ltac:(M.monadic
             (let ptr := M.alloc (| ptr |) in
             M.call_closure (|
@@ -7557,7 +7533,6 @@ Module sync.
       
       (*
                   pub fn from_mut(v: &mut $int_type) -> &mut Self {
-                      use crate::mem::align_of;
                       let [] = [(); align_of::<Self>() - align_of::<$int_type>()];
                       // SAFETY:
                       //  - the mutable reference guarantees unique ownership.
@@ -7608,7 +7583,6 @@ Module sync.
       
       (*
                   pub fn from_mut_slice(v: &mut [$int_type]) -> &mut [Self] {
-                      use crate::mem::align_of;
                       let [] = [(); align_of::<Self>() - align_of::<$int_type>()];
                       // SAFETY:
                       //  - the mutable reference guarantees unique ownership.
@@ -7642,18 +7616,18 @@ Module sync.
       
       (*
                   pub const fn into_inner(self) -> $int_type {
-                      self.v.into_inner()
+                      self.v.primitive_into_inner()
                   }
       *)
       Definition into_inner (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i32" ],
-                "into_inner",
+                "primitive_into_inner",
                 []
               |),
               [
@@ -8422,7 +8396,7 @@ Module sync.
       *)
       Definition as_ptr (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -8580,7 +8554,7 @@ Module sync.
       *)
       Definition new (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ v ] =>
+        | [], [], [ v ] =>
           ltac:(M.monadic
             (let v := M.alloc (| v |) in
             Value.StructRecord
@@ -8609,7 +8583,7 @@ Module sync.
       *)
       Definition from_ptr (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ ptr ] =>
+        | [], [], [ ptr ] =>
           ltac:(M.monadic
             (let ptr := M.alloc (| ptr |) in
             M.call_closure (|
@@ -8656,7 +8630,6 @@ Module sync.
       
       (*
                   pub fn from_mut(v: &mut $int_type) -> &mut Self {
-                      use crate::mem::align_of;
                       let [] = [(); align_of::<Self>() - align_of::<$int_type>()];
                       // SAFETY:
                       //  - the mutable reference guarantees unique ownership.
@@ -8707,7 +8680,6 @@ Module sync.
       
       (*
                   pub fn from_mut_slice(v: &mut [$int_type]) -> &mut [Self] {
-                      use crate::mem::align_of;
                       let [] = [(); align_of::<Self>() - align_of::<$int_type>()];
                       // SAFETY:
                       //  - the mutable reference guarantees unique ownership.
@@ -8741,18 +8713,18 @@ Module sync.
       
       (*
                   pub const fn into_inner(self) -> $int_type {
-                      self.v.into_inner()
+                      self.v.primitive_into_inner()
                   }
       *)
       Definition into_inner (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u32" ],
-                "into_inner",
+                "primitive_into_inner",
                 []
               |),
               [
@@ -9521,7 +9493,7 @@ Module sync.
       *)
       Definition as_ptr (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -9679,7 +9651,7 @@ Module sync.
       *)
       Definition new (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ v ] =>
+        | [], [], [ v ] =>
           ltac:(M.monadic
             (let v := M.alloc (| v |) in
             Value.StructRecord
@@ -9708,7 +9680,7 @@ Module sync.
       *)
       Definition from_ptr (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ ptr ] =>
+        | [], [], [ ptr ] =>
           ltac:(M.monadic
             (let ptr := M.alloc (| ptr |) in
             M.call_closure (|
@@ -9755,7 +9727,6 @@ Module sync.
       
       (*
                   pub fn from_mut(v: &mut $int_type) -> &mut Self {
-                      use crate::mem::align_of;
                       let [] = [(); align_of::<Self>() - align_of::<$int_type>()];
                       // SAFETY:
                       //  - the mutable reference guarantees unique ownership.
@@ -9806,7 +9777,6 @@ Module sync.
       
       (*
                   pub fn from_mut_slice(v: &mut [$int_type]) -> &mut [Self] {
-                      use crate::mem::align_of;
                       let [] = [(); align_of::<Self>() - align_of::<$int_type>()];
                       // SAFETY:
                       //  - the mutable reference guarantees unique ownership.
@@ -9840,18 +9810,18 @@ Module sync.
       
       (*
                   pub const fn into_inner(self) -> $int_type {
-                      self.v.into_inner()
+                      self.v.primitive_into_inner()
                   }
       *)
       Definition into_inner (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i64" ],
-                "into_inner",
+                "primitive_into_inner",
                 []
               |),
               [
@@ -10620,7 +10590,7 @@ Module sync.
       *)
       Definition as_ptr (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -10778,7 +10748,7 @@ Module sync.
       *)
       Definition new (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ v ] =>
+        | [], [], [ v ] =>
           ltac:(M.monadic
             (let v := M.alloc (| v |) in
             Value.StructRecord
@@ -10807,7 +10777,7 @@ Module sync.
       *)
       Definition from_ptr (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ ptr ] =>
+        | [], [], [ ptr ] =>
           ltac:(M.monadic
             (let ptr := M.alloc (| ptr |) in
             M.call_closure (|
@@ -10854,7 +10824,6 @@ Module sync.
       
       (*
                   pub fn from_mut(v: &mut $int_type) -> &mut Self {
-                      use crate::mem::align_of;
                       let [] = [(); align_of::<Self>() - align_of::<$int_type>()];
                       // SAFETY:
                       //  - the mutable reference guarantees unique ownership.
@@ -10905,7 +10874,6 @@ Module sync.
       
       (*
                   pub fn from_mut_slice(v: &mut [$int_type]) -> &mut [Self] {
-                      use crate::mem::align_of;
                       let [] = [(); align_of::<Self>() - align_of::<$int_type>()];
                       // SAFETY:
                       //  - the mutable reference guarantees unique ownership.
@@ -10939,18 +10907,18 @@ Module sync.
       
       (*
                   pub const fn into_inner(self) -> $int_type {
-                      self.v.into_inner()
+                      self.v.primitive_into_inner()
                   }
       *)
       Definition into_inner (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u64" ],
-                "into_inner",
+                "primitive_into_inner",
                 []
               |),
               [
@@ -11719,7 +11687,7 @@ Module sync.
       *)
       Definition as_ptr (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -11877,7 +11845,7 @@ Module sync.
       *)
       Definition new (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ v ] =>
+        | [], [], [ v ] =>
           ltac:(M.monadic
             (let v := M.alloc (| v |) in
             Value.StructRecord
@@ -11906,7 +11874,7 @@ Module sync.
       *)
       Definition from_ptr (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ ptr ] =>
+        | [], [], [ ptr ] =>
           ltac:(M.monadic
             (let ptr := M.alloc (| ptr |) in
             M.call_closure (|
@@ -11953,7 +11921,6 @@ Module sync.
       
       (*
                   pub fn from_mut(v: &mut $int_type) -> &mut Self {
-                      use crate::mem::align_of;
                       let [] = [(); align_of::<Self>() - align_of::<$int_type>()];
                       // SAFETY:
                       //  - the mutable reference guarantees unique ownership.
@@ -12004,7 +11971,6 @@ Module sync.
       
       (*
                   pub fn from_mut_slice(v: &mut [$int_type]) -> &mut [Self] {
-                      use crate::mem::align_of;
                       let [] = [(); align_of::<Self>() - align_of::<$int_type>()];
                       // SAFETY:
                       //  - the mutable reference guarantees unique ownership.
@@ -12038,18 +12004,18 @@ Module sync.
       
       (*
                   pub const fn into_inner(self) -> $int_type {
-                      self.v.into_inner()
+                      self.v.primitive_into_inner()
                   }
       *)
       Definition into_inner (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "isize" ],
-                "into_inner",
+                "primitive_into_inner",
                 []
               |),
               [
@@ -12821,7 +12787,7 @@ Module sync.
       *)
       Definition as_ptr (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -12979,7 +12945,7 @@ Module sync.
       *)
       Definition new (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ v ] =>
+        | [], [], [ v ] =>
           ltac:(M.monadic
             (let v := M.alloc (| v |) in
             Value.StructRecord
@@ -13008,7 +12974,7 @@ Module sync.
       *)
       Definition from_ptr (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ ptr ] =>
+        | [], [], [ ptr ] =>
           ltac:(M.monadic
             (let ptr := M.alloc (| ptr |) in
             M.call_closure (|
@@ -13055,7 +13021,6 @@ Module sync.
       
       (*
                   pub fn from_mut(v: &mut $int_type) -> &mut Self {
-                      use crate::mem::align_of;
                       let [] = [(); align_of::<Self>() - align_of::<$int_type>()];
                       // SAFETY:
                       //  - the mutable reference guarantees unique ownership.
@@ -13106,7 +13071,6 @@ Module sync.
       
       (*
                   pub fn from_mut_slice(v: &mut [$int_type]) -> &mut [Self] {
-                      use crate::mem::align_of;
                       let [] = [(); align_of::<Self>() - align_of::<$int_type>()];
                       // SAFETY:
                       //  - the mutable reference guarantees unique ownership.
@@ -13140,18 +13104,18 @@ Module sync.
       
       (*
                   pub const fn into_inner(self) -> $int_type {
-                      self.v.into_inner()
+                      self.v.primitive_into_inner()
                   }
       *)
       Definition into_inner (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "usize" ],
-                "into_inner",
+                "primitive_into_inner",
                 []
               |),
               [
@@ -13923,7 +13887,7 @@ Module sync.
       *)
       Definition as_ptr (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -14086,16 +14050,14 @@ Module sync.
                                 []
                               |),
                               [
-                                (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                    Value.Array
-                                      [
-                                        M.read (|
-                                          Value.String "there is no such thing as an acquire store"
-                                        |)
-                                      ]
-                                  |))
+                                M.alloc (|
+                                  Value.Array
+                                    [
+                                      M.read (|
+                                        Value.String "there is no such thing as an acquire store"
+                                      |)
+                                    ]
+                                |)
                               ]
                             |)
                           ]
@@ -14117,17 +14079,15 @@ Module sync.
                                 []
                               |),
                               [
-                                (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                    Value.Array
-                                      [
-                                        M.read (|
-                                          Value.String
-                                            "there is no such thing as an acquire-release store"
-                                        |)
-                                      ]
-                                  |))
+                                M.alloc (|
+                                  Value.Array
+                                    [
+                                      M.read (|
+                                        Value.String
+                                          "there is no such thing as an acquire-release store"
+                                      |)
+                                    ]
+                                |)
                               ]
                             |)
                           ]
@@ -14208,16 +14168,14 @@ Module sync.
                                 []
                               |),
                               [
-                                (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                    Value.Array
-                                      [
-                                        M.read (|
-                                          Value.String "there is no such thing as a release load"
-                                        |)
-                                      ]
-                                  |))
+                                M.alloc (|
+                                  Value.Array
+                                    [
+                                      M.read (|
+                                        Value.String "there is no such thing as a release load"
+                                      |)
+                                    ]
+                                |)
                               ]
                             |)
                           ]
@@ -14239,17 +14197,15 @@ Module sync.
                                 []
                               |),
                               [
-                                (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                    Value.Array
-                                      [
-                                        M.read (|
-                                          Value.String
-                                            "there is no such thing as an acquire-release load"
-                                        |)
-                                      ]
-                                  |))
+                                M.alloc (|
+                                  Value.Array
+                                    [
+                                      M.read (|
+                                        Value.String
+                                          "there is no such thing as an acquire-release load"
+                                      |)
+                                    ]
+                                |)
                               ]
                             |)
                           ]
@@ -14818,17 +14774,15 @@ Module sync.
                                   []
                                 |),
                                 [
-                                  (* Unsize *)
-                                  M.pointer_coercion
-                                    (M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.read (|
-                                            Value.String
-                                              "there is no such thing as an acquire-release failure ordering"
-                                          |)
-                                        ]
-                                    |))
+                                  M.alloc (|
+                                    Value.Array
+                                      [
+                                        M.read (|
+                                          Value.String
+                                            "there is no such thing as an acquire-release failure ordering"
+                                        |)
+                                      ]
+                                  |)
                                 ]
                               |)
                             ]
@@ -14853,17 +14807,15 @@ Module sync.
                                   []
                                 |),
                                 [
-                                  (* Unsize *)
-                                  M.pointer_coercion
-                                    (M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.read (|
-                                            Value.String
-                                              "there is no such thing as a release failure ordering"
-                                          |)
-                                        ]
-                                    |))
+                                  M.alloc (|
+                                    Value.Array
+                                      [
+                                        M.read (|
+                                          Value.String
+                                            "there is no such thing as a release failure ordering"
+                                        |)
+                                      ]
+                                  |)
                                 ]
                               |)
                             ]
@@ -15230,17 +15182,15 @@ Module sync.
                                   []
                                 |),
                                 [
-                                  (* Unsize *)
-                                  M.pointer_coercion
-                                    (M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.read (|
-                                            Value.String
-                                              "there is no such thing as an acquire-release failure ordering"
-                                          |)
-                                        ]
-                                    |))
+                                  M.alloc (|
+                                    Value.Array
+                                      [
+                                        M.read (|
+                                          Value.String
+                                            "there is no such thing as an acquire-release failure ordering"
+                                        |)
+                                      ]
+                                  |)
                                 ]
                               |)
                             ]
@@ -15265,17 +15215,15 @@ Module sync.
                                   []
                                 |),
                                 [
-                                  (* Unsize *)
-                                  M.pointer_coercion
-                                    (M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.read (|
-                                            Value.String
-                                              "there is no such thing as a release failure ordering"
-                                          |)
-                                        ]
-                                    |))
+                                  M.alloc (|
+                                    Value.Array
+                                      [
+                                        M.read (|
+                                          Value.String
+                                            "there is no such thing as a release failure ordering"
+                                        |)
+                                      ]
+                                  |)
                                 ]
                               |)
                             ]
@@ -16016,16 +15964,14 @@ Module sync.
                                 []
                               |),
                               [
-                                (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                    Value.Array
-                                      [
-                                        M.read (|
-                                          Value.String "there is no such thing as a relaxed fence"
-                                        |)
-                                      ]
-                                  |))
+                                M.alloc (|
+                                  Value.Array
+                                    [
+                                      M.read (|
+                                        Value.String "there is no such thing as a relaxed fence"
+                                      |)
+                                    ]
+                                |)
                               ]
                             |)
                           ]
@@ -16126,17 +16072,15 @@ Module sync.
                                 []
                               |),
                               [
-                                (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                    Value.Array
-                                      [
-                                        M.read (|
-                                          Value.String
-                                            "there is no such thing as a relaxed compiler fence"
-                                        |)
-                                      ]
-                                  |))
+                                M.alloc (|
+                                  Value.Array
+                                    [
+                                      M.read (|
+                                        Value.String
+                                          "there is no such thing as a relaxed compiler fence"
+                                      |)
+                                    ]
+                                |)
                               ]
                             |)
                           ]
@@ -16255,7 +16199,7 @@ Module sync.
       
       (*
           fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-              fmt::Pointer::fmt(&self.load(Ordering::SeqCst), f)
+              fmt::Pointer::fmt(&self.load(Ordering::Relaxed), f)
           }
       *)
       Definition fmt (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -16281,7 +16225,9 @@ Module sync.
                       "load",
                       []
                     |),
-                    [ M.read (| self |); Value.StructTuple "core::sync::atomic::Ordering::SeqCst" []
+                    [
+                      M.read (| self |);
+                      Value.StructTuple "core::sync::atomic::Ordering::Relaxed" []
                     ]
                   |)
                 |);

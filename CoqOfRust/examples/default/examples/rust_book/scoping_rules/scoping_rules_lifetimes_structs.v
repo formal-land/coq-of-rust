@@ -28,15 +28,13 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Borrowed.
           [
             M.read (| f |);
             M.read (| Value.String "Borrowed" |);
-            (* Unsize *)
-            M.pointer_coercion
-              (M.alloc (|
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "scoping_rules_lifetimes_structs::Borrowed",
-                  0
-                |)
-              |))
+            M.alloc (|
+              M.SubPointer.get_struct_tuple_field (|
+                M.read (| self |),
+                "scoping_rules_lifetimes_structs::Borrowed",
+                0
+              |)
+            |)
           ]
         |)))
     | _, _, _ => M.impossible
@@ -82,23 +80,19 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_NamedBorrowed.
             M.read (| f |);
             M.read (| Value.String "NamedBorrowed" |);
             M.read (| Value.String "x" |);
-            (* Unsize *)
-            M.pointer_coercion
-              (M.SubPointer.get_struct_record_field (|
+            M.SubPointer.get_struct_record_field (|
+              M.read (| self |),
+              "scoping_rules_lifetimes_structs::NamedBorrowed",
+              "x"
+            |);
+            M.read (| Value.String "y" |);
+            M.alloc (|
+              M.SubPointer.get_struct_record_field (|
                 M.read (| self |),
                 "scoping_rules_lifetimes_structs::NamedBorrowed",
-                "x"
-              |));
-            M.read (| Value.String "y" |);
-            (* Unsize *)
-            M.pointer_coercion
-              (M.alloc (|
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "scoping_rules_lifetimes_structs::NamedBorrowed",
-                  "y"
-                |)
-              |))
+                "y"
+              |)
+            |)
           ]
         |)))
     | _, _, _ => M.impossible
@@ -164,11 +158,7 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Either.
                         "debug_tuple_field1_finish",
                         []
                       |),
-                      [
-                        M.read (| f |);
-                        M.read (| Value.String "Num" |);
-                        (* Unsize *) M.pointer_coercion __self_0
-                      ]
+                      [ M.read (| f |); M.read (| Value.String "Num" |); __self_0 ]
                     |)
                   |)));
               fun γ =>
@@ -188,11 +178,7 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Either.
                         "debug_tuple_field1_finish",
                         []
                       |),
-                      [
-                        M.read (| f |);
-                        M.read (| Value.String "Ref" |);
-                        (* Unsize *) M.pointer_coercion __self_0
-                      ]
+                      [ M.read (| f |); M.read (| Value.String "Ref" |); __self_0 ]
                     |)
                   |)))
             ]
@@ -255,31 +241,27 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                     [
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.read (| Value.String "x is borrowed in " |);
-                              M.read (| Value.String "
+                      M.alloc (|
+                        Value.Array
+                          [
+                            M.read (| Value.String "x is borrowed in " |);
+                            M.read (| Value.String "
 " |)
-                            ]
-                        |));
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::rt::Argument",
-                                  "new_debug",
-                                  [ Ty.path "scoping_rules_lifetimes_structs::Borrowed" ]
-                                |),
-                                [ single ]
-                              |)
-                            ]
-                        |))
+                          ]
+                      |);
+                      M.alloc (|
+                        Value.Array
+                          [
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.path "core::fmt::rt::Argument",
+                                "new_debug",
+                                [ Ty.path "scoping_rules_lifetimes_structs::Borrowed" ]
+                              |),
+                              [ single ]
+                            |)
+                          ]
+                      |)
                     ]
                   |)
                 ]
@@ -295,31 +277,27 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                     [
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.read (| Value.String "x and y are borrowed in " |);
-                              M.read (| Value.String "
+                      M.alloc (|
+                        Value.Array
+                          [
+                            M.read (| Value.String "x and y are borrowed in " |);
+                            M.read (| Value.String "
 " |)
-                            ]
-                        |));
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::rt::Argument",
-                                  "new_debug",
-                                  [ Ty.path "scoping_rules_lifetimes_structs::NamedBorrowed" ]
-                                |),
-                                [ double ]
-                              |)
-                            ]
-                        |))
+                          ]
+                      |);
+                      M.alloc (|
+                        Value.Array
+                          [
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.path "core::fmt::rt::Argument",
+                                "new_debug",
+                                [ Ty.path "scoping_rules_lifetimes_structs::NamedBorrowed" ]
+                              |),
+                              [ double ]
+                            |)
+                          ]
+                      |)
                     ]
                   |)
                 ]
@@ -335,31 +313,27 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                     [
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.read (| Value.String "x is borrowed in " |);
-                              M.read (| Value.String "
+                      M.alloc (|
+                        Value.Array
+                          [
+                            M.read (| Value.String "x is borrowed in " |);
+                            M.read (| Value.String "
 " |)
-                            ]
-                        |));
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::rt::Argument",
-                                  "new_debug",
-                                  [ Ty.path "scoping_rules_lifetimes_structs::Either" ]
-                                |),
-                                [ reference ]
-                              |)
-                            ]
-                        |))
+                          ]
+                      |);
+                      M.alloc (|
+                        Value.Array
+                          [
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.path "core::fmt::rt::Argument",
+                                "new_debug",
+                                [ Ty.path "scoping_rules_lifetimes_structs::Either" ]
+                              |),
+                              [ reference ]
+                            |)
+                          ]
+                      |)
                     ]
                   |)
                 ]
@@ -375,31 +349,27 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                     [
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.read (| Value.String "y is *not* borrowed in " |);
-                              M.read (| Value.String "
+                      M.alloc (|
+                        Value.Array
+                          [
+                            M.read (| Value.String "y is *not* borrowed in " |);
+                            M.read (| Value.String "
 " |)
-                            ]
-                        |));
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::rt::Argument",
-                                  "new_debug",
-                                  [ Ty.path "scoping_rules_lifetimes_structs::Either" ]
-                                |),
-                                [ number ]
-                              |)
-                            ]
-                        |))
+                          ]
+                      |);
+                      M.alloc (|
+                        Value.Array
+                          [
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.path "core::fmt::rt::Argument",
+                                "new_debug",
+                                [ Ty.path "scoping_rules_lifetimes_structs::Either" ]
+                              |),
+                              [ number ]
+                            |)
+                          ]
+                      |)
                     ]
                   |)
                 ]

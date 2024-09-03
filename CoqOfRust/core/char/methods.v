@@ -62,7 +62,7 @@ Module char.
       *)
       Definition from_u32 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ i ] =>
+        | [], [], [ i ] =>
           ltac:(M.monadic
             (let i := M.alloc (| i |) in
             M.call_closure (|
@@ -82,7 +82,7 @@ Module char.
       *)
       Definition from_u32_unchecked (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ i ] =>
+        | [], [], [ i ] =>
           ltac:(M.monadic
             (let i := M.alloc (| i |) in
             M.call_closure (|
@@ -102,7 +102,7 @@ Module char.
       *)
       Definition from_digit (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ num; radix ] =>
+        | [], [], [ num; radix ] =>
           ltac:(M.monadic
             (let num := M.alloc (| num |) in
             let radix := M.alloc (| radix |) in
@@ -164,7 +164,7 @@ Module char.
       *)
       Definition to_digit (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self; radix ] =>
+        | [], [], [ self; radix ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let radix := M.alloc (| radix |) in
@@ -222,17 +222,15 @@ Module char.
                                                   []
                                                 |),
                                                 [
-                                                  (* Unsize *)
-                                                  M.pointer_coercion
-                                                    (M.alloc (|
-                                                      Value.Array
-                                                        [
-                                                          M.read (|
-                                                            Value.String
-                                                              "to_digit: radix is too high (maximum 36)"
-                                                          |)
-                                                        ]
-                                                    |))
+                                                  M.alloc (|
+                                                    Value.Array
+                                                      [
+                                                        M.read (|
+                                                          Value.String
+                                                            "to_digit: radix is too high (maximum 36)"
+                                                        |)
+                                                      ]
+                                                  |)
                                                 ]
                                               |)
                                             ]
@@ -361,10 +359,10 @@ Module char.
                   '\"' if args.escape_double_quote => EscapeDebug::backslash(ascii::Char::QuotationMark),
                   '\'' if args.escape_single_quote => EscapeDebug::backslash(ascii::Char::Apostrophe),
                   _ if args.escape_grapheme_extended && self.is_grapheme_extended() => {
-                      EscapeDebug::from_unicode(self.escape_unicode())
+                      EscapeDebug::unicode(self)
                   }
                   _ if is_printable(self) => EscapeDebug::printable(self),
-                  _ => EscapeDebug::from_unicode(self.escape_unicode()),
+                  _ => EscapeDebug::unicode(self),
               }
           }
       "
@@ -521,15 +519,10 @@ Module char.
                         M.call_closure (|
                           M.get_associated_function (|
                             Ty.path "core::char::EscapeDebug",
-                            "from_unicode",
+                            "unicode",
                             []
                           |),
-                          [
-                            M.call_closure (|
-                              M.get_associated_function (| Ty.path "char", "escape_unicode", [] |),
-                              [ M.read (| self |) ]
-                            |)
-                          ]
+                          [ M.read (| self |) ]
                         |)
                       |)));
                   fun γ =>
@@ -558,15 +551,10 @@ Module char.
                         M.call_closure (|
                           M.get_associated_function (|
                             Ty.path "core::char::EscapeDebug",
-                            "from_unicode",
+                            "unicode",
                             []
                           |),
-                          [
-                            M.call_closure (|
-                              M.get_associated_function (| Ty.path "char", "escape_unicode", [] |),
-                              [ M.read (| self |) ]
-                            |)
-                          ]
+                          [ M.read (| self |) ]
                         |)
                       |)))
                 ]
@@ -607,9 +595,9 @@ Module char.
                   '\t' => EscapeDefault::backslash(ascii::Char::SmallT),
                   '\r' => EscapeDefault::backslash(ascii::Char::SmallR),
                   '\n' => EscapeDefault::backslash(ascii::Char::SmallN),
-                  '\\' | '\'' | '"' => EscapeDefault::backslash(self.as_ascii().unwrap()),
+                  '\\' | '\'' | '\"' => EscapeDefault::backslash(self.as_ascii().unwrap()),
                   '\x20'..='\x7e' => EscapeDefault::printable(self.as_ascii().unwrap()),
-                  _ => EscapeDefault::from_unicode(self.escape_unicode()),
+                  _ => EscapeDefault::unicode(self),
               }
           }
       "
@@ -769,15 +757,10 @@ Module char.
                         M.call_closure (|
                           M.get_associated_function (|
                             Ty.path "core::char::EscapeDefault",
-                            "from_unicode",
+                            "unicode",
                             []
                           |),
-                          [
-                            M.call_closure (|
-                              M.get_associated_function (| Ty.path "char", "escape_unicode", [] |),
-                              [ M.read (| self |) ]
-                            |)
-                          ]
+                          [ M.read (| self |) ]
                         |)
                       |)))
                 ]
@@ -796,7 +779,7 @@ Module char.
       *)
       Definition len_utf8 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -816,7 +799,7 @@ Module char.
       *)
       Definition len_utf16 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -959,7 +942,7 @@ Module char.
       *)
       Definition is_lowercase (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -1002,7 +985,7 @@ Module char.
       *)
       Definition is_uppercase (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -1270,7 +1253,7 @@ Module char.
       *)
       Definition is_ascii (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             BinOp.Pure.le (M.rust_cast (M.read (| M.read (| self |) |))) (Value.Integer 127)))
@@ -1291,7 +1274,7 @@ Module char.
       *)
       Definition as_ascii (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -1345,7 +1328,7 @@ Module char.
       *)
       Definition to_ascii_uppercase (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -1399,7 +1382,7 @@ Module char.
       *)
       Definition to_ascii_lowercase (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -1449,7 +1432,7 @@ Module char.
       *)
       Definition eq_ignore_ascii_case (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self; other ] =>
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -1529,7 +1512,7 @@ Module char.
       *)
       Definition is_ascii_alphabetic (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -1569,7 +1552,7 @@ Module char.
       *)
       Definition is_ascii_uppercase (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -1594,7 +1577,7 @@ Module char.
       *)
       Definition is_ascii_lowercase (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -1619,7 +1602,7 @@ Module char.
       *)
       Definition is_ascii_alphanumeric (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             BinOp.Pure.bit_or
@@ -1664,7 +1647,7 @@ Module char.
       *)
       Definition is_ascii_digit (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -1689,7 +1672,7 @@ Module char.
       *)
       Definition is_ascii_octdigit (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -1714,7 +1697,7 @@ Module char.
       *)
       Definition is_ascii_hexdigit (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             BinOp.Pure.bit_or
@@ -1762,7 +1745,7 @@ Module char.
       *)
       Definition is_ascii_punctuation (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             BinOp.Pure.bit_or
@@ -1817,7 +1800,7 @@ Module char.
       *)
       Definition is_ascii_graphic (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -1842,7 +1825,7 @@ Module char.
       *)
       Definition is_ascii_whitespace (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -1920,7 +1903,7 @@ Module char.
       *)
       Definition is_ascii_control (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -2017,7 +2000,7 @@ Module char.
     *)
     Definition len_utf8 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [ host ], [], [ code ] =>
+      | [], [], [ code ] =>
         ltac:(M.monadic
           (let code := M.alloc (| code |) in
           M.read (|
@@ -2307,58 +2290,54 @@ Module char.
                                   []
                                 |),
                                 [
-                                  (* Unsize *)
-                                  M.pointer_coercion
-                                    (M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.read (| Value.String "encode_utf8: need " |);
-                                          M.read (| Value.String " bytes to encode U+" |);
-                                          M.read (| Value.String ", but the buffer has " |)
-                                        ]
-                                    |));
-                                  (* Unsize *)
-                                  M.pointer_coercion
-                                    (M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.call_closure (|
-                                            M.get_associated_function (|
-                                              Ty.path "core::fmt::rt::Argument",
-                                              "new_display",
-                                              [ Ty.path "usize" ]
-                                            |),
-                                            [ len ]
-                                          |);
-                                          M.call_closure (|
-                                            M.get_associated_function (|
-                                              Ty.path "core::fmt::rt::Argument",
-                                              "new_upper_hex",
-                                              [ Ty.path "u32" ]
-                                            |),
-                                            [ code ]
-                                          |);
-                                          M.call_closure (|
-                                            M.get_associated_function (|
-                                              Ty.path "core::fmt::rt::Argument",
-                                              "new_display",
-                                              [ Ty.path "usize" ]
-                                            |),
-                                            [
-                                              M.alloc (|
-                                                M.call_closure (|
-                                                  M.get_associated_function (|
-                                                    Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
-                                                    "len",
-                                                    []
-                                                  |),
-                                                  [ M.read (| dst |) ]
-                                                |)
+                                  M.alloc (|
+                                    Value.Array
+                                      [
+                                        M.read (| Value.String "encode_utf8: need " |);
+                                        M.read (| Value.String " bytes to encode U+" |);
+                                        M.read (| Value.String ", but the buffer has " |)
+                                      ]
+                                  |);
+                                  M.alloc (|
+                                    Value.Array
+                                      [
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path "core::fmt::rt::Argument",
+                                            "new_display",
+                                            [ Ty.path "usize" ]
+                                          |),
+                                          [ len ]
+                                        |);
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path "core::fmt::rt::Argument",
+                                            "new_upper_hex",
+                                            [ Ty.path "u32" ]
+                                          |),
+                                          [ code ]
+                                        |);
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path "core::fmt::rt::Argument",
+                                            "new_display",
+                                            [ Ty.path "usize" ]
+                                          |),
+                                          [
+                                            M.alloc (|
+                                              M.call_closure (|
+                                                M.get_associated_function (|
+                                                  Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+                                                  "len",
+                                                  []
+                                                |),
+                                                [ M.read (| dst |) ]
                                               |)
-                                            ]
-                                          |)
-                                        ]
-                                    |))
+                                            |)
+                                          ]
+                                        |)
+                                      ]
+                                  |)
                                 ]
                               |)
                             ]
@@ -2581,81 +2560,77 @@ Module char.
                                         []
                                       |),
                                       [
-                                        (* Unsize *)
-                                        M.pointer_coercion
-                                          (M.alloc (|
-                                            Value.Array
-                                              [
-                                                M.read (| Value.String "encode_utf16: need " |);
-                                                M.read (| Value.String " units to encode U+" |);
-                                                M.read (| Value.String ", but the buffer has " |)
-                                              ]
-                                          |));
-                                        (* Unsize *)
-                                        M.pointer_coercion
-                                          (M.alloc (|
-                                            Value.Array
-                                              [
-                                                M.call_closure (|
-                                                  M.get_associated_function (|
-                                                    Ty.path "core::fmt::rt::Argument",
-                                                    "new_display",
-                                                    [ Ty.path "usize" ]
-                                                  |),
-                                                  [
-                                                    M.alloc (|
-                                                      M.call_closure (|
-                                                        M.get_associated_function (|
-                                                          Ty.path "char",
-                                                          "len_utf16",
-                                                          []
-                                                        |),
-                                                        [
-                                                          M.call_closure (|
-                                                            M.get_associated_function (|
-                                                              Ty.path "char",
-                                                              "from_u32_unchecked",
-                                                              []
-                                                            |),
-                                                            [ M.read (| code |) ]
-                                                          |)
-                                                        ]
-                                                      |)
-                                                    |)
-                                                  ]
-                                                |);
-                                                M.call_closure (|
-                                                  M.get_associated_function (|
-                                                    Ty.path "core::fmt::rt::Argument",
-                                                    "new_upper_hex",
-                                                    [ Ty.path "u32" ]
-                                                  |),
-                                                  [ code ]
-                                                |);
-                                                M.call_closure (|
-                                                  M.get_associated_function (|
-                                                    Ty.path "core::fmt::rt::Argument",
-                                                    "new_display",
-                                                    [ Ty.path "usize" ]
-                                                  |),
-                                                  [
-                                                    M.alloc (|
-                                                      M.call_closure (|
-                                                        M.get_associated_function (|
-                                                          Ty.apply
-                                                            (Ty.path "slice")
+                                        M.alloc (|
+                                          Value.Array
+                                            [
+                                              M.read (| Value.String "encode_utf16: need " |);
+                                              M.read (| Value.String " units to encode U+" |);
+                                              M.read (| Value.String ", but the buffer has " |)
+                                            ]
+                                        |);
+                                        M.alloc (|
+                                          Value.Array
+                                            [
+                                              M.call_closure (|
+                                                M.get_associated_function (|
+                                                  Ty.path "core::fmt::rt::Argument",
+                                                  "new_display",
+                                                  [ Ty.path "usize" ]
+                                                |),
+                                                [
+                                                  M.alloc (|
+                                                    M.call_closure (|
+                                                      M.get_associated_function (|
+                                                        Ty.path "char",
+                                                        "len_utf16",
+                                                        []
+                                                      |),
+                                                      [
+                                                        M.call_closure (|
+                                                          M.get_associated_function (|
+                                                            Ty.path "char",
+                                                            "from_u32_unchecked",
                                                             []
-                                                            [ Ty.path "u16" ],
-                                                          "len",
-                                                          []
-                                                        |),
-                                                        [ M.read (| dst |) ]
-                                                      |)
+                                                          |),
+                                                          [ M.read (| code |) ]
+                                                        |)
+                                                      ]
                                                     |)
-                                                  ]
-                                                |)
-                                              ]
-                                          |))
+                                                  |)
+                                                ]
+                                              |);
+                                              M.call_closure (|
+                                                M.get_associated_function (|
+                                                  Ty.path "core::fmt::rt::Argument",
+                                                  "new_upper_hex",
+                                                  [ Ty.path "u32" ]
+                                                |),
+                                                [ code ]
+                                              |);
+                                              M.call_closure (|
+                                                M.get_associated_function (|
+                                                  Ty.path "core::fmt::rt::Argument",
+                                                  "new_display",
+                                                  [ Ty.path "usize" ]
+                                                |),
+                                                [
+                                                  M.alloc (|
+                                                    M.call_closure (|
+                                                      M.get_associated_function (|
+                                                        Ty.apply
+                                                          (Ty.path "slice")
+                                                          []
+                                                          [ Ty.path "u16" ],
+                                                        "len",
+                                                        []
+                                                      |),
+                                                      [ M.read (| dst |) ]
+                                                    |)
+                                                  |)
+                                                ]
+                                              |)
+                                            ]
+                                        |)
                                       ]
                                     |)
                                   ]

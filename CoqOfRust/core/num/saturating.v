@@ -63,19 +63,6 @@ Module num.
           (* Instance *) [ ("eq", InstanceField.Method (eq T)) ].
     End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_T_for_core_num_saturating_Saturating_T.
     
-    Module Impl_core_marker_StructuralEq_for_core_num_saturating_Saturating_T.
-      Definition Self (T : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ T ].
-      
-      Axiom Implements :
-        forall (T : Ty.t),
-        M.IsTraitInstance
-          "core::marker::StructuralEq"
-          (Self T)
-          (* Trait polymorphic types *) []
-          (* Instance *) [].
-    End Impl_core_marker_StructuralEq_for_core_num_saturating_Saturating_T.
-    
     Module Impl_core_cmp_Eq_where_core_cmp_Eq_T_for_core_num_saturating_Saturating_T.
       Definition Self (T : Ty.t) : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ T ].
@@ -15062,7 +15049,7 @@ Module num.
       *)
       Definition count_ones (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -15089,7 +15076,7 @@ Module num.
       *)
       Definition count_zeros (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -15116,7 +15103,7 @@ Module num.
       *)
       Definition trailing_zeros (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -15144,7 +15131,7 @@ Module num.
       *)
       Definition rotate_left (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self; n ] =>
+        | [], [], [ self; n ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
@@ -15177,7 +15164,7 @@ Module num.
       *)
       Definition rotate_right (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self; n ] =>
+        | [], [], [ self; n ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
@@ -15211,7 +15198,7 @@ Module num.
       *)
       Definition swap_bytes (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -15242,7 +15229,7 @@ Module num.
       *)
       Definition reverse_bits (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -15274,7 +15261,7 @@ Module num.
       *)
       Definition from_be (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ x ] =>
+        | [], [], [ x ] =>
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
             Value.StructTuple
@@ -15305,7 +15292,7 @@ Module num.
       *)
       Definition from_le (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ x ] =>
+        | [], [], [ x ] =>
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
             Value.StructTuple
@@ -15336,7 +15323,7 @@ Module num.
       *)
       Definition to_be (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -15367,7 +15354,7 @@ Module num.
       *)
       Definition to_le (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -15398,7 +15385,7 @@ Module num.
       *)
       Definition pow (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self; exp ] =>
+        | [], [], [ self; exp ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let exp := M.alloc (| exp |) in
@@ -15430,7 +15417,7 @@ Module num.
       *)
       Definition leading_zeros (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -15458,7 +15445,7 @@ Module num.
       *)
       Definition is_power_of_two (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -15524,7 +15511,7 @@ Module num.
       *)
       Definition count_ones (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -15551,7 +15538,7 @@ Module num.
       *)
       Definition count_zeros (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -15578,7 +15565,7 @@ Module num.
       *)
       Definition trailing_zeros (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -15606,7 +15593,7 @@ Module num.
       *)
       Definition rotate_left (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self; n ] =>
+        | [], [], [ self; n ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
@@ -15639,7 +15626,7 @@ Module num.
       *)
       Definition rotate_right (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self; n ] =>
+        | [], [], [ self; n ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
@@ -15673,7 +15660,7 @@ Module num.
       *)
       Definition swap_bytes (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -15704,7 +15691,7 @@ Module num.
       *)
       Definition reverse_bits (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -15736,7 +15723,7 @@ Module num.
       *)
       Definition from_be (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ x ] =>
+        | [], [], [ x ] =>
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
             Value.StructTuple
@@ -15767,7 +15754,7 @@ Module num.
       *)
       Definition from_le (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ x ] =>
+        | [], [], [ x ] =>
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
             Value.StructTuple
@@ -15798,7 +15785,7 @@ Module num.
       *)
       Definition to_be (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -15829,7 +15816,7 @@ Module num.
       *)
       Definition to_le (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -15860,7 +15847,7 @@ Module num.
       *)
       Definition pow (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self; exp ] =>
+        | [], [], [ self; exp ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let exp := M.alloc (| exp |) in
@@ -15892,7 +15879,7 @@ Module num.
       *)
       Definition leading_zeros (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -15920,7 +15907,7 @@ Module num.
       *)
       Definition is_power_of_two (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -15986,7 +15973,7 @@ Module num.
       *)
       Definition count_ones (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -16013,7 +16000,7 @@ Module num.
       *)
       Definition count_zeros (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -16040,7 +16027,7 @@ Module num.
       *)
       Definition trailing_zeros (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -16068,7 +16055,7 @@ Module num.
       *)
       Definition rotate_left (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self; n ] =>
+        | [], [], [ self; n ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
@@ -16101,7 +16088,7 @@ Module num.
       *)
       Definition rotate_right (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self; n ] =>
+        | [], [], [ self; n ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
@@ -16135,7 +16122,7 @@ Module num.
       *)
       Definition swap_bytes (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -16166,7 +16153,7 @@ Module num.
       *)
       Definition reverse_bits (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -16198,7 +16185,7 @@ Module num.
       *)
       Definition from_be (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ x ] =>
+        | [], [], [ x ] =>
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
             Value.StructTuple
@@ -16229,7 +16216,7 @@ Module num.
       *)
       Definition from_le (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ x ] =>
+        | [], [], [ x ] =>
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
             Value.StructTuple
@@ -16260,7 +16247,7 @@ Module num.
       *)
       Definition to_be (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -16291,7 +16278,7 @@ Module num.
       *)
       Definition to_le (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -16322,7 +16309,7 @@ Module num.
       *)
       Definition pow (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self; exp ] =>
+        | [], [], [ self; exp ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let exp := M.alloc (| exp |) in
@@ -16354,7 +16341,7 @@ Module num.
       *)
       Definition leading_zeros (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -16382,7 +16369,7 @@ Module num.
       *)
       Definition is_power_of_two (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -16448,7 +16435,7 @@ Module num.
       *)
       Definition count_ones (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -16475,7 +16462,7 @@ Module num.
       *)
       Definition count_zeros (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -16502,7 +16489,7 @@ Module num.
       *)
       Definition trailing_zeros (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -16530,7 +16517,7 @@ Module num.
       *)
       Definition rotate_left (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self; n ] =>
+        | [], [], [ self; n ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
@@ -16563,7 +16550,7 @@ Module num.
       *)
       Definition rotate_right (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self; n ] =>
+        | [], [], [ self; n ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
@@ -16597,7 +16584,7 @@ Module num.
       *)
       Definition swap_bytes (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -16628,7 +16615,7 @@ Module num.
       *)
       Definition reverse_bits (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -16660,7 +16647,7 @@ Module num.
       *)
       Definition from_be (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ x ] =>
+        | [], [], [ x ] =>
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
             Value.StructTuple
@@ -16691,7 +16678,7 @@ Module num.
       *)
       Definition from_le (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ x ] =>
+        | [], [], [ x ] =>
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
             Value.StructTuple
@@ -16722,7 +16709,7 @@ Module num.
       *)
       Definition to_be (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -16753,7 +16740,7 @@ Module num.
       *)
       Definition to_le (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -16784,7 +16771,7 @@ Module num.
       *)
       Definition pow (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self; exp ] =>
+        | [], [], [ self; exp ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let exp := M.alloc (| exp |) in
@@ -16816,7 +16803,7 @@ Module num.
       *)
       Definition leading_zeros (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -16844,7 +16831,7 @@ Module num.
       *)
       Definition is_power_of_two (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -16910,7 +16897,7 @@ Module num.
       *)
       Definition count_ones (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -16937,7 +16924,7 @@ Module num.
       *)
       Definition count_zeros (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -16964,7 +16951,7 @@ Module num.
       *)
       Definition trailing_zeros (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -16992,7 +16979,7 @@ Module num.
       *)
       Definition rotate_left (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self; n ] =>
+        | [], [], [ self; n ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
@@ -17025,7 +17012,7 @@ Module num.
       *)
       Definition rotate_right (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self; n ] =>
+        | [], [], [ self; n ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
@@ -17059,7 +17046,7 @@ Module num.
       *)
       Definition swap_bytes (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -17090,7 +17077,7 @@ Module num.
       *)
       Definition reverse_bits (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -17122,7 +17109,7 @@ Module num.
       *)
       Definition from_be (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ x ] =>
+        | [], [], [ x ] =>
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
             Value.StructTuple
@@ -17153,7 +17140,7 @@ Module num.
       *)
       Definition from_le (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ x ] =>
+        | [], [], [ x ] =>
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
             Value.StructTuple
@@ -17184,7 +17171,7 @@ Module num.
       *)
       Definition to_be (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -17215,7 +17202,7 @@ Module num.
       *)
       Definition to_le (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -17246,7 +17233,7 @@ Module num.
       *)
       Definition pow (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self; exp ] =>
+        | [], [], [ self; exp ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let exp := M.alloc (| exp |) in
@@ -17278,7 +17265,7 @@ Module num.
       *)
       Definition leading_zeros (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -17306,7 +17293,7 @@ Module num.
       *)
       Definition is_power_of_two (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -17372,7 +17359,7 @@ Module num.
       *)
       Definition count_ones (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -17399,7 +17386,7 @@ Module num.
       *)
       Definition count_zeros (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -17426,7 +17413,7 @@ Module num.
       *)
       Definition trailing_zeros (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -17454,7 +17441,7 @@ Module num.
       *)
       Definition rotate_left (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self; n ] =>
+        | [], [], [ self; n ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
@@ -17487,7 +17474,7 @@ Module num.
       *)
       Definition rotate_right (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self; n ] =>
+        | [], [], [ self; n ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
@@ -17521,7 +17508,7 @@ Module num.
       *)
       Definition swap_bytes (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -17552,7 +17539,7 @@ Module num.
       *)
       Definition reverse_bits (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -17584,7 +17571,7 @@ Module num.
       *)
       Definition from_be (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ x ] =>
+        | [], [], [ x ] =>
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
             Value.StructTuple
@@ -17615,7 +17602,7 @@ Module num.
       *)
       Definition from_le (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ x ] =>
+        | [], [], [ x ] =>
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
             Value.StructTuple
@@ -17646,7 +17633,7 @@ Module num.
       *)
       Definition to_be (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -17677,7 +17664,7 @@ Module num.
       *)
       Definition to_le (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -17708,7 +17695,7 @@ Module num.
       *)
       Definition pow (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self; exp ] =>
+        | [], [], [ self; exp ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let exp := M.alloc (| exp |) in
@@ -17740,7 +17727,7 @@ Module num.
       *)
       Definition leading_zeros (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -17768,7 +17755,7 @@ Module num.
       *)
       Definition is_power_of_two (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -17834,7 +17821,7 @@ Module num.
       *)
       Definition count_ones (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -17861,7 +17848,7 @@ Module num.
       *)
       Definition count_zeros (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -17888,7 +17875,7 @@ Module num.
       *)
       Definition trailing_zeros (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -17916,7 +17903,7 @@ Module num.
       *)
       Definition rotate_left (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self; n ] =>
+        | [], [], [ self; n ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
@@ -17949,7 +17936,7 @@ Module num.
       *)
       Definition rotate_right (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self; n ] =>
+        | [], [], [ self; n ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
@@ -17983,7 +17970,7 @@ Module num.
       *)
       Definition swap_bytes (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -18014,7 +18001,7 @@ Module num.
       *)
       Definition reverse_bits (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -18046,7 +18033,7 @@ Module num.
       *)
       Definition from_be (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ x ] =>
+        | [], [], [ x ] =>
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
             Value.StructTuple
@@ -18077,7 +18064,7 @@ Module num.
       *)
       Definition from_le (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ x ] =>
+        | [], [], [ x ] =>
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
             Value.StructTuple
@@ -18108,7 +18095,7 @@ Module num.
       *)
       Definition to_be (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -18139,7 +18126,7 @@ Module num.
       *)
       Definition to_le (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -18170,7 +18157,7 @@ Module num.
       *)
       Definition pow (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self; exp ] =>
+        | [], [], [ self; exp ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let exp := M.alloc (| exp |) in
@@ -18202,7 +18189,7 @@ Module num.
       *)
       Definition leading_zeros (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -18230,7 +18217,7 @@ Module num.
       *)
       Definition abs (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -18261,7 +18248,7 @@ Module num.
       *)
       Definition signum (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -18292,7 +18279,7 @@ Module num.
       *)
       Definition is_positive (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -18319,7 +18306,7 @@ Module num.
       *)
       Definition is_negative (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -18384,7 +18371,7 @@ Module num.
       *)
       Definition count_ones (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -18411,7 +18398,7 @@ Module num.
       *)
       Definition count_zeros (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -18438,7 +18425,7 @@ Module num.
       *)
       Definition trailing_zeros (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -18466,7 +18453,7 @@ Module num.
       *)
       Definition rotate_left (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self; n ] =>
+        | [], [], [ self; n ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
@@ -18499,7 +18486,7 @@ Module num.
       *)
       Definition rotate_right (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self; n ] =>
+        | [], [], [ self; n ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
@@ -18533,7 +18520,7 @@ Module num.
       *)
       Definition swap_bytes (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -18564,7 +18551,7 @@ Module num.
       *)
       Definition reverse_bits (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -18596,7 +18583,7 @@ Module num.
       *)
       Definition from_be (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ x ] =>
+        | [], [], [ x ] =>
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
             Value.StructTuple
@@ -18627,7 +18614,7 @@ Module num.
       *)
       Definition from_le (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ x ] =>
+        | [], [], [ x ] =>
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
             Value.StructTuple
@@ -18658,7 +18645,7 @@ Module num.
       *)
       Definition to_be (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -18689,7 +18676,7 @@ Module num.
       *)
       Definition to_le (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -18720,7 +18707,7 @@ Module num.
       *)
       Definition pow (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self; exp ] =>
+        | [], [], [ self; exp ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let exp := M.alloc (| exp |) in
@@ -18752,7 +18739,7 @@ Module num.
       *)
       Definition leading_zeros (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -18780,7 +18767,7 @@ Module num.
       *)
       Definition abs (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -18811,7 +18798,7 @@ Module num.
       *)
       Definition signum (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -18842,7 +18829,7 @@ Module num.
       *)
       Definition is_positive (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -18869,7 +18856,7 @@ Module num.
       *)
       Definition is_negative (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -18934,7 +18921,7 @@ Module num.
       *)
       Definition count_ones (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -18961,7 +18948,7 @@ Module num.
       *)
       Definition count_zeros (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -18988,7 +18975,7 @@ Module num.
       *)
       Definition trailing_zeros (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -19016,7 +19003,7 @@ Module num.
       *)
       Definition rotate_left (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self; n ] =>
+        | [], [], [ self; n ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
@@ -19049,7 +19036,7 @@ Module num.
       *)
       Definition rotate_right (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self; n ] =>
+        | [], [], [ self; n ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
@@ -19083,7 +19070,7 @@ Module num.
       *)
       Definition swap_bytes (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -19114,7 +19101,7 @@ Module num.
       *)
       Definition reverse_bits (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -19146,7 +19133,7 @@ Module num.
       *)
       Definition from_be (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ x ] =>
+        | [], [], [ x ] =>
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
             Value.StructTuple
@@ -19177,7 +19164,7 @@ Module num.
       *)
       Definition from_le (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ x ] =>
+        | [], [], [ x ] =>
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
             Value.StructTuple
@@ -19208,7 +19195,7 @@ Module num.
       *)
       Definition to_be (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -19239,7 +19226,7 @@ Module num.
       *)
       Definition to_le (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -19270,7 +19257,7 @@ Module num.
       *)
       Definition pow (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self; exp ] =>
+        | [], [], [ self; exp ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let exp := M.alloc (| exp |) in
@@ -19302,7 +19289,7 @@ Module num.
       *)
       Definition leading_zeros (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -19330,7 +19317,7 @@ Module num.
       *)
       Definition abs (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -19361,7 +19348,7 @@ Module num.
       *)
       Definition signum (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -19392,7 +19379,7 @@ Module num.
       *)
       Definition is_positive (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -19419,7 +19406,7 @@ Module num.
       *)
       Definition is_negative (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -19484,7 +19471,7 @@ Module num.
       *)
       Definition count_ones (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -19511,7 +19498,7 @@ Module num.
       *)
       Definition count_zeros (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -19538,7 +19525,7 @@ Module num.
       *)
       Definition trailing_zeros (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -19566,7 +19553,7 @@ Module num.
       *)
       Definition rotate_left (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self; n ] =>
+        | [], [], [ self; n ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
@@ -19599,7 +19586,7 @@ Module num.
       *)
       Definition rotate_right (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self; n ] =>
+        | [], [], [ self; n ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
@@ -19633,7 +19620,7 @@ Module num.
       *)
       Definition swap_bytes (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -19664,7 +19651,7 @@ Module num.
       *)
       Definition reverse_bits (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -19696,7 +19683,7 @@ Module num.
       *)
       Definition from_be (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ x ] =>
+        | [], [], [ x ] =>
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
             Value.StructTuple
@@ -19727,7 +19714,7 @@ Module num.
       *)
       Definition from_le (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ x ] =>
+        | [], [], [ x ] =>
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
             Value.StructTuple
@@ -19758,7 +19745,7 @@ Module num.
       *)
       Definition to_be (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -19789,7 +19776,7 @@ Module num.
       *)
       Definition to_le (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -19820,7 +19807,7 @@ Module num.
       *)
       Definition pow (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self; exp ] =>
+        | [], [], [ self; exp ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let exp := M.alloc (| exp |) in
@@ -19852,7 +19839,7 @@ Module num.
       *)
       Definition leading_zeros (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -19880,7 +19867,7 @@ Module num.
       *)
       Definition abs (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -19911,7 +19898,7 @@ Module num.
       *)
       Definition signum (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -19942,7 +19929,7 @@ Module num.
       *)
       Definition is_positive (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -19969,7 +19956,7 @@ Module num.
       *)
       Definition is_negative (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -20034,7 +20021,7 @@ Module num.
       *)
       Definition count_ones (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -20061,7 +20048,7 @@ Module num.
       *)
       Definition count_zeros (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -20088,7 +20075,7 @@ Module num.
       *)
       Definition trailing_zeros (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -20116,7 +20103,7 @@ Module num.
       *)
       Definition rotate_left (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self; n ] =>
+        | [], [], [ self; n ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
@@ -20149,7 +20136,7 @@ Module num.
       *)
       Definition rotate_right (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self; n ] =>
+        | [], [], [ self; n ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
@@ -20183,7 +20170,7 @@ Module num.
       *)
       Definition swap_bytes (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -20214,7 +20201,7 @@ Module num.
       *)
       Definition reverse_bits (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -20246,7 +20233,7 @@ Module num.
       *)
       Definition from_be (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ x ] =>
+        | [], [], [ x ] =>
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
             Value.StructTuple
@@ -20277,7 +20264,7 @@ Module num.
       *)
       Definition from_le (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ x ] =>
+        | [], [], [ x ] =>
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
             Value.StructTuple
@@ -20308,7 +20295,7 @@ Module num.
       *)
       Definition to_be (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -20339,7 +20326,7 @@ Module num.
       *)
       Definition to_le (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -20370,7 +20357,7 @@ Module num.
       *)
       Definition pow (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self; exp ] =>
+        | [], [], [ self; exp ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let exp := M.alloc (| exp |) in
@@ -20402,7 +20389,7 @@ Module num.
       *)
       Definition leading_zeros (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -20430,7 +20417,7 @@ Module num.
       *)
       Definition abs (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -20461,7 +20448,7 @@ Module num.
       *)
       Definition signum (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -20492,7 +20479,7 @@ Module num.
       *)
       Definition is_positive (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -20519,7 +20506,7 @@ Module num.
       *)
       Definition is_negative (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -20584,7 +20571,7 @@ Module num.
       *)
       Definition count_ones (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -20611,7 +20598,7 @@ Module num.
       *)
       Definition count_zeros (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -20638,7 +20625,7 @@ Module num.
       *)
       Definition trailing_zeros (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -20666,7 +20653,7 @@ Module num.
       *)
       Definition rotate_left (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self; n ] =>
+        | [], [], [ self; n ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
@@ -20699,7 +20686,7 @@ Module num.
       *)
       Definition rotate_right (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self; n ] =>
+        | [], [], [ self; n ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
@@ -20733,7 +20720,7 @@ Module num.
       *)
       Definition swap_bytes (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -20764,7 +20751,7 @@ Module num.
       *)
       Definition reverse_bits (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -20796,7 +20783,7 @@ Module num.
       *)
       Definition from_be (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ x ] =>
+        | [], [], [ x ] =>
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
             Value.StructTuple
@@ -20827,7 +20814,7 @@ Module num.
       *)
       Definition from_le (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ x ] =>
+        | [], [], [ x ] =>
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
             Value.StructTuple
@@ -20858,7 +20845,7 @@ Module num.
       *)
       Definition to_be (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -20889,7 +20876,7 @@ Module num.
       *)
       Definition to_le (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -20920,7 +20907,7 @@ Module num.
       *)
       Definition pow (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self; exp ] =>
+        | [], [], [ self; exp ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let exp := M.alloc (| exp |) in
@@ -20952,7 +20939,7 @@ Module num.
       *)
       Definition leading_zeros (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -20980,7 +20967,7 @@ Module num.
       *)
       Definition abs (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -21011,7 +20998,7 @@ Module num.
       *)
       Definition signum (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -21042,7 +21029,7 @@ Module num.
       *)
       Definition is_positive (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -21069,7 +21056,7 @@ Module num.
       *)
       Definition is_negative (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|

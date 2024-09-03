@@ -40,23 +40,19 @@ Module interpreter_action.
                 M.read (| f |);
                 M.read (| Value.String "CreateOutcome" |);
                 M.read (| Value.String "result" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.SubPointer.get_struct_record_field (|
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "revm_interpreter::interpreter_action::create_outcome::CreateOutcome",
+                  "result"
+                |);
+                M.read (| Value.String "address" |);
+                M.alloc (|
+                  M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
                     "revm_interpreter::interpreter_action::create_outcome::CreateOutcome",
-                    "result"
-                  |));
-                M.read (| Value.String "address" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.alloc (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "revm_interpreter::interpreter_action::create_outcome::CreateOutcome",
-                      "address"
-                    |)
-                  |))
+                    "address"
+                  |)
+                |)
               ]
             |)))
         | _, _, _ => M.impossible
@@ -218,18 +214,6 @@ Module interpreter_action.
           (* Trait polymorphic types *) []
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
     End Impl_core_cmp_PartialEq_for_revm_interpreter_interpreter_action_create_outcome_CreateOutcome.
-    
-    Module Impl_core_marker_StructuralEq_for_revm_interpreter_interpreter_action_create_outcome_CreateOutcome.
-      Definition Self : Ty.t :=
-        Ty.path "revm_interpreter::interpreter_action::create_outcome::CreateOutcome".
-      
-      Axiom Implements :
-        M.IsTraitInstance
-          "core::marker::StructuralEq"
-          Self
-          (* Trait polymorphic types *) []
-          (* Instance *) [].
-    End Impl_core_marker_StructuralEq_for_revm_interpreter_interpreter_action_create_outcome_CreateOutcome.
     
     Module Impl_core_cmp_Eq_for_revm_interpreter_interpreter_action_create_outcome_CreateOutcome.
       Definition Self : Ty.t :=

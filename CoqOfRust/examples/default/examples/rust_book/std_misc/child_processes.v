@@ -87,31 +87,27 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                           []
                                         |),
                                         [
-                                          (* Unsize *)
-                                          M.pointer_coercion
-                                            (M.alloc (|
-                                              Value.Array
-                                                [
-                                                  M.read (|
-                                                    Value.String "failed to execute process: "
-                                                  |)
-                                                ]
-                                            |));
-                                          (* Unsize *)
-                                          M.pointer_coercion
-                                            (M.alloc (|
-                                              Value.Array
-                                                [
-                                                  M.call_closure (|
-                                                    M.get_associated_function (|
-                                                      Ty.path "core::fmt::rt::Argument",
-                                                      "new_display",
-                                                      [ Ty.path "std::io::error::Error" ]
-                                                    |),
-                                                    [ e ]
-                                                  |)
-                                                ]
-                                            |))
+                                          M.alloc (|
+                                            Value.Array
+                                              [
+                                                M.read (|
+                                                  Value.String "failed to execute process: "
+                                                |)
+                                              ]
+                                          |);
+                                          M.alloc (|
+                                            Value.Array
+                                              [
+                                                M.call_closure (|
+                                                  M.get_associated_function (|
+                                                    Ty.path "core::fmt::rt::Argument",
+                                                    "new_display",
+                                                    [ Ty.path "std::io::error::Error" ]
+                                                  |),
+                                                  [ e ]
+                                                |)
+                                              ]
+                                          |)
                                         ]
                                       |)
                                     ]
@@ -192,33 +188,29 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [ M.read (| Value.String "rustc succeeded and stdout was:
+                              M.alloc (|
+                                Value.Array
+                                  [ M.read (| Value.String "rustc succeeded and stdout was:
 " |) ]
-                                |));
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path "core::fmt::rt::Argument",
-                                          "new_display",
-                                          [
-                                            Ty.apply
-                                              (Ty.path "alloc::borrow::Cow")
-                                              []
-                                              [ Ty.path "str" ]
-                                          ]
-                                        |),
-                                        [ s ]
-                                      |)
-                                    ]
-                                |))
+                              |);
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "core::fmt::rt::Argument",
+                                        "new_display",
+                                        [
+                                          Ty.apply
+                                            (Ty.path "alloc::borrow::Cow")
+                                            []
+                                            [ Ty.path "str" ]
+                                        ]
+                                      |),
+                                      [ s ]
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -272,33 +264,29 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [ M.read (| Value.String "rustc failed and stderr was:
+                              M.alloc (|
+                                Value.Array
+                                  [ M.read (| Value.String "rustc failed and stderr was:
 " |) ]
-                                |));
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path "core::fmt::rt::Argument",
-                                          "new_display",
-                                          [
-                                            Ty.apply
-                                              (Ty.path "alloc::borrow::Cow")
-                                              []
-                                              [ Ty.path "str" ]
-                                          ]
-                                        |),
-                                        [ s ]
-                                      |)
-                                    ]
-                                |))
+                              |);
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "core::fmt::rt::Argument",
+                                        "new_display",
+                                        [
+                                          Ty.apply
+                                            (Ty.path "alloc::borrow::Cow")
+                                            []
+                                            [ Ty.path "str" ]
+                                        ]
+                                      |),
+                                      [ s ]
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]

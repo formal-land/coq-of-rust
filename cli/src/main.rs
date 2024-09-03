@@ -1,3 +1,5 @@
+#![feature(rustc_private)]
+
 extern crate coq_of_rust_lib;
 
 use std::path::{Path, PathBuf};

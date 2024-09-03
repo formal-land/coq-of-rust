@@ -686,17 +686,6 @@ Module ascii.
           (* Instance *) [ ("clone", InstanceField.Method clone) ].
     End Impl_core_clone_Clone_for_core_ascii_ascii_char_AsciiChar.
     
-    Module Impl_core_marker_StructuralEq_for_core_ascii_ascii_char_AsciiChar.
-      Definition Self : Ty.t := Ty.path "core::ascii::ascii_char::AsciiChar".
-      
-      Axiom Implements :
-        M.IsTraitInstance
-          "core::marker::StructuralEq"
-          Self
-          (* Trait polymorphic types *) []
-          (* Instance *) [].
-    End Impl_core_marker_StructuralEq_for_core_ascii_ascii_char_AsciiChar.
-    
     Module Impl_core_cmp_Eq_for_core_ascii_ascii_char_AsciiChar.
       Definition Self : Ty.t := Ty.path "core::ascii::ascii_char::AsciiChar".
       
@@ -745,7 +734,7 @@ Module ascii.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ __self_tag :=
+              let~ __self_discr :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -755,7 +744,7 @@ Module ascii.
                     [ M.read (| self |) ]
                   |)
                 |) in
-              let~ __arg1_tag :=
+              let~ __arg1_discr :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -765,7 +754,7 @@ Module ascii.
                     [ M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)) |)
+              M.alloc (| BinOp.Pure.eq (M.read (| __self_discr |)) (M.read (| __arg1_discr |)) |)
             |)))
         | _, _, _ => M.impossible
         end.
@@ -789,7 +778,7 @@ Module ascii.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ __self_tag :=
+              let~ __self_discr :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -799,7 +788,7 @@ Module ascii.
                     [ M.read (| self |) ]
                   |)
                 |) in
-              let~ __arg1_tag :=
+              let~ __arg1_discr :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -812,7 +801,7 @@ Module ascii.
               M.alloc (|
                 M.call_closure (|
                   M.get_trait_method (| "core::cmp::Ord", Ty.path "u8", [], "cmp", [] |),
-                  [ __self_tag; __arg1_tag ]
+                  [ __self_discr; __arg1_discr ]
                 |)
               |)
             |)))
@@ -838,7 +827,7 @@ Module ascii.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ __self_tag :=
+              let~ __self_discr :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -848,7 +837,7 @@ Module ascii.
                     [ M.read (| self |) ]
                   |)
                 |) in
-              let~ __arg1_tag :=
+              let~ __arg1_discr :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -867,7 +856,7 @@ Module ascii.
                     "partial_cmp",
                     []
                   |),
-                  [ __self_tag; __arg1_tag ]
+                  [ __self_discr; __arg1_discr ]
                 |)
               |)
             |)))
@@ -893,7 +882,7 @@ Module ascii.
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
             M.read (|
-              let~ __self_tag :=
+              let~ __self_discr :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -906,7 +895,7 @@ Module ascii.
               M.alloc (|
                 M.call_closure (|
                   M.get_trait_method (| "core::hash::Hash", Ty.path "u8", [], "hash", [ __H ] |),
-                  [ __self_tag; M.read (| state |) ]
+                  [ __self_discr; M.read (| state |) ]
                 |)
               |)
             |)))
@@ -936,7 +925,7 @@ Module ascii.
       *)
       Definition from_u8 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ b ] =>
+        | [], [], [ b ] =>
           ltac:(M.monadic
             (let b := M.alloc (| b |) in
             M.read (|
@@ -981,7 +970,7 @@ Module ascii.
       *)
       Definition from_u8_unchecked (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ b ] =>
+        | [], [], [ b ] =>
           ltac:(M.monadic
             (let b := M.alloc (| b |) in
             M.call_closure (|
@@ -1009,7 +998,7 @@ Module ascii.
       *)
       Definition digit (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ d ] =>
+        | [], [], [ d ] =>
           ltac:(M.monadic
             (let d := M.alloc (| d |) in
             M.read (|
@@ -1048,7 +1037,11 @@ Module ascii.
       
       (*
           pub const unsafe fn digit_unchecked(d: u8) -> Self {
-              debug_assert!(d < 10);
+              assert_unsafe_precondition!(
+                  check_language_ub,
+                  "`AsciiChar::digit_unchecked` input cannot exceed 9.",
+                  (d: u8 = d) => d < 10
+              );
       
               // SAFETY: `'0'` through `'9'` are U+00030 through U+0039,
               // so because `d` must be 64 or less the addition can return at most
@@ -1061,7 +1054,7 @@ Module ascii.
       *)
       Definition digit_unchecked (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ d ] =>
+        | [], [], [ d ] =>
           ltac:(M.monadic
             (let d := M.alloc (| d |) in
             M.read (|
@@ -1071,36 +1064,26 @@ Module ascii.
                   [
                     fun γ =>
                       ltac:(M.monadic
-                        (let γ := M.use (M.alloc (| Value.Bool true |)) in
+                        (let γ :=
+                          M.use
+                            (M.alloc (|
+                              M.call_closure (|
+                                M.get_function (| "core::ub_checks::check_language_ub", [] |),
+                                []
+                              |)
+                            |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let~ _ :=
-                          M.match_operator (|
-                            M.alloc (| Value.Tuple [] |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let γ :=
-                                    M.use
-                                      (M.alloc (|
-                                        UnOp.Pure.not
-                                          (BinOp.Pure.lt (M.read (| d |)) (Value.Integer 10))
-                                      |)) in
-                                  let _ :=
-                                    M.is_constant_or_break_match (|
-                                      M.read (| γ |),
-                                      Value.Bool true
-                                    |) in
-                                  M.alloc (|
-                                    M.never_to_any (|
-                                      M.call_closure (|
-                                        M.get_function (| "core::panicking::panic", [] |),
-                                        [ M.read (| Value.String "assertion failed: d < 10" |) ]
-                                      |)
-                                    |)
-                                  |)));
-                              fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                            ]
+                          M.alloc (|
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Self,
+                                "precondition_check.digit_unchecked",
+                                []
+                              |),
+                              [ M.read (| d |) ]
+                            |)
                           |) in
                         M.alloc (| Value.Tuple [] |)));
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
@@ -1137,7 +1120,7 @@ Module ascii.
       *)
       Definition to_u8 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.rust_cast (M.read (| self |))))
@@ -1153,7 +1136,7 @@ Module ascii.
       *)
       Definition to_char (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.rust_cast (M.rust_cast (M.read (| self |)))))
@@ -1169,7 +1152,7 @@ Module ascii.
       *)
       Definition as_str (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -1194,6 +1177,156 @@ Module ascii.
       Axiom AssociatedFunction_as_str : M.IsAssociatedFunction Self "as_str" as_str.
     End Impl_core_ascii_ascii_char_AsciiChar.
     
+    Module Impl_core_convert_From_core_ascii_ascii_char_AsciiChar_for_u8.
+      Definition Self : Ty.t := Ty.path "u8".
+      
+      (*
+                      fn from(chr: AsciiChar) -> $ty {
+                          chr as u8 as $ty
+                      }
+      *)
+      Definition from (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ chr ] =>
+          ltac:(M.monadic
+            (let chr := M.alloc (| chr |) in
+            M.read (| M.use (M.alloc (| M.rust_cast (M.read (| chr |)) |)) |)))
+        | _, _, _ => M.impossible
+        end.
+      
+      Axiom Implements :
+        M.IsTraitInstance
+          "core::convert::From"
+          Self
+          (* Trait polymorphic types *) [ (* T *) Ty.path "core::ascii::ascii_char::AsciiChar" ]
+          (* Instance *) [ ("from", InstanceField.Method from) ].
+    End Impl_core_convert_From_core_ascii_ascii_char_AsciiChar_for_u8.
+    
+    Module Impl_core_convert_From_core_ascii_ascii_char_AsciiChar_for_u16.
+      Definition Self : Ty.t := Ty.path "u16".
+      
+      (*
+                      fn from(chr: AsciiChar) -> $ty {
+                          chr as u8 as $ty
+                      }
+      *)
+      Definition from (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ chr ] =>
+          ltac:(M.monadic
+            (let chr := M.alloc (| chr |) in
+            M.rust_cast (M.rust_cast (M.read (| chr |)))))
+        | _, _, _ => M.impossible
+        end.
+      
+      Axiom Implements :
+        M.IsTraitInstance
+          "core::convert::From"
+          Self
+          (* Trait polymorphic types *) [ (* T *) Ty.path "core::ascii::ascii_char::AsciiChar" ]
+          (* Instance *) [ ("from", InstanceField.Method from) ].
+    End Impl_core_convert_From_core_ascii_ascii_char_AsciiChar_for_u16.
+    
+    Module Impl_core_convert_From_core_ascii_ascii_char_AsciiChar_for_u32.
+      Definition Self : Ty.t := Ty.path "u32".
+      
+      (*
+                      fn from(chr: AsciiChar) -> $ty {
+                          chr as u8 as $ty
+                      }
+      *)
+      Definition from (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ chr ] =>
+          ltac:(M.monadic
+            (let chr := M.alloc (| chr |) in
+            M.rust_cast (M.rust_cast (M.read (| chr |)))))
+        | _, _, _ => M.impossible
+        end.
+      
+      Axiom Implements :
+        M.IsTraitInstance
+          "core::convert::From"
+          Self
+          (* Trait polymorphic types *) [ (* T *) Ty.path "core::ascii::ascii_char::AsciiChar" ]
+          (* Instance *) [ ("from", InstanceField.Method from) ].
+    End Impl_core_convert_From_core_ascii_ascii_char_AsciiChar_for_u32.
+    
+    Module Impl_core_convert_From_core_ascii_ascii_char_AsciiChar_for_u64.
+      Definition Self : Ty.t := Ty.path "u64".
+      
+      (*
+                      fn from(chr: AsciiChar) -> $ty {
+                          chr as u8 as $ty
+                      }
+      *)
+      Definition from (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ chr ] =>
+          ltac:(M.monadic
+            (let chr := M.alloc (| chr |) in
+            M.rust_cast (M.rust_cast (M.read (| chr |)))))
+        | _, _, _ => M.impossible
+        end.
+      
+      Axiom Implements :
+        M.IsTraitInstance
+          "core::convert::From"
+          Self
+          (* Trait polymorphic types *) [ (* T *) Ty.path "core::ascii::ascii_char::AsciiChar" ]
+          (* Instance *) [ ("from", InstanceField.Method from) ].
+    End Impl_core_convert_From_core_ascii_ascii_char_AsciiChar_for_u64.
+    
+    Module Impl_core_convert_From_core_ascii_ascii_char_AsciiChar_for_u128.
+      Definition Self : Ty.t := Ty.path "u128".
+      
+      (*
+                      fn from(chr: AsciiChar) -> $ty {
+                          chr as u8 as $ty
+                      }
+      *)
+      Definition from (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ chr ] =>
+          ltac:(M.monadic
+            (let chr := M.alloc (| chr |) in
+            M.rust_cast (M.rust_cast (M.read (| chr |)))))
+        | _, _, _ => M.impossible
+        end.
+      
+      Axiom Implements :
+        M.IsTraitInstance
+          "core::convert::From"
+          Self
+          (* Trait polymorphic types *) [ (* T *) Ty.path "core::ascii::ascii_char::AsciiChar" ]
+          (* Instance *) [ ("from", InstanceField.Method from) ].
+    End Impl_core_convert_From_core_ascii_ascii_char_AsciiChar_for_u128.
+    
+    Module Impl_core_convert_From_core_ascii_ascii_char_AsciiChar_for_char.
+      Definition Self : Ty.t := Ty.path "char".
+      
+      (*
+                      fn from(chr: AsciiChar) -> $ty {
+                          chr as u8 as $ty
+                      }
+      *)
+      Definition from (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ chr ] =>
+          ltac:(M.monadic
+            (let chr := M.alloc (| chr |) in
+            M.rust_cast (M.rust_cast (M.read (| chr |)))))
+        | _, _, _ => M.impossible
+        end.
+      
+      Axiom Implements :
+        M.IsTraitInstance
+          "core::convert::From"
+          Self
+          (* Trait polymorphic types *) [ (* T *) Ty.path "core::ascii::ascii_char::AsciiChar" ]
+          (* Instance *) [ ("from", InstanceField.Method from) ].
+    End Impl_core_convert_From_core_ascii_ascii_char_AsciiChar_for_char.
+    
     Module Impl_slice_core_ascii_ascii_char_AsciiChar.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "slice") [] [ Ty.path "core::ascii::ascii_char::AsciiChar" ].
@@ -1209,7 +1342,7 @@ Module ascii.
       *)
       Definition as_str (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -1229,7 +1362,7 @@ Module ascii.
       *)
       Definition as_bytes (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -1295,9 +1428,10 @@ Module ascii.
       
       (*
           fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-              #[inline]
-              fn backslash(a: AsciiChar) -> ([AsciiChar; 4], u8) {
-                  ([AsciiChar::ReverseSolidus, a, AsciiChar::Null, AsciiChar::Null], 2)
+              use AsciiChar::{Apostrophe, Null, ReverseSolidus as Backslash};
+      
+              fn backslash(a: AsciiChar) -> ([AsciiChar; 6], usize) {
+                  ([Apostrophe, Backslash, a, Apostrophe, Null, Null], 4)
               }
       
               let (buf, len) = match self {
@@ -1307,25 +1441,18 @@ Module ascii.
                   AsciiChar::LineFeed => backslash(AsciiChar::SmallN),
                   AsciiChar::ReverseSolidus => backslash(AsciiChar::ReverseSolidus),
                   AsciiChar::Apostrophe => backslash(AsciiChar::Apostrophe),
-                  _ => {
-                      let byte = self.to_u8();
-                      if !byte.is_ascii_control() {
-                          ([*self, AsciiChar::Null, AsciiChar::Null, AsciiChar::Null], 1)
-                      } else {
-                          const HEX_DIGITS: [AsciiChar; 16] = *b"0123456789abcdef".as_ascii().unwrap();
+                  _ if self.to_u8().is_ascii_control() => {
+                      const HEX_DIGITS: [AsciiChar; 16] = *b"0123456789abcdef".as_ascii().unwrap();
       
-                          let hi = HEX_DIGITS[usize::from(byte >> 4)];
-                          let lo = HEX_DIGITS[usize::from(byte & 0xf)];
-                          ([AsciiChar::ReverseSolidus, AsciiChar::SmallX, hi, lo], 4)
-                      }
+                      let byte = self.to_u8();
+                      let hi = HEX_DIGITS[usize::from(byte >> 4)];
+                      let lo = HEX_DIGITS[usize::from(byte & 0xf)];
+                      ([Apostrophe, Backslash, AsciiChar::SmallX, hi, lo, Apostrophe], 6)
                   }
+                  _ => ([Apostrophe, *self, Apostrophe, Null, Null, Null], 3),
               };
       
-              f.write_char('\'')?;
-              for byte in &buf[..len as usize] {
-                  f.write_str(byte.as_str())?;
-              }
-              f.write_char('\'')
+              f.write_str(buf[..len].as_str())
           }
       *)
       Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -1334,530 +1461,266 @@ Module ascii.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
-            M.catch_return (|
-              ltac:(M.monadic
-                (M.read (|
-                  M.match_operator (|
-                    M.match_operator (|
-                      self,
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ := M.read (| γ |) in
-                            let _ :=
-                              M.is_struct_tuple (|
-                                γ,
-                                "core::ascii::ascii_char::AsciiChar::Null"
-                              |) in
-                            M.alloc (|
-                              M.call_closure (|
-                                M.get_associated_function (| Self, "backslash.fmt", [] |),
-                                [ Value.StructTuple "core::ascii::ascii_char::AsciiChar::Digit0" []
-                                ]
-                              |)
-                            |)));
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ := M.read (| γ |) in
-                            let _ :=
-                              M.is_struct_tuple (|
-                                γ,
-                                "core::ascii::ascii_char::AsciiChar::CharacterTabulation"
-                              |) in
-                            M.alloc (|
-                              M.call_closure (|
-                                M.get_associated_function (| Self, "backslash.fmt", [] |),
-                                [ Value.StructTuple "core::ascii::ascii_char::AsciiChar::SmallT" []
-                                ]
-                              |)
-                            |)));
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ := M.read (| γ |) in
-                            let _ :=
-                              M.is_struct_tuple (|
-                                γ,
-                                "core::ascii::ascii_char::AsciiChar::CarriageReturn"
-                              |) in
-                            M.alloc (|
-                              M.call_closure (|
-                                M.get_associated_function (| Self, "backslash.fmt", [] |),
-                                [ Value.StructTuple "core::ascii::ascii_char::AsciiChar::SmallR" []
-                                ]
-                              |)
-                            |)));
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ := M.read (| γ |) in
-                            let _ :=
-                              M.is_struct_tuple (|
-                                γ,
-                                "core::ascii::ascii_char::AsciiChar::LineFeed"
-                              |) in
-                            M.alloc (|
-                              M.call_closure (|
-                                M.get_associated_function (| Self, "backslash.fmt", [] |),
-                                [ Value.StructTuple "core::ascii::ascii_char::AsciiChar::SmallN" []
-                                ]
-                              |)
-                            |)));
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ := M.read (| γ |) in
-                            let _ :=
-                              M.is_struct_tuple (|
-                                γ,
+            M.read (|
+              M.match_operator (|
+                M.match_operator (|
+                  self,
+                  [
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let γ := M.read (| γ |) in
+                        let _ :=
+                          M.is_struct_tuple (| γ, "core::ascii::ascii_char::AsciiChar::Null" |) in
+                        M.alloc (|
+                          M.call_closure (|
+                            M.get_associated_function (| Self, "backslash.fmt", [] |),
+                            [ Value.StructTuple "core::ascii::ascii_char::AsciiChar::Digit0" [] ]
+                          |)
+                        |)));
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let γ := M.read (| γ |) in
+                        let _ :=
+                          M.is_struct_tuple (|
+                            γ,
+                            "core::ascii::ascii_char::AsciiChar::CharacterTabulation"
+                          |) in
+                        M.alloc (|
+                          M.call_closure (|
+                            M.get_associated_function (| Self, "backslash.fmt", [] |),
+                            [ Value.StructTuple "core::ascii::ascii_char::AsciiChar::SmallT" [] ]
+                          |)
+                        |)));
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let γ := M.read (| γ |) in
+                        let _ :=
+                          M.is_struct_tuple (|
+                            γ,
+                            "core::ascii::ascii_char::AsciiChar::CarriageReturn"
+                          |) in
+                        M.alloc (|
+                          M.call_closure (|
+                            M.get_associated_function (| Self, "backslash.fmt", [] |),
+                            [ Value.StructTuple "core::ascii::ascii_char::AsciiChar::SmallR" [] ]
+                          |)
+                        |)));
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let γ := M.read (| γ |) in
+                        let _ :=
+                          M.is_struct_tuple (|
+                            γ,
+                            "core::ascii::ascii_char::AsciiChar::LineFeed"
+                          |) in
+                        M.alloc (|
+                          M.call_closure (|
+                            M.get_associated_function (| Self, "backslash.fmt", [] |),
+                            [ Value.StructTuple "core::ascii::ascii_char::AsciiChar::SmallN" [] ]
+                          |)
+                        |)));
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let γ := M.read (| γ |) in
+                        let _ :=
+                          M.is_struct_tuple (|
+                            γ,
+                            "core::ascii::ascii_char::AsciiChar::ReverseSolidus"
+                          |) in
+                        M.alloc (|
+                          M.call_closure (|
+                            M.get_associated_function (| Self, "backslash.fmt", [] |),
+                            [
+                              Value.StructTuple
                                 "core::ascii::ascii_char::AsciiChar::ReverseSolidus"
-                              |) in
-                            M.alloc (|
-                              M.call_closure (|
-                                M.get_associated_function (| Self, "backslash.fmt", [] |),
-                                [
-                                  Value.StructTuple
-                                    "core::ascii::ascii_char::AsciiChar::ReverseSolidus"
-                                    []
-                                ]
-                              |)
-                            |)));
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ := M.read (| γ |) in
-                            let _ :=
-                              M.is_struct_tuple (|
-                                γ,
-                                "core::ascii::ascii_char::AsciiChar::Apostrophe"
-                              |) in
-                            M.alloc (|
-                              M.call_closure (|
-                                M.get_associated_function (| Self, "backslash.fmt", [] |),
-                                [
-                                  Value.StructTuple
-                                    "core::ascii::ascii_char::AsciiChar::Apostrophe"
-                                    []
-                                ]
-                              |)
-                            |)));
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let~ byte :=
-                              M.alloc (|
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "core::ascii::ascii_char::AsciiChar",
-                                    "to_u8",
-                                    []
-                                  |),
-                                  [ M.read (| M.read (| self |) |) ]
-                                |)
-                              |) in
-                            M.match_operator (|
-                              M.alloc (| Value.Tuple [] |),
+                                []
+                            ]
+                          |)
+                        |)));
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let γ := M.read (| γ |) in
+                        let _ :=
+                          M.is_struct_tuple (|
+                            γ,
+                            "core::ascii::ascii_char::AsciiChar::Apostrophe"
+                          |) in
+                        M.alloc (|
+                          M.call_closure (|
+                            M.get_associated_function (| Self, "backslash.fmt", [] |),
+                            [ Value.StructTuple "core::ascii::ascii_char::AsciiChar::Apostrophe" []
+                            ]
+                          |)
+                        |)));
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let γ :=
+                          M.alloc (|
+                            M.call_closure (|
+                              M.get_associated_function (| Ty.path "u8", "is_ascii_control", [] |),
                               [
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let γ :=
-                                      M.use
-                                        (M.alloc (|
-                                          UnOp.Pure.not
-                                            (M.call_closure (|
-                                              M.get_associated_function (|
-                                                Ty.path "u8",
-                                                "is_ascii_control",
-                                                []
-                                              |),
-                                              [ byte ]
-                                            |))
-                                        |)) in
-                                    let _ :=
-                                      M.is_constant_or_break_match (|
-                                        M.read (| γ |),
-                                        Value.Bool true
-                                      |) in
-                                    M.alloc (|
-                                      Value.Tuple
-                                        [
-                                          Value.Array
-                                            [
-                                              M.read (| M.read (| self |) |);
-                                              Value.StructTuple
-                                                "core::ascii::ascii_char::AsciiChar::Null"
-                                                [];
-                                              Value.StructTuple
-                                                "core::ascii::ascii_char::AsciiChar::Null"
-                                                [];
-                                              Value.StructTuple
-                                                "core::ascii::ascii_char::AsciiChar::Null"
-                                                []
-                                            ];
-                                          Value.Integer 1
-                                        ]
-                                    |)));
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let~ hi :=
-                                      M.copy (|
-                                        M.SubPointer.get_array_field (|
-                                          M.get_constant (|
-                                            "core::ascii::ascii_char::fmt::HEX_DIGITS"
-                                          |),
-                                          M.alloc (|
-                                            M.call_closure (|
-                                              M.get_trait_method (|
-                                                "core::convert::From",
-                                                Ty.path "usize",
-                                                [ Ty.path "u8" ],
-                                                "from",
-                                                []
-                                              |),
-                                              [ BinOp.Wrap.shr (M.read (| byte |)) (Value.Integer 4)
-                                              ]
-                                            |)
-                                          |)
-                                        |)
-                                      |) in
-                                    let~ lo :=
-                                      M.copy (|
-                                        M.SubPointer.get_array_field (|
-                                          M.get_constant (|
-                                            "core::ascii::ascii_char::fmt::HEX_DIGITS"
-                                          |),
-                                          M.alloc (|
-                                            M.call_closure (|
-                                              M.get_trait_method (|
-                                                "core::convert::From",
-                                                Ty.path "usize",
-                                                [ Ty.path "u8" ],
-                                                "from",
-                                                []
-                                              |),
-                                              [
-                                                BinOp.Pure.bit_and
-                                                  (M.read (| byte |))
-                                                  (Value.Integer 15)
-                                              ]
-                                            |)
-                                          |)
-                                        |)
-                                      |) in
-                                    M.alloc (|
-                                      Value.Tuple
-                                        [
-                                          Value.Array
-                                            [
-                                              Value.StructTuple
-                                                "core::ascii::ascii_char::AsciiChar::ReverseSolidus"
-                                                [];
-                                              Value.StructTuple
-                                                "core::ascii::ascii_char::AsciiChar::SmallX"
-                                                [];
-                                              M.read (| hi |);
-                                              M.read (| lo |)
-                                            ];
-                                          Value.Integer 4
-                                        ]
-                                    |)))
+                                M.alloc (|
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::ascii::ascii_char::AsciiChar",
+                                      "to_u8",
+                                      []
+                                    |),
+                                    [ M.read (| M.read (| self |) |) ]
+                                  |)
+                                |)
                               ]
-                            |)))
-                      ]
-                    |),
-                    [
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                          let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                          let buf := M.copy (| γ0_0 |) in
-                          let len := M.copy (| γ0_1 |) in
-                          let~ _ :=
-                            M.match_operator (|
+                            |)
+                          |) in
+                        let _ :=
+                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        let~ byte :=
+                          M.alloc (|
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.path "core::ascii::ascii_char::AsciiChar",
+                                "to_u8",
+                                []
+                              |),
+                              [ M.read (| M.read (| self |) |) ]
+                            |)
+                          |) in
+                        let~ hi :=
+                          M.copy (|
+                            M.SubPointer.get_array_field (|
+                              M.get_constant (| "core::ascii::ascii_char::fmt::HEX_DIGITS" |),
                               M.alloc (|
                                 M.call_closure (|
                                   M.get_trait_method (|
-                                    "core::ops::try_trait::Try",
+                                    "core::convert::From",
+                                    Ty.path "usize",
+                                    [ Ty.path "u8" ],
+                                    "from",
+                                    []
+                                  |),
+                                  [ BinOp.Wrap.shr (M.read (| byte |)) (Value.Integer 4) ]
+                                |)
+                              |)
+                            |)
+                          |) in
+                        let~ lo :=
+                          M.copy (|
+                            M.SubPointer.get_array_field (|
+                              M.get_constant (| "core::ascii::ascii_char::fmt::HEX_DIGITS" |),
+                              M.alloc (|
+                                M.call_closure (|
+                                  M.get_trait_method (|
+                                    "core::convert::From",
+                                    Ty.path "usize",
+                                    [ Ty.path "u8" ],
+                                    "from",
+                                    []
+                                  |),
+                                  [ BinOp.Pure.bit_and (M.read (| byte |)) (Value.Integer 15) ]
+                                |)
+                              |)
+                            |)
+                          |) in
+                        M.alloc (|
+                          Value.Tuple
+                            [
+                              Value.Array
+                                [
+                                  Value.StructTuple
+                                    "core::ascii::ascii_char::AsciiChar::Apostrophe"
+                                    [];
+                                  Value.StructTuple
+                                    "core::ascii::ascii_char::AsciiChar::ReverseSolidus"
+                                    [];
+                                  Value.StructTuple "core::ascii::ascii_char::AsciiChar::SmallX" [];
+                                  M.read (| hi |);
+                                  M.read (| lo |);
+                                  Value.StructTuple
+                                    "core::ascii::ascii_char::AsciiChar::Apostrophe"
+                                    []
+                                ];
+                              Value.Integer 6
+                            ]
+                        |)));
+                    fun γ =>
+                      ltac:(M.monadic
+                        (M.alloc (|
+                          Value.Tuple
+                            [
+                              Value.Array
+                                [
+                                  Value.StructTuple
+                                    "core::ascii::ascii_char::AsciiChar::Apostrophe"
+                                    [];
+                                  M.read (| M.read (| self |) |);
+                                  Value.StructTuple
+                                    "core::ascii::ascii_char::AsciiChar::Apostrophe"
+                                    [];
+                                  Value.StructTuple "core::ascii::ascii_char::AsciiChar::Null" [];
+                                  Value.StructTuple "core::ascii::ascii_char::AsciiChar::Null" [];
+                                  Value.StructTuple "core::ascii::ascii_char::AsciiChar::Null" []
+                                ];
+                              Value.Integer 3
+                            ]
+                        |)))
+                  ]
+                |),
+                [
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                      let buf := M.copy (| γ0_0 |) in
+                      let len := M.copy (| γ0_1 |) in
+                      M.alloc (|
+                        M.call_closure (|
+                          M.get_associated_function (|
+                            Ty.path "core::fmt::Formatter",
+                            "write_str",
+                            []
+                          |),
+                          [
+                            M.read (| f |);
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.apply
+                                  (Ty.path "slice")
+                                  []
+                                  [ Ty.path "core::ascii::ascii_char::AsciiChar" ],
+                                "as_str",
+                                []
+                              |),
+                              [
+                                M.call_closure (|
+                                  M.get_trait_method (|
+                                    "core::ops::index::Index",
                                     Ty.apply
-                                      (Ty.path "core::result::Result")
-                                      []
-                                      [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                                    [],
-                                    "branch",
+                                      (Ty.path "array")
+                                      [ Value.Integer 6 ]
+                                      [ Ty.path "core::ascii::ascii_char::AsciiChar" ],
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::ops::range::RangeTo")
+                                        []
+                                        [ Ty.path "usize" ]
+                                    ],
+                                    "index",
                                     []
                                   |),
                                   [
-                                    M.call_closure (|
-                                      M.get_trait_method (|
-                                        "core::fmt::Write",
-                                        Ty.path "core::fmt::Formatter",
-                                        [],
-                                        "write_char",
-                                        []
-                                      |),
-                                      [ M.read (| f |); Value.UnicodeChar 39 ]
-                                    |)
+                                    buf;
+                                    Value.StructRecord
+                                      "core::ops::range::RangeTo"
+                                      [ ("end_", M.read (| len |)) ]
                                   ]
                                 |)
-                              |),
-                              [
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let γ0_0 :=
-                                      M.SubPointer.get_struct_tuple_field (|
-                                        γ,
-                                        "core::ops::control_flow::ControlFlow::Break",
-                                        0
-                                      |) in
-                                    let residual := M.copy (| γ0_0 |) in
-                                    M.alloc (|
-                                      M.never_to_any (|
-                                        M.read (|
-                                          M.return_ (|
-                                            M.call_closure (|
-                                              M.get_trait_method (|
-                                                "core::ops::try_trait::FromResidual",
-                                                Ty.apply
-                                                  (Ty.path "core::result::Result")
-                                                  []
-                                                  [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path "core::result::Result")
-                                                    []
-                                                    [
-                                                      Ty.path "core::convert::Infallible";
-                                                      Ty.path "core::fmt::Error"
-                                                    ]
-                                                ],
-                                                "from_residual",
-                                                []
-                                              |),
-                                              [ M.read (| residual |) ]
-                                            |)
-                                          |)
-                                        |)
-                                      |)
-                                    |)));
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let γ0_0 :=
-                                      M.SubPointer.get_struct_tuple_field (|
-                                        γ,
-                                        "core::ops::control_flow::ControlFlow::Continue",
-                                        0
-                                      |) in
-                                    let val := M.copy (| γ0_0 |) in
-                                    val))
                               ]
-                            |) in
-                          let~ _ :=
-                            M.use
-                              (M.match_operator (|
-                                M.alloc (|
-                                  M.call_closure (|
-                                    M.get_trait_method (|
-                                      "core::iter::traits::collect::IntoIterator",
-                                      Ty.apply
-                                        (Ty.path "&")
-                                        []
-                                        [
-                                          Ty.apply
-                                            (Ty.path "slice")
-                                            []
-                                            [ Ty.path "core::ascii::ascii_char::AsciiChar" ]
-                                        ],
-                                      [],
-                                      "into_iter",
-                                      []
-                                    |),
-                                    [
-                                      M.call_closure (|
-                                        M.get_trait_method (|
-                                          "core::ops::index::Index",
-                                          Ty.apply
-                                            (Ty.path "array")
-                                            [ Value.Integer 4 ]
-                                            [ Ty.path "core::ascii::ascii_char::AsciiChar" ],
-                                          [
-                                            Ty.apply
-                                              (Ty.path "core::ops::range::RangeTo")
-                                              []
-                                              [ Ty.path "usize" ]
-                                          ],
-                                          "index",
-                                          []
-                                        |),
-                                        [
-                                          buf;
-                                          Value.StructRecord
-                                            "core::ops::range::RangeTo"
-                                            [ ("end_", M.rust_cast (M.read (| len |))) ]
-                                        ]
-                                      |)
-                                    ]
-                                  |)
-                                |),
-                                [
-                                  fun γ =>
-                                    ltac:(M.monadic
-                                      (let iter := M.copy (| γ |) in
-                                      M.loop (|
-                                        ltac:(M.monadic
-                                          (let~ _ :=
-                                            M.match_operator (|
-                                              M.alloc (|
-                                                M.call_closure (|
-                                                  M.get_trait_method (|
-                                                    "core::iter::traits::iterator::Iterator",
-                                                    Ty.apply
-                                                      (Ty.path "core::slice::iter::Iter")
-                                                      []
-                                                      [ Ty.path "core::ascii::ascii_char::AsciiChar"
-                                                      ],
-                                                    [],
-                                                    "next",
-                                                    []
-                                                  |),
-                                                  [ iter ]
-                                                |)
-                                              |),
-                                              [
-                                                fun γ =>
-                                                  ltac:(M.monadic
-                                                    (let _ :=
-                                                      M.is_struct_tuple (|
-                                                        γ,
-                                                        "core::option::Option::None"
-                                                      |) in
-                                                    M.alloc (|
-                                                      M.never_to_any (| M.read (| M.break (||) |) |)
-                                                    |)));
-                                                fun γ =>
-                                                  ltac:(M.monadic
-                                                    (let γ0_0 :=
-                                                      M.SubPointer.get_struct_tuple_field (|
-                                                        γ,
-                                                        "core::option::Option::Some",
-                                                        0
-                                                      |) in
-                                                    let byte := M.copy (| γ0_0 |) in
-                                                    let~ _ :=
-                                                      M.match_operator (|
-                                                        M.alloc (|
-                                                          M.call_closure (|
-                                                            M.get_trait_method (|
-                                                              "core::ops::try_trait::Try",
-                                                              Ty.apply
-                                                                (Ty.path "core::result::Result")
-                                                                []
-                                                                [
-                                                                  Ty.tuple [];
-                                                                  Ty.path "core::fmt::Error"
-                                                                ],
-                                                              [],
-                                                              "branch",
-                                                              []
-                                                            |),
-                                                            [
-                                                              M.call_closure (|
-                                                                M.get_associated_function (|
-                                                                  Ty.path "core::fmt::Formatter",
-                                                                  "write_str",
-                                                                  []
-                                                                |),
-                                                                [
-                                                                  M.read (| f |);
-                                                                  M.call_closure (|
-                                                                    M.get_associated_function (|
-                                                                      Ty.path
-                                                                        "core::ascii::ascii_char::AsciiChar",
-                                                                      "as_str",
-                                                                      []
-                                                                    |),
-                                                                    [ M.read (| byte |) ]
-                                                                  |)
-                                                                ]
-                                                              |)
-                                                            ]
-                                                          |)
-                                                        |),
-                                                        [
-                                                          fun γ =>
-                                                            ltac:(M.monadic
-                                                              (let γ0_0 :=
-                                                                M.SubPointer.get_struct_tuple_field (|
-                                                                  γ,
-                                                                  "core::ops::control_flow::ControlFlow::Break",
-                                                                  0
-                                                                |) in
-                                                              let residual := M.copy (| γ0_0 |) in
-                                                              M.alloc (|
-                                                                M.never_to_any (|
-                                                                  M.read (|
-                                                                    M.return_ (|
-                                                                      M.call_closure (|
-                                                                        M.get_trait_method (|
-                                                                          "core::ops::try_trait::FromResidual",
-                                                                          Ty.apply
-                                                                            (Ty.path
-                                                                              "core::result::Result")
-                                                                            []
-                                                                            [
-                                                                              Ty.tuple [];
-                                                                              Ty.path
-                                                                                "core::fmt::Error"
-                                                                            ],
-                                                                          [
-                                                                            Ty.apply
-                                                                              (Ty.path
-                                                                                "core::result::Result")
-                                                                              []
-                                                                              [
-                                                                                Ty.path
-                                                                                  "core::convert::Infallible";
-                                                                                Ty.path
-                                                                                  "core::fmt::Error"
-                                                                              ]
-                                                                          ],
-                                                                          "from_residual",
-                                                                          []
-                                                                        |),
-                                                                        [ M.read (| residual |) ]
-                                                                      |)
-                                                                    |)
-                                                                  |)
-                                                                |)
-                                                              |)));
-                                                          fun γ =>
-                                                            ltac:(M.monadic
-                                                              (let γ0_0 :=
-                                                                M.SubPointer.get_struct_tuple_field (|
-                                                                  γ,
-                                                                  "core::ops::control_flow::ControlFlow::Continue",
-                                                                  0
-                                                                |) in
-                                                              let val := M.copy (| γ0_0 |) in
-                                                              val))
-                                                        ]
-                                                      |) in
-                                                    M.alloc (| Value.Tuple [] |)))
-                                              ]
-                                            |) in
-                                          M.alloc (| Value.Tuple [] |)))
-                                      |)))
-                                ]
-                              |)) in
-                          M.alloc (|
-                            M.call_closure (|
-                              M.get_trait_method (|
-                                "core::fmt::Write",
-                                Ty.path "core::fmt::Formatter",
-                                [],
-                                "write_char",
-                                []
-                              |),
-                              [ M.read (| f |); Value.UnicodeChar 39 ]
                             |)
-                          |)))
-                    ]
-                  |)
-                |)))
+                          ]
+                        |)
+                      |)))
+                ]
+              |)
             |)))
         | _, _, _ => M.impossible
         end.

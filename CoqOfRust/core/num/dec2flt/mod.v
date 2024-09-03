@@ -95,15 +95,13 @@ Module num.
                 M.read (| f |);
                 M.read (| Value.String "ParseFloatError" |);
                 M.read (| Value.String "kind" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.alloc (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::num::dec2flt::ParseFloatError",
-                      "kind"
-                    |)
-                  |))
+                M.alloc (|
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::num::dec2flt::ParseFloatError",
+                    "kind"
+                  |)
+                |)
               ]
             |)))
         | _, _, _ => M.impossible
@@ -210,17 +208,6 @@ Module num.
           (* Trait polymorphic types *) []
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
     End Impl_core_cmp_PartialEq_for_core_num_dec2flt_ParseFloatError.
-    
-    Module Impl_core_marker_StructuralEq_for_core_num_dec2flt_ParseFloatError.
-      Definition Self : Ty.t := Ty.path "core::num::dec2flt::ParseFloatError".
-      
-      Axiom Implements :
-        M.IsTraitInstance
-          "core::marker::StructuralEq"
-          Self
-          (* Trait polymorphic types *) []
-          (* Instance *) [].
-    End Impl_core_marker_StructuralEq_for_core_num_dec2flt_ParseFloatError.
     
     Module Impl_core_cmp_Eq_for_core_num_dec2flt_ParseFloatError.
       Definition Self : Ty.t := Ty.path "core::num::dec2flt::ParseFloatError".
@@ -391,7 +378,7 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ __self_tag :=
+              let~ __self_discr :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -401,7 +388,7 @@ Module num.
                     [ M.read (| self |) ]
                   |)
                 |) in
-              let~ __arg1_tag :=
+              let~ __arg1_discr :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -411,7 +398,7 @@ Module num.
                     [ M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)) |)
+              M.alloc (| BinOp.Pure.eq (M.read (| __self_discr |)) (M.read (| __arg1_discr |)) |)
             |)))
         | _, _, _ => M.impossible
         end.
@@ -423,17 +410,6 @@ Module num.
           (* Trait polymorphic types *) []
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
     End Impl_core_cmp_PartialEq_for_core_num_dec2flt_FloatErrorKind.
-    
-    Module Impl_core_marker_StructuralEq_for_core_num_dec2flt_FloatErrorKind.
-      Definition Self : Ty.t := Ty.path "core::num::dec2flt::FloatErrorKind".
-      
-      Axiom Implements :
-        M.IsTraitInstance
-          "core::marker::StructuralEq"
-          Self
-          (* Trait polymorphic types *) []
-          (* Instance *) [].
-    End Impl_core_marker_StructuralEq_for_core_num_dec2flt_FloatErrorKind.
     
     Module Impl_core_cmp_Eq_for_core_num_dec2flt_FloatErrorKind.
       Definition Self : Ty.t := Ty.path "core::num::dec2flt::FloatErrorKind".
@@ -670,8 +646,10 @@ Module num.
             None => return Err(pfe_invalid()),
         };
         num.negative = negative;
-        if let Some(value) = num.try_fast_path::<F>() {
-            return Ok(value);
+        if !cfg!(feature = "optimize_for_size") {
+            if let Some(value) = num.try_fast_path::<F>() {
+                return Ok(value);
+            }
         }
     
         // If significant digits were truncated, then we can have rounding error
@@ -937,34 +915,45 @@ Module num.
                     [
                       fun γ =>
                         ltac:(M.monadic
-                          (let γ :=
-                            M.alloc (|
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::num::dec2flt::number::Number",
-                                  "try_fast_path",
-                                  [ F ]
-                                |),
-                                [ num ]
-                              |)
-                            |) in
-                          let γ0_0 :=
-                            M.SubPointer.get_struct_tuple_field (|
-                              γ,
-                              "core::option::Option::Some",
-                              0
-                            |) in
-                          let value := M.copy (| γ0_0 |) in
-                          M.alloc (|
-                            M.never_to_any (|
-                              M.read (|
-                                M.return_ (|
-                                  Value.StructTuple
-                                    "core::result::Result::Ok"
-                                    [ M.read (| value |) ]
-                                |)
-                              |)
-                            |)
+                          (let γ := M.use (M.alloc (| UnOp.Pure.not (Value.Bool false) |)) in
+                          let _ :=
+                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                          M.match_operator (|
+                            M.alloc (| Value.Tuple [] |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let γ :=
+                                    M.alloc (|
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.path "core::num::dec2flt::number::Number",
+                                          "try_fast_path",
+                                          [ F ]
+                                        |),
+                                        [ num ]
+                                      |)
+                                    |) in
+                                  let γ0_0 :=
+                                    M.SubPointer.get_struct_tuple_field (|
+                                      γ,
+                                      "core::option::Option::Some",
+                                      0
+                                    |) in
+                                  let value := M.copy (| γ0_0 |) in
+                                  M.alloc (|
+                                    M.never_to_any (|
+                                      M.read (|
+                                        M.return_ (|
+                                          Value.StructTuple
+                                            "core::result::Result::Ok"
+                                            [ M.read (| value |) ]
+                                        |)
+                                      |)
+                                    |)
+                                  |)));
+                              fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                            ]
                           |)));
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]

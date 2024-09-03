@@ -47,21 +47,19 @@ Module array.
                         []
                       |),
                       [
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.call_closure (|
-                            M.get_trait_method (|
-                              "core::ops::deref::DerefMut",
-                              Ty.apply
-                                (Ty.path "core::mem::manually_drop::ManuallyDrop")
-                                []
-                                [ Ty.apply (Ty.path "array") [ N ] [ T ] ],
-                              [],
-                              "deref_mut",
+                        M.call_closure (|
+                          M.get_trait_method (|
+                            "core::ops::deref::DerefMut",
+                            Ty.apply
+                              (Ty.path "core::mem::manually_drop::ManuallyDrop")
                               []
-                            |),
-                            [ array ]
-                          |))
+                              [ Ty.apply (Ty.path "array") [ N ] [ T ] ],
+                            [],
+                            "deref_mut",
+                            []
+                          |),
+                          [ array ]
+                        |)
                       ]
                     |)
                   ]

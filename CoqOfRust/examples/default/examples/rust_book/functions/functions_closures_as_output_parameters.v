@@ -44,31 +44,27 @@ Definition create_fn (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : 
                                         []
                                       |),
                                       [
-                                        (* Unsize *)
-                                        M.pointer_coercion
-                                          (M.alloc (|
-                                            Value.Array
-                                              [
-                                                M.read (| Value.String "This is a: " |);
-                                                M.read (| Value.String "
+                                        M.alloc (|
+                                          Value.Array
+                                            [
+                                              M.read (| Value.String "This is a: " |);
+                                              M.read (| Value.String "
 " |)
-                                              ]
-                                          |));
-                                        (* Unsize *)
-                                        M.pointer_coercion
-                                          (M.alloc (|
-                                            Value.Array
-                                              [
-                                                M.call_closure (|
-                                                  M.get_associated_function (|
-                                                    Ty.path "core::fmt::rt::Argument",
-                                                    "new_display",
-                                                    [ Ty.path "alloc::string::String" ]
-                                                  |),
-                                                  [ text ]
-                                                |)
-                                              ]
-                                          |))
+                                            ]
+                                        |);
+                                        M.alloc (|
+                                          Value.Array
+                                            [
+                                              M.call_closure (|
+                                                M.get_associated_function (|
+                                                  Ty.path "core::fmt::rt::Argument",
+                                                  "new_display",
+                                                  [ Ty.path "alloc::string::String" ]
+                                                |),
+                                                [ text ]
+                                              |)
+                                            ]
+                                        |)
                                       ]
                                     |)
                                   ]
@@ -135,31 +131,27 @@ Definition create_fnmut (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
                                         []
                                       |),
                                       [
-                                        (* Unsize *)
-                                        M.pointer_coercion
-                                          (M.alloc (|
-                                            Value.Array
-                                              [
-                                                M.read (| Value.String "This is a: " |);
-                                                M.read (| Value.String "
+                                        M.alloc (|
+                                          Value.Array
+                                            [
+                                              M.read (| Value.String "This is a: " |);
+                                              M.read (| Value.String "
 " |)
-                                              ]
-                                          |));
-                                        (* Unsize *)
-                                        M.pointer_coercion
-                                          (M.alloc (|
-                                            Value.Array
-                                              [
-                                                M.call_closure (|
-                                                  M.get_associated_function (|
-                                                    Ty.path "core::fmt::rt::Argument",
-                                                    "new_display",
-                                                    [ Ty.path "alloc::string::String" ]
-                                                  |),
-                                                  [ text ]
-                                                |)
-                                              ]
-                                          |))
+                                            ]
+                                        |);
+                                        M.alloc (|
+                                          Value.Array
+                                            [
+                                              M.call_closure (|
+                                                M.get_associated_function (|
+                                                  Ty.path "core::fmt::rt::Argument",
+                                                  "new_display",
+                                                  [ Ty.path "alloc::string::String" ]
+                                                |),
+                                                [ text ]
+                                              |)
+                                            ]
+                                        |)
                                       ]
                                     |)
                                   ]
@@ -226,31 +218,27 @@ Definition create_fnonce (ε : list Value.t) (τ : list Ty.t) (α : list Value.t
                                         []
                                       |),
                                       [
-                                        (* Unsize *)
-                                        M.pointer_coercion
-                                          (M.alloc (|
-                                            Value.Array
-                                              [
-                                                M.read (| Value.String "This is a: " |);
-                                                M.read (| Value.String "
+                                        M.alloc (|
+                                          Value.Array
+                                            [
+                                              M.read (| Value.String "This is a: " |);
+                                              M.read (| Value.String "
 " |)
-                                              ]
-                                          |));
-                                        (* Unsize *)
-                                        M.pointer_coercion
-                                          (M.alloc (|
-                                            Value.Array
-                                              [
-                                                M.call_closure (|
-                                                  M.get_associated_function (|
-                                                    Ty.path "core::fmt::rt::Argument",
-                                                    "new_display",
-                                                    [ Ty.path "alloc::string::String" ]
-                                                  |),
-                                                  [ text ]
-                                                |)
-                                              ]
-                                          |))
+                                            ]
+                                        |);
+                                        M.alloc (|
+                                          Value.Array
+                                            [
+                                              M.call_closure (|
+                                                M.get_associated_function (|
+                                                  Ty.path "core::fmt::rt::Argument",
+                                                  "new_display",
+                                                  [ Ty.path "alloc::string::String" ]
+                                                |),
+                                                [ text ]
+                                              |)
+                                            ]
+                                        |)
                                       ]
                                     |)
                                   ]

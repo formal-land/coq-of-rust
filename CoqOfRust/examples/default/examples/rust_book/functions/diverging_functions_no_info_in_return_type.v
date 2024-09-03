@@ -40,17 +40,15 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
                   [
-                    (* Unsize *)
-                    M.pointer_coercion
-                      (M.alloc (|
-                        Value.Array
-                          [
-                            M.read (|
-                              Value.String "This function returns and you can see this line.
+                    M.alloc (|
+                      Value.Array
+                        [
+                          M.read (|
+                            Value.String "This function returns and you can see this line.
 "
-                            |)
-                          ]
-                      |))
+                          |)
+                        ]
+                    |)
                   ]
                 |)
               ]

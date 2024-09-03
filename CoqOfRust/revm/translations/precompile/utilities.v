@@ -639,16 +639,14 @@ Module utilities.
             []
           |),
           [
-            (* Unsize *)
-            M.pointer_coercion
-              (M.SubPointer.get_struct_tuple_field (|
-                M.call_closure (|
-                  M.get_function (| "revm_precompile::utilities::bool_to_b256", [] |),
-                  [ M.read (| value |) ]
-                |),
-                "alloy_primitives::bits::fixed::FixedBytes",
-                0
-              |))
+            M.SubPointer.get_struct_tuple_field (|
+              M.call_closure (|
+                M.get_function (| "revm_precompile::utilities::bool_to_b256", [] |),
+                [ M.read (| value |) ]
+              |),
+              "alloy_primitives::bits::fixed::FixedBytes",
+              0
+            |)
           ]
         |)))
     | _, _, _ => M.impossible

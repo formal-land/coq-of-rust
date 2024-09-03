@@ -76,20 +76,18 @@ Definition inspect (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M 
                             []
                           |),
                           [
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.alloc (|
-                                Value.Array
-                                  [
-                                    M.read (|
-                                      Value.String
-                                        ("page loaded, r"
-                                          ++
-                                          (String.String "233" ("f" ++ (String.String "233" "
+                            M.alloc (|
+                              Value.Array
+                                [
+                                  M.read (|
+                                    Value.String
+                                      ("page loaded, r"
+                                        ++
+                                        (String.String "233" ("f" ++ (String.String "233" "
 "))))
-                                    |)
-                                  ]
-                              |))
+                                  |)
+                                ]
+                            |)
                           ]
                         |)
                       ]
@@ -110,13 +108,8 @@ Definition inspect (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M 
                             "new_const",
                             []
                           |),
-                          [
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.alloc (|
-                                Value.Array [ M.read (| Value.String "page unloaded
-" |) ]
-                              |))
+                          [ M.alloc (| Value.Array [ M.read (| Value.String "page unloaded
+" |) ] |)
                           ]
                         |)
                       ]
@@ -140,31 +133,27 @@ Definition inspect (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M 
                             []
                           |),
                           [
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.alloc (|
-                                Value.Array
-                                  [
-                                    M.read (| Value.String "pressed '" |);
-                                    M.read (| Value.String "'.
+                            M.alloc (|
+                              Value.Array
+                                [
+                                  M.read (| Value.String "pressed '" |);
+                                  M.read (| Value.String "'.
 " |)
-                                  ]
-                              |));
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.alloc (|
-                                Value.Array
-                                  [
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::rt::Argument",
-                                        "new_display",
-                                        [ Ty.path "char" ]
-                                      |),
-                                      [ c ]
-                                    |)
-                                  ]
-                              |))
+                                ]
+                            |);
+                            M.alloc (|
+                              Value.Array
+                                [
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_display",
+                                      [ Ty.path "char" ]
+                                    |),
+                                    [ c ]
+                                  |)
+                                ]
+                            |)
                           ]
                         |)
                       ]
@@ -188,31 +177,27 @@ Definition inspect (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M 
                             []
                           |),
                           [
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.alloc (|
-                                Value.Array
-                                  [
-                                    M.read (| Value.String "pasted """ |);
-                                    M.read (| Value.String """.
+                            M.alloc (|
+                              Value.Array
+                                [
+                                  M.read (| Value.String "pasted """ |);
+                                  M.read (| Value.String """.
 " |)
-                                  ]
-                              |));
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.alloc (|
-                                Value.Array
-                                  [
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::rt::Argument",
-                                        "new_display",
-                                        [ Ty.path "alloc::string::String" ]
-                                      |),
-                                      [ s ]
-                                    |)
-                                  ]
-                              |))
+                                ]
+                            |);
+                            M.alloc (|
+                              Value.Array
+                                [
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_display",
+                                      [ Ty.path "alloc::string::String" ]
+                                    |),
+                                    [ s ]
+                                  |)
+                                ]
+                            |)
                           ]
                         |)
                       ]
@@ -240,40 +225,36 @@ Definition inspect (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M 
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (| Value.String "clicked at x=" |);
-                                      M.read (| Value.String ", y=" |);
-                                      M.read (| Value.String ".
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (| Value.String "clicked at x=" |);
+                                    M.read (| Value.String ", y=" |);
+                                    M.read (| Value.String ".
 " |)
-                                    ]
-                                |));
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path "core::fmt::rt::Argument",
-                                          "new_display",
-                                          [ Ty.path "i64" ]
-                                        |),
-                                        [ x ]
-                                      |);
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path "core::fmt::rt::Argument",
-                                          "new_display",
-                                          [ Ty.path "i64" ]
-                                        |),
-                                        [ y ]
-                                      |)
-                                    ]
-                                |))
+                                  ]
+                              |);
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "core::fmt::rt::Argument",
+                                        "new_display",
+                                        [ Ty.path "i64" ]
+                                      |),
+                                      [ x ]
+                                    |);
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "core::fmt::rt::Argument",
+                                        "new_display",
+                                        [ Ty.path "i64" ]
+                                      |),
+                                      [ y ]
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]

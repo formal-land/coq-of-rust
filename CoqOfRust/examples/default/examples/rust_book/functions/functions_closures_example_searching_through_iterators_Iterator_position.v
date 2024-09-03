@@ -30,36 +30,34 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 [ Ty.path "alloc::alloc::Global" ]
               |),
               [
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.read (|
-                    M.call_closure (|
-                      M.get_associated_function (|
-                        Ty.apply
-                          (Ty.path "alloc::boxed::Box")
-                          []
-                          [
-                            Ty.apply (Ty.path "array") [ Value.Integer 6 ] [ Ty.path "i32" ];
-                            Ty.path "alloc::alloc::Global"
-                          ],
-                        "new",
+                M.read (|
+                  M.call_closure (|
+                    M.get_associated_function (|
+                      Ty.apply
+                        (Ty.path "alloc::boxed::Box")
                         []
-                      |),
-                      [
-                        M.alloc (|
-                          Value.Array
-                            [
-                              Value.Integer 1;
-                              Value.Integer 9;
-                              Value.Integer 3;
-                              Value.Integer 3;
-                              Value.Integer 13;
-                              Value.Integer 2
-                            ]
-                        |)
-                      ]
-                    |)
-                  |))
+                        [
+                          Ty.apply (Ty.path "array") [ Value.Integer 6 ] [ Ty.path "i32" ];
+                          Ty.path "alloc::alloc::Global"
+                        ],
+                      "new",
+                      []
+                    |),
+                    [
+                      M.alloc (|
+                        Value.Array
+                          [
+                            Value.Integer 1;
+                            Value.Integer 9;
+                            Value.Integer 3;
+                            Value.Integer 3;
+                            Value.Integer 13;
+                            Value.Integer 2
+                          ]
+                      |)
+                    ]
+                  |)
+                |)
               ]
             |)
           |) in

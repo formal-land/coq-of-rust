@@ -143,47 +143,37 @@ Module interpreter_action.
                 M.read (| f |);
                 M.read (| Value.String "CreateInputs" |);
                 M.read (| Value.String "caller" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "revm_interpreter::interpreter_action::create_inputs::CreateInputs",
-                    "caller"
-                  |));
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "revm_interpreter::interpreter_action::create_inputs::CreateInputs",
+                  "caller"
+                |);
                 M.read (| Value.String "scheme" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "revm_interpreter::interpreter_action::create_inputs::CreateInputs",
-                    "scheme"
-                  |));
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "revm_interpreter::interpreter_action::create_inputs::CreateInputs",
+                  "scheme"
+                |);
                 M.read (| Value.String "value" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "revm_interpreter::interpreter_action::create_inputs::CreateInputs",
-                    "value"
-                  |));
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "revm_interpreter::interpreter_action::create_inputs::CreateInputs",
+                  "value"
+                |);
                 M.read (| Value.String "init_code" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.SubPointer.get_struct_record_field (|
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "revm_interpreter::interpreter_action::create_inputs::CreateInputs",
+                  "init_code"
+                |);
+                M.read (| Value.String "gas_limit" |);
+                M.alloc (|
+                  M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
                     "revm_interpreter::interpreter_action::create_inputs::CreateInputs",
-                    "init_code"
-                  |));
-                M.read (| Value.String "gas_limit" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.alloc (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "revm_interpreter::interpreter_action::create_inputs::CreateInputs",
-                      "gas_limit"
-                    |)
-                  |))
+                    "gas_limit"
+                  |)
+                |)
               ]
             |)))
         | _, _, _ => M.impossible
@@ -342,18 +332,6 @@ Module interpreter_action.
           (* Trait polymorphic types *) []
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
     End Impl_core_cmp_PartialEq_for_revm_interpreter_interpreter_action_create_inputs_CreateInputs.
-    
-    Module Impl_core_marker_StructuralEq_for_revm_interpreter_interpreter_action_create_inputs_CreateInputs.
-      Definition Self : Ty.t :=
-        Ty.path "revm_interpreter::interpreter_action::create_inputs::CreateInputs".
-      
-      Axiom Implements :
-        M.IsTraitInstance
-          "core::marker::StructuralEq"
-          Self
-          (* Trait polymorphic types *) []
-          (* Instance *) [].
-    End Impl_core_marker_StructuralEq_for_revm_interpreter_interpreter_action_create_inputs_CreateInputs.
     
     Module Impl_core_cmp_Eq_for_revm_interpreter_interpreter_action_create_inputs_CreateInputs.
       Definition Self : Ty.t :=

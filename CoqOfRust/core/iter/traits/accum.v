@@ -8672,7 +8672,7 @@ Module iter.
         (*
                     fn sum<I: Iterator<Item=Self>>(iter: I) -> Self {
                         iter.fold(
-                            0.0,
+                            -0.0,
                             #[rustc_inherit_overflow_checks]
                             |a, b| a + b,
                         )
@@ -8814,7 +8814,7 @@ Module iter.
         (*
                     fn sum<I: Iterator<Item=&'a Self>>(iter: I) -> Self {
                         iter.fold(
-                            0.0,
+                            -0.0,
                             #[rustc_inherit_overflow_checks]
                             |a, b| a + b,
                         )
@@ -8972,7 +8972,7 @@ Module iter.
         (*
                     fn sum<I: Iterator<Item=Self>>(iter: I) -> Self {
                         iter.fold(
-                            0.0,
+                            -0.0,
                             #[rustc_inherit_overflow_checks]
                             |a, b| a + b,
                         )
@@ -9114,7 +9114,7 @@ Module iter.
         (*
                     fn sum<I: Iterator<Item=&'a Self>>(iter: I) -> Self {
                         iter.fold(
-                            0.0,
+                            -0.0,
                             #[rustc_inherit_overflow_checks]
                             |a, b| a + b,
                         )

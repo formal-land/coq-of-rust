@@ -424,13 +424,11 @@ Module panic.
                         [ M.read (| f |); M.read (| Value.String "AssertUnwindSafe" |) ]
                       |)
                     |);
-                    (* Unsize *)
-                    M.pointer_coercion
-                      (M.SubPointer.get_struct_tuple_field (|
-                        M.read (| self |),
-                        "core::panic::unwind_safe::AssertUnwindSafe",
-                        0
-                      |))
+                    M.SubPointer.get_struct_tuple_field (|
+                      M.read (| self |),
+                      "core::panic::unwind_safe::AssertUnwindSafe",
+                      0
+                    |)
                   ]
                 |)
               ]

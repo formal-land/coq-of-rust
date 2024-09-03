@@ -26,58 +26,30 @@ Module num.
                 |)
               |))).
         
-        Definition value_TWOPOW10 : Value.t :=
+        Definition value_POW5TO16 : Value.t :=
+          M.run
+            ltac:(M.monadic
+              (M.alloc (|
+                M.alloc (| Value.Array [ Value.Integer 2264035265; Value.Integer 35 ] |)
+              |))).
+        
+        Definition value_POW5TO32 : Value.t :=
           M.run
             ltac:(M.monadic
               (M.alloc (|
                 M.alloc (|
                   Value.Array
-                    [
-                      Value.Integer 2;
-                      Value.Integer 20;
-                      Value.Integer 200;
-                      Value.Integer 2000;
-                      Value.Integer 20000;
-                      Value.Integer 200000;
-                      Value.Integer 2000000;
-                      Value.Integer 20000000;
-                      Value.Integer 200000000;
-                      Value.Integer 2000000000
-                    ]
+                    [ Value.Integer 2242703233; Value.Integer 762134875; Value.Integer 1262 ]
                 |)
               |))).
         
-        Definition value_POW10TO16 : Value.t :=
-          M.run
-            ltac:(M.monadic
-              (M.alloc (|
-                M.alloc (| Value.Array [ Value.Integer 1874919424; Value.Integer 2328306 ] |)
-              |))).
-        
-        Definition value_POW10TO32 : Value.t :=
+        Definition value_POW5TO64 : Value.t :=
           M.run
             ltac:(M.monadic
               (M.alloc (|
                 M.alloc (|
                   Value.Array
                     [
-                      Value.Integer 0;
-                      Value.Integer 2242703233;
-                      Value.Integer 762134875;
-                      Value.Integer 1262
-                    ]
-                |)
-              |))).
-        
-        Definition value_POW10TO64 : Value.t :=
-          M.run
-            ltac:(M.monadic
-              (M.alloc (|
-                M.alloc (|
-                  Value.Array
-                    [
-                      Value.Integer 0;
-                      Value.Integer 0;
                       Value.Integer 3211403009;
                       Value.Integer 1849224548;
                       Value.Integer 3668416493;
@@ -87,17 +59,13 @@ Module num.
                 |)
               |))).
         
-        Definition value_POW10TO128 : Value.t :=
+        Definition value_POW5TO128 : Value.t :=
           M.run
             ltac:(M.monadic
               (M.alloc (|
                 M.alloc (|
                   Value.Array
                     [
-                      Value.Integer 0;
-                      Value.Integer 0;
-                      Value.Integer 0;
-                      Value.Integer 0;
                       Value.Integer 781532673;
                       Value.Integer 64985353;
                       Value.Integer 253049085;
@@ -112,21 +80,13 @@ Module num.
                 |)
               |))).
         
-        Definition value_POW10TO256 : Value.t :=
+        Definition value_POW5TO256 : Value.t :=
           M.run
             ltac:(M.monadic
               (M.alloc (|
                 M.alloc (|
                   Value.Array
                     [
-                      Value.Integer 0;
-                      Value.Integer 0;
-                      Value.Integer 0;
-                      Value.Integer 0;
-                      Value.Integer 0;
-                      Value.Integer 0;
-                      Value.Integer 0;
-                      Value.Integer 0;
                       Value.Integer 2553183233;
                       Value.Integer 3201533787;
                       Value.Integer 3638140786;
@@ -153,28 +113,34 @@ Module num.
         (*
         pub fn mul_pow10(x: &mut Big, n: usize) -> &mut Big {
             debug_assert!(n < 512);
+            // Save ourself the left shift for the smallest cases.
+            if n < 8 {
+                return x.mul_small(POW10[n & 7]);
+            }
+            // Multiply by the powers of 5 and shift the 2s in at the end.
+            // This keeps the intermediate products smaller and faster.
             if n & 7 != 0 {
-                x.mul_small(POW10[n & 7]);
+                x.mul_small(POW10[n & 7] >> (n & 7));
             }
             if n & 8 != 0 {
-                x.mul_small(POW10[8]);
+                x.mul_small(POW10[8] >> 8);
             }
             if n & 16 != 0 {
-                x.mul_digits(&POW10TO16);
+                x.mul_digits(&POW5TO16);
             }
             if n & 32 != 0 {
-                x.mul_digits(&POW10TO32);
+                x.mul_digits(&POW5TO32);
             }
             if n & 64 != 0 {
-                x.mul_digits(&POW10TO64);
+                x.mul_digits(&POW5TO64);
             }
             if n & 128 != 0 {
-                x.mul_digits(&POW10TO128);
+                x.mul_digits(&POW5TO128);
             }
             if n & 256 != 0 {
-                x.mul_digits(&POW10TO256);
+                x.mul_digits(&POW5TO256);
             }
-            x
+            x.mul_pow2(n)
         }
         *)
         Definition mul_pow10 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -183,330 +149,415 @@ Module num.
             ltac:(M.monadic
               (let x := M.alloc (| x |) in
               let n := M.alloc (| n |) in
-              M.read (|
-                let~ _ :=
-                  M.match_operator (|
-                    M.alloc (| Value.Tuple [] |),
-                    [
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let γ := M.use (M.alloc (| Value.Bool true |)) in
-                          let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                          let~ _ :=
-                            M.match_operator (|
-                              M.alloc (| Value.Tuple [] |),
-                              [
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let γ :=
-                                      M.use
-                                        (M.alloc (|
-                                          UnOp.Pure.not
-                                            (BinOp.Pure.lt (M.read (| n |)) (Value.Integer 512))
-                                        |)) in
-                                    let _ :=
-                                      M.is_constant_or_break_match (|
-                                        M.read (| γ |),
-                                        Value.Bool true
-                                      |) in
-                                    M.alloc (|
-                                      M.never_to_any (|
-                                        M.call_closure (|
-                                          M.get_function (| "core::panicking::panic", [] |),
-                                          [ M.read (| Value.String "assertion failed: n < 512" |) ]
-                                        |)
-                                      |)
-                                    |)));
-                                fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                              ]
-                            |) in
-                          M.alloc (| Value.Tuple [] |)));
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                    ]
-                  |) in
-                let~ _ :=
-                  M.match_operator (|
-                    M.alloc (| Value.Tuple [] |),
-                    [
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let γ :=
-                            M.use
-                              (M.alloc (|
-                                BinOp.Pure.ne
-                                  (BinOp.Pure.bit_and (M.read (| n |)) (Value.Integer 7))
-                                  (Value.Integer 0)
-                              |)) in
-                          let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                          let~ _ :=
-                            M.alloc (|
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::num::bignum::Big32x40",
-                                  "mul_small",
-                                  []
-                                |),
-                                [
-                                  M.read (| x |);
+              M.catch_return (|
+                ltac:(M.monadic
+                  (M.read (|
+                    let~ _ :=
+                      M.match_operator (|
+                        M.alloc (| Value.Tuple [] |),
+                        [
+                          fun γ =>
+                            ltac:(M.monadic
+                              (let γ := M.use (M.alloc (| Value.Bool true |)) in
+                              let _ :=
+                                M.is_constant_or_break_match (|
+                                  M.read (| γ |),
+                                  Value.Bool true
+                                |) in
+                              let~ _ :=
+                                M.match_operator (|
+                                  M.alloc (| Value.Tuple [] |),
+                                  [
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (let γ :=
+                                          M.use
+                                            (M.alloc (|
+                                              UnOp.Pure.not
+                                                (BinOp.Pure.lt (M.read (| n |)) (Value.Integer 512))
+                                            |)) in
+                                        let _ :=
+                                          M.is_constant_or_break_match (|
+                                            M.read (| γ |),
+                                            Value.Bool true
+                                          |) in
+                                        M.alloc (|
+                                          M.never_to_any (|
+                                            M.call_closure (|
+                                              M.get_function (| "core::panicking::panic", [] |),
+                                              [
+                                                M.read (|
+                                                  Value.String "assertion failed: n < 512"
+                                                |)
+                                              ]
+                                            |)
+                                          |)
+                                        |)));
+                                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                  ]
+                                |) in
+                              M.alloc (| Value.Tuple [] |)));
+                          fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                        ]
+                      |) in
+                    let~ _ :=
+                      M.match_operator (|
+                        M.alloc (| Value.Tuple [] |),
+                        [
+                          fun γ =>
+                            ltac:(M.monadic
+                              (let γ :=
+                                M.use
+                                  (M.alloc (|
+                                    BinOp.Pure.lt (M.read (| n |)) (Value.Integer 8)
+                                  |)) in
+                              let _ :=
+                                M.is_constant_or_break_match (|
+                                  M.read (| γ |),
+                                  Value.Bool true
+                                |) in
+                              M.alloc (|
+                                M.never_to_any (|
                                   M.read (|
-                                    M.SubPointer.get_array_field (|
-                                      M.read (|
-                                        M.get_constant (|
-                                          "core::num::flt2dec::strategy::dragon::POW10"
-                                        |)
-                                      |),
-                                      M.alloc (|
-                                        BinOp.Pure.bit_and (M.read (| n |)) (Value.Integer 7)
+                                    M.return_ (|
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.path "core::num::bignum::Big32x40",
+                                          "mul_small",
+                                          []
+                                        |),
+                                        [
+                                          M.read (| x |);
+                                          M.read (|
+                                            M.SubPointer.get_array_field (|
+                                              M.read (|
+                                                M.get_constant (|
+                                                  "core::num::flt2dec::strategy::dragon::POW10"
+                                                |)
+                                              |),
+                                              M.alloc (|
+                                                BinOp.Pure.bit_and
+                                                  (M.read (| n |))
+                                                  (Value.Integer 7)
+                                              |)
+                                            |)
+                                          |)
+                                        ]
                                       |)
                                     |)
                                   |)
-                                ]
-                              |)
-                            |) in
-                          M.alloc (| Value.Tuple [] |)));
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                    ]
-                  |) in
-                let~ _ :=
-                  M.match_operator (|
-                    M.alloc (| Value.Tuple [] |),
-                    [
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let γ :=
-                            M.use
-                              (M.alloc (|
-                                BinOp.Pure.ne
-                                  (BinOp.Pure.bit_and (M.read (| n |)) (Value.Integer 8))
-                                  (Value.Integer 0)
-                              |)) in
-                          let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                          let~ _ :=
-                            M.alloc (|
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::num::bignum::Big32x40",
-                                  "mul_small",
-                                  []
-                                |),
-                                [
-                                  M.read (| x |);
-                                  M.read (|
-                                    M.SubPointer.get_array_field (|
+                                |)
+                              |)));
+                          fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                        ]
+                      |) in
+                    let~ _ :=
+                      M.match_operator (|
+                        M.alloc (| Value.Tuple [] |),
+                        [
+                          fun γ =>
+                            ltac:(M.monadic
+                              (let γ :=
+                                M.use
+                                  (M.alloc (|
+                                    BinOp.Pure.ne
+                                      (BinOp.Pure.bit_and (M.read (| n |)) (Value.Integer 7))
+                                      (Value.Integer 0)
+                                  |)) in
+                              let _ :=
+                                M.is_constant_or_break_match (|
+                                  M.read (| γ |),
+                                  Value.Bool true
+                                |) in
+                              let~ _ :=
+                                M.alloc (|
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::num::bignum::Big32x40",
+                                      "mul_small",
+                                      []
+                                    |),
+                                    [
+                                      M.read (| x |);
+                                      BinOp.Wrap.shr
+                                        (M.read (|
+                                          M.SubPointer.get_array_field (|
+                                            M.read (|
+                                              M.get_constant (|
+                                                "core::num::flt2dec::strategy::dragon::POW10"
+                                              |)
+                                            |),
+                                            M.alloc (|
+                                              BinOp.Pure.bit_and (M.read (| n |)) (Value.Integer 7)
+                                            |)
+                                          |)
+                                        |))
+                                        (BinOp.Pure.bit_and (M.read (| n |)) (Value.Integer 7))
+                                    ]
+                                  |)
+                                |) in
+                              M.alloc (| Value.Tuple [] |)));
+                          fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                        ]
+                      |) in
+                    let~ _ :=
+                      M.match_operator (|
+                        M.alloc (| Value.Tuple [] |),
+                        [
+                          fun γ =>
+                            ltac:(M.monadic
+                              (let γ :=
+                                M.use
+                                  (M.alloc (|
+                                    BinOp.Pure.ne
+                                      (BinOp.Pure.bit_and (M.read (| n |)) (Value.Integer 8))
+                                      (Value.Integer 0)
+                                  |)) in
+                              let _ :=
+                                M.is_constant_or_break_match (|
+                                  M.read (| γ |),
+                                  Value.Bool true
+                                |) in
+                              let~ _ :=
+                                M.alloc (|
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::num::bignum::Big32x40",
+                                      "mul_small",
+                                      []
+                                    |),
+                                    [
+                                      M.read (| x |);
+                                      BinOp.Wrap.shr
+                                        (M.read (|
+                                          M.SubPointer.get_array_field (|
+                                            M.read (|
+                                              M.get_constant (|
+                                                "core::num::flt2dec::strategy::dragon::POW10"
+                                              |)
+                                            |),
+                                            M.alloc (| Value.Integer 8 |)
+                                          |)
+                                        |))
+                                        (Value.Integer 8)
+                                    ]
+                                  |)
+                                |) in
+                              M.alloc (| Value.Tuple [] |)));
+                          fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                        ]
+                      |) in
+                    let~ _ :=
+                      M.match_operator (|
+                        M.alloc (| Value.Tuple [] |),
+                        [
+                          fun γ =>
+                            ltac:(M.monadic
+                              (let γ :=
+                                M.use
+                                  (M.alloc (|
+                                    BinOp.Pure.ne
+                                      (BinOp.Pure.bit_and (M.read (| n |)) (Value.Integer 16))
+                                      (Value.Integer 0)
+                                  |)) in
+                              let _ :=
+                                M.is_constant_or_break_match (|
+                                  M.read (| γ |),
+                                  Value.Bool true
+                                |) in
+                              let~ _ :=
+                                M.alloc (|
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::num::bignum::Big32x40",
+                                      "mul_digits",
+                                      []
+                                    |),
+                                    [
+                                      M.read (| x |);
                                       M.read (|
                                         M.get_constant (|
-                                          "core::num::flt2dec::strategy::dragon::POW10"
+                                          "core::num::flt2dec::strategy::dragon::POW5TO16"
                                         |)
-                                      |),
-                                      M.alloc (| Value.Integer 8 |)
-                                    |)
+                                      |)
+                                    ]
                                   |)
-                                ]
-                              |)
-                            |) in
-                          M.alloc (| Value.Tuple [] |)));
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                    ]
-                  |) in
-                let~ _ :=
-                  M.match_operator (|
-                    M.alloc (| Value.Tuple [] |),
-                    [
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let γ :=
-                            M.use
-                              (M.alloc (|
-                                BinOp.Pure.ne
-                                  (BinOp.Pure.bit_and (M.read (| n |)) (Value.Integer 16))
-                                  (Value.Integer 0)
-                              |)) in
-                          let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                          let~ _ :=
-                            M.alloc (|
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::num::bignum::Big32x40",
-                                  "mul_digits",
-                                  []
-                                |),
-                                [
-                                  M.read (| x |);
-                                  (* Unsize *)
-                                  M.pointer_coercion
-                                    (M.read (|
-                                      M.get_constant (|
-                                        "core::num::flt2dec::strategy::dragon::POW10TO16"
+                                |) in
+                              M.alloc (| Value.Tuple [] |)));
+                          fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                        ]
+                      |) in
+                    let~ _ :=
+                      M.match_operator (|
+                        M.alloc (| Value.Tuple [] |),
+                        [
+                          fun γ =>
+                            ltac:(M.monadic
+                              (let γ :=
+                                M.use
+                                  (M.alloc (|
+                                    BinOp.Pure.ne
+                                      (BinOp.Pure.bit_and (M.read (| n |)) (Value.Integer 32))
+                                      (Value.Integer 0)
+                                  |)) in
+                              let _ :=
+                                M.is_constant_or_break_match (|
+                                  M.read (| γ |),
+                                  Value.Bool true
+                                |) in
+                              let~ _ :=
+                                M.alloc (|
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::num::bignum::Big32x40",
+                                      "mul_digits",
+                                      []
+                                    |),
+                                    [
+                                      M.read (| x |);
+                                      M.read (|
+                                        M.get_constant (|
+                                          "core::num::flt2dec::strategy::dragon::POW5TO32"
+                                        |)
                                       |)
-                                    |))
-                                ]
-                              |)
-                            |) in
-                          M.alloc (| Value.Tuple [] |)));
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                    ]
-                  |) in
-                let~ _ :=
-                  M.match_operator (|
-                    M.alloc (| Value.Tuple [] |),
-                    [
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let γ :=
-                            M.use
-                              (M.alloc (|
-                                BinOp.Pure.ne
-                                  (BinOp.Pure.bit_and (M.read (| n |)) (Value.Integer 32))
-                                  (Value.Integer 0)
-                              |)) in
-                          let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                          let~ _ :=
-                            M.alloc (|
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::num::bignum::Big32x40",
-                                  "mul_digits",
-                                  []
-                                |),
-                                [
-                                  M.read (| x |);
-                                  (* Unsize *)
-                                  M.pointer_coercion
-                                    (M.read (|
-                                      M.get_constant (|
-                                        "core::num::flt2dec::strategy::dragon::POW10TO32"
+                                    ]
+                                  |)
+                                |) in
+                              M.alloc (| Value.Tuple [] |)));
+                          fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                        ]
+                      |) in
+                    let~ _ :=
+                      M.match_operator (|
+                        M.alloc (| Value.Tuple [] |),
+                        [
+                          fun γ =>
+                            ltac:(M.monadic
+                              (let γ :=
+                                M.use
+                                  (M.alloc (|
+                                    BinOp.Pure.ne
+                                      (BinOp.Pure.bit_and (M.read (| n |)) (Value.Integer 64))
+                                      (Value.Integer 0)
+                                  |)) in
+                              let _ :=
+                                M.is_constant_or_break_match (|
+                                  M.read (| γ |),
+                                  Value.Bool true
+                                |) in
+                              let~ _ :=
+                                M.alloc (|
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::num::bignum::Big32x40",
+                                      "mul_digits",
+                                      []
+                                    |),
+                                    [
+                                      M.read (| x |);
+                                      M.read (|
+                                        M.get_constant (|
+                                          "core::num::flt2dec::strategy::dragon::POW5TO64"
+                                        |)
                                       |)
-                                    |))
-                                ]
-                              |)
-                            |) in
-                          M.alloc (| Value.Tuple [] |)));
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                    ]
-                  |) in
-                let~ _ :=
-                  M.match_operator (|
-                    M.alloc (| Value.Tuple [] |),
-                    [
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let γ :=
-                            M.use
-                              (M.alloc (|
-                                BinOp.Pure.ne
-                                  (BinOp.Pure.bit_and (M.read (| n |)) (Value.Integer 64))
-                                  (Value.Integer 0)
-                              |)) in
-                          let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                          let~ _ :=
-                            M.alloc (|
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::num::bignum::Big32x40",
-                                  "mul_digits",
-                                  []
-                                |),
-                                [
-                                  M.read (| x |);
-                                  (* Unsize *)
-                                  M.pointer_coercion
-                                    (M.read (|
-                                      M.get_constant (|
-                                        "core::num::flt2dec::strategy::dragon::POW10TO64"
+                                    ]
+                                  |)
+                                |) in
+                              M.alloc (| Value.Tuple [] |)));
+                          fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                        ]
+                      |) in
+                    let~ _ :=
+                      M.match_operator (|
+                        M.alloc (| Value.Tuple [] |),
+                        [
+                          fun γ =>
+                            ltac:(M.monadic
+                              (let γ :=
+                                M.use
+                                  (M.alloc (|
+                                    BinOp.Pure.ne
+                                      (BinOp.Pure.bit_and (M.read (| n |)) (Value.Integer 128))
+                                      (Value.Integer 0)
+                                  |)) in
+                              let _ :=
+                                M.is_constant_or_break_match (|
+                                  M.read (| γ |),
+                                  Value.Bool true
+                                |) in
+                              let~ _ :=
+                                M.alloc (|
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::num::bignum::Big32x40",
+                                      "mul_digits",
+                                      []
+                                    |),
+                                    [
+                                      M.read (| x |);
+                                      M.read (|
+                                        M.get_constant (|
+                                          "core::num::flt2dec::strategy::dragon::POW5TO128"
+                                        |)
                                       |)
-                                    |))
-                                ]
-                              |)
-                            |) in
-                          M.alloc (| Value.Tuple [] |)));
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                    ]
-                  |) in
-                let~ _ :=
-                  M.match_operator (|
-                    M.alloc (| Value.Tuple [] |),
-                    [
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let γ :=
-                            M.use
-                              (M.alloc (|
-                                BinOp.Pure.ne
-                                  (BinOp.Pure.bit_and (M.read (| n |)) (Value.Integer 128))
-                                  (Value.Integer 0)
-                              |)) in
-                          let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                          let~ _ :=
-                            M.alloc (|
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::num::bignum::Big32x40",
-                                  "mul_digits",
-                                  []
-                                |),
-                                [
-                                  M.read (| x |);
-                                  (* Unsize *)
-                                  M.pointer_coercion
-                                    (M.read (|
-                                      M.get_constant (|
-                                        "core::num::flt2dec::strategy::dragon::POW10TO128"
+                                    ]
+                                  |)
+                                |) in
+                              M.alloc (| Value.Tuple [] |)));
+                          fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                        ]
+                      |) in
+                    let~ _ :=
+                      M.match_operator (|
+                        M.alloc (| Value.Tuple [] |),
+                        [
+                          fun γ =>
+                            ltac:(M.monadic
+                              (let γ :=
+                                M.use
+                                  (M.alloc (|
+                                    BinOp.Pure.ne
+                                      (BinOp.Pure.bit_and (M.read (| n |)) (Value.Integer 256))
+                                      (Value.Integer 0)
+                                  |)) in
+                              let _ :=
+                                M.is_constant_or_break_match (|
+                                  M.read (| γ |),
+                                  Value.Bool true
+                                |) in
+                              let~ _ :=
+                                M.alloc (|
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::num::bignum::Big32x40",
+                                      "mul_digits",
+                                      []
+                                    |),
+                                    [
+                                      M.read (| x |);
+                                      M.read (|
+                                        M.get_constant (|
+                                          "core::num::flt2dec::strategy::dragon::POW5TO256"
+                                        |)
                                       |)
-                                    |))
-                                ]
-                              |)
-                            |) in
-                          M.alloc (| Value.Tuple [] |)));
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                    ]
-                  |) in
-                let~ _ :=
-                  M.match_operator (|
-                    M.alloc (| Value.Tuple [] |),
-                    [
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let γ :=
-                            M.use
-                              (M.alloc (|
-                                BinOp.Pure.ne
-                                  (BinOp.Pure.bit_and (M.read (| n |)) (Value.Integer 256))
-                                  (Value.Integer 0)
-                              |)) in
-                          let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                          let~ _ :=
-                            M.alloc (|
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::num::bignum::Big32x40",
-                                  "mul_digits",
-                                  []
-                                |),
-                                [
-                                  M.read (| x |);
-                                  (* Unsize *)
-                                  M.pointer_coercion
-                                    (M.read (|
-                                      M.get_constant (|
-                                        "core::num::flt2dec::strategy::dragon::POW10TO256"
-                                      |)
-                                    |))
-                                ]
-                              |)
-                            |) in
-                          M.alloc (| Value.Tuple [] |)));
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                    ]
-                  |) in
-                M.alloc (| M.read (| x |) |)
+                                    ]
+                                  |)
+                                |) in
+                              M.alloc (| Value.Tuple [] |)));
+                          fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                        ]
+                      |) in
+                    M.alloc (|
+                      M.call_closure (|
+                        M.get_associated_function (|
+                          Ty.path "core::num::bignum::Big32x40",
+                          "mul_pow2",
+                          []
+                        |),
+                        [ M.read (| x |); M.read (| n |) ]
+                      |)
+                    |)
+                  |)))
               |)))
           | _, _, _ => M.impossible
           end.
@@ -521,7 +572,7 @@ Module num.
                 x.div_rem_small(POW10[largest]);
                 n -= largest;
             }
-            x.div_rem_small(TWOPOW10[n]);
+            x.div_rem_small(POW10[n] << 1);
             x
         }
         *)
@@ -543,11 +594,9 @@ Module num.
                           []
                         |),
                         [
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.read (|
-                              M.get_constant (| "core::num::flt2dec::strategy::dragon::POW10" |)
-                            |))
+                          M.read (|
+                            M.get_constant (| "core::num::flt2dec::strategy::dragon::POW10" |)
+                          |)
                         ]
                       |))
                       (Value.Integer 1)
@@ -629,14 +678,16 @@ Module num.
                       |),
                       [
                         M.read (| x |);
-                        M.read (|
-                          M.SubPointer.get_array_field (|
-                            M.read (|
-                              M.get_constant (| "core::num::flt2dec::strategy::dragon::TWOPOW10" |)
-                            |),
-                            n
-                          |)
-                        |)
+                        BinOp.Wrap.shl
+                          (M.read (|
+                            M.SubPointer.get_array_field (|
+                              M.read (|
+                                M.get_constant (| "core::num::flt2dec::strategy::dragon::POW10" |)
+                              |),
+                              n
+                            |)
+                          |))
+                          (Value.Integer 1)
                       ]
                     |)
                   |) in

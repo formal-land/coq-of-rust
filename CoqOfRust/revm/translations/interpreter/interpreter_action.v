@@ -277,7 +277,7 @@ Module interpreter_action.
                           M.read (| f |);
                           M.read (| Value.String "Call" |);
                           M.read (| Value.String "inputs" |);
-                          (* Unsize *) M.pointer_coercion __self_0
+                          __self_0
                         ]
                       |)
                     |)));
@@ -302,7 +302,7 @@ Module interpreter_action.
                           M.read (| f |);
                           M.read (| Value.String "Create" |);
                           M.read (| Value.String "inputs" |);
-                          (* Unsize *) M.pointer_coercion __self_0
+                          __self_0
                         ]
                       |)
                     |)));
@@ -327,7 +327,7 @@ Module interpreter_action.
                           M.read (| f |);
                           M.read (| Value.String "EOFCreate" |);
                           M.read (| Value.String "inputs" |);
-                          (* Unsize *) M.pointer_coercion __self_0
+                          __self_0
                         ]
                       |)
                     |)));
@@ -352,7 +352,7 @@ Module interpreter_action.
                           M.read (| f |);
                           M.read (| Value.String "Return" |);
                           M.read (| Value.String "result" |);
-                          (* Unsize *) M.pointer_coercion __self_0
+                          __self_0
                         ]
                       |)
                     |)));
@@ -430,7 +430,7 @@ Module interpreter_action.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ __self_tag :=
+            let~ __self_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -440,7 +440,7 @@ Module interpreter_action.
                   [ M.read (| self |) ]
                 |)
               |) in
-            let~ __arg1_tag :=
+            let~ __arg1_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -452,7 +452,7 @@ Module interpreter_action.
               |) in
             M.alloc (|
               LogicalOp.and (|
-                BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)),
+                BinOp.Pure.eq (M.read (| __self_discr |)) (M.read (| __arg1_discr |)),
                 ltac:(M.monadic
                   (M.read (|
                     M.match_operator (|
@@ -483,27 +483,37 @@ Module interpreter_action.
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply
-                                    (Ty.path "alloc::boxed::Box")
+                                    (Ty.path "&")
                                     []
                                     [
-                                      Ty.path
-                                        "revm_interpreter::interpreter_action::call_inputs::CallInputs";
-                                      Ty.path "alloc::alloc::Global"
+                                      Ty.apply
+                                        (Ty.path "alloc::boxed::Box")
+                                        []
+                                        [
+                                          Ty.path
+                                            "revm_interpreter::interpreter_action::call_inputs::CallInputs";
+                                          Ty.path "alloc::alloc::Global"
+                                        ]
                                     ],
                                   [
                                     Ty.apply
-                                      (Ty.path "alloc::boxed::Box")
+                                      (Ty.path "&")
                                       []
                                       [
-                                        Ty.path
-                                          "revm_interpreter::interpreter_action::call_inputs::CallInputs";
-                                        Ty.path "alloc::alloc::Global"
+                                        Ty.apply
+                                          (Ty.path "alloc::boxed::Box")
+                                          []
+                                          [
+                                            Ty.path
+                                              "revm_interpreter::interpreter_action::call_inputs::CallInputs";
+                                            Ty.path "alloc::alloc::Global"
+                                          ]
                                       ]
                                   ],
                                   "eq",
                                   []
                                 |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                [ __self_0; __arg1_0 ]
                               |)
                             |)));
                         fun γ =>
@@ -531,27 +541,37 @@ Module interpreter_action.
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply
-                                    (Ty.path "alloc::boxed::Box")
+                                    (Ty.path "&")
                                     []
                                     [
-                                      Ty.path
-                                        "revm_interpreter::interpreter_action::create_inputs::CreateInputs";
-                                      Ty.path "alloc::alloc::Global"
+                                      Ty.apply
+                                        (Ty.path "alloc::boxed::Box")
+                                        []
+                                        [
+                                          Ty.path
+                                            "revm_interpreter::interpreter_action::create_inputs::CreateInputs";
+                                          Ty.path "alloc::alloc::Global"
+                                        ]
                                     ],
                                   [
                                     Ty.apply
-                                      (Ty.path "alloc::boxed::Box")
+                                      (Ty.path "&")
                                       []
                                       [
-                                        Ty.path
-                                          "revm_interpreter::interpreter_action::create_inputs::CreateInputs";
-                                        Ty.path "alloc::alloc::Global"
+                                        Ty.apply
+                                          (Ty.path "alloc::boxed::Box")
+                                          []
+                                          [
+                                            Ty.path
+                                              "revm_interpreter::interpreter_action::create_inputs::CreateInputs";
+                                            Ty.path "alloc::alloc::Global"
+                                          ]
                                       ]
                                   ],
                                   "eq",
                                   []
                                 |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                [ __self_0; __arg1_0 ]
                               |)
                             |)));
                         fun γ =>
@@ -579,27 +599,37 @@ Module interpreter_action.
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply
-                                    (Ty.path "alloc::boxed::Box")
+                                    (Ty.path "&")
                                     []
                                     [
-                                      Ty.path
-                                        "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInput";
-                                      Ty.path "alloc::alloc::Global"
+                                      Ty.apply
+                                        (Ty.path "alloc::boxed::Box")
+                                        []
+                                        [
+                                          Ty.path
+                                            "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInput";
+                                          Ty.path "alloc::alloc::Global"
+                                        ]
                                     ],
                                   [
                                     Ty.apply
-                                      (Ty.path "alloc::boxed::Box")
+                                      (Ty.path "&")
                                       []
                                       [
-                                        Ty.path
-                                          "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInput";
-                                        Ty.path "alloc::alloc::Global"
+                                        Ty.apply
+                                          (Ty.path "alloc::boxed::Box")
+                                          []
+                                          [
+                                            Ty.path
+                                              "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInput";
+                                            Ty.path "alloc::alloc::Global"
+                                          ]
                                       ]
                                   ],
                                   "eq",
                                   []
                                 |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                [ __self_0; __arg1_0 ]
                               |)
                             |)));
                         fun γ =>
@@ -626,12 +656,20 @@ Module interpreter_action.
                               M.call_closure (|
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
-                                  Ty.path "revm_interpreter::interpreter::InterpreterResult",
-                                  [ Ty.path "revm_interpreter::interpreter::InterpreterResult" ],
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.path "revm_interpreter::interpreter::InterpreterResult" ],
+                                  [
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.path "revm_interpreter::interpreter::InterpreterResult" ]
+                                  ],
                                   "eq",
                                   []
                                 |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                [ __self_0; __arg1_0 ]
                               |)
                             |)));
                         fun γ => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
@@ -651,17 +689,6 @@ Module interpreter_action.
         (* Trait polymorphic types *) []
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_revm_interpreter_interpreter_action_InterpreterAction.
-  
-  Module Impl_core_marker_StructuralEq_for_revm_interpreter_interpreter_action_InterpreterAction.
-    Definition Self : Ty.t := Ty.path "revm_interpreter::interpreter_action::InterpreterAction".
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::marker::StructuralEq"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [].
-  End Impl_core_marker_StructuralEq_for_revm_interpreter_interpreter_action_InterpreterAction.
   
   Module Impl_core_cmp_Eq_for_revm_interpreter_interpreter_action_InterpreterAction.
     Definition Self : Ty.t := Ty.path "revm_interpreter::interpreter_action::InterpreterAction".

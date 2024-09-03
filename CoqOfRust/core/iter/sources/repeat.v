@@ -90,15 +90,13 @@ Module iter.
                   M.read (| f |);
                   M.read (| Value.String "Repeat" |);
                   M.read (| Value.String "element" |);
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.alloc (|
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::iter::sources::repeat::Repeat",
-                        "element"
-                      |)
-                    |))
+                  M.alloc (|
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::iter::sources::repeat::Repeat",
+                      "element"
+                    |)
+                  |)
                 ]
               |)))
           | _, _, _ => M.impossible
@@ -168,7 +166,7 @@ Module iter.
           end.
         
         (*
-            fn advance_by(&mut self, n: usize) -> Result<(), NonZeroUsize> {
+            fn advance_by(&mut self, n: usize) -> Result<(), NonZero<usize>> {
                 // Advancing an infinite iterator of a single element is a no-op.
                 let _ = n;
                 Ok(())
@@ -327,7 +325,7 @@ Module iter.
           end.
         
         (*
-            fn advance_back_by(&mut self, n: usize) -> Result<(), NonZeroUsize> {
+            fn advance_back_by(&mut self, n: usize) -> Result<(), NonZero<usize>> {
                 // Advancing an infinite iterator of a single element is a no-op.
                 let _ = n;
                 Ok(())

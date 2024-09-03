@@ -11,6 +11,90 @@ Module ffi.
         fields := [ ("inner", Ty.apply (Ty.path "slice") [] [ Ty.path "i8" ]) ];
       } *)
     
+    Module Impl_core_marker_StructuralPartialEq_for_core_ffi_c_str_CStr.
+      Definition Self : Ty.t := Ty.path "core::ffi::c_str::CStr".
+      
+      Axiom Implements :
+        M.IsTraitInstance
+          "core::marker::StructuralPartialEq"
+          Self
+          (* Trait polymorphic types *) []
+          (* Instance *) [].
+    End Impl_core_marker_StructuralPartialEq_for_core_ffi_c_str_CStr.
+    
+    Module Impl_core_cmp_PartialEq_for_core_ffi_c_str_CStr.
+      Definition Self : Ty.t := Ty.path "core::ffi::c_str::CStr".
+      
+      (* PartialEq *)
+      Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            let other := M.alloc (| other |) in
+            M.call_closure (|
+              M.get_trait_method (|
+                "core::cmp::PartialEq",
+                Ty.apply (Ty.path "slice") [] [ Ty.path "i8" ],
+                [ Ty.apply (Ty.path "slice") [] [ Ty.path "i8" ] ],
+                "eq",
+                []
+              |),
+              [
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::ffi::c_str::CStr",
+                  "inner"
+                |);
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| other |),
+                  "core::ffi::c_str::CStr",
+                  "inner"
+                |)
+              ]
+            |)))
+        | _, _, _ => M.impossible
+        end.
+      
+      Axiom Implements :
+        M.IsTraitInstance
+          "core::cmp::PartialEq"
+          Self
+          (* Trait polymorphic types *) []
+          (* Instance *) [ ("eq", InstanceField.Method eq) ].
+    End Impl_core_cmp_PartialEq_for_core_ffi_c_str_CStr.
+    
+    Module Impl_core_cmp_Eq_for_core_ffi_c_str_CStr.
+      Definition Self : Ty.t := Ty.path "core::ffi::c_str::CStr".
+      
+      (* Eq *)
+      Definition assert_receiver_is_total_eq
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            M.read (|
+              M.match_operator (|
+                Value.DeclaredButUndefined,
+                [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
+              |)
+            |)))
+        | _, _, _ => M.impossible
+        end.
+      
+      Axiom Implements :
+        M.IsTraitInstance
+          "core::cmp::Eq"
+          Self
+          (* Trait polymorphic types *) []
+          (* Instance *)
+          [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
+    End Impl_core_cmp_Eq_for_core_ffi_c_str_CStr.
+    
     Module Impl_core_hash_Hash_for_core_ffi_c_str_CStr.
       Definition Self : Ty.t := Ty.path "core::ffi::c_str::CStr".
       
@@ -151,17 +235,6 @@ Module ffi.
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
     End Impl_core_cmp_PartialEq_for_core_ffi_c_str_FromBytesWithNulError.
     
-    Module Impl_core_marker_StructuralEq_for_core_ffi_c_str_FromBytesWithNulError.
-      Definition Self : Ty.t := Ty.path "core::ffi::c_str::FromBytesWithNulError".
-      
-      Axiom Implements :
-        M.IsTraitInstance
-          "core::marker::StructuralEq"
-          Self
-          (* Trait polymorphic types *) []
-          (* Instance *) [].
-    End Impl_core_marker_StructuralEq_for_core_ffi_c_str_FromBytesWithNulError.
-    
     Module Impl_core_cmp_Eq_for_core_ffi_c_str_FromBytesWithNulError.
       Definition Self : Ty.t := Ty.path "core::ffi::c_str::FromBytesWithNulError".
       
@@ -213,15 +286,13 @@ Module ffi.
                 M.read (| f |);
                 M.read (| Value.String "FromBytesWithNulError" |);
                 M.read (| Value.String "kind" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.alloc (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::ffi::c_str::FromBytesWithNulError",
-                      "kind"
-                    |)
-                  |))
+                M.alloc (|
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::ffi::c_str::FromBytesWithNulError",
+                    "kind"
+                  |)
+                |)
               ]
             |)))
         | _, _, _ => M.impossible
@@ -344,7 +415,7 @@ Module ffi.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ __self_tag :=
+              let~ __self_discr :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -354,7 +425,7 @@ Module ffi.
                     [ M.read (| self |) ]
                   |)
                 |) in
-              let~ __arg1_tag :=
+              let~ __arg1_discr :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -366,7 +437,7 @@ Module ffi.
                 |) in
               M.alloc (|
                 LogicalOp.and (|
-                  BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)),
+                  BinOp.Pure.eq (M.read (| __self_discr |)) (M.read (| __arg1_discr |)),
                   ltac:(M.monadic
                     (M.read (|
                       M.match_operator (|
@@ -393,9 +464,16 @@ Module ffi.
                                 |) in
                               let __arg1_0 := M.alloc (| γ2_0 |) in
                               M.alloc (|
-                                BinOp.Pure.eq
-                                  (M.read (| M.read (| __self_0 |) |))
-                                  (M.read (| M.read (| __arg1_0 |) |))
+                                M.call_closure (|
+                                  M.get_trait_method (|
+                                    "core::cmp::PartialEq",
+                                    Ty.apply (Ty.path "&") [] [ Ty.path "usize" ],
+                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "usize" ] ],
+                                    "eq",
+                                    []
+                                  |),
+                                  [ __self_0; __arg1_0 ]
+                                |)
                               |)));
                           fun γ => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
                         ]
@@ -414,17 +492,6 @@ Module ffi.
           (* Trait polymorphic types *) []
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
     End Impl_core_cmp_PartialEq_for_core_ffi_c_str_FromBytesWithNulErrorKind.
-    
-    Module Impl_core_marker_StructuralEq_for_core_ffi_c_str_FromBytesWithNulErrorKind.
-      Definition Self : Ty.t := Ty.path "core::ffi::c_str::FromBytesWithNulErrorKind".
-      
-      Axiom Implements :
-        M.IsTraitInstance
-          "core::marker::StructuralEq"
-          Self
-          (* Trait polymorphic types *) []
-          (* Instance *) [].
-    End Impl_core_marker_StructuralEq_for_core_ffi_c_str_FromBytesWithNulErrorKind.
     
     Module Impl_core_cmp_Eq_for_core_ffi_c_str_FromBytesWithNulErrorKind.
       Definition Self : Ty.t := Ty.path "core::ffi::c_str::FromBytesWithNulErrorKind".
@@ -488,11 +555,7 @@ Module ffi.
                             "debug_tuple_field1_finish",
                             []
                           |),
-                          [
-                            M.read (| f |);
-                            M.read (| Value.String "InteriorNul" |);
-                            (* Unsize *) M.pointer_coercion __self_0
-                          ]
+                          [ M.read (| f |); M.read (| Value.String "InteriorNul" |); __self_0 ]
                         |)
                       |)));
                   fun γ =>
@@ -537,7 +600,7 @@ Module ffi.
       *)
       Definition interior_nul (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ pos ] =>
+        | [], [], [ pos ] =>
           ltac:(M.monadic
             (let pos := M.alloc (| pos |) in
             Value.StructRecord
@@ -561,7 +624,7 @@ Module ffi.
       *)
       Definition not_nul_terminated (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [] =>
+        | [], [], [] =>
           ltac:(M.monadic
             (Value.StructRecord
               "core::ffi::c_str::FromBytesWithNulError"
@@ -733,17 +796,6 @@ Module ffi.
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
     End Impl_core_cmp_PartialEq_for_core_ffi_c_str_FromBytesUntilNulError.
     
-    Module Impl_core_marker_StructuralEq_for_core_ffi_c_str_FromBytesUntilNulError.
-      Definition Self : Ty.t := Ty.path "core::ffi::c_str::FromBytesUntilNulError".
-      
-      Axiom Implements :
-        M.IsTraitInstance
-          "core::marker::StructuralEq"
-          Self
-          (* Trait polymorphic types *) []
-          (* Instance *) [].
-    End Impl_core_marker_StructuralEq_for_core_ffi_c_str_FromBytesUntilNulError.
-    
     Module Impl_core_cmp_Eq_for_core_ffi_c_str_FromBytesUntilNulError.
       Definition Self : Ty.t := Ty.path "core::ffi::c_str::FromBytesUntilNulError".
       
@@ -794,15 +846,13 @@ Module ffi.
               [
                 M.read (| f |);
                 M.read (| Value.String "FromBytesUntilNulError" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.alloc (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      M.read (| self |),
-                      "core::ffi::c_str::FromBytesUntilNulError",
-                      0
-                    |)
-                  |))
+                M.alloc (|
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.read (| self |),
+                    "core::ffi::c_str::FromBytesUntilNulError",
+                    0
+                  |)
+                |)
               ]
             |)))
         | _, _, _ => M.impossible
@@ -837,12 +887,10 @@ Module ffi.
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
                   [
-                    (* Unsize *)
-                    M.pointer_coercion
-                      (M.alloc (|
-                        Value.Array
-                          [ M.read (| Value.String "data provided does not contain a nul" |) ]
-                      |))
+                    M.alloc (|
+                      Value.Array
+                        [ M.read (| Value.String "data provided does not contain a nul" |) ]
+                    |)
                   ]
                 |)
               ]
@@ -879,47 +927,42 @@ Module ffi.
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                   [
-                    (* Unsize *)
-                    M.pointer_coercion
-                      (M.alloc (|
-                        Value.Array
-                          [ M.read (| Value.String """" |); M.read (| Value.String """" |) ]
-                      |));
-                    (* Unsize *)
-                    M.pointer_coercion
-                      (M.alloc (|
-                        Value.Array
-                          [
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.path "core::fmt::rt::Argument",
-                                "new_display",
-                                [ Ty.path "core::slice::ascii::EscapeAscii" ]
-                              |),
-                              [
-                                M.alloc (|
-                                  M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
-                                      "escape_ascii",
-                                      []
-                                    |),
-                                    [
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path "core::ffi::c_str::CStr",
-                                          "to_bytes",
-                                          []
-                                        |),
-                                        [ M.read (| self |) ]
-                                      |)
-                                    ]
-                                  |)
+                    M.alloc (|
+                      Value.Array [ M.read (| Value.String """" |); M.read (| Value.String """" |) ]
+                    |);
+                    M.alloc (|
+                      Value.Array
+                        [
+                          M.call_closure (|
+                            M.get_associated_function (|
+                              Ty.path "core::fmt::rt::Argument",
+                              "new_display",
+                              [ Ty.path "core::slice::ascii::EscapeAscii" ]
+                            |),
+                            [
+                              M.alloc (|
+                                M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+                                    "escape_ascii",
+                                    []
+                                  |),
+                                  [
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "core::ffi::c_str::CStr",
+                                        "to_bytes",
+                                        []
+                                      |),
+                                      [ M.read (| self |) ]
+                                    |)
+                                  ]
                                 |)
-                              ]
-                            |)
-                          ]
-                      |))
+                              |)
+                            ]
+                          |)
+                        ]
+                    |)
                   ]
                 |)
               ]
@@ -1132,27 +1175,23 @@ Module ffi.
                                               []
                                             |),
                                             [
-                                              (* Unsize *)
-                                              M.pointer_coercion
-                                                (M.alloc (|
-                                                  Value.Array
-                                                    [ M.read (| Value.String " at byte pos " |) ]
-                                                |));
-                                              (* Unsize *)
-                                              M.pointer_coercion
-                                                (M.alloc (|
-                                                  Value.Array
-                                                    [
-                                                      M.call_closure (|
-                                                        M.get_associated_function (|
-                                                          Ty.path "core::fmt::rt::Argument",
-                                                          "new_display",
-                                                          [ Ty.path "usize" ]
-                                                        |),
-                                                        [ pos ]
-                                                      |)
-                                                    ]
-                                                |))
+                                              M.alloc (|
+                                                Value.Array
+                                                  [ M.read (| Value.String " at byte pos " |) ]
+                                              |);
+                                              M.alloc (|
+                                                Value.Array
+                                                  [
+                                                    M.call_closure (|
+                                                      M.get_associated_function (|
+                                                        Ty.path "core::fmt::rt::Argument",
+                                                        "new_display",
+                                                        [ Ty.path "usize" ]
+                                                      |),
+                                                      [ pos ]
+                                                    |)
+                                                  ]
+                                              |)
                                             ]
                                           |)
                                         ]
@@ -1236,7 +1275,7 @@ Module ffi.
           pub const unsafe fn from_ptr<'a>(ptr: *const c_char) -> &'a CStr {
               // SAFETY: The caller has provided a pointer that points to a valid C
               // string with a NUL terminator less than `isize::MAX` from `ptr`.
-              let len = unsafe { const_strlen(ptr) };
+              let len = unsafe { strlen(ptr) };
       
               // SAFETY: The caller has provided a valid pointer with length less than
               // `isize::MAX`, so `from_raw_parts` is safe. The content remains valid
@@ -1249,14 +1288,14 @@ Module ffi.
       *)
       Definition from_ptr (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ ptr ] =>
+        | [], [], [ ptr ] =>
           ltac:(M.monadic
             (let ptr := M.alloc (| ptr |) in
             M.read (|
               let~ len :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_function (| "core::ffi::c_str::const_strlen", [] |),
+                    M.get_function (| "core::ffi::c_str::strlen", [] |),
                     [ M.read (| ptr |) ]
                   |)
                 |) in
@@ -1309,7 +1348,7 @@ Module ffi.
       *)
       Definition from_bytes_until_nul (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ bytes ] =>
+        | [], [], [ bytes ] =>
           ltac:(M.monadic
             (let bytes := M.alloc (| bytes |) in
             M.read (|
@@ -1403,7 +1442,7 @@ Module ffi.
       *)
       Definition from_bytes_with_nul (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ bytes ] =>
+        | [], [], [ bytes ] =>
           ltac:(M.monadic
             (let bytes := M.alloc (| bytes |) in
             M.read (|
@@ -1535,10 +1574,7 @@ Module ffi.
                   unsafe { &*(bytes as *const [u8] as *const CStr) }
               }
       
-              // SAFETY: The const and runtime versions have identical behavior
-              // unless the safety contract of `from_bytes_with_nul_unchecked` is
-              // violated, which is UB.
-              unsafe { intrinsics::const_eval_select((bytes,), const_impl, rt_impl) }
+              intrinsics::const_eval_select((bytes,), const_impl, rt_impl)
           }
       *)
       Definition from_bytes_with_nul_unchecked
@@ -1547,7 +1583,7 @@ Module ffi.
           (α : list Value.t)
           : M :=
         match ε, τ, α with
-        | [ host ], [], [ bytes ] =>
+        | [], [], [ bytes ] =>
           ltac:(M.monadic
             (let bytes := M.alloc (| bytes |) in
             M.call_closure (|
@@ -1589,7 +1625,7 @@ Module ffi.
       *)
       Definition as_ptr (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -1612,13 +1648,67 @@ Module ffi.
       Axiom AssociatedFunction_as_ptr : M.IsAssociatedFunction Self "as_ptr" as_ptr.
       
       (*
+          const fn as_non_null_ptr(&self) -> NonNull<c_char> {
+              // FIXME(effects) replace with `NonNull::from`
+              // SAFETY: a reference is never null
+              unsafe { NonNull::new_unchecked(&self.inner as *const [c_char] as *mut [c_char]) }
+                  .as_non_null_ptr()
+          }
+      *)
+      Definition as_non_null_ptr (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            M.call_closure (|
+              M.get_associated_function (|
+                Ty.apply
+                  (Ty.path "core::ptr::non_null::NonNull")
+                  []
+                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "i8" ] ],
+                "as_non_null_ptr",
+                []
+              |),
+              [
+                M.call_closure (|
+                  M.get_associated_function (|
+                    Ty.apply
+                      (Ty.path "core::ptr::non_null::NonNull")
+                      []
+                      [ Ty.apply (Ty.path "slice") [] [ Ty.path "i8" ] ],
+                    "new_unchecked",
+                    []
+                  |),
+                  [
+                    M.rust_cast
+                      (M.read (|
+                        M.use
+                          (M.alloc (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "core::ffi::c_str::CStr",
+                              "inner"
+                            |)
+                          |))
+                      |))
+                  ]
+                |)
+              ]
+            |)))
+        | _, _, _ => M.impossible
+        end.
+      
+      Axiom AssociatedFunction_as_non_null_ptr :
+        M.IsAssociatedFunction Self "as_non_null_ptr" as_non_null_ptr.
+      
+      (*
           pub const fn count_bytes(&self) -> usize {
               self.inner.len() - 1
           }
       *)
       Definition count_bytes (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             BinOp.Wrap.sub
@@ -1653,7 +1743,7 @@ Module ffi.
       *)
       Definition is_empty (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             BinOp.Pure.eq
@@ -1689,7 +1779,7 @@ Module ffi.
       *)
       Definition to_bytes (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -1740,30 +1830,44 @@ Module ffi.
           pub const fn to_bytes_with_nul(&self) -> &[u8] {
               // SAFETY: Transmuting a slice of `c_char`s to a slice of `u8`s
               // is safe on all supported targets.
-              unsafe { &*(&self.inner as *const [c_char] as *const [u8]) }
+              unsafe { &*(addr_of!(self.inner) as *const [u8]) }
           }
       *)
       Definition to_bytes_with_nul (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.rust_cast
-              (M.read (|
-                M.use
-                  (M.alloc (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::ffi::c_str::CStr",
-                      "inner"
-                    |)
-                  |))
+              (M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "core::ffi::c_str::CStr",
+                "inner"
               |))))
         | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_to_bytes_with_nul :
         M.IsAssociatedFunction Self "to_bytes_with_nul" to_bytes_with_nul.
+      
+      (*
+          pub fn bytes(&self) -> Bytes<'_> {
+              Bytes::new(self)
+          }
+      *)
+      Definition bytes (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            M.call_closure (|
+              M.get_associated_function (| Ty.path "core::ffi::c_str::Bytes", "new", [] |),
+              [ M.read (| self |) ]
+            |)))
+        | _, _, _ => M.impossible
+        end.
+      
+      Axiom AssociatedFunction_bytes : M.IsAssociatedFunction Self "bytes" bytes.
       
       (*
           pub const fn to_str(&self) -> Result<&str, str::Utf8Error> {
@@ -1776,7 +1880,7 @@ Module ffi.
       *)
       Definition to_str (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -1793,57 +1897,6 @@ Module ffi.
       
       Axiom AssociatedFunction_to_str : M.IsAssociatedFunction Self "to_str" to_str.
     End Impl_core_ffi_c_str_CStr.
-    
-    Module Impl_core_cmp_PartialEq_for_core_ffi_c_str_CStr.
-      Definition Self : Ty.t := Ty.path "core::ffi::c_str::CStr".
-      
-      (*
-          fn eq(&self, other: &CStr) -> bool {
-              self.to_bytes().eq(other.to_bytes())
-          }
-      *)
-      Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        match ε, τ, α with
-        | [], [], [ self; other ] =>
-          ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
-            M.call_closure (|
-              M.get_trait_method (|
-                "core::cmp::PartialEq",
-                Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
-                [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
-                "eq",
-                []
-              |),
-              [
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "core::ffi::c_str::CStr", "to_bytes", [] |),
-                  [ M.read (| self |) ]
-                |);
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "core::ffi::c_str::CStr", "to_bytes", [] |),
-                  [ M.read (| other |) ]
-                |)
-              ]
-            |)))
-        | _, _, _ => M.impossible
-        end.
-      
-      Axiom Implements :
-        M.IsTraitInstance
-          "core::cmp::PartialEq"
-          Self
-          (* Trait polymorphic types *) []
-          (* Instance *) [ ("eq", InstanceField.Method eq) ].
-    End Impl_core_cmp_PartialEq_for_core_ffi_c_str_CStr.
-    
-    Module Impl_core_cmp_Eq_for_core_ffi_c_str_CStr.
-      Definition Self : Ty.t := Ty.path "core::ffi::c_str::CStr".
-      
-      Axiom Implements :
-        M.IsTraitInstance "core::cmp::Eq" Self (* Trait polymorphic types *) [] (* Instance *) [].
-    End Impl_core_cmp_Eq_for_core_ffi_c_str_CStr.
     
     Module Impl_core_cmp_PartialOrd_for_core_ffi_c_str_CStr.
       Definition Self : Ty.t := Ty.path "core::ffi::c_str::CStr".
@@ -2055,57 +2108,53 @@ Module ffi.
                                   []
                                 |),
                                 [
-                                  (* Unsize *)
-                                  M.pointer_coercion
-                                    (M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.read (|
-                                            Value.String "index out of bounds: the len is "
-                                          |);
-                                          M.read (| Value.String " but the index is " |)
-                                        ]
-                                    |));
-                                  (* Unsize *)
-                                  M.pointer_coercion
-                                    (M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.call_closure (|
-                                            M.get_associated_function (|
-                                              Ty.path "core::fmt::rt::Argument",
-                                              "new_display",
-                                              [ Ty.path "usize" ]
-                                            |),
-                                            [
-                                              M.alloc (|
-                                                M.call_closure (|
-                                                  M.get_associated_function (|
-                                                    Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
-                                                    "len",
-                                                    []
-                                                  |),
-                                                  [ M.read (| bytes |) ]
-                                                |)
+                                  M.alloc (|
+                                    Value.Array
+                                      [
+                                        M.read (|
+                                          Value.String "index out of bounds: the len is "
+                                        |);
+                                        M.read (| Value.String " but the index is " |)
+                                      ]
+                                  |);
+                                  M.alloc (|
+                                    Value.Array
+                                      [
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path "core::fmt::rt::Argument",
+                                            "new_display",
+                                            [ Ty.path "usize" ]
+                                          |),
+                                          [
+                                            M.alloc (|
+                                              M.call_closure (|
+                                                M.get_associated_function (|
+                                                  Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+                                                  "len",
+                                                  []
+                                                |),
+                                                [ M.read (| bytes |) ]
                                               |)
-                                            ]
-                                          |);
-                                          M.call_closure (|
-                                            M.get_associated_function (|
-                                              Ty.path "core::fmt::rt::Argument",
-                                              "new_display",
-                                              [ Ty.path "usize" ]
-                                            |),
-                                            [
-                                              M.SubPointer.get_struct_record_field (|
-                                                index,
-                                                "core::ops::range::RangeFrom",
-                                                "start"
-                                              |)
-                                            ]
-                                          |)
-                                        ]
-                                    |))
+                                            |)
+                                          ]
+                                        |);
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path "core::fmt::rt::Argument",
+                                            "new_display",
+                                            [ Ty.path "usize" ]
+                                          |),
+                                          [
+                                            M.SubPointer.get_struct_record_field (|
+                                              index,
+                                              "core::ops::range::RangeFrom",
+                                              "start"
+                                            |)
+                                          ]
+                                        |)
+                                      ]
+                                  |)
                                 ]
                               |)
                             ]
@@ -2154,7 +2203,7 @@ Module ffi.
     End Impl_core_convert_AsRef_core_ffi_c_str_CStr_for_core_ffi_c_str_CStr.
     
     (*
-    const unsafe fn const_strlen(ptr: *const c_char) -> usize {
+    const unsafe fn strlen(ptr: *const c_char) -> usize {
         const fn strlen_ct(s: *const c_char) -> usize {
             let mut len = 0;
     
@@ -2177,13 +2226,12 @@ Module ffi.
             unsafe { strlen(s) }
         }
     
-        // SAFETY: the two functions always provide equivalent functionality
-        unsafe { intrinsics::const_eval_select((ptr,), strlen_ct, strlen_rt) }
+        intrinsics::const_eval_select((ptr,), strlen_ct, strlen_rt)
     }
     *)
-    Definition const_strlen (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition strlen (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [ host ], [], [ ptr ] =>
+      | [], [], [ ptr ] =>
         ltac:(M.monadic
           (let ptr := M.alloc (| ptr |) in
           M.call_closure (|
@@ -2198,16 +2246,16 @@ Module ffi.
             |),
             [
               Value.Tuple [ M.read (| ptr |) ];
-              M.get_function (| "core::ffi::c_str::const_strlen.strlen_ct", [] |);
-              M.get_function (| "core::ffi::c_str::const_strlen.strlen_rt", [] |)
+              M.get_function (| "core::ffi::c_str::strlen.strlen_ct", [] |);
+              M.get_function (| "core::ffi::c_str::strlen.strlen_rt", [] |)
             ]
           |)))
       | _, _, _ => M.impossible
       end.
     
-    Axiom Function_const_strlen : M.IsFunction "core::ffi::c_str::const_strlen" const_strlen.
+    Axiom Function_strlen : M.IsFunction "core::ffi::c_str::strlen" strlen.
     
-    Module const_strlen.
+    Module strlen.
       (*
           const fn strlen_ct(s: *const c_char) -> usize {
               let mut len = 0;
@@ -2222,7 +2270,7 @@ Module ffi.
       *)
       Definition strlen_ct (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ s ] =>
+        | [], [], [ s ] =>
           ltac:(M.monadic
             (let s := M.alloc (| s |) in
             M.read (|
@@ -2279,7 +2327,7 @@ Module ffi.
         | _, _, _ => M.impossible
         end.
       
-      Axiom Function_strlen_ct : M.IsFunction "core::ffi::c_str::const_strlen::strlen_ct" strlen_ct.
+      Axiom Function_strlen_ct : M.IsFunction "core::ffi::c_str::strlen::strlen_ct" strlen_ct.
       
       (*
           fn strlen_rt(s: *const c_char) -> usize {
@@ -2298,20 +2346,461 @@ Module ffi.
           ltac:(M.monadic
             (let s := M.alloc (| s |) in
             M.call_closure (|
-              M.get_function (| "core::ffi::c_str::const_strlen::strlen_rt::strlen", [] |),
+              M.get_function (| "core::ffi::c_str::strlen::strlen_rt::strlen", [] |),
               [ M.read (| s |) ]
             |)))
         | _, _, _ => M.impossible
         end.
       
-      Axiom Function_strlen_rt : M.IsFunction "core::ffi::c_str::const_strlen::strlen_rt" strlen_rt.
+      Axiom Function_strlen_rt : M.IsFunction "core::ffi::c_str::strlen::strlen_rt" strlen_rt.
       
       Module strlen_rt.
         Parameter strlen : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
         
-        Axiom Function_strlen :
-          M.IsFunction "core::ffi::c_str::const_strlen::strlen_rt::strlen" strlen.
+        Axiom Function_strlen : M.IsFunction "core::ffi::c_str::strlen::strlen_rt::strlen" strlen.
       End strlen_rt.
-    End const_strlen.
+    End strlen.
+    
+    (* StructRecord
+      {
+        name := "Bytes";
+        const_params := [];
+        ty_params := [];
+        fields :=
+          [
+            ("ptr", Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ Ty.path "u8" ]);
+            ("phantom",
+              Ty.apply
+                (Ty.path "core::marker::PhantomData")
+                []
+                [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "i8" ] ] ])
+          ];
+      } *)
+    
+    Module Impl_core_clone_Clone_for_core_ffi_c_str_Bytes.
+      Definition Self : Ty.t := Ty.path "core::ffi::c_str::Bytes".
+      
+      (* Clone *)
+      Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            Value.StructRecord
+              "core::ffi::c_str::Bytes"
+              [
+                ("ptr",
+                  M.call_closure (|
+                    M.get_trait_method (|
+                      "core::clone::Clone",
+                      Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ Ty.path "u8" ],
+                      [],
+                      "clone",
+                      []
+                    |),
+                    [
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::ffi::c_str::Bytes",
+                        "ptr"
+                      |)
+                    ]
+                  |));
+                ("phantom",
+                  M.call_closure (|
+                    M.get_trait_method (|
+                      "core::clone::Clone",
+                      Ty.apply
+                        (Ty.path "core::marker::PhantomData")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.apply (Ty.path "slice") [] [ Ty.path "i8" ] ]
+                        ],
+                      [],
+                      "clone",
+                      []
+                    |),
+                    [
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::ffi::c_str::Bytes",
+                        "phantom"
+                      |)
+                    ]
+                  |))
+              ]))
+        | _, _, _ => M.impossible
+        end.
+      
+      Axiom Implements :
+        M.IsTraitInstance
+          "core::clone::Clone"
+          Self
+          (* Trait polymorphic types *) []
+          (* Instance *) [ ("clone", InstanceField.Method clone) ].
+    End Impl_core_clone_Clone_for_core_ffi_c_str_Bytes.
+    
+    Module Impl_core_fmt_Debug_for_core_ffi_c_str_Bytes.
+      Definition Self : Ty.t := Ty.path "core::ffi::c_str::Bytes".
+      
+      (* Debug *)
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            let f := M.alloc (| f |) in
+            M.call_closure (|
+              M.get_associated_function (|
+                Ty.path "core::fmt::Formatter",
+                "debug_struct_field2_finish",
+                []
+              |),
+              [
+                M.read (| f |);
+                M.read (| Value.String "Bytes" |);
+                M.read (| Value.String "ptr" |);
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::ffi::c_str::Bytes",
+                  "ptr"
+                |);
+                M.read (| Value.String "phantom" |);
+                M.alloc (|
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::ffi::c_str::Bytes",
+                    "phantom"
+                  |)
+                |)
+              ]
+            |)))
+        | _, _, _ => M.impossible
+        end.
+      
+      Axiom Implements :
+        M.IsTraitInstance
+          "core::fmt::Debug"
+          Self
+          (* Trait polymorphic types *) []
+          (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
+    End Impl_core_fmt_Debug_for_core_ffi_c_str_Bytes.
+    
+    Module Impl_core_marker_Send_for_core_ffi_c_str_Bytes.
+      Definition Self : Ty.t := Ty.path "core::ffi::c_str::Bytes".
+      
+      Axiom Implements :
+        M.IsTraitInstance
+          "core::marker::Send"
+          Self
+          (* Trait polymorphic types *) []
+          (* Instance *) [].
+    End Impl_core_marker_Send_for_core_ffi_c_str_Bytes.
+    
+    Module Impl_core_marker_Sync_for_core_ffi_c_str_Bytes.
+      Definition Self : Ty.t := Ty.path "core::ffi::c_str::Bytes".
+      
+      Axiom Implements :
+        M.IsTraitInstance
+          "core::marker::Sync"
+          Self
+          (* Trait polymorphic types *) []
+          (* Instance *) [].
+    End Impl_core_marker_Sync_for_core_ffi_c_str_Bytes.
+    
+    Module Impl_core_ffi_c_str_Bytes.
+      Definition Self : Ty.t := Ty.path "core::ffi::c_str::Bytes".
+      
+      (*
+          fn new(s: &'a CStr) -> Self {
+              Self { ptr: s.as_non_null_ptr().cast(), phantom: PhantomData }
+          }
+      *)
+      Definition new (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ s ] =>
+          ltac:(M.monadic
+            (let s := M.alloc (| s |) in
+            Value.StructRecord
+              "core::ffi::c_str::Bytes"
+              [
+                ("ptr",
+                  M.call_closure (|
+                    M.get_associated_function (|
+                      Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ Ty.path "i8" ],
+                      "cast",
+                      [ Ty.path "u8" ]
+                    |),
+                    [
+                      M.call_closure (|
+                        M.get_associated_function (|
+                          Ty.path "core::ffi::c_str::CStr",
+                          "as_non_null_ptr",
+                          []
+                        |),
+                        [ M.read (| s |) ]
+                      |)
+                    ]
+                  |));
+                ("phantom", Value.StructTuple "core::marker::PhantomData" [])
+              ]))
+        | _, _, _ => M.impossible
+        end.
+      
+      Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
+      
+      (*
+          fn is_empty(&self) -> bool {
+              // SAFETY: We uphold that the pointer is always valid to dereference
+              // by starting with a valid C string and then never incrementing beyond
+              // the nul terminator.
+              unsafe { self.ptr.read() == 0 }
+          }
+      *)
+      Definition is_empty (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            BinOp.Pure.eq
+              (M.call_closure (|
+                M.get_associated_function (|
+                  Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ Ty.path "u8" ],
+                  "read",
+                  []
+                |),
+                [
+                  M.read (|
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::ffi::c_str::Bytes",
+                      "ptr"
+                    |)
+                  |)
+                ]
+              |))
+              (Value.Integer 0)))
+        | _, _, _ => M.impossible
+        end.
+      
+      Axiom AssociatedFunction_is_empty : M.IsAssociatedFunction Self "is_empty" is_empty.
+    End Impl_core_ffi_c_str_Bytes.
+    
+    Module Impl_core_iter_traits_iterator_Iterator_for_core_ffi_c_str_Bytes.
+      Definition Self : Ty.t := Ty.path "core::ffi::c_str::Bytes".
+      
+      (*     type Item = u8; *)
+      Definition _Item : Ty.t := Ty.path "u8".
+      
+      (*
+          fn next(&mut self) -> Option<u8> {
+              // SAFETY: We only choose a pointer from a valid C string, which must
+              // be non-null and contain at least one value. Since we always stop at
+              // the nul terminator, which is guaranteed to exist, we can assume that
+              // the pointer is non-null and valid. This lets us safely dereference
+              // it and assume that adding 1 will create a new, non-null, valid
+              // pointer.
+              unsafe {
+                  let ret = self.ptr.read();
+                  if ret == 0 {
+                      None
+                  } else {
+                      self.ptr = self.ptr.add(1);
+                      Some(ret)
+                  }
+              }
+          }
+      *)
+      Definition next (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            M.read (|
+              let~ ret :=
+                M.alloc (|
+                  M.call_closure (|
+                    M.get_associated_function (|
+                      Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ Ty.path "u8" ],
+                      "read",
+                      []
+                    |),
+                    [
+                      M.read (|
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::ffi::c_str::Bytes",
+                          "ptr"
+                        |)
+                      |)
+                    ]
+                  |)
+                |) in
+              M.match_operator (|
+                M.alloc (| Value.Tuple [] |),
+                [
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ :=
+                        M.use (M.alloc (| BinOp.Pure.eq (M.read (| ret |)) (Value.Integer 0) |)) in
+                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let~ _ :=
+                        M.write (|
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::ffi::c_str::Bytes",
+                            "ptr"
+                          |),
+                          M.call_closure (|
+                            M.get_associated_function (|
+                              Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ Ty.path "u8" ],
+                              "add",
+                              []
+                            |),
+                            [
+                              M.read (|
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::ffi::c_str::Bytes",
+                                  "ptr"
+                                |)
+                              |);
+                              Value.Integer 1
+                            ]
+                          |)
+                        |) in
+                      M.alloc (|
+                        Value.StructTuple "core::option::Option::Some" [ M.read (| ret |) ]
+                      |)))
+                ]
+              |)
+            |)))
+        | _, _, _ => M.impossible
+        end.
+      
+      (*
+          fn size_hint(&self) -> (usize, Option<usize>) {
+              if self.is_empty() { (0, Some(0)) } else { (1, None) }
+          }
+      *)
+      Definition size_hint (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            M.read (|
+              M.match_operator (|
+                M.alloc (| Value.Tuple [] |),
+                [
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ :=
+                        M.use
+                          (M.alloc (|
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.path "core::ffi::c_str::Bytes",
+                                "is_empty",
+                                []
+                              |),
+                              [ M.read (| self |) ]
+                            |)
+                          |)) in
+                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      M.alloc (|
+                        Value.Tuple
+                          [
+                            Value.Integer 0;
+                            Value.StructTuple "core::option::Option::Some" [ Value.Integer 0 ]
+                          ]
+                      |)));
+                  fun γ =>
+                    ltac:(M.monadic
+                      (M.alloc (|
+                        Value.Tuple
+                          [ Value.Integer 1; Value.StructTuple "core::option::Option::None" [] ]
+                      |)))
+                ]
+              |)
+            |)))
+        | _, _, _ => M.impossible
+        end.
+      
+      (*
+          fn count(self) -> usize {
+              // SAFETY: We always hold a valid pointer to a C string
+              unsafe { strlen(self.ptr.as_ptr().cast()) }
+          }
+      *)
+      Definition count (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            M.call_closure (|
+              M.get_function (| "core::ffi::c_str::strlen", [] |),
+              [
+                (* MutToConstPointer *)
+                M.pointer_coercion
+                  (M.call_closure (|
+                    M.get_associated_function (|
+                      Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
+                      "cast",
+                      [ Ty.path "i8" ]
+                    |),
+                    [
+                      M.call_closure (|
+                        M.get_associated_function (|
+                          Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ Ty.path "u8" ],
+                          "as_ptr",
+                          []
+                        |),
+                        [
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              self,
+                              "core::ffi::c_str::Bytes",
+                              "ptr"
+                            |)
+                          |)
+                        ]
+                      |)
+                    ]
+                  |))
+              ]
+            |)))
+        | _, _, _ => M.impossible
+        end.
+      
+      Axiom Implements :
+        M.IsTraitInstance
+          "core::iter::traits::iterator::Iterator"
+          Self
+          (* Trait polymorphic types *) []
+          (* Instance *)
+          [
+            ("Item", InstanceField.Ty _Item);
+            ("next", InstanceField.Method next);
+            ("size_hint", InstanceField.Method size_hint);
+            ("count", InstanceField.Method count)
+          ].
+    End Impl_core_iter_traits_iterator_Iterator_for_core_ffi_c_str_Bytes.
+    
+    Module Impl_core_iter_traits_marker_FusedIterator_for_core_ffi_c_str_Bytes.
+      Definition Self : Ty.t := Ty.path "core::ffi::c_str::Bytes".
+      
+      Axiom Implements :
+        M.IsTraitInstance
+          "core::iter::traits::marker::FusedIterator"
+          Self
+          (* Trait polymorphic types *) []
+          (* Instance *) [].
+    End Impl_core_iter_traits_marker_FusedIterator_for_core_ffi_c_str_Bytes.
   End c_str.
 End ffi.

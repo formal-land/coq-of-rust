@@ -86,6 +86,36 @@ Module iter.
         Axiom AssociatedFunction_new :
           forall (I F : Ty.t),
           M.IsAssociatedFunction (Self I F) "new" (new I F).
+        
+        (*
+            pub(crate) fn into_inner(self) -> I {
+                self.iter
+            }
+        *)
+        Definition into_inner
+            (I F : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          let Self : Ty.t := Self I F in
+          match ε, τ, α with
+          | [], [], [ self ] =>
+            ltac:(M.monadic
+              (let self := M.alloc (| self |) in
+              M.read (|
+                M.SubPointer.get_struct_record_field (|
+                  self,
+                  "core::iter::adapters::map::Map",
+                  "iter"
+                |)
+              |)))
+          | _, _, _ => M.impossible
+          end.
+        
+        Axiom AssociatedFunction_into_inner :
+          forall (I F : Ty.t),
+          M.IsAssociatedFunction (Self I F) "into_inner" (into_inner I F).
       End Impl_core_iter_adapters_map_Map_I_F.
       
       Module Impl_core_fmt_Debug_where_core_fmt_Debug_I_for_core_iter_adapters_map_Map_I_F.
@@ -129,13 +159,11 @@ Module iter.
                         |)
                       |);
                       M.read (| Value.String "iter" |);
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "core::iter::adapters::map::Map",
-                          "iter"
-                        |))
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::iter::adapters::map::Map",
+                        "iter"
+                      |)
                     ]
                   |)
                 ]
@@ -1032,22 +1060,22 @@ Module iter.
         Definition Self (I F : Ty.t) : Ty.t :=
           Ty.apply (Ty.path "core::iter::adapters::map::Map") [] [ I; F ].
         
-        (*     const EXPAND_BY: Option<NonZeroUsize> = I::EXPAND_BY; *)
+        (*     const EXPAND_BY: Option<NonZero<usize>> = I::EXPAND_BY; *)
         (* Ty.apply
           (Ty.path "core::option::Option")
           []
-          [ Ty.path "core::num::nonzero::NonZeroUsize" ] *)
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ] *)
         Definition value_EXPAND_BY (I F : Ty.t) : Value.t :=
           let Self : Ty.t := Self I F in
           M.run
             ltac:(M.monadic
               (M.get_constant (| "core::iter::traits::marker::InPlaceIterable::EXPAND_BY" |))).
         
-        (*     const MERGE_BY: Option<NonZeroUsize> = I::MERGE_BY; *)
+        (*     const MERGE_BY: Option<NonZero<usize>> = I::MERGE_BY; *)
         (* Ty.apply
           (Ty.path "core::option::Option")
           []
-          [ Ty.path "core::num::nonzero::NonZeroUsize" ] *)
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ] *)
         Definition value_MERGE_BY (I F : Ty.t) : Value.t :=
           let Self : Ty.t := Self I F in
           M.run

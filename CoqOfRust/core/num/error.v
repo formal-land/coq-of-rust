@@ -30,15 +30,13 @@ Module num.
               [
                 M.read (| f |);
                 M.read (| Value.String "TryFromIntError" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.alloc (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      M.read (| self |),
-                      "core::num::error::TryFromIntError",
-                      0
-                    |)
-                  |))
+                M.alloc (|
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.read (| self |),
+                    "core::num::error::TryFromIntError",
+                    0
+                  |)
+                |)
               ]
             |)))
         | _, _, _ => M.impossible
@@ -141,17 +139,6 @@ Module num.
           (* Trait polymorphic types *) []
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
     End Impl_core_cmp_PartialEq_for_core_num_error_TryFromIntError.
-    
-    Module Impl_core_marker_StructuralEq_for_core_num_error_TryFromIntError.
-      Definition Self : Ty.t := Ty.path "core::num::error::TryFromIntError".
-      
-      Axiom Implements :
-        M.IsTraitInstance
-          "core::marker::StructuralEq"
-          Self
-          (* Trait polymorphic types *) []
-          (* Instance *) [].
-    End Impl_core_marker_StructuralEq_for_core_num_error_TryFromIntError.
     
     Module Impl_core_cmp_Eq_for_core_num_error_TryFromIntError.
       Definition Self : Ty.t := Ty.path "core::num::error::TryFromIntError".
@@ -332,15 +319,13 @@ Module num.
                 M.read (| f |);
                 M.read (| Value.String "ParseIntError" |);
                 M.read (| Value.String "kind" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.alloc (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::num::error::ParseIntError",
-                      "kind"
-                    |)
-                  |))
+                M.alloc (|
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::num::error::ParseIntError",
+                    "kind"
+                  |)
+                |)
               ]
             |)))
         | _, _, _ => M.impossible
@@ -447,17 +432,6 @@ Module num.
           (* Trait polymorphic types *) []
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
     End Impl_core_cmp_PartialEq_for_core_num_error_ParseIntError.
-    
-    Module Impl_core_marker_StructuralEq_for_core_num_error_ParseIntError.
-      Definition Self : Ty.t := Ty.path "core::num::error::ParseIntError".
-      
-      Axiom Implements :
-        M.IsTraitInstance
-          "core::marker::StructuralEq"
-          Self
-          (* Trait polymorphic types *) []
-          (* Instance *) [].
-    End Impl_core_marker_StructuralEq_for_core_num_error_ParseIntError.
     
     Module Impl_core_cmp_Eq_for_core_num_error_ParseIntError.
       Definition Self : Ty.t := Ty.path "core::num::error::ParseIntError".
@@ -682,7 +656,7 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ __self_tag :=
+              let~ __self_discr :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -692,7 +666,7 @@ Module num.
                     [ M.read (| self |) ]
                   |)
                 |) in
-              let~ __arg1_tag :=
+              let~ __arg1_discr :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -702,7 +676,7 @@ Module num.
                     [ M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)) |)
+              M.alloc (| BinOp.Pure.eq (M.read (| __self_discr |)) (M.read (| __arg1_discr |)) |)
             |)))
         | _, _, _ => M.impossible
         end.
@@ -714,17 +688,6 @@ Module num.
           (* Trait polymorphic types *) []
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
     End Impl_core_cmp_PartialEq_for_core_num_error_IntErrorKind.
-    
-    Module Impl_core_marker_StructuralEq_for_core_num_error_IntErrorKind.
-      Definition Self : Ty.t := Ty.path "core::num::error::IntErrorKind".
-      
-      Axiom Implements :
-        M.IsTraitInstance
-          "core::marker::StructuralEq"
-          Self
-          (* Trait polymorphic types *) []
-          (* Instance *) [].
-    End Impl_core_marker_StructuralEq_for_core_num_error_IntErrorKind.
     
     Module Impl_core_cmp_Eq_for_core_num_error_IntErrorKind.
       Definition Self : Ty.t := Ty.path "core::num::error::IntErrorKind".
@@ -756,7 +719,7 @@ Module num.
       Definition Self : Ty.t := Ty.path "core::num::error::ParseIntError".
       
       (*
-          pub fn kind(&self) -> &IntErrorKind {
+          pub const fn kind(&self) -> &IntErrorKind {
               &self.kind
           }
       *)

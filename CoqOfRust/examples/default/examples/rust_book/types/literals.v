@@ -39,41 +39,34 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                     [
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.read (| Value.String "size of `x` in bytes: " |);
-                              M.read (| Value.String "
+                      M.alloc (|
+                        Value.Array
+                          [
+                            M.read (| Value.String "size of `x` in bytes: " |);
+                            M.read (| Value.String "
 " |)
-                            ]
-                        |));
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::rt::Argument",
-                                  "new_display",
-                                  [ Ty.path "usize" ]
-                                |),
-                                [
-                                  M.alloc (|
-                                    M.call_closure (|
-                                      M.get_function (|
-                                        "core::mem::size_of_val",
-                                        [ Ty.path "u8" ]
-                                      |),
-                                      [ x ]
-                                    |)
+                          ]
+                      |);
+                      M.alloc (|
+                        Value.Array
+                          [
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.path "core::fmt::rt::Argument",
+                                "new_display",
+                                [ Ty.path "usize" ]
+                              |),
+                              [
+                                M.alloc (|
+                                  M.call_closure (|
+                                    M.get_function (| "core::mem::size_of_val", [ Ty.path "u8" ] |),
+                                    [ x ]
                                   |)
-                                ]
-                              |)
-                            ]
-                        |))
+                                |)
+                              ]
+                            |)
+                          ]
+                      |)
                     ]
                   |)
                 ]
@@ -89,41 +82,37 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                     [
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.read (| Value.String "size of `y` in bytes: " |);
-                              M.read (| Value.String "
+                      M.alloc (|
+                        Value.Array
+                          [
+                            M.read (| Value.String "size of `y` in bytes: " |);
+                            M.read (| Value.String "
 " |)
-                            ]
-                        |));
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::rt::Argument",
-                                  "new_display",
-                                  [ Ty.path "usize" ]
-                                |),
-                                [
-                                  M.alloc (|
-                                    M.call_closure (|
-                                      M.get_function (|
-                                        "core::mem::size_of_val",
-                                        [ Ty.path "u32" ]
-                                      |),
-                                      [ y ]
-                                    |)
+                          ]
+                      |);
+                      M.alloc (|
+                        Value.Array
+                          [
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.path "core::fmt::rt::Argument",
+                                "new_display",
+                                [ Ty.path "usize" ]
+                              |),
+                              [
+                                M.alloc (|
+                                  M.call_closure (|
+                                    M.get_function (|
+                                      "core::mem::size_of_val",
+                                      [ Ty.path "u32" ]
+                                    |),
+                                    [ y ]
                                   |)
-                                ]
-                              |)
-                            ]
-                        |))
+                                |)
+                              ]
+                            |)
+                          ]
+                      |)
                     ]
                   |)
                 ]
@@ -139,41 +128,37 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                     [
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.read (| Value.String "size of `z` in bytes: " |);
-                              M.read (| Value.String "
+                      M.alloc (|
+                        Value.Array
+                          [
+                            M.read (| Value.String "size of `z` in bytes: " |);
+                            M.read (| Value.String "
 " |)
-                            ]
-                        |));
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::rt::Argument",
-                                  "new_display",
-                                  [ Ty.path "usize" ]
-                                |),
-                                [
-                                  M.alloc (|
-                                    M.call_closure (|
-                                      M.get_function (|
-                                        "core::mem::size_of_val",
-                                        [ Ty.path "f32" ]
-                                      |),
-                                      [ z ]
-                                    |)
+                          ]
+                      |);
+                      M.alloc (|
+                        Value.Array
+                          [
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.path "core::fmt::rt::Argument",
+                                "new_display",
+                                [ Ty.path "usize" ]
+                              |),
+                              [
+                                M.alloc (|
+                                  M.call_closure (|
+                                    M.get_function (|
+                                      "core::mem::size_of_val",
+                                      [ Ty.path "f32" ]
+                                    |),
+                                    [ z ]
                                   |)
-                                ]
-                              |)
-                            ]
-                        |))
+                                |)
+                              ]
+                            |)
+                          ]
+                      |)
                     ]
                   |)
                 ]
@@ -189,41 +174,37 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                     [
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.read (| Value.String "size of `i` in bytes: " |);
-                              M.read (| Value.String "
+                      M.alloc (|
+                        Value.Array
+                          [
+                            M.read (| Value.String "size of `i` in bytes: " |);
+                            M.read (| Value.String "
 " |)
-                            ]
-                        |));
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::rt::Argument",
-                                  "new_display",
-                                  [ Ty.path "usize" ]
-                                |),
-                                [
-                                  M.alloc (|
-                                    M.call_closure (|
-                                      M.get_function (|
-                                        "core::mem::size_of_val",
-                                        [ Ty.path "i32" ]
-                                      |),
-                                      [ i ]
-                                    |)
+                          ]
+                      |);
+                      M.alloc (|
+                        Value.Array
+                          [
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.path "core::fmt::rt::Argument",
+                                "new_display",
+                                [ Ty.path "usize" ]
+                              |),
+                              [
+                                M.alloc (|
+                                  M.call_closure (|
+                                    M.get_function (|
+                                      "core::mem::size_of_val",
+                                      [ Ty.path "i32" ]
+                                    |),
+                                    [ i ]
                                   |)
-                                ]
-                              |)
-                            ]
-                        |))
+                                |)
+                              ]
+                            |)
+                          ]
+                      |)
                     ]
                   |)
                 ]
@@ -239,41 +220,37 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                     [
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.read (| Value.String "size of `f` in bytes: " |);
-                              M.read (| Value.String "
+                      M.alloc (|
+                        Value.Array
+                          [
+                            M.read (| Value.String "size of `f` in bytes: " |);
+                            M.read (| Value.String "
 " |)
-                            ]
-                        |));
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::rt::Argument",
-                                  "new_display",
-                                  [ Ty.path "usize" ]
-                                |),
-                                [
-                                  M.alloc (|
-                                    M.call_closure (|
-                                      M.get_function (|
-                                        "core::mem::size_of_val",
-                                        [ Ty.path "f64" ]
-                                      |),
-                                      [ f ]
-                                    |)
+                          ]
+                      |);
+                      M.alloc (|
+                        Value.Array
+                          [
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.path "core::fmt::rt::Argument",
+                                "new_display",
+                                [ Ty.path "usize" ]
+                              |),
+                              [
+                                M.alloc (|
+                                  M.call_closure (|
+                                    M.get_function (|
+                                      "core::mem::size_of_val",
+                                      [ Ty.path "f64" ]
+                                    |),
+                                    [ f ]
                                   |)
-                                ]
-                              |)
-                            ]
-                        |))
+                                |)
+                              ]
+                            |)
+                          ]
+                      |)
                     ]
                   |)
                 ]

@@ -115,23 +115,19 @@ Module db.
                   M.read (| f |);
                   M.read (| Value.String "PlainAccount" |);
                   M.read (| Value.String "info" |);
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.SubPointer.get_struct_record_field (|
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "revm::db::states::plain_account::PlainAccount",
+                    "info"
+                  |);
+                  M.read (| Value.String "storage" |);
+                  M.alloc (|
+                    M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
                       "revm::db::states::plain_account::PlainAccount",
-                      "info"
-                    |));
-                  M.read (| Value.String "storage" |);
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.alloc (|
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "revm::db::states::plain_account::PlainAccount",
-                        "storage"
-                      |)
-                    |))
+                      "storage"
+                    |)
+                  |)
                 ]
               |)))
           | _, _, _ => M.impossible
@@ -307,17 +303,6 @@ Module db.
             (* Trait polymorphic types *) []
             (* Instance *) [ ("eq", InstanceField.Method eq) ].
       End Impl_core_cmp_PartialEq_for_revm_db_states_plain_account_PlainAccount.
-      
-      Module Impl_core_marker_StructuralEq_for_revm_db_states_plain_account_PlainAccount.
-        Definition Self : Ty.t := Ty.path "revm::db::states::plain_account::PlainAccount".
-        
-        Axiom Implements :
-          M.IsTraitInstance
-            "core::marker::StructuralEq"
-            Self
-            (* Trait polymorphic types *) []
-            (* Instance *) [].
-      End Impl_core_marker_StructuralEq_for_revm_db_states_plain_account_PlainAccount.
       
       Module Impl_core_cmp_Eq_for_revm_db_states_plain_account_PlainAccount.
         Definition Self : Ty.t := Ty.path "revm::db::states::plain_account::PlainAccount".

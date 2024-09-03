@@ -109,12 +109,10 @@ Module control_flow_graph.
                           []
                         |),
                         [
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.alloc (|
-                              Value.Array [ M.read (| Value.String "+=======================+
+                          M.alloc (|
+                            Value.Array [ M.read (| Value.String "+=======================+
 " |) ]
-                            |))
+                          |)
                         ]
                       |)
                     ]
@@ -134,31 +132,27 @@ Module control_flow_graph.
                           []
                         |),
                         [
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.alloc (|
-                              Value.Array
-                                [
-                                  M.read (| Value.String "| Enter:  " |);
-                                  M.read (| Value.String "            |
+                          M.alloc (|
+                            Value.Array
+                              [
+                                M.read (| Value.String "| Enter:  " |);
+                                M.read (| Value.String "            |
 " |)
-                                ]
-                            |));
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.alloc (|
-                              Value.Array
-                                [
-                                  M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.path "core::fmt::rt::Argument",
-                                      "new_display",
-                                      [ Ty.path "u16" ]
-                                    |),
-                                    [ entry ]
-                                  |)
-                                ]
-                            |))
+                              ]
+                          |);
+                          M.alloc (|
+                            Value.Array
+                              [
+                                M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.path "core::fmt::rt::Argument",
+                                    "new_display",
+                                    [ Ty.path "u16" ]
+                                  |),
+                                  [ entry ]
+                                |)
+                              ]
+                          |)
                         ]
                       |)
                     ]
@@ -178,12 +172,10 @@ Module control_flow_graph.
                           []
                         |),
                         [
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.alloc (|
-                              Value.Array [ M.read (| Value.String "+-----------------------+
+                          M.alloc (|
+                            Value.Array [ M.read (| Value.String "+-----------------------+
 " |) ]
-                            |))
+                          |)
                         ]
                       |)
                     ]
@@ -203,42 +195,38 @@ Module control_flow_graph.
                           []
                         |),
                         [
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.alloc (|
-                              Value.Array
-                                [
-                                  M.read (| Value.String "==> Children: " |);
-                                  M.read (| Value.String "
+                          M.alloc (|
+                            Value.Array
+                              [
+                                M.read (| Value.String "==> Children: " |);
+                                M.read (| Value.String "
 " |)
-                                ]
-                            |));
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.alloc (|
-                              Value.Array
-                                [
-                                  M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.path "core::fmt::rt::Argument",
-                                      "new_debug",
-                                      [
-                                        Ty.apply
-                                          (Ty.path "alloc::vec::Vec")
-                                          []
-                                          [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ]
-                                      ]
-                                    |),
+                              ]
+                          |);
+                          M.alloc (|
+                            Value.Array
+                              [
+                                M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.path "core::fmt::rt::Argument",
+                                    "new_debug",
                                     [
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.read (| self |),
-                                        "move_binary_format::control_flow_graph::BasicBlock",
-                                        "successors"
-                                      |)
+                                      Ty.apply
+                                        (Ty.path "alloc::vec::Vec")
+                                        []
+                                        [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ]
                                     ]
-                                  |)
-                                ]
-                            |))
+                                  |),
+                                  [
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "move_binary_format::control_flow_graph::BasicBlock",
+                                      "successors"
+                                    |)
+                                  ]
+                                |)
+                              ]
+                          |)
                         ]
                       |)
                     ]
@@ -258,12 +246,10 @@ Module control_flow_graph.
                           []
                         |),
                         [
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.alloc (|
-                              Value.Array [ M.read (| Value.String "+-----------------------+
+                          M.alloc (|
+                            Value.Array [ M.read (| Value.String "+-----------------------+
 " |) ]
-                            |))
+                          |)
                         ]
                       |)
                     ]
@@ -283,37 +269,33 @@ Module control_flow_graph.
                           []
                         |),
                         [
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.alloc (|
-                              Value.Array
-                                [
-                                  M.read (| Value.String "| Exit:   " |);
-                                  M.read (| Value.String "            |
+                          M.alloc (|
+                            Value.Array
+                              [
+                                M.read (| Value.String "| Exit:   " |);
+                                M.read (| Value.String "            |
 " |)
-                                ]
-                            |));
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.alloc (|
-                              Value.Array
-                                [
-                                  M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.path "core::fmt::rt::Argument",
-                                      "new_display",
-                                      [ Ty.path "u16" ]
-                                    |),
-                                    [
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.read (| self |),
-                                        "move_binary_format::control_flow_graph::BasicBlock",
-                                        "exit"
-                                      |)
-                                    ]
-                                  |)
-                                ]
-                            |))
+                              ]
+                          |);
+                          M.alloc (|
+                            Value.Array
+                              [
+                                M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.path "core::fmt::rt::Argument",
+                                    "new_display",
+                                    [ Ty.path "u16" ]
+                                  |),
+                                  [
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "move_binary_format::control_flow_graph::BasicBlock",
+                                      "exit"
+                                    |)
+                                  ]
+                                |)
+                              ]
+                          |)
                         ]
                       |)
                     ]
@@ -333,12 +315,10 @@ Module control_flow_graph.
                           []
                         |),
                         [
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.alloc (|
-                              Value.Array [ M.read (| Value.String "+=======================+
+                          M.alloc (|
+                            Value.Array [ M.read (| Value.String "+=======================+
 " |) ]
-                            |))
+                          |)
                         ]
                       |)
                     ]
@@ -955,35 +935,33 @@ Module control_flow_graph.
                     [ Ty.path "alloc::alloc::Global" ]
                   |),
                   [
-                    (* Unsize *)
-                    M.pointer_coercion
-                      (M.read (|
-                        M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.apply
-                              (Ty.path "alloc::boxed::Box")
-                              []
-                              [
-                                Ty.apply (Ty.path "array") [ Value.Integer 1 ] [ Ty.path "u16" ];
-                                Ty.path "alloc::alloc::Global"
-                              ],
-                            "new",
+                    M.read (|
+                      M.call_closure (|
+                        M.get_associated_function (|
+                          Ty.apply
+                            (Ty.path "alloc::boxed::Box")
                             []
-                          |),
-                          [
-                            M.alloc (|
-                              Value.Array
-                                [
-                                  M.read (|
-                                    M.get_constant (|
-                                      "move_binary_format::control_flow_graph::ENTRY_BLOCK_ID"
-                                    |)
+                            [
+                              Ty.apply (Ty.path "array") [ Value.Integer 1 ] [ Ty.path "u16" ];
+                              Ty.path "alloc::alloc::Global"
+                            ],
+                          "new",
+                          []
+                        |),
+                        [
+                          M.alloc (|
+                            Value.Array
+                              [
+                                M.read (|
+                                  M.get_constant (|
+                                    "move_binary_format::control_flow_graph::ENTRY_BLOCK_ID"
                                   |)
-                                ]
-                            |)
-                          ]
-                        |)
-                      |))
+                                |)
+                              ]
+                          |)
+                        ]
+                      |)
+                    |)
                   ]
                 |)
               |) in
@@ -1862,68 +1840,62 @@ Module control_flow_graph.
                           []
                         |),
                         [
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.alloc (|
-                              Value.Array
-                                [
-                                  M.read (| Value.String "Traversal: " |);
-                                  M.read (| Value.String "
+                          M.alloc (|
+                            Value.Array
+                              [
+                                M.read (| Value.String "Traversal: " |);
+                                M.read (| Value.String "
 " |)
-                                ]
-                            |));
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.alloc (|
-                              Value.Array
-                                [
-                                  M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.path "core::fmt::rt::Argument",
-                                      "new_debug",
-                                      [
-                                        Ty.apply
-                                          (Ty.path "alloc::collections::btree::map::BTreeMap")
-                                          []
-                                          [
-                                            Ty.path "u16";
-                                            Ty.path "u16";
-                                            Ty.path "alloc::alloc::Global"
-                                          ]
-                                      ]
-                                    |),
+                              ]
+                          |);
+                          M.alloc (|
+                            Value.Array
+                              [
+                                M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.path "core::fmt::rt::Argument",
+                                    "new_debug",
                                     [
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.read (| self |),
-                                        "move_binary_format::control_flow_graph::VMControlFlowGraph",
-                                        "traversal_successors"
-                                      |)
+                                      Ty.apply
+                                        (Ty.path "alloc::collections::btree::map::BTreeMap")
+                                        []
+                                        [
+                                          Ty.path "u16";
+                                          Ty.path "u16";
+                                          Ty.path "alloc::alloc::Global"
+                                        ]
                                     ]
-                                  |)
-                                ]
-                            |));
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.alloc (|
-                              Value.Array
-                                [
-                                  M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.path "core::fmt::rt::Placeholder",
-                                      "new",
-                                      []
-                                    |),
-                                    [
-                                      Value.Integer 0;
-                                      Value.UnicodeChar 32;
-                                      Value.StructTuple "core::fmt::rt::Alignment::Unknown" [];
-                                      Value.Integer 4;
-                                      Value.StructTuple "core::fmt::rt::Count::Implied" [];
-                                      Value.StructTuple "core::fmt::rt::Count::Implied" []
-                                    ]
-                                  |)
-                                ]
-                            |));
+                                  |),
+                                  [
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "move_binary_format::control_flow_graph::VMControlFlowGraph",
+                                      "traversal_successors"
+                                    |)
+                                  ]
+                                |)
+                              ]
+                          |);
+                          M.alloc (|
+                            Value.Array
+                              [
+                                M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.path "core::fmt::rt::Placeholder",
+                                    "new",
+                                    []
+                                  |),
+                                  [
+                                    Value.Integer 0;
+                                    Value.UnicodeChar 32;
+                                    Value.StructTuple "core::fmt::rt::Alignment::Unknown" [];
+                                    Value.Integer 4;
+                                    Value.StructTuple "core::fmt::rt::Count::Implied" [];
+                                    Value.StructTuple "core::fmt::rt::Count::Implied" []
+                                  ]
+                                |)
+                              ]
+                          |);
                           M.call_closure (|
                             M.get_associated_function (|
                               Ty.path "core::fmt::rt::UnsafeArg",
@@ -2735,54 +2707,50 @@ Module control_flow_graph.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let block_id := M.alloc (| block_id |) in
-          (* Unsize *)
-          M.pointer_coercion
-            (* Unsize *)
-            (M.pointer_coercion
-              (M.call_closure (|
+          M.call_closure (|
+            M.get_associated_function (|
+              Ty.apply
+                (Ty.path "alloc::boxed::Box")
+                []
+                [
+                  Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ Ty.path "u16" ];
+                  Ty.path "alloc::alloc::Global"
+                ],
+              "new",
+              []
+            |),
+            [
+              M.call_closure (|
                 M.get_associated_function (|
-                  Ty.apply
-                    (Ty.path "alloc::boxed::Box")
-                    []
-                    [
-                      Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ Ty.path "u16" ];
-                      Ty.path "alloc::alloc::Global"
-                    ],
+                  Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ Ty.path "u16" ],
                   "new",
                   []
                 |),
                 [
                   M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ Ty.path "u16" ],
-                      "new",
+                    M.get_trait_method (|
+                      "move_binary_format::control_flow_graph::ControlFlowGraph",
+                      Ty.path "move_binary_format::control_flow_graph::VMControlFlowGraph",
+                      [],
+                      "block_start",
                       []
                     |),
-                    [
-                      M.call_closure (|
-                        M.get_trait_method (|
-                          "move_binary_format::control_flow_graph::ControlFlowGraph",
-                          Ty.path "move_binary_format::control_flow_graph::VMControlFlowGraph",
-                          [],
-                          "block_start",
-                          []
-                        |),
-                        [ M.read (| self |); M.read (| block_id |) ]
-                      |);
-                      M.call_closure (|
-                        M.get_trait_method (|
-                          "move_binary_format::control_flow_graph::ControlFlowGraph",
-                          Ty.path "move_binary_format::control_flow_graph::VMControlFlowGraph",
-                          [],
-                          "block_end",
-                          []
-                        |),
-                        [ M.read (| self |); M.read (| block_id |) ]
-                      |)
-                    ]
+                    [ M.read (| self |); M.read (| block_id |) ]
+                  |);
+                  M.call_closure (|
+                    M.get_trait_method (|
+                      "move_binary_format::control_flow_graph::ControlFlowGraph",
+                      Ty.path "move_binary_format::control_flow_graph::VMControlFlowGraph",
+                      [],
+                      "block_end",
+                      []
+                    |),
+                    [ M.read (| self |); M.read (| block_id |) ]
                   |)
                 ]
-              |)))))
+              |)
+            ]
+          |)))
       | _, _, _ => M.impossible
       end.
     

@@ -65,15 +65,13 @@ Module Impl_core_fmt_Debug_for_constructor_as_function_Constructor.
           [
             M.read (| f |);
             M.read (| Value.String "Constructor" |);
-            (* Unsize *)
-            M.pointer_coercion
-              (M.alloc (|
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "constructor_as_function::Constructor",
-                  0
-                |)
-              |))
+            M.alloc (|
+              M.SubPointer.get_struct_tuple_field (|
+                M.read (| self |),
+                "constructor_as_function::Constructor",
+                0
+              |)
+            |)
           ]
         |)))
     | _, _, _ => M.impossible
@@ -159,32 +157,30 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             [ Ty.path "alloc::alloc::Global" ]
                           |),
                           [
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.read (|
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.apply
-                                      (Ty.path "alloc::boxed::Box")
-                                      []
-                                      [
-                                        Ty.apply
-                                          (Ty.path "array")
-                                          [ Value.Integer 3 ]
-                                          [ Ty.path "i32" ];
-                                        Ty.path "alloc::alloc::Global"
-                                      ],
-                                    "new",
+                            M.read (|
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.apply
+                                    (Ty.path "alloc::boxed::Box")
                                     []
-                                  |),
-                                  [
-                                    M.alloc (|
-                                      Value.Array
-                                        [ Value.Integer 1; Value.Integer 2; Value.Integer 3 ]
-                                    |)
-                                  ]
-                                |)
-                              |))
+                                    [
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ Value.Integer 3 ]
+                                        [ Ty.path "i32" ];
+                                      Ty.path "alloc::alloc::Global"
+                                    ],
+                                  "new",
+                                  []
+                                |),
+                                [
+                                  M.alloc (|
+                                    Value.Array
+                                      [ Value.Integer 1; Value.Integer 2; Value.Integer 3 ]
+                                  |)
+                                ]
+                              |)
+                            |)
                           ]
                         |)
                       ]
@@ -204,36 +200,31 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                     [
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [ M.read (| Value.String "" |); M.read (| Value.String "
+                      M.alloc (|
+                        Value.Array [ M.read (| Value.String "" |); M.read (| Value.String "
 " |) ]
-                        |));
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::rt::Argument",
-                                  "new_debug",
-                                  [
-                                    Ty.apply
-                                      (Ty.path "alloc::vec::Vec")
-                                      []
-                                      [
-                                        Ty.path "constructor_as_function::Constructor";
-                                        Ty.path "alloc::alloc::Global"
-                                      ]
-                                  ]
-                                |),
-                                [ v ]
-                              |)
-                            ]
-                        |))
+                      |);
+                      M.alloc (|
+                        Value.Array
+                          [
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.path "core::fmt::rt::Argument",
+                                "new_debug",
+                                [
+                                  Ty.apply
+                                    (Ty.path "alloc::vec::Vec")
+                                    []
+                                    [
+                                      Ty.path "constructor_as_function::Constructor";
+                                      Ty.path "alloc::alloc::Global"
+                                    ]
+                                ]
+                              |),
+                              [ v ]
+                            |)
+                          ]
+                      |)
                     ]
                   |)
                 ]

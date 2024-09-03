@@ -29,23 +29,19 @@ Module Impl_core_fmt_Debug_for_box_stack_heap_Point.
             M.read (| f |);
             M.read (| Value.String "Point" |);
             M.read (| Value.String "x" |);
-            (* Unsize *)
-            M.pointer_coercion
-              (M.SubPointer.get_struct_record_field (|
+            M.SubPointer.get_struct_record_field (|
+              M.read (| self |),
+              "box_stack_heap::Point",
+              "x"
+            |);
+            M.read (| Value.String "y" |);
+            M.alloc (|
+              M.SubPointer.get_struct_record_field (|
                 M.read (| self |),
                 "box_stack_heap::Point",
-                "x"
-              |));
-            M.read (| Value.String "y" |);
-            (* Unsize *)
-            M.pointer_coercion
-              (M.alloc (|
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "box_stack_heap::Point",
-                  "y"
-                |)
-              |))
+                "y"
+              |)
+            |)
           ]
         |)))
     | _, _, _ => M.impossible
@@ -298,41 +294,37 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                     [
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.read (| Value.String "Point occupies " |);
-                              M.read (| Value.String " bytes on the stack
+                      M.alloc (|
+                        Value.Array
+                          [
+                            M.read (| Value.String "Point occupies " |);
+                            M.read (| Value.String " bytes on the stack
 " |)
-                            ]
-                        |));
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::rt::Argument",
-                                  "new_display",
-                                  [ Ty.path "usize" ]
-                                |),
-                                [
-                                  M.alloc (|
-                                    M.call_closure (|
-                                      M.get_function (|
-                                        "core::mem::size_of_val",
-                                        [ Ty.path "box_stack_heap::Point" ]
-                                      |),
-                                      [ point ]
-                                    |)
+                          ]
+                      |);
+                      M.alloc (|
+                        Value.Array
+                          [
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.path "core::fmt::rt::Argument",
+                                "new_display",
+                                [ Ty.path "usize" ]
+                              |),
+                              [
+                                M.alloc (|
+                                  M.call_closure (|
+                                    M.get_function (|
+                                      "core::mem::size_of_val",
+                                      [ Ty.path "box_stack_heap::Point" ]
+                                    |),
+                                    [ point ]
                                   |)
-                                ]
-                              |)
-                            ]
-                        |))
+                                |)
+                              ]
+                            |)
+                          ]
+                      |)
                     ]
                   |)
                 ]
@@ -348,41 +340,37 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                     [
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.read (| Value.String "Rectangle occupies " |);
-                              M.read (| Value.String " bytes on the stack
+                      M.alloc (|
+                        Value.Array
+                          [
+                            M.read (| Value.String "Rectangle occupies " |);
+                            M.read (| Value.String " bytes on the stack
 " |)
-                            ]
-                        |));
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::rt::Argument",
-                                  "new_display",
-                                  [ Ty.path "usize" ]
-                                |),
-                                [
-                                  M.alloc (|
-                                    M.call_closure (|
-                                      M.get_function (|
-                                        "core::mem::size_of_val",
-                                        [ Ty.path "box_stack_heap::Rectangle" ]
-                                      |),
-                                      [ rectangle ]
-                                    |)
+                          ]
+                      |);
+                      M.alloc (|
+                        Value.Array
+                          [
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.path "core::fmt::rt::Argument",
+                                "new_display",
+                                [ Ty.path "usize" ]
+                              |),
+                              [
+                                M.alloc (|
+                                  M.call_closure (|
+                                    M.get_function (|
+                                      "core::mem::size_of_val",
+                                      [ Ty.path "box_stack_heap::Rectangle" ]
+                                    |),
+                                    [ rectangle ]
                                   |)
-                                ]
-                              |)
-                            ]
-                        |))
+                                |)
+                              ]
+                            |)
+                          ]
+                      |)
                     ]
                   |)
                 ]
@@ -398,49 +386,45 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                     [
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.read (| Value.String "Boxed point occupies " |);
-                              M.read (| Value.String " bytes on the stack
+                      M.alloc (|
+                        Value.Array
+                          [
+                            M.read (| Value.String "Boxed point occupies " |);
+                            M.read (| Value.String " bytes on the stack
 " |)
-                            ]
-                        |));
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::rt::Argument",
-                                  "new_display",
-                                  [ Ty.path "usize" ]
-                                |),
-                                [
-                                  M.alloc (|
-                                    M.call_closure (|
-                                      M.get_function (|
-                                        "core::mem::size_of_val",
-                                        [
-                                          Ty.apply
-                                            (Ty.path "alloc::boxed::Box")
-                                            []
-                                            [
-                                              Ty.path "box_stack_heap::Point";
-                                              Ty.path "alloc::alloc::Global"
-                                            ]
-                                        ]
-                                      |),
-                                      [ boxed_point ]
-                                    |)
+                          ]
+                      |);
+                      M.alloc (|
+                        Value.Array
+                          [
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.path "core::fmt::rt::Argument",
+                                "new_display",
+                                [ Ty.path "usize" ]
+                              |),
+                              [
+                                M.alloc (|
+                                  M.call_closure (|
+                                    M.get_function (|
+                                      "core::mem::size_of_val",
+                                      [
+                                        Ty.apply
+                                          (Ty.path "alloc::boxed::Box")
+                                          []
+                                          [
+                                            Ty.path "box_stack_heap::Point";
+                                            Ty.path "alloc::alloc::Global"
+                                          ]
+                                      ]
+                                    |),
+                                    [ boxed_point ]
                                   |)
-                                ]
-                              |)
-                            ]
-                        |))
+                                |)
+                              ]
+                            |)
+                          ]
+                      |)
                     ]
                   |)
                 ]
@@ -456,49 +440,45 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                     [
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.read (| Value.String "Boxed rectangle occupies " |);
-                              M.read (| Value.String " bytes on the stack
+                      M.alloc (|
+                        Value.Array
+                          [
+                            M.read (| Value.String "Boxed rectangle occupies " |);
+                            M.read (| Value.String " bytes on the stack
 " |)
-                            ]
-                        |));
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::rt::Argument",
-                                  "new_display",
-                                  [ Ty.path "usize" ]
-                                |),
-                                [
-                                  M.alloc (|
-                                    M.call_closure (|
-                                      M.get_function (|
-                                        "core::mem::size_of_val",
-                                        [
-                                          Ty.apply
-                                            (Ty.path "alloc::boxed::Box")
-                                            []
-                                            [
-                                              Ty.path "box_stack_heap::Rectangle";
-                                              Ty.path "alloc::alloc::Global"
-                                            ]
-                                        ]
-                                      |),
-                                      [ boxed_rectangle ]
-                                    |)
+                          ]
+                      |);
+                      M.alloc (|
+                        Value.Array
+                          [
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.path "core::fmt::rt::Argument",
+                                "new_display",
+                                [ Ty.path "usize" ]
+                              |),
+                              [
+                                M.alloc (|
+                                  M.call_closure (|
+                                    M.get_function (|
+                                      "core::mem::size_of_val",
+                                      [
+                                        Ty.apply
+                                          (Ty.path "alloc::boxed::Box")
+                                          []
+                                          [
+                                            Ty.path "box_stack_heap::Rectangle";
+                                            Ty.path "alloc::alloc::Global"
+                                          ]
+                                      ]
+                                    |),
+                                    [ boxed_rectangle ]
                                   |)
-                                ]
-                              |)
-                            ]
-                        |))
+                                |)
+                              ]
+                            |)
+                          ]
+                      |)
                     ]
                   |)
                 ]
@@ -514,55 +494,51 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                     [
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.read (| Value.String "Boxed box occupies " |);
-                              M.read (| Value.String " bytes on the stack
+                      M.alloc (|
+                        Value.Array
+                          [
+                            M.read (| Value.String "Boxed box occupies " |);
+                            M.read (| Value.String " bytes on the stack
 " |)
-                            ]
-                        |));
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::rt::Argument",
-                                  "new_display",
-                                  [ Ty.path "usize" ]
-                                |),
-                                [
-                                  M.alloc (|
-                                    M.call_closure (|
-                                      M.get_function (|
-                                        "core::mem::size_of_val",
-                                        [
-                                          Ty.apply
-                                            (Ty.path "alloc::boxed::Box")
-                                            []
-                                            [
-                                              Ty.apply
-                                                (Ty.path "alloc::boxed::Box")
-                                                []
-                                                [
-                                                  Ty.path "box_stack_heap::Point";
-                                                  Ty.path "alloc::alloc::Global"
-                                                ];
-                                              Ty.path "alloc::alloc::Global"
-                                            ]
-                                        ]
-                                      |),
-                                      [ box_in_a_box ]
-                                    |)
+                          ]
+                      |);
+                      M.alloc (|
+                        Value.Array
+                          [
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.path "core::fmt::rt::Argument",
+                                "new_display",
+                                [ Ty.path "usize" ]
+                              |),
+                              [
+                                M.alloc (|
+                                  M.call_closure (|
+                                    M.get_function (|
+                                      "core::mem::size_of_val",
+                                      [
+                                        Ty.apply
+                                          (Ty.path "alloc::boxed::Box")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "alloc::boxed::Box")
+                                              []
+                                              [
+                                                Ty.path "box_stack_heap::Point";
+                                                Ty.path "alloc::alloc::Global"
+                                              ];
+                                            Ty.path "alloc::alloc::Global"
+                                          ]
+                                      ]
+                                    |),
+                                    [ box_in_a_box ]
                                   |)
-                                ]
-                              |)
-                            ]
-                        |))
+                                |)
+                              ]
+                            |)
+                          ]
+                      |)
                     ]
                   |)
                 ]
@@ -579,41 +555,37 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                     [
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.read (| Value.String "Unboxed point occupies " |);
-                              M.read (| Value.String " bytes on the stack
+                      M.alloc (|
+                        Value.Array
+                          [
+                            M.read (| Value.String "Unboxed point occupies " |);
+                            M.read (| Value.String " bytes on the stack
 " |)
-                            ]
-                        |));
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::rt::Argument",
-                                  "new_display",
-                                  [ Ty.path "usize" ]
-                                |),
-                                [
-                                  M.alloc (|
-                                    M.call_closure (|
-                                      M.get_function (|
-                                        "core::mem::size_of_val",
-                                        [ Ty.path "box_stack_heap::Point" ]
-                                      |),
-                                      [ unboxed_point ]
-                                    |)
+                          ]
+                      |);
+                      M.alloc (|
+                        Value.Array
+                          [
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.path "core::fmt::rt::Argument",
+                                "new_display",
+                                [ Ty.path "usize" ]
+                              |),
+                              [
+                                M.alloc (|
+                                  M.call_closure (|
+                                    M.get_function (|
+                                      "core::mem::size_of_val",
+                                      [ Ty.path "box_stack_heap::Point" ]
+                                    |),
+                                    [ unboxed_point ]
                                   |)
-                                ]
-                              |)
-                            ]
-                        |))
+                                |)
+                              ]
+                            |)
+                          ]
+                      |)
                     ]
                   |)
                 ]

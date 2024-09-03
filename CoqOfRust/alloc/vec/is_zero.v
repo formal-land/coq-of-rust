@@ -988,7 +988,7 @@ Module vec.
                           "iter",
                           []
                         |),
-                        [ (* Unsize *) M.pointer_coercion (M.read (| self |)) ]
+                        [ M.read (| self |) ]
                       |)
                     |);
                     M.get_trait_method (| "alloc::vec::is_zero::IsZero", T, [], "is_zero", [] |)
@@ -1977,9 +1977,12 @@ Module vec.
           (* Instance *) [ ("is_zero", InstanceField.Method (is_zero T)) ].
     End Impl_alloc_vec_is_zero_IsZero_where_core_marker_Sized_T_for_core_option_Option_alloc_boxed_Box_T_alloc_alloc_Global.
     
-    Module Impl_alloc_vec_is_zero_IsZero_for_core_option_Option_core_num_nonzero_NonZeroU8.
+    Module Impl_alloc_vec_is_zero_IsZero_for_core_option_Option_core_num_nonzero_NonZero_u8.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::num::nonzero::NonZeroU8" ].
+        Ty.apply
+          (Ty.path "core::option::Option")
+          []
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ] ].
       
       (*
                   fn is_zero(&self) -> bool {
@@ -1996,7 +1999,7 @@ Module vec.
                 Ty.apply
                   (Ty.path "core::option::Option")
                   []
-                  [ Ty.path "core::num::nonzero::NonZeroU8" ],
+                  [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ] ],
                 "is_none",
                 []
               |),
@@ -2011,11 +2014,14 @@ Module vec.
           Self
           (* Trait polymorphic types *) []
           (* Instance *) [ ("is_zero", InstanceField.Method is_zero) ].
-    End Impl_alloc_vec_is_zero_IsZero_for_core_option_Option_core_num_nonzero_NonZeroU8.
+    End Impl_alloc_vec_is_zero_IsZero_for_core_option_Option_core_num_nonzero_NonZero_u8.
     
-    Module Impl_alloc_vec_is_zero_IsZero_for_core_option_Option_core_num_nonzero_NonZeroU16.
+    Module Impl_alloc_vec_is_zero_IsZero_for_core_option_Option_core_num_nonzero_NonZero_u16.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::num::nonzero::NonZeroU16" ].
+        Ty.apply
+          (Ty.path "core::option::Option")
+          []
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ] ].
       
       (*
                   fn is_zero(&self) -> bool {
@@ -2032,7 +2038,7 @@ Module vec.
                 Ty.apply
                   (Ty.path "core::option::Option")
                   []
-                  [ Ty.path "core::num::nonzero::NonZeroU16" ],
+                  [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ] ],
                 "is_none",
                 []
               |),
@@ -2047,11 +2053,14 @@ Module vec.
           Self
           (* Trait polymorphic types *) []
           (* Instance *) [ ("is_zero", InstanceField.Method is_zero) ].
-    End Impl_alloc_vec_is_zero_IsZero_for_core_option_Option_core_num_nonzero_NonZeroU16.
+    End Impl_alloc_vec_is_zero_IsZero_for_core_option_Option_core_num_nonzero_NonZero_u16.
     
-    Module Impl_alloc_vec_is_zero_IsZero_for_core_option_Option_core_num_nonzero_NonZeroU32.
+    Module Impl_alloc_vec_is_zero_IsZero_for_core_option_Option_core_num_nonzero_NonZero_u32.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::num::nonzero::NonZeroU32" ].
+        Ty.apply
+          (Ty.path "core::option::Option")
+          []
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ] ].
       
       (*
                   fn is_zero(&self) -> bool {
@@ -2068,7 +2077,7 @@ Module vec.
                 Ty.apply
                   (Ty.path "core::option::Option")
                   []
-                  [ Ty.path "core::num::nonzero::NonZeroU32" ],
+                  [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ] ],
                 "is_none",
                 []
               |),
@@ -2083,11 +2092,14 @@ Module vec.
           Self
           (* Trait polymorphic types *) []
           (* Instance *) [ ("is_zero", InstanceField.Method is_zero) ].
-    End Impl_alloc_vec_is_zero_IsZero_for_core_option_Option_core_num_nonzero_NonZeroU32.
+    End Impl_alloc_vec_is_zero_IsZero_for_core_option_Option_core_num_nonzero_NonZero_u32.
     
-    Module Impl_alloc_vec_is_zero_IsZero_for_core_option_Option_core_num_nonzero_NonZeroU64.
+    Module Impl_alloc_vec_is_zero_IsZero_for_core_option_Option_core_num_nonzero_NonZero_u64.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::num::nonzero::NonZeroU64" ].
+        Ty.apply
+          (Ty.path "core::option::Option")
+          []
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ] ].
       
       (*
                   fn is_zero(&self) -> bool {
@@ -2104,7 +2116,7 @@ Module vec.
                 Ty.apply
                   (Ty.path "core::option::Option")
                   []
-                  [ Ty.path "core::num::nonzero::NonZeroU64" ],
+                  [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ] ],
                 "is_none",
                 []
               |),
@@ -2119,11 +2131,14 @@ Module vec.
           Self
           (* Trait polymorphic types *) []
           (* Instance *) [ ("is_zero", InstanceField.Method is_zero) ].
-    End Impl_alloc_vec_is_zero_IsZero_for_core_option_Option_core_num_nonzero_NonZeroU64.
+    End Impl_alloc_vec_is_zero_IsZero_for_core_option_Option_core_num_nonzero_NonZero_u64.
     
-    Module Impl_alloc_vec_is_zero_IsZero_for_core_option_Option_core_num_nonzero_NonZeroU128.
+    Module Impl_alloc_vec_is_zero_IsZero_for_core_option_Option_core_num_nonzero_NonZero_u128.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::num::nonzero::NonZeroU128" ].
+        Ty.apply
+          (Ty.path "core::option::Option")
+          []
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ] ].
       
       (*
                   fn is_zero(&self) -> bool {
@@ -2140,7 +2155,7 @@ Module vec.
                 Ty.apply
                   (Ty.path "core::option::Option")
                   []
-                  [ Ty.path "core::num::nonzero::NonZeroU128" ],
+                  [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ] ],
                 "is_none",
                 []
               |),
@@ -2155,11 +2170,14 @@ Module vec.
           Self
           (* Trait polymorphic types *) []
           (* Instance *) [ ("is_zero", InstanceField.Method is_zero) ].
-    End Impl_alloc_vec_is_zero_IsZero_for_core_option_Option_core_num_nonzero_NonZeroU128.
+    End Impl_alloc_vec_is_zero_IsZero_for_core_option_Option_core_num_nonzero_NonZero_u128.
     
-    Module Impl_alloc_vec_is_zero_IsZero_for_core_option_Option_core_num_nonzero_NonZeroI8.
+    Module Impl_alloc_vec_is_zero_IsZero_for_core_option_Option_core_num_nonzero_NonZero_usize.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::num::nonzero::NonZeroI8" ].
+        Ty.apply
+          (Ty.path "core::option::Option")
+          []
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ].
       
       (*
                   fn is_zero(&self) -> bool {
@@ -2176,7 +2194,7 @@ Module vec.
                 Ty.apply
                   (Ty.path "core::option::Option")
                   []
-                  [ Ty.path "core::num::nonzero::NonZeroI8" ],
+                  [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ],
                 "is_none",
                 []
               |),
@@ -2191,11 +2209,14 @@ Module vec.
           Self
           (* Trait polymorphic types *) []
           (* Instance *) [ ("is_zero", InstanceField.Method is_zero) ].
-    End Impl_alloc_vec_is_zero_IsZero_for_core_option_Option_core_num_nonzero_NonZeroI8.
+    End Impl_alloc_vec_is_zero_IsZero_for_core_option_Option_core_num_nonzero_NonZero_usize.
     
-    Module Impl_alloc_vec_is_zero_IsZero_for_core_option_Option_core_num_nonzero_NonZeroI16.
+    Module Impl_alloc_vec_is_zero_IsZero_for_core_option_Option_core_num_nonzero_NonZero_i8.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::num::nonzero::NonZeroI16" ].
+        Ty.apply
+          (Ty.path "core::option::Option")
+          []
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ] ].
       
       (*
                   fn is_zero(&self) -> bool {
@@ -2212,7 +2233,7 @@ Module vec.
                 Ty.apply
                   (Ty.path "core::option::Option")
                   []
-                  [ Ty.path "core::num::nonzero::NonZeroI16" ],
+                  [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ] ],
                 "is_none",
                 []
               |),
@@ -2227,11 +2248,14 @@ Module vec.
           Self
           (* Trait polymorphic types *) []
           (* Instance *) [ ("is_zero", InstanceField.Method is_zero) ].
-    End Impl_alloc_vec_is_zero_IsZero_for_core_option_Option_core_num_nonzero_NonZeroI16.
+    End Impl_alloc_vec_is_zero_IsZero_for_core_option_Option_core_num_nonzero_NonZero_i8.
     
-    Module Impl_alloc_vec_is_zero_IsZero_for_core_option_Option_core_num_nonzero_NonZeroI32.
+    Module Impl_alloc_vec_is_zero_IsZero_for_core_option_Option_core_num_nonzero_NonZero_i16.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::num::nonzero::NonZeroI32" ].
+        Ty.apply
+          (Ty.path "core::option::Option")
+          []
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ] ].
       
       (*
                   fn is_zero(&self) -> bool {
@@ -2248,7 +2272,7 @@ Module vec.
                 Ty.apply
                   (Ty.path "core::option::Option")
                   []
-                  [ Ty.path "core::num::nonzero::NonZeroI32" ],
+                  [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ] ],
                 "is_none",
                 []
               |),
@@ -2263,11 +2287,14 @@ Module vec.
           Self
           (* Trait polymorphic types *) []
           (* Instance *) [ ("is_zero", InstanceField.Method is_zero) ].
-    End Impl_alloc_vec_is_zero_IsZero_for_core_option_Option_core_num_nonzero_NonZeroI32.
+    End Impl_alloc_vec_is_zero_IsZero_for_core_option_Option_core_num_nonzero_NonZero_i16.
     
-    Module Impl_alloc_vec_is_zero_IsZero_for_core_option_Option_core_num_nonzero_NonZeroI64.
+    Module Impl_alloc_vec_is_zero_IsZero_for_core_option_Option_core_num_nonzero_NonZero_i32.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::num::nonzero::NonZeroI64" ].
+        Ty.apply
+          (Ty.path "core::option::Option")
+          []
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ] ].
       
       (*
                   fn is_zero(&self) -> bool {
@@ -2284,7 +2311,7 @@ Module vec.
                 Ty.apply
                   (Ty.path "core::option::Option")
                   []
-                  [ Ty.path "core::num::nonzero::NonZeroI64" ],
+                  [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ] ],
                 "is_none",
                 []
               |),
@@ -2299,11 +2326,14 @@ Module vec.
           Self
           (* Trait polymorphic types *) []
           (* Instance *) [ ("is_zero", InstanceField.Method is_zero) ].
-    End Impl_alloc_vec_is_zero_IsZero_for_core_option_Option_core_num_nonzero_NonZeroI64.
+    End Impl_alloc_vec_is_zero_IsZero_for_core_option_Option_core_num_nonzero_NonZero_i32.
     
-    Module Impl_alloc_vec_is_zero_IsZero_for_core_option_Option_core_num_nonzero_NonZeroI128.
+    Module Impl_alloc_vec_is_zero_IsZero_for_core_option_Option_core_num_nonzero_NonZero_i64.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::num::nonzero::NonZeroI128" ].
+        Ty.apply
+          (Ty.path "core::option::Option")
+          []
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ] ].
       
       (*
                   fn is_zero(&self) -> bool {
@@ -2320,7 +2350,7 @@ Module vec.
                 Ty.apply
                   (Ty.path "core::option::Option")
                   []
-                  [ Ty.path "core::num::nonzero::NonZeroI128" ],
+                  [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ] ],
                 "is_none",
                 []
               |),
@@ -2335,11 +2365,14 @@ Module vec.
           Self
           (* Trait polymorphic types *) []
           (* Instance *) [ ("is_zero", InstanceField.Method is_zero) ].
-    End Impl_alloc_vec_is_zero_IsZero_for_core_option_Option_core_num_nonzero_NonZeroI128.
+    End Impl_alloc_vec_is_zero_IsZero_for_core_option_Option_core_num_nonzero_NonZero_i64.
     
-    Module Impl_alloc_vec_is_zero_IsZero_for_core_option_Option_core_num_nonzero_NonZeroUsize.
+    Module Impl_alloc_vec_is_zero_IsZero_for_core_option_Option_core_num_nonzero_NonZero_i128.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::num::nonzero::NonZeroUsize" ].
+        Ty.apply
+          (Ty.path "core::option::Option")
+          []
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ] ].
       
       (*
                   fn is_zero(&self) -> bool {
@@ -2356,7 +2389,7 @@ Module vec.
                 Ty.apply
                   (Ty.path "core::option::Option")
                   []
-                  [ Ty.path "core::num::nonzero::NonZeroUsize" ],
+                  [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ] ],
                 "is_none",
                 []
               |),
@@ -2371,11 +2404,14 @@ Module vec.
           Self
           (* Trait polymorphic types *) []
           (* Instance *) [ ("is_zero", InstanceField.Method is_zero) ].
-    End Impl_alloc_vec_is_zero_IsZero_for_core_option_Option_core_num_nonzero_NonZeroUsize.
+    End Impl_alloc_vec_is_zero_IsZero_for_core_option_Option_core_num_nonzero_NonZero_i128.
     
-    Module Impl_alloc_vec_is_zero_IsZero_for_core_option_Option_core_num_nonzero_NonZeroIsize.
+    Module Impl_alloc_vec_is_zero_IsZero_for_core_option_Option_core_num_nonzero_NonZero_isize.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::num::nonzero::NonZeroIsize" ].
+        Ty.apply
+          (Ty.path "core::option::Option")
+          []
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ] ].
       
       (*
                   fn is_zero(&self) -> bool {
@@ -2392,7 +2428,7 @@ Module vec.
                 Ty.apply
                   (Ty.path "core::option::Option")
                   []
-                  [ Ty.path "core::num::nonzero::NonZeroIsize" ],
+                  [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ] ],
                 "is_none",
                 []
               |),
@@ -2407,7 +2443,7 @@ Module vec.
           Self
           (* Trait polymorphic types *) []
           (* Instance *) [ ("is_zero", InstanceField.Method is_zero) ].
-    End Impl_alloc_vec_is_zero_IsZero_for_core_option_Option_core_num_nonzero_NonZeroIsize.
+    End Impl_alloc_vec_is_zero_IsZero_for_core_option_Option_core_num_nonzero_NonZero_isize.
     
     Module Impl_alloc_vec_is_zero_IsZero_for_core_option_Option_u8.
       Definition Self : Ty.t := Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u8" ].

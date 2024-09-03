@@ -148,17 +148,6 @@ Module parser.
   }
   *)
   
-  Module Impl_core_marker_StructuralEq_for_move_core_types_parser_Token.
-    Definition Self : Ty.t := Ty.path "move_core_types::parser::Token".
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::marker::StructuralEq"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [].
-  End Impl_core_marker_StructuralEq_for_move_core_types_parser_Token.
-  
   Module Impl_core_cmp_Eq_for_move_core_types_parser_Token.
     Definition Self : Ty.t := Ty.path "move_core_types::parser::Token".
     
@@ -212,7 +201,7 @@ Module parser.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ __self_tag :=
+            let~ __self_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -222,7 +211,7 @@ Module parser.
                   [ M.read (| self |) ]
                 |)
               |) in
-            let~ __arg1_tag :=
+            let~ __arg1_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -234,7 +223,7 @@ Module parser.
               |) in
             M.alloc (|
               LogicalOp.and (|
-                BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)),
+                BinOp.Pure.eq (M.read (| __self_discr |)) (M.read (| __arg1_discr |)),
                 ltac:(M.monadic
                   (M.read (|
                     M.match_operator (|
@@ -264,12 +253,12 @@ Module parser.
                               M.call_closure (|
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
-                                  Ty.path "alloc::string::String",
-                                  [ Ty.path "alloc::string::String" ],
+                                  Ty.apply (Ty.path "&") [] [ Ty.path "alloc::string::String" ],
+                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "alloc::string::String" ] ],
                                   "eq",
                                   []
                                 |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                [ __self_0; __arg1_0 ]
                               |)
                             |)));
                         fun γ =>
@@ -296,12 +285,12 @@ Module parser.
                               M.call_closure (|
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
-                                  Ty.path "alloc::string::String",
-                                  [ Ty.path "alloc::string::String" ],
+                                  Ty.apply (Ty.path "&") [] [ Ty.path "alloc::string::String" ],
+                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "alloc::string::String" ] ],
                                   "eq",
                                   []
                                 |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                [ __self_0; __arg1_0 ]
                               |)
                             |)));
                         fun γ =>
@@ -328,12 +317,12 @@ Module parser.
                               M.call_closure (|
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
-                                  Ty.path "alloc::string::String",
-                                  [ Ty.path "alloc::string::String" ],
+                                  Ty.apply (Ty.path "&") [] [ Ty.path "alloc::string::String" ],
+                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "alloc::string::String" ] ],
                                   "eq",
                                   []
                                 |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                [ __self_0; __arg1_0 ]
                               |)
                             |)));
                         fun γ =>
@@ -360,12 +349,12 @@ Module parser.
                               M.call_closure (|
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
-                                  Ty.path "alloc::string::String",
-                                  [ Ty.path "alloc::string::String" ],
+                                  Ty.apply (Ty.path "&") [] [ Ty.path "alloc::string::String" ],
+                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "alloc::string::String" ] ],
                                   "eq",
                                   []
                                 |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                [ __self_0; __arg1_0 ]
                               |)
                             |)));
                         fun γ =>
@@ -392,12 +381,12 @@ Module parser.
                               M.call_closure (|
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
-                                  Ty.path "alloc::string::String",
-                                  [ Ty.path "alloc::string::String" ],
+                                  Ty.apply (Ty.path "&") [] [ Ty.path "alloc::string::String" ],
+                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "alloc::string::String" ] ],
                                   "eq",
                                   []
                                 |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                [ __self_0; __arg1_0 ]
                               |)
                             |)));
                         fun γ =>
@@ -424,12 +413,12 @@ Module parser.
                               M.call_closure (|
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
-                                  Ty.path "alloc::string::String",
-                                  [ Ty.path "alloc::string::String" ],
+                                  Ty.apply (Ty.path "&") [] [ Ty.path "alloc::string::String" ],
+                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "alloc::string::String" ] ],
                                   "eq",
                                   []
                                 |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                [ __self_0; __arg1_0 ]
                               |)
                             |)));
                         fun γ =>
@@ -456,12 +445,12 @@ Module parser.
                               M.call_closure (|
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
-                                  Ty.path "alloc::string::String",
-                                  [ Ty.path "alloc::string::String" ],
+                                  Ty.apply (Ty.path "&") [] [ Ty.path "alloc::string::String" ],
+                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "alloc::string::String" ] ],
                                   "eq",
                                   []
                                 |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                [ __self_0; __arg1_0 ]
                               |)
                             |)));
                         fun γ =>
@@ -488,12 +477,12 @@ Module parser.
                               M.call_closure (|
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
-                                  Ty.path "alloc::string::String",
-                                  [ Ty.path "alloc::string::String" ],
+                                  Ty.apply (Ty.path "&") [] [ Ty.path "alloc::string::String" ],
+                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "alloc::string::String" ] ],
                                   "eq",
                                   []
                                 |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                [ __self_0; __arg1_0 ]
                               |)
                             |)));
                         fun γ =>
@@ -520,12 +509,12 @@ Module parser.
                               M.call_closure (|
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
-                                  Ty.path "alloc::string::String",
-                                  [ Ty.path "alloc::string::String" ],
+                                  Ty.apply (Ty.path "&") [] [ Ty.path "alloc::string::String" ],
+                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "alloc::string::String" ] ],
                                   "eq",
                                   []
                                 |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                [ __self_0; __arg1_0 ]
                               |)
                             |)));
                         fun γ =>
@@ -552,12 +541,12 @@ Module parser.
                               M.call_closure (|
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
-                                  Ty.path "alloc::string::String",
-                                  [ Ty.path "alloc::string::String" ],
+                                  Ty.apply (Ty.path "&") [] [ Ty.path "alloc::string::String" ],
+                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "alloc::string::String" ] ],
                                   "eq",
                                   []
                                 |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                [ __self_0; __arg1_0 ]
                               |)
                             |)));
                         fun γ => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
@@ -755,11 +744,7 @@ Module parser.
                           "debug_tuple_field1_finish",
                           []
                         |),
-                        [
-                          M.read (| f |);
-                          M.read (| Value.String "Whitespace" |);
-                          (* Unsize *) M.pointer_coercion __self_0
-                        ]
+                        [ M.read (| f |); M.read (| Value.String "Whitespace" |); __self_0 ]
                       |)
                     |)));
                 fun γ =>
@@ -779,11 +764,7 @@ Module parser.
                           "debug_tuple_field1_finish",
                           []
                         |),
-                        [
-                          M.read (| f |);
-                          M.read (| Value.String "Name" |);
-                          (* Unsize *) M.pointer_coercion __self_0
-                        ]
+                        [ M.read (| f |); M.read (| Value.String "Name" |); __self_0 ]
                       |)
                     |)));
                 fun γ =>
@@ -803,11 +784,7 @@ Module parser.
                           "debug_tuple_field1_finish",
                           []
                         |),
-                        [
-                          M.read (| f |);
-                          M.read (| Value.String "Address" |);
-                          (* Unsize *) M.pointer_coercion __self_0
-                        ]
+                        [ M.read (| f |); M.read (| Value.String "Address" |); __self_0 ]
                       |)
                     |)));
                 fun γ =>
@@ -827,11 +804,7 @@ Module parser.
                           "debug_tuple_field1_finish",
                           []
                         |),
-                        [
-                          M.read (| f |);
-                          M.read (| Value.String "U8" |);
-                          (* Unsize *) M.pointer_coercion __self_0
-                        ]
+                        [ M.read (| f |); M.read (| Value.String "U8" |); __self_0 ]
                       |)
                     |)));
                 fun γ =>
@@ -851,11 +824,7 @@ Module parser.
                           "debug_tuple_field1_finish",
                           []
                         |),
-                        [
-                          M.read (| f |);
-                          M.read (| Value.String "U16" |);
-                          (* Unsize *) M.pointer_coercion __self_0
-                        ]
+                        [ M.read (| f |); M.read (| Value.String "U16" |); __self_0 ]
                       |)
                     |)));
                 fun γ =>
@@ -875,11 +844,7 @@ Module parser.
                           "debug_tuple_field1_finish",
                           []
                         |),
-                        [
-                          M.read (| f |);
-                          M.read (| Value.String "U32" |);
-                          (* Unsize *) M.pointer_coercion __self_0
-                        ]
+                        [ M.read (| f |); M.read (| Value.String "U32" |); __self_0 ]
                       |)
                     |)));
                 fun γ =>
@@ -899,11 +864,7 @@ Module parser.
                           "debug_tuple_field1_finish",
                           []
                         |),
-                        [
-                          M.read (| f |);
-                          M.read (| Value.String "U64" |);
-                          (* Unsize *) M.pointer_coercion __self_0
-                        ]
+                        [ M.read (| f |); M.read (| Value.String "U64" |); __self_0 ]
                       |)
                     |)));
                 fun γ =>
@@ -923,11 +884,7 @@ Module parser.
                           "debug_tuple_field1_finish",
                           []
                         |),
-                        [
-                          M.read (| f |);
-                          M.read (| Value.String "U128" |);
-                          (* Unsize *) M.pointer_coercion __self_0
-                        ]
+                        [ M.read (| f |); M.read (| Value.String "U128" |); __self_0 ]
                       |)
                     |)));
                 fun γ =>
@@ -947,11 +904,7 @@ Module parser.
                           "debug_tuple_field1_finish",
                           []
                         |),
-                        [
-                          M.read (| f |);
-                          M.read (| Value.String "U256" |);
-                          (* Unsize *) M.pointer_coercion __self_0
-                        ]
+                        [ M.read (| f |); M.read (| Value.String "U256" |); __self_0 ]
                       |)
                     |)));
                 fun γ =>
@@ -971,11 +924,7 @@ Module parser.
                           "debug_tuple_field1_finish",
                           []
                         |),
-                        [
-                          M.read (| f |);
-                          M.read (| Value.String "Bytes" |);
-                          (* Unsize *) M.pointer_coercion __self_0
-                        ]
+                        [ M.read (| f |); M.read (| Value.String "Bytes" |); __self_0 ]
                       |)
                     |)));
                 fun γ =>
@@ -1524,58 +1473,63 @@ Module parser.
                                                     [ Ty.path "alloc::string::String" ]
                                                   |),
                                                   [
-                                                    M.read (|
-                                                      let~ res :=
-                                                        M.alloc (|
-                                                          M.call_closure (|
-                                                            M.get_function (|
-                                                              "alloc::fmt::format",
-                                                              []
-                                                            |),
-                                                            [
+                                                    M.call_closure (|
+                                                      M.get_function (|
+                                                        "core::hint::must_use",
+                                                        [ Ty.path "alloc::string::String" ]
+                                                      |),
+                                                      [
+                                                        M.read (|
+                                                          let~ res :=
+                                                            M.alloc (|
                                                               M.call_closure (|
-                                                                M.get_associated_function (|
-                                                                  Ty.path "core::fmt::Arguments",
-                                                                  "new_v1",
+                                                                M.get_function (|
+                                                                  "alloc::fmt::format",
                                                                   []
                                                                 |),
                                                                 [
-                                                                  (* Unsize *)
-                                                                  M.pointer_coercion
-                                                                    (M.alloc (|
-                                                                      Value.Array
-                                                                        [
-                                                                          M.read (|
-                                                                            Value.String
-                                                                              "Invalid token. Expected a name but got "
-                                                                          |)
-                                                                        ]
-                                                                    |));
-                                                                  (* Unsize *)
-                                                                  M.pointer_coercion
-                                                                    (M.alloc (|
-                                                                      Value.Array
-                                                                        [
-                                                                          M.call_closure (|
-                                                                            M.get_associated_function (|
-                                                                              Ty.path
-                                                                                "core::fmt::rt::Argument",
-                                                                              "new_debug",
-                                                                              [
+                                                                  M.call_closure (|
+                                                                    M.get_associated_function (|
+                                                                      Ty.path
+                                                                        "core::fmt::Arguments",
+                                                                      "new_v1",
+                                                                      []
+                                                                    |),
+                                                                    [
+                                                                      M.alloc (|
+                                                                        Value.Array
+                                                                          [
+                                                                            M.read (|
+                                                                              Value.String
+                                                                                "Invalid token. Expected a name but got "
+                                                                            |)
+                                                                          ]
+                                                                      |);
+                                                                      M.alloc (|
+                                                                        Value.Array
+                                                                          [
+                                                                            M.call_closure (|
+                                                                              M.get_associated_function (|
                                                                                 Ty.path
-                                                                                  "move_core_types::parser::Token"
-                                                                              ]
-                                                                            |),
-                                                                            [ tok ]
-                                                                          |)
-                                                                        ]
-                                                                    |))
+                                                                                  "core::fmt::rt::Argument",
+                                                                                "new_debug",
+                                                                                [
+                                                                                  Ty.path
+                                                                                    "move_core_types::parser::Token"
+                                                                                ]
+                                                                              |),
+                                                                              [ tok ]
+                                                                            |)
+                                                                          ]
+                                                                      |)
+                                                                    ]
+                                                                  |)
                                                                 ]
                                                               |)
-                                                            ]
-                                                          |)
-                                                        |) in
-                                                      res
+                                                            |) in
+                                                          res
+                                                        |)
+                                                      ]
                                                     |)
                                                   ]
                                                 |)
@@ -2059,17 +2013,15 @@ Module parser.
                                                                                               []
                                                                                             |),
                                                                                             [
-                                                                                              (* Unsize *)
-                                                                                              M.pointer_coercion
-                                                                                                (M.alloc (|
-                                                                                                  Value.Array
-                                                                                                    [
-                                                                                                      M.read (|
-                                                                                                        Value.String
-                                                                                                          "invalid suffix"
-                                                                                                      |)
-                                                                                                    ]
-                                                                                                |))
+                                                                                              M.alloc (|
+                                                                                                Value.Array
+                                                                                                  [
+                                                                                                    M.read (|
+                                                                                                      Value.String
+                                                                                                        "invalid suffix"
+                                                                                                    |)
+                                                                                                  ]
+                                                                                              |)
                                                                                             ]
                                                                                           |)
                                                                                         ]
@@ -2432,17 +2384,15 @@ Module parser.
                                                                             []
                                                                           |),
                                                                           [
-                                                                            (* Unsize *)
-                                                                            M.pointer_coercion
-                                                                              (M.alloc (|
-                                                                                Value.Array
-                                                                                  [
-                                                                                    M.read (|
-                                                                                      Value.String
-                                                                                        "unrecognized token"
-                                                                                    |)
-                                                                                  ]
-                                                                              |))
+                                                                            M.alloc (|
+                                                                              Value.Array
+                                                                                [
+                                                                                  M.read (|
+                                                                                    Value.String
+                                                                                      "unrecognized token"
+                                                                                  |)
+                                                                                ]
+                                                                            |)
                                                                           ]
                                                                         |)
                                                                       ]
@@ -2866,17 +2816,15 @@ Module parser.
                                                                             []
                                                                           |),
                                                                           [
-                                                                            (* Unsize *)
-                                                                            M.pointer_coercion
-                                                                              (M.alloc (|
-                                                                                Value.Array
-                                                                                  [
-                                                                                    M.read (|
-                                                                                      Value.String
-                                                                                        "unrecognized token"
-                                                                                    |)
-                                                                                  ]
-                                                                              |))
+                                                                            M.alloc (|
+                                                                              Value.Array
+                                                                                [
+                                                                                  M.read (|
+                                                                                    Value.String
+                                                                                      "unrecognized token"
+                                                                                  |)
+                                                                                ]
+                                                                            |)
                                                                           ]
                                                                         |)
                                                                       ]
@@ -3207,17 +3155,15 @@ Module parser.
                                                                                   []
                                                                                 |),
                                                                                 [
-                                                                                  (* Unsize *)
-                                                                                  M.pointer_coercion
-                                                                                    (M.alloc (|
-                                                                                      Value.Array
-                                                                                        [
-                                                                                          M.read (|
-                                                                                            Value.String
-                                                                                              "unrecognized token"
-                                                                                          |)
-                                                                                        ]
-                                                                                    |))
+                                                                                  M.alloc (|
+                                                                                    Value.Array
+                                                                                      [
+                                                                                        M.read (|
+                                                                                          Value.String
+                                                                                            "unrecognized token"
+                                                                                        |)
+                                                                                      ]
+                                                                                  |)
                                                                                 ]
                                                                               |)
                                                                             ]
@@ -3459,17 +3405,15 @@ Module parser.
                                                                                   []
                                                                                 |),
                                                                                 [
-                                                                                  (* Unsize *)
-                                                                                  M.pointer_coercion
-                                                                                    (M.alloc (|
-                                                                                      Value.Array
-                                                                                        [
-                                                                                          M.read (|
-                                                                                            Value.String
-                                                                                              "unrecognized token"
-                                                                                          |)
-                                                                                        ]
-                                                                                    |))
+                                                                                  M.alloc (|
+                                                                                    Value.Array
+                                                                                      [
+                                                                                        M.read (|
+                                                                                          Value.String
+                                                                                            "unrecognized token"
+                                                                                        |)
+                                                                                      ]
+                                                                                  |)
                                                                                 ]
                                                                               |)
                                                                             ]
@@ -3910,17 +3854,15 @@ Module parser.
                                                                     []
                                                                   |),
                                                                   [
-                                                                    (* Unsize *)
-                                                                    M.pointer_coercion
-                                                                      (M.alloc (|
-                                                                        Value.Array
-                                                                          [
-                                                                            M.read (|
-                                                                              Value.String
-                                                                                "unrecognized token"
-                                                                            |)
-                                                                          ]
-                                                                      |))
+                                                                    M.alloc (|
+                                                                      Value.Array
+                                                                        [
+                                                                          M.read (|
+                                                                            Value.String
+                                                                              "unrecognized token"
+                                                                          |)
+                                                                        ]
+                                                                    |)
                                                                   ]
                                                                 |)
                                                               ]
@@ -4291,17 +4233,15 @@ Module parser.
                                                   []
                                                 |),
                                                 [
-                                                  (* Unsize *)
-                                                  M.pointer_coercion
-                                                    (M.alloc (|
-                                                      Value.Array
-                                                        [
-                                                          M.read (|
-                                                            Value.String
-                                                              "out of tokens, this should not happen"
-                                                          |)
-                                                        ]
-                                                    |))
+                                                  M.alloc (|
+                                                    Value.Array
+                                                      [
+                                                        M.read (|
+                                                          Value.String
+                                                            "out of tokens, this should not happen"
+                                                        |)
+                                                      ]
+                                                  |)
                                                 ]
                                               |)
                                             ]
@@ -4491,67 +4431,71 @@ Module parser.
                                           [ Ty.path "alloc::string::String" ]
                                         |),
                                         [
-                                          M.read (|
-                                            let~ res :=
-                                              M.alloc (|
-                                                M.call_closure (|
-                                                  M.get_function (| "alloc::fmt::format", [] |),
-                                                  [
+                                          M.call_closure (|
+                                            M.get_function (|
+                                              "core::hint::must_use",
+                                              [ Ty.path "alloc::string::String" ]
+                                            |),
+                                            [
+                                              M.read (|
+                                                let~ res :=
+                                                  M.alloc (|
                                                     M.call_closure (|
-                                                      M.get_associated_function (|
-                                                        Ty.path "core::fmt::Arguments",
-                                                        "new_v1",
-                                                        []
-                                                      |),
+                                                      M.get_function (| "alloc::fmt::format", [] |),
                                                       [
-                                                        (* Unsize *)
-                                                        M.pointer_coercion
-                                                          (M.alloc (|
-                                                            Value.Array
-                                                              [
-                                                                M.read (|
-                                                                  Value.String "expected token "
-                                                                |);
-                                                                M.read (| Value.String ", got " |)
-                                                              ]
-                                                          |));
-                                                        (* Unsize *)
-                                                        M.pointer_coercion
-                                                          (M.alloc (|
-                                                            Value.Array
-                                                              [
-                                                                M.call_closure (|
-                                                                  M.get_associated_function (|
-                                                                    Ty.path
-                                                                      "core::fmt::rt::Argument",
-                                                                    "new_debug",
-                                                                    [
+                                                        M.call_closure (|
+                                                          M.get_associated_function (|
+                                                            Ty.path "core::fmt::Arguments",
+                                                            "new_v1",
+                                                            []
+                                                          |),
+                                                          [
+                                                            M.alloc (|
+                                                              Value.Array
+                                                                [
+                                                                  M.read (|
+                                                                    Value.String "expected token "
+                                                                  |);
+                                                                  M.read (| Value.String ", got " |)
+                                                                ]
+                                                            |);
+                                                            M.alloc (|
+                                                              Value.Array
+                                                                [
+                                                                  M.call_closure (|
+                                                                    M.get_associated_function (|
                                                                       Ty.path
-                                                                        "move_core_types::parser::Token"
-                                                                    ]
-                                                                  |),
-                                                                  [ tok ]
-                                                                |);
-                                                                M.call_closure (|
-                                                                  M.get_associated_function (|
-                                                                    Ty.path
-                                                                      "core::fmt::rt::Argument",
-                                                                    "new_debug",
-                                                                    [
+                                                                        "core::fmt::rt::Argument",
+                                                                      "new_debug",
+                                                                      [
+                                                                        Ty.path
+                                                                          "move_core_types::parser::Token"
+                                                                      ]
+                                                                    |),
+                                                                    [ tok ]
+                                                                  |);
+                                                                  M.call_closure (|
+                                                                    M.get_associated_function (|
                                                                       Ty.path
-                                                                        "move_core_types::parser::Token"
-                                                                    ]
-                                                                  |),
-                                                                  [ t ]
-                                                                |)
-                                                              ]
-                                                          |))
+                                                                        "core::fmt::rt::Argument",
+                                                                      "new_debug",
+                                                                      [
+                                                                        Ty.path
+                                                                          "move_core_types::parser::Token"
+                                                                      ]
+                                                                    |),
+                                                                    [ t ]
+                                                                  |)
+                                                                ]
+                                                            |)
+                                                          ]
+                                                        |)
                                                       ]
                                                     |)
-                                                  ]
-                                                |)
-                                              |) in
-                                            res
+                                                  |) in
+                                                res
+                                              |)
+                                            ]
                                           |)
                                         ]
                                       |)
@@ -5190,57 +5134,66 @@ Module parser.
                                             [ Ty.path "alloc::string::String" ]
                                           |),
                                           [
-                                            M.read (|
-                                              let~ res :=
-                                                M.alloc (|
-                                                  M.call_closure (|
-                                                    M.get_function (| "alloc::fmt::format", [] |),
-                                                    [
+                                            M.call_closure (|
+                                              M.get_function (|
+                                                "core::hint::must_use",
+                                                [ Ty.path "alloc::string::String" ]
+                                              |),
+                                              [
+                                                M.read (|
+                                                  let~ res :=
+                                                    M.alloc (|
                                                       M.call_closure (|
-                                                        M.get_associated_function (|
-                                                          Ty.path "core::fmt::Arguments",
-                                                          "new_v1",
+                                                        M.get_function (|
+                                                          "alloc::fmt::format",
                                                           []
                                                         |),
                                                         [
-                                                          (* Unsize *)
-                                                          M.pointer_coercion
-                                                            (M.alloc (|
-                                                              Value.Array
-                                                                [
-                                                                  M.read (|
-                                                                    Value.String "unexpected token "
-                                                                  |);
-                                                                  M.read (|
-                                                                    Value.String ", expected string"
-                                                                  |)
-                                                                ]
-                                                            |));
-                                                          (* Unsize *)
-                                                          M.pointer_coercion
-                                                            (M.alloc (|
-                                                              Value.Array
-                                                                [
-                                                                  M.call_closure (|
-                                                                    M.get_associated_function (|
-                                                                      Ty.path
-                                                                        "core::fmt::rt::Argument",
-                                                                      "new_debug",
-                                                                      [
+                                                          M.call_closure (|
+                                                            M.get_associated_function (|
+                                                              Ty.path "core::fmt::Arguments",
+                                                              "new_v1",
+                                                              []
+                                                            |),
+                                                            [
+                                                              M.alloc (|
+                                                                Value.Array
+                                                                  [
+                                                                    M.read (|
+                                                                      Value.String
+                                                                        "unexpected token "
+                                                                    |);
+                                                                    M.read (|
+                                                                      Value.String
+                                                                        ", expected string"
+                                                                    |)
+                                                                  ]
+                                                              |);
+                                                              M.alloc (|
+                                                                Value.Array
+                                                                  [
+                                                                    M.call_closure (|
+                                                                      M.get_associated_function (|
                                                                         Ty.path
-                                                                          "move_core_types::parser::Token"
-                                                                      ]
-                                                                    |),
-                                                                    [ tok ]
-                                                                  |)
-                                                                ]
-                                                            |))
+                                                                          "core::fmt::rt::Argument",
+                                                                        "new_debug",
+                                                                        [
+                                                                          Ty.path
+                                                                            "move_core_types::parser::Token"
+                                                                        ]
+                                                                      |),
+                                                                      [ tok ]
+                                                                    |)
+                                                                  ]
+                                                              |)
+                                                            ]
+                                                          |)
                                                         ]
                                                       |)
-                                                    ]
-                                                  |)
-                                                |) in
-                                              res
+                                                    |) in
+                                                  res
+                                                |)
+                                              ]
                                             |)
                                           ]
                                         |)
@@ -6968,58 +6921,66 @@ Module parser.
                                             [ Ty.path "alloc::string::String" ]
                                           |),
                                           [
-                                            M.read (|
-                                              let~ res :=
-                                                M.alloc (|
-                                                  M.call_closure (|
-                                                    M.get_function (| "alloc::fmt::format", [] |),
-                                                    [
+                                            M.call_closure (|
+                                              M.get_function (|
+                                                "core::hint::must_use",
+                                                [ Ty.path "alloc::string::String" ]
+                                              |),
+                                              [
+                                                M.read (|
+                                                  let~ res :=
+                                                    M.alloc (|
                                                       M.call_closure (|
-                                                        M.get_associated_function (|
-                                                          Ty.path "core::fmt::Arguments",
-                                                          "new_v1",
+                                                        M.get_function (|
+                                                          "alloc::fmt::format",
                                                           []
                                                         |),
                                                         [
-                                                          (* Unsize *)
-                                                          M.pointer_coercion
-                                                            (M.alloc (|
-                                                              Value.Array
-                                                                [
-                                                                  M.read (|
-                                                                    Value.String "unexpected token "
-                                                                  |);
-                                                                  M.read (|
-                                                                    Value.String
-                                                                      ", expected type tag"
-                                                                  |)
-                                                                ]
-                                                            |));
-                                                          (* Unsize *)
-                                                          M.pointer_coercion
-                                                            (M.alloc (|
-                                                              Value.Array
-                                                                [
-                                                                  M.call_closure (|
-                                                                    M.get_associated_function (|
-                                                                      Ty.path
-                                                                        "core::fmt::rt::Argument",
-                                                                      "new_debug",
-                                                                      [
+                                                          M.call_closure (|
+                                                            M.get_associated_function (|
+                                                              Ty.path "core::fmt::Arguments",
+                                                              "new_v1",
+                                                              []
+                                                            |),
+                                                            [
+                                                              M.alloc (|
+                                                                Value.Array
+                                                                  [
+                                                                    M.read (|
+                                                                      Value.String
+                                                                        "unexpected token "
+                                                                    |);
+                                                                    M.read (|
+                                                                      Value.String
+                                                                        ", expected type tag"
+                                                                    |)
+                                                                  ]
+                                                              |);
+                                                              M.alloc (|
+                                                                Value.Array
+                                                                  [
+                                                                    M.call_closure (|
+                                                                      M.get_associated_function (|
                                                                         Ty.path
-                                                                          "move_core_types::parser::Token"
-                                                                      ]
-                                                                    |),
-                                                                    [ tok ]
-                                                                  |)
-                                                                ]
-                                                            |))
+                                                                          "core::fmt::rt::Argument",
+                                                                        "new_debug",
+                                                                        [
+                                                                          Ty.path
+                                                                            "move_core_types::parser::Token"
+                                                                        ]
+                                                                      |),
+                                                                      [ tok ]
+                                                                    |)
+                                                                  ]
+                                                              |)
+                                                            ]
+                                                          |)
                                                         ]
                                                       |)
-                                                    ]
-                                                  |)
-                                                |) in
-                                              res
+                                                    |) in
+                                                  res
+                                                |)
+                                              ]
                                             |)
                                           ]
                                         |)
@@ -8227,58 +8188,66 @@ Module parser.
                                             [ Ty.path "alloc::string::String" ]
                                           |),
                                           [
-                                            M.read (|
-                                              let~ res :=
-                                                M.alloc (|
-                                                  M.call_closure (|
-                                                    M.get_function (| "alloc::fmt::format", [] |),
-                                                    [
+                                            M.call_closure (|
+                                              M.get_function (|
+                                                "core::hint::must_use",
+                                                [ Ty.path "alloc::string::String" ]
+                                              |),
+                                              [
+                                                M.read (|
+                                                  let~ res :=
+                                                    M.alloc (|
                                                       M.call_closure (|
-                                                        M.get_associated_function (|
-                                                          Ty.path "core::fmt::Arguments",
-                                                          "new_v1",
+                                                        M.get_function (|
+                                                          "alloc::fmt::format",
                                                           []
                                                         |),
                                                         [
-                                                          (* Unsize *)
-                                                          M.pointer_coercion
-                                                            (M.alloc (|
-                                                              Value.Array
-                                                                [
-                                                                  M.read (|
-                                                                    Value.String "unexpected token "
-                                                                  |);
-                                                                  M.read (|
-                                                                    Value.String
-                                                                      ", expected transaction argument"
-                                                                  |)
-                                                                ]
-                                                            |));
-                                                          (* Unsize *)
-                                                          M.pointer_coercion
-                                                            (M.alloc (|
-                                                              Value.Array
-                                                                [
-                                                                  M.call_closure (|
-                                                                    M.get_associated_function (|
-                                                                      Ty.path
-                                                                        "core::fmt::rt::Argument",
-                                                                      "new_debug",
-                                                                      [
+                                                          M.call_closure (|
+                                                            M.get_associated_function (|
+                                                              Ty.path "core::fmt::Arguments",
+                                                              "new_v1",
+                                                              []
+                                                            |),
+                                                            [
+                                                              M.alloc (|
+                                                                Value.Array
+                                                                  [
+                                                                    M.read (|
+                                                                      Value.String
+                                                                        "unexpected token "
+                                                                    |);
+                                                                    M.read (|
+                                                                      Value.String
+                                                                        ", expected transaction argument"
+                                                                    |)
+                                                                  ]
+                                                              |);
+                                                              M.alloc (|
+                                                                Value.Array
+                                                                  [
+                                                                    M.call_closure (|
+                                                                      M.get_associated_function (|
                                                                         Ty.path
-                                                                          "move_core_types::parser::Token"
-                                                                      ]
-                                                                    |),
-                                                                    [ tok ]
-                                                                  |)
-                                                                ]
-                                                            |))
+                                                                          "core::fmt::rt::Argument",
+                                                                        "new_debug",
+                                                                        [
+                                                                          Ty.path
+                                                                            "move_core_types::parser::Token"
+                                                                        ]
+                                                                      |),
+                                                                      [ tok ]
+                                                                    |)
+                                                                  ]
+                                                              |)
+                                                            ]
+                                                          |)
                                                         ]
                                                       |)
-                                                    ]
-                                                  |)
-                                                |) in
-                                              res
+                                                    |) in
+                                                  res
+                                                |)
+                                              ]
                                             |)
                                           ]
                                         |)
@@ -9627,75 +9596,79 @@ Module parser.
                                                   [ Ty.path "alloc::string::String" ]
                                                 |),
                                                 [
-                                                  M.read (|
-                                                    let~ res :=
-                                                      M.alloc (|
-                                                        M.call_closure (|
-                                                          M.get_function (|
-                                                            "alloc::fmt::format",
-                                                            []
-                                                          |),
-                                                          [
+                                                  M.call_closure (|
+                                                    M.get_function (|
+                                                      "core::hint::must_use",
+                                                      [ Ty.path "alloc::string::String" ]
+                                                    |),
+                                                    [
+                                                      M.read (|
+                                                        let~ res :=
+                                                          M.alloc (|
                                                             M.call_closure (|
-                                                              M.get_associated_function (|
-                                                                Ty.path "core::fmt::Arguments",
-                                                                "new_v1",
+                                                              M.get_function (|
+                                                                "alloc::fmt::format",
                                                                 []
                                                               |),
                                                               [
-                                                                (* Unsize *)
-                                                                M.pointer_coercion
-                                                                  (M.alloc (|
-                                                                    Value.Array
-                                                                      [
-                                                                        M.read (|
-                                                                          Value.String
-                                                                            "invalid struct tag: "
-                                                                        |);
-                                                                        M.read (|
-                                                                          Value.String ", "
-                                                                        |)
-                                                                      ]
-                                                                  |));
-                                                                (* Unsize *)
-                                                                M.pointer_coercion
-                                                                  (M.alloc (|
-                                                                    Value.Array
-                                                                      [
-                                                                        M.call_closure (|
-                                                                          M.get_associated_function (|
-                                                                            Ty.path
-                                                                              "core::fmt::rt::Argument",
-                                                                            "new_display",
-                                                                            [
-                                                                              Ty.apply
-                                                                                (Ty.path "&")
-                                                                                []
-                                                                                [ Ty.path "str" ]
-                                                                            ]
-                                                                          |),
-                                                                          [ s ]
-                                                                        |);
-                                                                        M.call_closure (|
-                                                                          M.get_associated_function (|
-                                                                            Ty.path
-                                                                              "core::fmt::rt::Argument",
-                                                                            "new_display",
-                                                                            [
+                                                                M.call_closure (|
+                                                                  M.get_associated_function (|
+                                                                    Ty.path "core::fmt::Arguments",
+                                                                    "new_v1",
+                                                                    []
+                                                                  |),
+                                                                  [
+                                                                    M.alloc (|
+                                                                      Value.Array
+                                                                        [
+                                                                          M.read (|
+                                                                            Value.String
+                                                                              "invalid struct tag: "
+                                                                          |);
+                                                                          M.read (|
+                                                                            Value.String ", "
+                                                                          |)
+                                                                        ]
+                                                                    |);
+                                                                    M.alloc (|
+                                                                      Value.Array
+                                                                        [
+                                                                          M.call_closure (|
+                                                                            M.get_associated_function (|
                                                                               Ty.path
-                                                                                "anyhow::Error"
-                                                                            ]
-                                                                          |),
-                                                                          [ e ]
-                                                                        |)
-                                                                      ]
-                                                                  |))
+                                                                                "core::fmt::rt::Argument",
+                                                                              "new_display",
+                                                                              [
+                                                                                Ty.apply
+                                                                                  (Ty.path "&")
+                                                                                  []
+                                                                                  [ Ty.path "str" ]
+                                                                              ]
+                                                                            |),
+                                                                            [ s ]
+                                                                          |);
+                                                                          M.call_closure (|
+                                                                            M.get_associated_function (|
+                                                                              Ty.path
+                                                                                "core::fmt::rt::Argument",
+                                                                              "new_display",
+                                                                              [
+                                                                                Ty.path
+                                                                                  "anyhow::Error"
+                                                                              ]
+                                                                            |),
+                                                                            [ e ]
+                                                                          |)
+                                                                        ]
+                                                                    |)
+                                                                  ]
+                                                                |)
                                                               ]
                                                             |)
-                                                          ]
-                                                        |)
-                                                      |) in
-                                                    res
+                                                          |) in
+                                                        res
+                                                      |)
+                                                    ]
                                                   |)
                                                 ]
                                               |)))
@@ -9797,55 +9770,59 @@ Module parser.
                                       [ Ty.path "alloc::string::String" ]
                                     |),
                                     [
-                                      M.read (|
-                                        let~ res :=
-                                          M.alloc (|
-                                            M.call_closure (|
-                                              M.get_function (| "alloc::fmt::format", [] |),
-                                              [
+                                      M.call_closure (|
+                                        M.get_function (|
+                                          "core::hint::must_use",
+                                          [ Ty.path "alloc::string::String" ]
+                                        |),
+                                        [
+                                          M.read (|
+                                            let~ res :=
+                                              M.alloc (|
                                                 M.call_closure (|
-                                                  M.get_associated_function (|
-                                                    Ty.path "core::fmt::Arguments",
-                                                    "new_v1",
-                                                    []
-                                                  |),
+                                                  M.get_function (| "alloc::fmt::format", [] |),
                                                   [
-                                                    (* Unsize *)
-                                                    M.pointer_coercion
-                                                      (M.alloc (|
-                                                        Value.Array
-                                                          [
-                                                            M.read (|
-                                                              Value.String "invalid struct tag: "
-                                                            |)
-                                                          ]
-                                                      |));
-                                                    (* Unsize *)
-                                                    M.pointer_coercion
-                                                      (M.alloc (|
-                                                        Value.Array
-                                                          [
-                                                            M.call_closure (|
-                                                              M.get_associated_function (|
-                                                                Ty.path "core::fmt::rt::Argument",
-                                                                "new_display",
-                                                                [
-                                                                  Ty.apply
-                                                                    (Ty.path "&")
-                                                                    []
-                                                                    [ Ty.path "str" ]
-                                                                ]
-                                                              |),
-                                                              [ s ]
-                                                            |)
-                                                          ]
-                                                      |))
+                                                    M.call_closure (|
+                                                      M.get_associated_function (|
+                                                        Ty.path "core::fmt::Arguments",
+                                                        "new_v1",
+                                                        []
+                                                      |),
+                                                      [
+                                                        M.alloc (|
+                                                          Value.Array
+                                                            [
+                                                              M.read (|
+                                                                Value.String "invalid struct tag: "
+                                                              |)
+                                                            ]
+                                                        |);
+                                                        M.alloc (|
+                                                          Value.Array
+                                                            [
+                                                              M.call_closure (|
+                                                                M.get_associated_function (|
+                                                                  Ty.path "core::fmt::rt::Argument",
+                                                                  "new_display",
+                                                                  [
+                                                                    Ty.apply
+                                                                      (Ty.path "&")
+                                                                      []
+                                                                      [ Ty.path "str" ]
+                                                                  ]
+                                                                |),
+                                                                [ s ]
+                                                              |)
+                                                            ]
+                                                        |)
+                                                      ]
+                                                    |)
                                                   ]
                                                 |)
-                                              ]
-                                            |)
-                                          |) in
-                                        res
+                                              |) in
+                                            res
+                                          |)
+                                        ]
                                       |)
                                     ]
                                   |)

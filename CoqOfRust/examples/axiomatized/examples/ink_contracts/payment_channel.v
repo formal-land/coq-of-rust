@@ -66,17 +66,6 @@ Module Impl_core_cmp_PartialEq_for_payment_channel_AccountId.
       (* Instance *) [ ("eq", InstanceField.Method eq) ].
 End Impl_core_cmp_PartialEq_for_payment_channel_AccountId.
 
-Module Impl_core_marker_StructuralEq_for_payment_channel_AccountId.
-  Definition Self : Ty.t := Ty.path "payment_channel::AccountId".
-  
-  Axiom Implements :
-    M.IsTraitInstance
-      "core::marker::StructuralEq"
-      Self
-      (* Trait polymorphic types *) []
-      (* Instance *) [].
-End Impl_core_marker_StructuralEq_for_payment_channel_AccountId.
-
 Module Impl_core_cmp_Eq_for_payment_channel_AccountId.
   Definition Self : Ty.t := Ty.path "payment_channel::AccountId".
   
@@ -196,17 +185,6 @@ Module Impl_core_cmp_PartialEq_for_payment_channel_Error.
       (* Trait polymorphic types *) []
       (* Instance *) [ ("eq", InstanceField.Method eq) ].
 End Impl_core_cmp_PartialEq_for_payment_channel_Error.
-
-Module Impl_core_marker_StructuralEq_for_payment_channel_Error.
-  Definition Self : Ty.t := Ty.path "payment_channel::Error".
-  
-  Axiom Implements :
-    M.IsTraitInstance
-      "core::marker::StructuralEq"
-      Self
-      (* Trait polymorphic types *) []
-      (* Instance *) [].
-End Impl_core_marker_StructuralEq_for_payment_channel_Error.
 
 Module Impl_core_cmp_Eq_for_payment_channel_Error.
   Definition Self : Ty.t := Ty.path "payment_channel::Error".

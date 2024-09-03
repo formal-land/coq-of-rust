@@ -72,15 +72,13 @@ Module iter.
                   M.read (| f |);
                   M.read (| Value.String "Cloned" |);
                   M.read (| Value.String "it" |);
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.alloc (|
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::iter::adapters::cloned::Cloned",
-                        "it"
-                      |)
-                    |))
+                  M.alloc (|
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::iter::adapters::cloned::Cloned",
+                      "it"
+                    |)
+                  |)
                 ]
               |)))
           | _, _, _ => M.impossible
@@ -841,6 +839,90 @@ Module iter.
             (* Trait polymorphic types *) []
             (* Instance *) [ ("default", InstanceField.Method (default I)) ].
       End Impl_core_default_Default_where_core_default_Default_I_for_core_iter_adapters_cloned_Cloned_I.
+      
+      Module Impl_core_iter_adapters_SourceIter_where_core_iter_adapters_SourceIter_I_for_core_iter_adapters_cloned_Cloned_I.
+        Definition Self (I : Ty.t) : Ty.t :=
+          Ty.apply (Ty.path "core::iter::adapters::cloned::Cloned") [] [ I ].
+        
+        (*     type Source = I::Source; *)
+        Definition _Source (I : Ty.t) : Ty.t := Ty.associated.
+        
+        (*
+            unsafe fn as_inner(&mut self) -> &mut I::Source {
+                // SAFETY: unsafe function forwarding to unsafe function with the same requirements
+                unsafe { SourceIter::as_inner(&mut self.it) }
+            }
+        *)
+        Definition as_inner (I : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          let Self : Ty.t := Self I in
+          match ε, τ, α with
+          | [], [], [ self ] =>
+            ltac:(M.monadic
+              (let self := M.alloc (| self |) in
+              M.call_closure (|
+                M.get_trait_method (| "core::iter::adapters::SourceIter", I, [], "as_inner", [] |),
+                [
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::iter::adapters::cloned::Cloned",
+                    "it"
+                  |)
+                ]
+              |)))
+          | _, _, _ => M.impossible
+          end.
+        
+        Axiom Implements :
+          forall (I : Ty.t),
+          M.IsTraitInstance
+            "core::iter::adapters::SourceIter"
+            (Self I)
+            (* Trait polymorphic types *) []
+            (* Instance *)
+            [
+              ("Source", InstanceField.Ty (_Source I));
+              ("as_inner", InstanceField.Method (as_inner I))
+            ].
+      End Impl_core_iter_adapters_SourceIter_where_core_iter_adapters_SourceIter_I_for_core_iter_adapters_cloned_Cloned_I.
+      
+      Module Impl_core_iter_traits_marker_InPlaceIterable_where_core_iter_traits_marker_InPlaceIterable_I_for_core_iter_adapters_cloned_Cloned_I.
+        Definition Self (I : Ty.t) : Ty.t :=
+          Ty.apply (Ty.path "core::iter::adapters::cloned::Cloned") [] [ I ].
+        
+        (*     const EXPAND_BY: Option<NonZero<usize>> = I::EXPAND_BY; *)
+        (* Ty.apply
+          (Ty.path "core::option::Option")
+          []
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ] *)
+        Definition value_EXPAND_BY (I : Ty.t) : Value.t :=
+          let Self : Ty.t := Self I in
+          M.run
+            ltac:(M.monadic
+              (M.get_constant (| "core::iter::traits::marker::InPlaceIterable::EXPAND_BY" |))).
+        
+        (*     const MERGE_BY: Option<NonZero<usize>> = I::MERGE_BY; *)
+        (* Ty.apply
+          (Ty.path "core::option::Option")
+          []
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ] *)
+        Definition value_MERGE_BY (I : Ty.t) : Value.t :=
+          let Self : Ty.t := Self I in
+          M.run
+            ltac:(M.monadic
+              (M.get_constant (| "core::iter::traits::marker::InPlaceIterable::MERGE_BY" |))).
+        
+        Axiom Implements :
+          forall (I : Ty.t),
+          M.IsTraitInstance
+            "core::iter::traits::marker::InPlaceIterable"
+            (Self I)
+            (* Trait polymorphic types *) []
+            (* Instance *)
+            [
+              ("value_EXPAND_BY", InstanceField.Constant (value_EXPAND_BY I));
+              ("value_MERGE_BY", InstanceField.Constant (value_MERGE_BY I))
+            ].
+      End Impl_core_iter_traits_marker_InPlaceIterable_where_core_iter_traits_marker_InPlaceIterable_I_for_core_iter_adapters_cloned_Cloned_I.
     End cloned.
   End adapters.
 End iter.

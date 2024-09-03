@@ -11,7 +11,7 @@ Module iter.
       *)
       Definition empty (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [ T ], [] =>
+        | [], [ T ], [] =>
           ltac:(M.monadic
             (Value.StructTuple
               "core::iter::sources::empty::Empty"

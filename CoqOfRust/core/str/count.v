@@ -15,7 +15,7 @@ Module str.
     
     (*
     pub(super) fn count_chars(s: &str) -> usize {
-        if s.len() < USIZE_SIZE * UNROLL_INNER {
+        if cfg!(feature = "optimize_for_size") || s.len() < USIZE_SIZE * UNROLL_INNER {
             // Avoid entering the optimized implementation for strings where the
             // difference is not likely to matter, or where it might even be slower.
             // That said, a ton of thought was not spent on the particular threshold
@@ -40,15 +40,21 @@ Module str.
                     (let γ :=
                       M.use
                         (M.alloc (|
-                          BinOp.Pure.lt
-                            (M.call_closure (|
-                              M.get_associated_function (| Ty.path "str", "len", [] |),
-                              [ M.read (| s |) ]
-                            |))
-                            (BinOp.Wrap.mul
-                              Integer.Usize
-                              (M.read (| M.get_constant (| "core::str::count::USIZE_SIZE" |) |))
-                              (M.read (| M.get_constant (| "core::str::count::UNROLL_INNER" |) |)))
+                          LogicalOp.or (|
+                            Value.Bool false,
+                            ltac:(M.monadic
+                              (BinOp.Pure.lt
+                                (M.call_closure (|
+                                  M.get_associated_function (| Ty.path "str", "len", [] |),
+                                  [ M.read (| s |) ]
+                                |))
+                                (BinOp.Wrap.mul
+                                  Integer.Usize
+                                  (M.read (| M.get_constant (| "core::str::count::USIZE_SIZE" |) |))
+                                  (M.read (|
+                                    M.get_constant (| "core::str::count::UNROLL_INNER" |)
+                                  |)))))
+                          |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|

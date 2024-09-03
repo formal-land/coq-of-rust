@@ -1113,7 +1113,7 @@ Module handler.
                     |);
                     Value.StructTuple
                       "revm::handler::register::HandleRegisters::Box"
-                      [ (* Unsize *) M.pointer_coercion (M.read (| register |)) ]
+                      [ M.read (| register |) ]
                   ]
                 |)
               |) in

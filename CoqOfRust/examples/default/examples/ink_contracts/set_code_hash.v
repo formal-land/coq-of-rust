@@ -114,40 +114,35 @@ Module Impl_set_code_hash_Incrementer.
                     M.call_closure (|
                       M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                       [
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.alloc (|
-                            Value.Array
-                              [
-                                M.read (| Value.String "The new count is " |);
-                                M.read (|
-                                  Value.String
-                                    ", it was modified using the original contract code.
+                        M.alloc (|
+                          Value.Array
+                            [
+                              M.read (| Value.String "The new count is " |);
+                              M.read (|
+                                Value.String ", it was modified using the original contract code.
 "
-                                |)
-                              ]
-                          |));
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.alloc (|
-                            Value.Array
-                              [
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "core::fmt::rt::Argument",
-                                    "new_display",
-                                    [ Ty.path "u32" ]
-                                  |),
-                                  [
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.read (| self |),
-                                      "set_code_hash::Incrementer",
-                                      "count"
-                                    |)
-                                  ]
-                                |)
-                              ]
-                          |))
+                              |)
+                            ]
+                        |);
+                        M.alloc (|
+                          Value.Array
+                            [
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.path "core::fmt::rt::Argument",
+                                  "new_display",
+                                  [ Ty.path "u32" ]
+                                |),
+                                [
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "set_code_hash::Incrementer",
+                                    "count"
+                                  |)
+                                ]
+                              |)
+                            ]
+                        |)
                       ]
                     |)
                   ]
@@ -258,36 +253,28 @@ Module Impl_set_code_hash_Incrementer.
                     M.call_closure (|
                       M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                       [
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.alloc (|
-                            Value.Array
-                              [
-                                M.read (| Value.String "Switched code hash to " |);
-                                M.read (| Value.String ".
+                        M.alloc (|
+                          Value.Array
+                            [
+                              M.read (| Value.String "Switched code hash to " |);
+                              M.read (| Value.String ".
 " |)
-                              ]
-                          |));
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.alloc (|
-                            Value.Array
-                              [
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "core::fmt::rt::Argument",
-                                    "new_debug",
-                                    [
-                                      Ty.apply
-                                        (Ty.path "array")
-                                        [ Value.Integer 32 ]
-                                        [ Ty.path "u8" ]
-                                    ]
-                                  |),
-                                  [ code_hash ]
-                                |)
-                              ]
-                          |))
+                            ]
+                        |);
+                        M.alloc (|
+                          Value.Array
+                            [
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.path "core::fmt::rt::Argument",
+                                  "new_debug",
+                                  [ Ty.apply (Ty.path "array") [ Value.Integer 32 ] [ Ty.path "u8" ]
+                                  ]
+                                |),
+                                [ code_hash ]
+                              |)
+                            ]
+                        |)
                       ]
                     |)
                   ]

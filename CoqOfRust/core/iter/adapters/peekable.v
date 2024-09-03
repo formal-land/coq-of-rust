@@ -100,23 +100,19 @@ Module iter.
                   M.read (| f |);
                   M.read (| Value.String "Peekable" |);
                   M.read (| Value.String "iter" |);
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.SubPointer.get_struct_record_field (|
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::iter::adapters::peekable::Peekable",
+                    "iter"
+                  |);
+                  M.read (| Value.String "peeked" |);
+                  M.alloc (|
+                    M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
                       "core::iter::adapters::peekable::Peekable",
-                      "iter"
-                    |));
-                  M.read (| Value.String "peeked" |);
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.alloc (|
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::iter::adapters::peekable::Peekable",
-                        "peeked"
-                      |)
-                    |))
+                      "peeked"
+                    |)
+                  |)
                 ]
               |)))
           | _, _, _ => M.impossible

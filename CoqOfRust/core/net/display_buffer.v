@@ -25,25 +25,31 @@ Module net.
       
       (*
           pub const fn new() -> Self {
-              Self { buf: MaybeUninit::uninit_array(), len: 0 }
+              Self { buf: [MaybeUninit::uninit(); SIZE], len: 0 }
           }
       *)
       Definition new (SIZE : Value.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self SIZE in
         match ε, τ, α with
-        | [ host ], [], [] =>
+        | [], [], [] =>
           ltac:(M.monadic
             (Value.StructRecord
               "core::net::display_buffer::DisplayBuffer"
               [
                 ("buf",
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ Ty.path "u8" ],
-                      "uninit_array",
+                  repeat (|
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.apply
+                          (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                          []
+                          [ Ty.path "u8" ],
+                        "uninit",
+                        []
+                      |),
                       []
                     |),
-                    []
+                    SIZE
                   |));
                 ("len", Value.Integer 0)
               ]))
@@ -148,7 +154,7 @@ Module net.
               let bytes = s.as_bytes();
       
               if let Some(buf) = self.buf.get_mut(self.len..(self.len + bytes.len())) {
-                  MaybeUninit::write_slice(buf, bytes);
+                  MaybeUninit::copy_from_slice(buf, bytes);
                   self.len += bytes.len();
                   Ok(())
               } else {
@@ -199,13 +205,11 @@ Module net.
                               ]
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
-                                  "core::net::display_buffer::DisplayBuffer",
-                                  "buf"
-                                |));
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "core::net::display_buffer::DisplayBuffer",
+                                "buf"
+                              |);
                               Value.StructRecord
                                 "core::ops::range::Range"
                                 [
@@ -254,7 +258,7 @@ Module net.
                                 (Ty.path "core::mem::maybe_uninit::MaybeUninit")
                                 []
                                 [ Ty.path "u8" ],
-                              "write_slice",
+                              "copy_from_slice",
                               []
                             |),
                             [ M.read (| buf |); M.read (| bytes |) ]

@@ -226,64 +226,48 @@ Module db.
                   |) in
                 let~ values :=
                   M.alloc (|
-                    (* Unsize *)
-                    M.pointer_coercion
-                      (M.alloc (|
-                        Value.Array
-                          [
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
-                                "revm::db::states::state_builder::StateBuilder",
-                                "database"
-                              |));
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
-                                "revm::db::states::state_builder::StateBuilder",
-                                "with_state_clear"
-                              |));
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
-                                "revm::db::states::state_builder::StateBuilder",
-                                "with_bundle_prestate"
-                              |));
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
-                                "revm::db::states::state_builder::StateBuilder",
-                                "with_cache_prestate"
-                              |));
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
-                                "revm::db::states::state_builder::StateBuilder",
-                                "with_bundle_update"
-                              |));
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
-                                "revm::db::states::state_builder::StateBuilder",
-                                "with_background_transition_merge"
-                              |));
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.alloc (|
-                                M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
-                                  "revm::db::states::state_builder::StateBuilder",
-                                  "with_block_hashes"
-                                |)
-                              |))
-                          ]
-                      |))
+                    M.alloc (|
+                      Value.Array
+                        [
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "revm::db::states::state_builder::StateBuilder",
+                            "database"
+                          |);
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "revm::db::states::state_builder::StateBuilder",
+                            "with_state_clear"
+                          |);
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "revm::db::states::state_builder::StateBuilder",
+                            "with_bundle_prestate"
+                          |);
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "revm::db::states::state_builder::StateBuilder",
+                            "with_cache_prestate"
+                          |);
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "revm::db::states::state_builder::StateBuilder",
+                            "with_bundle_update"
+                          |);
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "revm::db::states::state_builder::StateBuilder",
+                            "with_background_transition_merge"
+                          |);
+                          M.alloc (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "revm::db::states::state_builder::StateBuilder",
+                              "with_block_hashes"
+                            |)
+                          |)
+                        ]
+                    |)
                   |) in
                 M.alloc (|
                   M.call_closure (|
@@ -295,7 +279,7 @@ Module db.
                     [
                       M.read (| f |);
                       M.read (| Value.String "StateBuilder" |);
-                      (* Unsize *) M.pointer_coercion (M.read (| names |));
+                      M.read (| names |);
                       M.read (| values |)
                     ]
                   |)
@@ -528,19 +512,6 @@ Module db.
             (* Trait polymorphic types *) []
             (* Instance *) [ ("eq", InstanceField.Method (eq DB)) ].
       End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_DB_for_revm_db_states_state_builder_StateBuilder_DB.
-      
-      Module Impl_core_marker_StructuralEq_for_revm_db_states_state_builder_StateBuilder_DB.
-        Definition Self (DB : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "revm::db::states::state_builder::StateBuilder") [] [ DB ].
-        
-        Axiom Implements :
-          forall (DB : Ty.t),
-          M.IsTraitInstance
-            "core::marker::StructuralEq"
-            (Self DB)
-            (* Trait polymorphic types *) []
-            (* Instance *) [].
-      End Impl_core_marker_StructuralEq_for_revm_db_states_state_builder_StateBuilder_DB.
       
       Module Impl_core_cmp_Eq_where_core_cmp_Eq_DB_for_revm_db_states_state_builder_StateBuilder_DB.
         Definition Self (DB : Ty.t) : Ty.t :=
@@ -921,7 +892,7 @@ Module db.
                       ]
                   ]
                 |),
-                [ M.read (| self |); (* Unsize *) M.pointer_coercion (M.read (| database |)) ]
+                [ M.read (| self |); M.read (| database |) ]
               |)))
           | _, _, _ => M.impossible
           end.

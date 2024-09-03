@@ -53,13 +53,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               "new_const",
                               []
                             |),
-                            [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array [ M.read (| Value.String "a is foobar
-" |) ]
-                                |))
+                            [ M.alloc (| Value.Array [ M.read (| Value.String "a is foobar
+" |) ] |)
                             ]
                           |)
                         ]

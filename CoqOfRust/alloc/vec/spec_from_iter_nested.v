@@ -304,12 +304,10 @@ Module vec.
                                       []
                                     |),
                                     [
-                                      (* Unsize *)
-                                      M.pointer_coercion
-                                        (M.alloc (|
-                                          Value.Array
-                                            [ M.read (| Value.String "capacity overflow" |) ]
-                                        |))
+                                      M.alloc (|
+                                        Value.Array
+                                          [ M.read (| Value.String "capacity overflow" |) ]
+                                      |)
                                     ]
                                   |)
                                 ]

@@ -16,7 +16,7 @@ impl rustc_driver::Callbacks for DefaultCallbacks {}
 
 fn main() {
     let handler =
-        rustc_session::EarlyErrorHandler::new(rustc_session::config::ErrorOutputType::default());
+        rustc_session::EarlyDiagCtxt::new(rustc_session::config::ErrorOutputType::default());
 
     rustc_driver::init_rustc_env_logger(&handler);
     setup_plugin();

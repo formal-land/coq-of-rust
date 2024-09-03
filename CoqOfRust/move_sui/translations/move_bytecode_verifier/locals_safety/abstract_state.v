@@ -125,18 +125,6 @@ Module locals_safety.
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Debug_for_move_bytecode_verifier_locals_safety_abstract_state_LocalState.
     
-    Module Impl_core_marker_StructuralEq_for_move_bytecode_verifier_locals_safety_abstract_state_LocalState.
-      Definition Self : Ty.t :=
-        Ty.path "move_bytecode_verifier::locals_safety::abstract_state::LocalState".
-      
-      Axiom Implements :
-        M.IsTraitInstance
-          "core::marker::StructuralEq"
-          Self
-          (* Trait polymorphic types *) []
-          (* Instance *) [].
-    End Impl_core_marker_StructuralEq_for_move_bytecode_verifier_locals_safety_abstract_state_LocalState.
-    
     Module Impl_core_cmp_Eq_for_move_bytecode_verifier_locals_safety_abstract_state_LocalState.
       Definition Self : Ty.t :=
         Ty.path "move_bytecode_verifier::locals_safety::abstract_state::LocalState".
@@ -188,7 +176,7 @@ Module locals_safety.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ __self_tag :=
+              let~ __self_discr :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -199,7 +187,7 @@ Module locals_safety.
                     [ M.read (| self |) ]
                   |)
                 |) in
-              let~ __arg1_tag :=
+              let~ __arg1_discr :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -210,7 +198,7 @@ Module locals_safety.
                     [ M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)) |)
+              M.alloc (| BinOp.Pure.eq (M.read (| __self_discr |)) (M.read (| __arg1_discr |)) |)
             |)))
         | _, _, _ => M.impossible
         end.
@@ -379,31 +367,25 @@ Module locals_safety.
                 M.read (| f |);
                 M.read (| Value.String "AbstractState" |);
                 M.read (| Value.String "current_function" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "move_bytecode_verifier::locals_safety::abstract_state::AbstractState",
-                    "current_function"
-                  |));
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "move_bytecode_verifier::locals_safety::abstract_state::AbstractState",
+                  "current_function"
+                |);
                 M.read (| Value.String "all_local_abilities" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.SubPointer.get_struct_record_field (|
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "move_bytecode_verifier::locals_safety::abstract_state::AbstractState",
+                  "all_local_abilities"
+                |);
+                M.read (| Value.String "local_states" |);
+                M.alloc (|
+                  M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
                     "move_bytecode_verifier::locals_safety::abstract_state::AbstractState",
-                    "all_local_abilities"
-                  |));
-                M.read (| Value.String "local_states" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.alloc (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "move_bytecode_verifier::locals_safety::abstract_state::AbstractState",
-                      "local_states"
-                    |)
-                  |))
+                    "local_states"
+                  |)
+                |)
               ]
             |)))
         | _, _, _ => M.impossible
@@ -416,18 +398,6 @@ Module locals_safety.
           (* Trait polymorphic types *) []
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Debug_for_move_bytecode_verifier_locals_safety_abstract_state_AbstractState.
-    
-    Module Impl_core_marker_StructuralEq_for_move_bytecode_verifier_locals_safety_abstract_state_AbstractState.
-      Definition Self : Ty.t :=
-        Ty.path "move_bytecode_verifier::locals_safety::abstract_state::AbstractState".
-      
-      Axiom Implements :
-        M.IsTraitInstance
-          "core::marker::StructuralEq"
-          Self
-          (* Trait polymorphic types *) []
-          (* Instance *) [].
-    End Impl_core_marker_StructuralEq_for_move_bytecode_verifier_locals_safety_abstract_state_AbstractState.
     
     Module Impl_core_cmp_Eq_for_move_bytecode_verifier_locals_safety_abstract_state_AbstractState.
       Definition Self : Ty.t :=

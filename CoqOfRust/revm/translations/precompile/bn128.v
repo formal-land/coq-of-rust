@@ -27,7 +27,7 @@ Module bn128.
                 Value.StructTuple
                   "revm_primitives::precompile::Precompile::Standard"
                   [
-                    (* ClosureFnPointer(Normal) *)
+                    (* ClosureFnPointer(Safe) *)
                     M.pointer_coercion
                       (M.closure
                         (fun γ =>
@@ -105,7 +105,7 @@ Module bn128.
                 Value.StructTuple
                   "revm_primitives::precompile::Precompile::Standard"
                   [
-                    (* ClosureFnPointer(Normal) *)
+                    (* ClosureFnPointer(Safe) *)
                     M.pointer_coercion
                       (M.closure
                         (fun γ =>
@@ -195,7 +195,7 @@ Module bn128.
                 Value.StructTuple
                   "revm_primitives::precompile::Precompile::Standard"
                   [
-                    (* ClosureFnPointer(Normal) *)
+                    (* ClosureFnPointer(Safe) *)
                     M.pointer_coercion
                       (M.closure
                         (fun γ =>
@@ -273,7 +273,7 @@ Module bn128.
                 Value.StructTuple
                   "revm_primitives::precompile::Precompile::Standard"
                   [
-                    (* ClosureFnPointer(Normal) *)
+                    (* ClosureFnPointer(Safe) *)
                     M.pointer_coercion
                       (M.closure
                         (fun γ =>
@@ -366,7 +366,7 @@ Module bn128.
                 Value.StructTuple
                   "revm_primitives::precompile::Precompile::Standard"
                   [
-                    (* ClosureFnPointer(Normal) *)
+                    (* ClosureFnPointer(Safe) *)
                     M.pointer_coercion
                       (M.closure
                         (fun γ =>
@@ -452,7 +452,7 @@ Module bn128.
                 Value.StructTuple
                   "revm_primitives::precompile::Precompile::Standard"
                   [
-                    (* ClosureFnPointer(Normal) *)
+                    (* ClosureFnPointer(Safe) *)
                     M.pointer_coercion
                       (M.closure
                         (fun γ =>

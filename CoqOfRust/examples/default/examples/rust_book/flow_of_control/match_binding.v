@@ -44,13 +44,11 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
                     [
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [ M.read (| Value.String "Tell me what type of person you are
+                      M.alloc (|
+                        Value.Array
+                          [ M.read (| Value.String "Tell me what type of person you are
 " |) ]
-                        |))
+                      |)
                     ]
                   |)
                 ]
@@ -75,17 +73,15 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             []
                           |),
                           [
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.alloc (|
-                                Value.Array
-                                  [
-                                    M.read (|
-                                      Value.String "I haven't celebrated my first birthday yet
+                            M.alloc (|
+                              Value.Array
+                                [
+                                  M.read (|
+                                    Value.String "I haven't celebrated my first birthday yet
 "
-                                    |)
-                                  ]
-                              |))
+                                  |)
+                                ]
+                            |)
                           ]
                         |)
                       ]
@@ -107,31 +103,27 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             []
                           |),
                           [
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.alloc (|
-                                Value.Array
-                                  [
-                                    M.read (| Value.String "I'm a child of age " |);
-                                    M.read (| Value.String "
+                            M.alloc (|
+                              Value.Array
+                                [
+                                  M.read (| Value.String "I'm a child of age " |);
+                                  M.read (| Value.String "
 " |)
-                                  ]
-                              |));
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.alloc (|
-                                Value.Array
-                                  [
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::rt::Argument",
-                                        "new_debug",
-                                        [ Ty.path "u32" ]
-                                      |),
-                                      [ n ]
-                                    |)
-                                  ]
-                              |))
+                                ]
+                            |);
+                            M.alloc (|
+                              Value.Array
+                                [
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_debug",
+                                      [ Ty.path "u32" ]
+                                    |),
+                                    [ n ]
+                                  |)
+                                ]
+                            |)
                           ]
                         |)
                       ]
@@ -153,31 +145,27 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             []
                           |),
                           [
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.alloc (|
-                                Value.Array
-                                  [
-                                    M.read (| Value.String "I'm a teen of age " |);
-                                    M.read (| Value.String "
+                            M.alloc (|
+                              Value.Array
+                                [
+                                  M.read (| Value.String "I'm a teen of age " |);
+                                  M.read (| Value.String "
 " |)
-                                  ]
-                              |));
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.alloc (|
-                                Value.Array
-                                  [
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::rt::Argument",
-                                        "new_debug",
-                                        [ Ty.path "u32" ]
-                                      |),
-                                      [ n ]
-                                    |)
-                                  ]
-                              |))
+                                ]
+                            |);
+                            M.alloc (|
+                              Value.Array
+                                [
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_debug",
+                                      [ Ty.path "u32" ]
+                                    |),
+                                    [ n ]
+                                  |)
+                                ]
+                            |)
                           ]
                         |)
                       ]
@@ -199,31 +187,27 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             []
                           |),
                           [
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.alloc (|
-                                Value.Array
-                                  [
-                                    M.read (| Value.String "I'm an old person of age " |);
-                                    M.read (| Value.String "
+                            M.alloc (|
+                              Value.Array
+                                [
+                                  M.read (| Value.String "I'm an old person of age " |);
+                                  M.read (| Value.String "
 " |)
-                                  ]
-                              |));
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.alloc (|
-                                Value.Array
-                                  [
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::rt::Argument",
-                                        "new_debug",
-                                        [ Ty.path "u32" ]
-                                      |),
-                                      [ n ]
-                                    |)
-                                  ]
-                              |))
+                                ]
+                            |);
+                            M.alloc (|
+                              Value.Array
+                                [
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_debug",
+                                      [ Ty.path "u32" ]
+                                    |),
+                                    [ n ]
+                                  |)
+                                ]
+                            |)
                           ]
                         |)
                       ]

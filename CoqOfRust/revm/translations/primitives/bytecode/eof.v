@@ -111,31 +111,25 @@ Module bytecode.
                 M.read (| f |);
                 M.read (| Value.String "Eof" |);
                 M.read (| Value.String "header" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "revm_primitives::bytecode::eof::Eof",
-                    "header"
-                  |));
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "revm_primitives::bytecode::eof::Eof",
+                  "header"
+                |);
                 M.read (| Value.String "body" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.SubPointer.get_struct_record_field (|
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "revm_primitives::bytecode::eof::Eof",
+                  "body"
+                |);
+                M.read (| Value.String "raw" |);
+                M.alloc (|
+                  M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
                     "revm_primitives::bytecode::eof::Eof",
-                    "body"
-                  |));
-                M.read (| Value.String "raw" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.alloc (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "revm_primitives::bytecode::eof::Eof",
-                      "raw"
-                    |)
-                  |))
+                    "raw"
+                  |)
+                |)
               ]
             |)))
         | _, _, _ => M.impossible
@@ -249,17 +243,6 @@ Module bytecode.
           (* Trait polymorphic types *) []
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
     End Impl_core_cmp_PartialEq_for_revm_primitives_bytecode_eof_Eof.
-    
-    Module Impl_core_marker_StructuralEq_for_revm_primitives_bytecode_eof_Eof.
-      Definition Self : Ty.t := Ty.path "revm_primitives::bytecode::eof::Eof".
-      
-      Axiom Implements :
-        M.IsTraitInstance
-          "core::marker::StructuralEq"
-          Self
-          (* Trait polymorphic types *) []
-          (* Instance *) [].
-    End Impl_core_marker_StructuralEq_for_revm_primitives_bytecode_eof_Eof.
     
     Module Impl_core_cmp_Eq_for_revm_primitives_bytecode_eof_Eof.
       Definition Self : Ty.t := Ty.path "revm_primitives::bytecode::eof::Eof".
@@ -429,47 +412,45 @@ Module bytecode.
                             [ Ty.path "alloc::alloc::Global" ]
                           |),
                           [
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.read (|
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.apply
-                                      (Ty.path "alloc::boxed::Box")
-                                      []
-                                      [
-                                        Ty.apply
-                                          (Ty.path "array")
-                                          [ Value.Integer 1 ]
-                                          [
-                                            Ty.path
-                                              "revm_primitives::bytecode::eof::types_section::TypesSection"
-                                          ];
-                                        Ty.path "alloc::alloc::Global"
-                                      ],
-                                    "new",
+                            M.read (|
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.apply
+                                    (Ty.path "alloc::boxed::Box")
                                     []
-                                  |),
-                                  [
-                                    M.alloc (|
-                                      Value.Array
+                                    [
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ Value.Integer 1 ]
                                         [
-                                          M.call_closure (|
-                                            M.get_trait_method (|
-                                              "core::default::Default",
-                                              Ty.path
-                                                "revm_primitives::bytecode::eof::types_section::TypesSection",
-                                              [],
-                                              "default",
-                                              []
-                                            |),
+                                          Ty.path
+                                            "revm_primitives::bytecode::eof::types_section::TypesSection"
+                                        ];
+                                      Ty.path "alloc::alloc::Global"
+                                    ],
+                                  "new",
+                                  []
+                                |),
+                                [
+                                  M.alloc (|
+                                    Value.Array
+                                      [
+                                        M.call_closure (|
+                                          M.get_trait_method (|
+                                            "core::default::Default",
+                                            Ty.path
+                                              "revm_primitives::bytecode::eof::types_section::TypesSection",
+                                            [],
+                                            "default",
                                             []
-                                          |)
-                                        ]
-                                    |)
-                                  ]
-                                |)
-                              |))
+                                          |),
+                                          []
+                                        |)
+                                      ]
+                                  |)
+                                ]
+                              |)
+                            |)
                           ]
                         |));
                       ("code_section",
@@ -483,46 +464,44 @@ Module bytecode.
                             [ Ty.path "alloc::alloc::Global" ]
                           |),
                           [
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.read (|
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.apply
-                                      (Ty.path "alloc::boxed::Box")
-                                      []
-                                      [
-                                        Ty.apply
-                                          (Ty.path "array")
-                                          [ Value.Integer 1 ]
-                                          [ Ty.path "alloy_primitives::bytes_::Bytes" ];
-                                        Ty.path "alloc::alloc::Global"
-                                      ],
-                                    "new",
+                            M.read (|
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.apply
+                                    (Ty.path "alloc::boxed::Box")
                                     []
-                                  |),
-                                  [
-                                    M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.call_closure (|
-                                            M.get_trait_method (|
-                                              "core::convert::Into",
-                                              Ty.apply
-                                                (Ty.path "array")
-                                                [ Value.Integer 1 ]
-                                                [ Ty.path "u8" ],
-                                              [ Ty.path "alloy_primitives::bytes_::Bytes" ],
-                                              "into",
-                                              []
-                                            |),
-                                            [ Value.Array [ Value.Integer 0 ] ]
-                                          |)
-                                        ]
-                                    |)
-                                  ]
-                                |)
-                              |))
+                                    [
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ Value.Integer 1 ]
+                                        [ Ty.path "alloy_primitives::bytes_::Bytes" ];
+                                      Ty.path "alloc::alloc::Global"
+                                    ],
+                                  "new",
+                                  []
+                                |),
+                                [
+                                  M.alloc (|
+                                    Value.Array
+                                      [
+                                        M.call_closure (|
+                                          M.get_trait_method (|
+                                            "core::convert::Into",
+                                            Ty.apply
+                                              (Ty.path "array")
+                                              [ Value.Integer 1 ]
+                                              [ Ty.path "u8" ],
+                                            [ Ty.path "alloy_primitives::bytes_::Bytes" ],
+                                            "into",
+                                            []
+                                          |),
+                                          [ Value.Array [ Value.Integer 0 ] ]
+                                        |)
+                                      ]
+                                  |)
+                                ]
+                              |)
+                            |)
                           ]
                         |));
                       ("container_section",
@@ -800,7 +779,7 @@ Module bytecode.
                           end))
                   ]
                 |);
-                (* Unsize *) M.pointer_coercion (M.alloc (| Value.Array [] |))
+                M.alloc (| Value.Array [] |)
               ]
             |)))
         | _, _, _ => M.impossible
@@ -1514,7 +1493,7 @@ Module bytecode.
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
             M.read (|
-              let~ __self_tag :=
+              let~ __self_discr :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -1527,7 +1506,7 @@ Module bytecode.
               M.alloc (|
                 M.call_closure (|
                   M.get_trait_method (| "core::hash::Hash", Ty.path "isize", [], "hash", [ __H ] |),
-                  [ __self_tag; M.read (| state |) ]
+                  [ __self_discr; M.read (| state |) ]
                 |)
               |)
             |)))
@@ -1564,7 +1543,7 @@ Module bytecode.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ __self_tag :=
+              let~ __self_discr :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -1574,7 +1553,7 @@ Module bytecode.
                     [ M.read (| self |) ]
                   |)
                 |) in
-              let~ __arg1_tag :=
+              let~ __arg1_discr :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -1584,7 +1563,7 @@ Module bytecode.
                     [ M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)) |)
+              M.alloc (| BinOp.Pure.eq (M.read (| __self_discr |)) (M.read (| __arg1_discr |)) |)
             |)))
         | _, _, _ => M.impossible
         end.
@@ -1596,17 +1575,6 @@ Module bytecode.
           (* Trait polymorphic types *) []
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
     End Impl_core_cmp_PartialEq_for_revm_primitives_bytecode_eof_EofDecodeError.
-    
-    Module Impl_core_marker_StructuralEq_for_revm_primitives_bytecode_eof_EofDecodeError.
-      Definition Self : Ty.t := Ty.path "revm_primitives::bytecode::eof::EofDecodeError".
-      
-      Axiom Implements :
-        M.IsTraitInstance
-          "core::marker::StructuralEq"
-          Self
-          (* Trait polymorphic types *) []
-          (* Instance *) [].
-    End Impl_core_marker_StructuralEq_for_revm_primitives_bytecode_eof_EofDecodeError.
     
     Module Impl_core_cmp_Eq_for_revm_primitives_bytecode_eof_EofDecodeError.
       Definition Self : Ty.t := Ty.path "revm_primitives::bytecode::eof::EofDecodeError".
@@ -1645,7 +1613,7 @@ Module bytecode.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ __self_tag :=
+              let~ __self_discr :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -1655,7 +1623,7 @@ Module bytecode.
                     [ M.read (| self |) ]
                   |)
                 |) in
-              let~ __arg1_tag :=
+              let~ __arg1_discr :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -1674,7 +1642,7 @@ Module bytecode.
                     "partial_cmp",
                     []
                   |),
-                  [ __self_tag; __arg1_tag ]
+                  [ __self_discr; __arg1_discr ]
                 |)
               |)
             |)))
@@ -1700,7 +1668,7 @@ Module bytecode.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ __self_tag :=
+              let~ __self_discr :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -1710,7 +1678,7 @@ Module bytecode.
                     [ M.read (| self |) ]
                   |)
                 |) in
-              let~ __arg1_tag :=
+              let~ __arg1_discr :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -1723,7 +1691,7 @@ Module bytecode.
               M.alloc (|
                 M.call_closure (|
                   M.get_trait_method (| "core::cmp::Ord", Ty.path "isize", [], "cmp", [] |),
-                  [ __self_tag; __arg1_tag ]
+                  [ __self_discr; __arg1_discr ]
                 |)
               |)
             |)))

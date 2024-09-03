@@ -122,17 +122,15 @@ Module iter.
                                       []
                                     |),
                                     [
-                                      (* Unsize *)
-                                      M.pointer_coercion
-                                        (M.alloc (|
-                                          Value.Array
-                                            [
-                                              M.read (|
-                                                Value.String
-                                                  "array in `Iterator::map_windows` must contain more than 0 elements"
-                                              |)
-                                            ]
-                                        |))
+                                      M.alloc (|
+                                        Value.Array
+                                          [
+                                            M.read (|
+                                              Value.String
+                                                "array in `Iterator::map_windows` must contain more than 0 elements"
+                                            |)
+                                          ]
+                                      |)
                                     ]
                                   |)
                                 ]
@@ -217,17 +215,15 @@ Module iter.
                                                 []
                                               |),
                                               [
-                                                (* Unsize *)
-                                                M.pointer_coercion
-                                                  (M.alloc (|
-                                                    Value.Array
-                                                      [
-                                                        M.read (|
-                                                          Value.String
-                                                            "array size of `Iterator::map_windows` is too large"
-                                                        |)
-                                                      ]
-                                                  |))
+                                                M.alloc (|
+                                                  Value.Array
+                                                    [
+                                                      M.read (|
+                                                        Value.String
+                                                          "array size of `Iterator::map_windows` is too large"
+                                                      |)
+                                                    ]
+                                                |)
                                               ]
                                             |)
                                           ]
@@ -845,7 +841,8 @@ Module iter.
         (*
             fn try_from_iter(iter: &mut impl Iterator<Item = T>) -> Option<Self> {
                 let first_half = crate::array::iter_next_chunk(iter).ok()?;
-                let buffer = [MaybeUninit::new(first_half).transpose(), MaybeUninit::uninit_array()];
+                let buffer =
+                    [MaybeUninit::new(first_half).transpose(), [const { MaybeUninit::uninit() }; N]];
                 Some(Self { buffer, start: 0 })
             }
         *)
@@ -987,13 +984,13 @@ Module iter.
                                 |)
                               ]
                             |);
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ],
-                                "uninit_array",
-                                []
+                            repeat (|
+                              M.read (|
+                                M.get_constant (|
+                                  "core::iter::adapters::map_windows::try_from_iter_discriminant"
+                                |)
                               |),
-                              []
+                              N
                             |)
                           ]
                       |) in
@@ -1062,13 +1059,11 @@ Module iter.
                       []
                     |),
                     [
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "core::iter::adapters::map_windows::Buffer",
-                          "buffer"
-                        |))
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::iter::adapters::map_windows::Buffer",
+                        "buffer"
+                      |)
                     ]
                   |)
                 ]
@@ -1127,13 +1122,11 @@ Module iter.
                       []
                     |),
                     [
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "core::iter::adapters::map_windows::Buffer",
-                          "buffer"
-                        |))
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::iter::adapters::map_windows::Buffer",
+                        "buffer"
+                      |)
                     ]
                   |)
                 ]
@@ -1875,7 +1868,7 @@ Module iter.
         (*
             fn clone(&self) -> Self {
                 let mut buffer = Buffer {
-                    buffer: [MaybeUninit::uninit_array(), MaybeUninit::uninit_array()],
+                    buffer: [[const { MaybeUninit::uninit() }; N], [const { MaybeUninit::uninit() }; N]],
                     start: self.start,
                 };
                 buffer.as_uninit_array_mut().write(self.as_array_ref().clone());
@@ -1903,27 +1896,21 @@ Module iter.
                         ("buffer",
                           Value.Array
                             [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.apply
-                                    (Ty.path "core::mem::maybe_uninit::MaybeUninit")
-                                    []
-                                    [ T ],
-                                  "uninit_array",
-                                  []
+                              repeat (|
+                                M.read (|
+                                  M.get_constant (|
+                                    "core::iter::adapters::map_windows::clone_discriminant"
+                                  |)
                                 |),
-                                []
+                                N
                               |);
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.apply
-                                    (Ty.path "core::mem::maybe_uninit::MaybeUninit")
-                                    []
-                                    [ T ],
-                                  "uninit_array",
-                                  []
+                              repeat (|
+                                M.read (|
+                                  M.get_constant (|
+                                    "core::iter::adapters::map_windows::clone_discriminant"
+                                  |)
                                 |),
-                                []
+                                N
                               |)
                             ]);
                         ("start",
@@ -2464,17 +2451,15 @@ Module iter.
                         |)
                       |);
                       M.read (| Value.String "iter" |);
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.SubPointer.get_struct_record_field (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "core::iter::adapters::map_windows::MapWindows",
-                            "inner"
-                          |),
-                          "core::iter::adapters::map_windows::MapWindowsInner",
-                          "iter"
-                        |))
+                      M.SubPointer.get_struct_record_field (|
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::iter::adapters::map_windows::MapWindows",
+                          "inner"
+                        |),
+                        "core::iter::adapters::map_windows::MapWindowsInner",
+                        "iter"
+                      |)
                     ]
                   |)
                 ]

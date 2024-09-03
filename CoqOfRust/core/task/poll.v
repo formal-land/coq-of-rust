@@ -122,11 +122,7 @@ Module task.
                             "debug_tuple_field1_finish",
                             []
                           |),
-                          [
-                            M.read (| f |);
-                            M.read (| Value.String "Ready" |);
-                            (* Unsize *) M.pointer_coercion __self_0
-                          ]
+                          [ M.read (| f |); M.read (| Value.String "Ready" |); __self_0 ]
                         |)
                       |)));
                   fun γ =>
@@ -157,18 +153,6 @@ Module task.
           (* Trait polymorphic types *) []
           (* Instance *) [ ("fmt", InstanceField.Method (fmt T)) ].
     End Impl_core_fmt_Debug_where_core_fmt_Debug_T_for_core_task_poll_Poll_T.
-    
-    Module Impl_core_marker_StructuralEq_for_core_task_poll_Poll_T.
-      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::task::poll::Poll") [] [ T ].
-      
-      Axiom Implements :
-        forall (T : Ty.t),
-        M.IsTraitInstance
-          "core::marker::StructuralEq"
-          (Self T)
-          (* Trait polymorphic types *) []
-          (* Instance *) [].
-    End Impl_core_marker_StructuralEq_for_core_task_poll_Poll_T.
     
     Module Impl_core_cmp_Eq_where_core_cmp_Eq_T_for_core_task_poll_Poll_T.
       Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::task::poll::Poll") [] [ T ].
@@ -228,7 +212,7 @@ Module task.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ __self_tag :=
+              let~ __self_discr :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -238,7 +222,7 @@ Module task.
                     [ M.read (| self |) ]
                   |)
                 |) in
-              let~ __arg1_tag :=
+              let~ __arg1_discr :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -250,7 +234,7 @@ Module task.
                 |) in
               M.alloc (|
                 LogicalOp.and (|
-                  BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)),
+                  BinOp.Pure.eq (M.read (| __self_discr |)) (M.read (| __arg1_discr |)),
                   ltac:(M.monadic
                     (M.read (|
                       M.match_operator (|
@@ -280,12 +264,12 @@ Module task.
                                 M.call_closure (|
                                   M.get_trait_method (|
                                     "core::cmp::PartialEq",
-                                    T,
-                                    [ T ],
+                                    Ty.apply (Ty.path "&") [] [ T ],
+                                    [ Ty.apply (Ty.path "&") [] [ T ] ],
                                     "eq",
                                     []
                                   |),
-                                  [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                  [ __self_0; __arg1_0 ]
                                 |)
                               |)));
                           fun γ => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
@@ -319,7 +303,7 @@ Module task.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ __self_tag :=
+              let~ __self_discr :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -329,7 +313,7 @@ Module task.
                     [ M.read (| self |) ]
                   |)
                 |) in
-              let~ __arg1_tag :=
+              let~ __arg1_discr :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -343,7 +327,7 @@ Module task.
                 M.alloc (|
                   M.call_closure (|
                     M.get_trait_method (| "core::cmp::Ord", Ty.path "isize", [], "cmp", [] |),
-                    [ __self_tag; __arg1_tag ]
+                    [ __self_discr; __arg1_discr ]
                   |)
                 |),
                 [
@@ -415,7 +399,7 @@ Module task.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ __self_tag :=
+              let~ __self_discr :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -425,7 +409,7 @@ Module task.
                     [ M.read (| self |) ]
                   |)
                 |) in
-              let~ __arg1_tag :=
+              let~ __arg1_discr :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -481,7 +465,7 @@ Module task.
                             "partial_cmp",
                             []
                           |),
-                          [ __self_tag; __arg1_tag ]
+                          [ __self_discr; __arg1_discr ]
                         |)
                       |)))
                 ]
@@ -511,7 +495,7 @@ Module task.
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
             M.read (|
-              let~ __self_tag :=
+              let~ __self_discr :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -531,7 +515,7 @@ Module task.
                       "hash",
                       [ __H ]
                     |),
-                    [ __self_tag; M.read (| state |) ]
+                    [ __self_discr; M.read (| state |) ]
                   |)
                 |) in
               M.match_operator (|
@@ -641,7 +625,7 @@ Module task.
       Definition is_ready (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -676,7 +660,7 @@ Module task.
       Definition is_pending (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             UnOp.Pure.not

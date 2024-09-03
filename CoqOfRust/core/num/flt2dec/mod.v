@@ -542,7 +542,7 @@ Module num.
                           [
                             Value.StructTuple
                               "core::num::fmt::Part::Copy"
-                              [ (* Unsize *) M.pointer_coercion (M.read (| UnsupportedLiteral |)) ]
+                              [ M.read (| UnsupportedLiteral |) ]
                           ]
                         |)
                       |) in
@@ -833,10 +833,7 @@ Module num.
                                   [
                                     Value.StructTuple
                                       "core::num::fmt::Part::Copy"
-                                      [
-                                        (* Unsize *)
-                                        M.pointer_coercion (M.read (| UnsupportedLiteral |))
-                                      ]
+                                      [ M.read (| UnsupportedLiteral |) ]
                                   ]
                                 |)
                               |) in
@@ -1129,10 +1126,7 @@ Module num.
                                           [
                                             Value.StructTuple
                                               "core::num::fmt::Part::Copy"
-                                              [
-                                                (* Unsize *)
-                                                M.pointer_coercion (M.read (| UnsupportedLiteral |))
-                                              ]
+                                              [ M.read (| UnsupportedLiteral |) ]
                                           ]
                                         |)
                                       |) in
@@ -1491,8 +1485,7 @@ Module num.
                             [
                               Value.StructTuple
                                 "core::num::fmt::Part::Copy"
-                                [ (* Unsize *) M.pointer_coercion (M.read (| UnsupportedLiteral |))
-                                ]
+                                [ M.read (| UnsupportedLiteral |) ]
                             ]
                           |)
                         |) in
@@ -1656,16 +1649,10 @@ Module num.
                                                 M.read (| γ |),
                                                 Value.Bool true
                                               |) in
-                                            M.alloc (|
-                                              (* Unsize *)
-                                              M.pointer_coercion (M.read (| UnsupportedLiteral |))
-                                            |)));
+                                            M.alloc (| M.read (| UnsupportedLiteral |) |)));
                                         fun γ =>
                                           ltac:(M.monadic
-                                            (M.alloc (|
-                                              (* Unsize *)
-                                              M.pointer_coercion (M.read (| UnsupportedLiteral |))
-                                            |)))
+                                            (M.alloc (| M.read (| UnsupportedLiteral |) |)))
                                       ]
                                     |)
                                   |)
@@ -1728,16 +1715,10 @@ Module num.
                                                 M.read (| γ |),
                                                 Value.Bool true
                                               |) in
-                                            M.alloc (|
-                                              (* Unsize *)
-                                              M.pointer_coercion (M.read (| UnsupportedLiteral |))
-                                            |)));
+                                            M.alloc (| M.read (| UnsupportedLiteral |) |)));
                                         fun γ =>
                                           ltac:(M.monadic
-                                            (M.alloc (|
-                                              (* Unsize *)
-                                              M.pointer_coercion (M.read (| UnsupportedLiteral |))
-                                            |)))
+                                            (M.alloc (| M.read (| UnsupportedLiteral |) |)))
                                       ]
                                     |)
                                   |)
@@ -1892,7 +1873,7 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ __self_tag :=
+              let~ __self_discr :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -1902,7 +1883,7 @@ Module num.
                     [ M.read (| self |) ]
                   |)
                 |) in
-              let~ __arg1_tag :=
+              let~ __arg1_discr :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -1912,7 +1893,7 @@ Module num.
                     [ M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)) |)
+              M.alloc (| BinOp.Pure.eq (M.read (| __self_discr |)) (M.read (| __arg1_discr |)) |)
             |)))
         | _, _, _ => M.impossible
         end.
@@ -1924,17 +1905,6 @@ Module num.
           (* Trait polymorphic types *) []
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
     End Impl_core_cmp_PartialEq_for_core_num_flt2dec_Sign.
-    
-    Module Impl_core_marker_StructuralEq_for_core_num_flt2dec_Sign.
-      Definition Self : Ty.t := Ty.path "core::num::flt2dec::Sign".
-      
-      Axiom Implements :
-        M.IsTraitInstance
-          "core::marker::StructuralEq"
-          Self
-          (* Trait polymorphic types *) []
-          (* Instance *) [].
-    End Impl_core_marker_StructuralEq_for_core_num_flt2dec_Sign.
     
     Module Impl_core_cmp_Eq_for_core_num_flt2dec_Sign.
       Definition Self : Ty.t := Ty.path "core::num::flt2dec::Sign".
@@ -2295,10 +2265,7 @@ Module num.
                                   [
                                     Value.StructTuple
                                       "core::num::fmt::Part::Copy"
-                                      [
-                                        (* Unsize *)
-                                        M.pointer_coercion (M.read (| UnsupportedLiteral |))
-                                      ]
+                                      [ M.read (| UnsupportedLiteral |) ]
                                   ]
                                 |)
                               |) in
@@ -2375,10 +2342,7 @@ Module num.
                                   [
                                     Value.StructTuple
                                       "core::num::fmt::Part::Copy"
-                                      [
-                                        (* Unsize *)
-                                        M.pointer_coercion (M.read (| UnsupportedLiteral |))
-                                      ]
+                                      [ M.read (| UnsupportedLiteral |) ]
                                   ]
                                 |)
                               |) in
@@ -2470,10 +2434,7 @@ Module num.
                                           [
                                             Value.StructTuple
                                               "core::num::fmt::Part::Copy"
-                                              [
-                                                (* Unsize *)
-                                                M.pointer_coercion (M.read (| UnsupportedLiteral |))
-                                              ]
+                                              [ M.read (| UnsupportedLiteral |) ]
                                           ]
                                         |)
                                       |) in
@@ -2568,10 +2529,7 @@ Module num.
                                           [
                                             Value.StructTuple
                                               "core::num::fmt::Part::Copy"
-                                              [
-                                                (* Unsize *)
-                                                M.pointer_coercion (M.read (| UnsupportedLiteral |))
-                                              ]
+                                              [ M.read (| UnsupportedLiteral |) ]
                                           ]
                                         |)
                                       |) in
@@ -2945,10 +2903,7 @@ Module num.
                                   [
                                     Value.StructTuple
                                       "core::num::fmt::Part::Copy"
-                                      [
-                                        (* Unsize *)
-                                        M.pointer_coercion (M.read (| UnsupportedLiteral |))
-                                      ]
+                                      [ M.read (| UnsupportedLiteral |) ]
                                   ]
                                 |)
                               |) in
@@ -3025,10 +2980,7 @@ Module num.
                                   [
                                     Value.StructTuple
                                       "core::num::fmt::Part::Copy"
-                                      [
-                                        (* Unsize *)
-                                        M.pointer_coercion (M.read (| UnsupportedLiteral |))
-                                      ]
+                                      [ M.read (| UnsupportedLiteral |) ]
                                   ]
                                 |)
                               |) in
@@ -3140,11 +3092,7 @@ Module num.
                                               [
                                                 Value.StructTuple
                                                   "core::num::fmt::Part::Copy"
-                                                  [
-                                                    (* Unsize *)
-                                                    M.pointer_coercion
-                                                      (M.read (| UnsupportedLiteral |))
-                                                  ]
+                                                  [ M.read (| UnsupportedLiteral |) ]
                                               ]
                                             |)
                                           |)));
@@ -3177,16 +3125,12 @@ Module num.
                                                                   Value.Bool true
                                                                 |) in
                                                               M.alloc (|
-                                                                (* Unsize *)
-                                                                M.pointer_coercion
-                                                                  (M.read (| UnsupportedLiteral |))
+                                                                M.read (| UnsupportedLiteral |)
                                                               |)));
                                                           fun γ =>
                                                             ltac:(M.monadic
                                                               (M.alloc (|
-                                                                (* Unsize *)
-                                                                M.pointer_coercion
-                                                                  (M.read (| UnsupportedLiteral |))
+                                                                M.read (| UnsupportedLiteral |)
                                                               |)))
                                                         ]
                                                       |)
@@ -3627,10 +3571,7 @@ Module num.
                                   [
                                     Value.StructTuple
                                       "core::num::fmt::Part::Copy"
-                                      [
-                                        (* Unsize *)
-                                        M.pointer_coercion (M.read (| UnsupportedLiteral |))
-                                      ]
+                                      [ M.read (| UnsupportedLiteral |) ]
                                   ]
                                 |)
                               |) in
@@ -3707,10 +3648,7 @@ Module num.
                                   [
                                     Value.StructTuple
                                       "core::num::fmt::Part::Copy"
-                                      [
-                                        (* Unsize *)
-                                        M.pointer_coercion (M.read (| UnsupportedLiteral |))
-                                      ]
+                                      [ M.read (| UnsupportedLiteral |) ]
                                   ]
                                 |)
                               |) in
@@ -3802,10 +3740,7 @@ Module num.
                                           [
                                             Value.StructTuple
                                               "core::num::fmt::Part::Copy"
-                                              [
-                                                (* Unsize *)
-                                                M.pointer_coercion (M.read (| UnsupportedLiteral |))
-                                              ]
+                                              [ M.read (| UnsupportedLiteral |) ]
                                           ]
                                         |)
                                       |) in
@@ -3868,16 +3803,12 @@ Module num.
                                                               Value.Bool true
                                                             |) in
                                                           M.alloc (|
-                                                            (* Unsize *)
-                                                            M.pointer_coercion
-                                                              (M.read (| UnsupportedLiteral |))
+                                                            M.read (| UnsupportedLiteral |)
                                                           |)));
                                                       fun γ =>
                                                         ltac:(M.monadic
                                                           (M.alloc (|
-                                                            (* Unsize *)
-                                                            M.pointer_coercion
-                                                              (M.read (| UnsupportedLiteral |))
+                                                            M.read (| UnsupportedLiteral |)
                                                           |)))
                                                     ]
                                                   |)
@@ -3969,16 +3900,12 @@ Module num.
                                                               Value.Bool true
                                                             |) in
                                                           M.alloc (|
-                                                            (* Unsize *)
-                                                            M.pointer_coercion
-                                                              (M.read (| UnsupportedLiteral |))
+                                                            M.read (| UnsupportedLiteral |)
                                                           |)));
                                                       fun γ =>
                                                         ltac:(M.monadic
                                                           (M.alloc (|
-                                                            (* Unsize *)
-                                                            M.pointer_coercion
-                                                              (M.read (| UnsupportedLiteral |))
+                                                            M.read (| UnsupportedLiteral |)
                                                           |)))
                                                     ]
                                                   |)
@@ -4460,10 +4387,7 @@ Module num.
                                   [
                                     Value.StructTuple
                                       "core::num::fmt::Part::Copy"
-                                      [
-                                        (* Unsize *)
-                                        M.pointer_coercion (M.read (| UnsupportedLiteral |))
-                                      ]
+                                      [ M.read (| UnsupportedLiteral |) ]
                                   ]
                                 |)
                               |) in
@@ -4540,10 +4464,7 @@ Module num.
                                   [
                                     Value.StructTuple
                                       "core::num::fmt::Part::Copy"
-                                      [
-                                        (* Unsize *)
-                                        M.pointer_coercion (M.read (| UnsupportedLiteral |))
-                                      ]
+                                      [ M.read (| UnsupportedLiteral |) ]
                                   ]
                                 |)
                               |) in
@@ -4635,10 +4556,7 @@ Module num.
                                           [
                                             Value.StructTuple
                                               "core::num::fmt::Part::Copy"
-                                              [
-                                                (* Unsize *)
-                                                M.pointer_coercion (M.read (| UnsupportedLiteral |))
-                                              ]
+                                              [ M.read (| UnsupportedLiteral |) ]
                                           ]
                                         |)
                                       |) in
@@ -4733,10 +4651,7 @@ Module num.
                                           [
                                             Value.StructTuple
                                               "core::num::fmt::Part::Copy"
-                                              [
-                                                (* Unsize *)
-                                                M.pointer_coercion (M.read (| UnsupportedLiteral |))
-                                              ]
+                                              [ M.read (| UnsupportedLiteral |) ]
                                           ]
                                         |)
                                       |) in
@@ -5158,11 +5073,7 @@ Module num.
                                                           [
                                                             Value.StructTuple
                                                               "core::num::fmt::Part::Copy"
-                                                              [
-                                                                (* Unsize *)
-                                                                M.pointer_coercion
-                                                                  (M.read (| UnsupportedLiteral |))
-                                                              ]
+                                                              [ M.read (| UnsupportedLiteral |) ]
                                                           ]
                                                         |)
                                                       |) in
@@ -5265,11 +5176,7 @@ Module num.
                                                           [
                                                             Value.StructTuple
                                                               "core::num::fmt::Part::Copy"
-                                                              [
-                                                                (* Unsize *)
-                                                                M.pointer_coercion
-                                                                  (M.read (| UnsupportedLiteral |))
-                                                              ]
+                                                              [ M.read (| UnsupportedLiteral |) ]
                                                           ]
                                                         |)
                                                       |) in

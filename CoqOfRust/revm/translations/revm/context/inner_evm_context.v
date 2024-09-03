@@ -50,39 +50,31 @@ Module context.
                 M.read (| f |);
                 M.read (| Value.String "InnerEvmContext" |);
                 M.read (| Value.String "env" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "revm::context::inner_evm_context::InnerEvmContext",
-                    "env"
-                  |));
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "revm::context::inner_evm_context::InnerEvmContext",
+                  "env"
+                |);
                 M.read (| Value.String "journaled_state" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "revm::context::inner_evm_context::InnerEvmContext",
-                    "journaled_state"
-                  |));
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "revm::context::inner_evm_context::InnerEvmContext",
+                  "journaled_state"
+                |);
                 M.read (| Value.String "db" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.SubPointer.get_struct_record_field (|
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "revm::context::inner_evm_context::InnerEvmContext",
+                  "db"
+                |);
+                M.read (| Value.String "error" |);
+                M.alloc (|
+                  M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
                     "revm::context::inner_evm_context::InnerEvmContext",
-                    "db"
-                  |));
-                M.read (| Value.String "error" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.alloc (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "revm::context::inner_evm_context::InnerEvmContext",
-                      "error"
-                    |)
-                  |))
+                    "error"
+                  |)
+                |)
               ]
             |)))
         | _, _, _ => M.impossible

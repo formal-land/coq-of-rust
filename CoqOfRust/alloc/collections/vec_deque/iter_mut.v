@@ -90,44 +90,40 @@ Module collections.
                               [ M.read (| f |); M.read (| Value.String "IterMut" |) ]
                             |)
                           |);
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.alloc (|
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
-                                  "as_slice",
-                                  []
-                                |),
-                                [
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
-                                    "alloc::collections::vec_deque::iter_mut::IterMut",
-                                    "i1"
-                                  |)
-                                ]
-                              |)
-                            |))
+                          M.alloc (|
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
+                                "as_slice",
+                                []
+                              |),
+                              [
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "alloc::collections::vec_deque::iter_mut::IterMut",
+                                  "i1"
+                                |)
+                              ]
+                            |)
+                          |)
                         ]
                       |);
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          M.call_closure (|
-                            M.get_associated_function (|
-                              Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
-                              "as_slice",
-                              []
-                            |),
-                            [
-                              M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
-                                "alloc::collections::vec_deque::iter_mut::IterMut",
-                                "i2"
-                              |)
-                            ]
-                          |)
-                        |))
+                      M.alloc (|
+                        M.call_closure (|
+                          M.get_associated_function (|
+                            Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
+                            "as_slice",
+                            []
+                          |),
+                          [
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "alloc::collections::vec_deque::iter_mut::IterMut",
+                              "i2"
+                            |)
+                          ]
+                        |)
+                      |)
                     ]
                   |)
                 ]
@@ -143,6 +139,58 @@ Module collections.
             (* Trait polymorphic types *) []
             (* Instance *) [ ("fmt", InstanceField.Method (fmt T)) ].
       End Impl_core_fmt_Debug_where_core_fmt_Debug_T_for_alloc_collections_vec_deque_iter_mut_IterMut_T.
+      
+      Module Impl_core_default_Default_for_alloc_collections_vec_deque_iter_mut_IterMut_T.
+        Definition Self (T : Ty.t) : Ty.t :=
+          Ty.apply (Ty.path "alloc::collections::vec_deque::iter_mut::IterMut") [] [ T ].
+        
+        (*
+            fn default() -> Self {
+                IterMut { i1: Default::default(), i2: Default::default() }
+            }
+        *)
+        Definition default (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          let Self : Ty.t := Self T in
+          match ε, τ, α with
+          | [], [], [] =>
+            ltac:(M.monadic
+              (Value.StructRecord
+                "alloc::collections::vec_deque::iter_mut::IterMut"
+                [
+                  ("i1",
+                    M.call_closure (|
+                      M.get_trait_method (|
+                        "core::default::Default",
+                        Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
+                        [],
+                        "default",
+                        []
+                      |),
+                      []
+                    |));
+                  ("i2",
+                    M.call_closure (|
+                      M.get_trait_method (|
+                        "core::default::Default",
+                        Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
+                        [],
+                        "default",
+                        []
+                      |),
+                      []
+                    |))
+                ]))
+          | _, _, _ => M.impossible
+          end.
+        
+        Axiom Implements :
+          forall (T : Ty.t),
+          M.IsTraitInstance
+            "core::default::Default"
+            (Self T)
+            (* Trait polymorphic types *) []
+            (* Instance *) [ ("default", InstanceField.Method (default T)) ].
+      End Impl_core_default_Default_for_alloc_collections_vec_deque_iter_mut_IterMut_T.
       
       Module Impl_core_iter_traits_iterator_Iterator_for_alloc_collections_vec_deque_iter_mut_IterMut_T.
         Definition Self (T : Ty.t) : Ty.t :=
@@ -255,7 +303,7 @@ Module collections.
           end.
         
         (*
-            fn advance_by(&mut self, n: usize) -> Result<(), NonZeroUsize> {
+            fn advance_by(&mut self, n: usize) -> Result<(), NonZero<usize>> {
                 match self.i1.advance_by(n) {
                     Ok(()) => return Ok(()),
                     Err(remaining) => {
@@ -365,7 +413,10 @@ Module collections.
                                   |);
                                   M.call_closure (|
                                     M.get_associated_function (|
-                                      Ty.path "core::num::nonzero::NonZeroUsize",
+                                      Ty.apply
+                                        (Ty.path "core::num::nonzero::NonZero")
+                                        []
+                                        [ Ty.path "usize" ],
                                       "get",
                                       []
                                     |),
@@ -871,7 +922,7 @@ Module collections.
           end.
         
         (*
-            fn advance_back_by(&mut self, n: usize) -> Result<(), NonZeroUsize> {
+            fn advance_back_by(&mut self, n: usize) -> Result<(), NonZero<usize>> {
                 match self.i2.advance_back_by(n) {
                     Ok(()) => return Ok(()),
                     Err(remaining) => {
@@ -981,7 +1032,10 @@ Module collections.
                                   |);
                                   M.call_closure (|
                                     M.get_associated_function (|
-                                      Ty.path "core::num::nonzero::NonZeroUsize",
+                                      Ty.apply
+                                        (Ty.path "core::num::nonzero::NonZero")
+                                        []
+                                        [ Ty.path "usize" ],
                                       "get",
                                       []
                                     |),

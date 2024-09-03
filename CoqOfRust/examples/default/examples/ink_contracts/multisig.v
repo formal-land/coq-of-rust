@@ -184,15 +184,9 @@ Module Impl_core_fmt_Debug_for_multisig_AccountId.
           [
             M.read (| f |);
             M.read (| Value.String "AccountId" |);
-            (* Unsize *)
-            M.pointer_coercion
-              (M.alloc (|
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "multisig::AccountId",
-                  0
-                |)
-              |))
+            M.alloc (|
+              M.SubPointer.get_struct_tuple_field (| M.read (| self |), "multisig::AccountId", 0 |)
+            |)
           ]
         |)))
     | _, _, _ => M.impossible
@@ -277,17 +271,6 @@ Module Impl_core_cmp_PartialEq_for_multisig_AccountId.
       (* Trait polymorphic types *) []
       (* Instance *) [ ("eq", InstanceField.Method eq) ].
 End Impl_core_cmp_PartialEq_for_multisig_AccountId.
-
-Module Impl_core_marker_StructuralEq_for_multisig_AccountId.
-  Definition Self : Ty.t := Ty.path "multisig::AccountId".
-  
-  Axiom Implements :
-    M.IsTraitInstance
-      "core::marker::StructuralEq"
-      Self
-      (* Trait polymorphic types *) []
-      (* Instance *) [].
-End Impl_core_marker_StructuralEq_for_multisig_AccountId.
 
 Module Impl_core_cmp_Eq_for_multisig_AccountId.
   Definition Self : Ty.t := Ty.path "multisig::AccountId".
@@ -640,17 +623,6 @@ Module Impl_core_cmp_PartialEq_for_multisig_Error.
       (* Trait polymorphic types *) []
       (* Instance *) [ ("eq", InstanceField.Method eq) ].
 End Impl_core_cmp_PartialEq_for_multisig_Error.
-
-Module Impl_core_marker_StructuralEq_for_multisig_Error.
-  Definition Self : Ty.t := Ty.path "multisig::Error".
-  
-  Axiom Implements :
-    M.IsTraitInstance
-      "core::marker::StructuralEq"
-      Self
-      (* Trait polymorphic types *) []
-      (* Instance *) [].
-End Impl_core_marker_StructuralEq_for_multisig_Error.
 
 Module Impl_core_cmp_Eq_for_multisig_Error.
   Definition Self : Ty.t := Ty.path "multisig::Error".

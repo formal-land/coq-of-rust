@@ -175,57 +175,43 @@ Module bytecode.
                   |) in
                 let~ values :=
                   M.alloc (|
-                    (* Unsize *)
-                    M.pointer_coercion
-                      (M.alloc (|
-                        Value.Array
-                          [
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
-                                "revm_primitives::bytecode::eof::header::EofHeader",
-                                "types_size"
-                              |));
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
-                                "revm_primitives::bytecode::eof::header::EofHeader",
-                                "code_sizes"
-                              |));
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
-                                "revm_primitives::bytecode::eof::header::EofHeader",
-                                "container_sizes"
-                              |));
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
-                                "revm_primitives::bytecode::eof::header::EofHeader",
-                                "data_size"
-                              |));
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
-                                "revm_primitives::bytecode::eof::header::EofHeader",
-                                "sum_code_sizes"
-                              |));
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.alloc (|
-                                M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
-                                  "revm_primitives::bytecode::eof::header::EofHeader",
-                                  "sum_container_sizes"
-                                |)
-                              |))
-                          ]
-                      |))
+                    M.alloc (|
+                      Value.Array
+                        [
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "revm_primitives::bytecode::eof::header::EofHeader",
+                            "types_size"
+                          |);
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "revm_primitives::bytecode::eof::header::EofHeader",
+                            "code_sizes"
+                          |);
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "revm_primitives::bytecode::eof::header::EofHeader",
+                            "container_sizes"
+                          |);
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "revm_primitives::bytecode::eof::header::EofHeader",
+                            "data_size"
+                          |);
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "revm_primitives::bytecode::eof::header::EofHeader",
+                            "sum_code_sizes"
+                          |);
+                          M.alloc (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "revm_primitives::bytecode::eof::header::EofHeader",
+                              "sum_container_sizes"
+                            |)
+                          |)
+                        ]
+                    |)
                   |) in
                 M.alloc (|
                   M.call_closure (|
@@ -237,7 +223,7 @@ Module bytecode.
                     [
                       M.read (| f |);
                       M.read (| Value.String "EofHeader" |);
-                      (* Unsize *) M.pointer_coercion (M.read (| names |));
+                      M.read (| names |);
                       M.read (| values |)
                     ]
                   |)
@@ -513,17 +499,6 @@ Module bytecode.
             (* Trait polymorphic types *) []
             (* Instance *) [ ("eq", InstanceField.Method eq) ].
       End Impl_core_cmp_PartialEq_for_revm_primitives_bytecode_eof_header_EofHeader.
-      
-      Module Impl_core_marker_StructuralEq_for_revm_primitives_bytecode_eof_header_EofHeader.
-        Definition Self : Ty.t := Ty.path "revm_primitives::bytecode::eof::header::EofHeader".
-        
-        Axiom Implements :
-          M.IsTraitInstance
-            "core::marker::StructuralEq"
-            Self
-            (* Trait polymorphic types *) []
-            (* Instance *) [].
-      End Impl_core_marker_StructuralEq_for_revm_primitives_bytecode_eof_header_EofHeader.
       
       Module Impl_core_cmp_Eq_for_revm_primitives_bytecode_eof_header_EofHeader.
         Definition Self : Ty.t := Ty.path "revm_primitives::bytecode::eof::header::EofHeader".
@@ -1485,14 +1460,12 @@ Module bytecode.
                       |),
                       [
                         M.read (| buffer |);
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.alloc (|
-                            M.call_closure (|
-                              M.get_associated_function (| Ty.path "u16", "to_be_bytes", [] |),
-                              [ Value.Integer 61184 ]
-                            |)
-                          |))
+                        M.alloc (|
+                          M.call_closure (|
+                            M.get_associated_function (| Ty.path "u16", "to_be_bytes", [] |),
+                            [ Value.Integer 61184 ]
+                          |)
+                        |)
                       ]
                     |)
                   |) in
@@ -1542,22 +1515,20 @@ Module bytecode.
                       |),
                       [
                         M.read (| buffer |);
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.alloc (|
-                            M.call_closure (|
-                              M.get_associated_function (| Ty.path "u16", "to_be_bytes", [] |),
-                              [
-                                M.read (|
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
-                                    "revm_primitives::bytecode::eof::header::EofHeader",
-                                    "types_size"
-                                  |)
+                        M.alloc (|
+                          M.call_closure (|
+                            M.get_associated_function (| Ty.path "u16", "to_be_bytes", [] |),
+                            [
+                              M.read (|
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "revm_primitives::bytecode::eof::header::EofHeader",
+                                  "types_size"
                                 |)
-                              ]
-                            |)
-                          |))
+                              |)
+                            ]
+                          |)
+                        |)
                       ]
                     |)
                   |) in
@@ -1593,33 +1564,31 @@ Module bytecode.
                       |),
                       [
                         M.read (| buffer |);
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.alloc (|
-                            M.call_closure (|
-                              M.get_associated_function (| Ty.path "u16", "to_be_bytes", [] |),
-                              [
-                                M.rust_cast
-                                  (M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.apply
-                                        (Ty.path "alloc::vec::Vec")
-                                        []
-                                        [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ],
-                                      "len",
+                        M.alloc (|
+                          M.call_closure (|
+                            M.get_associated_function (| Ty.path "u16", "to_be_bytes", [] |),
+                            [
+                              M.rust_cast
+                                (M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.apply
+                                      (Ty.path "alloc::vec::Vec")
                                       []
-                                    |),
-                                    [
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.read (| self |),
-                                        "revm_primitives::bytecode::eof::header::EofHeader",
-                                        "code_sizes"
-                                      |)
-                                    ]
-                                  |))
-                              ]
-                            |)
-                          |))
+                                      [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ],
+                                    "len",
+                                    []
+                                  |),
+                                  [
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "revm_primitives::bytecode::eof::header::EofHeader",
+                                      "code_sizes"
+                                    |)
+                                  ]
+                                |))
+                            ]
+                          |)
+                        |)
                       ]
                     |)
                   |) in
@@ -1709,18 +1678,16 @@ Module bytecode.
                                                 |),
                                                 [
                                                   M.read (| buffer |);
-                                                  (* Unsize *)
-                                                  M.pointer_coercion
-                                                    (M.alloc (|
-                                                      M.call_closure (|
-                                                        M.get_associated_function (|
-                                                          Ty.path "u16",
-                                                          "to_be_bytes",
-                                                          []
-                                                        |),
-                                                        [ M.read (| M.read (| size |) |) ]
-                                                      |)
-                                                    |))
+                                                  M.alloc (|
+                                                    M.call_closure (|
+                                                      M.get_associated_function (|
+                                                        Ty.path "u16",
+                                                        "to_be_bytes",
+                                                        []
+                                                      |),
+                                                      [ M.read (| M.read (| size |) |) ]
+                                                    |)
+                                                  |)
                                                 ]
                                               |)
                                             |) in
@@ -1818,37 +1785,35 @@ Module bytecode.
                                 |),
                                 [
                                   M.read (| buffer |);
-                                  (* Unsize *)
-                                  M.pointer_coercion
-                                    (M.alloc (|
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path "u16",
-                                          "to_be_bytes",
-                                          []
-                                        |),
-                                        [
-                                          M.rust_cast
-                                            (M.call_closure (|
-                                              M.get_associated_function (|
-                                                Ty.apply
-                                                  (Ty.path "alloc::vec::Vec")
-                                                  []
-                                                  [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ],
-                                                "len",
+                                  M.alloc (|
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "u16",
+                                        "to_be_bytes",
+                                        []
+                                      |),
+                                      [
+                                        M.rust_cast
+                                          (M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.apply
+                                                (Ty.path "alloc::vec::Vec")
                                                 []
-                                              |),
-                                              [
-                                                M.SubPointer.get_struct_record_field (|
-                                                  M.read (| self |),
-                                                  "revm_primitives::bytecode::eof::header::EofHeader",
-                                                  "container_sizes"
-                                                |)
-                                              ]
-                                            |))
-                                        ]
-                                      |)
-                                    |))
+                                                [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ],
+                                              "len",
+                                              []
+                                            |),
+                                            [
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.read (| self |),
+                                                "revm_primitives::bytecode::eof::header::EofHeader",
+                                                "container_sizes"
+                                              |)
+                                            ]
+                                          |))
+                                      ]
+                                    |)
+                                  |)
                                 ]
                               |)
                             |) in
@@ -1940,18 +1905,16 @@ Module bytecode.
                                                           |),
                                                           [
                                                             M.read (| buffer |);
-                                                            (* Unsize *)
-                                                            M.pointer_coercion
-                                                              (M.alloc (|
-                                                                M.call_closure (|
-                                                                  M.get_associated_function (|
-                                                                    Ty.path "u16",
-                                                                    "to_be_bytes",
-                                                                    []
-                                                                  |),
-                                                                  [ M.read (| M.read (| size |) |) ]
-                                                                |)
-                                                              |))
+                                                            M.alloc (|
+                                                              M.call_closure (|
+                                                                M.get_associated_function (|
+                                                                  Ty.path "u16",
+                                                                  "to_be_bytes",
+                                                                  []
+                                                                |),
+                                                                [ M.read (| M.read (| size |) |) ]
+                                                              |)
+                                                            |)
                                                           ]
                                                         |)
                                                       |) in
@@ -1999,22 +1962,20 @@ Module bytecode.
                       |),
                       [
                         M.read (| buffer |);
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.alloc (|
-                            M.call_closure (|
-                              M.get_associated_function (| Ty.path "u16", "to_be_bytes", [] |),
-                              [
-                                M.read (|
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
-                                    "revm_primitives::bytecode::eof::header::EofHeader",
-                                    "data_size"
-                                  |)
+                        M.alloc (|
+                          M.call_closure (|
+                            M.get_associated_function (| Ty.path "u16", "to_be_bytes", [] |),
+                            [
+                              M.read (|
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "revm_primitives::bytecode::eof::header::EofHeader",
+                                  "data_size"
                                 |)
-                              ]
-                            |)
-                          |))
+                              |)
+                            ]
+                          |)
+                        |)
                       ]
                     |)
                   |) in

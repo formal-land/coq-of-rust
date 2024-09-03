@@ -30,30 +30,26 @@ Module Impl_core_fmt_Display_for_converting_to_string_Circle.
             M.call_closure (|
               M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
               [
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.alloc (| Value.Array [ M.read (| Value.String "Circle of radius " |) ] |));
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.alloc (|
-                    Value.Array
-                      [
-                        M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.path "core::fmt::rt::Argument",
-                            "new_display",
-                            [ Ty.path "i32" ]
-                          |),
-                          [
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "converting_to_string::Circle",
-                              "radius"
-                            |)
-                          ]
-                        |)
-                      ]
-                  |))
+                M.alloc (| Value.Array [ M.read (| Value.String "Circle of radius " |) ] |);
+                M.alloc (|
+                  Value.Array
+                    [
+                      M.call_closure (|
+                        M.get_associated_function (|
+                          Ty.path "core::fmt::rt::Argument",
+                          "new_display",
+                          [ Ty.path "i32" ]
+                        |),
+                        [
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "converting_to_string::Circle",
+                            "radius"
+                          |)
+                        ]
+                      |)
+                    ]
+                |)
               ]
             |)
           ]

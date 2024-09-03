@@ -84,23 +84,19 @@ Module Impl_core_fmt_Debug_where_core_fmt_Debug_T_for_move_abstract_stack_Abstra
             M.read (| f |);
             M.read (| Value.String "AbstractStack" |);
             M.read (| Value.String "values" |);
-            (* Unsize *)
-            M.pointer_coercion
-              (M.SubPointer.get_struct_record_field (|
+            M.SubPointer.get_struct_record_field (|
+              M.read (| self |),
+              "move_abstract_stack::AbstractStack",
+              "values"
+            |);
+            M.read (| Value.String "len" |);
+            M.alloc (|
+              M.SubPointer.get_struct_record_field (|
                 M.read (| self |),
                 "move_abstract_stack::AbstractStack",
-                "values"
-              |));
-            M.read (| Value.String "len" |);
-            (* Unsize *)
-            M.pointer_coercion
-              (M.alloc (|
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "move_abstract_stack::AbstractStack",
-                  "len"
-                |)
-              |))
+                "len"
+              |)
+            |)
           ]
         |)))
     | _, _, _ => M.impossible
@@ -962,14 +958,14 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                 Ty.apply
                   (Ty.path "core::option::Option")
                   []
-                  [ Ty.path "core::num::nonzero::NonZeroU64" ],
+                  [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ] ],
                 "unwrap",
                 []
               |),
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.path "core::num::nonzero::NonZeroU64",
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
                     "new",
                     []
                   |),
@@ -1021,7 +1017,7 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.path "core::num::nonzero::NonZeroU64",
+                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
                       "get",
                       []
                     |),
@@ -1354,7 +1350,7 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.path "core::num::nonzero::NonZeroU64",
+                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
                       "get",
                       []
                     |),
@@ -1723,17 +1719,6 @@ Enum AbsStackError
 }
 *)
 
-Module Impl_core_marker_StructuralEq_for_move_abstract_stack_AbsStackError.
-  Definition Self : Ty.t := Ty.path "move_abstract_stack::AbsStackError".
-  
-  Axiom Implements :
-    M.IsTraitInstance
-      "core::marker::StructuralEq"
-      Self
-      (* Trait polymorphic types *) []
-      (* Instance *) [].
-End Impl_core_marker_StructuralEq_for_move_abstract_stack_AbsStackError.
-
 Module Impl_core_cmp_Eq_for_move_abstract_stack_AbsStackError.
   Definition Self : Ty.t := Ty.path "move_abstract_stack::AbsStackError".
   
@@ -1782,7 +1767,7 @@ Module Impl_core_cmp_PartialEq_for_move_abstract_stack_AbsStackError.
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
         M.read (|
-          let~ __self_tag :=
+          let~ __self_discr :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (|
@@ -1792,7 +1777,7 @@ Module Impl_core_cmp_PartialEq_for_move_abstract_stack_AbsStackError.
                 [ M.read (| self |) ]
               |)
             |) in
-          let~ __arg1_tag :=
+          let~ __arg1_discr :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (|
@@ -1802,7 +1787,7 @@ Module Impl_core_cmp_PartialEq_for_move_abstract_stack_AbsStackError.
                 [ M.read (| other |) ]
               |)
             |) in
-          M.alloc (| BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)) |)
+          M.alloc (| BinOp.Pure.eq (M.read (| __self_discr |)) (M.read (| __arg1_discr |)) |)
         |)))
     | _, _, _ => M.impossible
     end.
@@ -1826,7 +1811,7 @@ Module Impl_core_cmp_PartialOrd_for_move_abstract_stack_AbsStackError.
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
         M.read (|
-          let~ __self_tag :=
+          let~ __self_discr :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (|
@@ -1836,7 +1821,7 @@ Module Impl_core_cmp_PartialOrd_for_move_abstract_stack_AbsStackError.
                 [ M.read (| self |) ]
               |)
             |) in
-          let~ __arg1_tag :=
+          let~ __arg1_discr :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (|
@@ -1855,7 +1840,7 @@ Module Impl_core_cmp_PartialOrd_for_move_abstract_stack_AbsStackError.
                 "partial_cmp",
                 []
               |),
-              [ __self_tag; __arg1_tag ]
+              [ __self_discr; __arg1_discr ]
             |)
           |)
         |)))
@@ -1881,7 +1866,7 @@ Module Impl_core_cmp_Ord_for_move_abstract_stack_AbsStackError.
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
         M.read (|
-          let~ __self_tag :=
+          let~ __self_discr :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (|
@@ -1891,7 +1876,7 @@ Module Impl_core_cmp_Ord_for_move_abstract_stack_AbsStackError.
                 [ M.read (| self |) ]
               |)
             |) in
-          let~ __arg1_tag :=
+          let~ __arg1_discr :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (|
@@ -1904,7 +1889,7 @@ Module Impl_core_cmp_Ord_for_move_abstract_stack_AbsStackError.
           M.alloc (|
             M.call_closure (|
               M.get_trait_method (| "core::cmp::Ord", Ty.path "isize", [], "cmp", [] |),
-              [ __self_tag; __arg1_tag ]
+              [ __self_discr; __arg1_discr ]
             |)
           |)
         |)))
@@ -2057,16 +2042,14 @@ Module Impl_core_fmt_Display_for_move_abstract_stack_AbsStackError.
                             []
                           |),
                           [
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.alloc (|
-                                Value.Array
-                                  [
-                                    M.read (|
-                                      Value.String "Popped element is not equal to specified item"
-                                    |)
-                                  ]
-                              |))
+                            M.alloc (|
+                              Value.Array
+                                [
+                                  M.read (|
+                                    Value.String "Popped element is not equal to specified item"
+                                  |)
+                                ]
+                            |)
                           ]
                         |)
                       ]
@@ -2093,16 +2076,14 @@ Module Impl_core_fmt_Display_for_move_abstract_stack_AbsStackError.
                             []
                           |),
                           [
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.alloc (|
-                                Value.Array
-                                  [
-                                    M.read (|
-                                      Value.String "Popped more values than are on the stack"
-                                    |)
-                                  ]
-                              |))
+                            M.alloc (|
+                              Value.Array
+                                [
+                                  M.read (|
+                                    Value.String "Popped more values than are on the stack"
+                                  |)
+                                ]
+                            |)
                           ]
                         |)
                       ]
@@ -2129,16 +2110,11 @@ Module Impl_core_fmt_Display_for_move_abstract_stack_AbsStackError.
                             []
                           |),
                           [
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.alloc (|
-                                Value.Array
-                                  [
-                                    M.read (|
-                                      Value.String "Pushed too many elements on the stack"
-                                    |)
-                                  ]
-                              |))
+                            M.alloc (|
+                              Value.Array
+                                [ M.read (| Value.String "Pushed too many elements on the stack" |)
+                                ]
+                            |)
                           ]
                         |)
                       ]

@@ -3,16 +3,16 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module slice.
   Module cmp.
-    Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_A_B_slice_B_for_slice_A.
-      Definition Self (A B : Ty.t) : Ty.t := Ty.apply (Ty.path "slice") [] [ A ].
+    Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_T_U_slice_U_for_slice_T.
+      Definition Self (T U : Ty.t) : Ty.t := Ty.apply (Ty.path "slice") [] [ T ].
       
       (*
-          fn eq(&self, other: &[B]) -> bool {
+          fn eq(&self, other: &[U]) -> bool {
               SlicePartialEq::equal(self, other)
           }
       *)
-      Definition eq (A B : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        let Self : Ty.t := Self A B in
+      Definition eq (T U : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        let Self : Ty.t := Self T U in
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
@@ -21,8 +21,8 @@ Module slice.
             M.call_closure (|
               M.get_trait_method (|
                 "core::slice::cmp::SlicePartialEq",
-                Ty.apply (Ty.path "slice") [] [ A ],
-                [ B ],
+                Ty.apply (Ty.path "slice") [] [ T ],
+                [ U ],
                 "equal",
                 []
               |),
@@ -32,12 +32,12 @@ Module slice.
         end.
       
       (*
-          fn ne(&self, other: &[B]) -> bool {
+          fn ne(&self, other: &[U]) -> bool {
               SlicePartialEq::not_equal(self, other)
           }
       *)
-      Definition ne (A B : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        let Self : Ty.t := Self A B in
+      Definition ne (T U : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        let Self : Ty.t := Self T U in
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
@@ -46,8 +46,8 @@ Module slice.
             M.call_closure (|
               M.get_trait_method (|
                 "core::slice::cmp::SlicePartialEq",
-                Ty.apply (Ty.path "slice") [] [ A ],
-                [ B ],
+                Ty.apply (Ty.path "slice") [] [ T ],
+                [ U ],
                 "not_equal",
                 []
               |),
@@ -57,14 +57,14 @@ Module slice.
         end.
       
       Axiom Implements :
-        forall (A B : Ty.t),
+        forall (T U : Ty.t),
         M.IsTraitInstance
           "core::cmp::PartialEq"
-          (Self A B)
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.apply (Ty.path "slice") [] [ B ] ]
+          (Self T U)
+          (* Trait polymorphic types *) [ (* Rhs *) Ty.apply (Ty.path "slice") [] [ U ] ]
           (* Instance *)
-          [ ("eq", InstanceField.Method (eq A B)); ("ne", InstanceField.Method (ne A B)) ].
-    End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_A_B_slice_B_for_slice_A.
+          [ ("eq", InstanceField.Method (eq T U)); ("ne", InstanceField.Method (ne T U)) ].
+    End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_T_U_slice_U_for_slice_T.
     
     Module Impl_core_cmp_Eq_where_core_cmp_Eq_T_for_slice_T.
       Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "slice") [] [ T ].
@@ -187,7 +187,17 @@ Module slice.
                   return false;
               }
       
-              self.iter().zip(other.iter()).all(|(x, y)| x == y)
+              // Implemented as explicit indexing rather
+              // than zipped iterators for performance reasons.
+              // See PR https://github.com/rust-lang/rust/pull/116846
+              for idx in 0..self.len() {
+                  // bound checks are optimized away
+                  if self[idx] != other[idx] {
+                      return false;
+                  }
+              }
+      
+              true
           }
       *)
       Definition equal (A B : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -235,95 +245,130 @@ Module slice.
                         fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                       ]
                     |) in
-                  M.alloc (|
-                    M.call_closure (|
-                      M.get_trait_method (|
-                        "core::iter::traits::iterator::Iterator",
-                        Ty.apply
-                          (Ty.path "core::iter::adapters::zip::Zip")
-                          []
-                          [
-                            Ty.apply (Ty.path "core::slice::iter::Iter") [] [ A ];
-                            Ty.apply (Ty.path "core::slice::iter::Iter") [] [ B ]
-                          ],
-                        [],
-                        "all",
-                        [
-                          Ty.function
-                            [
-                              Ty.tuple
-                                [
-                                  Ty.tuple
-                                    [
-                                      Ty.apply (Ty.path "&") [] [ A ];
-                                      Ty.apply (Ty.path "&") [] [ B ]
-                                    ]
-                                ]
-                            ]
-                            (Ty.path "bool")
-                        ]
-                      |),
-                      [
+                  let~ _ :=
+                    M.use
+                      (M.match_operator (|
                         M.alloc (|
                           M.call_closure (|
                             M.get_trait_method (|
-                              "core::iter::traits::iterator::Iterator",
-                              Ty.apply (Ty.path "core::slice::iter::Iter") [] [ A ],
+                              "core::iter::traits::collect::IntoIterator",
+                              Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
                               [],
-                              "zip",
-                              [ Ty.apply (Ty.path "core::slice::iter::Iter") [] [ B ] ]
+                              "into_iter",
+                              []
                             |),
                             [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.apply (Ty.path "slice") [] [ A ],
-                                  "iter",
-                                  []
-                                |),
-                                [ M.read (| self |) ]
-                              |);
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.apply (Ty.path "slice") [] [ B ],
-                                  "iter",
-                                  []
-                                |),
-                                [ M.read (| other |) ]
-                              |)
+                              Value.StructRecord
+                                "core::ops::range::Range"
+                                [
+                                  ("start", Value.Integer 0);
+                                  ("end_",
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.apply (Ty.path "slice") [] [ A ],
+                                        "len",
+                                        []
+                                      |),
+                                      [ M.read (| self |) ]
+                                    |))
+                                ]
                             ]
                           |)
-                        |);
-                        M.closure
-                          (fun γ =>
+                        |),
+                        [
+                          fun γ =>
                             ltac:(M.monadic
-                              match γ with
-                              | [ α0 ] =>
-                                M.match_operator (|
-                                  M.alloc (| α0 |),
-                                  [
-                                    fun γ =>
-                                      ltac:(M.monadic
-                                        (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                                        let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                                        let x := M.copy (| γ0_0 |) in
-                                        let y := M.copy (| γ0_1 |) in
+                              (let iter := M.copy (| γ |) in
+                              M.loop (|
+                                ltac:(M.monadic
+                                  (let~ _ :=
+                                    M.match_operator (|
+                                      M.alloc (|
                                         M.call_closure (|
                                           M.get_trait_method (|
-                                            "core::cmp::PartialEq",
-                                            Ty.apply (Ty.path "&") [] [ A ],
-                                            [ Ty.apply (Ty.path "&") [] [ B ] ],
-                                            "eq",
+                                            "core::iter::traits::iterator::Iterator",
+                                            Ty.apply
+                                              (Ty.path "core::ops::range::Range")
+                                              []
+                                              [ Ty.path "usize" ],
+                                            [],
+                                            "next",
                                             []
                                           |),
-                                          [ x; y ]
-                                        |)))
-                                  ]
-                                |)
-                              | _ => M.impossible (||)
-                              end))
-                      ]
-                    |)
-                  |)
+                                          [ iter ]
+                                        |)
+                                      |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let _ :=
+                                              M.is_struct_tuple (|
+                                                γ,
+                                                "core::option::Option::None"
+                                              |) in
+                                            M.alloc (|
+                                              M.never_to_any (| M.read (| M.break (||) |) |)
+                                            |)));
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let γ0_0 :=
+                                              M.SubPointer.get_struct_tuple_field (|
+                                                γ,
+                                                "core::option::Option::Some",
+                                                0
+                                              |) in
+                                            let idx := M.copy (| γ0_0 |) in
+                                            M.match_operator (|
+                                              M.alloc (| Value.Tuple [] |),
+                                              [
+                                                fun γ =>
+                                                  ltac:(M.monadic
+                                                    (let γ :=
+                                                      M.use
+                                                        (M.alloc (|
+                                                          M.call_closure (|
+                                                            M.get_trait_method (|
+                                                              "core::cmp::PartialEq",
+                                                              A,
+                                                              [ B ],
+                                                              "ne",
+                                                              []
+                                                            |),
+                                                            [
+                                                              M.SubPointer.get_array_field (|
+                                                                M.read (| self |),
+                                                                idx
+                                                              |);
+                                                              M.SubPointer.get_array_field (|
+                                                                M.read (| other |),
+                                                                idx
+                                                              |)
+                                                            ]
+                                                          |)
+                                                        |)) in
+                                                    let _ :=
+                                                      M.is_constant_or_break_match (|
+                                                        M.read (| γ |),
+                                                        Value.Bool true
+                                                      |) in
+                                                    M.alloc (|
+                                                      M.never_to_any (|
+                                                        M.read (|
+                                                          M.return_ (| Value.Bool false |)
+                                                        |)
+                                                      |)
+                                                    |)));
+                                                fun γ =>
+                                                  ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                              ]
+                                            |)))
+                                      ]
+                                    |) in
+                                  M.alloc (| Value.Tuple [] |)))
+                              |)))
+                        ]
+                      |)) in
+                  M.alloc (| Value.Bool true |)
                 |)))
             |)))
         | _, _, _ => M.impossible

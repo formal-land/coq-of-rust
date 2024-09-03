@@ -417,13 +417,11 @@ Module num.
                             []
                           |),
                           [
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.read (|
-                                M.get_constant (|
-                                  "core::num::flt2dec::strategy::grisu::CACHED_POW10"
-                                |)
-                              |))
+                            M.read (|
+                              M.get_constant (|
+                                "core::num::flt2dec::strategy::grisu::CACHED_POW10"
+                              |)
+                            |)
                           ]
                         |)))
                       (Value.Integer 1)

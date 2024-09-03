@@ -37,23 +37,19 @@ Module vec.
                 M.read (| f |);
                 M.read (| Value.String "Splice" |);
                 M.read (| Value.String "drain" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.SubPointer.get_struct_record_field (|
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "alloc::vec::splice::Splice",
+                  "drain"
+                |);
+                M.read (| Value.String "replace_with" |);
+                M.alloc (|
+                  M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
                     "alloc::vec::splice::Splice",
-                    "drain"
-                  |));
-                M.read (| Value.String "replace_with" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.alloc (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "alloc::vec::splice::Splice",
-                      "replace_with"
-                    |)
-                  |))
+                    "replace_with"
+                  |)
+                |)
               ]
             |)))
         | _, _, _ => M.impossible
@@ -315,7 +311,7 @@ Module vec.
                           "iter",
                           []
                         |),
-                        [ (* Unsize *) M.pointer_coercion (M.alloc (| Value.Array [] |)) ]
+                        [ M.alloc (| Value.Array [] |) ]
                       |)
                     |) in
                   let~ _ :=

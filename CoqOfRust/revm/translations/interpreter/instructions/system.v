@@ -1051,29 +1051,25 @@ Module instructions.
                                                       []
                                                     |),
                                                     [
-                                                      (* Unsize *)
-                                                      M.pointer_coercion
-                                                        (M.alloc (|
-                                                          Value.Array
-                                                            [
-                                                              M.read (|
-                                                                Value.String
-                                                                  "internal error: entered unreachable code: !interpreter.contract.bytecode.is_eof()"
-                                                              |)
-                                                            ]
-                                                        |));
-                                                      (* Unsize *)
-                                                      M.pointer_coercion
-                                                        (M.alloc (|
-                                                          M.call_closure (|
-                                                            M.get_associated_function (|
-                                                              Ty.path "core::fmt::rt::Argument",
-                                                              "none",
-                                                              []
-                                                            |),
+                                                      M.alloc (|
+                                                        Value.Array
+                                                          [
+                                                            M.read (|
+                                                              Value.String
+                                                                "internal error: entered unreachable code: !interpreter.contract.bytecode.is_eof()"
+                                                            |)
+                                                          ]
+                                                      |);
+                                                      M.alloc (|
+                                                        M.call_closure (|
+                                                          M.get_associated_function (|
+                                                            Ty.path "core::fmt::rt::Argument",
+                                                            "none",
                                                             []
-                                                          |)
-                                                        |))
+                                                          |),
+                                                          []
+                                                        |)
+                                                      |)
                                                     ]
                                                   |)
                                                 ]
@@ -1918,30 +1914,26 @@ Module instructions.
                                                               []
                                                             |),
                                                             [
-                                                              (* Unsize *)
-                                                              M.pointer_coercion
-                                                                (M.alloc (|
-                                                                  Value.Array
-                                                                    [
-                                                                      M.read (|
-                                                                        Value.String
-                                                                          "internal error: entered unreachable code: !interpreter.contract.bytecode.is_eof()"
-                                                                      |)
-                                                                    ]
-                                                                |));
-                                                              (* Unsize *)
-                                                              M.pointer_coercion
-                                                                (M.alloc (|
-                                                                  M.call_closure (|
-                                                                    M.get_associated_function (|
-                                                                      Ty.path
-                                                                        "core::fmt::rt::Argument",
-                                                                      "none",
-                                                                      []
-                                                                    |),
+                                                              M.alloc (|
+                                                                Value.Array
+                                                                  [
+                                                                    M.read (|
+                                                                      Value.String
+                                                                        "internal error: entered unreachable code: !interpreter.contract.bytecode.is_eof()"
+                                                                    |)
+                                                                  ]
+                                                              |);
+                                                              M.alloc (|
+                                                                M.call_closure (|
+                                                                  M.get_associated_function (|
+                                                                    Ty.path
+                                                                      "core::fmt::rt::Argument",
+                                                                    "none",
                                                                     []
-                                                                  |)
-                                                                |))
+                                                                  |),
+                                                                  []
+                                                                |)
+                                                              |)
                                                             ]
                                                           |)
                                                         ]
@@ -2547,21 +2539,19 @@ Module instructions.
                                       []
                                     |),
                                     [
-                                      (* Unsize *)
-                                      M.pointer_coercion
-                                        (M.call_closure (|
-                                          M.get_trait_method (|
-                                            "core::ops::deref::DerefMut",
-                                            Ty.apply
-                                              (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                                              [ Value.Integer 32 ]
-                                              [],
+                                      M.call_closure (|
+                                        M.get_trait_method (|
+                                          "core::ops::deref::DerefMut",
+                                          Ty.apply
+                                            (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                                            [ Value.Integer 32 ]
                                             [],
-                                            "deref_mut",
-                                            []
-                                          |),
-                                          [ word ]
-                                        |))
+                                          [],
+                                          "deref_mut",
+                                          []
+                                        |),
+                                        [ word ]
+                                      |)
                                     ]
                                   |);
                                   M.read (| count |)

@@ -193,17 +193,6 @@ Module Impl_core_cmp_PartialEq_for_mother_AccountId.
       (* Instance *) [ ("eq", InstanceField.Method eq) ].
 End Impl_core_cmp_PartialEq_for_mother_AccountId.
 
-Module Impl_core_marker_StructuralEq_for_mother_AccountId.
-  Definition Self : Ty.t := Ty.path "mother::AccountId".
-  
-  Axiom Implements :
-    M.IsTraitInstance
-      "core::marker::StructuralEq"
-      Self
-      (* Trait polymorphic types *) []
-      (* Instance *) [].
-End Impl_core_marker_StructuralEq_for_mother_AccountId.
-
 Module Impl_core_cmp_Eq_for_mother_AccountId.
   Definition Self : Ty.t := Ty.path "mother::AccountId".
   
@@ -401,17 +390,6 @@ Module Impl_core_cmp_PartialEq_for_mother_Bids.
       (* Instance *) [ ("eq", InstanceField.Method eq) ].
 End Impl_core_cmp_PartialEq_for_mother_Bids.
 
-Module Impl_core_marker_StructuralEq_for_mother_Bids.
-  Definition Self : Ty.t := Ty.path "mother::Bids".
-  
-  Axiom Implements :
-    M.IsTraitInstance
-      "core::marker::StructuralEq"
-      Self
-      (* Trait polymorphic types *) []
-      (* Instance *) [].
-End Impl_core_marker_StructuralEq_for_mother_Bids.
-
 Module Impl_core_cmp_Eq_for_mother_Bids.
   Definition Self : Ty.t := Ty.path "mother::Bids".
   
@@ -540,7 +518,7 @@ Module Impl_core_cmp_PartialEq_for_mother_Outline.
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
         M.read (|
-          let~ __self_tag :=
+          let~ __self_discr :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (|
@@ -550,7 +528,7 @@ Module Impl_core_cmp_PartialEq_for_mother_Outline.
                 [ M.read (| self |) ]
               |)
             |) in
-          let~ __arg1_tag :=
+          let~ __arg1_discr :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (|
@@ -560,7 +538,7 @@ Module Impl_core_cmp_PartialEq_for_mother_Outline.
                 [ M.read (| other |) ]
               |)
             |) in
-          M.alloc (| BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)) |)
+          M.alloc (| BinOp.Pure.eq (M.read (| __self_discr |)) (M.read (| __arg1_discr |)) |)
         |)))
     | _, _, _ => M.impossible
     end.
@@ -572,17 +550,6 @@ Module Impl_core_cmp_PartialEq_for_mother_Outline.
       (* Trait polymorphic types *) []
       (* Instance *) [ ("eq", InstanceField.Method eq) ].
 End Impl_core_cmp_PartialEq_for_mother_Outline.
-
-Module Impl_core_marker_StructuralEq_for_mother_Outline.
-  Definition Self : Ty.t := Ty.path "mother::Outline".
-  
-  Axiom Implements :
-    M.IsTraitInstance
-      "core::marker::StructuralEq"
-      Self
-      (* Trait polymorphic types *) []
-      (* Instance *) [].
-End Impl_core_marker_StructuralEq_for_mother_Outline.
 
 Module Impl_core_cmp_Eq_for_mother_Outline.
   Definition Self : Ty.t := Ty.path "mother::Outline".
@@ -710,7 +677,7 @@ Module Impl_core_cmp_PartialEq_for_mother_Status.
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
         M.read (|
-          let~ __self_tag :=
+          let~ __self_discr :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (|
@@ -720,7 +687,7 @@ Module Impl_core_cmp_PartialEq_for_mother_Status.
                 [ M.read (| self |) ]
               |)
             |) in
-          let~ __arg1_tag :=
+          let~ __arg1_discr :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (|
@@ -732,7 +699,7 @@ Module Impl_core_cmp_PartialEq_for_mother_Status.
             |) in
           M.alloc (|
             LogicalOp.and (|
-              BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)),
+              BinOp.Pure.eq (M.read (| __self_discr |)) (M.read (| __arg1_discr |)),
               ltac:(M.monadic
                 (M.read (|
                   M.match_operator (|
@@ -759,9 +726,16 @@ Module Impl_core_cmp_PartialEq_for_mother_Status.
                             |) in
                           let __arg1_0 := M.alloc (| γ2_0 |) in
                           M.alloc (|
-                            BinOp.Pure.eq
-                              (M.read (| M.read (| __self_0 |) |))
-                              (M.read (| M.read (| __arg1_0 |) |))
+                            M.call_closure (|
+                              M.get_trait_method (|
+                                "core::cmp::PartialEq",
+                                Ty.apply (Ty.path "&") [] [ Ty.path "u32" ],
+                                [ Ty.apply (Ty.path "&") [] [ Ty.path "u32" ] ],
+                                "eq",
+                                []
+                              |),
+                              [ __self_0; __arg1_0 ]
+                            |)
                           |)));
                       fun γ =>
                         ltac:(M.monadic
@@ -787,12 +761,12 @@ Module Impl_core_cmp_PartialEq_for_mother_Status.
                             M.call_closure (|
                               M.get_trait_method (|
                                 "core::cmp::PartialEq",
-                                Ty.path "mother::Outline",
-                                [ Ty.path "mother::Outline" ],
+                                Ty.apply (Ty.path "&") [] [ Ty.path "mother::Outline" ],
+                                [ Ty.apply (Ty.path "&") [] [ Ty.path "mother::Outline" ] ],
                                 "eq",
                                 []
                               |),
-                              [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                              [ __self_0; __arg1_0 ]
                             |)
                           |)));
                       fun γ =>
@@ -816,9 +790,16 @@ Module Impl_core_cmp_PartialEq_for_mother_Status.
                             |) in
                           let __arg1_0 := M.alloc (| γ2_0 |) in
                           M.alloc (|
-                            BinOp.Pure.eq
-                              (M.read (| M.read (| __self_0 |) |))
-                              (M.read (| M.read (| __arg1_0 |) |))
+                            M.call_closure (|
+                              M.get_trait_method (|
+                                "core::cmp::PartialEq",
+                                Ty.apply (Ty.path "&") [] [ Ty.path "u32" ],
+                                [ Ty.apply (Ty.path "&") [] [ Ty.path "u32" ] ],
+                                "eq",
+                                []
+                              |),
+                              [ __self_0; __arg1_0 ]
+                            |)
                           |)));
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
                     ]
@@ -837,17 +818,6 @@ Module Impl_core_cmp_PartialEq_for_mother_Status.
       (* Trait polymorphic types *) []
       (* Instance *) [ ("eq", InstanceField.Method eq) ].
 End Impl_core_cmp_PartialEq_for_mother_Status.
-
-Module Impl_core_marker_StructuralEq_for_mother_Status.
-  Definition Self : Ty.t := Ty.path "mother::Status".
-  
-  Axiom Implements :
-    M.IsTraitInstance
-      "core::marker::StructuralEq"
-      Self
-      (* Trait polymorphic types *) []
-      (* Instance *) [].
-End Impl_core_marker_StructuralEq_for_mother_Status.
 
 Module Impl_core_cmp_Eq_for_mother_Status.
   Definition Self : Ty.t := Ty.path "mother::Status".
@@ -1211,17 +1181,6 @@ Module Impl_core_cmp_PartialEq_for_mother_Auction.
       (* Instance *) [ ("eq", InstanceField.Method eq) ].
 End Impl_core_cmp_PartialEq_for_mother_Auction.
 
-Module Impl_core_marker_StructuralEq_for_mother_Auction.
-  Definition Self : Ty.t := Ty.path "mother::Auction".
-  
-  Axiom Implements :
-    M.IsTraitInstance
-      "core::marker::StructuralEq"
-      Self
-      (* Trait polymorphic types *) []
-      (* Instance *) [].
-End Impl_core_marker_StructuralEq_for_mother_Auction.
-
 Module Impl_core_cmp_Eq_for_mother_Auction.
   Definition Self : Ty.t := Ty.path "mother::Auction".
   
@@ -1577,7 +1536,7 @@ Module Impl_core_cmp_PartialEq_for_mother_Failure.
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
         M.read (|
-          let~ __self_tag :=
+          let~ __self_discr :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (|
@@ -1587,7 +1546,7 @@ Module Impl_core_cmp_PartialEq_for_mother_Failure.
                 [ M.read (| self |) ]
               |)
             |) in
-          let~ __arg1_tag :=
+          let~ __arg1_discr :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (|
@@ -1599,7 +1558,7 @@ Module Impl_core_cmp_PartialEq_for_mother_Failure.
             |) in
           M.alloc (|
             LogicalOp.and (|
-              BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)),
+              BinOp.Pure.eq (M.read (| __self_discr |)) (M.read (| __arg1_discr |)),
               ltac:(M.monadic
                 (M.read (|
                   M.match_operator (|
@@ -1629,12 +1588,12 @@ Module Impl_core_cmp_PartialEq_for_mother_Failure.
                             M.call_closure (|
                               M.get_trait_method (|
                                 "core::cmp::PartialEq",
-                                Ty.path "alloc::string::String",
-                                [ Ty.path "alloc::string::String" ],
+                                Ty.apply (Ty.path "&") [] [ Ty.path "alloc::string::String" ],
+                                [ Ty.apply (Ty.path "&") [] [ Ty.path "alloc::string::String" ] ],
                                 "eq",
                                 []
                               |),
-                              [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                              [ __self_0; __arg1_0 ]
                             |)
                           |)));
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
@@ -1654,17 +1613,6 @@ Module Impl_core_cmp_PartialEq_for_mother_Failure.
       (* Trait polymorphic types *) []
       (* Instance *) [ ("eq", InstanceField.Method eq) ].
 End Impl_core_cmp_PartialEq_for_mother_Failure.
-
-Module Impl_core_marker_StructuralEq_for_mother_Failure.
-  Definition Self : Ty.t := Ty.path "mother::Failure".
-  
-  Axiom Implements :
-    M.IsTraitInstance
-      "core::marker::StructuralEq"
-      Self
-      (* Trait polymorphic types *) []
-      (* Instance *) [].
-End Impl_core_marker_StructuralEq_for_mother_Failure.
 
 Module Impl_core_cmp_Eq_for_mother_Failure.
   Definition Self : Ty.t := Ty.path "mother::Failure".
@@ -2127,31 +2075,25 @@ Module Impl_mother_Mother.
                     M.call_closure (|
                       M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                       [
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.alloc (|
-                            Value.Array
-                              [
-                                M.read (| Value.String "debug_log: " |);
-                                M.read (| Value.String "
+                        M.alloc (|
+                          Value.Array
+                            [ M.read (| Value.String "debug_log: " |); M.read (| Value.String "
 " |)
-                              ]
-                          |));
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.alloc (|
-                            Value.Array
-                              [
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "core::fmt::rt::Argument",
-                                    "new_display",
-                                    [ Ty.path "alloc::string::String" ]
-                                  |),
-                                  [ _message ]
-                                |)
-                              ]
-                          |))
+                            ]
+                        |);
+                        M.alloc (|
+                          Value.Array
+                            [
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.path "core::fmt::rt::Argument",
+                                  "new_display",
+                                  [ Ty.path "alloc::string::String" ]
+                                |),
+                                [ _message ]
+                              |)
+                            ]
+                        |)
                       ]
                     |)
                   ]

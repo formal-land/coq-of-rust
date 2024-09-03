@@ -950,15 +950,13 @@ Module db.
             [
               M.read (| f |);
               M.read (| Value.String "WrapDatabaseRef" |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.alloc (|
-                  M.SubPointer.get_struct_tuple_field (|
-                    M.read (| self |),
-                    "revm_primitives::db::WrapDatabaseRef",
-                    0
-                  |)
-                |))
+              M.alloc (|
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "revm_primitives::db::WrapDatabaseRef",
+                  0
+                |)
+              |)
             ]
           |)))
       | _, _, _ => M.impossible
@@ -1054,19 +1052,6 @@ Module db.
         (* Trait polymorphic types *) []
         (* Instance *) [ ("eq", InstanceField.Method (eq T)) ].
   End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_T_where_revm_primitives_db_DatabaseRef_T_for_revm_primitives_db_WrapDatabaseRef_T.
-  
-  Module Impl_core_marker_StructuralEq_where_revm_primitives_db_DatabaseRef_T_for_revm_primitives_db_WrapDatabaseRef_T.
-    Definition Self (T : Ty.t) : Ty.t :=
-      Ty.apply (Ty.path "revm_primitives::db::WrapDatabaseRef") [] [ T ].
-    
-    Axiom Implements :
-      forall (T : Ty.t),
-      M.IsTraitInstance
-        "core::marker::StructuralEq"
-        (Self T)
-        (* Trait polymorphic types *) []
-        (* Instance *) [].
-  End Impl_core_marker_StructuralEq_where_revm_primitives_db_DatabaseRef_T_for_revm_primitives_db_WrapDatabaseRef_T.
   
   Module Impl_core_cmp_Eq_where_core_cmp_Eq_T_where_revm_primitives_db_DatabaseRef_T_for_revm_primitives_db_WrapDatabaseRef_T.
     Definition Self (T : Ty.t) : Ty.t :=
@@ -1457,9 +1442,7 @@ Module db.
       | [], [], [ db ] =>
         ltac:(M.monadic
           (let db := M.alloc (| db |) in
-          Value.StructRecord
-            "revm_primitives::db::RefDBWrapper"
-            [ ("db", (* Unsize *) M.pointer_coercion (M.read (| db |))) ]))
+          Value.StructRecord "revm_primitives::db::RefDBWrapper" [ ("db", M.read (| db |)) ]))
       | _, _, _ => M.impossible
       end.
     

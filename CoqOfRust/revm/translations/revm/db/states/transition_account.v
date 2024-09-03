@@ -205,57 +205,43 @@ Module db.
                   |) in
                 let~ values :=
                   M.alloc (|
-                    (* Unsize *)
-                    M.pointer_coercion
-                      (M.alloc (|
-                        Value.Array
-                          [
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
-                                "revm::db::states::transition_account::TransitionAccount",
-                                "info"
-                              |));
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
-                                "revm::db::states::transition_account::TransitionAccount",
-                                "status"
-                              |));
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
-                                "revm::db::states::transition_account::TransitionAccount",
-                                "previous_info"
-                              |));
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
-                                "revm::db::states::transition_account::TransitionAccount",
-                                "previous_status"
-                              |));
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
-                                "revm::db::states::transition_account::TransitionAccount",
-                                "storage"
-                              |));
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.alloc (|
-                                M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
-                                  "revm::db::states::transition_account::TransitionAccount",
-                                  "storage_was_destroyed"
-                                |)
-                              |))
-                          ]
-                      |))
+                    M.alloc (|
+                      Value.Array
+                        [
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "revm::db::states::transition_account::TransitionAccount",
+                            "info"
+                          |);
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "revm::db::states::transition_account::TransitionAccount",
+                            "status"
+                          |);
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "revm::db::states::transition_account::TransitionAccount",
+                            "previous_info"
+                          |);
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "revm::db::states::transition_account::TransitionAccount",
+                            "previous_status"
+                          |);
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "revm::db::states::transition_account::TransitionAccount",
+                            "storage"
+                          |);
+                          M.alloc (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "revm::db::states::transition_account::TransitionAccount",
+                              "storage_was_destroyed"
+                            |)
+                          |)
+                        ]
+                    |)
                   |) in
                 M.alloc (|
                   M.call_closure (|
@@ -267,7 +253,7 @@ Module db.
                     [
                       M.read (| f |);
                       M.read (| Value.String "TransitionAccount" |);
-                      (* Unsize *) M.pointer_coercion (M.read (| names |));
+                      M.read (| names |);
                       M.read (| values |)
                     ]
                   |)
@@ -488,17 +474,6 @@ Module db.
             (* Trait polymorphic types *) []
             (* Instance *) [ ("eq", InstanceField.Method eq) ].
       End Impl_core_cmp_PartialEq_for_revm_db_states_transition_account_TransitionAccount.
-      
-      Module Impl_core_marker_StructuralEq_for_revm_db_states_transition_account_TransitionAccount.
-        Definition Self : Ty.t := Ty.path "revm::db::states::transition_account::TransitionAccount".
-        
-        Axiom Implements :
-          M.IsTraitInstance
-            "core::marker::StructuralEq"
-            Self
-            (* Trait polymorphic types *) []
-            (* Instance *) [].
-      End Impl_core_marker_StructuralEq_for_revm_db_states_transition_account_TransitionAccount.
       
       Module Impl_core_cmp_Eq_for_revm_db_states_transition_account_TransitionAccount.
         Definition Self : Ty.t := Ty.path "revm::db::states::transition_account::TransitionAccount".

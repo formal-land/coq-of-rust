@@ -7,6 +7,69 @@ Module iter.
       (* Trait *)
       (* Empty module 'FromIterator' *)
       
+      Module Impl_core_iter_traits_collect_FromIterator_where_core_default_Default_A_where_core_iter_traits_collect_Extend_A_AE_where_core_default_Default_B_where_core_iter_traits_collect_Extend_B_BE_Tuple_AE_BE__for_Tuple_A_B_.
+        Definition Self (A B AE BE : Ty.t) : Ty.t := Ty.tuple [ A; B ].
+        
+        (*
+            fn from_iter<I: IntoIterator<Item = (AE, BE)>>(iter: I) -> Self {
+                let mut res = <(A, B)>::default();
+                res.extend(iter);
+        
+                res
+            }
+        *)
+        Definition from_iter
+            (A B AE BE : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          let Self : Ty.t := Self A B AE BE in
+          match ε, τ, α with
+          | [], [ _ as I ], [ iter ] =>
+            ltac:(M.monadic
+              (let iter := M.alloc (| iter |) in
+              M.read (|
+                let~ res :=
+                  M.alloc (|
+                    M.call_closure (|
+                      M.get_trait_method (|
+                        "core::default::Default",
+                        Ty.tuple [ A; B ],
+                        [],
+                        "default",
+                        []
+                      |),
+                      []
+                    |)
+                  |) in
+                let~ _ :=
+                  M.alloc (|
+                    M.call_closure (|
+                      M.get_trait_method (|
+                        "core::iter::traits::collect::Extend",
+                        Ty.tuple [ A; B ],
+                        [ Ty.tuple [ AE; BE ] ],
+                        "extend",
+                        [ I ]
+                      |),
+                      [ res; M.read (| iter |) ]
+                    |)
+                  |) in
+                res
+              |)))
+          | _, _, _ => M.impossible
+          end.
+        
+        Axiom Implements :
+          forall (A B AE BE : Ty.t),
+          M.IsTraitInstance
+            "core::iter::traits::collect::FromIterator"
+            (Self A B AE BE)
+            (* Trait polymorphic types *) [ (* A *) Ty.tuple [ AE; BE ] ]
+            (* Instance *) [ ("from_iter", InstanceField.Method (from_iter A B AE BE)) ].
+      End Impl_core_iter_traits_collect_FromIterator_where_core_default_Default_A_where_core_iter_traits_collect_Extend_A_AE_where_core_default_Default_B_where_core_iter_traits_collect_Extend_B_BE_Tuple_AE_BE__for_Tuple_A_B_.
+      
       (* Trait *)
       (* Empty module 'IntoIterator' *)
       
@@ -112,6 +175,42 @@ Module iter.
             "core::iter::traits::collect::Extend"
             "extend_reserve"
             (extend_reserve A).
+        Definition extend_one_unchecked
+            (A Self : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          match ε, τ, α with
+          | [], [], [ self; item ] =>
+            ltac:(M.monadic
+              (let self := M.alloc (| self |) in
+              let item := M.alloc (| item |) in
+              M.read (|
+                let~ _ :=
+                  M.alloc (|
+                    M.call_closure (|
+                      M.get_trait_method (|
+                        "core::iter::traits::collect::Extend",
+                        Self,
+                        [ A ],
+                        "extend_one",
+                        []
+                      |),
+                      [ M.read (| self |); M.read (| item |) ]
+                    |)
+                  |) in
+                M.alloc (| Value.Tuple [] |)
+              |)))
+          | _, _, _ => M.impossible
+          end.
+        
+        Axiom ProvidedMethod_extend_one_unchecked :
+          forall (A : Ty.t),
+          M.IsProvidedMethod
+            "core::iter::traits::collect::Extend"
+            "extend_one_unchecked"
+            (extend_one_unchecked A).
       End Extend.
       
       Module Impl_core_iter_traits_collect_Extend_Tuple__for_Tuple_.
@@ -183,24 +282,7 @@ Module iter.
             fn extend<T: IntoIterator<Item = (A, B)>>(&mut self, into_iter: T) {
                 let (a, b) = self;
                 let iter = into_iter.into_iter();
-        
-                fn extend<'a, A, B>(
-                    a: &'a mut impl Extend<A>,
-                    b: &'a mut impl Extend<B>,
-                ) -> impl FnMut((), (A, B)) + 'a {
-                    move |(), (t, u)| {
-                        a.extend_one(t);
-                        b.extend_one(u);
-                    }
-                }
-        
-                let (lower_bound, _) = iter.size_hint();
-                if lower_bound > 0 {
-                    a.extend_reserve(lower_bound);
-                    b.extend_reserve(lower_bound);
-                }
-        
-                iter.fold((), extend(a, b));
+                SpecTupleExtend::extend(iter, a, b);
             }
         *)
         Definition extend
@@ -239,96 +321,20 @@ Module iter.
                               [ M.read (| into_iter |) ]
                             |)
                           |) in
-                        M.match_operator (|
+                        let~ _ :=
                           M.alloc (|
                             M.call_closure (|
                               M.get_trait_method (|
-                                "core::iter::traits::iterator::Iterator",
+                                "core::iter::traits::collect::SpecTupleExtend",
                                 Ty.associated,
-                                [],
-                                "size_hint",
+                                [ ExtendA; ExtendB ],
+                                "extend",
                                 []
                               |),
-                              [ iter ]
+                              [ M.read (| iter |); M.read (| a |); M.read (| b |) ]
                             |)
-                          |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                                let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                                let lower_bound := M.copy (| γ0_0 |) in
-                                let~ _ :=
-                                  M.match_operator (|
-                                    M.alloc (| Value.Tuple [] |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let γ :=
-                                            M.use
-                                              (M.alloc (|
-                                                BinOp.Pure.gt
-                                                  (M.read (| lower_bound |))
-                                                  (Value.Integer 0)
-                                              |)) in
-                                          let _ :=
-                                            M.is_constant_or_break_match (|
-                                              M.read (| γ |),
-                                              Value.Bool true
-                                            |) in
-                                          let~ _ :=
-                                            M.alloc (|
-                                              M.call_closure (|
-                                                M.get_trait_method (|
-                                                  "core::iter::traits::collect::Extend",
-                                                  ExtendA,
-                                                  [ A ],
-                                                  "extend_reserve",
-                                                  []
-                                                |),
-                                                [ M.read (| a |); M.read (| lower_bound |) ]
-                                              |)
-                                            |) in
-                                          let~ _ :=
-                                            M.alloc (|
-                                              M.call_closure (|
-                                                M.get_trait_method (|
-                                                  "core::iter::traits::collect::Extend",
-                                                  ExtendB,
-                                                  [ B ],
-                                                  "extend_reserve",
-                                                  []
-                                                |),
-                                                [ M.read (| b |); M.read (| lower_bound |) ]
-                                              |)
-                                            |) in
-                                          M.alloc (| Value.Tuple [] |)));
-                                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                                    ]
-                                  |) in
-                                let~ _ :=
-                                  M.alloc (|
-                                    M.call_closure (|
-                                      M.get_trait_method (|
-                                        "core::iter::traits::iterator::Iterator",
-                                        Ty.associated,
-                                        [],
-                                        "fold",
-                                        [ Ty.tuple []; Ty.associated ]
-                                      |),
-                                      [
-                                        M.read (| iter |);
-                                        Value.Tuple [];
-                                        M.call_closure (|
-                                          M.get_associated_function (| Self, "extend.extend", [] |),
-                                          [ M.read (| a |); M.read (| b |) ]
-                                        |)
-                                      ]
-                                    |)
-                                  |) in
-                                M.alloc (| Value.Tuple [] |)))
-                          ]
-                        |)))
+                          |) in
+                        M.alloc (| Value.Tuple [] |)))
                   ]
                 |)
               |)))
@@ -447,6 +453,65 @@ Module iter.
           | _, _, _ => M.impossible
           end.
         
+        (*
+            unsafe fn extend_one_unchecked(&mut self, item: (A, B)) {
+                // SAFETY: Those are our safety preconditions, and we correctly forward `extend_reserve`.
+                unsafe {
+                    self.0.extend_one_unchecked(item.0);
+                    self.1.extend_one_unchecked(item.1);
+                }
+            }
+        *)
+        Definition extend_one_unchecked
+            (A B ExtendA ExtendB : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          let Self : Ty.t := Self A B ExtendA ExtendB in
+          match ε, τ, α with
+          | [], [], [ self; item ] =>
+            ltac:(M.monadic
+              (let self := M.alloc (| self |) in
+              let item := M.alloc (| item |) in
+              M.read (|
+                let~ _ :=
+                  M.alloc (|
+                    M.call_closure (|
+                      M.get_trait_method (|
+                        "core::iter::traits::collect::Extend",
+                        ExtendA,
+                        [ A ],
+                        "extend_one_unchecked",
+                        []
+                      |),
+                      [
+                        M.SubPointer.get_tuple_field (| M.read (| self |), 0 |);
+                        M.read (| M.SubPointer.get_tuple_field (| item, 0 |) |)
+                      ]
+                    |)
+                  |) in
+                let~ _ :=
+                  M.alloc (|
+                    M.call_closure (|
+                      M.get_trait_method (|
+                        "core::iter::traits::collect::Extend",
+                        ExtendB,
+                        [ B ],
+                        "extend_one_unchecked",
+                        []
+                      |),
+                      [
+                        M.SubPointer.get_tuple_field (| M.read (| self |), 1 |);
+                        M.read (| M.SubPointer.get_tuple_field (| item, 1 |) |)
+                      ]
+                    |)
+                  |) in
+                M.alloc (| Value.Tuple [] |)
+              |)))
+          | _, _, _ => M.impossible
+          end.
+        
         Axiom Implements :
           forall (A B ExtendA ExtendB : Ty.t),
           M.IsTraitInstance
@@ -457,9 +522,481 @@ Module iter.
             [
               ("extend", InstanceField.Method (extend A B ExtendA ExtendB));
               ("extend_one", InstanceField.Method (extend_one A B ExtendA ExtendB));
-              ("extend_reserve", InstanceField.Method (extend_reserve A B ExtendA ExtendB))
+              ("extend_reserve", InstanceField.Method (extend_reserve A B ExtendA ExtendB));
+              ("extend_one_unchecked",
+                InstanceField.Method (extend_one_unchecked A B ExtendA ExtendB))
             ].
       End Impl_core_iter_traits_collect_Extend_where_core_iter_traits_collect_Extend_ExtendA_A_where_core_iter_traits_collect_Extend_ExtendB_B_Tuple_A_B__for_Tuple_ExtendA_ExtendB_.
+      
+      (*
+      fn default_extend_tuple<A, B, ExtendA, ExtendB>(
+          iter: impl Iterator<Item = (A, B)>,
+          a: &mut ExtendA,
+          b: &mut ExtendB,
+      ) where
+          ExtendA: Extend<A>,
+          ExtendB: Extend<B>,
+      {
+          fn extend<'a, A, B>(
+              a: &'a mut impl Extend<A>,
+              b: &'a mut impl Extend<B>,
+          ) -> impl FnMut((), (A, B)) + 'a {
+              move |(), (t, u)| {
+                  a.extend_one(t);
+                  b.extend_one(u);
+              }
+          }
+      
+          let (lower_bound, _) = iter.size_hint();
+          if lower_bound > 0 {
+              a.extend_reserve(lower_bound);
+              b.extend_reserve(lower_bound);
+          }
+      
+          iter.fold((), extend(a, b));
+      }
+      *)
+      Definition default_extend_tuple (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ A; B; ExtendA; ExtendB; impl_Iterator_Item____A__B__ ], [ iter; a; b ] =>
+          ltac:(M.monadic
+            (let iter := M.alloc (| iter |) in
+            let a := M.alloc (| a |) in
+            let b := M.alloc (| b |) in
+            M.read (|
+              M.match_operator (|
+                M.alloc (|
+                  M.call_closure (|
+                    M.get_trait_method (|
+                      "core::iter::traits::iterator::Iterator",
+                      impl_Iterator_Item____A__B__,
+                      [],
+                      "size_hint",
+                      []
+                    |),
+                    [ iter ]
+                  |)
+                |),
+                [
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                      let lower_bound := M.copy (| γ0_0 |) in
+                      let~ _ :=
+                        M.match_operator (|
+                          M.alloc (| Value.Tuple [] |),
+                          [
+                            fun γ =>
+                              ltac:(M.monadic
+                                (let γ :=
+                                  M.use
+                                    (M.alloc (|
+                                      BinOp.Pure.gt (M.read (| lower_bound |)) (Value.Integer 0)
+                                    |)) in
+                                let _ :=
+                                  M.is_constant_or_break_match (|
+                                    M.read (| γ |),
+                                    Value.Bool true
+                                  |) in
+                                let~ _ :=
+                                  M.alloc (|
+                                    M.call_closure (|
+                                      M.get_trait_method (|
+                                        "core::iter::traits::collect::Extend",
+                                        ExtendA,
+                                        [ A ],
+                                        "extend_reserve",
+                                        []
+                                      |),
+                                      [ M.read (| a |); M.read (| lower_bound |) ]
+                                    |)
+                                  |) in
+                                let~ _ :=
+                                  M.alloc (|
+                                    M.call_closure (|
+                                      M.get_trait_method (|
+                                        "core::iter::traits::collect::Extend",
+                                        ExtendB,
+                                        [ B ],
+                                        "extend_reserve",
+                                        []
+                                      |),
+                                      [ M.read (| b |); M.read (| lower_bound |) ]
+                                    |)
+                                  |) in
+                                M.alloc (| Value.Tuple [] |)));
+                            fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                          ]
+                        |) in
+                      let~ _ :=
+                        M.alloc (|
+                          M.call_closure (|
+                            M.get_trait_method (|
+                              "core::iter::traits::iterator::Iterator",
+                              impl_Iterator_Item____A__B__,
+                              [],
+                              "fold",
+                              [ Ty.tuple []; Ty.associated ]
+                            |),
+                            [
+                              M.read (| iter |);
+                              Value.Tuple [];
+                              M.call_closure (|
+                                M.get_function (|
+                                  "core::iter::traits::collect::default_extend_tuple.extend",
+                                  []
+                                |),
+                                [ M.read (| a |); M.read (| b |) ]
+                              |)
+                            ]
+                          |)
+                        |) in
+                      M.alloc (| Value.Tuple [] |)))
+                ]
+              |)
+            |)))
+        | _, _, _ => M.impossible
+        end.
+      
+      Axiom Function_default_extend_tuple :
+        M.IsFunction "core::iter::traits::collect::default_extend_tuple" default_extend_tuple.
+      
+      Module default_extend_tuple.
+        (*
+            fn extend<'a, A, B>(
+                a: &'a mut impl Extend<A>,
+                b: &'a mut impl Extend<B>,
+            ) -> impl FnMut((), (A, B)) + 'a {
+                move |(), (t, u)| {
+                    a.extend_one(t);
+                    b.extend_one(u);
+                }
+            }
+        *)
+        Definition extend (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [ A; B; impl_Extend_A_; impl_Extend_B_ ], [ a; b ] =>
+            ltac:(M.monadic
+              (let a := M.alloc (| a |) in
+              let b := M.alloc (| b |) in
+              M.closure
+                (fun γ =>
+                  ltac:(M.monadic
+                    match γ with
+                    | [ α0; α1 ] =>
+                      M.match_operator (|
+                        M.alloc (| α0 |),
+                        [
+                          fun γ =>
+                            ltac:(M.monadic
+                              (M.match_operator (|
+                                M.alloc (| α1 |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                                      let t := M.copy (| γ0_0 |) in
+                                      let u := M.copy (| γ0_1 |) in
+                                      M.read (|
+                                        let~ _ :=
+                                          M.alloc (|
+                                            M.call_closure (|
+                                              M.get_trait_method (|
+                                                "core::iter::traits::collect::Extend",
+                                                impl_Extend_A_,
+                                                [ A ],
+                                                "extend_one",
+                                                []
+                                              |),
+                                              [ M.read (| a |); M.read (| t |) ]
+                                            |)
+                                          |) in
+                                        let~ _ :=
+                                          M.alloc (|
+                                            M.call_closure (|
+                                              M.get_trait_method (|
+                                                "core::iter::traits::collect::Extend",
+                                                impl_Extend_B_,
+                                                [ B ],
+                                                "extend_one",
+                                                []
+                                              |),
+                                              [ M.read (| b |); M.read (| u |) ]
+                                            |)
+                                          |) in
+                                        M.alloc (| Value.Tuple [] |)
+                                      |)))
+                                ]
+                              |)))
+                        ]
+                      |)
+                    | _ => M.impossible (||)
+                    end))))
+          | _, _, _ => M.impossible
+          end.
+        
+        Axiom Function_extend :
+          M.IsFunction "core::iter::traits::collect::default_extend_tuple::extend" extend.
+        
+        Module extend.
+          (* Error OpaqueTy *)
+        End extend.
+      End default_extend_tuple.
+      
+      (* Trait *)
+      (* Empty module 'SpecTupleExtend' *)
+      
+      Module Impl_core_iter_traits_collect_SpecTupleExtend_where_core_iter_traits_collect_Extend_ExtendA_A_where_core_iter_traits_collect_Extend_ExtendB_B_where_core_iter_traits_iterator_Iterator_Iter_ExtendA_ExtendB_for_Iter.
+        Definition Self (A B ExtendA ExtendB Iter : Ty.t) : Ty.t := Iter.
+        
+        (*
+            default fn extend(self, a: &mut ExtendA, b: &mut ExtendB) {
+                default_extend_tuple(self, a, b);
+            }
+        *)
+        Definition extend
+            (A B ExtendA ExtendB Iter : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          let Self : Ty.t := Self A B ExtendA ExtendB Iter in
+          match ε, τ, α with
+          | [], [], [ self; a; b ] =>
+            ltac:(M.monadic
+              (let self := M.alloc (| self |) in
+              let a := M.alloc (| a |) in
+              let b := M.alloc (| b |) in
+              M.read (|
+                let~ _ :=
+                  M.alloc (|
+                    M.call_closure (|
+                      M.get_function (|
+                        "core::iter::traits::collect::default_extend_tuple",
+                        [ A; B; ExtendA; ExtendB; Iter ]
+                      |),
+                      [ M.read (| self |); M.read (| a |); M.read (| b |) ]
+                    |)
+                  |) in
+                M.alloc (| Value.Tuple [] |)
+              |)))
+          | _, _, _ => M.impossible
+          end.
+        
+        Axiom Implements :
+          forall (A B ExtendA ExtendB Iter : Ty.t),
+          M.IsTraitInstance
+            "core::iter::traits::collect::SpecTupleExtend"
+            (Self A B ExtendA ExtendB Iter)
+            (* Trait polymorphic types *) [ (* A *) ExtendA; (* B *) ExtendB ]
+            (* Instance *) [ ("extend", InstanceField.Method (extend A B ExtendA ExtendB Iter)) ].
+      End Impl_core_iter_traits_collect_SpecTupleExtend_where_core_iter_traits_collect_Extend_ExtendA_A_where_core_iter_traits_collect_Extend_ExtendB_B_where_core_iter_traits_iterator_Iterator_Iter_ExtendA_ExtendB_for_Iter.
+      
+      Module Impl_core_iter_traits_collect_SpecTupleExtend_where_core_iter_traits_collect_Extend_ExtendA_A_where_core_iter_traits_collect_Extend_ExtendB_B_where_core_iter_traits_marker_TrustedLen_Iter_ExtendA_ExtendB_for_Iter.
+        Definition Self (A B ExtendA ExtendB Iter : Ty.t) : Ty.t := Iter.
+        
+        (*
+            fn extend(self, a: &mut ExtendA, b: &mut ExtendB) {
+                fn extend<'a, A, B>(
+                    a: &'a mut impl Extend<A>,
+                    b: &'a mut impl Extend<B>,
+                ) -> impl FnMut((), (A, B)) + 'a {
+                    // SAFETY: We reserve enough space for the `size_hint`, and the iterator is `TrustedLen`
+                    // so its `size_hint` is exact.
+                    move |(), (t, u)| unsafe {
+                        a.extend_one_unchecked(t);
+                        b.extend_one_unchecked(u);
+                    }
+                }
+        
+                let (lower_bound, upper_bound) = self.size_hint();
+        
+                if upper_bound.is_none() {
+                    // We cannot reserve more than `usize::MAX` items, and this is likely to go out of memory anyway.
+                    default_extend_tuple(self, a, b);
+                    return;
+                }
+        
+                if lower_bound > 0 {
+                    a.extend_reserve(lower_bound);
+                    b.extend_reserve(lower_bound);
+                }
+        
+                self.fold((), extend(a, b));
+            }
+        *)
+        Definition extend
+            (A B ExtendA ExtendB Iter : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          let Self : Ty.t := Self A B ExtendA ExtendB Iter in
+          match ε, τ, α with
+          | [], [], [ self; a; b ] =>
+            ltac:(M.monadic
+              (let self := M.alloc (| self |) in
+              let a := M.alloc (| a |) in
+              let b := M.alloc (| b |) in
+              M.catch_return (|
+                ltac:(M.monadic
+                  (M.read (|
+                    M.match_operator (|
+                      M.alloc (|
+                        M.call_closure (|
+                          M.get_trait_method (|
+                            "core::iter::traits::iterator::Iterator",
+                            Iter,
+                            [],
+                            "size_hint",
+                            []
+                          |),
+                          [ self ]
+                        |)
+                      |),
+                      [
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                            let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                            let lower_bound := M.copy (| γ0_0 |) in
+                            let upper_bound := M.copy (| γ0_1 |) in
+                            let~ _ :=
+                              M.match_operator (|
+                                M.alloc (| Value.Tuple [] |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let γ :=
+                                        M.use
+                                          (M.alloc (|
+                                            M.call_closure (|
+                                              M.get_associated_function (|
+                                                Ty.apply
+                                                  (Ty.path "core::option::Option")
+                                                  []
+                                                  [ Ty.path "usize" ],
+                                                "is_none",
+                                                []
+                                              |),
+                                              [ upper_bound ]
+                                            |)
+                                          |)) in
+                                      let _ :=
+                                        M.is_constant_or_break_match (|
+                                          M.read (| γ |),
+                                          Value.Bool true
+                                        |) in
+                                      M.alloc (|
+                                        M.never_to_any (|
+                                          M.read (|
+                                            let~ _ :=
+                                              M.alloc (|
+                                                M.call_closure (|
+                                                  M.get_function (|
+                                                    "core::iter::traits::collect::default_extend_tuple",
+                                                    [ A; B; ExtendA; ExtendB; Iter ]
+                                                  |),
+                                                  [
+                                                    M.read (| self |);
+                                                    M.read (| a |);
+                                                    M.read (| b |)
+                                                  ]
+                                                |)
+                                              |) in
+                                            M.return_ (| Value.Tuple [] |)
+                                          |)
+                                        |)
+                                      |)));
+                                  fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                ]
+                              |) in
+                            let~ _ :=
+                              M.match_operator (|
+                                M.alloc (| Value.Tuple [] |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let γ :=
+                                        M.use
+                                          (M.alloc (|
+                                            BinOp.Pure.gt
+                                              (M.read (| lower_bound |))
+                                              (Value.Integer 0)
+                                          |)) in
+                                      let _ :=
+                                        M.is_constant_or_break_match (|
+                                          M.read (| γ |),
+                                          Value.Bool true
+                                        |) in
+                                      let~ _ :=
+                                        M.alloc (|
+                                          M.call_closure (|
+                                            M.get_trait_method (|
+                                              "core::iter::traits::collect::Extend",
+                                              ExtendA,
+                                              [ A ],
+                                              "extend_reserve",
+                                              []
+                                            |),
+                                            [ M.read (| a |); M.read (| lower_bound |) ]
+                                          |)
+                                        |) in
+                                      let~ _ :=
+                                        M.alloc (|
+                                          M.call_closure (|
+                                            M.get_trait_method (|
+                                              "core::iter::traits::collect::Extend",
+                                              ExtendB,
+                                              [ B ],
+                                              "extend_reserve",
+                                              []
+                                            |),
+                                            [ M.read (| b |); M.read (| lower_bound |) ]
+                                          |)
+                                        |) in
+                                      M.alloc (| Value.Tuple [] |)));
+                                  fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                ]
+                              |) in
+                            let~ _ :=
+                              M.alloc (|
+                                M.call_closure (|
+                                  M.get_trait_method (|
+                                    "core::iter::traits::iterator::Iterator",
+                                    Iter,
+                                    [],
+                                    "fold",
+                                    [ Ty.tuple []; Ty.associated ]
+                                  |),
+                                  [
+                                    M.read (| self |);
+                                    Value.Tuple [];
+                                    M.call_closure (|
+                                      M.get_associated_function (| Self, "extend.extend", [] |),
+                                      [ M.read (| a |); M.read (| b |) ]
+                                    |)
+                                  ]
+                                |)
+                              |) in
+                            M.alloc (| Value.Tuple [] |)))
+                      ]
+                    |)
+                  |)))
+              |)))
+          | _, _, _ => M.impossible
+          end.
+        
+        Axiom Implements :
+          forall (A B ExtendA ExtendB Iter : Ty.t),
+          M.IsTraitInstance
+            "core::iter::traits::collect::SpecTupleExtend"
+            (Self A B ExtendA ExtendB Iter)
+            (* Trait polymorphic types *) [ (* A *) ExtendA; (* B *) ExtendB ]
+            (* Instance *) [ ("extend", InstanceField.Method (extend A B ExtendA ExtendB Iter)) ].
+      End Impl_core_iter_traits_collect_SpecTupleExtend_where_core_iter_traits_collect_Extend_ExtendA_A_where_core_iter_traits_collect_Extend_ExtendB_B_where_core_iter_traits_marker_TrustedLen_Iter_ExtendA_ExtendB_for_Iter.
     End collect.
   End traits.
 End iter.

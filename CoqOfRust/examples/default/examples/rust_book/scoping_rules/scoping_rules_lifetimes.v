@@ -39,29 +39,24 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     M.call_closure (|
                       M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                       [
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.alloc (|
-                            Value.Array
-                              [ M.read (| Value.String "borrow1: " |); M.read (| Value.String "
-" |)
-                              ]
-                          |));
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.alloc (|
-                            Value.Array
-                              [
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "core::fmt::rt::Argument",
-                                    "new_display",
-                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "i32" ] ]
-                                  |),
-                                  [ borrow1 ]
-                                |)
-                              ]
-                          |))
+                        M.alloc (|
+                          Value.Array
+                            [ M.read (| Value.String "borrow1: " |); M.read (| Value.String "
+" |) ]
+                        |);
+                        M.alloc (|
+                          Value.Array
+                            [
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.path "core::fmt::rt::Argument",
+                                  "new_display",
+                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "i32" ] ]
+                                |),
+                                [ borrow1 ]
+                              |)
+                            ]
+                        |)
                       ]
                     |)
                   ]
@@ -79,28 +74,24 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                     [
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [ M.read (| Value.String "borrow2: " |); M.read (| Value.String "
+                      M.alloc (|
+                        Value.Array
+                          [ M.read (| Value.String "borrow2: " |); M.read (| Value.String "
 " |) ]
-                        |));
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::rt::Argument",
-                                  "new_display",
-                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "i32" ] ]
-                                |),
-                                [ borrow2 ]
-                              |)
-                            ]
-                        |))
+                      |);
+                      M.alloc (|
+                        Value.Array
+                          [
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.path "core::fmt::rt::Argument",
+                                "new_display",
+                                [ Ty.apply (Ty.path "&") [] [ Ty.path "i32" ] ]
+                              |),
+                              [ borrow2 ]
+                            |)
+                          ]
+                      |)
                     ]
                   |)
                 ]

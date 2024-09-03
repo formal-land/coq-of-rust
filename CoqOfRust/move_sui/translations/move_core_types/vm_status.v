@@ -190,7 +190,7 @@ Module vm_status.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ __self_tag :=
+            let~ __self_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -200,7 +200,7 @@ Module vm_status.
                   [ M.read (| self |) ]
                 |)
               |) in
-            let~ __arg1_tag :=
+            let~ __arg1_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -210,7 +210,7 @@ Module vm_status.
                   [ M.read (| other |) ]
                 |)
               |) in
-            M.alloc (| BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)) |)
+            M.alloc (| BinOp.Pure.eq (M.read (| __self_discr |)) (M.read (| __arg1_discr |)) |)
           |)))
       | _, _, _ => M.impossible
       end.
@@ -222,17 +222,6 @@ Module vm_status.
         (* Trait polymorphic types *) []
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_move_core_types_vm_status_StatusType.
-  
-  Module Impl_core_marker_StructuralEq_for_move_core_types_vm_status_StatusType.
-    Definition Self : Ty.t := Ty.path "move_core_types::vm_status::StatusType".
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::marker::StructuralEq"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [].
-  End Impl_core_marker_StructuralEq_for_move_core_types_vm_status_StatusType.
   
   Module Impl_core_cmp_Eq_for_move_core_types_vm_status_StatusType.
     Definition Self : Ty.t := Ty.path "move_core_types::vm_status::StatusType".
@@ -359,7 +348,7 @@ Module vm_status.
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
           M.read (|
-            let~ __self_tag :=
+            let~ __self_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -372,7 +361,7 @@ Module vm_status.
             M.alloc (|
               M.call_closure (|
                 M.get_trait_method (| "core::hash::Hash", Ty.path "isize", [], "hash", [ __H ] |),
-                [ __self_tag; M.read (| state |) ]
+                [ __self_discr; M.read (| state |) ]
               |)
             |)
           |)))
@@ -3438,17 +3427,6 @@ Module vm_status.
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Debug_for_move_core_types_vm_status_StatusCode.
   
-  Module Impl_core_marker_StructuralEq_for_move_core_types_vm_status_StatusCode.
-    Definition Self : Ty.t := Ty.path "move_core_types::vm_status::StatusCode".
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::marker::StructuralEq"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [].
-  End Impl_core_marker_StructuralEq_for_move_core_types_vm_status_StatusCode.
-  
   Module Impl_core_cmp_Eq_for_move_core_types_vm_status_StatusCode.
     Definition Self : Ty.t := Ty.path "move_core_types::vm_status::StatusCode".
     
@@ -3486,7 +3464,7 @@ Module vm_status.
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
           M.read (|
-            let~ __self_tag :=
+            let~ __self_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -3499,7 +3477,7 @@ Module vm_status.
             M.alloc (|
               M.call_closure (|
                 M.get_trait_method (| "core::hash::Hash", Ty.path "u64", [], "hash", [ __H ] |),
-                [ __self_tag; M.read (| state |) ]
+                [ __self_discr; M.read (| state |) ]
               |)
             |)
           |)))
@@ -3536,7 +3514,7 @@ Module vm_status.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ __self_tag :=
+            let~ __self_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -3546,7 +3524,7 @@ Module vm_status.
                   [ M.read (| self |) ]
                 |)
               |) in
-            let~ __arg1_tag :=
+            let~ __arg1_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -3556,7 +3534,7 @@ Module vm_status.
                   [ M.read (| other |) ]
                 |)
               |) in
-            M.alloc (| BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)) |)
+            M.alloc (| BinOp.Pure.eq (M.read (| __self_discr |)) (M.read (| __arg1_discr |)) |)
           |)))
       | _, _, _ => M.impossible
       end.
@@ -3580,7 +3558,7 @@ Module vm_status.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ __self_tag :=
+            let~ __self_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -3590,7 +3568,7 @@ Module vm_status.
                   [ M.read (| self |) ]
                 |)
               |) in
-            let~ __arg1_tag :=
+            let~ __arg1_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -3609,7 +3587,7 @@ Module vm_status.
                   "partial_cmp",
                   []
                 |),
-                [ __self_tag; __arg1_tag ]
+                [ __self_discr; __arg1_discr ]
               |)
             |)
           |)))
@@ -3635,7 +3613,7 @@ Module vm_status.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ __self_tag :=
+            let~ __self_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -3645,7 +3623,7 @@ Module vm_status.
                   [ M.read (| self |) ]
                 |)
               |) in
-            let~ __arg1_tag :=
+            let~ __arg1_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -3658,7 +3636,7 @@ Module vm_status.
             M.alloc (|
               M.call_closure (|
                 M.get_trait_method (| "core::cmp::Ord", Ty.path "u64", [], "cmp", [] |),
-                [ __self_tag; __arg1_tag ]
+                [ __self_discr; __arg1_discr ]
               |)
             |)
           |)))

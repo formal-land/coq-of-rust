@@ -578,17 +578,15 @@ Module collections.
                                                           []
                                                         |),
                                                         [
-                                                          (* Unsize *)
-                                                          M.pointer_coercion
-                                                            (M.alloc (|
-                                                              Value.Array
-                                                                [
-                                                                  M.read (|
-                                                                    Value.String
-                                                                      "range start and end are equal and excluded in BTreeSet"
-                                                                  |)
-                                                                ]
-                                                            |))
+                                                          M.alloc (|
+                                                            Value.Array
+                                                              [
+                                                                M.read (|
+                                                                  Value.String
+                                                                    "range start and end are equal and excluded in BTreeSet"
+                                                                |)
+                                                              ]
+                                                          |)
                                                         ]
                                                       |)
                                                     ]
@@ -612,17 +610,15 @@ Module collections.
                                                           []
                                                         |),
                                                         [
-                                                          (* Unsize *)
-                                                          M.pointer_coercion
-                                                            (M.alloc (|
-                                                              Value.Array
-                                                                [
-                                                                  M.read (|
-                                                                    Value.String
-                                                                      "range start and end are equal and excluded in BTreeMap"
-                                                                  |)
-                                                                ]
-                                                            |))
+                                                          M.alloc (|
+                                                            Value.Array
+                                                              [
+                                                                M.read (|
+                                                                  Value.String
+                                                                    "range start and end are equal and excluded in BTreeMap"
+                                                                |)
+                                                              ]
+                                                          |)
                                                         ]
                                                       |)
                                                     ]
@@ -739,17 +735,15 @@ Module collections.
                                                                               []
                                                                             |),
                                                                             [
-                                                                              (* Unsize *)
-                                                                              M.pointer_coercion
-                                                                                (M.alloc (|
-                                                                                  Value.Array
-                                                                                    [
-                                                                                      M.read (|
-                                                                                        Value.String
-                                                                                          "range start is greater than range end in BTreeSet"
-                                                                                      |)
-                                                                                    ]
-                                                                                |))
+                                                                              M.alloc (|
+                                                                                Value.Array
+                                                                                  [
+                                                                                    M.read (|
+                                                                                      Value.String
+                                                                                        "range start is greater than range end in BTreeSet"
+                                                                                    |)
+                                                                                  ]
+                                                                              |)
                                                                             ]
                                                                           |)
                                                                         ]
@@ -774,17 +768,15 @@ Module collections.
                                                                               []
                                                                             |),
                                                                             [
-                                                                              (* Unsize *)
-                                                                              M.pointer_coercion
-                                                                                (M.alloc (|
-                                                                                  Value.Array
-                                                                                    [
-                                                                                      M.read (|
-                                                                                        Value.String
-                                                                                          "range start is greater than range end in BTreeMap"
-                                                                                      |)
-                                                                                    ]
-                                                                                |))
+                                                                              M.alloc (|
+                                                                                Value.Array
+                                                                                  [
+                                                                                    M.read (|
+                                                                                      Value.String
+                                                                                        "range start is greater than range end in BTreeMap"
+                                                                                    |)
+                                                                                  ]
+                                                                              |)
                                                                             ]
                                                                           |)
                                                                         ]

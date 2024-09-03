@@ -10,17 +10,7 @@ Module panic.
         ty_params := [];
         fields :=
           [
-            ("payload",
-              Ty.apply
-                (Ty.path "&")
-                []
-                [ Ty.dyn [ ("core::any::Any::Trait", []); ("core::marker::Send::AutoTrait", []) ]
-                ]);
-            ("message",
-              Ty.apply
-                (Ty.path "core::option::Option")
-                []
-                [ Ty.apply (Ty.path "&") [] [ Ty.path "core::fmt::Arguments" ] ]);
+            ("message", Ty.path "core::fmt::Arguments");
             ("location", Ty.apply (Ty.path "&") [] [ Ty.path "core::panic::location::Location" ]);
             ("can_unwind", Ty.path "bool");
             ("force_no_backtrace", Ty.path "bool")
@@ -40,54 +30,38 @@ Module panic.
             M.call_closure (|
               M.get_associated_function (|
                 Ty.path "core::fmt::Formatter",
-                "debug_struct_field5_finish",
+                "debug_struct_field4_finish",
                 []
               |),
               [
                 M.read (| f |);
                 M.read (| Value.String "PanicInfo" |);
-                M.read (| Value.String "payload" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::panic::panic_info::PanicInfo",
-                    "payload"
-                  |));
                 M.read (| Value.String "message" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::panic::panic_info::PanicInfo",
-                    "message"
-                  |));
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::panic::panic_info::PanicInfo",
+                  "message"
+                |);
                 M.read (| Value.String "location" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::panic::panic_info::PanicInfo",
-                    "location"
-                  |));
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::panic::panic_info::PanicInfo",
+                  "location"
+                |);
                 M.read (| Value.String "can_unwind" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.SubPointer.get_struct_record_field (|
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::panic::panic_info::PanicInfo",
+                  "can_unwind"
+                |);
+                M.read (| Value.String "force_no_backtrace" |);
+                M.alloc (|
+                  M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
                     "core::panic::panic_info::PanicInfo",
-                    "can_unwind"
-                  |));
-                M.read (| Value.String "force_no_backtrace" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.alloc (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::panic::panic_info::PanicInfo",
-                      "force_no_backtrace"
-                    |)
-                  |))
+                    "force_no_backtrace"
+                  |)
+                |)
               ]
             |)))
         | _, _, _ => M.impossible
@@ -101,21 +75,28 @@ Module panic.
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Debug_for_core_panic_panic_info_PanicInfo.
     
+    (* StructRecord
+      {
+        name := "PanicMessage";
+        const_params := [];
+        ty_params := [];
+        fields := [ ("message", Ty.path "core::fmt::Arguments") ];
+      } *)
+    
     Module Impl_core_panic_panic_info_PanicInfo.
       Definition Self : Ty.t := Ty.path "core::panic::panic_info::PanicInfo".
       
       (*
-          pub fn internal_constructor(
-              message: Option<&'a fmt::Arguments<'a>>,
+          pub(crate) fn new(
+              message: fmt::Arguments<'a>,
               location: &'a Location<'a>,
               can_unwind: bool,
               force_no_backtrace: bool,
           ) -> Self {
-              struct NoPayload;
-              PanicInfo { location, message, payload: &NoPayload, can_unwind, force_no_backtrace }
+              PanicInfo { location, message, can_unwind, force_no_backtrace }
           }
       *)
-      Definition internal_constructor (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition new (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
         | [], [], [ message; location; can_unwind; force_no_backtrace ] =>
           ltac:(M.monadic
@@ -128,80 +109,17 @@ Module panic.
               [
                 ("location", M.read (| location |));
                 ("message", M.read (| message |));
-                ("payload",
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.alloc (|
-                      Value.StructTuple
-                        "core::panic::panic_info::internal_constructor::NoPayload"
-                        []
-                    |)));
                 ("can_unwind", M.read (| can_unwind |));
                 ("force_no_backtrace", M.read (| force_no_backtrace |))
               ]))
         | _, _, _ => M.impossible
         end.
       
-      Axiom AssociatedFunction_internal_constructor :
-        M.IsAssociatedFunction Self "internal_constructor" internal_constructor.
+      Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
       
       (*
-          pub fn set_payload(&mut self, info: &'a (dyn Any + Send)) {
-              self.payload = info;
-          }
-      *)
-      Definition set_payload (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        match ε, τ, α with
-        | [], [], [ self; info ] =>
-          ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let info := M.alloc (| info |) in
-            M.read (|
-              let~ _ :=
-                M.write (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::panic::panic_info::PanicInfo",
-                    "payload"
-                  |),
-                  (* Unsize *) M.pointer_coercion (M.read (| info |))
-                |) in
-              M.alloc (| Value.Tuple [] |)
-            |)))
-        | _, _, _ => M.impossible
-        end.
-      
-      Axiom AssociatedFunction_set_payload : M.IsAssociatedFunction Self "set_payload" set_payload.
-      
-      (*
-          pub fn payload(&self) -> &(dyn Any + Send) {
-              self.payload
-          }
-      *)
-      Definition payload (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        match ε, τ, α with
-        | [], [], [ self ] =>
-          ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            (* Unsize *)
-            M.pointer_coercion
-              (* Unsize *)
-              (M.pointer_coercion
-                (M.read (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::panic::panic_info::PanicInfo",
-                    "payload"
-                  |)
-                |)))))
-        | _, _, _ => M.impossible
-        end.
-      
-      Axiom AssociatedFunction_payload : M.IsAssociatedFunction Self "payload" payload.
-      
-      (*
-          pub fn message(&self) -> Option<&fmt::Arguments<'_>> {
-              self.message
+          pub fn message(&self) -> PanicMessage<'_> {
+              PanicMessage { message: self.message }
           }
       *)
       Definition message (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -209,13 +127,18 @@ Module panic.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.read (|
-              M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
-                "core::panic::panic_info::PanicInfo",
-                "message"
-              |)
-            |)))
+            Value.StructRecord
+              "core::panic::panic_info::PanicMessage"
+              [
+                ("message",
+                  M.read (|
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::panic::panic_info::PanicInfo",
+                      "message"
+                    |)
+                  |))
+              ]))
         | _, _, _ => M.impossible
         end.
       
@@ -248,6 +171,23 @@ Module panic.
         end.
       
       Axiom AssociatedFunction_location : M.IsAssociatedFunction Self "location" location.
+      
+      (*
+          pub fn payload(&self) -> &(dyn crate::any::Any + Send) {
+              struct NoPayload;
+              &NoPayload
+          }
+      *)
+      Definition payload (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            M.alloc (| Value.StructTuple "core::panic::panic_info::payload::NoPayload" [] |)))
+        | _, _, _ => M.impossible
+        end.
+      
+      Axiom AssociatedFunction_payload : M.IsAssociatedFunction Self "payload" payload.
       
       (*
           pub fn can_unwind(&self) -> bool {
@@ -302,17 +242,8 @@ Module panic.
           fn fmt(&self, formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
               formatter.write_str("panicked at ")?;
               self.location.fmt(formatter)?;
-              if let Some(message) = self.message {
-                  formatter.write_str(":\n")?;
-                  formatter.write_fmt( *message)?;
-              } else if let Some(payload) = self.payload.downcast_ref::<&'static str>() {
-                  formatter.write_str(":\n")?;
-                  formatter.write_str(payload)?;
-              }
-              // NOTE: we cannot use downcast_ref::<String>() here
-              // since String is not available in core!
-              // The payload is a String when `std::panic!` is called with multiple arguments,
-              // but in that case the message is also available.
+              formatter.write_str(":\n")?;
+              formatter.write_fmt(self.message)?;
               Ok(())
           }
       *)
@@ -492,388 +423,166 @@ Module panic.
                     |) in
                   let~ _ :=
                     M.match_operator (|
-                      M.alloc (| Value.Tuple [] |),
+                      M.alloc (|
+                        M.call_closure (|
+                          M.get_trait_method (|
+                            "core::ops::try_trait::Try",
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                            [],
+                            "branch",
+                            []
+                          |),
+                          [
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.path "core::fmt::Formatter",
+                                "write_str",
+                                []
+                              |),
+                              [ M.read (| formatter |); M.read (| Value.String ":
+" |) ]
+                            |)
+                          ]
+                        |)
+                      |),
                       [
                         fun γ =>
                           ltac:(M.monadic
-                            (let γ :=
-                              M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
-                                "core::panic::panic_info::PanicInfo",
-                                "message"
-                              |) in
-                            let γ0_0 :=
+                            (let γ0_0 :=
                               M.SubPointer.get_struct_tuple_field (|
                                 γ,
-                                "core::option::Option::Some",
+                                "core::ops::control_flow::ControlFlow::Break",
                                 0
                               |) in
-                            let message := M.copy (| γ0_0 |) in
-                            let~ _ :=
-                              M.match_operator (|
-                                M.alloc (|
-                                  M.call_closure (|
-                                    M.get_trait_method (|
-                                      "core::ops::try_trait::Try",
-                                      Ty.apply
-                                        (Ty.path "core::result::Result")
-                                        []
-                                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                                      [],
-                                      "branch",
-                                      []
-                                    |),
-                                    [
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path "core::fmt::Formatter",
-                                          "write_str",
+                            let residual := M.copy (| γ0_0 |) in
+                            M.alloc (|
+                              M.never_to_any (|
+                                M.read (|
+                                  M.return_ (|
+                                    M.call_closure (|
+                                      M.get_trait_method (|
+                                        "core::ops::try_trait::FromResidual",
+                                        Ty.apply
+                                          (Ty.path "core::result::Result")
                                           []
-                                        |),
-                                        [ M.read (| formatter |); M.read (| Value.String ":
-" |) ]
-                                      |)
-                                    ]
-                                  |)
-                                |),
-                                [
-                                  fun γ =>
-                                    ltac:(M.monadic
-                                      (let γ0_0 :=
-                                        M.SubPointer.get_struct_tuple_field (|
-                                          γ,
-                                          "core::ops::control_flow::ControlFlow::Break",
-                                          0
-                                        |) in
-                                      let residual := M.copy (| γ0_0 |) in
-                                      M.alloc (|
-                                        M.never_to_any (|
-                                          M.read (|
-                                            M.return_ (|
-                                              M.call_closure (|
-                                                M.get_trait_method (|
-                                                  "core::ops::try_trait::FromResidual",
-                                                  Ty.apply
-                                                    (Ty.path "core::result::Result")
-                                                    []
-                                                    [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                                                  [
-                                                    Ty.apply
-                                                      (Ty.path "core::result::Result")
-                                                      []
-                                                      [
-                                                        Ty.path "core::convert::Infallible";
-                                                        Ty.path "core::fmt::Error"
-                                                      ]
-                                                  ],
-                                                  "from_residual",
-                                                  []
-                                                |),
-                                                [ M.read (| residual |) ]
-                                              |)
-                                            |)
-                                          |)
-                                        |)
-                                      |)));
-                                  fun γ =>
-                                    ltac:(M.monadic
-                                      (let γ0_0 :=
-                                        M.SubPointer.get_struct_tuple_field (|
-                                          γ,
-                                          "core::ops::control_flow::ControlFlow::Continue",
-                                          0
-                                        |) in
-                                      let val := M.copy (| γ0_0 |) in
-                                      val))
-                                ]
-                              |) in
-                            let~ _ :=
-                              M.match_operator (|
-                                M.alloc (|
-                                  M.call_closure (|
-                                    M.get_trait_method (|
-                                      "core::ops::try_trait::Try",
-                                      Ty.apply
-                                        (Ty.path "core::result::Result")
+                                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                                        [
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.path "core::convert::Infallible";
+                                              Ty.path "core::fmt::Error"
+                                            ]
+                                        ],
+                                        "from_residual",
                                         []
-                                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                                      [],
-                                      "branch",
-                                      []
-                                    |),
-                                    [
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path "core::fmt::Formatter",
-                                          "write_fmt",
-                                          []
-                                        |),
-                                        [ M.read (| formatter |); M.read (| M.read (| message |) |)
-                                        ]
-                                      |)
-                                    ]
+                                      |),
+                                      [ M.read (| residual |) ]
+                                    |)
                                   |)
-                                |),
-                                [
-                                  fun γ =>
-                                    ltac:(M.monadic
-                                      (let γ0_0 :=
-                                        M.SubPointer.get_struct_tuple_field (|
-                                          γ,
-                                          "core::ops::control_flow::ControlFlow::Break",
-                                          0
-                                        |) in
-                                      let residual := M.copy (| γ0_0 |) in
-                                      M.alloc (|
-                                        M.never_to_any (|
-                                          M.read (|
-                                            M.return_ (|
-                                              M.call_closure (|
-                                                M.get_trait_method (|
-                                                  "core::ops::try_trait::FromResidual",
-                                                  Ty.apply
-                                                    (Ty.path "core::result::Result")
-                                                    []
-                                                    [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                                                  [
-                                                    Ty.apply
-                                                      (Ty.path "core::result::Result")
-                                                      []
-                                                      [
-                                                        Ty.path "core::convert::Infallible";
-                                                        Ty.path "core::fmt::Error"
-                                                      ]
-                                                  ],
-                                                  "from_residual",
-                                                  []
-                                                |),
-                                                [ M.read (| residual |) ]
-                                              |)
-                                            |)
-                                          |)
-                                        |)
-                                      |)));
-                                  fun γ =>
-                                    ltac:(M.monadic
-                                      (let γ0_0 :=
-                                        M.SubPointer.get_struct_tuple_field (|
-                                          γ,
-                                          "core::ops::control_flow::ControlFlow::Continue",
-                                          0
-                                        |) in
-                                      let val := M.copy (| γ0_0 |) in
-                                      val))
-                                ]
-                              |) in
-                            M.alloc (| Value.Tuple [] |)));
+                                |)
+                              |)
+                            |)));
                         fun γ =>
                           ltac:(M.monadic
-                            (M.match_operator (|
-                              M.alloc (| Value.Tuple [] |),
+                            (let γ0_0 :=
+                              M.SubPointer.get_struct_tuple_field (|
+                                γ,
+                                "core::ops::control_flow::ControlFlow::Continue",
+                                0
+                              |) in
+                            let val := M.copy (| γ0_0 |) in
+                            val))
+                      ]
+                    |) in
+                  let~ _ :=
+                    M.match_operator (|
+                      M.alloc (|
+                        M.call_closure (|
+                          M.get_trait_method (|
+                            "core::ops::try_trait::Try",
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                            [],
+                            "branch",
+                            []
+                          |),
+                          [
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.path "core::fmt::Formatter",
+                                "write_fmt",
+                                []
+                              |),
                               [
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let γ :=
-                                      M.alloc (|
-                                        M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.dyn
-                                              [
-                                                ("core::any::Any::Trait", []);
-                                                ("core::marker::Send::AutoTrait", [])
-                                              ],
-                                            "downcast_ref",
-                                            [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
-                                          |),
-                                          [
-                                            M.read (|
-                                              M.SubPointer.get_struct_record_field (|
-                                                M.read (| self |),
-                                                "core::panic::panic_info::PanicInfo",
-                                                "payload"
-                                              |)
-                                            |)
-                                          ]
-                                        |)
-                                      |) in
-                                    let γ0_0 :=
-                                      M.SubPointer.get_struct_tuple_field (|
-                                        γ,
-                                        "core::option::Option::Some",
-                                        0
-                                      |) in
-                                    let payload := M.copy (| γ0_0 |) in
-                                    let~ _ :=
-                                      M.match_operator (|
-                                        M.alloc (|
-                                          M.call_closure (|
-                                            M.get_trait_method (|
-                                              "core::ops::try_trait::Try",
-                                              Ty.apply
-                                                (Ty.path "core::result::Result")
-                                                []
-                                                [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                                              [],
-                                              "branch",
-                                              []
-                                            |),
-                                            [
-                                              M.call_closure (|
-                                                M.get_associated_function (|
-                                                  Ty.path "core::fmt::Formatter",
-                                                  "write_str",
-                                                  []
-                                                |),
-                                                [
-                                                  M.read (| formatter |);
-                                                  M.read (| Value.String ":
-" |)
-                                                ]
-                                              |)
-                                            ]
-                                          |)
-                                        |),
-                                        [
-                                          fun γ =>
-                                            ltac:(M.monadic
-                                              (let γ0_0 :=
-                                                M.SubPointer.get_struct_tuple_field (|
-                                                  γ,
-                                                  "core::ops::control_flow::ControlFlow::Break",
-                                                  0
-                                                |) in
-                                              let residual := M.copy (| γ0_0 |) in
-                                              M.alloc (|
-                                                M.never_to_any (|
-                                                  M.read (|
-                                                    M.return_ (|
-                                                      M.call_closure (|
-                                                        M.get_trait_method (|
-                                                          "core::ops::try_trait::FromResidual",
-                                                          Ty.apply
-                                                            (Ty.path "core::result::Result")
-                                                            []
-                                                            [
-                                                              Ty.tuple [];
-                                                              Ty.path "core::fmt::Error"
-                                                            ],
-                                                          [
-                                                            Ty.apply
-                                                              (Ty.path "core::result::Result")
-                                                              []
-                                                              [
-                                                                Ty.path "core::convert::Infallible";
-                                                                Ty.path "core::fmt::Error"
-                                                              ]
-                                                          ],
-                                                          "from_residual",
-                                                          []
-                                                        |),
-                                                        [ M.read (| residual |) ]
-                                                      |)
-                                                    |)
-                                                  |)
-                                                |)
-                                              |)));
-                                          fun γ =>
-                                            ltac:(M.monadic
-                                              (let γ0_0 :=
-                                                M.SubPointer.get_struct_tuple_field (|
-                                                  γ,
-                                                  "core::ops::control_flow::ControlFlow::Continue",
-                                                  0
-                                                |) in
-                                              let val := M.copy (| γ0_0 |) in
-                                              val))
-                                        ]
-                                      |) in
-                                    let~ _ :=
-                                      M.match_operator (|
-                                        M.alloc (|
-                                          M.call_closure (|
-                                            M.get_trait_method (|
-                                              "core::ops::try_trait::Try",
-                                              Ty.apply
-                                                (Ty.path "core::result::Result")
-                                                []
-                                                [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                                              [],
-                                              "branch",
-                                              []
-                                            |),
-                                            [
-                                              M.call_closure (|
-                                                M.get_associated_function (|
-                                                  Ty.path "core::fmt::Formatter",
-                                                  "write_str",
-                                                  []
-                                                |),
-                                                [
-                                                  M.read (| formatter |);
-                                                  M.read (| M.read (| payload |) |)
-                                                ]
-                                              |)
-                                            ]
-                                          |)
-                                        |),
-                                        [
-                                          fun γ =>
-                                            ltac:(M.monadic
-                                              (let γ0_0 :=
-                                                M.SubPointer.get_struct_tuple_field (|
-                                                  γ,
-                                                  "core::ops::control_flow::ControlFlow::Break",
-                                                  0
-                                                |) in
-                                              let residual := M.copy (| γ0_0 |) in
-                                              M.alloc (|
-                                                M.never_to_any (|
-                                                  M.read (|
-                                                    M.return_ (|
-                                                      M.call_closure (|
-                                                        M.get_trait_method (|
-                                                          "core::ops::try_trait::FromResidual",
-                                                          Ty.apply
-                                                            (Ty.path "core::result::Result")
-                                                            []
-                                                            [
-                                                              Ty.tuple [];
-                                                              Ty.path "core::fmt::Error"
-                                                            ],
-                                                          [
-                                                            Ty.apply
-                                                              (Ty.path "core::result::Result")
-                                                              []
-                                                              [
-                                                                Ty.path "core::convert::Infallible";
-                                                                Ty.path "core::fmt::Error"
-                                                              ]
-                                                          ],
-                                                          "from_residual",
-                                                          []
-                                                        |),
-                                                        [ M.read (| residual |) ]
-                                                      |)
-                                                    |)
-                                                  |)
-                                                |)
-                                              |)));
-                                          fun γ =>
-                                            ltac:(M.monadic
-                                              (let γ0_0 :=
-                                                M.SubPointer.get_struct_tuple_field (|
-                                                  γ,
-                                                  "core::ops::control_flow::ControlFlow::Continue",
-                                                  0
-                                                |) in
-                                              let val := M.copy (| γ0_0 |) in
-                                              val))
-                                        ]
-                                      |) in
-                                    M.alloc (| Value.Tuple [] |)));
-                                fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                M.read (| formatter |);
+                                M.read (|
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::panic::panic_info::PanicInfo",
+                                    "message"
+                                  |)
+                                |)
                               ]
-                            |)))
+                            |)
+                          ]
+                        |)
+                      |),
+                      [
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let γ0_0 :=
+                              M.SubPointer.get_struct_tuple_field (|
+                                γ,
+                                "core::ops::control_flow::ControlFlow::Break",
+                                0
+                              |) in
+                            let residual := M.copy (| γ0_0 |) in
+                            M.alloc (|
+                              M.never_to_any (|
+                                M.read (|
+                                  M.return_ (|
+                                    M.call_closure (|
+                                      M.get_trait_method (|
+                                        "core::ops::try_trait::FromResidual",
+                                        Ty.apply
+                                          (Ty.path "core::result::Result")
+                                          []
+                                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                                        [
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.path "core::convert::Infallible";
+                                              Ty.path "core::fmt::Error"
+                                            ]
+                                        ],
+                                        "from_residual",
+                                        []
+                                      |),
+                                      [ M.read (| residual |) ]
+                                    |)
+                                  |)
+                                |)
+                              |)
+                            |)));
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let γ0_0 :=
+                              M.SubPointer.get_struct_tuple_field (|
+                                γ,
+                                "core::ops::control_flow::ControlFlow::Continue",
+                                0
+                              |) in
+                            let val := M.copy (| γ0_0 |) in
+                            val))
                       ]
                     |) in
                   M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
@@ -889,5 +598,110 @@ Module panic.
           (* Trait polymorphic types *) []
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Display_for_core_panic_panic_info_PanicInfo.
+    
+    Module Impl_core_panic_panic_info_PanicMessage.
+      Definition Self : Ty.t := Ty.path "core::panic::panic_info::PanicMessage".
+      
+      (*
+          pub const fn as_str(&self) -> Option<&'static str> {
+              self.message.as_str()
+          }
+      *)
+      Definition as_str (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            M.call_closure (|
+              M.get_associated_function (| Ty.path "core::fmt::Arguments", "as_str", [] |),
+              [
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::panic::panic_info::PanicMessage",
+                  "message"
+                |)
+              ]
+            |)))
+        | _, _, _ => M.impossible
+        end.
+      
+      Axiom AssociatedFunction_as_str : M.IsAssociatedFunction Self "as_str" as_str.
+    End Impl_core_panic_panic_info_PanicMessage.
+    
+    Module Impl_core_fmt_Display_for_core_panic_panic_info_PanicMessage.
+      Definition Self : Ty.t := Ty.path "core::panic::panic_info::PanicMessage".
+      
+      (*
+          fn fmt(&self, formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
+              formatter.write_fmt(self.message)
+          }
+      *)
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; formatter ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            let formatter := M.alloc (| formatter |) in
+            M.call_closure (|
+              M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_fmt", [] |),
+              [
+                M.read (| formatter |);
+                M.read (|
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::panic::panic_info::PanicMessage",
+                    "message"
+                  |)
+                |)
+              ]
+            |)))
+        | _, _, _ => M.impossible
+        end.
+      
+      Axiom Implements :
+        M.IsTraitInstance
+          "core::fmt::Display"
+          Self
+          (* Trait polymorphic types *) []
+          (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
+    End Impl_core_fmt_Display_for_core_panic_panic_info_PanicMessage.
+    
+    Module Impl_core_fmt_Debug_for_core_panic_panic_info_PanicMessage.
+      Definition Self : Ty.t := Ty.path "core::panic::panic_info::PanicMessage".
+      
+      (*
+          fn fmt(&self, formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
+              formatter.write_fmt(self.message)
+          }
+      *)
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; formatter ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            let formatter := M.alloc (| formatter |) in
+            M.call_closure (|
+              M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_fmt", [] |),
+              [
+                M.read (| formatter |);
+                M.read (|
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::panic::panic_info::PanicMessage",
+                    "message"
+                  |)
+                |)
+              ]
+            |)))
+        | _, _, _ => M.impossible
+        end.
+      
+      Axiom Implements :
+        M.IsTraitInstance
+          "core::fmt::Debug"
+          Self
+          (* Trait polymorphic types *) []
+          (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
+    End Impl_core_fmt_Debug_for_core_panic_panic_info_PanicMessage.
   End panic_info.
 End panic.

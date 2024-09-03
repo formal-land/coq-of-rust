@@ -9,7 +9,7 @@ Module mem.
   *)
   Definition forget (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     match ε, τ, α with
-    | [ host ], [ T ], [ t ] =>
+    | [], [ T ], [ t ] =>
       ltac:(M.monadic
         (let t := M.alloc (| t |) in
         M.read (|
@@ -58,7 +58,7 @@ Module mem.
   *)
   Definition size_of (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     match ε, τ, α with
-    | [ host ], [ T ], [] =>
+    | [], [ T ], [] =>
       ltac:(M.monadic
         (M.call_closure (| M.get_function (| "core::intrinsics::size_of", [ T ] |), [] |)))
     | _, _, _ => M.impossible
@@ -74,7 +74,7 @@ Module mem.
   *)
   Definition size_of_val (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     match ε, τ, α with
-    | [ host ], [ T ], [ val ] =>
+    | [], [ T ], [ val ] =>
       ltac:(M.monadic
         (let val := M.alloc (| val |) in
         M.call_closure (|
@@ -94,7 +94,7 @@ Module mem.
   *)
   Definition size_of_val_raw (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     match ε, τ, α with
-    | [ host ], [ T ], [ val ] =>
+    | [], [ T ], [ val ] =>
       ltac:(M.monadic
         (let val := M.alloc (| val |) in
         M.call_closure (|
@@ -148,7 +148,7 @@ Module mem.
   *)
   Definition align_of (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     match ε, τ, α with
-    | [ host ], [ T ], [] =>
+    | [], [ T ], [] =>
       ltac:(M.monadic
         (M.call_closure (| M.get_function (| "core::intrinsics::min_align_of", [ T ] |), [] |)))
     | _, _, _ => M.impossible
@@ -164,7 +164,7 @@ Module mem.
   *)
   Definition align_of_val (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     match ε, τ, α with
-    | [ host ], [ T ], [ val ] =>
+    | [], [ T ], [ val ] =>
       ltac:(M.monadic
         (let val := M.alloc (| val |) in
         M.call_closure (|
@@ -184,7 +184,7 @@ Module mem.
   *)
   Definition align_of_val_raw (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     match ε, τ, α with
-    | [ host ], [ T ], [ val ] =>
+    | [], [ T ], [ val ] =>
       ltac:(M.monadic
         (let val := M.alloc (| val |) in
         M.call_closure (|
@@ -203,7 +203,7 @@ Module mem.
   *)
   Definition needs_drop (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     match ε, τ, α with
-    | [ host ], [ T ], [] =>
+    | [], [ T ], [] =>
       ltac:(M.monadic
         (M.call_closure (| M.get_function (| "core::intrinsics::needs_drop", [ T ] |), [] |)))
     | _, _, _ => M.impossible
@@ -222,7 +222,7 @@ Module mem.
   *)
   Definition zeroed (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     match ε, τ, α with
-    | [ host ], [ T ], [] =>
+    | [], [ T ], [] =>
       ltac:(M.monadic
         (M.read (|
           let~ _ :=
@@ -349,159 +349,25 @@ Module mem.
   
   (*
   pub const fn swap<T>(x: &mut T, y: &mut T) {
-      // NOTE(eddyb) SPIR-V's Logical addressing model doesn't allow for arbitrary
-      // reinterpretation of values as (chunkable) byte arrays, and the loop in the
-      // block optimization in `swap_slice` is hard to rewrite back
-      // into the (unoptimized) direct swapping implementation, so we disable it.
-      #[cfg(not(any(target_arch = "spirv")))]
-      {
-          // For types that are larger multiples of their alignment, the simple way
-          // tends to copy the whole thing to stack rather than doing it one part
-          // at a time, so instead treat them as one-element slices and piggy-back
-          // the slice optimizations that will split up the swaps.
-          if size_of::<T>() / align_of::<T>() > 4 {
-              // SAFETY: exclusive references always point to one non-overlapping
-              // element and are non-null and properly aligned.
-              return unsafe { ptr::swap_nonoverlapping(x, y, 1) };
-          }
-      }
-  
-      // If a scalar consists of just a small number of alignment units, let
-      // the codegen just swap those pieces directly, as it's likely just a
-      // few instructions and anything else is probably overcomplicated.
-      //
-      // Most importantly, this covers primitives and simd types that tend to
-      // have size=align where doing anything else can be a pessimization.
-      // (This will also be used for ZSTs, though any solution works for them.)
-      swap_simple(x, y);
+      // SAFETY: `&mut` guarantees these are typed readable and writable
+      // as well as non-overlapping.
+      unsafe { intrinsics::typed_swap(x, y) }
   }
   *)
   Definition swap (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     match ε, τ, α with
-    | [ host ], [ T ], [ x; y ] =>
+    | [], [ T ], [ x; y ] =>
       ltac:(M.monadic
         (let x := M.alloc (| x |) in
         let y := M.alloc (| y |) in
-        M.catch_return (|
-          ltac:(M.monadic
-            (M.read (|
-              let~ _ :=
-                M.match_operator (|
-                  M.alloc (| Value.Tuple [] |),
-                  [
-                    fun γ =>
-                      ltac:(M.monadic
-                        (let γ :=
-                          M.use
-                            (M.alloc (|
-                              BinOp.Pure.gt
-                                (BinOp.Wrap.div
-                                  Integer.Usize
-                                  (M.call_closure (|
-                                    M.get_function (| "core::mem::size_of", [ T ] |),
-                                    []
-                                  |))
-                                  (M.call_closure (|
-                                    M.get_function (| "core::mem::align_of", [ T ] |),
-                                    []
-                                  |)))
-                                (Value.Integer 4)
-                            |)) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                        M.alloc (|
-                          M.never_to_any (|
-                            M.read (|
-                              M.return_ (|
-                                M.call_closure (|
-                                  M.get_function (| "core::ptr::swap_nonoverlapping", [ T ] |),
-                                  [ M.read (| x |); M.read (| y |); Value.Integer 1 ]
-                                |)
-                              |)
-                            |)
-                          |)
-                        |)));
-                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                  ]
-                |) in
-              let~ _ :=
-                M.alloc (|
-                  M.call_closure (|
-                    M.get_function (| "core::mem::swap_simple", [ T ] |),
-                    [ M.read (| x |); M.read (| y |) ]
-                  |)
-                |) in
-              M.alloc (| Value.Tuple [] |)
-            |)))
+        M.call_closure (|
+          M.get_function (| "core::intrinsics::typed_swap", [ T ] |),
+          [ M.read (| x |); M.read (| y |) ]
         |)))
     | _, _, _ => M.impossible
     end.
   
   Axiom Function_swap : M.IsFunction "core::mem::swap" swap.
-  
-  (*
-  pub(crate) const fn swap_simple<T>(x: &mut T, y: &mut T) {
-      // We arrange for this to typically be called with small types,
-      // so this reads-and-writes approach is actually better than using
-      // copy_nonoverlapping as it easily puts things in LLVM registers
-      // directly and doesn't end up inlining allocas.
-      // And LLVM actually optimizes it to 3×memcpy if called with
-      // a type larger than it's willing to keep in a register.
-      // Having typed reads and writes in MIR here is also good as
-      // it lets Miri and CTFE understand them better, including things
-      // like enforcing type validity for them.
-      // Importantly, read+copy_nonoverlapping+write introduces confusing
-      // asymmetry to the behaviour where one value went through read+write
-      // whereas the other was copied over by the intrinsic (see #94371).
-      // Furthermore, using only read+write here benefits limited backends
-      // such as SPIR-V that work on an underlying *typed* view of memory,
-      // and thus have trouble with Rust's untyped memory operations.
-  
-      // SAFETY: exclusive references are always valid to read/write,
-      // including being aligned, and nothing here panics so it's drop-safe.
-      unsafe {
-          let a = ptr::read(x);
-          let b = ptr::read(y);
-          ptr::write(x, b);
-          ptr::write(y, a);
-      }
-  }
-  *)
-  Definition swap_simple (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-    match ε, τ, α with
-    | [ host ], [ T ], [ x; y ] =>
-      ltac:(M.monadic
-        (let x := M.alloc (| x |) in
-        let y := M.alloc (| y |) in
-        M.read (|
-          let~ a :=
-            M.alloc (|
-              M.call_closure (| M.get_function (| "core::ptr::read", [ T ] |), [ M.read (| x |) ] |)
-            |) in
-          let~ b :=
-            M.alloc (|
-              M.call_closure (| M.get_function (| "core::ptr::read", [ T ] |), [ M.read (| y |) ] |)
-            |) in
-          let~ _ :=
-            M.alloc (|
-              M.call_closure (|
-                M.get_function (| "core::ptr::write", [ T ] |),
-                [ M.read (| x |); M.read (| b |) ]
-              |)
-            |) in
-          let~ _ :=
-            M.alloc (|
-              M.call_closure (|
-                M.get_function (| "core::ptr::write", [ T ] |),
-                [ M.read (| y |); M.read (| a |) ]
-              |)
-            |) in
-          M.alloc (| Value.Tuple [] |)
-        |)))
-    | _, _, _ => M.impossible
-    end.
-  
-  Axiom Function_swap_simple : M.IsFunction "core::mem::swap_simple" swap_simple.
   
   (*
   pub fn take<T: Default>(dest: &mut T) -> T {
@@ -546,7 +412,7 @@ Module mem.
   *)
   Definition replace (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     match ε, τ, α with
-    | [ host ], [ T ], [ dest; src ] =>
+    | [], [ T ], [ dest; src ] =>
       ltac:(M.monadic
         (let dest := M.alloc (| dest |) in
         let src := M.alloc (| src |) in
@@ -591,7 +457,7 @@ Module mem.
   *)
   Definition copy (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     match ε, τ, α with
-    | [ host ], [ T ], [ x ] =>
+    | [], [ T ], [ x ] =>
       ltac:(M.monadic
         (let x := M.alloc (| x |) in
         M.read (| M.read (| x |) |)))
@@ -622,7 +488,7 @@ Module mem.
   *)
   Definition transmute_copy (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     match ε, τ, α with
-    | [ host ], [ Src; Dst ], [ src ] =>
+    | [], [ Src; Dst ], [ src ] =>
       ltac:(M.monadic
         (let src := M.alloc (| src |) in
         M.read (|
@@ -659,17 +525,15 @@ Module mem.
                                 []
                               |),
                               [
-                                (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                    Value.Array
-                                      [
-                                        M.read (|
-                                          Value.String
-                                            "cannot transmute_copy if Dst is larger than Src"
-                                        |)
-                                      ]
-                                  |))
+                                M.alloc (|
+                                  Value.Array
+                                    [
+                                      M.read (|
+                                        Value.String
+                                          "cannot transmute_copy if Dst is larger than Src"
+                                      |)
+                                    ]
+                                |)
                               ]
                             |)
                           ]
@@ -902,13 +766,11 @@ Module mem.
                       [ M.read (| fmt |); M.read (| Value.String "Discriminant" |) ]
                     |)
                   |);
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.SubPointer.get_struct_tuple_field (|
-                      M.read (| self |),
-                      "core::mem::Discriminant",
-                      0
-                    |))
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.read (| self |),
+                    "core::mem::Discriminant",
+                    0
+                  |)
                 ]
               |)
             ]
@@ -932,7 +794,7 @@ Module mem.
   *)
   Definition discriminant (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     match ε, τ, α with
-    | [ host ], [ T ], [ v ] =>
+    | [], [ T ], [ v ] =>
       ltac:(M.monadic
         (let v := M.alloc (| v |) in
         Value.StructTuple
@@ -955,7 +817,7 @@ Module mem.
   *)
   Definition variant_count (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     match ε, τ, α with
-    | [ host ], [ T ], [] =>
+    | [], [ T ], [] =>
       ltac:(M.monadic
         (M.call_closure (| M.get_function (| "core::intrinsics::variant_count", [ T ] |), [] |)))
     | _, _, _ => M.impossible

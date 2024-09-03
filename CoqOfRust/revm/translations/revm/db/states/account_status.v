@@ -237,7 +237,7 @@ Module db.
               (let self := M.alloc (| self |) in
               let other := M.alloc (| other |) in
               M.read (|
-                let~ __self_tag :=
+                let~ __self_discr :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_function (|
@@ -247,7 +247,7 @@ Module db.
                       [ M.read (| self |) ]
                     |)
                   |) in
-                let~ __arg1_tag :=
+                let~ __arg1_discr :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_function (|
@@ -257,7 +257,7 @@ Module db.
                       [ M.read (| other |) ]
                     |)
                   |) in
-                M.alloc (| BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)) |)
+                M.alloc (| BinOp.Pure.eq (M.read (| __self_discr |)) (M.read (| __arg1_discr |)) |)
               |)))
           | _, _, _ => M.impossible
           end.
@@ -269,17 +269,6 @@ Module db.
             (* Trait polymorphic types *) []
             (* Instance *) [ ("eq", InstanceField.Method eq) ].
       End Impl_core_cmp_PartialEq_for_revm_db_states_account_status_AccountStatus.
-      
-      Module Impl_core_marker_StructuralEq_for_revm_db_states_account_status_AccountStatus.
-        Definition Self : Ty.t := Ty.path "revm::db::states::account_status::AccountStatus".
-        
-        Axiom Implements :
-          M.IsTraitInstance
-            "core::marker::StructuralEq"
-            Self
-            (* Trait polymorphic types *) []
-            (* Instance *) [].
-      End Impl_core_marker_StructuralEq_for_revm_db_states_account_status_AccountStatus.
       
       Module Impl_core_cmp_Eq_for_revm_db_states_account_status_AccountStatus.
         Definition Self : Ty.t := Ty.path "revm::db::states::account_status::AccountStatus".
@@ -318,7 +307,7 @@ Module db.
               (let self := M.alloc (| self |) in
               let state := M.alloc (| state |) in
               M.read (|
-                let~ __self_tag :=
+                let~ __self_discr :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_function (|
@@ -337,7 +326,7 @@ Module db.
                       "hash",
                       [ __H ]
                     |),
-                    [ __self_tag; M.read (| state |) ]
+                    [ __self_discr; M.read (| state |) ]
                   |)
                 |)
               |)))
@@ -964,40 +953,36 @@ Module db.
                                               []
                                             |),
                                             [
-                                              (* Unsize *)
-                                              M.pointer_coercion
-                                                (M.alloc (|
-                                                  Value.Array
-                                                    [
-                                                      M.read (|
-                                                        Value.String
-                                                          "internal error: entered unreachable code: Wrong state transition, touch empty is not possible from "
-                                                      |)
-                                                    ]
-                                                |));
-                                              (* Unsize *)
-                                              M.pointer_coercion
-                                                (M.alloc (|
-                                                  Value.Array
-                                                    [
-                                                      M.call_closure (|
-                                                        M.get_associated_function (|
-                                                          Ty.path "core::fmt::rt::Argument",
-                                                          "new_debug",
-                                                          [
-                                                            Ty.apply
-                                                              (Ty.path "&")
-                                                              []
-                                                              [
-                                                                Ty.path
-                                                                  "revm::db::states::account_status::AccountStatus"
-                                                              ]
-                                                          ]
-                                                        |),
-                                                        [ self ]
-                                                      |)
-                                                    ]
-                                                |))
+                                              M.alloc (|
+                                                Value.Array
+                                                  [
+                                                    M.read (|
+                                                      Value.String
+                                                        "internal error: entered unreachable code: Wrong state transition, touch empty is not possible from "
+                                                    |)
+                                                  ]
+                                              |);
+                                              M.alloc (|
+                                                Value.Array
+                                                  [
+                                                    M.call_closure (|
+                                                      M.get_associated_function (|
+                                                        Ty.path "core::fmt::rt::Argument",
+                                                        "new_debug",
+                                                        [
+                                                          Ty.apply
+                                                            (Ty.path "&")
+                                                            []
+                                                            [
+                                                              Ty.path
+                                                                "revm::db::states::account_status::AccountStatus"
+                                                            ]
+                                                        ]
+                                                      |),
+                                                      [ self ]
+                                                    |)
+                                                  ]
+                                              |)
                                             ]
                                           |)
                                         ]
@@ -1218,40 +1203,36 @@ Module db.
                                               []
                                             |),
                                             [
-                                              (* Unsize *)
-                                              M.pointer_coercion
-                                                (M.alloc (|
-                                                  Value.Array
-                                                    [
-                                                      M.read (|
-                                                        Value.String
-                                                          "internal error: entered unreachable code: Wrong state transition, touch crate is not possible from "
-                                                      |)
-                                                    ]
-                                                |));
-                                              (* Unsize *)
-                                              M.pointer_coercion
-                                                (M.alloc (|
-                                                  Value.Array
-                                                    [
-                                                      M.call_closure (|
-                                                        M.get_associated_function (|
-                                                          Ty.path "core::fmt::rt::Argument",
-                                                          "new_debug",
-                                                          [
-                                                            Ty.apply
-                                                              (Ty.path "&")
-                                                              []
-                                                              [
-                                                                Ty.path
-                                                                  "revm::db::states::account_status::AccountStatus"
-                                                              ]
-                                                          ]
-                                                        |),
-                                                        [ self ]
-                                                      |)
-                                                    ]
-                                                |))
+                                              M.alloc (|
+                                                Value.Array
+                                                  [
+                                                    M.read (|
+                                                      Value.String
+                                                        "internal error: entered unreachable code: Wrong state transition, touch crate is not possible from "
+                                                    |)
+                                                  ]
+                                              |);
+                                              M.alloc (|
+                                                Value.Array
+                                                  [
+                                                    M.call_closure (|
+                                                      M.get_associated_function (|
+                                                        Ty.path "core::fmt::rt::Argument",
+                                                        "new_debug",
+                                                        [
+                                                          Ty.apply
+                                                            (Ty.path "&")
+                                                            []
+                                                            [
+                                                              Ty.path
+                                                                "revm::db::states::account_status::AccountStatus"
+                                                            ]
+                                                        ]
+                                                      |),
+                                                      [ self ]
+                                                    |)
+                                                  ]
+                                              |)
                                             ]
                                           |)
                                         ]

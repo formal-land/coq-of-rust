@@ -75,17 +75,6 @@ Module alloc.
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_core_alloc_AllocError.
   
-  Module Impl_core_marker_StructuralEq_for_core_alloc_AllocError.
-    Definition Self : Ty.t := Ty.path "core::alloc::AllocError".
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::marker::StructuralEq"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [].
-  End Impl_core_marker_StructuralEq_for_core_alloc_AllocError.
-  
   Module Impl_core_cmp_Eq_for_core_alloc_AllocError.
     Definition Self : Ty.t := Ty.path "core::alloc::AllocError".
     
@@ -403,17 +392,15 @@ Module alloc.
                                                 []
                                               |),
                                               [
-                                                (* Unsize *)
-                                                M.pointer_coercion
-                                                  (M.alloc (|
-                                                    Value.Array
-                                                      [
-                                                        M.read (|
-                                                          Value.String
-                                                            "`new_layout.size()` must be greater than or equal to `old_layout.size()`"
-                                                        |)
-                                                      ]
-                                                  |))
+                                                M.alloc (|
+                                                  Value.Array
+                                                    [
+                                                      M.read (|
+                                                        Value.String
+                                                          "`new_layout.size()` must be greater than or equal to `old_layout.size()`"
+                                                      |)
+                                                    ]
+                                                |)
                                               ]
                                             |)
                                           ]
@@ -655,17 +642,15 @@ Module alloc.
                                                 []
                                               |),
                                               [
-                                                (* Unsize *)
-                                                M.pointer_coercion
-                                                  (M.alloc (|
-                                                    Value.Array
-                                                      [
-                                                        M.read (|
-                                                          Value.String
-                                                            "`new_layout.size()` must be greater than or equal to `old_layout.size()`"
-                                                        |)
-                                                      ]
-                                                  |))
+                                                M.alloc (|
+                                                  Value.Array
+                                                    [
+                                                      M.read (|
+                                                        Value.String
+                                                          "`new_layout.size()` must be greater than or equal to `old_layout.size()`"
+                                                      |)
+                                                    ]
+                                                |)
                                               ]
                                             |)
                                           ]
@@ -903,17 +888,15 @@ Module alloc.
                                                 []
                                               |),
                                               [
-                                                (* Unsize *)
-                                                M.pointer_coercion
-                                                  (M.alloc (|
-                                                    Value.Array
-                                                      [
-                                                        M.read (|
-                                                          Value.String
-                                                            "`new_layout.size()` must be smaller than or equal to `old_layout.size()`"
-                                                        |)
-                                                      ]
-                                                  |))
+                                                M.alloc (|
+                                                  Value.Array
+                                                    [
+                                                      M.read (|
+                                                        Value.String
+                                                          "`new_layout.size()` must be smaller than or equal to `old_layout.size()`"
+                                                      |)
+                                                    ]
+                                                |)
                                               ]
                                             |)
                                           ]

@@ -3171,13 +3171,11 @@ Module collections.
                           [ Ty.apply (Ty.path "core::ops::range::RangeTo") [] [ Ty.path "usize" ] ]
                         |),
                         [
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.SubPointer.get_struct_record_field (|
-                              M.read (| leaf |),
-                              "alloc::collections::btree::node::LeafNode",
-                              "keys"
-                            |));
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| leaf |),
+                            "alloc::collections::btree::node::LeafNode",
+                            "keys"
+                          |);
                           Value.StructRecord
                             "core::ops::range::RangeTo"
                             [
@@ -3951,8 +3949,8 @@ Module collections.
                       "vals"
                     |)
                   |) in
-                let~ keys := M.alloc (| (* Unsize *) M.pointer_coercion (M.read (| keys |)) |) in
-                let~ vals := M.alloc (| (* Unsize *) M.pointer_coercion (M.read (| vals |)) |) in
+                let~ keys := M.alloc (| M.read (| keys |) |) in
+                let~ vals := M.alloc (| M.read (| vals |) |) in
                 let~ key :=
                   M.alloc (|
                     M.call_closure (|
@@ -4712,29 +4710,25 @@ Module collections.
                                                     []
                                                   |),
                                                   [
-                                                    (* Unsize *)
-                                                    M.pointer_coercion
-                                                      (M.alloc (|
-                                                        Value.Array
-                                                          [
-                                                            M.read (|
-                                                              Value.String
-                                                                "internal error: entered unreachable code: empty internal node"
-                                                            |)
-                                                          ]
-                                                      |));
-                                                    (* Unsize *)
-                                                    M.pointer_coercion
-                                                      (M.alloc (|
-                                                        M.call_closure (|
-                                                          M.get_associated_function (|
-                                                            Ty.path "core::fmt::rt::Argument",
-                                                            "none",
-                                                            []
-                                                          |),
+                                                    M.alloc (|
+                                                      Value.Array
+                                                        [
+                                                          M.read (|
+                                                            Value.String
+                                                              "internal error: entered unreachable code: empty internal node"
+                                                          |)
+                                                        ]
+                                                    |);
+                                                    M.alloc (|
+                                                      M.call_closure (|
+                                                        M.get_associated_function (|
+                                                          Ty.path "core::fmt::rt::Argument",
+                                                          "none",
                                                           []
-                                                        |)
-                                                      |))
+                                                        |),
+                                                        []
+                                                      |)
+                                                    |)
                                                   ]
                                                 |)
                                               ]
@@ -5459,18 +5453,31 @@ Module collections.
             ].
         
         (*
-            pub fn push(&mut self, key: K, val: V) -> &mut V {
+            pub unsafe fn push_with_handle<'b>(
+                &mut self,
+                key: K,
+                val: V,
+            ) -> Handle<NodeRef<marker::Mut<'b>, K, V, marker::Leaf>, marker::KV> {
                 let len = self.len_mut();
                 let idx = usize::from( *len);
                 assert!(idx < CAPACITY);
                 *len += 1;
                 unsafe {
                     self.key_area_mut(idx).write(key);
-                    self.val_area_mut(idx).write(val)
+                    self.val_area_mut(idx).write(val);
+                    Handle::new_kv(
+                        NodeRef { height: self.height, node: self.node, _marker: PhantomData },
+                        idx,
+                    )
                 }
             }
         *)
-        Definition push (K V : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition push_with_handle
+            (K V : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self K V in
           match ε, τ, α with
           | [], [], [ self; key; val ] =>
@@ -5545,73 +5552,177 @@ Module collections.
                 let~ _ :=
                   let β := M.read (| len |) in
                   M.write (| β, BinOp.Wrap.add Integer.U16 (M.read (| β |)) (Value.Integer 1) |) in
-                M.alloc (|
-                  M.read (|
-                    let~ _ :=
-                      M.alloc (|
+                let~ _ :=
+                  M.alloc (|
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ K ],
+                        "write",
+                        []
+                      |),
+                      [
                         M.call_closure (|
                           M.get_associated_function (|
-                            Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ K ],
-                            "write",
-                            []
-                          |),
-                          [
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.apply
-                                  (Ty.path "alloc::collections::btree::node::NodeRef")
-                                  []
-                                  [
-                                    Ty.path "alloc::collections::btree::node::marker::Mut";
-                                    K;
-                                    V;
-                                    Ty.path "alloc::collections::btree::node::marker::Leaf"
-                                  ],
-                                "key_area_mut",
-                                [
-                                  Ty.path "usize";
-                                  Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ K ]
-                                ]
-                              |),
-                              [ M.read (| self |); M.read (| idx |) ]
-                            |);
-                            M.read (| key |)
-                          ]
-                        |)
-                      |) in
-                    M.alloc (|
-                      M.call_closure (|
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ V ],
-                          "write",
-                          []
-                        |),
-                        [
-                          M.call_closure (|
-                            M.get_associated_function (|
-                              Ty.apply
-                                (Ty.path "alloc::collections::btree::node::NodeRef")
-                                []
-                                [
-                                  Ty.path "alloc::collections::btree::node::marker::Mut";
-                                  K;
-                                  V;
-                                  Ty.path "alloc::collections::btree::node::marker::Leaf"
-                                ],
-                              "val_area_mut",
+                            Ty.apply
+                              (Ty.path "alloc::collections::btree::node::NodeRef")
+                              []
                               [
-                                Ty.path "usize";
-                                Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ V ]
-                              ]
-                            |),
-                            [ M.read (| self |); M.read (| idx |) ]
-                          |);
-                          M.read (| val |)
-                        ]
-                      |)
+                                Ty.path "alloc::collections::btree::node::marker::Mut";
+                                K;
+                                V;
+                                Ty.path "alloc::collections::btree::node::marker::Leaf"
+                              ],
+                            "key_area_mut",
+                            [
+                              Ty.path "usize";
+                              Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ K ]
+                            ]
+                          |),
+                          [ M.read (| self |); M.read (| idx |) ]
+                        |);
+                        M.read (| key |)
+                      ]
                     |)
+                  |) in
+                let~ _ :=
+                  M.alloc (|
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ V ],
+                        "write",
+                        []
+                      |),
+                      [
+                        M.call_closure (|
+                          M.get_associated_function (|
+                            Ty.apply
+                              (Ty.path "alloc::collections::btree::node::NodeRef")
+                              []
+                              [
+                                Ty.path "alloc::collections::btree::node::marker::Mut";
+                                K;
+                                V;
+                                Ty.path "alloc::collections::btree::node::marker::Leaf"
+                              ],
+                            "val_area_mut",
+                            [
+                              Ty.path "usize";
+                              Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ V ]
+                            ]
+                          |),
+                          [ M.read (| self |); M.read (| idx |) ]
+                        |);
+                        M.read (| val |)
+                      ]
+                    |)
+                  |) in
+                M.alloc (|
+                  M.call_closure (|
+                    M.get_associated_function (|
+                      Ty.apply
+                        (Ty.path "alloc::collections::btree::node::Handle")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "alloc::collections::btree::node::NodeRef")
+                            []
+                            [
+                              Ty.path "alloc::collections::btree::node::marker::Mut";
+                              K;
+                              V;
+                              Ty.path "alloc::collections::btree::node::marker::Leaf"
+                            ];
+                          Ty.path "alloc::collections::btree::node::marker::KV"
+                        ],
+                      "new_kv",
+                      []
+                    |),
+                    [
+                      Value.StructRecord
+                        "alloc::collections::btree::node::NodeRef"
+                        [
+                          ("height",
+                            M.read (|
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "alloc::collections::btree::node::NodeRef",
+                                "height"
+                              |)
+                            |));
+                          ("node",
+                            M.read (|
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "alloc::collections::btree::node::NodeRef",
+                                "node"
+                              |)
+                            |));
+                          ("_marker", Value.StructTuple "core::marker::PhantomData" [])
+                        ];
+                      M.read (| idx |)
+                    ]
                   |)
                 |)
+              |)))
+          | _, _, _ => M.impossible
+          end.
+        
+        Axiom AssociatedFunction_push_with_handle :
+          forall (K V : Ty.t),
+          M.IsAssociatedFunction (Self K V) "push_with_handle" (push_with_handle K V).
+        
+        (*
+            pub fn push(&mut self, key: K, val: V) -> *mut V {
+                // SAFETY: The unbound handle is no longer accessible.
+                unsafe { self.push_with_handle(key, val).into_val_mut() }
+            }
+        *)
+        Definition push (K V : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          let Self : Ty.t := Self K V in
+          match ε, τ, α with
+          | [], [], [ self; key; val ] =>
+            ltac:(M.monadic
+              (let self := M.alloc (| self |) in
+              let key := M.alloc (| key |) in
+              let val := M.alloc (| val |) in
+              M.call_closure (|
+                M.get_associated_function (|
+                  Ty.apply
+                    (Ty.path "alloc::collections::btree::node::Handle")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "alloc::collections::btree::node::NodeRef")
+                        []
+                        [
+                          Ty.path "alloc::collections::btree::node::marker::Mut";
+                          K;
+                          V;
+                          Ty.path "alloc::collections::btree::node::marker::Leaf"
+                        ];
+                      Ty.path "alloc::collections::btree::node::marker::KV"
+                    ],
+                  "into_val_mut",
+                  []
+                |),
+                [
+                  M.call_closure (|
+                    M.get_associated_function (|
+                      Ty.apply
+                        (Ty.path "alloc::collections::btree::node::NodeRef")
+                        []
+                        [
+                          Ty.path "alloc::collections::btree::node::marker::Mut";
+                          K;
+                          V;
+                          Ty.path "alloc::collections::btree::node::marker::Leaf"
+                        ],
+                      "push_with_handle",
+                      []
+                    |),
+                    [ M.read (| self |); M.read (| key |); M.read (| val |) ]
+                  |)
+                ]
               |)))
           | _, _, _ => M.impossible
           end.
@@ -9442,13 +9553,11 @@ Module collections.
                             [ Ty.path "usize" ]
                           |),
                           [
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.SubPointer.get_struct_record_field (|
-                                M.read (| parent_ptr |),
-                                "alloc::collections::btree::node::InternalNode",
-                                "edges"
-                              |));
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| parent_ptr |),
+                              "alloc::collections::btree::node::InternalNode",
+                              "edges"
+                            |);
                             M.read (|
                               M.SubPointer.get_struct_record_field (|
                                 self,
@@ -9728,13 +9837,11 @@ Module collections.
                             [ Ty.path "usize" ]
                           |),
                           [
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.SubPointer.get_struct_record_field (|
-                                M.read (| leaf |),
-                                "alloc::collections::btree::node::LeafNode",
-                                "keys"
-                              |));
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| leaf |),
+                              "alloc::collections::btree::node::LeafNode",
+                              "keys"
+                            |);
                             M.read (|
                               M.SubPointer.get_struct_record_field (|
                                 self,
@@ -9767,13 +9874,11 @@ Module collections.
                             [ Ty.path "usize" ]
                           |),
                           [
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.SubPointer.get_struct_record_field (|
-                                M.read (| leaf |),
-                                "alloc::collections::btree::node::LeafNode",
-                                "vals"
-                              |));
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| leaf |),
+                              "alloc::collections::btree::node::LeafNode",
+                              "vals"
+                            |);
                             M.read (|
                               M.SubPointer.get_struct_record_field (|
                                 self,
@@ -10005,13 +10110,11 @@ Module collections.
                           [ Ty.path "usize" ]
                         |),
                         [
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.SubPointer.get_struct_record_field (|
-                              M.read (| leaf |),
-                              "alloc::collections::btree::node::LeafNode",
-                              "vals"
-                            |));
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| leaf |),
+                            "alloc::collections::btree::node::LeafNode",
+                            "vals"
+                          |);
                           M.read (|
                             M.SubPointer.get_struct_record_field (|
                               self,
@@ -10033,15 +10136,15 @@ Module collections.
           M.IsAssociatedFunction (Self K V NodeType) "into_val_mut" (into_val_mut K V NodeType).
         
         (*
-            pub fn into_kv_valmut(self) -> (&'a K, &'a mut V) {
+            pub fn into_kv_mut(self) -> (&'a mut K, &'a mut V) {
                 debug_assert!(self.idx < self.node.len());
                 let leaf = self.node.into_leaf_mut();
-                let k = unsafe { leaf.keys.get_unchecked(self.idx).assume_init_ref() };
+                let k = unsafe { leaf.keys.get_unchecked_mut(self.idx).assume_init_mut() };
                 let v = unsafe { leaf.vals.get_unchecked_mut(self.idx).assume_init_mut() };
                 (k, v)
             }
         *)
-        Definition into_kv_valmut
+        Definition into_kv_mut
             (K V NodeType : Ty.t)
             (ε : list Value.t)
             (τ : list Ty.t)
@@ -10158,7 +10261,7 @@ Module collections.
                     M.call_closure (|
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ K ],
-                        "assume_init_ref",
+                        "assume_init_mut",
                         []
                       |),
                       [
@@ -10169,17 +10272,15 @@ Module collections.
                               []
                               [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ K ]
                               ],
-                            "get_unchecked",
+                            "get_unchecked_mut",
                             [ Ty.path "usize" ]
                           |),
                           [
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.SubPointer.get_struct_record_field (|
-                                M.read (| leaf |),
-                                "alloc::collections::btree::node::LeafNode",
-                                "keys"
-                              |));
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| leaf |),
+                              "alloc::collections::btree::node::LeafNode",
+                              "keys"
+                            |);
                             M.read (|
                               M.SubPointer.get_struct_record_field (|
                                 self,
@@ -10212,13 +10313,11 @@ Module collections.
                             [ Ty.path "usize" ]
                           |),
                           [
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.SubPointer.get_struct_record_field (|
-                                M.read (| leaf |),
-                                "alloc::collections::btree::node::LeafNode",
-                                "vals"
-                              |));
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| leaf |),
+                              "alloc::collections::btree::node::LeafNode",
+                              "vals"
+                            |);
                             M.read (|
                               M.SubPointer.get_struct_record_field (|
                                 self,
@@ -10236,9 +10335,9 @@ Module collections.
           | _, _, _ => M.impossible
           end.
         
-        Axiom AssociatedFunction_into_kv_valmut :
+        Axiom AssociatedFunction_into_kv_mut :
           forall (K V NodeType : Ty.t),
-          M.IsAssociatedFunction (Self K V NodeType) "into_kv_valmut" (into_kv_valmut K V NodeType).
+          M.IsAssociatedFunction (Self K V NodeType) "into_kv_mut" (into_kv_mut K V NodeType).
         (*
             pub fn kv_mut(&mut self) -> (&mut K, &mut V) {
                 debug_assert!(self.idx < self.node.len());
@@ -10382,13 +10481,11 @@ Module collections.
                             [ Ty.path "usize" ]
                           |),
                           [
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.SubPointer.get_struct_record_field (|
-                                M.read (| leaf |),
-                                "alloc::collections::btree::node::LeafNode",
-                                "keys"
-                              |));
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| leaf |),
+                              "alloc::collections::btree::node::LeafNode",
+                              "keys"
+                            |);
                             M.read (|
                               M.SubPointer.get_struct_record_field (|
                                 M.read (| self |),
@@ -10421,13 +10518,11 @@ Module collections.
                             [ Ty.path "usize" ]
                           |),
                           [
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.SubPointer.get_struct_record_field (|
-                                M.read (| leaf |),
-                                "alloc::collections::btree::node::LeafNode",
-                                "vals"
-                              |));
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| leaf |),
+                              "alloc::collections::btree::node::LeafNode",
+                              "vals"
+                            |);
                             M.read (|
                               M.SubPointer.get_struct_record_field (|
                                 M.read (| self |),
@@ -11185,13 +11280,11 @@ Module collections.
                             [ Ty.path "usize" ]
                           |),
                           [
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.SubPointer.get_struct_record_field (|
-                                M.read (| leaf |),
-                                "alloc::collections::btree::node::LeafNode",
-                                "keys"
-                              |));
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| leaf |),
+                              "alloc::collections::btree::node::LeafNode",
+                              "keys"
+                            |);
                             M.read (|
                               M.SubPointer.get_struct_record_field (|
                                 self,
@@ -11224,13 +11317,11 @@ Module collections.
                             [ Ty.path "usize" ]
                           |),
                           [
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.SubPointer.get_struct_record_field (|
-                                M.read (| leaf |),
-                                "alloc::collections::btree::node::LeafNode",
-                                "vals"
-                              |));
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| leaf |),
+                              "alloc::collections::btree::node::LeafNode",
+                              "vals"
+                            |);
                             M.read (|
                               M.SubPointer.get_struct_record_field (|
                                 self,
@@ -11392,13 +11483,11 @@ Module collections.
                             [ Ty.path "usize" ]
                           |),
                           [
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.SubPointer.get_struct_record_field (|
-                                M.read (| leaf |),
-                                "alloc::collections::btree::node::LeafNode",
-                                "keys"
-                              |));
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| leaf |),
+                              "alloc::collections::btree::node::LeafNode",
+                              "keys"
+                            |);
                             M.read (|
                               M.SubPointer.get_struct_record_field (|
                                 self,
@@ -11431,13 +11520,11 @@ Module collections.
                             [ Ty.path "usize" ]
                           |),
                           [
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.SubPointer.get_struct_record_field (|
-                                M.read (| leaf |),
-                                "alloc::collections::btree::node::LeafNode",
-                                "vals"
-                              |));
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| leaf |),
+                              "alloc::collections::btree::node::LeafNode",
+                              "vals"
+                            |);
                             M.read (|
                               M.SubPointer.get_struct_record_field (|
                                 self,

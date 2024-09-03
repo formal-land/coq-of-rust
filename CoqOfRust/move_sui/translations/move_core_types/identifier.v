@@ -359,15 +359,13 @@ Module identifier.
             [
               M.read (| f |);
               M.read (| Value.String "Identifier" |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.alloc (|
-                  M.SubPointer.get_struct_tuple_field (|
-                    M.read (| self |),
-                    "move_core_types::identifier::Identifier",
-                    0
-                  |)
-                |))
+              M.alloc (|
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "move_core_types::identifier::Identifier",
+                  0
+                |)
+              |)
             ]
           |)))
       | _, _, _ => M.impossible
@@ -380,17 +378,6 @@ Module identifier.
         (* Trait polymorphic types *) []
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Debug_for_move_core_types_identifier_Identifier.
-  
-  Module Impl_core_marker_StructuralEq_for_move_core_types_identifier_Identifier.
-    Definition Self : Ty.t := Ty.path "move_core_types::identifier::Identifier".
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::marker::StructuralEq"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [].
-  End Impl_core_marker_StructuralEq_for_move_core_types_identifier_Identifier.
   
   Module Impl_core_cmp_Eq_for_move_core_types_identifier_Identifier.
     Definition Self : Ty.t := Ty.path "move_core_types::identifier::Identifier".
@@ -798,60 +785,67 @@ Module identifier.
                                         [ Ty.path "alloc::string::String" ]
                                       |),
                                       [
-                                        M.read (|
-                                          let~ res :=
-                                            M.alloc (|
-                                              M.call_closure (|
-                                                M.get_function (| "alloc::fmt::format", [] |),
-                                                [
+                                        M.call_closure (|
+                                          M.get_function (|
+                                            "core::hint::must_use",
+                                            [ Ty.path "alloc::string::String" ]
+                                          |),
+                                          [
+                                            M.read (|
+                                              let~ res :=
+                                                M.alloc (|
                                                   M.call_closure (|
-                                                    M.get_associated_function (|
-                                                      Ty.path "core::fmt::Arguments",
-                                                      "new_v1",
-                                                      []
-                                                    |),
+                                                    M.get_function (| "alloc::fmt::format", [] |),
                                                     [
-                                                      (* Unsize *)
-                                                      M.pointer_coercion
-                                                        (M.alloc (|
-                                                          Value.Array
-                                                            [
-                                                              M.read (|
-                                                                Value.String "Invalid identifier '"
-                                                              |);
-                                                              M.read (| Value.String "'" |)
-                                                            ]
-                                                        |));
-                                                      (* Unsize *)
-                                                      M.pointer_coercion
-                                                        (M.alloc (|
-                                                          Value.Array
-                                                            [
-                                                              M.call_closure (|
-                                                                M.get_associated_function (|
-                                                                  Ty.path "core::fmt::rt::Argument",
-                                                                  "new_display",
-                                                                  [
-                                                                    Ty.apply
-                                                                      (Ty.path "alloc::boxed::Box")
-                                                                      []
-                                                                      [
-                                                                        Ty.path "str";
-                                                                        Ty.path
-                                                                          "alloc::alloc::Global"
-                                                                      ]
-                                                                  ]
-                                                                |),
-                                                                [ s ]
-                                                              |)
-                                                            ]
-                                                        |))
+                                                      M.call_closure (|
+                                                        M.get_associated_function (|
+                                                          Ty.path "core::fmt::Arguments",
+                                                          "new_v1",
+                                                          []
+                                                        |),
+                                                        [
+                                                          M.alloc (|
+                                                            Value.Array
+                                                              [
+                                                                M.read (|
+                                                                  Value.String
+                                                                    "Invalid identifier '"
+                                                                |);
+                                                                M.read (| Value.String "'" |)
+                                                              ]
+                                                          |);
+                                                          M.alloc (|
+                                                            Value.Array
+                                                              [
+                                                                M.call_closure (|
+                                                                  M.get_associated_function (|
+                                                                    Ty.path
+                                                                      "core::fmt::rt::Argument",
+                                                                    "new_display",
+                                                                    [
+                                                                      Ty.apply
+                                                                        (Ty.path
+                                                                          "alloc::boxed::Box")
+                                                                        []
+                                                                        [
+                                                                          Ty.path "str";
+                                                                          Ty.path
+                                                                            "alloc::alloc::Global"
+                                                                        ]
+                                                                    ]
+                                                                  |),
+                                                                  [ s ]
+                                                                |)
+                                                              ]
+                                                          |)
+                                                        ]
+                                                      |)
                                                     ]
                                                   |)
-                                                ]
-                                              |)
-                                            |) in
-                                          res
+                                                |) in
+                                              res
+                                            |)
+                                          ]
                                         |)
                                       ]
                                     |)
@@ -1315,41 +1309,38 @@ Module identifier.
               M.call_closure (|
                 M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                 [
-                  (* Unsize *)
-                  M.pointer_coercion (M.alloc (| Value.Array [ M.read (| Value.String "" |) ] |));
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.alloc (|
-                      Value.Array
-                        [
-                          M.call_closure (|
-                            M.get_associated_function (|
-                              Ty.path "core::fmt::rt::Argument",
-                              "new_display",
-                              [
-                                Ty.apply
-                                  (Ty.path "&")
-                                  []
-                                  [
-                                    Ty.apply
-                                      (Ty.path "alloc::boxed::Box")
-                                      []
-                                      [ Ty.path "str"; Ty.path "alloc::alloc::Global" ]
-                                  ]
-                              ]
-                            |),
+                  M.alloc (| Value.Array [ M.read (| Value.String "" |) ] |);
+                  M.alloc (|
+                    Value.Array
+                      [
+                        M.call_closure (|
+                          M.get_associated_function (|
+                            Ty.path "core::fmt::rt::Argument",
+                            "new_display",
                             [
-                              M.alloc (|
-                                M.SubPointer.get_struct_tuple_field (|
-                                  M.read (| self |),
-                                  "move_core_types::identifier::Identifier",
-                                  0
-                                |)
-                              |)
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "alloc::boxed::Box")
+                                    []
+                                    [ Ty.path "str"; Ty.path "alloc::alloc::Global" ]
+                                ]
                             ]
-                          |)
-                        ]
-                    |))
+                          |),
+                          [
+                            M.alloc (|
+                              M.SubPointer.get_struct_tuple_field (|
+                                M.read (| self |),
+                                "move_core_types::identifier::Identifier",
+                                0
+                              |)
+                            |)
+                          ]
+                        |)
+                      ]
+                  |)
                 ]
               |)
             ]
@@ -1392,15 +1383,13 @@ Module identifier.
             [
               M.read (| f |);
               M.read (| Value.String "IdentStr" |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.alloc (|
-                  M.SubPointer.get_struct_tuple_field (|
-                    M.read (| self |),
-                    "move_core_types::identifier::IdentStr",
-                    0
-                  |)
-                |))
+              M.alloc (|
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "move_core_types::identifier::IdentStr",
+                  0
+                |)
+              |)
             ]
           |)))
       | _, _, _ => M.impossible
@@ -1413,17 +1402,6 @@ Module identifier.
         (* Trait polymorphic types *) []
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Debug_for_move_core_types_identifier_IdentStr.
-  
-  Module Impl_core_marker_StructuralEq_for_move_core_types_identifier_IdentStr.
-    Definition Self : Ty.t := Ty.path "move_core_types::identifier::IdentStr".
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::marker::StructuralEq"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [].
-  End Impl_core_marker_StructuralEq_for_move_core_types_identifier_IdentStr.
   
   Module Impl_core_cmp_Eq_for_move_core_types_identifier_IdentStr.
     Definition Self : Ty.t := Ty.path "move_core_types::identifier::IdentStr".
@@ -1769,56 +1747,62 @@ Module identifier.
                                         [ Ty.path "alloc::string::String" ]
                                       |),
                                       [
-                                        M.read (|
-                                          let~ res :=
-                                            M.alloc (|
-                                              M.call_closure (|
-                                                M.get_function (| "alloc::fmt::format", [] |),
-                                                [
+                                        M.call_closure (|
+                                          M.get_function (|
+                                            "core::hint::must_use",
+                                            [ Ty.path "alloc::string::String" ]
+                                          |),
+                                          [
+                                            M.read (|
+                                              let~ res :=
+                                                M.alloc (|
                                                   M.call_closure (|
-                                                    M.get_associated_function (|
-                                                      Ty.path "core::fmt::Arguments",
-                                                      "new_v1",
-                                                      []
-                                                    |),
+                                                    M.get_function (| "alloc::fmt::format", [] |),
                                                     [
-                                                      (* Unsize *)
-                                                      M.pointer_coercion
-                                                        (M.alloc (|
-                                                          Value.Array
-                                                            [
-                                                              M.read (|
-                                                                Value.String "Invalid identifier '"
-                                                              |);
-                                                              M.read (| Value.String "'" |)
-                                                            ]
-                                                        |));
-                                                      (* Unsize *)
-                                                      M.pointer_coercion
-                                                        (M.alloc (|
-                                                          Value.Array
-                                                            [
-                                                              M.call_closure (|
-                                                                M.get_associated_function (|
-                                                                  Ty.path "core::fmt::rt::Argument",
-                                                                  "new_display",
-                                                                  [
-                                                                    Ty.apply
-                                                                      (Ty.path "&")
-                                                                      []
-                                                                      [ Ty.path "str" ]
-                                                                  ]
-                                                                |),
-                                                                [ s ]
-                                                              |)
-                                                            ]
-                                                        |))
+                                                      M.call_closure (|
+                                                        M.get_associated_function (|
+                                                          Ty.path "core::fmt::Arguments",
+                                                          "new_v1",
+                                                          []
+                                                        |),
+                                                        [
+                                                          M.alloc (|
+                                                            Value.Array
+                                                              [
+                                                                M.read (|
+                                                                  Value.String
+                                                                    "Invalid identifier '"
+                                                                |);
+                                                                M.read (| Value.String "'" |)
+                                                              ]
+                                                          |);
+                                                          M.alloc (|
+                                                            Value.Array
+                                                              [
+                                                                M.call_closure (|
+                                                                  M.get_associated_function (|
+                                                                    Ty.path
+                                                                      "core::fmt::rt::Argument",
+                                                                    "new_display",
+                                                                    [
+                                                                      Ty.apply
+                                                                        (Ty.path "&")
+                                                                        []
+                                                                        [ Ty.path "str" ]
+                                                                    ]
+                                                                  |),
+                                                                  [ s ]
+                                                                |)
+                                                              ]
+                                                          |)
+                                                        ]
+                                                      |)
                                                     ]
                                                   |)
-                                                ]
-                                              |)
-                                            |) in
-                                          res
+                                                |) in
+                                              res
+                                            |)
+                                          ]
                                         |)
                                       ]
                                     |)
@@ -2112,31 +2096,28 @@ Module identifier.
               M.call_closure (|
                 M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                 [
-                  (* Unsize *)
-                  M.pointer_coercion (M.alloc (| Value.Array [ M.read (| Value.String "" |) ] |));
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.alloc (|
-                      Value.Array
-                        [
-                          M.call_closure (|
-                            M.get_associated_function (|
-                              Ty.path "core::fmt::rt::Argument",
-                              "new_display",
-                              [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
-                            |),
-                            [
-                              M.alloc (|
-                                M.SubPointer.get_struct_tuple_field (|
-                                  M.read (| self |),
-                                  "move_core_types::identifier::IdentStr",
-                                  0
-                                |)
+                  M.alloc (| Value.Array [ M.read (| Value.String "" |) ] |);
+                  M.alloc (|
+                    Value.Array
+                      [
+                        M.call_closure (|
+                          M.get_associated_function (|
+                            Ty.path "core::fmt::rt::Argument",
+                            "new_display",
+                            [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                          |),
+                          [
+                            M.alloc (|
+                              M.SubPointer.get_struct_tuple_field (|
+                                M.read (| self |),
+                                "move_core_types::identifier::IdentStr",
+                                0
                               |)
-                            ]
-                          |)
-                        ]
-                    |))
+                            |)
+                          ]
+                        |)
+                      ]
+                  |)
                 ]
               |)
             ]

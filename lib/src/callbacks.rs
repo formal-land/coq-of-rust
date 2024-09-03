@@ -56,7 +56,7 @@ impl Callbacks for ToCoq {
 
             // We exclude this specific file as it is triggered by the `thread_local!` macro
             // but is not a file part of the current crate being translated.
-            if coq_file_name.contains("library/std/src/sys/common/thread_local/fast_local.v") {
+            if coq_file_name.contains("library/std/src/sys/thread_local/native/mod.v") {
                 println!("Skipping {coq_file_name:}");
                 continue;
             }
@@ -70,7 +70,7 @@ impl Callbacks for ToCoq {
 
         file.write_all(index_content.as_bytes()).unwrap();
 
-        compiler.sess.abort_if_errors();
+        compiler.sess.dcx().abort_if_errors();
 
         if self.opts.in_cargo {
             Compilation::Continue

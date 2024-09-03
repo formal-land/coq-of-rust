@@ -8,7 +8,7 @@ Module ptr.
         name := "Alignment";
         const_params := [];
         ty_params := [];
-        fields := [ Ty.path "core::ptr::alignment::AlignmentEnum64" ];
+        fields := [ Ty.path "core::ptr::alignment::AlignmentEnum" ];
       } *)
     
     Module Impl_core_marker_Copy_for_core_ptr_alignment_Alignment.
@@ -72,8 +72,8 @@ Module ptr.
             M.call_closure (|
               M.get_trait_method (|
                 "core::cmp::PartialEq",
-                Ty.path "core::ptr::alignment::AlignmentEnum64",
-                [ Ty.path "core::ptr::alignment::AlignmentEnum64" ],
+                Ty.path "core::ptr::alignment::AlignmentEnum",
+                [ Ty.path "core::ptr::alignment::AlignmentEnum" ],
                 "eq",
                 []
               |),
@@ -100,17 +100,6 @@ Module ptr.
           (* Trait polymorphic types *) []
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
     End Impl_core_cmp_PartialEq_for_core_ptr_alignment_Alignment.
-    
-    Module Impl_core_marker_StructuralEq_for_core_ptr_alignment_Alignment.
-      Definition Self : Ty.t := Ty.path "core::ptr::alignment::Alignment".
-      
-      Axiom Implements :
-        M.IsTraitInstance
-          "core::marker::StructuralEq"
-          Self
-          (* Trait polymorphic types *) []
-          (* Instance *) [].
-    End Impl_core_marker_StructuralEq_for_core_ptr_alignment_Alignment.
     
     Module Impl_core_cmp_Eq_for_core_ptr_alignment_Alignment.
       Definition Self : Ty.t := Ty.path "core::ptr::alignment::Alignment".
@@ -172,7 +161,7 @@ Module ptr.
                     let _ :=
                       M.is_struct_tuple (|
                         γ0_0,
-                        "core::ptr::alignment::AlignmentEnum64::_Align1Shl0"
+                        "core::ptr::alignment::AlignmentEnum::_Align1Shl0"
                       |) in
                     M.alloc (| Value.Bool true |)));
                 fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
@@ -198,7 +187,7 @@ Module ptr.
             (M.alloc (|
               Value.StructTuple
                 "core::ptr::alignment::Alignment"
-                [ Value.StructTuple "core::ptr::alignment::AlignmentEnum64::_Align1Shl0" [] ]
+                [ Value.StructTuple "core::ptr::alignment::AlignmentEnum::_Align1Shl0" [] ]
             |))).
       
       Axiom AssociatedConstant_value_MIN : M.IsAssociatedConstant Self "value_MIN" value_MIN.
@@ -211,7 +200,7 @@ Module ptr.
       *)
       Definition of (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [ T ], [] =>
+        | [], [ T ], [] =>
           ltac:(M.monadic
             (M.call_closure (|
               M.get_associated_function (|
@@ -238,7 +227,7 @@ Module ptr.
       *)
       Definition new (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ align ] =>
+        | [], [], [ align ] =>
           ltac:(M.monadic
             (let align := M.alloc (| align |) in
             M.read (|
@@ -287,9 +276,11 @@ Module ptr.
       
       (*
           pub const unsafe fn new_unchecked(align: usize) -> Self {
-              crate::panic::debug_assert_nounwind!(
-                  align.is_power_of_two(),
-                  "Alignment::new_unchecked requires a power of two"
+              #[cfg(debug_assertions)]
+              assert_unsafe_precondition!(
+                  check_language_ub,
+                  "Alignment::new_unchecked requires a power of two",
+                  (align: usize = align) => align.is_power_of_two()
               );
       
               // SAFETY: By precondition, this must be a power of two, and
@@ -299,7 +290,7 @@ Module ptr.
       *)
       Definition new_unchecked (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ align ] =>
+        | [], [], [ align ] =>
           ltac:(M.monadic
             (let align := M.alloc (| align |) in
             M.read (|
@@ -309,68 +300,28 @@ Module ptr.
                   [
                     fun γ =>
                       ltac:(M.monadic
-                        (let γ := M.use (M.alloc (| Value.Bool true |)) in
+                        (let γ :=
+                          M.use
+                            (M.alloc (|
+                              M.call_closure (|
+                                M.get_function (| "core::ub_checks::check_language_ub", [] |),
+                                []
+                              |)
+                            |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                        M.match_operator (|
-                          M.alloc (| Value.Tuple [] |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let γ :=
-                                  M.use
-                                    (M.alloc (|
-                                      UnOp.Pure.not
-                                        (M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.path "usize",
-                                            "is_power_of_two",
-                                            []
-                                          |),
-                                          [ M.read (| align |) ]
-                                        |))
-                                    |)) in
-                                let _ :=
-                                  M.is_constant_or_break_match (|
-                                    M.read (| γ |),
-                                    Value.Bool true
-                                  |) in
-                                M.alloc (|
-                                  M.never_to_any (|
-                                    M.call_closure (|
-                                      M.get_function (|
-                                        "core::panicking::panic_nounwind_fmt",
-                                        []
-                                      |),
-                                      [
-                                        M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.path "core::fmt::Arguments",
-                                            "new_const",
-                                            []
-                                          |),
-                                          [
-                                            (* Unsize *)
-                                            M.pointer_coercion
-                                              (M.alloc (|
-                                                Value.Array
-                                                  [
-                                                    M.read (|
-                                                      Value.String
-                                                        "Alignment::new_unchecked requires a power of two"
-                                                    |)
-                                                  ]
-                                              |))
-                                          ]
-                                        |);
-                                        Value.Bool false
-                                      ]
-                                    |)
-                                  |)
-                                |)));
-                            fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                          ]
-                        |)));
+                        let~ _ :=
+                          M.alloc (|
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Self,
+                                "precondition_check.new_unchecked",
+                                []
+                              |),
+                              [ M.read (| align |) ]
+                            |)
+                          |) in
+                        M.alloc (| Value.Tuple [] |)));
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
@@ -397,7 +348,7 @@ Module ptr.
       *)
       Definition as_usize (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.rust_cast
@@ -410,19 +361,19 @@ Module ptr.
       Axiom AssociatedFunction_as_usize : M.IsAssociatedFunction Self "as_usize" as_usize.
       
       (*
-          pub const fn as_nonzero(self) -> NonZeroUsize {
+          pub const fn as_nonzero(self) -> NonZero<usize> {
               // SAFETY: All the discriminants are non-zero.
-              unsafe { NonZeroUsize::new_unchecked(self.as_usize()) }
+              unsafe { NonZero::new_unchecked(self.as_usize()) }
           }
       *)
       Definition as_nonzero (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
-                Ty.path "core::num::nonzero::NonZeroUsize",
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                 "new_unchecked",
                 []
               |),
@@ -449,12 +400,12 @@ Module ptr.
       *)
       Definition log2 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
-                Ty.path "core::num::nonzero::NonZeroUsize",
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                 "trailing_zeros",
                 []
               |),
@@ -482,7 +433,7 @@ Module ptr.
       *)
       Definition mask (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             UnOp.Pure.not
@@ -527,61 +478,62 @@ Module ptr.
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                   [
-                    (* Unsize *)
-                    M.pointer_coercion
-                      (M.alloc (|
-                        Value.Array
-                          [
-                            M.read (| Value.String "" |);
-                            M.read (| Value.String " (1 << " |);
-                            M.read (| Value.String ")" |)
-                          ]
-                      |));
-                    (* Unsize *)
-                    M.pointer_coercion
-                      (M.alloc (|
-                        Value.Array
-                          [
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.path "core::fmt::rt::Argument",
-                                "new_debug",
-                                [ Ty.path "core::num::nonzero::NonZeroUsize" ]
-                              |),
+                    M.alloc (|
+                      Value.Array
+                        [
+                          M.read (| Value.String "" |);
+                          M.read (| Value.String " (1 << " |);
+                          M.read (| Value.String ")" |)
+                        ]
+                    |);
+                    M.alloc (|
+                      Value.Array
+                        [
+                          M.call_closure (|
+                            M.get_associated_function (|
+                              Ty.path "core::fmt::rt::Argument",
+                              "new_debug",
                               [
-                                M.alloc (|
-                                  M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.path "core::ptr::alignment::Alignment",
-                                      "as_nonzero",
-                                      []
-                                    |),
-                                    [ M.read (| M.read (| self |) |) ]
-                                  |)
-                                |)
+                                Ty.apply
+                                  (Ty.path "core::num::nonzero::NonZero")
+                                  []
+                                  [ Ty.path "usize" ]
                               ]
-                            |);
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.path "core::fmt::rt::Argument",
-                                "new_debug",
-                                [ Ty.path "u32" ]
-                              |),
-                              [
-                                M.alloc (|
-                                  M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.path "core::ptr::alignment::Alignment",
-                                      "log2",
-                                      []
-                                    |),
-                                    [ M.read (| M.read (| self |) |) ]
-                                  |)
+                            |),
+                            [
+                              M.alloc (|
+                                M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.path "core::ptr::alignment::Alignment",
+                                    "as_nonzero",
+                                    []
+                                  |),
+                                  [ M.read (| M.read (| self |) |) ]
                                 |)
-                              ]
-                            |)
-                          ]
-                      |))
+                              |)
+                            ]
+                          |);
+                          M.call_closure (|
+                            M.get_associated_function (|
+                              Ty.path "core::fmt::rt::Argument",
+                              "new_debug",
+                              [ Ty.path "u32" ]
+                            |),
+                            [
+                              M.alloc (|
+                                M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.path "core::ptr::alignment::Alignment",
+                                    "log2",
+                                    []
+                                  |),
+                                  [ M.read (| M.read (| self |) |) ]
+                                |)
+                              |)
+                            ]
+                          |)
+                        ]
+                    |)
                   ]
                 |)
               ]
@@ -597,14 +549,14 @@ Module ptr.
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Debug_for_core_ptr_alignment_Alignment.
     
-    Module Impl_core_convert_TryFrom_core_num_nonzero_NonZeroUsize_for_core_ptr_alignment_Alignment.
+    Module Impl_core_convert_TryFrom_core_num_nonzero_NonZero_usize_for_core_ptr_alignment_Alignment.
       Definition Self : Ty.t := Ty.path "core::ptr::alignment::Alignment".
       
       (*     type Error = num::TryFromIntError; *)
       Definition _Error : Ty.t := Ty.path "core::num::error::TryFromIntError".
       
       (*
-          fn try_from(align: NonZeroUsize) -> Result<Alignment, Self::Error> {
+          fn try_from(align: NonZero<usize>) -> Result<Alignment, Self::Error> {
               align.get().try_into()
           }
       *)
@@ -624,7 +576,7 @@ Module ptr.
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.path "core::num::nonzero::NonZeroUsize",
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                     "get",
                     []
                   |),
@@ -639,10 +591,11 @@ Module ptr.
         M.IsTraitInstance
           "core::convert::TryFrom"
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "core::num::nonzero::NonZeroUsize" ]
+          (* Trait polymorphic types *)
+          [ (* T *) Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ]
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
-    End Impl_core_convert_TryFrom_core_num_nonzero_NonZeroUsize_for_core_ptr_alignment_Alignment.
+    End Impl_core_convert_TryFrom_core_num_nonzero_NonZero_usize_for_core_ptr_alignment_Alignment.
     
     Module Impl_core_convert_TryFrom_usize_for_core_ptr_alignment_Alignment.
       Definition Self : Ty.t := Ty.path "core::ptr::alignment::Alignment".
@@ -693,11 +646,12 @@ Module ptr.
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_usize_for_core_ptr_alignment_Alignment.
     
-    Module Impl_core_convert_From_core_ptr_alignment_Alignment_for_core_num_nonzero_NonZeroUsize.
-      Definition Self : Ty.t := Ty.path "core::num::nonzero::NonZeroUsize".
+    Module Impl_core_convert_From_core_ptr_alignment_Alignment_for_core_num_nonzero_NonZero_usize.
+      Definition Self : Ty.t :=
+        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ].
       
       (*
-          fn from(align: Alignment) -> NonZeroUsize {
+          fn from(align: Alignment) -> NonZero<usize> {
               align.as_nonzero()
           }
       *)
@@ -723,7 +677,7 @@ Module ptr.
           Self
           (* Trait polymorphic types *) [ (* T *) Ty.path "core::ptr::alignment::Alignment" ]
           (* Instance *) [ ("from", InstanceField.Method from) ].
-    End Impl_core_convert_From_core_ptr_alignment_Alignment_for_core_num_nonzero_NonZeroUsize.
+    End Impl_core_convert_From_core_ptr_alignment_Alignment_for_core_num_nonzero_NonZero_usize.
     
     Module Impl_core_convert_From_core_ptr_alignment_Alignment_for_usize.
       Definition Self : Ty.t := Ty.path "usize".
@@ -777,7 +731,7 @@ Module ptr.
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.path "core::num::nonzero::NonZeroUsize",
+                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                       "get",
                       []
                     |),
@@ -796,7 +750,7 @@ Module ptr.
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.path "core::num::nonzero::NonZeroUsize",
+                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                       "get",
                       []
                     |),
@@ -881,7 +835,7 @@ Module ptr.
             M.call_closure (|
               M.get_trait_method (|
                 "core::hash::Hash",
-                Ty.path "core::num::nonzero::NonZeroUsize",
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                 [],
                 "hash",
                 [ H ]
@@ -934,522 +888,8 @@ Module ptr.
           (* Instance *) [ ("default", InstanceField.Method default) ].
     End Impl_core_default_Default_for_core_ptr_alignment_Alignment.
     
-    Axiom AlignmentEnum :
-      (Ty.path "core::ptr::alignment::AlignmentEnum") =
-        (Ty.path "core::ptr::alignment::AlignmentEnum64").
-    
     (*
-    Enum AlignmentEnum16
-    {
-      const_params := [];
-      ty_params := [];
-      variants :=
-        [
-          {
-            name := "_Align1Shl0";
-            item := StructTuple [];
-            discriminant := None;
-          };
-          {
-            name := "_Align1Shl1";
-            item := StructTuple [];
-            discriminant := None;
-          };
-          {
-            name := "_Align1Shl2";
-            item := StructTuple [];
-            discriminant := None;
-          };
-          {
-            name := "_Align1Shl3";
-            item := StructTuple [];
-            discriminant := None;
-          };
-          {
-            name := "_Align1Shl4";
-            item := StructTuple [];
-            discriminant := None;
-          };
-          {
-            name := "_Align1Shl5";
-            item := StructTuple [];
-            discriminant := None;
-          };
-          {
-            name := "_Align1Shl6";
-            item := StructTuple [];
-            discriminant := None;
-          };
-          {
-            name := "_Align1Shl7";
-            item := StructTuple [];
-            discriminant := None;
-          };
-          {
-            name := "_Align1Shl8";
-            item := StructTuple [];
-            discriminant := None;
-          };
-          {
-            name := "_Align1Shl9";
-            item := StructTuple [];
-            discriminant := None;
-          };
-          {
-            name := "_Align1Shl10";
-            item := StructTuple [];
-            discriminant := None;
-          };
-          {
-            name := "_Align1Shl11";
-            item := StructTuple [];
-            discriminant := None;
-          };
-          {
-            name := "_Align1Shl12";
-            item := StructTuple [];
-            discriminant := None;
-          };
-          {
-            name := "_Align1Shl13";
-            item := StructTuple [];
-            discriminant := None;
-          };
-          {
-            name := "_Align1Shl14";
-            item := StructTuple [];
-            discriminant := None;
-          };
-          {
-            name := "_Align1Shl15";
-            item := StructTuple [];
-            discriminant := None;
-          }
-        ];
-    }
-    *)
-    
-    Module Impl_core_marker_Copy_for_core_ptr_alignment_AlignmentEnum16.
-      Definition Self : Ty.t := Ty.path "core::ptr::alignment::AlignmentEnum16".
-      
-      Axiom Implements :
-        M.IsTraitInstance
-          "core::marker::Copy"
-          Self
-          (* Trait polymorphic types *) []
-          (* Instance *) [].
-    End Impl_core_marker_Copy_for_core_ptr_alignment_AlignmentEnum16.
-    
-    Module Impl_core_clone_Clone_for_core_ptr_alignment_AlignmentEnum16.
-      Definition Self : Ty.t := Ty.path "core::ptr::alignment::AlignmentEnum16".
-      
-      (* Clone *)
-      Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        match ε, τ, α with
-        | [], [], [ self ] =>
-          ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            M.read (| M.read (| self |) |)))
-        | _, _, _ => M.impossible
-        end.
-      
-      Axiom Implements :
-        M.IsTraitInstance
-          "core::clone::Clone"
-          Self
-          (* Trait polymorphic types *) []
-          (* Instance *) [ ("clone", InstanceField.Method clone) ].
-    End Impl_core_clone_Clone_for_core_ptr_alignment_AlignmentEnum16.
-    
-    Module Impl_core_marker_StructuralPartialEq_for_core_ptr_alignment_AlignmentEnum16.
-      Definition Self : Ty.t := Ty.path "core::ptr::alignment::AlignmentEnum16".
-      
-      Axiom Implements :
-        M.IsTraitInstance
-          "core::marker::StructuralPartialEq"
-          Self
-          (* Trait polymorphic types *) []
-          (* Instance *) [].
-    End Impl_core_marker_StructuralPartialEq_for_core_ptr_alignment_AlignmentEnum16.
-    
-    Module Impl_core_cmp_PartialEq_for_core_ptr_alignment_AlignmentEnum16.
-      Definition Self : Ty.t := Ty.path "core::ptr::alignment::AlignmentEnum16".
-      
-      (* PartialEq *)
-      Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        match ε, τ, α with
-        | [], [], [ self; other ] =>
-          ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
-            M.read (|
-              let~ __self_tag :=
-                M.alloc (|
-                  M.call_closure (|
-                    M.get_function (|
-                      "core::intrinsics::discriminant_value",
-                      [ Ty.path "core::ptr::alignment::AlignmentEnum16" ]
-                    |),
-                    [ M.read (| self |) ]
-                  |)
-                |) in
-              let~ __arg1_tag :=
-                M.alloc (|
-                  M.call_closure (|
-                    M.get_function (|
-                      "core::intrinsics::discriminant_value",
-                      [ Ty.path "core::ptr::alignment::AlignmentEnum16" ]
-                    |),
-                    [ M.read (| other |) ]
-                  |)
-                |) in
-              M.alloc (| BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)) |)
-            |)))
-        | _, _, _ => M.impossible
-        end.
-      
-      Axiom Implements :
-        M.IsTraitInstance
-          "core::cmp::PartialEq"
-          Self
-          (* Trait polymorphic types *) []
-          (* Instance *) [ ("eq", InstanceField.Method eq) ].
-    End Impl_core_cmp_PartialEq_for_core_ptr_alignment_AlignmentEnum16.
-    
-    Module Impl_core_marker_StructuralEq_for_core_ptr_alignment_AlignmentEnum16.
-      Definition Self : Ty.t := Ty.path "core::ptr::alignment::AlignmentEnum16".
-      
-      Axiom Implements :
-        M.IsTraitInstance
-          "core::marker::StructuralEq"
-          Self
-          (* Trait polymorphic types *) []
-          (* Instance *) [].
-    End Impl_core_marker_StructuralEq_for_core_ptr_alignment_AlignmentEnum16.
-    
-    Module Impl_core_cmp_Eq_for_core_ptr_alignment_AlignmentEnum16.
-      Definition Self : Ty.t := Ty.path "core::ptr::alignment::AlignmentEnum16".
-      
-      (* Eq *)
-      Definition assert_receiver_is_total_eq
-          (ε : list Value.t)
-          (τ : list Ty.t)
-          (α : list Value.t)
-          : M :=
-        match ε, τ, α with
-        | [], [], [ self ] =>
-          ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            Value.Tuple []))
-        | _, _, _ => M.impossible
-        end.
-      
-      Axiom Implements :
-        M.IsTraitInstance
-          "core::cmp::Eq"
-          Self
-          (* Trait polymorphic types *) []
-          (* Instance *)
-          [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
-    End Impl_core_cmp_Eq_for_core_ptr_alignment_AlignmentEnum16.
-    
-    (*
-    Enum AlignmentEnum32
-    {
-      const_params := [];
-      ty_params := [];
-      variants :=
-        [
-          {
-            name := "_Align1Shl0";
-            item := StructTuple [];
-            discriminant := None;
-          };
-          {
-            name := "_Align1Shl1";
-            item := StructTuple [];
-            discriminant := None;
-          };
-          {
-            name := "_Align1Shl2";
-            item := StructTuple [];
-            discriminant := None;
-          };
-          {
-            name := "_Align1Shl3";
-            item := StructTuple [];
-            discriminant := None;
-          };
-          {
-            name := "_Align1Shl4";
-            item := StructTuple [];
-            discriminant := None;
-          };
-          {
-            name := "_Align1Shl5";
-            item := StructTuple [];
-            discriminant := None;
-          };
-          {
-            name := "_Align1Shl6";
-            item := StructTuple [];
-            discriminant := None;
-          };
-          {
-            name := "_Align1Shl7";
-            item := StructTuple [];
-            discriminant := None;
-          };
-          {
-            name := "_Align1Shl8";
-            item := StructTuple [];
-            discriminant := None;
-          };
-          {
-            name := "_Align1Shl9";
-            item := StructTuple [];
-            discriminant := None;
-          };
-          {
-            name := "_Align1Shl10";
-            item := StructTuple [];
-            discriminant := None;
-          };
-          {
-            name := "_Align1Shl11";
-            item := StructTuple [];
-            discriminant := None;
-          };
-          {
-            name := "_Align1Shl12";
-            item := StructTuple [];
-            discriminant := None;
-          };
-          {
-            name := "_Align1Shl13";
-            item := StructTuple [];
-            discriminant := None;
-          };
-          {
-            name := "_Align1Shl14";
-            item := StructTuple [];
-            discriminant := None;
-          };
-          {
-            name := "_Align1Shl15";
-            item := StructTuple [];
-            discriminant := None;
-          };
-          {
-            name := "_Align1Shl16";
-            item := StructTuple [];
-            discriminant := None;
-          };
-          {
-            name := "_Align1Shl17";
-            item := StructTuple [];
-            discriminant := None;
-          };
-          {
-            name := "_Align1Shl18";
-            item := StructTuple [];
-            discriminant := None;
-          };
-          {
-            name := "_Align1Shl19";
-            item := StructTuple [];
-            discriminant := None;
-          };
-          {
-            name := "_Align1Shl20";
-            item := StructTuple [];
-            discriminant := None;
-          };
-          {
-            name := "_Align1Shl21";
-            item := StructTuple [];
-            discriminant := None;
-          };
-          {
-            name := "_Align1Shl22";
-            item := StructTuple [];
-            discriminant := None;
-          };
-          {
-            name := "_Align1Shl23";
-            item := StructTuple [];
-            discriminant := None;
-          };
-          {
-            name := "_Align1Shl24";
-            item := StructTuple [];
-            discriminant := None;
-          };
-          {
-            name := "_Align1Shl25";
-            item := StructTuple [];
-            discriminant := None;
-          };
-          {
-            name := "_Align1Shl26";
-            item := StructTuple [];
-            discriminant := None;
-          };
-          {
-            name := "_Align1Shl27";
-            item := StructTuple [];
-            discriminant := None;
-          };
-          {
-            name := "_Align1Shl28";
-            item := StructTuple [];
-            discriminant := None;
-          };
-          {
-            name := "_Align1Shl29";
-            item := StructTuple [];
-            discriminant := None;
-          };
-          {
-            name := "_Align1Shl30";
-            item := StructTuple [];
-            discriminant := None;
-          };
-          {
-            name := "_Align1Shl31";
-            item := StructTuple [];
-            discriminant := None;
-          }
-        ];
-    }
-    *)
-    
-    Module Impl_core_marker_Copy_for_core_ptr_alignment_AlignmentEnum32.
-      Definition Self : Ty.t := Ty.path "core::ptr::alignment::AlignmentEnum32".
-      
-      Axiom Implements :
-        M.IsTraitInstance
-          "core::marker::Copy"
-          Self
-          (* Trait polymorphic types *) []
-          (* Instance *) [].
-    End Impl_core_marker_Copy_for_core_ptr_alignment_AlignmentEnum32.
-    
-    Module Impl_core_clone_Clone_for_core_ptr_alignment_AlignmentEnum32.
-      Definition Self : Ty.t := Ty.path "core::ptr::alignment::AlignmentEnum32".
-      
-      (* Clone *)
-      Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        match ε, τ, α with
-        | [], [], [ self ] =>
-          ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            M.read (| M.read (| self |) |)))
-        | _, _, _ => M.impossible
-        end.
-      
-      Axiom Implements :
-        M.IsTraitInstance
-          "core::clone::Clone"
-          Self
-          (* Trait polymorphic types *) []
-          (* Instance *) [ ("clone", InstanceField.Method clone) ].
-    End Impl_core_clone_Clone_for_core_ptr_alignment_AlignmentEnum32.
-    
-    Module Impl_core_marker_StructuralPartialEq_for_core_ptr_alignment_AlignmentEnum32.
-      Definition Self : Ty.t := Ty.path "core::ptr::alignment::AlignmentEnum32".
-      
-      Axiom Implements :
-        M.IsTraitInstance
-          "core::marker::StructuralPartialEq"
-          Self
-          (* Trait polymorphic types *) []
-          (* Instance *) [].
-    End Impl_core_marker_StructuralPartialEq_for_core_ptr_alignment_AlignmentEnum32.
-    
-    Module Impl_core_cmp_PartialEq_for_core_ptr_alignment_AlignmentEnum32.
-      Definition Self : Ty.t := Ty.path "core::ptr::alignment::AlignmentEnum32".
-      
-      (* PartialEq *)
-      Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        match ε, τ, α with
-        | [], [], [ self; other ] =>
-          ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
-            M.read (|
-              let~ __self_tag :=
-                M.alloc (|
-                  M.call_closure (|
-                    M.get_function (|
-                      "core::intrinsics::discriminant_value",
-                      [ Ty.path "core::ptr::alignment::AlignmentEnum32" ]
-                    |),
-                    [ M.read (| self |) ]
-                  |)
-                |) in
-              let~ __arg1_tag :=
-                M.alloc (|
-                  M.call_closure (|
-                    M.get_function (|
-                      "core::intrinsics::discriminant_value",
-                      [ Ty.path "core::ptr::alignment::AlignmentEnum32" ]
-                    |),
-                    [ M.read (| other |) ]
-                  |)
-                |) in
-              M.alloc (| BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)) |)
-            |)))
-        | _, _, _ => M.impossible
-        end.
-      
-      Axiom Implements :
-        M.IsTraitInstance
-          "core::cmp::PartialEq"
-          Self
-          (* Trait polymorphic types *) []
-          (* Instance *) [ ("eq", InstanceField.Method eq) ].
-    End Impl_core_cmp_PartialEq_for_core_ptr_alignment_AlignmentEnum32.
-    
-    Module Impl_core_marker_StructuralEq_for_core_ptr_alignment_AlignmentEnum32.
-      Definition Self : Ty.t := Ty.path "core::ptr::alignment::AlignmentEnum32".
-      
-      Axiom Implements :
-        M.IsTraitInstance
-          "core::marker::StructuralEq"
-          Self
-          (* Trait polymorphic types *) []
-          (* Instance *) [].
-    End Impl_core_marker_StructuralEq_for_core_ptr_alignment_AlignmentEnum32.
-    
-    Module Impl_core_cmp_Eq_for_core_ptr_alignment_AlignmentEnum32.
-      Definition Self : Ty.t := Ty.path "core::ptr::alignment::AlignmentEnum32".
-      
-      (* Eq *)
-      Definition assert_receiver_is_total_eq
-          (ε : list Value.t)
-          (τ : list Ty.t)
-          (α : list Value.t)
-          : M :=
-        match ε, τ, α with
-        | [], [], [ self ] =>
-          ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            Value.Tuple []))
-        | _, _, _ => M.impossible
-        end.
-      
-      Axiom Implements :
-        M.IsTraitInstance
-          "core::cmp::Eq"
-          Self
-          (* Trait polymorphic types *) []
-          (* Instance *)
-          [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
-    End Impl_core_cmp_Eq_for_core_ptr_alignment_AlignmentEnum32.
-    
-    (*
-    Enum AlignmentEnum64
+    Enum AlignmentEnum
     {
       const_params := [];
       ty_params := [];
@@ -1779,8 +1219,8 @@ Module ptr.
     }
     *)
     
-    Module Impl_core_marker_Copy_for_core_ptr_alignment_AlignmentEnum64.
-      Definition Self : Ty.t := Ty.path "core::ptr::alignment::AlignmentEnum64".
+    Module Impl_core_marker_Copy_for_core_ptr_alignment_AlignmentEnum.
+      Definition Self : Ty.t := Ty.path "core::ptr::alignment::AlignmentEnum".
       
       Axiom Implements :
         M.IsTraitInstance
@@ -1788,10 +1228,10 @@ Module ptr.
           Self
           (* Trait polymorphic types *) []
           (* Instance *) [].
-    End Impl_core_marker_Copy_for_core_ptr_alignment_AlignmentEnum64.
+    End Impl_core_marker_Copy_for_core_ptr_alignment_AlignmentEnum.
     
-    Module Impl_core_clone_Clone_for_core_ptr_alignment_AlignmentEnum64.
-      Definition Self : Ty.t := Ty.path "core::ptr::alignment::AlignmentEnum64".
+    Module Impl_core_clone_Clone_for_core_ptr_alignment_AlignmentEnum.
+      Definition Self : Ty.t := Ty.path "core::ptr::alignment::AlignmentEnum".
       
       (* Clone *)
       Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -1809,10 +1249,10 @@ Module ptr.
           Self
           (* Trait polymorphic types *) []
           (* Instance *) [ ("clone", InstanceField.Method clone) ].
-    End Impl_core_clone_Clone_for_core_ptr_alignment_AlignmentEnum64.
+    End Impl_core_clone_Clone_for_core_ptr_alignment_AlignmentEnum.
     
-    Module Impl_core_marker_StructuralPartialEq_for_core_ptr_alignment_AlignmentEnum64.
-      Definition Self : Ty.t := Ty.path "core::ptr::alignment::AlignmentEnum64".
+    Module Impl_core_marker_StructuralPartialEq_for_core_ptr_alignment_AlignmentEnum.
+      Definition Self : Ty.t := Ty.path "core::ptr::alignment::AlignmentEnum".
       
       Axiom Implements :
         M.IsTraitInstance
@@ -1820,10 +1260,10 @@ Module ptr.
           Self
           (* Trait polymorphic types *) []
           (* Instance *) [].
-    End Impl_core_marker_StructuralPartialEq_for_core_ptr_alignment_AlignmentEnum64.
+    End Impl_core_marker_StructuralPartialEq_for_core_ptr_alignment_AlignmentEnum.
     
-    Module Impl_core_cmp_PartialEq_for_core_ptr_alignment_AlignmentEnum64.
-      Definition Self : Ty.t := Ty.path "core::ptr::alignment::AlignmentEnum64".
+    Module Impl_core_cmp_PartialEq_for_core_ptr_alignment_AlignmentEnum.
+      Definition Self : Ty.t := Ty.path "core::ptr::alignment::AlignmentEnum".
       
       (* PartialEq *)
       Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -1833,27 +1273,27 @@ Module ptr.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ __self_tag :=
+              let~ __self_discr :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
                       "core::intrinsics::discriminant_value",
-                      [ Ty.path "core::ptr::alignment::AlignmentEnum64" ]
+                      [ Ty.path "core::ptr::alignment::AlignmentEnum" ]
                     |),
                     [ M.read (| self |) ]
                   |)
                 |) in
-              let~ __arg1_tag :=
+              let~ __arg1_discr :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
                       "core::intrinsics::discriminant_value",
-                      [ Ty.path "core::ptr::alignment::AlignmentEnum64" ]
+                      [ Ty.path "core::ptr::alignment::AlignmentEnum" ]
                     |),
                     [ M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)) |)
+              M.alloc (| BinOp.Pure.eq (M.read (| __self_discr |)) (M.read (| __arg1_discr |)) |)
             |)))
         | _, _, _ => M.impossible
         end.
@@ -1864,21 +1304,10 @@ Module ptr.
           Self
           (* Trait polymorphic types *) []
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
-    End Impl_core_cmp_PartialEq_for_core_ptr_alignment_AlignmentEnum64.
+    End Impl_core_cmp_PartialEq_for_core_ptr_alignment_AlignmentEnum.
     
-    Module Impl_core_marker_StructuralEq_for_core_ptr_alignment_AlignmentEnum64.
-      Definition Self : Ty.t := Ty.path "core::ptr::alignment::AlignmentEnum64".
-      
-      Axiom Implements :
-        M.IsTraitInstance
-          "core::marker::StructuralEq"
-          Self
-          (* Trait polymorphic types *) []
-          (* Instance *) [].
-    End Impl_core_marker_StructuralEq_for_core_ptr_alignment_AlignmentEnum64.
-    
-    Module Impl_core_cmp_Eq_for_core_ptr_alignment_AlignmentEnum64.
-      Definition Self : Ty.t := Ty.path "core::ptr::alignment::AlignmentEnum64".
+    Module Impl_core_cmp_Eq_for_core_ptr_alignment_AlignmentEnum.
+      Definition Self : Ty.t := Ty.path "core::ptr::alignment::AlignmentEnum".
       
       (* Eq *)
       Definition assert_receiver_is_total_eq
@@ -1901,6 +1330,6 @@ Module ptr.
           (* Trait polymorphic types *) []
           (* Instance *)
           [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
-    End Impl_core_cmp_Eq_for_core_ptr_alignment_AlignmentEnum64.
+    End Impl_core_cmp_Eq_for_core_ptr_alignment_AlignmentEnum.
   End alignment.
 End ptr.

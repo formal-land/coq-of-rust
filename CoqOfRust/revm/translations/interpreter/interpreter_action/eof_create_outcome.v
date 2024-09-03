@@ -38,31 +38,25 @@ Module interpreter_action.
                 M.read (| f |);
                 M.read (| Value.String "EOFCreateOutcome" |);
                 M.read (| Value.String "result" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "revm_interpreter::interpreter_action::eof_create_outcome::EOFCreateOutcome",
-                    "result"
-                  |));
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "revm_interpreter::interpreter_action::eof_create_outcome::EOFCreateOutcome",
+                  "result"
+                |);
                 M.read (| Value.String "address" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.SubPointer.get_struct_record_field (|
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "revm_interpreter::interpreter_action::eof_create_outcome::EOFCreateOutcome",
+                  "address"
+                |);
+                M.read (| Value.String "return_memory_range" |);
+                M.alloc (|
+                  M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
                     "revm_interpreter::interpreter_action::eof_create_outcome::EOFCreateOutcome",
-                    "address"
-                  |));
-                M.read (| Value.String "return_memory_range" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.alloc (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "revm_interpreter::interpreter_action::eof_create_outcome::EOFCreateOutcome",
-                      "return_memory_range"
-                    |)
-                  |))
+                    "return_memory_range"
+                  |)
+                |)
               ]
             |)))
         | _, _, _ => M.impossible
@@ -254,18 +248,6 @@ Module interpreter_action.
           (* Trait polymorphic types *) []
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
     End Impl_core_cmp_PartialEq_for_revm_interpreter_interpreter_action_eof_create_outcome_EOFCreateOutcome.
-    
-    Module Impl_core_marker_StructuralEq_for_revm_interpreter_interpreter_action_eof_create_outcome_EOFCreateOutcome.
-      Definition Self : Ty.t :=
-        Ty.path "revm_interpreter::interpreter_action::eof_create_outcome::EOFCreateOutcome".
-      
-      Axiom Implements :
-        M.IsTraitInstance
-          "core::marker::StructuralEq"
-          Self
-          (* Trait polymorphic types *) []
-          (* Instance *) [].
-    End Impl_core_marker_StructuralEq_for_revm_interpreter_interpreter_action_eof_create_outcome_EOFCreateOutcome.
     
     Module Impl_core_cmp_Eq_for_revm_interpreter_interpreter_action_eof_create_outcome_EOFCreateOutcome.
       Definition Self : Ty.t :=

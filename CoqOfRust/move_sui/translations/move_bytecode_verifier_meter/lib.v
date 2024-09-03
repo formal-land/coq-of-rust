@@ -146,7 +146,7 @@ Module Impl_core_cmp_PartialEq_for_move_bytecode_verifier_meter_Scope.
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
         M.read (|
-          let~ __self_tag :=
+          let~ __self_discr :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (|
@@ -156,7 +156,7 @@ Module Impl_core_cmp_PartialEq_for_move_bytecode_verifier_meter_Scope.
                 [ M.read (| self |) ]
               |)
             |) in
-          let~ __arg1_tag :=
+          let~ __arg1_discr :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (|
@@ -166,7 +166,7 @@ Module Impl_core_cmp_PartialEq_for_move_bytecode_verifier_meter_Scope.
                 [ M.read (| other |) ]
               |)
             |) in
-          M.alloc (| BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)) |)
+          M.alloc (| BinOp.Pure.eq (M.read (| __self_discr |)) (M.read (| __arg1_discr |)) |)
         |)))
     | _, _, _ => M.impossible
     end.
@@ -178,17 +178,6 @@ Module Impl_core_cmp_PartialEq_for_move_bytecode_verifier_meter_Scope.
       (* Trait polymorphic types *) []
       (* Instance *) [ ("eq", InstanceField.Method eq) ].
 End Impl_core_cmp_PartialEq_for_move_bytecode_verifier_meter_Scope.
-
-Module Impl_core_marker_StructuralEq_for_move_bytecode_verifier_meter_Scope.
-  Definition Self : Ty.t := Ty.path "move_bytecode_verifier_meter::Scope".
-  
-  Axiom Implements :
-    M.IsTraitInstance
-      "core::marker::StructuralEq"
-      Self
-      (* Trait polymorphic types *) []
-      (* Instance *) [].
-End Impl_core_marker_StructuralEq_for_move_bytecode_verifier_meter_Scope.
 
 Module Impl_core_cmp_Eq_for_move_bytecode_verifier_meter_Scope.
   Definition Self : Ty.t := Ty.path "move_bytecode_verifier_meter::Scope".
@@ -227,7 +216,7 @@ Module Impl_core_cmp_PartialOrd_for_move_bytecode_verifier_meter_Scope.
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
         M.read (|
-          let~ __self_tag :=
+          let~ __self_discr :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (|
@@ -237,7 +226,7 @@ Module Impl_core_cmp_PartialOrd_for_move_bytecode_verifier_meter_Scope.
                 [ M.read (| self |) ]
               |)
             |) in
-          let~ __arg1_tag :=
+          let~ __arg1_discr :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (|
@@ -256,7 +245,7 @@ Module Impl_core_cmp_PartialOrd_for_move_bytecode_verifier_meter_Scope.
                 "partial_cmp",
                 []
               |),
-              [ __self_tag; __arg1_tag ]
+              [ __self_discr; __arg1_discr ]
             |)
           |)
         |)))
@@ -282,7 +271,7 @@ Module Impl_core_cmp_Ord_for_move_bytecode_verifier_meter_Scope.
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
         M.read (|
-          let~ __self_tag :=
+          let~ __self_discr :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (|
@@ -292,7 +281,7 @@ Module Impl_core_cmp_Ord_for_move_bytecode_verifier_meter_Scope.
                 [ M.read (| self |) ]
               |)
             |) in
-          let~ __arg1_tag :=
+          let~ __arg1_discr :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (|
@@ -305,7 +294,7 @@ Module Impl_core_cmp_Ord_for_move_bytecode_verifier_meter_Scope.
           M.alloc (|
             M.call_closure (|
               M.get_trait_method (| "core::cmp::Ord", Ty.path "isize", [], "cmp", [] |),
-              [ __self_tag; __arg1_tag ]
+              [ __self_discr; __arg1_discr ]
             |)
           |)
         |)))

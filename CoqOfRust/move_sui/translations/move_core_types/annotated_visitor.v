@@ -952,12 +952,9 @@ Module annotated_visitor.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [ M.read (| Value.String "unexpected end of input" |) ]
-                                |))
+                              M.alloc (|
+                                Value.Array [ M.read (| Value.String "unexpected end of input" |) ]
+                              |)
                             ]
                           |)
                         ]
@@ -989,39 +986,35 @@ Module annotated_visitor.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array [ M.read (| Value.String "unexpected byte: " |) ]
-                                |));
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path "core::fmt::rt::Argument",
-                                          "new_display",
-                                          [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ]
-                                        |),
-                                        [
-                                          M.alloc (|
-                                            M.call_closure (|
-                                              M.get_trait_method (|
-                                                "thiserror::display::DisplayAsDisplay",
-                                                Ty.apply (Ty.path "&") [] [ Ty.path "u8" ],
-                                                [],
-                                                "as_display",
-                                                []
-                                              |),
-                                              [ _0 ]
-                                            |)
+                              M.alloc (|
+                                Value.Array [ M.read (| Value.String "unexpected byte: " |) ]
+                              |);
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "core::fmt::rt::Argument",
+                                        "new_display",
+                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ]
+                                      |),
+                                      [
+                                        M.alloc (|
+                                          M.call_closure (|
+                                            M.get_trait_method (|
+                                              "thiserror::display::DisplayAsDisplay",
+                                              Ty.apply (Ty.path "&") [] [ Ty.path "u8" ],
+                                              [],
+                                              "as_display",
+                                              []
+                                            |),
+                                            [ _0 ]
                                           |)
-                                        ]
-                                      |)
-                                    ]
-                                |))
+                                        |)
+                                      ]
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -1053,43 +1046,39 @@ Module annotated_visitor.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (| Value.String "trailing " |);
-                                      M.read (| Value.String " byte(s) at the end of input" |)
-                                    ]
-                                |));
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path "core::fmt::rt::Argument",
-                                          "new_display",
-                                          [ Ty.apply (Ty.path "&") [] [ Ty.path "usize" ] ]
-                                        |),
-                                        [
-                                          M.alloc (|
-                                            M.call_closure (|
-                                              M.get_trait_method (|
-                                                "thiserror::display::DisplayAsDisplay",
-                                                Ty.apply (Ty.path "&") [] [ Ty.path "usize" ],
-                                                [],
-                                                "as_display",
-                                                []
-                                              |),
-                                              [ _0 ]
-                                            |)
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (| Value.String "trailing " |);
+                                    M.read (| Value.String " byte(s) at the end of input" |)
+                                  ]
+                              |);
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "core::fmt::rt::Argument",
+                                        "new_display",
+                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "usize" ] ]
+                                      |),
+                                      [
+                                        M.alloc (|
+                                          M.call_closure (|
+                                            M.get_trait_method (|
+                                              "thiserror::display::DisplayAsDisplay",
+                                              Ty.apply (Ty.path "&") [] [ Ty.path "usize" ],
+                                              [],
+                                              "as_display",
+                                              []
+                                            |),
+                                            [ _0 ]
                                           |)
-                                        ]
-                                      |)
-                                    ]
-                                |))
+                                        |)
+                                      ]
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -1158,11 +1147,7 @@ Module annotated_visitor.
                           "debug_tuple_field1_finish",
                           []
                         |),
-                        [
-                          M.read (| f |);
-                          M.read (| Value.String "UnexpectedByte" |);
-                          (* Unsize *) M.pointer_coercion __self_0
-                        ]
+                        [ M.read (| f |); M.read (| Value.String "UnexpectedByte" |); __self_0 ]
                       |)
                     |)));
                 fun γ =>
@@ -1182,11 +1167,7 @@ Module annotated_visitor.
                           "debug_tuple_field1_finish",
                           []
                         |),
-                        [
-                          M.read (| f |);
-                          M.read (| Value.String "TrailingBytes" |);
-                          (* Unsize *) M.pointer_coercion __self_0
-                        ]
+                        [ M.read (| f |); M.read (| Value.String "TrailingBytes" |); __self_0 ]
                       |)
                     |)))
               ]
@@ -3879,7 +3860,7 @@ Module annotated_visitor.
                                 "read_exact",
                                 []
                               |),
-                              [ M.read (| bytes |); (* Unsize *) M.pointer_coercion buf ]
+                              [ M.read (| bytes |); buf ]
                             |);
                             M.closure
                               (fun γ =>

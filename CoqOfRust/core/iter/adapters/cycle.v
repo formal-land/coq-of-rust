@@ -83,23 +83,19 @@ Module iter.
                   M.read (| f |);
                   M.read (| Value.String "Cycle" |);
                   M.read (| Value.String "orig" |);
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.SubPointer.get_struct_record_field (|
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::iter::adapters::cycle::Cycle",
+                    "orig"
+                  |);
+                  M.read (| Value.String "iter" |);
+                  M.alloc (|
+                    M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
                       "core::iter::adapters::cycle::Cycle",
-                      "orig"
-                    |));
-                  M.read (| Value.String "iter" |);
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.alloc (|
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::iter::adapters::cycle::Cycle",
-                        "iter"
-                      |)
-                    |))
+                      "iter"
+                    |)
+                  |)
                 ]
               |)))
           | _, _, _ => M.impossible
@@ -737,7 +733,7 @@ Module iter.
           end.
         
         (*
-            fn advance_by(&mut self, n: usize) -> Result<(), NonZeroUsize> {
+            fn advance_by(&mut self, n: usize) -> Result<(), NonZero<usize>> {
                 let mut n = match self.iter.advance_by(n) {
                     Ok(()) => return Ok(()),
                     Err(rem) => rem.get(),
@@ -752,7 +748,7 @@ Module iter.
                     };
                 }
         
-                NonZeroUsize::new(n).map_or(Ok(()), Err)
+                NonZero::new(n).map_or(Ok(()), Err)
             }
         *)
         Definition advance_by
@@ -824,7 +820,10 @@ Module iter.
                                 M.alloc (|
                                   M.call_closure (|
                                     M.get_associated_function (|
-                                      Ty.path "core::num::nonzero::NonZeroUsize",
+                                      Ty.apply
+                                        (Ty.path "core::num::nonzero::NonZero")
+                                        []
+                                        [ Ty.path "usize" ],
                                       "get",
                                       []
                                     |),
@@ -935,8 +934,10 @@ Module iter.
                                                     BinOp.Pure.eq
                                                       (M.call_closure (|
                                                         M.get_associated_function (|
-                                                          Ty.path
-                                                            "core::num::nonzero::NonZeroUsize",
+                                                          Ty.apply
+                                                            (Ty.path "core::num::nonzero::NonZero")
+                                                            []
+                                                            [ Ty.path "usize" ],
                                                           "get",
                                                           []
                                                         |),
@@ -966,7 +967,10 @@ Module iter.
                                                 M.alloc (|
                                                   M.call_closure (|
                                                     M.get_associated_function (|
-                                                      Ty.path "core::num::nonzero::NonZeroUsize",
+                                                      Ty.apply
+                                                        (Ty.path "core::num::nonzero::NonZero")
+                                                        []
+                                                        [ Ty.path "usize" ],
                                                       "get",
                                                       []
                                                     |),
@@ -1000,25 +1004,50 @@ Module iter.
                           Ty.apply
                             (Ty.path "core::option::Option")
                             []
-                            [ Ty.path "core::num::nonzero::NonZeroUsize" ],
+                            [
+                              Ty.apply
+                                (Ty.path "core::num::nonzero::NonZero")
+                                []
+                                [ Ty.path "usize" ]
+                            ],
                           "map_or",
                           [
                             Ty.apply
                               (Ty.path "core::result::Result")
                               []
-                              [ Ty.tuple []; Ty.path "core::num::nonzero::NonZeroUsize" ];
+                              [
+                                Ty.tuple [];
+                                Ty.apply
+                                  (Ty.path "core::num::nonzero::NonZero")
+                                  []
+                                  [ Ty.path "usize" ]
+                              ];
                             Ty.function
-                              [ Ty.path "core::num::nonzero::NonZeroUsize" ]
+                              [
+                                Ty.apply
+                                  (Ty.path "core::num::nonzero::NonZero")
+                                  []
+                                  [ Ty.path "usize" ]
+                              ]
                               (Ty.apply
                                 (Ty.path "core::result::Result")
                                 []
-                                [ Ty.tuple []; Ty.path "core::num::nonzero::NonZeroUsize" ])
+                                [
+                                  Ty.tuple [];
+                                  Ty.apply
+                                    (Ty.path "core::num::nonzero::NonZero")
+                                    []
+                                    [ Ty.path "usize" ]
+                                ])
                           ]
                         |),
                         [
                           M.call_closure (|
                             M.get_associated_function (|
-                              Ty.path "core::num::nonzero::NonZeroUsize",
+                              Ty.apply
+                                (Ty.path "core::num::nonzero::NonZero")
+                                []
+                                [ Ty.path "usize" ],
                               "new",
                               []
                             |),

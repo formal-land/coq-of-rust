@@ -29,7 +29,7 @@ Module cell.
       Definition new (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
         match ε, τ, α with
-        | [ host ], [], [] =>
+        | [], [], [] =>
           ltac:(M.monadic
             (Value.StructRecord
               "core::cell::once::OnceCell"
@@ -397,6 +397,96 @@ Module cell.
         M.IsAssociatedFunction (Self T) "get_or_init" (get_or_init T).
       
       (*
+          pub fn get_mut_or_init<F>(&mut self, f: F) -> &mut T
+          where
+              F: FnOnce() -> T,
+          {
+              match self.get_mut_or_try_init(|| Ok::<T, !>(f())) {
+                  Ok(val) => val,
+              }
+          }
+      *)
+      Definition get_mut_or_init
+          (T : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        let Self : Ty.t := Self T in
+        match ε, τ, α with
+        | [], [ F ], [ self; f ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            let f := M.alloc (| f |) in
+            M.read (|
+              M.match_operator (|
+                M.alloc (|
+                  M.call_closure (|
+                    M.get_associated_function (|
+                      Ty.apply (Ty.path "core::cell::once::OnceCell") [] [ T ],
+                      "get_mut_or_try_init",
+                      [
+                        Ty.function
+                          [ Ty.tuple [] ]
+                          (Ty.apply (Ty.path "core::result::Result") [] [ T; Ty.path "never" ]);
+                        Ty.path "never"
+                      ]
+                    |),
+                    [
+                      M.read (| self |);
+                      M.closure
+                        (fun γ =>
+                          ltac:(M.monadic
+                            match γ with
+                            | [ α0 ] =>
+                              M.match_operator (|
+                                M.alloc (| α0 |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (Value.StructTuple
+                                        "core::result::Result::Ok"
+                                        [
+                                          M.call_closure (|
+                                            M.get_trait_method (|
+                                              "core::ops::function::FnOnce",
+                                              F,
+                                              [ Ty.tuple [] ],
+                                              "call_once",
+                                              []
+                                            |),
+                                            [ M.read (| f |); Value.Tuple [] ]
+                                          |)
+                                        ]))
+                                ]
+                              |)
+                            | _ => M.impossible (||)
+                            end))
+                    ]
+                  |)
+                |),
+                [
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ0_0 :=
+                        M.SubPointer.get_struct_tuple_field (|
+                          γ,
+                          "core::result::Result::Ok",
+                          0
+                        |) in
+                      let val := M.copy (| γ0_0 |) in
+                      M.alloc (| M.read (| val |) |)))
+                ]
+              |)
+            |)))
+        | _, _, _ => M.impossible
+        end.
+      
+      Axiom AssociatedFunction_get_mut_or_init :
+        forall (T : Ty.t),
+        M.IsAssociatedFunction (Self T) "get_mut_or_init" (get_mut_or_init T).
+      
+      (*
           pub fn get_or_try_init<F, E>(&self, f: F) -> Result<&T, E>
           where
               F: FnOnce() -> Result<T, E>,
@@ -404,21 +494,7 @@ Module cell.
               if let Some(val) = self.get() {
                   return Ok(val);
               }
-              /// Avoid inlining the initialization closure into the common path that fetches
-              /// the already initialized value
-              #[cold]
-              fn outlined_call<F, T, E>(f: F) -> Result<T, E>
-              where
-                  F: FnOnce() -> Result<T, E>,
-              {
-                  f()
-              }
-              let val = outlined_call(f)?;
-              // Note that *some* forms of reentrant initialization might lead to
-              // UB (see `reentrant_init` test). I believe that just removing this
-              // `panic`, while keeping `try_insert` would be sound, but it seems
-              // better to panic, rather than to silently use an old value.
-              if let Ok(val) = self.try_insert(val) { Ok(val) } else { panic!("reentrant init") }
+              self.try_init(f)
           }
       *)
       Definition get_or_try_init
@@ -474,6 +550,224 @@ Module cell.
                         fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                       ]
                     |) in
+                  M.alloc (|
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::cell::once::OnceCell") [] [ T ],
+                        "try_init",
+                        [ F; E ]
+                      |),
+                      [ M.read (| self |); M.read (| f |) ]
+                    |)
+                  |)
+                |)))
+            |)))
+        | _, _, _ => M.impossible
+        end.
+      
+      Axiom AssociatedFunction_get_or_try_init :
+        forall (T : Ty.t),
+        M.IsAssociatedFunction (Self T) "get_or_try_init" (get_or_try_init T).
+      
+      (*
+          pub fn get_mut_or_try_init<F, E>(&mut self, f: F) -> Result<&mut T, E>
+          where
+              F: FnOnce() -> Result<T, E>,
+          {
+              if self.get().is_none() {
+                  self.try_init(f)?;
+              }
+              Ok(self.get_mut().unwrap())
+          }
+      *)
+      Definition get_mut_or_try_init
+          (T : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        let Self : Ty.t := Self T in
+        match ε, τ, α with
+        | [], [ F; E ], [ self; f ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            let f := M.alloc (| f |) in
+            M.catch_return (|
+              ltac:(M.monadic
+                (M.read (|
+                  let~ _ :=
+                    M.match_operator (|
+                      M.alloc (| Value.Tuple [] |),
+                      [
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let γ :=
+                              M.use
+                                (M.alloc (|
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.apply
+                                        (Ty.path "core::option::Option")
+                                        []
+                                        [ Ty.apply (Ty.path "&") [] [ T ] ],
+                                      "is_none",
+                                      []
+                                    |),
+                                    [
+                                      M.alloc (|
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.apply
+                                              (Ty.path "core::cell::once::OnceCell")
+                                              []
+                                              [ T ],
+                                            "get",
+                                            []
+                                          |),
+                                          [ M.read (| self |) ]
+                                        |)
+                                      |)
+                                    ]
+                                  |)
+                                |)) in
+                            let _ :=
+                              M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            let~ _ :=
+                              M.match_operator (|
+                                M.alloc (|
+                                  M.call_closure (|
+                                    M.get_trait_method (|
+                                      "core::ops::try_trait::Try",
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [ Ty.apply (Ty.path "&") [] [ T ]; E ],
+                                      [],
+                                      "branch",
+                                      []
+                                    |),
+                                    [
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.apply (Ty.path "core::cell::once::OnceCell") [] [ T ],
+                                          "try_init",
+                                          [ F; E ]
+                                        |),
+                                        [ M.read (| self |); M.read (| f |) ]
+                                      |)
+                                    ]
+                                  |)
+                                |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let γ0_0 :=
+                                        M.SubPointer.get_struct_tuple_field (|
+                                          γ,
+                                          "core::ops::control_flow::ControlFlow::Break",
+                                          0
+                                        |) in
+                                      let residual := M.copy (| γ0_0 |) in
+                                      M.alloc (|
+                                        M.never_to_any (|
+                                          M.read (|
+                                            M.return_ (|
+                                              M.call_closure (|
+                                                M.get_trait_method (|
+                                                  "core::ops::try_trait::FromResidual",
+                                                  Ty.apply
+                                                    (Ty.path "core::result::Result")
+                                                    []
+                                                    [ Ty.apply (Ty.path "&mut") [] [ T ]; E ],
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "core::result::Result")
+                                                      []
+                                                      [ Ty.path "core::convert::Infallible"; E ]
+                                                  ],
+                                                  "from_residual",
+                                                  []
+                                                |),
+                                                [ M.read (| residual |) ]
+                                              |)
+                                            |)
+                                          |)
+                                        |)
+                                      |)));
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let γ0_0 :=
+                                        M.SubPointer.get_struct_tuple_field (|
+                                          γ,
+                                          "core::ops::control_flow::ControlFlow::Continue",
+                                          0
+                                        |) in
+                                      let val := M.copy (| γ0_0 |) in
+                                      val))
+                                ]
+                              |) in
+                            M.alloc (| Value.Tuple [] |)));
+                        fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                      ]
+                    |) in
+                  M.alloc (|
+                    Value.StructTuple
+                      "core::result::Result::Ok"
+                      [
+                        M.call_closure (|
+                          M.get_associated_function (|
+                            Ty.apply
+                              (Ty.path "core::option::Option")
+                              []
+                              [ Ty.apply (Ty.path "&mut") [] [ T ] ],
+                            "unwrap",
+                            []
+                          |),
+                          [
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.apply (Ty.path "core::cell::once::OnceCell") [] [ T ],
+                                "get_mut",
+                                []
+                              |),
+                              [ M.read (| self |) ]
+                            |)
+                          ]
+                        |)
+                      ]
+                  |)
+                |)))
+            |)))
+        | _, _, _ => M.impossible
+        end.
+      
+      Axiom AssociatedFunction_get_mut_or_try_init :
+        forall (T : Ty.t),
+        M.IsAssociatedFunction (Self T) "get_mut_or_try_init" (get_mut_or_try_init T).
+      
+      (*
+          fn try_init<F, E>(&self, f: F) -> Result<&T, E>
+          where
+              F: FnOnce() -> Result<T, E>,
+          {
+              let val = f()?;
+              // Note that *some* forms of reentrant initialization might lead to
+              // UB (see `reentrant_init` test). I believe that just removing this
+              // `panic`, while keeping `try_insert` would be sound, but it seems
+              // better to panic, rather than to silently use an old value.
+              if let Ok(val) = self.try_insert(val) { Ok(val) } else { panic!("reentrant init") }
+          }
+      *)
+      Definition try_init (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        let Self : Ty.t := Self T in
+        match ε, τ, α with
+        | [], [ F; E ], [ self; f ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            let f := M.alloc (| f |) in
+            M.catch_return (|
+              ltac:(M.monadic
+                (M.read (|
                   let~ val :=
                     M.copy (|
                       M.match_operator (|
@@ -488,12 +782,14 @@ Module cell.
                             |),
                             [
                               M.call_closure (|
-                                M.get_associated_function (|
-                                  Self,
-                                  "outlined_call.get_or_try_init",
+                                M.get_trait_method (|
+                                  "core::ops::function::FnOnce",
+                                  F,
+                                  [ Ty.tuple [] ],
+                                  "call_once",
                                   []
                                 |),
-                                [ M.read (| f |) ]
+                                [ M.read (| f |); Value.Tuple [] ]
                               |)
                             ]
                           |)
@@ -587,11 +883,9 @@ Module cell.
                                       []
                                     |),
                                     [
-                                      (* Unsize *)
-                                      M.pointer_coercion
-                                        (M.alloc (|
-                                          Value.Array [ M.read (| Value.String "reentrant init" |) ]
-                                        |))
+                                      M.alloc (|
+                                        Value.Array [ M.read (| Value.String "reentrant init" |) ]
+                                      |)
                                     ]
                                   |)
                                 ]
@@ -605,12 +899,12 @@ Module cell.
         | _, _, _ => M.impossible
         end.
       
-      Axiom AssociatedFunction_get_or_try_init :
+      Axiom AssociatedFunction_try_init :
         forall (T : Ty.t),
-        M.IsAssociatedFunction (Self T) "get_or_try_init" (get_or_try_init T).
+        M.IsAssociatedFunction (Self T) "try_init" (try_init T).
       
       (*
-          pub fn into_inner(self) -> Option<T> {
+          pub const fn into_inner(self) -> Option<T> {
               // Because `into_inner` takes `self` by value, the compiler statically verifies
               // that it is not currently borrowed. So it is safe to move out `Option<T>`.
               self.inner.into_inner()
@@ -777,7 +1071,7 @@ Module cell.
                               "field",
                               []
                             |),
-                            [ d; (* Unsize *) M.pointer_coercion (M.read (| v |)) ]
+                            [ d; M.read (| v |) ]
                           |)
                         |)));
                     fun γ =>
@@ -792,24 +1086,20 @@ Module cell.
                             |),
                             [
                               d;
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.path "core::fmt::Arguments",
-                                      "new_const",
-                                      []
-                                    |),
-                                    [
-                                      (* Unsize *)
-                                      M.pointer_coercion
-                                        (M.alloc (|
-                                          Value.Array [ M.read (| Value.String "<uninit>" |) ]
-                                        |))
-                                    ]
-                                  |)
-                                |))
+                              M.alloc (|
+                                M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.path "core::fmt::Arguments",
+                                    "new_const",
+                                    []
+                                  |),
+                                  [
+                                    M.alloc (|
+                                      Value.Array [ M.read (| Value.String "<uninit>" |) ]
+                                    |)
+                                  ]
+                                |)
+                              |)
                             ]
                           |)
                         |)))

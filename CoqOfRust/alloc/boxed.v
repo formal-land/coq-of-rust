@@ -1197,10 +1197,7 @@ Module boxed.
                           "from_raw_in",
                           []
                         |),
-                        [
-                          (* Unsize *) M.pointer_coercion (M.rust_cast (M.read (| raw |)));
-                          M.read (| alloc |)
-                        ]
+                        [ M.rust_cast (M.read (| raw |)); M.read (| alloc |) ]
                       |)
                     |)))
               ]
@@ -1265,7 +1262,8 @@ Module boxed.
     
     (*
         pub fn into_raw(b: Self) -> *mut T {
-            Self::into_raw_with_allocator(b).0
+            // Make sure Miri realizes that we transition from a noalias pointer to a raw pointer here.
+            unsafe { addr_of_mut!( *&mut *Self::into_raw_with_allocator(b).0) }
         }
     *)
     Definition into_raw (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -1298,8 +1296,15 @@ Module boxed.
     
     (*
         pub fn into_raw_with_allocator(b: Self) -> ( *mut T, A) {
-            let (leaked, alloc) = Box::into_unique(b);
-            (leaked.as_ptr(), alloc)
+            let mut b = mem::ManuallyDrop::new(b);
+            // We carefully get the raw pointer out in a way that Miri's aliasing model understands what
+            // is happening: using the primitive "deref" of `Box`. In case `A` is *not* `Global`, we
+            // want *no* aliasing requirements here!
+            // In case `A` *is* `Global`, this does not quite have the right behavior; `into_raw`
+            // works around that.
+            let ptr = addr_of_mut!( **b);
+            let alloc = unsafe { ptr::read(&b.1) };
+            (ptr, alloc)
         }
     *)
     Definition into_raw_with_allocator
@@ -1314,40 +1319,64 @@ Module boxed.
         ltac:(M.monadic
           (let b := M.alloc (| b |) in
           M.read (|
-            M.match_operator (|
+            let~ b :=
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ],
-                    "into_unique",
+                    Ty.apply
+                      (Ty.path "core::mem::manually_drop::ManuallyDrop")
+                      []
+                      [ Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ] ],
+                    "new",
                     []
                   |),
                   [ M.read (| b |) ]
                 |)
-              |),
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                    let leaked := M.copy (| γ0_0 |) in
-                    let alloc := M.copy (| γ0_1 |) in
-                    M.alloc (|
-                      Value.Tuple
-                        [
-                          M.call_closure (|
-                            M.get_associated_function (|
-                              Ty.apply (Ty.path "core::ptr::unique::Unique") [] [ T ],
-                              "as_ptr",
-                              []
-                            |),
-                            [ M.read (| leaked |) ]
-                          |);
-                          M.read (| alloc |)
-                        ]
-                    |)))
-              ]
-            |)
+              |) in
+            let~ ptr :=
+              M.alloc (|
+                M.read (|
+                  M.call_closure (|
+                    M.get_trait_method (|
+                      "core::ops::deref::DerefMut",
+                      Ty.apply
+                        (Ty.path "core::mem::manually_drop::ManuallyDrop")
+                        []
+                        [ Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ] ],
+                      [],
+                      "deref_mut",
+                      []
+                    |),
+                    [ b ]
+                  |)
+                |)
+              |) in
+            let~ alloc :=
+              M.alloc (|
+                M.call_closure (|
+                  M.get_function (| "core::ptr::read", [ A ] |),
+                  [
+                    M.SubPointer.get_struct_tuple_field (|
+                      M.call_closure (|
+                        M.get_trait_method (|
+                          "core::ops::deref::Deref",
+                          Ty.apply
+                            (Ty.path "core::mem::manually_drop::ManuallyDrop")
+                            []
+                            [ Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ] ],
+                          [],
+                          "deref",
+                          []
+                        |),
+                        [ b ]
+                      |),
+                      "alloc::boxed::Box",
+                      1
+                    |)
+                  ]
+                |)
+              |) in
+            M.alloc (| Value.Tuple [ M.read (| ptr |); M.read (| alloc |) ] |)
           |)))
       | _, _, _ => M.impossible
       end.
@@ -1358,13 +1387,8 @@ Module boxed.
     
     (*
         pub fn into_unique(b: Self) -> (Unique<T>, A) {
-            // Box is recognized as a "unique pointer" by Stacked Borrows, but internally it is a
-            // raw pointer for the type system. Turning it directly into a raw pointer would not be
-            // recognized as "releasing" the unique pointer to permit aliased raw accesses,
-            // so all raw pointer methods have to go through `Box::leak`. Turning *that* to a raw pointer
-            // behaves correctly.
-            let alloc = unsafe { ptr::read(&b.1) };
-            (Unique::from(Box::leak(b)), alloc)
+            let (ptr, alloc) = Box::into_raw_with_allocator(b);
+            unsafe { (Unique::from(&mut *ptr), alloc) }
         }
     *)
     Definition into_unique (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -1374,37 +1398,41 @@ Module boxed.
         ltac:(M.monadic
           (let b := M.alloc (| b |) in
           M.read (|
-            let~ alloc :=
+            M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "core::ptr::read", [ A ] |),
-                  [ M.SubPointer.get_struct_tuple_field (| b, "alloc::boxed::Box", 1 |) ]
+                  M.get_associated_function (|
+                    Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ],
+                    "into_raw_with_allocator",
+                    []
+                  |),
+                  [ M.read (| b |) ]
                 |)
-              |) in
-            M.alloc (|
-              Value.Tuple
-                [
-                  M.call_closure (|
-                    M.get_trait_method (|
-                      "core::convert::From",
-                      Ty.apply (Ty.path "core::ptr::unique::Unique") [] [ T ],
-                      [ Ty.apply (Ty.path "&mut") [] [ T ] ],
-                      "from",
-                      []
-                    |),
-                    [
-                      M.call_closure (|
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ],
-                          "leak",
-                          []
-                        |),
-                        [ M.read (| b |) ]
-                      |)
-                    ]
-                  |);
-                  M.read (| alloc |)
-                ]
+              |),
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                    let ptr := M.copy (| γ0_0 |) in
+                    let alloc := M.copy (| γ0_1 |) in
+                    M.alloc (|
+                      Value.Tuple
+                        [
+                          M.call_closure (|
+                            M.get_trait_method (|
+                              "core::convert::From",
+                              Ty.apply (Ty.path "core::ptr::unique::Unique") [] [ T ],
+                              [ Ty.apply (Ty.path "&mut") [] [ T ] ],
+                              "from",
+                              []
+                            |),
+                            [ M.read (| ptr |) ]
+                          |);
+                          M.read (| alloc |)
+                        ]
+                    |)))
+              ]
             |)
           |)))
       | _, _, _ => M.impossible
@@ -1413,6 +1441,48 @@ Module boxed.
     Axiom AssociatedFunction_into_unique :
       forall (T A : Ty.t),
       M.IsAssociatedFunction (Self T A) "into_unique" (into_unique T A).
+    
+    (*
+        pub fn as_mut_ptr(b: &mut Self) -> *mut T {
+            // This is a primitive deref, not going through `DerefMut`, and therefore not materializing
+            // any references.
+            ptr::addr_of_mut!( **b)
+        }
+    *)
+    Definition as_mut_ptr (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      let Self : Ty.t := Self T A in
+      match ε, τ, α with
+      | [], [], [ b ] =>
+        ltac:(M.monadic
+          (let b := M.alloc (| b |) in
+          M.read (| M.read (| b |) |)))
+      | _, _, _ => M.impossible
+      end.
+    
+    Axiom AssociatedFunction_as_mut_ptr :
+      forall (T A : Ty.t),
+      M.IsAssociatedFunction (Self T A) "as_mut_ptr" (as_mut_ptr T A).
+    
+    (*
+        pub fn as_ptr(b: &Self) -> *const T {
+            // This is a primitive deref, not going through `DerefMut`, and therefore not materializing
+            // any references.
+            ptr::addr_of!( **b)
+        }
+    *)
+    Definition as_ptr (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      let Self : Ty.t := Self T A in
+      match ε, τ, α with
+      | [], [], [ b ] =>
+        ltac:(M.monadic
+          (let b := M.alloc (| b |) in
+          M.read (| M.read (| b |) |)))
+      | _, _, _ => M.impossible
+      end.
+    
+    Axiom AssociatedFunction_as_ptr :
+      forall (T A : Ty.t),
+      M.IsAssociatedFunction (Self T A) "as_ptr" (as_ptr T A).
     
     (*
         pub const fn allocator(b: &Self) -> &A {
@@ -1438,7 +1508,7 @@ Module boxed.
         where
             A: 'a,
         {
-            unsafe { &mut *mem::ManuallyDrop::new(b).0.as_ptr() }
+            unsafe { &mut *Box::into_raw(b) }
         }
     *)
     Definition leak (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -1449,45 +1519,11 @@ Module boxed.
           (let b := M.alloc (| b |) in
           M.call_closure (|
             M.get_associated_function (|
-              Ty.apply (Ty.path "core::ptr::unique::Unique") [] [ T ],
-              "as_ptr",
+              Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ],
+              "into_raw",
               []
             |),
-            [
-              M.read (|
-                M.SubPointer.get_struct_tuple_field (|
-                  M.call_closure (|
-                    M.get_trait_method (|
-                      "core::ops::deref::Deref",
-                      Ty.apply
-                        (Ty.path "core::mem::manually_drop::ManuallyDrop")
-                        []
-                        [ Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ] ],
-                      [],
-                      "deref",
-                      []
-                    |),
-                    [
-                      M.alloc (|
-                        M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.apply
-                              (Ty.path "core::mem::manually_drop::ManuallyDrop")
-                              []
-                              [ Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ] ],
-                            "new",
-                            []
-                          |),
-                          [ M.read (| b |) ]
-                        |)
-                      |)
-                    ]
-                  |),
-                  "alloc::boxed::Box",
-                  0
-                |)
-              |)
-            ]
+            [ M.read (| b |) ]
           |)))
       | _, _, _ => M.impossible
       end.
@@ -2291,6 +2327,568 @@ Module boxed.
     Axiom AssociatedFunction_new_zeroed_slice_in :
       forall (T A : Ty.t),
       M.IsAssociatedFunction (Self T A) "new_zeroed_slice_in" (new_zeroed_slice_in T A).
+    
+    (*
+        pub fn try_new_uninit_slice_in(
+            len: usize,
+            alloc: A,
+        ) -> Result<Box<[mem::MaybeUninit<T>], A>, AllocError> {
+            let ptr = if T::IS_ZST || len == 0 {
+                NonNull::dangling()
+            } else {
+                let layout = match Layout::array::<mem::MaybeUninit<T>>(len) {
+                    Ok(l) => l,
+                    Err(_) => return Err(AllocError),
+                };
+                alloc.allocate(layout)?.cast()
+            };
+            unsafe { Ok(RawVec::from_raw_parts_in(ptr.as_ptr(), len, alloc).into_box(len)) }
+        }
+    *)
+    Definition try_new_uninit_slice_in
+        (T A : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      let Self : Ty.t := Self T A in
+      match ε, τ, α with
+      | [], [], [ len; alloc ] =>
+        ltac:(M.monadic
+          (let len := M.alloc (| len |) in
+          let alloc := M.alloc (| alloc |) in
+          M.catch_return (|
+            ltac:(M.monadic
+              (M.read (|
+                let~ ptr :=
+                  M.copy (|
+                    M.match_operator (|
+                      M.alloc (| Value.Tuple [] |),
+                      [
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let γ :=
+                              M.use
+                                (M.alloc (|
+                                  LogicalOp.or (|
+                                    M.read (|
+                                      M.get_constant (| "core::mem::SizedTypeProperties::IS_ZST" |)
+                                    |),
+                                    ltac:(M.monadic
+                                      (BinOp.Pure.eq (M.read (| len |)) (Value.Integer 0)))
+                                  |)
+                                |)) in
+                            let _ :=
+                              M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            M.alloc (|
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
+                                  "dangling",
+                                  []
+                                |),
+                                []
+                              |)
+                            |)));
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let~ layout :=
+                              M.copy (|
+                                M.match_operator (|
+                                  M.alloc (|
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "core::alloc::layout::Layout",
+                                        "array",
+                                        [
+                                          Ty.apply
+                                            (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                            []
+                                            [ T ]
+                                        ]
+                                      |),
+                                      [ M.read (| len |) ]
+                                    |)
+                                  |),
+                                  [
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (let γ0_0 :=
+                                          M.SubPointer.get_struct_tuple_field (|
+                                            γ,
+                                            "core::result::Result::Ok",
+                                            0
+                                          |) in
+                                        let l := M.copy (| γ0_0 |) in
+                                        l));
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (let γ0_0 :=
+                                          M.SubPointer.get_struct_tuple_field (|
+                                            γ,
+                                            "core::result::Result::Err",
+                                            0
+                                          |) in
+                                        M.alloc (|
+                                          M.never_to_any (|
+                                            M.read (|
+                                              M.return_ (|
+                                                Value.StructTuple
+                                                  "core::result::Result::Err"
+                                                  [ Value.StructTuple "core::alloc::AllocError" [] ]
+                                              |)
+                                            |)
+                                          |)
+                                        |)))
+                                  ]
+                                |)
+                              |) in
+                            M.alloc (|
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.apply
+                                    (Ty.path "core::ptr::non_null::NonNull")
+                                    []
+                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                                  "cast",
+                                  [ T ]
+                                |),
+                                [
+                                  M.read (|
+                                    M.match_operator (|
+                                      M.alloc (|
+                                        M.call_closure (|
+                                          M.get_trait_method (|
+                                            "core::ops::try_trait::Try",
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::ptr::non_null::NonNull")
+                                                  []
+                                                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]
+                                                  ];
+                                                Ty.path "core::alloc::AllocError"
+                                              ],
+                                            [],
+                                            "branch",
+                                            []
+                                          |),
+                                          [
+                                            M.call_closure (|
+                                              M.get_trait_method (|
+                                                "core::alloc::Allocator",
+                                                A,
+                                                [],
+                                                "allocate",
+                                                []
+                                              |),
+                                              [ alloc; M.read (| layout |) ]
+                                            |)
+                                          ]
+                                        |)
+                                      |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let γ0_0 :=
+                                              M.SubPointer.get_struct_tuple_field (|
+                                                γ,
+                                                "core::ops::control_flow::ControlFlow::Break",
+                                                0
+                                              |) in
+                                            let residual := M.copy (| γ0_0 |) in
+                                            M.alloc (|
+                                              M.never_to_any (|
+                                                M.read (|
+                                                  M.return_ (|
+                                                    M.call_closure (|
+                                                      M.get_trait_method (|
+                                                        "core::ops::try_trait::FromResidual",
+                                                        Ty.apply
+                                                          (Ty.path "core::result::Result")
+                                                          []
+                                                          [
+                                                            Ty.apply
+                                                              (Ty.path "alloc::boxed::Box")
+                                                              []
+                                                              [
+                                                                Ty.apply
+                                                                  (Ty.path "slice")
+                                                                  []
+                                                                  [
+                                                                    Ty.apply
+                                                                      (Ty.path
+                                                                        "core::mem::maybe_uninit::MaybeUninit")
+                                                                      []
+                                                                      [ T ]
+                                                                  ];
+                                                                A
+                                                              ];
+                                                            Ty.path "core::alloc::AllocError"
+                                                          ],
+                                                        [
+                                                          Ty.apply
+                                                            (Ty.path "core::result::Result")
+                                                            []
+                                                            [
+                                                              Ty.path "core::convert::Infallible";
+                                                              Ty.path "core::alloc::AllocError"
+                                                            ]
+                                                        ],
+                                                        "from_residual",
+                                                        []
+                                                      |),
+                                                      [ M.read (| residual |) ]
+                                                    |)
+                                                  |)
+                                                |)
+                                              |)
+                                            |)));
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let γ0_0 :=
+                                              M.SubPointer.get_struct_tuple_field (|
+                                                γ,
+                                                "core::ops::control_flow::ControlFlow::Continue",
+                                                0
+                                              |) in
+                                            let val := M.copy (| γ0_0 |) in
+                                            val))
+                                      ]
+                                    |)
+                                  |)
+                                ]
+                              |)
+                            |)))
+                      ]
+                    |)
+                  |) in
+                M.alloc (|
+                  Value.StructTuple
+                    "core::result::Result::Ok"
+                    [
+                      M.call_closure (|
+                        M.get_associated_function (|
+                          Ty.apply (Ty.path "alloc::raw_vec::RawVec") [] [ T; A ],
+                          "into_box",
+                          []
+                        |),
+                        [
+                          M.call_closure (|
+                            M.get_associated_function (|
+                              Ty.apply (Ty.path "alloc::raw_vec::RawVec") [] [ T; A ],
+                              "from_raw_parts_in",
+                              []
+                            |),
+                            [
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
+                                  "as_ptr",
+                                  []
+                                |),
+                                [ M.read (| ptr |) ]
+                              |);
+                              M.read (| len |);
+                              M.read (| alloc |)
+                            ]
+                          |);
+                          M.read (| len |)
+                        ]
+                      |)
+                    ]
+                |)
+              |)))
+          |)))
+      | _, _, _ => M.impossible
+      end.
+    
+    Axiom AssociatedFunction_try_new_uninit_slice_in :
+      forall (T A : Ty.t),
+      M.IsAssociatedFunction (Self T A) "try_new_uninit_slice_in" (try_new_uninit_slice_in T A).
+    
+    (*
+        pub fn try_new_zeroed_slice_in(
+            len: usize,
+            alloc: A,
+        ) -> Result<Box<[mem::MaybeUninit<T>], A>, AllocError> {
+            let ptr = if T::IS_ZST || len == 0 {
+                NonNull::dangling()
+            } else {
+                let layout = match Layout::array::<mem::MaybeUninit<T>>(len) {
+                    Ok(l) => l,
+                    Err(_) => return Err(AllocError),
+                };
+                alloc.allocate_zeroed(layout)?.cast()
+            };
+            unsafe { Ok(RawVec::from_raw_parts_in(ptr.as_ptr(), len, alloc).into_box(len)) }
+        }
+    *)
+    Definition try_new_zeroed_slice_in
+        (T A : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      let Self : Ty.t := Self T A in
+      match ε, τ, α with
+      | [], [], [ len; alloc ] =>
+        ltac:(M.monadic
+          (let len := M.alloc (| len |) in
+          let alloc := M.alloc (| alloc |) in
+          M.catch_return (|
+            ltac:(M.monadic
+              (M.read (|
+                let~ ptr :=
+                  M.copy (|
+                    M.match_operator (|
+                      M.alloc (| Value.Tuple [] |),
+                      [
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let γ :=
+                              M.use
+                                (M.alloc (|
+                                  LogicalOp.or (|
+                                    M.read (|
+                                      M.get_constant (| "core::mem::SizedTypeProperties::IS_ZST" |)
+                                    |),
+                                    ltac:(M.monadic
+                                      (BinOp.Pure.eq (M.read (| len |)) (Value.Integer 0)))
+                                  |)
+                                |)) in
+                            let _ :=
+                              M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            M.alloc (|
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
+                                  "dangling",
+                                  []
+                                |),
+                                []
+                              |)
+                            |)));
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let~ layout :=
+                              M.copy (|
+                                M.match_operator (|
+                                  M.alloc (|
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "core::alloc::layout::Layout",
+                                        "array",
+                                        [
+                                          Ty.apply
+                                            (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                            []
+                                            [ T ]
+                                        ]
+                                      |),
+                                      [ M.read (| len |) ]
+                                    |)
+                                  |),
+                                  [
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (let γ0_0 :=
+                                          M.SubPointer.get_struct_tuple_field (|
+                                            γ,
+                                            "core::result::Result::Ok",
+                                            0
+                                          |) in
+                                        let l := M.copy (| γ0_0 |) in
+                                        l));
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (let γ0_0 :=
+                                          M.SubPointer.get_struct_tuple_field (|
+                                            γ,
+                                            "core::result::Result::Err",
+                                            0
+                                          |) in
+                                        M.alloc (|
+                                          M.never_to_any (|
+                                            M.read (|
+                                              M.return_ (|
+                                                Value.StructTuple
+                                                  "core::result::Result::Err"
+                                                  [ Value.StructTuple "core::alloc::AllocError" [] ]
+                                              |)
+                                            |)
+                                          |)
+                                        |)))
+                                  ]
+                                |)
+                              |) in
+                            M.alloc (|
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.apply
+                                    (Ty.path "core::ptr::non_null::NonNull")
+                                    []
+                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                                  "cast",
+                                  [ T ]
+                                |),
+                                [
+                                  M.read (|
+                                    M.match_operator (|
+                                      M.alloc (|
+                                        M.call_closure (|
+                                          M.get_trait_method (|
+                                            "core::ops::try_trait::Try",
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::ptr::non_null::NonNull")
+                                                  []
+                                                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]
+                                                  ];
+                                                Ty.path "core::alloc::AllocError"
+                                              ],
+                                            [],
+                                            "branch",
+                                            []
+                                          |),
+                                          [
+                                            M.call_closure (|
+                                              M.get_trait_method (|
+                                                "core::alloc::Allocator",
+                                                A,
+                                                [],
+                                                "allocate_zeroed",
+                                                []
+                                              |),
+                                              [ alloc; M.read (| layout |) ]
+                                            |)
+                                          ]
+                                        |)
+                                      |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let γ0_0 :=
+                                              M.SubPointer.get_struct_tuple_field (|
+                                                γ,
+                                                "core::ops::control_flow::ControlFlow::Break",
+                                                0
+                                              |) in
+                                            let residual := M.copy (| γ0_0 |) in
+                                            M.alloc (|
+                                              M.never_to_any (|
+                                                M.read (|
+                                                  M.return_ (|
+                                                    M.call_closure (|
+                                                      M.get_trait_method (|
+                                                        "core::ops::try_trait::FromResidual",
+                                                        Ty.apply
+                                                          (Ty.path "core::result::Result")
+                                                          []
+                                                          [
+                                                            Ty.apply
+                                                              (Ty.path "alloc::boxed::Box")
+                                                              []
+                                                              [
+                                                                Ty.apply
+                                                                  (Ty.path "slice")
+                                                                  []
+                                                                  [
+                                                                    Ty.apply
+                                                                      (Ty.path
+                                                                        "core::mem::maybe_uninit::MaybeUninit")
+                                                                      []
+                                                                      [ T ]
+                                                                  ];
+                                                                A
+                                                              ];
+                                                            Ty.path "core::alloc::AllocError"
+                                                          ],
+                                                        [
+                                                          Ty.apply
+                                                            (Ty.path "core::result::Result")
+                                                            []
+                                                            [
+                                                              Ty.path "core::convert::Infallible";
+                                                              Ty.path "core::alloc::AllocError"
+                                                            ]
+                                                        ],
+                                                        "from_residual",
+                                                        []
+                                                      |),
+                                                      [ M.read (| residual |) ]
+                                                    |)
+                                                  |)
+                                                |)
+                                              |)
+                                            |)));
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let γ0_0 :=
+                                              M.SubPointer.get_struct_tuple_field (|
+                                                γ,
+                                                "core::ops::control_flow::ControlFlow::Continue",
+                                                0
+                                              |) in
+                                            let val := M.copy (| γ0_0 |) in
+                                            val))
+                                      ]
+                                    |)
+                                  |)
+                                ]
+                              |)
+                            |)))
+                      ]
+                    |)
+                  |) in
+                M.alloc (|
+                  Value.StructTuple
+                    "core::result::Result::Ok"
+                    [
+                      M.call_closure (|
+                        M.get_associated_function (|
+                          Ty.apply (Ty.path "alloc::raw_vec::RawVec") [] [ T; A ],
+                          "into_box",
+                          []
+                        |),
+                        [
+                          M.call_closure (|
+                            M.get_associated_function (|
+                              Ty.apply (Ty.path "alloc::raw_vec::RawVec") [] [ T; A ],
+                              "from_raw_parts_in",
+                              []
+                            |),
+                            [
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
+                                  "as_ptr",
+                                  []
+                                |),
+                                [ M.read (| ptr |) ]
+                              |);
+                              M.read (| len |);
+                              M.read (| alloc |)
+                            ]
+                          |);
+                          M.read (| len |)
+                        ]
+                      |)
+                    ]
+                |)
+              |)))
+          |)))
+      | _, _, _ => M.impossible
+      end.
+    
+    Axiom AssociatedFunction_try_new_zeroed_slice_in :
+      forall (T A : Ty.t),
+      M.IsAssociatedFunction (Self T A) "try_new_zeroed_slice_in" (try_new_zeroed_slice_in T A).
   End Impl_alloc_boxed_Box_slice_T_A.
   
   Module Impl_alloc_boxed_Box_core_mem_maybe_uninit_MaybeUninit_T_A.
@@ -2672,19 +3270,17 @@ Module boxed.
           (M.read (|
             let~ ptr :=
               M.alloc (|
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.apply
-                        (Ty.path "core::ptr::unique::Unique")
-                        []
-                        [ Ty.apply (Ty.path "array") [ Value.Integer 0 ] [ T ] ],
-                      "dangling",
+                M.call_closure (|
+                  M.get_associated_function (|
+                    Ty.apply
+                      (Ty.path "core::ptr::unique::Unique")
                       []
-                    |),
+                      [ Ty.apply (Ty.path "array") [ Value.Integer 0 ] [ T ] ],
+                    "dangling",
                     []
-                  |))
+                  |),
+                  []
+                |)
               |) in
             M.alloc (|
               Value.StructTuple
@@ -2727,19 +3323,17 @@ Module boxed.
               M.copy (|
                 let~ bytes :=
                   M.alloc (|
-                    (* Unsize *)
-                    M.pointer_coercion
-                      (M.call_closure (|
-                        M.get_associated_function (|
-                          Ty.apply
-                            (Ty.path "core::ptr::unique::Unique")
-                            []
-                            [ Ty.apply (Ty.path "array") [ Value.Integer 0 ] [ Ty.path "u8" ] ],
-                          "dangling",
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.apply
+                          (Ty.path "core::ptr::unique::Unique")
                           []
-                        |),
+                          [ Ty.apply (Ty.path "array") [ Value.Integer 0 ] [ Ty.path "u8" ] ],
+                        "dangling",
                         []
-                      |))
+                      |),
+                      []
+                    |)
                   |) in
                 M.alloc (|
                   M.call_closure (|
@@ -2790,7 +3384,7 @@ Module boxed.
             // Pre-allocate memory to allow writing the cloned value directly.
             let mut boxed = Self::new_uninit_in(self.1.clone());
             unsafe {
-                ( **self).write_clone_into_raw(boxed.as_mut_ptr());
+                ( **self).clone_to_uninit(boxed.as_mut_ptr());
                 boxed.assume_init()
             }
         }
@@ -2828,10 +3422,10 @@ Module boxed.
               M.alloc (|
                 M.call_closure (|
                   M.get_trait_method (|
-                    "alloc::alloc::WriteCloneIntoRaw",
+                    "core::clone::CloneToUninit",
                     T,
                     [],
-                    "write_clone_into_raw",
+                    "clone_to_uninit",
                     []
                   |),
                   [
@@ -4144,19 +4738,17 @@ Module boxed.
       | [], [], [ array ] =>
         ltac:(M.monadic
           (let array := M.alloc (| array |) in
-          (* Unsize *)
-          M.pointer_coercion
-            (M.call_closure (|
-              M.get_associated_function (|
-                Ty.apply
-                  (Ty.path "alloc::boxed::Box")
-                  []
-                  [ Ty.apply (Ty.path "array") [ N ] [ T ]; Ty.path "alloc::alloc::Global" ],
-                "new",
+          M.call_closure (|
+            M.get_associated_function (|
+              Ty.apply
+                (Ty.path "alloc::boxed::Box")
                 []
-              |),
-              [ M.read (| array |) ]
-            |))))
+                [ Ty.apply (Ty.path "array") [ N ] [ T ]; Ty.path "alloc::alloc::Global" ],
+              "new",
+              []
+            |),
+            [ M.read (| array |) ]
+          |)))
       | _, _, _ => M.impossible
       end.
     
@@ -4583,9 +5175,7 @@ Module boxed.
                 fun γ =>
                   ltac:(M.monadic
                     (M.alloc (|
-                      Value.StructTuple
-                        "core::result::Result::Err"
-                        [ (* Unsize *) M.pointer_coercion (M.read (| self |)) ]
+                      Value.StructTuple "core::result::Result::Err" [ M.read (| self |) ]
                     |)))
               ]
             |)
@@ -4677,7 +5267,7 @@ Module boxed.
                     "into_raw_with_allocator",
                     []
                   |),
-                  [ (* Unsize *) M.pointer_coercion (M.read (| self |)) ]
+                  [ M.read (| self |) ]
                 |)
               |),
               [
@@ -4776,9 +5366,7 @@ Module boxed.
                 fun γ =>
                   ltac:(M.monadic
                     (M.alloc (|
-                      Value.StructTuple
-                        "core::result::Result::Err"
-                        [ (* Unsize *) M.pointer_coercion (M.read (| self |)) ]
+                      Value.StructTuple "core::result::Result::Err" [ M.read (| self |) ]
                     |)))
               ]
             |)
@@ -4878,7 +5466,7 @@ Module boxed.
                     "into_raw_with_allocator",
                     []
                   |),
-                  [ (* Unsize *) M.pointer_coercion (M.read (| self |)) ]
+                  [ M.read (| self |) ]
                 |)
               |),
               [
@@ -4909,7 +5497,7 @@ Module boxed.
       M.IsAssociatedFunction (Self A) "downcast_unchecked" (downcast_unchecked A).
   End Impl_alloc_boxed_Box_Dyn_core_any_Any_Trait_core_marker_Send_AutoTrait_A.
   
-  Module Impl_alloc_boxed_Box_Dyn_core_any_Any_Trait_core_marker_Sync_AutoTrait_core_marker_Send_AutoTrait_A.
+  Module Impl_alloc_boxed_Box_Dyn_core_any_Any_Trait_core_marker_Send_AutoTrait_core_marker_Sync_AutoTrait_A.
     Definition Self (A : Ty.t) : Ty.t :=
       Ty.apply
         (Ty.path "alloc::boxed::Box")
@@ -4918,8 +5506,8 @@ Module boxed.
           Ty.dyn
             [
               ("core::any::Any::Trait", []);
-              ("core::marker::Sync::AutoTrait", []);
-              ("core::marker::Send::AutoTrait", [])
+              ("core::marker::Send::AutoTrait", []);
+              ("core::marker::Sync::AutoTrait", [])
             ];
           A
         ].
@@ -4949,8 +5537,8 @@ Module boxed.
                               Ty.dyn
                                 [
                                   ("core::any::Any::Trait", []);
-                                  ("core::marker::Sync::AutoTrait", []);
-                                  ("core::marker::Send::AutoTrait", [])
+                                  ("core::marker::Send::AutoTrait", []);
+                                  ("core::marker::Sync::AutoTrait", [])
                                 ],
                               "is",
                               [ T ]
@@ -4972,8 +5560,8 @@ Module boxed.
                                   Ty.dyn
                                     [
                                       ("core::any::Any::Trait", []);
-                                      ("core::marker::Sync::AutoTrait", []);
-                                      ("core::marker::Send::AutoTrait", [])
+                                      ("core::marker::Send::AutoTrait", []);
+                                      ("core::marker::Sync::AutoTrait", [])
                                     ];
                                   A
                                 ],
@@ -4987,9 +5575,7 @@ Module boxed.
                 fun γ =>
                   ltac:(M.monadic
                     (M.alloc (|
-                      Value.StructTuple
-                        "core::result::Result::Err"
-                        [ (* Unsize *) M.pointer_coercion (M.read (| self |)) ]
+                      Value.StructTuple "core::result::Result::Err" [ M.read (| self |) ]
                     |)))
               ]
             |)
@@ -5046,8 +5632,8 @@ Module boxed.
                                             Ty.dyn
                                               [
                                                 ("core::any::Any::Trait", []);
-                                                ("core::marker::Sync::AutoTrait", []);
-                                                ("core::marker::Send::AutoTrait", [])
+                                                ("core::marker::Send::AutoTrait", []);
+                                                ("core::marker::Sync::AutoTrait", [])
                                               ],
                                             "is",
                                             [ T ]
@@ -5087,15 +5673,15 @@ Module boxed.
                         Ty.dyn
                           [
                             ("core::any::Any::Trait", []);
-                            ("core::marker::Sync::AutoTrait", []);
-                            ("core::marker::Send::AutoTrait", [])
+                            ("core::marker::Send::AutoTrait", []);
+                            ("core::marker::Sync::AutoTrait", [])
                           ];
                         A
                       ],
                     "into_raw_with_allocator",
                     []
                   |),
-                  [ (* Unsize *) M.pointer_coercion (M.read (| self |)) ]
+                  [ M.read (| self |) ]
                 |)
               |),
               [
@@ -5124,7 +5710,7 @@ Module boxed.
     Axiom AssociatedFunction_downcast_unchecked :
       forall (A : Ty.t),
       M.IsAssociatedFunction (Self A) "downcast_unchecked" (downcast_unchecked A).
-  End Impl_alloc_boxed_Box_Dyn_core_any_Any_Trait_core_marker_Sync_AutoTrait_core_marker_Send_AutoTrait_A.
+  End Impl_alloc_boxed_Box_Dyn_core_any_Any_Trait_core_marker_Send_AutoTrait_core_marker_Sync_AutoTrait_A.
   
   Module Impl_core_fmt_Display_where_core_fmt_Display_T_where_core_marker_Sized_T_where_core_alloc_Allocator_A_for_alloc_boxed_Box_T_A.
     Definition Self (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ].
@@ -5290,6 +5876,18 @@ Module boxed.
         (* Trait polymorphic types *) []
         (* Instance *) [ ("deref_mut", InstanceField.Method (deref_mut T A)) ].
   End Impl_core_ops_deref_DerefMut_where_core_marker_Sized_T_where_core_alloc_Allocator_A_for_alloc_boxed_Box_T_A.
+  
+  Module Impl_core_ops_deref_DerefPure_where_core_marker_Sized_T_where_core_alloc_Allocator_A_for_alloc_boxed_Box_T_A.
+    Definition Self (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ].
+    
+    Axiom Implements :
+      forall (T A : Ty.t),
+      M.IsTraitInstance
+        "core::ops::deref::DerefPure"
+        (Self T A)
+        (* Trait polymorphic types *) []
+        (* Instance *) [].
+  End Impl_core_ops_deref_DerefPure_where_core_marker_Sized_T_where_core_alloc_Allocator_A_for_alloc_boxed_Box_T_A.
   
   Module Impl_core_ops_deref_Receiver_where_core_marker_Sized_T_where_core_alloc_Allocator_A_for_alloc_boxed_Box_T_A.
     Definition Self (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ].
@@ -5746,6 +6344,150 @@ Module boxed.
         (* Instance *) [ ("call", InstanceField.Method (call Args F A)) ].
   End Impl_core_ops_function_Fn_where_core_marker_Tuple_Args_where_core_ops_function_Fn_F_Args_where_core_marker_Sized_F_where_core_alloc_Allocator_A_Args_for_alloc_boxed_Box_F_A.
   
+  Module Impl_core_ops_async_function_AsyncFnOnce_where_core_marker_Tuple_Args_where_core_ops_async_function_AsyncFnOnce_F_Args_where_core_marker_Sized_F_where_core_alloc_Allocator_A_Args_for_alloc_boxed_Box_F_A.
+    Definition Self (Args F A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::boxed::Box") [] [ F; A ].
+    
+    (*     type Output = F::Output; *)
+    Definition _Output (Args F A : Ty.t) : Ty.t := Ty.associated.
+    
+    (*     type CallOnceFuture = F::CallOnceFuture; *)
+    Definition _CallOnceFuture (Args F A : Ty.t) : Ty.t := Ty.associated.
+    
+    (*
+        extern "rust-call" fn async_call_once(self, args: Args) -> Self::CallOnceFuture {
+            F::async_call_once( *self, args)
+        }
+    *)
+    Definition async_call_once
+        (Args F A : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      let Self : Ty.t := Self Args F A in
+      match ε, τ, α with
+      | [], [], [ self; args ] =>
+        ltac:(M.monadic
+          (let self := M.alloc (| self |) in
+          let args := M.alloc (| args |) in
+          M.call_closure (|
+            M.get_trait_method (|
+              "core::ops::async_function::AsyncFnOnce",
+              F,
+              [ Args ],
+              "async_call_once",
+              []
+            |),
+            [ M.read (| M.read (| self |) |); M.read (| args |) ]
+          |)))
+      | _, _, _ => M.impossible
+      end.
+    
+    Axiom Implements :
+      forall (Args F A : Ty.t),
+      M.IsTraitInstance
+        "core::ops::async_function::AsyncFnOnce"
+        (Self Args F A)
+        (* Trait polymorphic types *) [ (* Args *) Args ]
+        (* Instance *)
+        [
+          ("Output", InstanceField.Ty (_Output Args F A));
+          ("CallOnceFuture", InstanceField.Ty (_CallOnceFuture Args F A));
+          ("async_call_once", InstanceField.Method (async_call_once Args F A))
+        ].
+  End Impl_core_ops_async_function_AsyncFnOnce_where_core_marker_Tuple_Args_where_core_ops_async_function_AsyncFnOnce_F_Args_where_core_marker_Sized_F_where_core_alloc_Allocator_A_Args_for_alloc_boxed_Box_F_A.
+  
+  Module Impl_core_ops_async_function_AsyncFnMut_where_core_marker_Tuple_Args_where_core_ops_async_function_AsyncFnMut_F_Args_where_core_marker_Sized_F_where_core_alloc_Allocator_A_Args_for_alloc_boxed_Box_F_A.
+    Definition Self (Args F A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::boxed::Box") [] [ F; A ].
+    
+    (*     type CallRefFuture<'a> = F::CallRefFuture<'a> where Self: 'a; *)
+    Definition _CallRefFuture (Args F A : Ty.t) : Ty.t := Ty.associated.
+    
+    (*
+        extern "rust-call" fn async_call_mut(&mut self, args: Args) -> Self::CallRefFuture<'_> {
+            F::async_call_mut(self, args)
+        }
+    *)
+    Definition async_call_mut
+        (Args F A : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      let Self : Ty.t := Self Args F A in
+      match ε, τ, α with
+      | [], [], [ self; args ] =>
+        ltac:(M.monadic
+          (let self := M.alloc (| self |) in
+          let args := M.alloc (| args |) in
+          M.call_closure (|
+            M.get_trait_method (|
+              "core::ops::async_function::AsyncFnMut",
+              F,
+              [ Args ],
+              "async_call_mut",
+              []
+            |),
+            [ M.read (| M.read (| self |) |); M.read (| args |) ]
+          |)))
+      | _, _, _ => M.impossible
+      end.
+    
+    Axiom Implements :
+      forall (Args F A : Ty.t),
+      M.IsTraitInstance
+        "core::ops::async_function::AsyncFnMut"
+        (Self Args F A)
+        (* Trait polymorphic types *) [ (* Args *) Args ]
+        (* Instance *)
+        [
+          ("CallRefFuture", InstanceField.Ty (_CallRefFuture Args F A));
+          ("async_call_mut", InstanceField.Method (async_call_mut Args F A))
+        ].
+  End Impl_core_ops_async_function_AsyncFnMut_where_core_marker_Tuple_Args_where_core_ops_async_function_AsyncFnMut_F_Args_where_core_marker_Sized_F_where_core_alloc_Allocator_A_Args_for_alloc_boxed_Box_F_A.
+  
+  Module Impl_core_ops_async_function_AsyncFn_where_core_marker_Tuple_Args_where_core_ops_async_function_AsyncFn_F_Args_where_core_marker_Sized_F_where_core_alloc_Allocator_A_Args_for_alloc_boxed_Box_F_A.
+    Definition Self (Args F A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::boxed::Box") [] [ F; A ].
+    
+    (*
+        extern "rust-call" fn async_call(&self, args: Args) -> Self::CallRefFuture<'_> {
+            F::async_call(self, args)
+        }
+    *)
+    Definition async_call
+        (Args F A : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      let Self : Ty.t := Self Args F A in
+      match ε, τ, α with
+      | [], [], [ self; args ] =>
+        ltac:(M.monadic
+          (let self := M.alloc (| self |) in
+          let args := M.alloc (| args |) in
+          M.call_closure (|
+            M.get_trait_method (|
+              "core::ops::async_function::AsyncFn",
+              F,
+              [ Args ],
+              "async_call",
+              []
+            |),
+            [ M.read (| M.read (| self |) |); M.read (| args |) ]
+          |)))
+      | _, _, _ => M.impossible
+      end.
+    
+    Axiom Implements :
+      forall (Args F A : Ty.t),
+      M.IsTraitInstance
+        "core::ops::async_function::AsyncFn"
+        (Self Args F A)
+        (* Trait polymorphic types *) [ (* Args *) Args ]
+        (* Instance *) [ ("async_call", InstanceField.Method (async_call Args F A)) ].
+  End Impl_core_ops_async_function_AsyncFn_where_core_marker_Tuple_Args_where_core_ops_async_function_AsyncFn_F_Args_where_core_marker_Sized_F_where_core_alloc_Allocator_A_Args_for_alloc_boxed_Box_F_A.
+  
   Module Impl_core_ops_unsize_CoerceUnsized_where_core_marker_Sized_T_where_core_marker_Unsize_T_U_where_core_marker_Sized_U_where_core_alloc_Allocator_A_alloc_boxed_Box_U_A_for_alloc_boxed_Box_T_A.
     Definition Self (T U A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ].
     
@@ -5832,6 +6574,445 @@ Module boxed.
         (* Instance *) [ ("from_iter", InstanceField.Method (from_iter I)) ].
   End Impl_core_iter_traits_collect_FromIterator_I_for_alloc_boxed_Box_slice_I_alloc_alloc_Global.
   
+  Module Impl_core_iter_traits_iterator_Iterator_where_core_alloc_Allocator_A_for_alloc_boxed_Box_slice_I_A.
+    Definition Self (I A : Ty.t) : Ty.t :=
+      Ty.apply (Ty.path "alloc::boxed::Box") [] [ Ty.apply (Ty.path "slice") [] [ I ]; A ].
+    
+    Axiom Implements :
+      forall (I A : Ty.t),
+      M.IsTraitInstance
+        "core::iter::traits::iterator::Iterator"
+        (Self I A)
+        (* Trait polymorphic types *) []
+        (* Instance *) [].
+  End Impl_core_iter_traits_iterator_Iterator_where_core_alloc_Allocator_A_for_alloc_boxed_Box_slice_I_A.
+  
+  Module Impl_core_iter_traits_iterator_Iterator_where_core_alloc_Allocator_A_for_ref__alloc_boxed_Box_slice_I_A.
+    Definition Self (I A : Ty.t) : Ty.t :=
+      Ty.apply
+        (Ty.path "&")
+        []
+        [ Ty.apply (Ty.path "alloc::boxed::Box") [] [ Ty.apply (Ty.path "slice") [] [ I ]; A ] ].
+    
+    Axiom Implements :
+      forall (I A : Ty.t),
+      M.IsTraitInstance
+        "core::iter::traits::iterator::Iterator"
+        (Self I A)
+        (* Trait polymorphic types *) []
+        (* Instance *) [].
+  End Impl_core_iter_traits_iterator_Iterator_where_core_alloc_Allocator_A_for_ref__alloc_boxed_Box_slice_I_A.
+  
+  Module Impl_core_iter_traits_iterator_Iterator_where_core_alloc_Allocator_A_for_ref_mut_alloc_boxed_Box_slice_I_A.
+    Definition Self (I A : Ty.t) : Ty.t :=
+      Ty.apply
+        (Ty.path "&mut")
+        []
+        [ Ty.apply (Ty.path "alloc::boxed::Box") [] [ Ty.apply (Ty.path "slice") [] [ I ]; A ] ].
+    
+    Axiom Implements :
+      forall (I A : Ty.t),
+      M.IsTraitInstance
+        "core::iter::traits::iterator::Iterator"
+        (Self I A)
+        (* Trait polymorphic types *) []
+        (* Instance *) [].
+  End Impl_core_iter_traits_iterator_Iterator_where_core_alloc_Allocator_A_for_ref_mut_alloc_boxed_Box_slice_I_A.
+  
+  Module Impl_core_iter_traits_collect_IntoIterator_where_core_alloc_Allocator_A_for_alloc_boxed_Box_slice_I_A.
+    Definition Self (I A : Ty.t) : Ty.t :=
+      Ty.apply (Ty.path "alloc::boxed::Box") [] [ Ty.apply (Ty.path "slice") [] [ I ]; A ].
+    
+    (*     type IntoIter = vec::IntoIter<I, A>; *)
+    Definition _IntoIter (I A : Ty.t) : Ty.t :=
+      Ty.apply (Ty.path "alloc::vec::into_iter::IntoIter") [] [ I; A ].
+    
+    (*     type Item = I; *)
+    Definition _Item (I A : Ty.t) : Ty.t := I.
+    
+    (*
+        fn into_iter(self) -> vec::IntoIter<I, A> {
+            self.into_vec().into_iter()
+        }
+    *)
+    Definition into_iter (I A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      let Self : Ty.t := Self I A in
+      match ε, τ, α with
+      | [], [], [ self ] =>
+        ltac:(M.monadic
+          (let self := M.alloc (| self |) in
+          M.call_closure (|
+            M.get_trait_method (|
+              "core::iter::traits::collect::IntoIterator",
+              Ty.apply (Ty.path "alloc::vec::Vec") [] [ I; A ],
+              [],
+              "into_iter",
+              []
+            |),
+            [
+              M.call_closure (|
+                M.get_associated_function (|
+                  Ty.apply (Ty.path "slice") [] [ I ],
+                  "into_vec",
+                  [ A ]
+                |),
+                [ M.read (| self |) ]
+              |)
+            ]
+          |)))
+      | _, _, _ => M.impossible
+      end.
+    
+    Axiom Implements :
+      forall (I A : Ty.t),
+      M.IsTraitInstance
+        "core::iter::traits::collect::IntoIterator"
+        (Self I A)
+        (* Trait polymorphic types *) []
+        (* Instance *)
+        [
+          ("IntoIter", InstanceField.Ty (_IntoIter I A));
+          ("Item", InstanceField.Ty (_Item I A));
+          ("into_iter", InstanceField.Method (into_iter I A))
+        ].
+  End Impl_core_iter_traits_collect_IntoIterator_where_core_alloc_Allocator_A_for_alloc_boxed_Box_slice_I_A.
+  
+  Module Impl_core_iter_traits_collect_IntoIterator_where_core_alloc_Allocator_A_for_ref__alloc_boxed_Box_slice_I_A.
+    Definition Self (I A : Ty.t) : Ty.t :=
+      Ty.apply
+        (Ty.path "&")
+        []
+        [ Ty.apply (Ty.path "alloc::boxed::Box") [] [ Ty.apply (Ty.path "slice") [] [ I ]; A ] ].
+    
+    (*     type IntoIter = slice::Iter<'a, I>; *)
+    Definition _IntoIter (I A : Ty.t) : Ty.t :=
+      Ty.apply (Ty.path "core::slice::iter::Iter") [] [ I ].
+    
+    (*     type Item = &'a I; *)
+    Definition _Item (I A : Ty.t) : Ty.t := Ty.apply (Ty.path "&") [] [ I ].
+    
+    (*
+        fn into_iter(self) -> slice::Iter<'a, I> {
+            self.iter()
+        }
+    *)
+    Definition into_iter (I A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      let Self : Ty.t := Self I A in
+      match ε, τ, α with
+      | [], [], [ self ] =>
+        ltac:(M.monadic
+          (let self := M.alloc (| self |) in
+          M.call_closure (|
+            M.get_associated_function (| Ty.apply (Ty.path "slice") [] [ I ], "iter", [] |),
+            [ M.read (| M.read (| self |) |) ]
+          |)))
+      | _, _, _ => M.impossible
+      end.
+    
+    Axiom Implements :
+      forall (I A : Ty.t),
+      M.IsTraitInstance
+        "core::iter::traits::collect::IntoIterator"
+        (Self I A)
+        (* Trait polymorphic types *) []
+        (* Instance *)
+        [
+          ("IntoIter", InstanceField.Ty (_IntoIter I A));
+          ("Item", InstanceField.Ty (_Item I A));
+          ("into_iter", InstanceField.Method (into_iter I A))
+        ].
+  End Impl_core_iter_traits_collect_IntoIterator_where_core_alloc_Allocator_A_for_ref__alloc_boxed_Box_slice_I_A.
+  
+  Module Impl_core_iter_traits_collect_IntoIterator_where_core_alloc_Allocator_A_for_ref_mut_alloc_boxed_Box_slice_I_A.
+    Definition Self (I A : Ty.t) : Ty.t :=
+      Ty.apply
+        (Ty.path "&mut")
+        []
+        [ Ty.apply (Ty.path "alloc::boxed::Box") [] [ Ty.apply (Ty.path "slice") [] [ I ]; A ] ].
+    
+    (*     type IntoIter = slice::IterMut<'a, I>; *)
+    Definition _IntoIter (I A : Ty.t) : Ty.t :=
+      Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ I ].
+    
+    (*     type Item = &'a mut I; *)
+    Definition _Item (I A : Ty.t) : Ty.t := Ty.apply (Ty.path "&mut") [] [ I ].
+    
+    (*
+        fn into_iter(self) -> slice::IterMut<'a, I> {
+            self.iter_mut()
+        }
+    *)
+    Definition into_iter (I A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      let Self : Ty.t := Self I A in
+      match ε, τ, α with
+      | [], [], [ self ] =>
+        ltac:(M.monadic
+          (let self := M.alloc (| self |) in
+          M.call_closure (|
+            M.get_associated_function (| Ty.apply (Ty.path "slice") [] [ I ], "iter_mut", [] |),
+            [ M.read (| M.read (| self |) |) ]
+          |)))
+      | _, _, _ => M.impossible
+      end.
+    
+    Axiom Implements :
+      forall (I A : Ty.t),
+      M.IsTraitInstance
+        "core::iter::traits::collect::IntoIterator"
+        (Self I A)
+        (* Trait polymorphic types *) []
+        (* Instance *)
+        [
+          ("IntoIter", InstanceField.Ty (_IntoIter I A));
+          ("Item", InstanceField.Ty (_Item I A));
+          ("into_iter", InstanceField.Method (into_iter I A))
+        ].
+  End Impl_core_iter_traits_collect_IntoIterator_where_core_alloc_Allocator_A_for_ref_mut_alloc_boxed_Box_slice_I_A.
+  
+  Module Impl_core_iter_traits_collect_FromIterator_char_for_alloc_boxed_Box_str_alloc_alloc_Global.
+    Definition Self : Ty.t :=
+      Ty.apply (Ty.path "alloc::boxed::Box") [] [ Ty.path "str"; Ty.path "alloc::alloc::Global" ].
+    
+    (*
+        fn from_iter<T: IntoIterator<Item = char>>(iter: T) -> Self {
+            String::from_iter(iter).into_boxed_str()
+        }
+    *)
+    Definition from_iter (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ T ], [ iter ] =>
+        ltac:(M.monadic
+          (let iter := M.alloc (| iter |) in
+          M.call_closure (|
+            M.get_associated_function (| Ty.path "alloc::string::String", "into_boxed_str", [] |),
+            [
+              M.call_closure (|
+                M.get_trait_method (|
+                  "core::iter::traits::collect::FromIterator",
+                  Ty.path "alloc::string::String",
+                  [ Ty.path "char" ],
+                  "from_iter",
+                  [ T ]
+                |),
+                [ M.read (| iter |) ]
+              |)
+            ]
+          |)))
+      | _, _, _ => M.impossible
+      end.
+    
+    Axiom Implements :
+      M.IsTraitInstance
+        "core::iter::traits::collect::FromIterator"
+        Self
+        (* Trait polymorphic types *) [ (* A *) Ty.path "char" ]
+        (* Instance *) [ ("from_iter", InstanceField.Method from_iter) ].
+  End Impl_core_iter_traits_collect_FromIterator_char_for_alloc_boxed_Box_str_alloc_alloc_Global.
+  
+  Module Impl_core_iter_traits_collect_FromIterator_ref__char_for_alloc_boxed_Box_str_alloc_alloc_Global.
+    Definition Self : Ty.t :=
+      Ty.apply (Ty.path "alloc::boxed::Box") [] [ Ty.path "str"; Ty.path "alloc::alloc::Global" ].
+    
+    (*
+        fn from_iter<T: IntoIterator<Item = &'a char>>(iter: T) -> Self {
+            String::from_iter(iter).into_boxed_str()
+        }
+    *)
+    Definition from_iter (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ T ], [ iter ] =>
+        ltac:(M.monadic
+          (let iter := M.alloc (| iter |) in
+          M.call_closure (|
+            M.get_associated_function (| Ty.path "alloc::string::String", "into_boxed_str", [] |),
+            [
+              M.call_closure (|
+                M.get_trait_method (|
+                  "core::iter::traits::collect::FromIterator",
+                  Ty.path "alloc::string::String",
+                  [ Ty.apply (Ty.path "&") [] [ Ty.path "char" ] ],
+                  "from_iter",
+                  [ T ]
+                |),
+                [ M.read (| iter |) ]
+              |)
+            ]
+          |)))
+      | _, _, _ => M.impossible
+      end.
+    
+    Axiom Implements :
+      M.IsTraitInstance
+        "core::iter::traits::collect::FromIterator"
+        Self
+        (* Trait polymorphic types *) [ (* A *) Ty.apply (Ty.path "&") [] [ Ty.path "char" ] ]
+        (* Instance *) [ ("from_iter", InstanceField.Method from_iter) ].
+  End Impl_core_iter_traits_collect_FromIterator_ref__char_for_alloc_boxed_Box_str_alloc_alloc_Global.
+  
+  Module Impl_core_iter_traits_collect_FromIterator_ref__str_for_alloc_boxed_Box_str_alloc_alloc_Global.
+    Definition Self : Ty.t :=
+      Ty.apply (Ty.path "alloc::boxed::Box") [] [ Ty.path "str"; Ty.path "alloc::alloc::Global" ].
+    
+    (*
+        fn from_iter<T: IntoIterator<Item = &'a str>>(iter: T) -> Self {
+            String::from_iter(iter).into_boxed_str()
+        }
+    *)
+    Definition from_iter (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ T ], [ iter ] =>
+        ltac:(M.monadic
+          (let iter := M.alloc (| iter |) in
+          M.call_closure (|
+            M.get_associated_function (| Ty.path "alloc::string::String", "into_boxed_str", [] |),
+            [
+              M.call_closure (|
+                M.get_trait_method (|
+                  "core::iter::traits::collect::FromIterator",
+                  Ty.path "alloc::string::String",
+                  [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                  "from_iter",
+                  [ T ]
+                |),
+                [ M.read (| iter |) ]
+              |)
+            ]
+          |)))
+      | _, _, _ => M.impossible
+      end.
+    
+    Axiom Implements :
+      M.IsTraitInstance
+        "core::iter::traits::collect::FromIterator"
+        Self
+        (* Trait polymorphic types *) [ (* A *) Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+        (* Instance *) [ ("from_iter", InstanceField.Method from_iter) ].
+  End Impl_core_iter_traits_collect_FromIterator_ref__str_for_alloc_boxed_Box_str_alloc_alloc_Global.
+  
+  Module Impl_core_iter_traits_collect_FromIterator_alloc_string_String_for_alloc_boxed_Box_str_alloc_alloc_Global.
+    Definition Self : Ty.t :=
+      Ty.apply (Ty.path "alloc::boxed::Box") [] [ Ty.path "str"; Ty.path "alloc::alloc::Global" ].
+    
+    (*
+        fn from_iter<T: IntoIterator<Item = String>>(iter: T) -> Self {
+            String::from_iter(iter).into_boxed_str()
+        }
+    *)
+    Definition from_iter (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ T ], [ iter ] =>
+        ltac:(M.monadic
+          (let iter := M.alloc (| iter |) in
+          M.call_closure (|
+            M.get_associated_function (| Ty.path "alloc::string::String", "into_boxed_str", [] |),
+            [
+              M.call_closure (|
+                M.get_trait_method (|
+                  "core::iter::traits::collect::FromIterator",
+                  Ty.path "alloc::string::String",
+                  [ Ty.path "alloc::string::String" ],
+                  "from_iter",
+                  [ T ]
+                |),
+                [ M.read (| iter |) ]
+              |)
+            ]
+          |)))
+      | _, _, _ => M.impossible
+      end.
+    
+    Axiom Implements :
+      M.IsTraitInstance
+        "core::iter::traits::collect::FromIterator"
+        Self
+        (* Trait polymorphic types *) [ (* A *) Ty.path "alloc::string::String" ]
+        (* Instance *) [ ("from_iter", InstanceField.Method from_iter) ].
+  End Impl_core_iter_traits_collect_FromIterator_alloc_string_String_for_alloc_boxed_Box_str_alloc_alloc_Global.
+  
+  Module Impl_core_iter_traits_collect_FromIterator_where_core_alloc_Allocator_A_alloc_boxed_Box_str_A_for_alloc_boxed_Box_str_alloc_alloc_Global.
+    Definition Self (A : Ty.t) : Ty.t :=
+      Ty.apply (Ty.path "alloc::boxed::Box") [] [ Ty.path "str"; Ty.path "alloc::alloc::Global" ].
+    
+    (*
+        fn from_iter<T: IntoIterator<Item = Box<str, A>>>(iter: T) -> Self {
+            String::from_iter(iter).into_boxed_str()
+        }
+    *)
+    Definition from_iter (A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      let Self : Ty.t := Self A in
+      match ε, τ, α with
+      | [], [ T ], [ iter ] =>
+        ltac:(M.monadic
+          (let iter := M.alloc (| iter |) in
+          M.call_closure (|
+            M.get_associated_function (| Ty.path "alloc::string::String", "into_boxed_str", [] |),
+            [
+              M.call_closure (|
+                M.get_trait_method (|
+                  "core::iter::traits::collect::FromIterator",
+                  Ty.path "alloc::string::String",
+                  [ Ty.apply (Ty.path "alloc::boxed::Box") [] [ Ty.path "str"; A ] ],
+                  "from_iter",
+                  [ T ]
+                |),
+                [ M.read (| iter |) ]
+              |)
+            ]
+          |)))
+      | _, _, _ => M.impossible
+      end.
+    
+    Axiom Implements :
+      forall (A : Ty.t),
+      M.IsTraitInstance
+        "core::iter::traits::collect::FromIterator"
+        (Self A)
+        (* Trait polymorphic types *)
+        [ (* A *) Ty.apply (Ty.path "alloc::boxed::Box") [] [ Ty.path "str"; A ] ]
+        (* Instance *) [ ("from_iter", InstanceField.Method (from_iter A)) ].
+  End Impl_core_iter_traits_collect_FromIterator_where_core_alloc_Allocator_A_alloc_boxed_Box_str_A_for_alloc_boxed_Box_str_alloc_alloc_Global.
+  
+  Module Impl_core_iter_traits_collect_FromIterator_alloc_borrow_Cow_str_for_alloc_boxed_Box_str_alloc_alloc_Global.
+    Definition Self : Ty.t :=
+      Ty.apply (Ty.path "alloc::boxed::Box") [] [ Ty.path "str"; Ty.path "alloc::alloc::Global" ].
+    
+    (*
+        fn from_iter<T: IntoIterator<Item = Cow<'a, str>>>(iter: T) -> Self {
+            String::from_iter(iter).into_boxed_str()
+        }
+    *)
+    Definition from_iter (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ T ], [ iter ] =>
+        ltac:(M.monadic
+          (let iter := M.alloc (| iter |) in
+          M.call_closure (|
+            M.get_associated_function (| Ty.path "alloc::string::String", "into_boxed_str", [] |),
+            [
+              M.call_closure (|
+                M.get_trait_method (|
+                  "core::iter::traits::collect::FromIterator",
+                  Ty.path "alloc::string::String",
+                  [ Ty.apply (Ty.path "alloc::borrow::Cow") [] [ Ty.path "str" ] ],
+                  "from_iter",
+                  [ T ]
+                |),
+                [ M.read (| iter |) ]
+              |)
+            ]
+          |)))
+      | _, _, _ => M.impossible
+      end.
+    
+    Axiom Implements :
+      M.IsTraitInstance
+        "core::iter::traits::collect::FromIterator"
+        Self
+        (* Trait polymorphic types *)
+        [ (* A *) Ty.apply (Ty.path "alloc::borrow::Cow") [] [ Ty.path "str" ] ]
+        (* Instance *) [ ("from_iter", InstanceField.Method from_iter) ].
+  End Impl_core_iter_traits_collect_FromIterator_alloc_borrow_Cow_str_for_alloc_boxed_Box_str_alloc_alloc_Global.
+  
   Module Impl_core_clone_Clone_where_core_clone_Clone_T_where_core_alloc_Allocator_A_where_core_clone_Clone_A_for_alloc_boxed_Box_slice_T_A.
     Definition Self (T A : Ty.t) : Ty.t :=
       Ty.apply (Ty.path "alloc::boxed::Box") [] [ Ty.apply (Ty.path "slice") [] [ T ]; A ].
@@ -5892,21 +7073,21 @@ Module boxed.
       end.
     
     (*
-        fn clone_from(&mut self, other: &Self) {
-            if self.len() == other.len() {
-                self.clone_from_slice(&other);
+        fn clone_from(&mut self, source: &Self) {
+            if self.len() == source.len() {
+                self.clone_from_slice(&source);
             } else {
-                *self = other.clone();
+                *self = source.clone();
             }
         }
     *)
     Definition clone_from (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
       match ε, τ, α with
-      | [], [], [ self; other ] =>
+      | [], [], [ self; source ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          let other := M.alloc (| other |) in
+          let source := M.alloc (| source |) in
           M.read (|
             M.match_operator (|
               M.alloc (| Value.Tuple [] |),
@@ -5931,7 +7112,7 @@ Module boxed.
                                 "len",
                                 []
                               |),
-                              [ M.read (| M.read (| other |) |) ]
+                              [ M.read (| M.read (| source |) |) ]
                             |))
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -5943,7 +7124,7 @@ Module boxed.
                             "clone_from_slice",
                             []
                           |),
-                          [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
+                          [ M.read (| M.read (| self |) |); M.read (| M.read (| source |) |) ]
                         |)
                       |) in
                     M.alloc (| Value.Tuple [] |)));
@@ -5963,7 +7144,7 @@ Module boxed.
                             "clone",
                             []
                           |),
-                          [ M.read (| other |) ]
+                          [ M.read (| source |) ]
                         |)
                       |) in
                     M.alloc (| Value.Tuple [] |)))
@@ -6472,22 +7653,20 @@ Module boxed.
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     let~ raw :=
                       M.alloc (|
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.call_closure (|
-                            M.get_associated_function (|
-                              Ty.apply
-                                (Ty.path "alloc::boxed::Box")
-                                []
-                                [
-                                  Ty.dyn [ ("core::error::Error::Trait", []) ];
-                                  Ty.path "alloc::alloc::Global"
-                                ],
-                              "into_raw",
+                        M.call_closure (|
+                          M.get_associated_function (|
+                            Ty.apply
+                              (Ty.path "alloc::boxed::Box")
                               []
-                            |),
-                            [ (* Unsize *) M.pointer_coercion (M.read (| self |)) ]
-                          |))
+                              [
+                                Ty.dyn [ ("core::error::Error::Trait", []) ];
+                                Ty.path "alloc::alloc::Global"
+                              ],
+                            "into_raw",
+                            []
+                          |),
+                          [ M.read (| self |) ]
+                        |)
                       |) in
                     M.alloc (|
                       Value.StructTuple
@@ -6509,9 +7688,7 @@ Module boxed.
                 fun γ =>
                   ltac:(M.monadic
                     (M.alloc (|
-                      Value.StructTuple
-                        "core::result::Result::Err"
-                        [ (* Unsize *) M.pointer_coercion (M.read (| self |)) ]
+                      Value.StructTuple "core::result::Result::Err" [ M.read (| self |) ]
                     |)))
               ]
             |)
@@ -6531,7 +7708,7 @@ Module boxed.
             let err: Box<dyn Error> = self;
             <dyn Error>::downcast(err).map_err(|s| unsafe {
                 // Reapply the `Send` marker.
-                Box::from_raw(Box::into_raw(s) as *mut (dyn Error + Send))
+                mem::transmute::<Box<dyn Error>, Box<dyn Error + Send>>(s)
             })
         }
     *)
@@ -6541,7 +7718,7 @@ Module boxed.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
-            let~ err := M.alloc (| (* Unsize *) M.pointer_coercion (M.read (| self |)) |) in
+            let~ err := M.alloc (| M.read (| self |) |) in
             M.alloc (|
               M.call_closure (|
                 M.get_associated_function (|
@@ -6605,7 +7782,7 @@ Module boxed.
                       "downcast",
                       [ T ]
                     |),
-                    [ (* Unsize *) M.pointer_coercion (M.read (| err |)) ]
+                    [ M.read (| err |) ]
                   |);
                   M.closure
                     (fun γ =>
@@ -6618,10 +7795,17 @@ Module boxed.
                               fun γ =>
                                 ltac:(M.monadic
                                   (let s := M.copy (| γ |) in
-                                  (* Unsize *)
-                                  M.pointer_coercion
-                                    (M.call_closure (|
-                                      M.get_associated_function (|
+                                  M.call_closure (|
+                                    M.get_function (|
+                                      "core::intrinsics::transmute",
+                                      [
+                                        Ty.apply
+                                          (Ty.path "alloc::boxed::Box")
+                                          []
+                                          [
+                                            Ty.dyn [ ("core::error::Error::Trait", []) ];
+                                            Ty.path "alloc::alloc::Global"
+                                          ];
                                         Ty.apply
                                           (Ty.path "alloc::boxed::Box")
                                           []
@@ -6632,28 +7816,11 @@ Module boxed.
                                                 ("core::marker::Send::AutoTrait", [])
                                               ];
                                             Ty.path "alloc::alloc::Global"
-                                          ],
-                                        "from_raw",
-                                        []
-                                      |),
-                                      [
-                                        M.rust_cast
-                                          (M.call_closure (|
-                                            M.get_associated_function (|
-                                              Ty.apply
-                                                (Ty.path "alloc::boxed::Box")
-                                                []
-                                                [
-                                                  Ty.dyn [ ("core::error::Error::Trait", []) ];
-                                                  Ty.path "alloc::alloc::Global"
-                                                ],
-                                              "into_raw",
-                                              []
-                                            |),
-                                            [ M.read (| s |) ]
-                                          |))
+                                          ]
                                       ]
-                                    |))))
+                                    |),
+                                    [ M.read (| s |) ]
+                                  |)))
                             ]
                           |)
                         | _ => M.impossible (||)
@@ -6668,21 +7835,21 @@ Module boxed.
     Axiom AssociatedFunction_downcast : M.IsAssociatedFunction Self "downcast" downcast.
   End Impl_Dyn_core_error_Error_Trait_core_marker_Send_AutoTrait.
   
-  Module Impl_Dyn_core_error_Error_Trait_core_marker_Sync_AutoTrait_core_marker_Send_AutoTrait.
+  Module Impl_Dyn_core_error_Error_Trait_core_marker_Send_AutoTrait_core_marker_Sync_AutoTrait.
     Definition Self : Ty.t :=
       Ty.dyn
         [
           ("core::error::Error::Trait", []);
-          ("core::marker::Sync::AutoTrait", []);
-          ("core::marker::Send::AutoTrait", [])
+          ("core::marker::Send::AutoTrait", []);
+          ("core::marker::Sync::AutoTrait", [])
         ].
     
     (*
         pub fn downcast<T: Error + 'static>(self: Box<Self>) -> Result<Box<T>, Box<Self>> {
             let err: Box<dyn Error> = self;
             <dyn Error>::downcast(err).map_err(|s| unsafe {
-                // Reapply the `Send + Sync` marker.
-                Box::from_raw(Box::into_raw(s) as *mut (dyn Error + Send + Sync))
+                // Reapply the `Send + Sync` markers.
+                mem::transmute::<Box<dyn Error>, Box<dyn Error + Send + Sync>>(s)
             })
         }
     *)
@@ -6692,7 +7859,7 @@ Module boxed.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
-            let~ err := M.alloc (| (* Unsize *) M.pointer_coercion (M.read (| self |)) |) in
+            let~ err := M.alloc (| M.read (| self |) |) in
             M.alloc (|
               M.call_closure (|
                 M.get_associated_function (|
@@ -6721,8 +7888,8 @@ Module boxed.
                         Ty.dyn
                           [
                             ("core::error::Error::Trait", []);
-                            ("core::marker::Sync::AutoTrait", []);
-                            ("core::marker::Send::AutoTrait", [])
+                            ("core::marker::Send::AutoTrait", []);
+                            ("core::marker::Sync::AutoTrait", [])
                           ];
                         Ty.path "alloc::alloc::Global"
                       ];
@@ -6746,8 +7913,8 @@ Module boxed.
                           Ty.dyn
                             [
                               ("core::error::Error::Trait", []);
-                              ("core::marker::Sync::AutoTrait", []);
-                              ("core::marker::Send::AutoTrait", [])
+                              ("core::marker::Send::AutoTrait", []);
+                              ("core::marker::Sync::AutoTrait", [])
                             ];
                           Ty.path "alloc::alloc::Global"
                         ])
@@ -6760,7 +7927,7 @@ Module boxed.
                       "downcast",
                       [ T ]
                     |),
-                    [ (* Unsize *) M.pointer_coercion (M.read (| err |)) ]
+                    [ M.read (| err |) ]
                   |);
                   M.closure
                     (fun γ =>
@@ -6773,10 +7940,17 @@ Module boxed.
                               fun γ =>
                                 ltac:(M.monadic
                                   (let s := M.copy (| γ |) in
-                                  (* Unsize *)
-                                  M.pointer_coercion
-                                    (M.call_closure (|
-                                      M.get_associated_function (|
+                                  M.call_closure (|
+                                    M.get_function (|
+                                      "core::intrinsics::transmute",
+                                      [
+                                        Ty.apply
+                                          (Ty.path "alloc::boxed::Box")
+                                          []
+                                          [
+                                            Ty.dyn [ ("core::error::Error::Trait", []) ];
+                                            Ty.path "alloc::alloc::Global"
+                                          ];
                                         Ty.apply
                                           (Ty.path "alloc::boxed::Box")
                                           []
@@ -6784,32 +7958,15 @@ Module boxed.
                                             Ty.dyn
                                               [
                                                 ("core::error::Error::Trait", []);
-                                                ("core::marker::Sync::AutoTrait", []);
-                                                ("core::marker::Send::AutoTrait", [])
+                                                ("core::marker::Send::AutoTrait", []);
+                                                ("core::marker::Sync::AutoTrait", [])
                                               ];
                                             Ty.path "alloc::alloc::Global"
-                                          ],
-                                        "from_raw",
-                                        []
-                                      |),
-                                      [
-                                        M.rust_cast
-                                          (M.call_closure (|
-                                            M.get_associated_function (|
-                                              Ty.apply
-                                                (Ty.path "alloc::boxed::Box")
-                                                []
-                                                [
-                                                  Ty.dyn [ ("core::error::Error::Trait", []) ];
-                                                  Ty.path "alloc::alloc::Global"
-                                                ],
-                                              "into_raw",
-                                              []
-                                            |),
-                                            [ M.read (| s |) ]
-                                          |))
+                                          ]
                                       ]
-                                    |))))
+                                    |),
+                                    [ M.read (| s |) ]
+                                  |)))
                             ]
                           |)
                         | _ => M.impossible (||)
@@ -6822,7 +7979,7 @@ Module boxed.
       end.
     
     Axiom AssociatedFunction_downcast : M.IsAssociatedFunction Self "downcast" downcast.
-  End Impl_Dyn_core_error_Error_Trait_core_marker_Sync_AutoTrait_core_marker_Send_AutoTrait.
+  End Impl_Dyn_core_error_Error_Trait_core_marker_Send_AutoTrait_core_marker_Sync_AutoTrait.
   
   Module Impl_core_convert_From_where_core_error_Error_E_E_for_alloc_boxed_Box_Dyn_core_error_Error_Trait_alloc_alloc_Global.
     Definition Self (E : Ty.t) : Ty.t :=
@@ -6842,18 +7999,14 @@ Module boxed.
       | [], [], [ err ] =>
         ltac:(M.monadic
           (let err := M.alloc (| err |) in
-          (* Unsize *)
-          M.pointer_coercion
-            (* Unsize *)
-            (M.pointer_coercion
-              (M.call_closure (|
-                M.get_associated_function (|
-                  Ty.apply (Ty.path "alloc::boxed::Box") [] [ E; Ty.path "alloc::alloc::Global" ],
-                  "new",
-                  []
-                |),
-                [ M.read (| err |) ]
-              |)))))
+          M.call_closure (|
+            M.get_associated_function (|
+              Ty.apply (Ty.path "alloc::boxed::Box") [] [ E; Ty.path "alloc::alloc::Global" ],
+              "new",
+              []
+            |),
+            [ M.read (| err |) ]
+          |)))
       | _, _, _ => M.impossible
       end.
     
@@ -6866,7 +8019,7 @@ Module boxed.
         (* Instance *) [ ("from", InstanceField.Method (from E)) ].
   End Impl_core_convert_From_where_core_error_Error_E_E_for_alloc_boxed_Box_Dyn_core_error_Error_Trait_alloc_alloc_Global.
   
-  Module Impl_core_convert_From_where_core_error_Error_E_where_core_marker_Send_E_where_core_marker_Sync_E_E_for_alloc_boxed_Box_Dyn_core_error_Error_Trait_core_marker_Sync_AutoTrait_core_marker_Send_AutoTrait_alloc_alloc_Global.
+  Module Impl_core_convert_From_where_core_error_Error_E_where_core_marker_Send_E_where_core_marker_Sync_E_E_for_alloc_boxed_Box_Dyn_core_error_Error_Trait_core_marker_Send_AutoTrait_core_marker_Sync_AutoTrait_alloc_alloc_Global.
     Definition Self (E : Ty.t) : Ty.t :=
       Ty.apply
         (Ty.path "alloc::boxed::Box")
@@ -6875,8 +8028,8 @@ Module boxed.
           Ty.dyn
             [
               ("core::error::Error::Trait", []);
-              ("core::marker::Sync::AutoTrait", []);
-              ("core::marker::Send::AutoTrait", [])
+              ("core::marker::Send::AutoTrait", []);
+              ("core::marker::Sync::AutoTrait", [])
             ];
           Ty.path "alloc::alloc::Global"
         ].
@@ -6892,18 +8045,14 @@ Module boxed.
       | [], [], [ err ] =>
         ltac:(M.monadic
           (let err := M.alloc (| err |) in
-          (* Unsize *)
-          M.pointer_coercion
-            (* Unsize *)
-            (M.pointer_coercion
-              (M.call_closure (|
-                M.get_associated_function (|
-                  Ty.apply (Ty.path "alloc::boxed::Box") [] [ E; Ty.path "alloc::alloc::Global" ],
-                  "new",
-                  []
-                |),
-                [ M.read (| err |) ]
-              |)))))
+          M.call_closure (|
+            M.get_associated_function (|
+              Ty.apply (Ty.path "alloc::boxed::Box") [] [ E; Ty.path "alloc::alloc::Global" ],
+              "new",
+              []
+            |),
+            [ M.read (| err |) ]
+          |)))
       | _, _, _ => M.impossible
       end.
     
@@ -6914,9 +8063,9 @@ Module boxed.
         (Self E)
         (* Trait polymorphic types *) [ (* T *) E ]
         (* Instance *) [ ("from", InstanceField.Method (from E)) ].
-  End Impl_core_convert_From_where_core_error_Error_E_where_core_marker_Send_E_where_core_marker_Sync_E_E_for_alloc_boxed_Box_Dyn_core_error_Error_Trait_core_marker_Sync_AutoTrait_core_marker_Send_AutoTrait_alloc_alloc_Global.
+  End Impl_core_convert_From_where_core_error_Error_E_where_core_marker_Send_E_where_core_marker_Sync_E_E_for_alloc_boxed_Box_Dyn_core_error_Error_Trait_core_marker_Send_AutoTrait_core_marker_Sync_AutoTrait_alloc_alloc_Global.
   
-  Module Impl_core_convert_From_alloc_string_String_for_alloc_boxed_Box_Dyn_core_error_Error_Trait_core_marker_Sync_AutoTrait_core_marker_Send_AutoTrait_alloc_alloc_Global.
+  Module Impl_core_convert_From_alloc_string_String_for_alloc_boxed_Box_Dyn_core_error_Error_Trait_core_marker_Send_AutoTrait_core_marker_Sync_AutoTrait_alloc_alloc_Global.
     Definition Self : Ty.t :=
       Ty.apply
         (Ty.path "alloc::boxed::Box")
@@ -6925,14 +8074,14 @@ Module boxed.
           Ty.dyn
             [
               ("core::error::Error::Trait", []);
-              ("core::marker::Sync::AutoTrait", []);
-              ("core::marker::Send::AutoTrait", [])
+              ("core::marker::Send::AutoTrait", []);
+              ("core::marker::Sync::AutoTrait", [])
             ];
           Ty.path "alloc::alloc::Global"
         ].
     
     (*
-        fn from(err: String) -> Box<dyn Error + Send + Sync> {
+        fn from(err: String) -> Box<dyn Error + Send + Sync + 'a> {
             struct StringError(String);
     
             impl Error for StringError {
@@ -6963,21 +8112,17 @@ Module boxed.
       | [], [], [ err ] =>
         ltac:(M.monadic
           (let err := M.alloc (| err |) in
-          (* Unsize *)
-          M.pointer_coercion
-            (* Unsize *)
-            (M.pointer_coercion
-              (M.call_closure (|
-                M.get_associated_function (|
-                  Ty.apply
-                    (Ty.path "alloc::boxed::Box")
-                    []
-                    [ Ty.path "alloc::boxed::from::StringError"; Ty.path "alloc::alloc::Global" ],
-                  "new",
-                  []
-                |),
-                [ Value.StructTuple "alloc::boxed::from::StringError" [ M.read (| err |) ] ]
-              |)))))
+          M.call_closure (|
+            M.get_associated_function (|
+              Ty.apply
+                (Ty.path "alloc::boxed::Box")
+                []
+                [ Ty.path "alloc::boxed::from::StringError"; Ty.path "alloc::alloc::Global" ],
+              "new",
+              []
+            |),
+            [ Value.StructTuple "alloc::boxed::from::StringError" [ M.read (| err |) ] ]
+          |)))
       | _, _, _ => M.impossible
       end.
     
@@ -6987,7 +8132,7 @@ Module boxed.
         Self
         (* Trait polymorphic types *) [ (* T *) Ty.path "alloc::string::String" ]
         (* Instance *) [ ("from", InstanceField.Method from) ].
-  End Impl_core_convert_From_alloc_string_String_for_alloc_boxed_Box_Dyn_core_error_Error_Trait_core_marker_Sync_AutoTrait_core_marker_Send_AutoTrait_alloc_alloc_Global.
+  End Impl_core_convert_From_alloc_string_String_for_alloc_boxed_Box_Dyn_core_error_Error_Trait_core_marker_Send_AutoTrait_core_marker_Sync_AutoTrait_alloc_alloc_Global.
   
   Module Impl_core_convert_From_alloc_string_String_for_alloc_boxed_Box_Dyn_core_error_Error_Trait_alloc_alloc_Global.
     Definition Self : Ty.t :=
@@ -6997,7 +8142,7 @@ Module boxed.
         [ Ty.dyn [ ("core::error::Error::Trait", []) ]; Ty.path "alloc::alloc::Global" ].
     
     (*
-        fn from(str_err: String) -> Box<dyn Error> {
+        fn from(str_err: String) -> Box<dyn Error + 'a> {
             let err1: Box<dyn Error + Send + Sync> = From::from(str_err);
             let err2: Box<dyn Error> = err1;
             err2
@@ -7008,36 +8153,34 @@ Module boxed.
       | [], [], [ str_err ] =>
         ltac:(M.monadic
           (let str_err := M.alloc (| str_err |) in
-          (* Unsize *)
-          M.pointer_coercion
-            (M.read (|
-              let~ err1 :=
-                M.alloc (|
-                  M.call_closure (|
-                    M.get_trait_method (|
-                      "core::convert::From",
-                      Ty.apply
-                        (Ty.path "alloc::boxed::Box")
-                        []
-                        [
-                          Ty.dyn
-                            [
-                              ("core::error::Error::Trait", []);
-                              ("core::marker::Sync::AutoTrait", []);
-                              ("core::marker::Send::AutoTrait", [])
-                            ];
-                          Ty.path "alloc::alloc::Global"
-                        ],
-                      [ Ty.path "alloc::string::String" ],
-                      "from",
+          M.read (|
+            let~ err1 :=
+              M.alloc (|
+                M.call_closure (|
+                  M.get_trait_method (|
+                    "core::convert::From",
+                    Ty.apply
+                      (Ty.path "alloc::boxed::Box")
                       []
-                    |),
-                    [ M.read (| str_err |) ]
-                  |)
-                |) in
-              let~ err2 := M.alloc (| (* Unsize *) M.pointer_coercion (M.read (| err1 |)) |) in
-              M.alloc (| (* Unsize *) M.pointer_coercion (M.read (| err2 |)) |)
-            |))))
+                      [
+                        Ty.dyn
+                          [
+                            ("core::error::Error::Trait", []);
+                            ("core::marker::Send::AutoTrait", []);
+                            ("core::marker::Sync::AutoTrait", [])
+                          ];
+                        Ty.path "alloc::alloc::Global"
+                      ],
+                    [ Ty.path "alloc::string::String" ],
+                    "from",
+                    []
+                  |),
+                  [ M.read (| str_err |) ]
+                |)
+              |) in
+            let~ err2 := M.alloc (| M.read (| err1 |) |) in
+            M.alloc (| M.read (| err2 |) |)
+          |)))
       | _, _, _ => M.impossible
       end.
     
@@ -7049,7 +8192,7 @@ Module boxed.
         (* Instance *) [ ("from", InstanceField.Method from) ].
   End Impl_core_convert_From_alloc_string_String_for_alloc_boxed_Box_Dyn_core_error_Error_Trait_alloc_alloc_Global.
   
-  Module Impl_core_convert_From_ref__str_for_alloc_boxed_Box_Dyn_core_error_Error_Trait_core_marker_Sync_AutoTrait_core_marker_Send_AutoTrait_alloc_alloc_Global.
+  Module Impl_core_convert_From_ref__str_for_alloc_boxed_Box_Dyn_core_error_Error_Trait_core_marker_Send_AutoTrait_core_marker_Sync_AutoTrait_alloc_alloc_Global.
     Definition Self : Ty.t :=
       Ty.apply
         (Ty.path "alloc::boxed::Box")
@@ -7058,8 +8201,8 @@ Module boxed.
           Ty.dyn
             [
               ("core::error::Error::Trait", []);
-              ("core::marker::Sync::AutoTrait", []);
-              ("core::marker::Send::AutoTrait", [])
+              ("core::marker::Send::AutoTrait", []);
+              ("core::marker::Sync::AutoTrait", [])
             ];
           Ty.path "alloc::alloc::Global"
         ].
@@ -7074,40 +8217,38 @@ Module boxed.
       | [], [], [ err ] =>
         ltac:(M.monadic
           (let err := M.alloc (| err |) in
-          (* Unsize *)
-          M.pointer_coercion
-            (M.call_closure (|
-              M.get_trait_method (|
-                "core::convert::From",
-                Ty.apply
-                  (Ty.path "alloc::boxed::Box")
-                  []
-                  [
-                    Ty.dyn
-                      [
-                        ("core::error::Error::Trait", []);
-                        ("core::marker::Sync::AutoTrait", []);
-                        ("core::marker::Send::AutoTrait", [])
-                      ];
-                    Ty.path "alloc::alloc::Global"
-                  ],
-                [ Ty.path "alloc::string::String" ],
-                "from",
+          M.call_closure (|
+            M.get_trait_method (|
+              "core::convert::From",
+              Ty.apply
+                (Ty.path "alloc::boxed::Box")
                 []
-              |),
-              [
-                M.call_closure (|
-                  M.get_trait_method (|
-                    "core::convert::From",
-                    Ty.path "alloc::string::String",
-                    [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
-                    "from",
-                    []
-                  |),
-                  [ M.read (| err |) ]
-                |)
-              ]
-            |))))
+                [
+                  Ty.dyn
+                    [
+                      ("core::error::Error::Trait", []);
+                      ("core::marker::Send::AutoTrait", []);
+                      ("core::marker::Sync::AutoTrait", [])
+                    ];
+                  Ty.path "alloc::alloc::Global"
+                ],
+              [ Ty.path "alloc::string::String" ],
+              "from",
+              []
+            |),
+            [
+              M.call_closure (|
+                M.get_trait_method (|
+                  "core::convert::From",
+                  Ty.path "alloc::string::String",
+                  [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                  "from",
+                  []
+                |),
+                [ M.read (| err |) ]
+              |)
+            ]
+          |)))
       | _, _, _ => M.impossible
       end.
     
@@ -7117,7 +8258,7 @@ Module boxed.
         Self
         (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
         (* Instance *) [ ("from", InstanceField.Method from) ].
-  End Impl_core_convert_From_ref__str_for_alloc_boxed_Box_Dyn_core_error_Error_Trait_core_marker_Sync_AutoTrait_core_marker_Send_AutoTrait_alloc_alloc_Global.
+  End Impl_core_convert_From_ref__str_for_alloc_boxed_Box_Dyn_core_error_Error_Trait_core_marker_Send_AutoTrait_core_marker_Sync_AutoTrait_alloc_alloc_Global.
   
   Module Impl_core_convert_From_ref__str_for_alloc_boxed_Box_Dyn_core_error_Error_Trait_alloc_alloc_Global.
     Definition Self : Ty.t :=
@@ -7127,7 +8268,7 @@ Module boxed.
         [ Ty.dyn [ ("core::error::Error::Trait", []) ]; Ty.path "alloc::alloc::Global" ].
     
     (*
-        fn from(err: &str) -> Box<dyn Error> {
+        fn from(err: &str) -> Box<dyn Error + 'a> {
             From::from(String::from(err))
         }
     *)
@@ -7136,32 +8277,30 @@ Module boxed.
       | [], [], [ err ] =>
         ltac:(M.monadic
           (let err := M.alloc (| err |) in
-          (* Unsize *)
-          M.pointer_coercion
-            (M.call_closure (|
-              M.get_trait_method (|
-                "core::convert::From",
-                Ty.apply
-                  (Ty.path "alloc::boxed::Box")
-                  []
-                  [ Ty.dyn [ ("core::error::Error::Trait", []) ]; Ty.path "alloc::alloc::Global" ],
-                [ Ty.path "alloc::string::String" ],
-                "from",
+          M.call_closure (|
+            M.get_trait_method (|
+              "core::convert::From",
+              Ty.apply
+                (Ty.path "alloc::boxed::Box")
                 []
-              |),
-              [
-                M.call_closure (|
-                  M.get_trait_method (|
-                    "core::convert::From",
-                    Ty.path "alloc::string::String",
-                    [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
-                    "from",
-                    []
-                  |),
-                  [ M.read (| err |) ]
-                |)
-              ]
-            |))))
+                [ Ty.dyn [ ("core::error::Error::Trait", []) ]; Ty.path "alloc::alloc::Global" ],
+              [ Ty.path "alloc::string::String" ],
+              "from",
+              []
+            |),
+            [
+              M.call_closure (|
+                M.get_trait_method (|
+                  "core::convert::From",
+                  Ty.path "alloc::string::String",
+                  [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                  "from",
+                  []
+                |),
+                [ M.read (| err |) ]
+              |)
+            ]
+          |)))
       | _, _, _ => M.impossible
       end.
     
@@ -7173,7 +8312,7 @@ Module boxed.
         (* Instance *) [ ("from", InstanceField.Method from) ].
   End Impl_core_convert_From_ref__str_for_alloc_boxed_Box_Dyn_core_error_Error_Trait_alloc_alloc_Global.
   
-  Module Impl_core_convert_From_alloc_borrow_Cow_str_for_alloc_boxed_Box_Dyn_core_error_Error_Trait_core_marker_Sync_AutoTrait_core_marker_Send_AutoTrait_alloc_alloc_Global.
+  Module Impl_core_convert_From_alloc_borrow_Cow_str_for_alloc_boxed_Box_Dyn_core_error_Error_Trait_core_marker_Send_AutoTrait_core_marker_Sync_AutoTrait_alloc_alloc_Global.
     Definition Self : Ty.t :=
       Ty.apply
         (Ty.path "alloc::boxed::Box")
@@ -7182,8 +8321,8 @@ Module boxed.
           Ty.dyn
             [
               ("core::error::Error::Trait", []);
-              ("core::marker::Sync::AutoTrait", []);
-              ("core::marker::Send::AutoTrait", [])
+              ("core::marker::Send::AutoTrait", []);
+              ("core::marker::Sync::AutoTrait", [])
             ];
           Ty.path "alloc::alloc::Global"
         ].
@@ -7198,40 +8337,38 @@ Module boxed.
       | [], [], [ err ] =>
         ltac:(M.monadic
           (let err := M.alloc (| err |) in
-          (* Unsize *)
-          M.pointer_coercion
-            (M.call_closure (|
-              M.get_trait_method (|
-                "core::convert::From",
-                Ty.apply
-                  (Ty.path "alloc::boxed::Box")
-                  []
-                  [
-                    Ty.dyn
-                      [
-                        ("core::error::Error::Trait", []);
-                        ("core::marker::Sync::AutoTrait", []);
-                        ("core::marker::Send::AutoTrait", [])
-                      ];
-                    Ty.path "alloc::alloc::Global"
-                  ],
-                [ Ty.path "alloc::string::String" ],
-                "from",
+          M.call_closure (|
+            M.get_trait_method (|
+              "core::convert::From",
+              Ty.apply
+                (Ty.path "alloc::boxed::Box")
                 []
-              |),
-              [
-                M.call_closure (|
-                  M.get_trait_method (|
-                    "core::convert::From",
-                    Ty.path "alloc::string::String",
-                    [ Ty.apply (Ty.path "alloc::borrow::Cow") [] [ Ty.path "str" ] ],
-                    "from",
-                    []
-                  |),
-                  [ M.read (| err |) ]
-                |)
-              ]
-            |))))
+                [
+                  Ty.dyn
+                    [
+                      ("core::error::Error::Trait", []);
+                      ("core::marker::Send::AutoTrait", []);
+                      ("core::marker::Sync::AutoTrait", [])
+                    ];
+                  Ty.path "alloc::alloc::Global"
+                ],
+              [ Ty.path "alloc::string::String" ],
+              "from",
+              []
+            |),
+            [
+              M.call_closure (|
+                M.get_trait_method (|
+                  "core::convert::From",
+                  Ty.path "alloc::string::String",
+                  [ Ty.apply (Ty.path "alloc::borrow::Cow") [] [ Ty.path "str" ] ],
+                  "from",
+                  []
+                |),
+                [ M.read (| err |) ]
+              |)
+            ]
+          |)))
       | _, _, _ => M.impossible
       end.
     
@@ -7242,7 +8379,7 @@ Module boxed.
         (* Trait polymorphic types *)
         [ (* T *) Ty.apply (Ty.path "alloc::borrow::Cow") [] [ Ty.path "str" ] ]
         (* Instance *) [ ("from", InstanceField.Method from) ].
-  End Impl_core_convert_From_alloc_borrow_Cow_str_for_alloc_boxed_Box_Dyn_core_error_Error_Trait_core_marker_Sync_AutoTrait_core_marker_Send_AutoTrait_alloc_alloc_Global.
+  End Impl_core_convert_From_alloc_borrow_Cow_str_for_alloc_boxed_Box_Dyn_core_error_Error_Trait_core_marker_Send_AutoTrait_core_marker_Sync_AutoTrait_alloc_alloc_Global.
   
   Module Impl_core_convert_From_alloc_borrow_Cow_str_for_alloc_boxed_Box_Dyn_core_error_Error_Trait_alloc_alloc_Global.
     Definition Self : Ty.t :=
@@ -7252,7 +8389,7 @@ Module boxed.
         [ Ty.dyn [ ("core::error::Error::Trait", []) ]; Ty.path "alloc::alloc::Global" ].
     
     (*
-        fn from(err: Cow<'a, str>) -> Box<dyn Error> {
+        fn from(err: Cow<'b, str>) -> Box<dyn Error + 'a> {
             From::from(String::from(err))
         }
     *)
@@ -7261,32 +8398,30 @@ Module boxed.
       | [], [], [ err ] =>
         ltac:(M.monadic
           (let err := M.alloc (| err |) in
-          (* Unsize *)
-          M.pointer_coercion
-            (M.call_closure (|
-              M.get_trait_method (|
-                "core::convert::From",
-                Ty.apply
-                  (Ty.path "alloc::boxed::Box")
-                  []
-                  [ Ty.dyn [ ("core::error::Error::Trait", []) ]; Ty.path "alloc::alloc::Global" ],
-                [ Ty.path "alloc::string::String" ],
-                "from",
+          M.call_closure (|
+            M.get_trait_method (|
+              "core::convert::From",
+              Ty.apply
+                (Ty.path "alloc::boxed::Box")
                 []
-              |),
-              [
-                M.call_closure (|
-                  M.get_trait_method (|
-                    "core::convert::From",
-                    Ty.path "alloc::string::String",
-                    [ Ty.apply (Ty.path "alloc::borrow::Cow") [] [ Ty.path "str" ] ],
-                    "from",
-                    []
-                  |),
-                  [ M.read (| err |) ]
-                |)
-              ]
-            |))))
+                [ Ty.dyn [ ("core::error::Error::Trait", []) ]; Ty.path "alloc::alloc::Global" ],
+              [ Ty.path "alloc::string::String" ],
+              "from",
+              []
+            |),
+            [
+              M.call_closure (|
+                M.get_trait_method (|
+                  "core::convert::From",
+                  Ty.path "alloc::string::String",
+                  [ Ty.apply (Ty.path "alloc::borrow::Cow") [] [ Ty.path "str" ] ],
+                  "from",
+                  []
+                |),
+                [ M.read (| err |) ]
+              |)
+            ]
+          |)))
       | _, _, _ => M.impossible
       end.
     
@@ -7396,4 +8531,16 @@ Module boxed.
           ("provide", InstanceField.Method (provide T))
         ].
   End Impl_core_error_Error_where_core_error_Error_T_for_alloc_boxed_Box_T_alloc_alloc_Global.
+  
+  Module Impl_core_pin_PinCoerceUnsized_where_core_marker_Sized_T_where_core_alloc_Allocator_A_for_alloc_boxed_Box_T_A.
+    Definition Self (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ].
+    
+    Axiom Implements :
+      forall (T A : Ty.t),
+      M.IsTraitInstance
+        "core::pin::PinCoerceUnsized"
+        (Self T A)
+        (* Trait polymorphic types *) []
+        (* Instance *) [].
+  End Impl_core_pin_PinCoerceUnsized_where_core_marker_Sized_T_where_core_alloc_Allocator_A_for_alloc_boxed_Box_T_A.
 End boxed.

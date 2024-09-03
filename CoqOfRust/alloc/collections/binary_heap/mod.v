@@ -27,7 +27,7 @@ Module collections.
               Ty.apply
                 (Ty.path "core::option::Option")
                 []
-                [ Ty.path "core::num::nonzero::NonZeroUsize" ])
+                [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ])
           ];
       } *)
     
@@ -71,31 +71,29 @@ Module collections.
                         [ M.read (| f |); M.read (| Value.String "PeekMut" |) ]
                       |)
                     |);
-                    (* Unsize *)
-                    M.pointer_coercion
-                      (M.call_closure (|
-                        M.get_trait_method (|
-                          "core::ops::index::Index",
-                          Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
-                          [ Ty.path "usize" ],
-                          "index",
-                          []
-                        |),
-                        [
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (|
-                              M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
-                                "alloc::collections::binary_heap::PeekMut",
-                                "heap"
-                              |)
-                            |),
-                            "alloc::collections::binary_heap::BinaryHeap",
-                            "data"
-                          |);
-                          Value.Integer 0
-                        ]
-                      |))
+                    M.call_closure (|
+                      M.get_trait_method (|
+                        "core::ops::index::Index",
+                        Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
+                        [ Ty.path "usize" ],
+                        "index",
+                        []
+                      |),
+                      [
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "alloc::collections::binary_heap::PeekMut",
+                              "heap"
+                            |)
+                          |),
+                          "alloc::collections::binary_heap::BinaryHeap",
+                          "data"
+                        |);
+                        Value.Integer 0
+                      ]
+                    |)
                   ]
                 |)
               ]
@@ -178,7 +176,10 @@ Module collections.
                               |);
                               M.call_closure (|
                                 M.get_associated_function (|
-                                  Ty.path "core::num::nonzero::NonZeroUsize",
+                                  Ty.apply
+                                    (Ty.path "core::num::nonzero::NonZero")
+                                    []
+                                    [ Ty.path "usize" ],
                                   "get",
                                   []
                                 |),
@@ -382,7 +383,7 @@ Module collections.
                   // the standard library as "leak amplification".
                   unsafe {
                       // SAFETY: len > 1 so len != 0.
-                      self.original_len = Some(NonZeroUsize::new_unchecked(len));
+                      self.original_len = Some(NonZero::new_unchecked(len));
                       // SAFETY: len > 1 so all this does for now is leak elements,
                       // which is safe.
                       self.heap.data.set_len(1);
@@ -507,7 +508,10 @@ Module collections.
                               [
                                 M.call_closure (|
                                   M.get_associated_function (|
-                                    Ty.path "core::num::nonzero::NonZeroUsize",
+                                    Ty.apply
+                                      (Ty.path "core::num::nonzero::NonZero")
+                                      []
+                                      [ Ty.path "usize" ],
                                     "new_unchecked",
                                     []
                                   |),
@@ -628,7 +632,12 @@ Module collections.
                                 Ty.apply
                                   (Ty.path "core::option::Option")
                                   []
-                                  [ Ty.path "core::num::nonzero::NonZeroUsize" ],
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::num::nonzero::NonZero")
+                                      []
+                                      [ Ty.path "usize" ]
+                                  ],
                                 "take",
                                 []
                               |),
@@ -670,7 +679,10 @@ Module collections.
                                 |);
                                 M.call_closure (|
                                   M.get_associated_function (|
-                                    Ty.path "core::num::nonzero::NonZeroUsize",
+                                    Ty.apply
+                                      (Ty.path "core::num::nonzero::NonZero")
+                                      []
+                                      [ Ty.path "usize" ],
                                     "get",
                                     []
                                   |),
@@ -4533,6 +4545,47 @@ Module collections.
         fields := [ ("iter", Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ]) ];
       } *)
     
+    Module Impl_core_default_Default_for_alloc_collections_binary_heap_Iter_T.
+      Definition Self (T : Ty.t) : Ty.t :=
+        Ty.apply (Ty.path "alloc::collections::binary_heap::Iter") [] [ T ].
+      
+      (*
+          fn default() -> Self {
+              Iter { iter: Default::default() }
+          }
+      *)
+      Definition default (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        let Self : Ty.t := Self T in
+        match ε, τ, α with
+        | [], [], [] =>
+          ltac:(M.monadic
+            (Value.StructRecord
+              "alloc::collections::binary_heap::Iter"
+              [
+                ("iter",
+                  M.call_closure (|
+                    M.get_trait_method (|
+                      "core::default::Default",
+                      Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ],
+                      [],
+                      "default",
+                      []
+                    |),
+                    []
+                  |))
+              ]))
+        | _, _, _ => M.impossible
+        end.
+      
+      Axiom Implements :
+        forall (T : Ty.t),
+        M.IsTraitInstance
+          "core::default::Default"
+          (Self T)
+          (* Trait polymorphic types *) []
+          (* Instance *) [ ("default", InstanceField.Method (default T)) ].
+    End Impl_core_default_Default_for_alloc_collections_binary_heap_Iter_T.
+    
     Module Impl_core_fmt_Debug_where_core_fmt_Debug_T_for_alloc_collections_binary_heap_Iter_T.
       Definition Self (T : Ty.t) : Ty.t :=
         Ty.apply (Ty.path "alloc::collections::binary_heap::Iter") [] [ T ].
@@ -4573,24 +4626,22 @@ Module collections.
                         [ M.read (| f |); M.read (| Value.String "Iter" |) ]
                       |)
                     |);
-                    (* Unsize *)
-                    M.pointer_coercion
-                      (M.alloc (|
-                        M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ],
-                            "as_slice",
-                            []
-                          |),
-                          [
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "alloc::collections::binary_heap::Iter",
-                              "iter"
-                            |)
-                          ]
-                        |)
-                      |))
+                    M.alloc (|
+                      M.call_closure (|
+                        M.get_associated_function (|
+                          Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ],
+                          "as_slice",
+                          []
+                        |),
+                        [
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "alloc::collections::binary_heap::Iter",
+                            "iter"
+                          |)
+                        ]
+                      |)
+                    |)
                   ]
                 |)
               ]
@@ -4997,24 +5048,22 @@ Module collections.
                         [ M.read (| f |); M.read (| Value.String "IntoIter" |) ]
                       |)
                     |);
-                    (* Unsize *)
-                    M.pointer_coercion
-                      (M.alloc (|
-                        M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.apply (Ty.path "alloc::vec::into_iter::IntoIter") [] [ T; A ],
-                            "as_slice",
-                            []
-                          |),
-                          [
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "alloc::collections::binary_heap::IntoIter",
-                              "iter"
-                            |)
-                          ]
-                        |)
-                      |))
+                    M.alloc (|
+                      M.call_closure (|
+                        M.get_associated_function (|
+                          Ty.apply (Ty.path "alloc::vec::into_iter::IntoIter") [] [ T; A ],
+                          "as_slice",
+                          []
+                        |),
+                        [
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "alloc::collections::binary_heap::IntoIter",
+                            "iter"
+                          |)
+                        ]
+                      |)
+                    |)
                   ]
                 |)
               ]
@@ -5311,11 +5360,11 @@ Module collections.
       Definition Self (I A : Ty.t) : Ty.t :=
         Ty.apply (Ty.path "alloc::collections::binary_heap::IntoIter") [] [ I; A ].
       
-      (*     const EXPAND_BY: Option<NonZeroUsize> = NonZeroUsize::new(1); *)
+      (*     const EXPAND_BY: Option<NonZero<usize>> = NonZero::new(1); *)
       (* Ty.apply
         (Ty.path "core::option::Option")
         []
-        [ Ty.path "core::num::nonzero::NonZeroUsize" ] *)
+        [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ] *)
       Definition value_EXPAND_BY (I A : Ty.t) : Value.t :=
         let Self : Ty.t := Self I A in
         M.run
@@ -5323,7 +5372,7 @@ Module collections.
             (M.alloc (|
               M.call_closure (|
                 M.get_associated_function (|
-                  Ty.path "core::num::nonzero::NonZeroUsize",
+                  Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                   "new",
                   []
                 |),
@@ -5331,11 +5380,11 @@ Module collections.
               |)
             |))).
       
-      (*     const MERGE_BY: Option<NonZeroUsize> = NonZeroUsize::new(1); *)
+      (*     const MERGE_BY: Option<NonZero<usize>> = NonZero::new(1); *)
       (* Ty.apply
         (Ty.path "core::option::Option")
         []
-        [ Ty.path "core::num::nonzero::NonZeroUsize" ] *)
+        [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ] *)
       Definition value_MERGE_BY (I A : Ty.t) : Value.t :=
         let Self : Ty.t := Self I A in
         M.run
@@ -5343,7 +5392,7 @@ Module collections.
             (M.alloc (|
               M.call_closure (|
                 M.get_associated_function (|
-                  Ty.path "core::num::nonzero::NonZeroUsize",
+                  Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                   "new",
                   []
                 |),
@@ -5487,15 +5536,13 @@ Module collections.
                 M.read (| f |);
                 M.read (| Value.String "IntoIterSorted" |);
                 M.read (| Value.String "inner" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.alloc (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "alloc::collections::binary_heap::IntoIterSorted",
-                      "inner"
-                    |)
-                  |))
+                M.alloc (|
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "alloc::collections::binary_heap::IntoIterSorted",
+                    "inner"
+                  |)
+                |)
               ]
             |)))
         | _, _, _ => M.impossible
@@ -5706,15 +5753,13 @@ Module collections.
                 M.read (| f |);
                 M.read (| Value.String "Drain" |);
                 M.read (| Value.String "iter" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.alloc (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "alloc::collections::binary_heap::Drain",
-                      "iter"
-                    |)
-                  |))
+                M.alloc (|
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "alloc::collections::binary_heap::Drain",
+                    "iter"
+                  |)
+                |)
               ]
             |)))
         | _, _, _ => M.impossible
@@ -5983,15 +6028,13 @@ Module collections.
                 M.read (| f |);
                 M.read (| Value.String "DrainSorted" |);
                 M.read (| Value.String "inner" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.alloc (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "alloc::collections::binary_heap::DrainSorted",
-                      "inner"
-                    |)
-                  |))
+                M.alloc (|
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "alloc::collections::binary_heap::DrainSorted",
+                    "inner"
+                  |)
+                |)
               ]
             |)))
         | _, _, _ => M.impossible
