@@ -6,34 +6,37 @@ Module context.
     (* StructRecord
       {
         name := "InnerEvmContext";
+        const_params := [];
         ty_params := [ "DB" ];
         fields :=
           [
             ("env",
               Ty.apply
                 (Ty.path "alloc::boxed::Box")
+                []
                 [ Ty.path "revm_primitives::env::Env"; Ty.path "alloc::alloc::Global" ]);
             ("journaled_state", Ty.path "revm::journaled_state::JournaledState");
             ("db", DB);
             ("error",
               Ty.apply
                 (Ty.path "core::result::Result")
+                []
                 [
                   Ty.tuple [];
-                  Ty.apply (Ty.path "revm_primitives::result::EVMError") [ Ty.associated ]
+                  Ty.apply (Ty.path "revm_primitives::result::EVMError") [] [ Ty.associated ]
                 ])
           ];
       } *)
     
     Module Impl_core_fmt_Debug_where_core_fmt_Debug_DB_where_revm_primitives_db_Database_DB_where_core_fmt_Debug_associated_type_for_revm_context_inner_evm_context_InnerEvmContext_DB.
       Definition Self (DB : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "revm::context::inner_evm_context::InnerEvmContext") [ DB ].
+        Ty.apply (Ty.path "revm::context::inner_evm_context::InnerEvmContext") [] [ DB ].
       
       (* Debug *)
-      Definition fmt (DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (DB : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self DB in
-        match τ, α with
-        | [], [ self; f ] =>
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -82,7 +85,7 @@ Module context.
                   |))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -96,7 +99,7 @@ Module context.
     
     Module Impl_core_clone_Clone_where_revm_primitives_db_Database_DB_where_core_clone_Clone_DB_where_core_clone_Clone_associated_type_for_revm_context_inner_evm_context_InnerEvmContext_DB.
       Definition Self (DB : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "revm::context::inner_evm_context::InnerEvmContext") [ DB ].
+        Ty.apply (Ty.path "revm::context::inner_evm_context::InnerEvmContext") [] [ DB ].
       
       (*
           fn clone(&self) -> Self {
@@ -110,10 +113,10 @@ Module context.
               }
           }
       *)
-      Definition clone (DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition clone (DB : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self DB in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructRecord
@@ -125,6 +128,7 @@ Module context.
                       "core::clone::Clone",
                       Ty.apply
                         (Ty.path "alloc::boxed::Box")
+                        []
                         [ Ty.path "revm_primitives::env::Env"; Ty.path "alloc::alloc::Global" ],
                       [],
                       "clone",
@@ -172,9 +176,13 @@ Module context.
                       "core::clone::Clone",
                       Ty.apply
                         (Ty.path "core::result::Result")
+                        []
                         [
                           Ty.tuple [];
-                          Ty.apply (Ty.path "revm_primitives::result::EVMError") [ Ty.associated ]
+                          Ty.apply
+                            (Ty.path "revm_primitives::result::EVMError")
+                            []
+                            [ Ty.associated ]
                         ],
                       [],
                       "clone",
@@ -189,7 +197,7 @@ Module context.
                     ]
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -203,7 +211,7 @@ Module context.
     
     Module Impl_revm_context_inner_evm_context_InnerEvmContext_DB.
       Definition Self (DB : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "revm::context::inner_evm_context::InnerEvmContext") [ DB ].
+        Ty.apply (Ty.path "revm::context::inner_evm_context::InnerEvmContext") [] [ DB ].
       
       (*
           pub fn new(db: DB) -> Self {
@@ -217,10 +225,10 @@ Module context.
               }
           }
       *)
-      Definition new (DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition new (DB : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self DB in
-        match τ, α with
-        | [], [ db ] =>
+        match ε, τ, α with
+        | [], [], [ db ] =>
           ltac:(M.monadic
             (let db := M.alloc (| db |) in
             Value.StructRecord
@@ -232,6 +240,7 @@ Module context.
                       "core::default::Default",
                       Ty.apply
                         (Ty.path "alloc::boxed::Box")
+                        []
                         [ Ty.path "revm_primitives::env::Env"; Ty.path "alloc::alloc::Global" ],
                       [],
                       "default",
@@ -252,6 +261,7 @@ Module context.
                         M.get_associated_function (|
                           Ty.apply
                             (Ty.path "std::collections::hash::set::HashSet")
+                            []
                             [
                               Ty.path "alloy_primitives::bits::address::Address";
                               Ty.path "std::hash::random::RandomState"
@@ -266,7 +276,7 @@ Module context.
                 ("db", M.read (| db |));
                 ("error", Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ])
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_new :
@@ -285,10 +295,15 @@ Module context.
               }
           }
       *)
-      Definition new_with_env (DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition new_with_env
+          (DB : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self DB in
-        match τ, α with
-        | [], [ db; env ] =>
+        match ε, τ, α with
+        | [], [], [ db; env ] =>
           ltac:(M.monadic
             (let db := M.alloc (| db |) in
             let env := M.alloc (| env |) in
@@ -309,6 +324,7 @@ Module context.
                         M.get_associated_function (|
                           Ty.apply
                             (Ty.path "std::collections::hash::set::HashSet")
+                            []
                             [
                               Ty.path "alloy_primitives::bits::address::Address";
                               Ty.path "std::hash::random::RandomState"
@@ -323,7 +339,7 @@ Module context.
                 ("db", M.read (| db |));
                 ("error", Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ])
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_new_with_env :
@@ -342,10 +358,10 @@ Module context.
               }
           }
       *)
-      Definition with_db (DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition with_db (DB : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self DB in
-        match τ, α with
-        | [ ODB ], [ self; db ] =>
+        match ε, τ, α with
+        | [], [ ODB ], [ self; db ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let db := M.alloc (| db |) in
@@ -371,7 +387,7 @@ Module context.
                 ("db", M.read (| db |));
                 ("error", Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ])
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_with_db :
@@ -383,10 +399,10 @@ Module context.
               self.journaled_state.spec
           }
       *)
-      Definition spec_id (DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition spec_id (DB : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self DB in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -400,7 +416,7 @@ Module context.
                 "spec"
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_spec_id :
@@ -416,10 +432,15 @@ Module context.
               Ok(())
           }
       *)
-      Definition load_access_list (DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition load_access_list
+          (DB : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self DB in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.catch_return (|
@@ -434,13 +455,21 @@ Module context.
                               "core::iter::traits::collect::IntoIterator",
                               Ty.apply
                                 (Ty.path "core::slice::iter::Iter")
+                                []
                                 [
                                   Ty.tuple
                                     [
                                       Ty.path "alloy_primitives::bits::address::Address";
                                       Ty.apply
                                         (Ty.path "alloc::vec::Vec")
-                                        [ Ty.path "ruint::Uint"; Ty.path "alloc::alloc::Global" ]
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "ruint::Uint")
+                                            [ Value.Integer 256; Value.Integer 4 ]
+                                            [];
+                                          Ty.path "alloc::alloc::Global"
+                                        ]
                                     ]
                                 ],
                               [],
@@ -452,13 +481,20 @@ Module context.
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "slice")
+                                    []
                                     [
                                       Ty.tuple
                                         [
                                           Ty.path "alloy_primitives::bits::address::Address";
                                           Ty.apply
                                             (Ty.path "alloc::vec::Vec")
-                                            [ Ty.path "ruint::Uint"; Ty.path "alloc::alloc::Global"
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "ruint::Uint")
+                                                [ Value.Integer 256; Value.Integer 4 ]
+                                                [];
+                                              Ty.path "alloc::alloc::Global"
                                             ]
                                         ]
                                     ],
@@ -471,14 +507,19 @@ Module context.
                                       "core::ops::deref::Deref",
                                       Ty.apply
                                         (Ty.path "alloc::vec::Vec")
+                                        []
                                         [
                                           Ty.tuple
                                             [
                                               Ty.path "alloy_primitives::bits::address::Address";
                                               Ty.apply
                                                 (Ty.path "alloc::vec::Vec")
+                                                []
                                                 [
-                                                  Ty.path "ruint::Uint";
+                                                  Ty.apply
+                                                    (Ty.path "ruint::Uint")
+                                                    [ Value.Integer 256; Value.Integer 4 ]
+                                                    [];
                                                   Ty.path "alloc::alloc::Global"
                                                 ]
                                             ];
@@ -525,6 +566,7 @@ Module context.
                                             "core::iter::traits::iterator::Iterator",
                                             Ty.apply
                                               (Ty.path "core::slice::iter::Iter")
+                                              []
                                               [
                                                 Ty.tuple
                                                   [
@@ -532,8 +574,12 @@ Module context.
                                                       "alloy_primitives::bits::address::Address";
                                                     Ty.apply
                                                       (Ty.path "alloc::vec::Vec")
+                                                      []
                                                       [
-                                                        Ty.path "ruint::Uint";
+                                                        Ty.apply
+                                                          (Ty.path "ruint::Uint")
+                                                          [ Value.Integer 256; Value.Integer 4 ]
+                                                          [];
                                                         Ty.path "alloc::alloc::Global"
                                                       ]
                                                   ]
@@ -579,9 +625,11 @@ Module context.
                                                       "core::ops::try_trait::Try",
                                                       Ty.apply
                                                         (Ty.path "core::result::Result")
+                                                        []
                                                         [
                                                           Ty.apply
                                                             (Ty.path "&mut")
+                                                            []
                                                             [
                                                               Ty.path
                                                                 "revm_primitives::state::Account"
@@ -589,6 +637,7 @@ Module context.
                                                           Ty.apply
                                                             (Ty.path
                                                               "revm_primitives::result::EVMError")
+                                                            []
                                                             [ Ty.associated ]
                                                         ],
                                                       [],
@@ -615,8 +664,15 @@ Module context.
                                                               "core::ops::deref::Deref",
                                                               Ty.apply
                                                                 (Ty.path "alloc::vec::Vec")
+                                                                []
                                                                 [
-                                                                  Ty.path "ruint::Uint";
+                                                                  Ty.apply
+                                                                    (Ty.path "ruint::Uint")
+                                                                    [
+                                                                      Value.Integer 256;
+                                                                      Value.Integer 4
+                                                                    ]
+                                                                    [];
                                                                   Ty.path "alloc::alloc::Global"
                                                                 ],
                                                               [],
@@ -654,23 +710,27 @@ Module context.
                                                                   "core::ops::try_trait::FromResidual",
                                                                   Ty.apply
                                                                     (Ty.path "core::result::Result")
+                                                                    []
                                                                     [
                                                                       Ty.tuple [];
                                                                       Ty.apply
                                                                         (Ty.path
                                                                           "revm_primitives::result::EVMError")
+                                                                        []
                                                                         [ Ty.associated ]
                                                                     ],
                                                                   [
                                                                     Ty.apply
                                                                       (Ty.path
                                                                         "core::result::Result")
+                                                                      []
                                                                       [
                                                                         Ty.path
                                                                           "core::convert::Infallible";
                                                                         Ty.apply
                                                                           (Ty.path
                                                                             "revm_primitives::result::EVMError")
+                                                                          []
                                                                           [ Ty.associated ]
                                                                       ]
                                                                   ],
@@ -705,7 +765,7 @@ Module context.
                   M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_load_access_list :
@@ -717,10 +777,10 @@ Module context.
               &mut self.env
           }
       *)
-      Definition env (DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition env (DB : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self DB in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -730,7 +790,7 @@ Module context.
                 "env"
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_env :
@@ -742,10 +802,10 @@ Module context.
               core::mem::replace(&mut self.error, Ok(()))
           }
       *)
-      Definition take_error (DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition take_error (DB : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self DB in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -754,9 +814,10 @@ Module context.
                 [
                   Ty.apply
                     (Ty.path "core::result::Result")
+                    []
                     [
                       Ty.tuple [];
-                      Ty.apply (Ty.path "revm_primitives::result::EVMError") [ Ty.associated ]
+                      Ty.apply (Ty.path "revm_primitives::result::EVMError") [] [ Ty.associated ]
                     ]
                 ]
               |),
@@ -769,7 +830,7 @@ Module context.
                 Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ]
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_take_error :
@@ -781,10 +842,10 @@ Module context.
               self.db.block_hash(number).map_err(EVMError::Database)
           }
       *)
-      Definition block_hash (DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition block_hash (DB : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self DB in
-        match τ, α with
-        | [], [ self; number ] =>
+        match ε, τ, α with
+        | [], [], [ self; number ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let number := M.alloc (| number |) in
@@ -792,13 +853,20 @@ Module context.
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "core::result::Result")
-                  [ Ty.path "alloy_primitives::bits::fixed::FixedBytes"; Ty.associated ],
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                      [ Value.Integer 32 ]
+                      [];
+                    Ty.associated
+                  ],
                 "map_err",
                 [
-                  Ty.apply (Ty.path "revm_primitives::result::EVMError") [ Ty.associated ];
+                  Ty.apply (Ty.path "revm_primitives::result::EVMError") [] [ Ty.associated ];
                   Ty.function
                     [ Ty.associated ]
-                    (Ty.apply (Ty.path "revm_primitives::result::EVMError") [ Ty.associated ])
+                    (Ty.apply (Ty.path "revm_primitives::result::EVMError") [] [ Ty.associated ])
                 ]
               |),
               [
@@ -822,7 +890,7 @@ Module context.
                 M.constructor_as_closure "revm_primitives::result::EVMError::Database"
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_block_hash :
@@ -834,10 +902,10 @@ Module context.
               self.journaled_state.touch(address);
           }
       *)
-      Definition touch (DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition touch (DB : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self DB in
-        match τ, α with
-        | [], [ self; address ] =>
+        match ε, τ, α with
+        | [], [], [ self; address ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let address := M.alloc (| address |) in
@@ -862,7 +930,7 @@ Module context.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_touch :
@@ -877,10 +945,15 @@ Module context.
               self.journaled_state.load_account(address, &mut self.db)
           }
       *)
-      Definition load_account (DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition load_account
+          (DB : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self DB in
-        match τ, α with
-        | [], [ self; address ] =>
+        match ε, τ, α with
+        | [], [], [ self; address ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let address := M.alloc (| address |) in
@@ -904,7 +977,7 @@ Module context.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_load_account :
@@ -920,10 +993,15 @@ Module context.
                   .load_account_exist(address, &mut self.db)
           }
       *)
-      Definition load_account_exist (DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition load_account_exist
+          (DB : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self DB in
-        match τ, α with
-        | [], [ self; address ] =>
+        match ε, τ, α with
+        | [], [], [ self; address ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let address := M.alloc (| address |) in
@@ -947,7 +1025,7 @@ Module context.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_load_account_exist :
@@ -961,10 +1039,10 @@ Module context.
                   .map(|(acc, is_cold)| (acc.info.balance, is_cold))
           }
       *)
-      Definition balance (DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition balance (DB : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self DB in
-        match τ, α with
-        | [], [ self; address ] =>
+        match ε, τ, α with
+        | [], [], [ self; address ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let address := M.alloc (| address |) in
@@ -972,17 +1050,22 @@ Module context.
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "core::result::Result")
+                  []
                   [
                     Ty.tuple
                       [
-                        Ty.apply (Ty.path "&mut") [ Ty.path "revm_primitives::state::Account" ];
+                        Ty.apply (Ty.path "&mut") [] [ Ty.path "revm_primitives::state::Account" ];
                         Ty.path "bool"
                       ];
-                    Ty.apply (Ty.path "revm_primitives::result::EVMError") [ Ty.associated ]
+                    Ty.apply (Ty.path "revm_primitives::result::EVMError") [] [ Ty.associated ]
                   ],
                 "map",
                 [
-                  Ty.tuple [ Ty.path "ruint::Uint"; Ty.path "bool" ];
+                  Ty.tuple
+                    [
+                      Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [];
+                      Ty.path "bool"
+                    ];
                   Ty.function
                     [
                       Ty.tuple
@@ -991,12 +1074,17 @@ Module context.
                             [
                               Ty.apply
                                 (Ty.path "&mut")
+                                []
                                 [ Ty.path "revm_primitives::state::Account" ];
                               Ty.path "bool"
                             ]
                         ]
                     ]
-                    (Ty.tuple [ Ty.path "ruint::Uint"; Ty.path "bool" ])
+                    (Ty.tuple
+                      [
+                        Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [];
+                        Ty.path "bool"
+                      ])
                 ]
               |),
               [
@@ -1055,7 +1143,7 @@ Module context.
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_balance :
@@ -1069,10 +1157,10 @@ Module context.
                   .map(|(a, is_cold)| (a.info.code.clone().unwrap(), is_cold))
           }
       *)
-      Definition code (DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition code (DB : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self DB in
-        match τ, α with
-        | [], [ self; address ] =>
+        match ε, τ, α with
+        | [], [], [ self; address ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let address := M.alloc (| address |) in
@@ -1080,13 +1168,14 @@ Module context.
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "core::result::Result")
+                  []
                   [
                     Ty.tuple
                       [
-                        Ty.apply (Ty.path "&mut") [ Ty.path "revm_primitives::state::Account" ];
+                        Ty.apply (Ty.path "&mut") [] [ Ty.path "revm_primitives::state::Account" ];
                         Ty.path "bool"
                       ];
-                    Ty.apply (Ty.path "revm_primitives::result::EVMError") [ Ty.associated ]
+                    Ty.apply (Ty.path "revm_primitives::result::EVMError") [] [ Ty.associated ]
                   ],
                 "map",
                 [
@@ -1099,6 +1188,7 @@ Module context.
                             [
                               Ty.apply
                                 (Ty.path "&mut")
+                                []
                                 [ Ty.path "revm_primitives::state::Account" ];
                               Ty.path "bool"
                             ]
@@ -1148,6 +1238,7 @@ Module context.
                                       M.get_associated_function (|
                                         Ty.apply
                                           (Ty.path "core::option::Option")
+                                          []
                                           [ Ty.path "revm_primitives::bytecode::Bytecode" ],
                                         "unwrap",
                                         []
@@ -1158,6 +1249,7 @@ Module context.
                                             "core::clone::Clone",
                                             Ty.apply
                                               (Ty.path "core::option::Option")
+                                              []
                                               [ Ty.path "revm_primitives::bytecode::Bytecode" ],
                                             [],
                                             "clone",
@@ -1185,7 +1277,7 @@ Module context.
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_code :
@@ -1201,10 +1293,10 @@ Module context.
               Ok((acc.info.code_hash, is_cold))
           }
       *)
-      Definition code_hash (DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition code_hash (DB : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self DB in
-        match τ, α with
-        | [], [ self; address ] =>
+        match ε, τ, α with
+        | [], [], [ self; address ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let address := M.alloc (| address |) in
@@ -1219,16 +1311,19 @@ Module context.
                             "core::ops::try_trait::Try",
                             Ty.apply
                               (Ty.path "core::result::Result")
+                              []
                               [
                                 Ty.tuple
                                   [
                                     Ty.apply
                                       (Ty.path "&mut")
+                                      []
                                       [ Ty.path "revm_primitives::state::Account" ];
                                     Ty.path "bool"
                                   ];
                                 Ty.apply
                                   (Ty.path "revm_primitives::result::EVMError")
+                                  []
                                   [ Ty.associated ]
                               ],
                             [],
@@ -1278,23 +1373,31 @@ Module context.
                                         "core::ops::try_trait::FromResidual",
                                         Ty.apply
                                           (Ty.path "core::result::Result")
+                                          []
                                           [
                                             Ty.tuple
                                               [
-                                                Ty.path "alloy_primitives::bits::fixed::FixedBytes";
+                                                Ty.apply
+                                                  (Ty.path
+                                                    "alloy_primitives::bits::fixed::FixedBytes")
+                                                  [ Value.Integer 32 ]
+                                                  [];
                                                 Ty.path "bool"
                                               ];
                                             Ty.apply
                                               (Ty.path "revm_primitives::result::EVMError")
+                                              []
                                               [ Ty.associated ]
                                           ],
                                         [
                                           Ty.apply
                                             (Ty.path "core::result::Result")
+                                            []
                                             [
                                               Ty.path "core::convert::Infallible";
                                               Ty.apply
                                                 (Ty.path "revm_primitives::result::EVMError")
+                                                []
                                                 [ Ty.associated ]
                                             ]
                                         ],
@@ -1398,7 +1501,7 @@ Module context.
                   |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_code_hash :
@@ -1415,10 +1518,10 @@ Module context.
               self.journaled_state.sload(address, index, &mut self.db)
           }
       *)
-      Definition sload (DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition sload (DB : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self DB in
-        match τ, α with
-        | [], [ self; address; index ] =>
+        match ε, τ, α with
+        | [], [], [ self; address; index ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let address := M.alloc (| address |) in
@@ -1444,7 +1547,7 @@ Module context.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_sload :
@@ -1462,10 +1565,10 @@ Module context.
                   .sstore(address, index, value, &mut self.db)
           }
       *)
-      Definition sstore (DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition sstore (DB : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self DB in
-        match τ, α with
-        | [], [ self; address; index; value ] =>
+        match ε, τ, α with
+        | [], [], [ self; address; index; value ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let address := M.alloc (| address |) in
@@ -1493,7 +1596,7 @@ Module context.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_sstore :
@@ -1505,10 +1608,10 @@ Module context.
               self.journaled_state.tload(address, index)
           }
       *)
-      Definition tload (DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition tload (DB : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self DB in
-        match τ, α with
-        | [], [ self; address; index ] =>
+        match ε, τ, α with
+        | [], [], [ self; address; index ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let address := M.alloc (| address |) in
@@ -1529,7 +1632,7 @@ Module context.
                 M.read (| index |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_tload :
@@ -1541,10 +1644,10 @@ Module context.
               self.journaled_state.tstore(address, index, value)
           }
       *)
-      Definition tstore (DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition tstore (DB : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self DB in
-        match τ, α with
-        | [], [ self; address; index; value ] =>
+        match ε, τ, α with
+        | [], [], [ self; address; index; value ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let address := M.alloc (| address |) in
@@ -1567,7 +1670,7 @@ Module context.
                 M.read (| value |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_tstore :
@@ -1584,10 +1687,15 @@ Module context.
                   .selfdestruct(address, target, &mut self.db)
           }
       *)
-      Definition selfdestruct (DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition selfdestruct
+          (DB : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self DB in
-        match τ, α with
-        | [], [ self; address; target ] =>
+        match ε, τ, α with
+        | [], [], [ self; address; target ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let address := M.alloc (| address |) in
@@ -1613,7 +1721,7 @@ Module context.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_selfdestruct :
@@ -1696,10 +1804,15 @@ Module context.
               ))
           }
       *)
-      Definition make_eofcreate_frame (DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition make_eofcreate_frame
+          (DB : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self DB in
-        match τ, α with
-        | [], [ self; spec_id; inputs ] =>
+        match ε, τ, α with
+        | [], [], [ self; spec_id; inputs ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let spec_id := M.alloc (| spec_id |) in
@@ -1773,6 +1886,7 @@ Module context.
                                                   "core::clone::Clone",
                                                   Ty.apply
                                                     (Ty.path "core::ops::range::Range")
+                                                    []
                                                     [ Ty.path "usize" ],
                                                   [],
                                                   "clone",
@@ -1841,10 +1955,12 @@ Module context.
                                           ]
                                           (Ty.apply
                                             (Ty.path "core::result::Result")
+                                            []
                                             [
                                               Ty.path "revm::frame::FrameOrResult";
                                               Ty.apply
                                                 (Ty.path "revm_primitives::result::EVMError")
+                                                []
                                                 [ Ty.associated ]
                                             ]),
                                         [
@@ -1882,10 +1998,19 @@ Module context.
                             "core::ops::try_trait::Try",
                             Ty.apply
                               (Ty.path "core::result::Result")
+                              []
                               [
-                                Ty.tuple [ Ty.path "ruint::Uint"; Ty.path "bool" ];
+                                Ty.tuple
+                                  [
+                                    Ty.apply
+                                      (Ty.path "ruint::Uint")
+                                      [ Value.Integer 256; Value.Integer 4 ]
+                                      [];
+                                    Ty.path "bool"
+                                  ];
                                 Ty.apply
                                   (Ty.path "revm_primitives::result::EVMError")
+                                  []
                                   [ Ty.associated ]
                               ],
                             [],
@@ -1897,6 +2022,7 @@ Module context.
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "revm::context::inner_evm_context::InnerEvmContext")
+                                  []
                                   [ DB ],
                                 "balance",
                                 []
@@ -1934,19 +2060,23 @@ Module context.
                                         "core::ops::try_trait::FromResidual",
                                         Ty.apply
                                           (Ty.path "core::result::Result")
+                                          []
                                           [
                                             Ty.path "revm::frame::FrameOrResult";
                                             Ty.apply
                                               (Ty.path "revm_primitives::result::EVMError")
+                                              []
                                               [ Ty.associated ]
                                           ],
                                         [
                                           Ty.apply
                                             (Ty.path "core::result::Result")
+                                            []
                                             [
                                               Ty.path "core::convert::Infallible";
                                               Ty.apply
                                                 (Ty.path "revm_primitives::result::EVMError")
+                                                []
                                                 [ Ty.associated ]
                                             ]
                                         ],
@@ -1989,8 +2119,16 @@ Module context.
                                           M.call_closure (|
                                             M.get_trait_method (|
                                               "core::cmp::PartialOrd",
-                                              Ty.path "ruint::Uint",
-                                              [ Ty.path "ruint::Uint" ],
+                                              Ty.apply
+                                                (Ty.path "ruint::Uint")
+                                                [ Value.Integer 256; Value.Integer 4 ]
+                                                [],
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "ruint::Uint")
+                                                  [ Value.Integer 256; Value.Integer 4 ]
+                                                  []
+                                              ],
                                               "lt",
                                               []
                                             |),
@@ -2026,11 +2164,13 @@ Module context.
                                                   ]
                                                   (Ty.apply
                                                     (Ty.path "core::result::Result")
+                                                    []
                                                     [
                                                       Ty.path "revm::frame::FrameOrResult";
                                                       Ty.apply
                                                         (Ty.path
                                                           "revm_primitives::result::EVMError")
+                                                        []
                                                         [ Ty.associated ]
                                                     ]),
                                                 [
@@ -2073,6 +2213,7 @@ Module context.
                                             M.get_associated_function (|
                                               Ty.apply
                                                 (Ty.path "core::option::Option")
+                                                []
                                                 [ Ty.path "u64" ],
                                               "is_none",
                                               []
@@ -2126,11 +2267,13 @@ Module context.
                                                   ]
                                                   (Ty.apply
                                                     (Ty.path "core::result::Result")
+                                                    []
                                                     [
                                                       Ty.path "revm::frame::FrameOrResult";
                                                       Ty.apply
                                                         (Ty.path
                                                           "revm_primitives::result::EVMError")
+                                                        []
                                                         [ Ty.associated ]
                                                     ]),
                                                 [
@@ -2168,16 +2311,19 @@ Module context.
                                     "core::ops::try_trait::Try",
                                     Ty.apply
                                       (Ty.path "core::result::Result")
+                                      []
                                       [
                                         Ty.tuple
                                           [
                                             Ty.apply
                                               (Ty.path "&mut")
+                                              []
                                               [ Ty.path "revm_primitives::state::Account" ];
                                             Ty.path "bool"
                                           ];
                                         Ty.apply
                                           (Ty.path "revm_primitives::result::EVMError")
+                                          []
                                           [ Ty.associated ]
                                       ],
                                     [],
@@ -2233,20 +2379,24 @@ Module context.
                                                 "core::ops::try_trait::FromResidual",
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
+                                                  []
                                                   [
                                                     Ty.path "revm::frame::FrameOrResult";
                                                     Ty.apply
                                                       (Ty.path "revm_primitives::result::EVMError")
+                                                      []
                                                       [ Ty.associated ]
                                                   ],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::result::Result")
+                                                    []
                                                     [
                                                       Ty.path "core::convert::Infallible";
                                                       Ty.apply
                                                         (Ty.path
                                                           "revm_primitives::result::EVMError")
+                                                        []
                                                         [ Ty.associated ]
                                                     ]
                                                 ],
@@ -2349,11 +2499,13 @@ Module context.
                                                     ]
                                                     (Ty.apply
                                                       (Ty.path "core::result::Result")
+                                                      []
                                                       [
                                                         Ty.path "revm::frame::FrameOrResult";
                                                         Ty.apply
                                                           (Ty.path
                                                             "revm_primitives::result::EVMError")
+                                                          []
                                                           [ Ty.associated ]
                                                       ]),
                                                   [
@@ -2492,6 +2644,7 @@ Module context.
                                         "core::clone::Clone",
                                         Ty.apply
                                           (Ty.path "core::ops::range::Range")
+                                          []
                                           [ Ty.path "usize" ],
                                         [],
                                         "clone",
@@ -2515,7 +2668,7 @@ Module context.
                   |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_make_eofcreate_frame :
@@ -2553,10 +2706,15 @@ Module context.
                   .set_code(address, Bytecode::Eof(bytecode));
           }
       *)
-      Definition eofcreate_return (DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition eofcreate_return
+          (DB : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self DB in
-        match τ, α with
-        | [ SPEC ], [ self; interpreter_result; address; journal_checkpoint ] =>
+        match ε, τ, α with
+        | [], [ SPEC ], [ self; interpreter_result; address; journal_checkpoint ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let interpreter_result := M.alloc (| interpreter_result |) in
@@ -2653,6 +2811,7 @@ Module context.
                         M.get_associated_function (|
                           Ty.apply
                             (Ty.path "core::result::Result")
+                            []
                             [
                               Ty.path "revm_primitives::bytecode::eof::Eof";
                               Ty.path "revm_primitives::bytecode::eof::EofDecodeError"
@@ -2714,7 +2873,7 @@ Module context.
                   M.alloc (| Value.Tuple [] |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_eofcreate_return :
@@ -2807,10 +2966,15 @@ Module context.
               ))
           }
       *)
-      Definition make_create_frame (DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition make_create_frame
+          (DB : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self DB in
-        match τ, α with
-        | [], [ self; spec_id; inputs ] =>
+        match ε, τ, α with
+        | [], [], [ self; spec_id; inputs ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let spec_id := M.alloc (| spec_id |) in
@@ -2931,10 +3095,12 @@ Module context.
                                           ]
                                           (Ty.apply
                                             (Ty.path "core::result::Result")
+                                            []
                                             [
                                               Ty.path "revm::frame::FrameOrResult";
                                               Ty.apply
                                                 (Ty.path "revm_primitives::result::EVMError")
+                                                []
                                                 [ Ty.associated ]
                                             ]),
                                         [
@@ -2972,10 +3138,19 @@ Module context.
                             "core::ops::try_trait::Try",
                             Ty.apply
                               (Ty.path "core::result::Result")
+                              []
                               [
-                                Ty.tuple [ Ty.path "ruint::Uint"; Ty.path "bool" ];
+                                Ty.tuple
+                                  [
+                                    Ty.apply
+                                      (Ty.path "ruint::Uint")
+                                      [ Value.Integer 256; Value.Integer 4 ]
+                                      [];
+                                    Ty.path "bool"
+                                  ];
                                 Ty.apply
                                   (Ty.path "revm_primitives::result::EVMError")
+                                  []
                                   [ Ty.associated ]
                               ],
                             [],
@@ -2987,6 +3162,7 @@ Module context.
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "revm::context::inner_evm_context::InnerEvmContext")
+                                  []
                                   [ DB ],
                                 "balance",
                                 []
@@ -3024,19 +3200,23 @@ Module context.
                                         "core::ops::try_trait::FromResidual",
                                         Ty.apply
                                           (Ty.path "core::result::Result")
+                                          []
                                           [
                                             Ty.path "revm::frame::FrameOrResult";
                                             Ty.apply
                                               (Ty.path "revm_primitives::result::EVMError")
+                                              []
                                               [ Ty.associated ]
                                           ],
                                         [
                                           Ty.apply
                                             (Ty.path "core::result::Result")
+                                            []
                                             [
                                               Ty.path "core::convert::Infallible";
                                               Ty.apply
                                                 (Ty.path "revm_primitives::result::EVMError")
+                                                []
                                                 [ Ty.associated ]
                                             ]
                                         ],
@@ -3079,8 +3259,16 @@ Module context.
                                           M.call_closure (|
                                             M.get_trait_method (|
                                               "core::cmp::PartialOrd",
-                                              Ty.path "ruint::Uint",
-                                              [ Ty.path "ruint::Uint" ],
+                                              Ty.apply
+                                                (Ty.path "ruint::Uint")
+                                                [ Value.Integer 256; Value.Integer 4 ]
+                                                [],
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "ruint::Uint")
+                                                  [ Value.Integer 256; Value.Integer 4 ]
+                                                  []
+                                              ],
                                               "lt",
                                               []
                                             |),
@@ -3116,11 +3304,13 @@ Module context.
                                                   ]
                                                   (Ty.apply
                                                     (Ty.path "core::result::Result")
+                                                    []
                                                     [
                                                       Ty.path "revm::frame::FrameOrResult";
                                                       Ty.apply
                                                         (Ty.path
                                                           "revm_primitives::result::EVMError")
+                                                        []
                                                         [ Ty.associated ]
                                                     ]),
                                                 [
@@ -3216,11 +3406,13 @@ Module context.
                                                   ]
                                                   (Ty.apply
                                                     (Ty.path "core::result::Result")
+                                                    []
                                                     [
                                                       Ty.path "revm::frame::FrameOrResult";
                                                       Ty.apply
                                                         (Ty.path
                                                           "revm_primitives::result::EVMError")
+                                                        []
                                                         [ Ty.associated ]
                                                     ]),
                                                 [
@@ -3304,6 +3496,7 @@ Module context.
                                               [
                                                 Ty.apply
                                                   (Ty.path "&")
+                                                  []
                                                   [ Ty.path "alloy_primitives::bytes_::Bytes" ]
                                               ]
                                             |),
@@ -3322,8 +3515,15 @@ Module context.
                                             Ty.path "alloy_primitives::bits::address::Address",
                                             "create2",
                                             [
-                                              Ty.apply (Ty.path "array") [ Ty.path "u8" ];
-                                              Ty.path "alloy_primitives::bits::fixed::FixedBytes"
+                                              Ty.apply
+                                                (Ty.path "array")
+                                                [ Value.Integer 32 ]
+                                                [ Ty.path "u8" ];
+                                              Ty.apply
+                                                (Ty.path
+                                                  "alloy_primitives::bits::fixed::FixedBytes")
+                                                [ Value.Integer 32 ]
+                                                []
                                             ]
                                           |),
                                           [
@@ -3334,7 +3534,10 @@ Module context.
                                             |);
                                             M.call_closure (|
                                               M.get_associated_function (|
-                                                Ty.path "ruint::Uint",
+                                                Ty.apply
+                                                  (Ty.path "ruint::Uint")
+                                                  [ Value.Integer 256; Value.Integer 4 ]
+                                                  [],
                                                 "to_be_bytes",
                                                 []
                                               |),
@@ -3355,16 +3558,19 @@ Module context.
                                     "core::ops::try_trait::Try",
                                     Ty.apply
                                       (Ty.path "core::result::Result")
+                                      []
                                       [
                                         Ty.tuple
                                           [
                                             Ty.apply
                                               (Ty.path "&mut")
+                                              []
                                               [ Ty.path "revm_primitives::state::Account" ];
                                             Ty.path "bool"
                                           ];
                                         Ty.apply
                                           (Ty.path "revm_primitives::result::EVMError")
+                                          []
                                           [ Ty.associated ]
                                       ],
                                     [],
@@ -3414,20 +3620,24 @@ Module context.
                                                 "core::ops::try_trait::FromResidual",
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
+                                                  []
                                                   [
                                                     Ty.path "revm::frame::FrameOrResult";
                                                     Ty.apply
                                                       (Ty.path "revm_primitives::result::EVMError")
+                                                      []
                                                       [ Ty.associated ]
                                                   ],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::result::Result")
+                                                    []
                                                     [
                                                       Ty.path "core::convert::Infallible";
                                                       Ty.apply
                                                         (Ty.path
                                                           "revm_primitives::result::EVMError")
+                                                        []
                                                         [ Ty.associated ]
                                                     ]
                                                 ],
@@ -3524,11 +3734,13 @@ Module context.
                                                     ]
                                                     (Ty.apply
                                                       (Ty.path "core::result::Result")
+                                                      []
                                                       [
                                                         Ty.path "revm::frame::FrameOrResult";
                                                         Ty.apply
                                                           (Ty.path
                                                             "revm_primitives::result::EVMError")
+                                                          []
                                                           [ Ty.associated ]
                                                       ]),
                                                   [
@@ -3657,7 +3869,7 @@ Module context.
                   |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_make_create_frame :
@@ -3678,10 +3890,15 @@ Module context.
               }
           }
       *)
-      Definition call_return (DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition call_return
+          (DB : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self DB in
-        match τ, α with
-        | [], [ self; interpreter_result; journal_checkpoint ] =>
+        match ε, τ, α with
+        | [], [], [ self; interpreter_result; journal_checkpoint ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let interpreter_result := M.alloc (| interpreter_result |) in
@@ -3801,7 +4018,7 @@ Module context.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_call_return :
@@ -3878,10 +4095,15 @@ Module context.
               interpreter_result.result = InstructionResult::Return;
           }
       *)
-      Definition create_return (DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition create_return
+          (DB : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self DB in
-        match τ, α with
-        | [ SPEC ], [ self; interpreter_result; address; journal_checkpoint ] =>
+        match ε, τ, α with
+        | [], [ SPEC ], [ self; interpreter_result; address; journal_checkpoint ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let interpreter_result := M.alloc (| interpreter_result |) in
@@ -4056,11 +4278,13 @@ Module context.
                                           "core::cmp::PartialEq",
                                           Ty.apply
                                             (Ty.path "core::option::Option")
-                                            [ Ty.apply (Ty.path "&") [ Ty.path "u8" ] ],
+                                            []
+                                            [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ],
                                           [
                                             Ty.apply
                                               (Ty.path "core::option::Option")
-                                              [ Ty.apply (Ty.path "&") [ Ty.path "u8" ] ]
+                                              []
+                                              [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ]
                                           ],
                                           "eq",
                                           []
@@ -4069,7 +4293,7 @@ Module context.
                                           M.alloc (|
                                             M.call_closure (|
                                               M.get_associated_function (|
-                                                Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                                Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                                 "first",
                                                 []
                                               |),
@@ -4209,6 +4433,7 @@ Module context.
                                           M.get_associated_function (|
                                             Ty.apply
                                               (Ty.path "core::option::Option")
+                                              []
                                               [ Ty.path "usize" ],
                                             "unwrap_or",
                                             []
@@ -4579,7 +4804,7 @@ Module context.
                   M.alloc (| Value.Tuple [] |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_create_return :

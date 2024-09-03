@@ -106,6 +106,7 @@ Module ffi.
   (*
   Enum c_void
   {
+    const_params := [];
     ty_params := [];
     variants :=
       [
@@ -131,9 +132,9 @@ Module ffi.
             f.debug_struct("c_void").finish()
         }
     *)
-    Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; f ] =>
+    Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; f ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
@@ -156,7 +157,7 @@ Module ffi.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -170,17 +171,23 @@ Module ffi.
   (* StructRecord
     {
       name := "VaListImpl";
+      const_params := [];
       ty_params := [];
       fields :=
         [
           ("gp_offset", Ty.path "i32");
           ("fp_offset", Ty.path "i32");
-          ("overflow_arg_area", Ty.apply (Ty.path "*mut") [ Ty.path "core::ffi::c_void" ]);
-          ("reg_save_area", Ty.apply (Ty.path "*mut") [ Ty.path "core::ffi::c_void" ]);
+          ("overflow_arg_area", Ty.apply (Ty.path "*mut") [] [ Ty.path "core::ffi::c_void" ]);
+          ("reg_save_area", Ty.apply (Ty.path "*mut") [] [ Ty.path "core::ffi::c_void" ]);
           ("_marker",
             Ty.apply
               (Ty.path "core::marker::PhantomData")
-              [ Ty.apply (Ty.path "&mut") [ Ty.apply (Ty.path "&") [ Ty.path "core::ffi::c_void" ] ]
+              []
+              [
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "&") [] [ Ty.path "core::ffi::c_void" ] ]
               ])
         ];
     } *)
@@ -189,9 +196,9 @@ Module ffi.
     Definition Self : Ty.t := Ty.path "core::ffi::VaListImpl".
     
     (* Debug *)
-    Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; f ] =>
+    Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; f ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
@@ -248,7 +255,7 @@ Module ffi.
                 |))
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -262,14 +269,16 @@ Module ffi.
   (* StructRecord
     {
       name := "VaList";
+      const_params := [];
       ty_params := [];
       fields :=
         [
-          ("inner", Ty.apply (Ty.path "&mut") [ Ty.path "core::ffi::VaListImpl" ]);
+          ("inner", Ty.apply (Ty.path "&mut") [] [ Ty.path "core::ffi::VaListImpl" ]);
           ("_marker",
             Ty.apply
               (Ty.path "core::marker::PhantomData")
-              [ Ty.apply (Ty.path "&mut") [ Ty.path "core::ffi::VaListImpl" ] ])
+              []
+              [ Ty.apply (Ty.path "&mut") [] [ Ty.path "core::ffi::VaListImpl" ] ])
         ];
     } *)
   
@@ -277,9 +286,9 @@ Module ffi.
     Definition Self : Ty.t := Ty.path "core::ffi::VaList".
     
     (* Debug *)
-    Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; f ] =>
+    Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; f ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
@@ -312,7 +321,7 @@ Module ffi.
                 |))
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -331,9 +340,9 @@ Module ffi.
             VaList { inner: self, _marker: PhantomData }
         }
     *)
-    Definition as_va_list (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition as_va_list (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           Value.StructRecord
@@ -342,7 +351,7 @@ Module ffi.
               ("inner", M.read (| self |));
               ("_marker", Value.StructTuple "core::marker::PhantomData" [])
             ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_as_va_list : M.IsAssociatedFunction Self "as_va_list" as_va_list.
@@ -352,16 +361,16 @@ Module ffi.
             unsafe { va_arg(self) }
         }
     *)
-    Definition arg (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ T ], [ self ] =>
+    Definition arg (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ T ], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
             M.get_function (| "core::ffi::va_arg", [ T ] |),
             [ M.read (| self |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_arg : M.IsAssociatedFunction Self "arg" arg.
@@ -380,9 +389,9 @@ Module ffi.
             ret
         }
     *)
-    Definition with_copy (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ F; R ], [ self; f ] =>
+    Definition with_copy (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ F; R ], [ self; f ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
@@ -434,7 +443,7 @@ Module ffi.
               M.alloc (| Value.Tuple [] |) in
             ret
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_with_copy : M.IsAssociatedFunction Self "with_copy" with_copy.
@@ -451,9 +460,9 @@ Module ffi.
             &self.inner
         }
     *)
-    Definition deref (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition deref (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -463,7 +472,7 @@ Module ffi.
               "inner"
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -483,9 +492,9 @@ Module ffi.
             &mut self.inner
         }
     *)
-    Definition deref_mut (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition deref_mut (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -495,7 +504,7 @@ Module ffi.
               "inner"
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -633,7 +642,7 @@ Module ffi.
   End Impl_core_ffi_sealed_trait_VaArgSafe_for_f64.
   
   Module Impl_core_ffi_sealed_trait_VaArgSafe_for_pointer_mut_T.
-    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "*mut") [ T ].
+    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "*mut") [] [ T ].
     
     Axiom Implements :
       forall (T : Ty.t),
@@ -645,7 +654,7 @@ Module ffi.
   End Impl_core_ffi_sealed_trait_VaArgSafe_for_pointer_mut_T.
   
   Module Impl_core_ffi_sealed_trait_VaArgSafe_for_pointer_const_T.
-    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "*const") [ T ].
+    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "*const") [] [ T ].
     
     Axiom Implements :
       forall (T : Ty.t),
@@ -670,9 +679,9 @@ Module ffi.
             }
         }
     *)
-    Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -682,6 +691,7 @@ Module ffi.
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                      []
                       [ Ty.path "core::ffi::VaListImpl" ],
                     "uninit",
                     []
@@ -698,6 +708,7 @@ Module ffi.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                          []
                           [ Ty.path "core::ffi::VaListImpl" ],
                         "as_mut_ptr",
                         []
@@ -713,6 +724,7 @@ Module ffi.
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                    []
                     [ Ty.path "core::ffi::VaListImpl" ],
                   "assume_init",
                   []
@@ -721,7 +733,7 @@ Module ffi.
               |)
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -749,13 +761,13 @@ Module ffi.
             // This works for now, since `va_end` is a no-op on all current LLVM targets.
         }
     *)
-    Definition drop (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition drop (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           Value.Tuple []))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -766,15 +778,15 @@ Module ffi.
         (* Instance *) [ ("drop", InstanceField.Method drop) ].
   End Impl_core_ops_drop_Drop_for_core_ffi_VaListImpl.
   
-  Parameter va_end : (list Ty.t) -> (list Value.t) -> M.
+  Parameter va_end : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_va_end : M.IsFunction "core::ffi::va_end" va_end.
   
-  Parameter va_copy : (list Ty.t) -> (list Value.t) -> M.
+  Parameter va_copy : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_va_copy : M.IsFunction "core::ffi::va_copy" va_copy.
   
-  Parameter va_arg : (list Ty.t) -> (list Value.t) -> M.
+  Parameter va_arg : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_va_arg : M.IsFunction "core::ffi::va_arg" va_arg.
 End ffi.

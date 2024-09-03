@@ -7,12 +7,14 @@ Module db.
       (* StructRecord
         {
           name := "BundleBuilder";
+          const_params := [];
           ty_params := [];
           fields :=
             [
               ("states",
                 Ty.apply
                   (Ty.path "std::collections::hash::set::HashSet")
+                  []
                   [
                     Ty.path "alloy_primitives::bits::address::Address";
                     Ty.path "std::hash::random::RandomState"
@@ -20,6 +22,7 @@ Module db.
               ("state_original",
                 Ty.apply
                   (Ty.path "std::collections::hash::map::HashMap")
+                  []
                   [
                     Ty.path "alloy_primitives::bits::address::Address";
                     Ty.path "revm_primitives::state::AccountInfo";
@@ -28,6 +31,7 @@ Module db.
               ("state_present",
                 Ty.apply
                   (Ty.path "std::collections::hash::map::HashMap")
+                  []
                   [
                     Ty.path "alloy_primitives::bits::address::Address";
                     Ty.path "revm_primitives::state::AccountInfo";
@@ -36,13 +40,25 @@ Module db.
               ("state_storage",
                 Ty.apply
                   (Ty.path "std::collections::hash::map::HashMap")
+                  []
                   [
                     Ty.path "alloy_primitives::bits::address::Address";
                     Ty.apply
                       (Ty.path "std::collections::hash::map::HashMap")
+                      []
                       [
-                        Ty.path "ruint::Uint";
-                        Ty.tuple [ Ty.path "ruint::Uint"; Ty.path "ruint::Uint" ];
+                        Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [];
+                        Ty.tuple
+                          [
+                            Ty.apply
+                              (Ty.path "ruint::Uint")
+                              [ Value.Integer 256; Value.Integer 4 ]
+                              [];
+                            Ty.apply
+                              (Ty.path "ruint::Uint")
+                              [ Value.Integer 256; Value.Integer 4 ]
+                              []
+                          ];
                         Ty.path "std::hash::random::RandomState"
                       ];
                     Ty.path "std::hash::random::RandomState"
@@ -50,22 +66,26 @@ Module db.
               ("reverts",
                 Ty.apply
                   (Ty.path "alloc::collections::btree::set::BTreeSet")
+                  []
                   [
                     Ty.tuple [ Ty.path "u64"; Ty.path "alloy_primitives::bits::address::Address" ];
                     Ty.path "alloc::alloc::Global"
                   ]);
               ("revert_range",
-                Ty.apply (Ty.path "core::ops::range::RangeInclusive") [ Ty.path "u64" ]);
+                Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ Ty.path "u64" ]);
               ("revert_account",
                 Ty.apply
                   (Ty.path "std::collections::hash::map::HashMap")
+                  []
                   [
                     Ty.tuple [ Ty.path "u64"; Ty.path "alloy_primitives::bits::address::Address" ];
                     Ty.apply
                       (Ty.path "core::option::Option")
+                      []
                       [
                         Ty.apply
                           (Ty.path "core::option::Option")
+                          []
                           [ Ty.path "revm_primitives::state::AccountInfo" ]
                       ];
                     Ty.path "std::hash::random::RandomState"
@@ -73,12 +93,24 @@ Module db.
               ("revert_storage",
                 Ty.apply
                   (Ty.path "std::collections::hash::map::HashMap")
+                  []
                   [
                     Ty.tuple [ Ty.path "u64"; Ty.path "alloy_primitives::bits::address::Address" ];
                     Ty.apply
                       (Ty.path "alloc::vec::Vec")
+                      []
                       [
-                        Ty.tuple [ Ty.path "ruint::Uint"; Ty.path "ruint::Uint" ];
+                        Ty.tuple
+                          [
+                            Ty.apply
+                              (Ty.path "ruint::Uint")
+                              [ Value.Integer 256; Value.Integer 4 ]
+                              [];
+                            Ty.apply
+                              (Ty.path "ruint::Uint")
+                              [ Value.Integer 256; Value.Integer 4 ]
+                              []
+                          ];
                         Ty.path "alloc::alloc::Global"
                       ];
                     Ty.path "std::hash::random::RandomState"
@@ -86,8 +118,12 @@ Module db.
               ("contracts",
                 Ty.apply
                   (Ty.path "std::collections::hash::map::HashMap")
+                  []
                   [
-                    Ty.path "alloy_primitives::bits::fixed::FixedBytes";
+                    Ty.apply
+                      (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                      [ Value.Integer 32 ]
+                      [];
                     Ty.path "revm_primitives::bytecode::Bytecode";
                     Ty.path "std::hash::random::RandomState"
                   ])
@@ -98,9 +134,9 @@ Module db.
         Definition Self : Ty.t := Ty.path "revm::db::states::bundle_state::BundleBuilder".
         
         (* Debug *)
-        Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self; f ] =>
+        Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self; f ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let f := M.alloc (| f |) in
@@ -213,7 +249,7 @@ Module db.
                   |)
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -227,6 +263,7 @@ Module db.
       (*
       Enum OriginalValuesKnown
       {
+        const_params := [];
         ty_params := [];
         variants :=
           [
@@ -248,13 +285,13 @@ Module db.
         Definition Self : Ty.t := Ty.path "revm::db::states::bundle_state::OriginalValuesKnown".
         
         (* Clone *)
-        Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self ] =>
+        Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (| M.read (| self |) |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -280,9 +317,9 @@ Module db.
         Definition Self : Ty.t := Ty.path "revm::db::states::bundle_state::OriginalValuesKnown".
         
         (* Debug *)
-        Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self; f ] =>
+        Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self; f ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let f := M.alloc (| f |) in
@@ -317,7 +354,7 @@ Module db.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -343,9 +380,9 @@ Module db.
         Definition Self : Ty.t := Ty.path "revm::db::states::bundle_state::OriginalValuesKnown".
         
         (* PartialEq *)
-        Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self; other ] =>
+        Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self; other ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let other := M.alloc (| other |) in
@@ -372,7 +409,7 @@ Module db.
                   |) in
                 M.alloc (| BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)) |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -398,13 +435,17 @@ Module db.
         Definition Self : Ty.t := Ty.path "revm::db::states::bundle_state::OriginalValuesKnown".
         
         (* Eq *)
-        Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self ] =>
+        Definition assert_receiver_is_total_eq
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               Value.Tuple []))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -420,9 +461,9 @@ Module db.
         Definition Self : Ty.t := Ty.path "revm::db::states::bundle_state::OriginalValuesKnown".
         
         (* PartialOrd *)
-        Definition partial_cmp (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self; other ] =>
+        Definition partial_cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self; other ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let other := M.alloc (| other |) in
@@ -460,7 +501,7 @@ Module db.
                   |)
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -475,9 +516,9 @@ Module db.
         Definition Self : Ty.t := Ty.path "revm::db::states::bundle_state::OriginalValuesKnown".
         
         (* Ord *)
-        Definition cmp (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self; other ] =>
+        Definition cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self; other ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let other := M.alloc (| other |) in
@@ -509,7 +550,7 @@ Module db.
                   |)
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -524,9 +565,9 @@ Module db.
         Definition Self : Ty.t := Ty.path "revm::db::states::bundle_state::OriginalValuesKnown".
         
         (* Hash *)
-        Definition hash (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ __H ], [ self; state ] =>
+        Definition hash (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [ __H ], [ self; state ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let state := M.alloc (| state |) in
@@ -554,7 +595,7 @@ Module db.
                   |)
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -573,9 +614,9 @@ Module db.
                 matches!(self, Self::No)
             }
         *)
-        Definition is_not_known (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self ] =>
+        Definition is_not_known (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
@@ -595,7 +636,7 @@ Module db.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_is_not_known :
@@ -620,9 +661,9 @@ Module db.
                 }
             }
         *)
-        Definition default (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [] =>
+        Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [] =>
             ltac:(M.monadic
               (Value.StructRecord
                 "revm::db::states::bundle_state::BundleBuilder"
@@ -632,6 +673,7 @@ Module db.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "std::collections::hash::set::HashSet")
+                          []
                           [
                             Ty.path "alloy_primitives::bits::address::Address";
                             Ty.path "std::hash::random::RandomState"
@@ -646,6 +688,7 @@ Module db.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "std::collections::hash::map::HashMap")
+                          []
                           [
                             Ty.path "alloy_primitives::bits::address::Address";
                             Ty.path "revm_primitives::state::AccountInfo";
@@ -661,6 +704,7 @@ Module db.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "std::collections::hash::map::HashMap")
+                          []
                           [
                             Ty.path "alloy_primitives::bits::address::Address";
                             Ty.path "revm_primitives::state::AccountInfo";
@@ -676,13 +720,28 @@ Module db.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "std::collections::hash::map::HashMap")
+                          []
                           [
                             Ty.path "alloy_primitives::bits::address::Address";
                             Ty.apply
                               (Ty.path "std::collections::hash::map::HashMap")
+                              []
                               [
-                                Ty.path "ruint::Uint";
-                                Ty.tuple [ Ty.path "ruint::Uint"; Ty.path "ruint::Uint" ];
+                                Ty.apply
+                                  (Ty.path "ruint::Uint")
+                                  [ Value.Integer 256; Value.Integer 4 ]
+                                  [];
+                                Ty.tuple
+                                  [
+                                    Ty.apply
+                                      (Ty.path "ruint::Uint")
+                                      [ Value.Integer 256; Value.Integer 4 ]
+                                      [];
+                                    Ty.apply
+                                      (Ty.path "ruint::Uint")
+                                      [ Value.Integer 256; Value.Integer 4 ]
+                                      []
+                                  ];
                                 Ty.path "std::hash::random::RandomState"
                               ];
                             Ty.path "std::hash::random::RandomState"
@@ -697,6 +756,7 @@ Module db.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "alloc::collections::btree::set::BTreeSet")
+                          []
                           [
                             Ty.tuple
                               [ Ty.path "u64"; Ty.path "alloy_primitives::bits::address::Address" ];
@@ -710,7 +770,7 @@ Module db.
                   ("revert_range",
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "core::ops::range::RangeInclusive") [ Ty.path "u64" ],
+                        Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ Ty.path "u64" ],
                         "new",
                         []
                       |),
@@ -721,14 +781,17 @@ Module db.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "std::collections::hash::map::HashMap")
+                          []
                           [
                             Ty.tuple
                               [ Ty.path "u64"; Ty.path "alloy_primitives::bits::address::Address" ];
                             Ty.apply
                               (Ty.path "core::option::Option")
+                              []
                               [
                                 Ty.apply
                                   (Ty.path "core::option::Option")
+                                  []
                                   [ Ty.path "revm_primitives::state::AccountInfo" ]
                               ];
                             Ty.path "std::hash::random::RandomState"
@@ -743,13 +806,25 @@ Module db.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "std::collections::hash::map::HashMap")
+                          []
                           [
                             Ty.tuple
                               [ Ty.path "u64"; Ty.path "alloy_primitives::bits::address::Address" ];
                             Ty.apply
                               (Ty.path "alloc::vec::Vec")
+                              []
                               [
-                                Ty.tuple [ Ty.path "ruint::Uint"; Ty.path "ruint::Uint" ];
+                                Ty.tuple
+                                  [
+                                    Ty.apply
+                                      (Ty.path "ruint::Uint")
+                                      [ Value.Integer 256; Value.Integer 4 ]
+                                      [];
+                                    Ty.apply
+                                      (Ty.path "ruint::Uint")
+                                      [ Value.Integer 256; Value.Integer 4 ]
+                                      []
+                                  ];
                                 Ty.path "alloc::alloc::Global"
                               ];
                             Ty.path "std::hash::random::RandomState"
@@ -764,8 +839,12 @@ Module db.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "std::collections::hash::map::HashMap")
+                          []
                           [
-                            Ty.path "alloy_primitives::bits::fixed::FixedBytes";
+                            Ty.apply
+                              (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                              [ Value.Integer 32 ]
+                              [];
                             Ty.path "revm_primitives::bytecode::Bytecode";
                             Ty.path "std::hash::random::RandomState"
                           ],
@@ -775,7 +854,7 @@ Module db.
                       []
                     |))
                 ]))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -797,9 +876,9 @@ Module db.
                 }
             }
         *)
-        Definition new (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ revert_range ] =>
+        Definition new (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ revert_range ] =>
             ltac:(M.monadic
               (let revert_range := M.alloc (| revert_range |) in
               M.struct_record_update
@@ -814,7 +893,7 @@ Module db.
                   []
                 |))
                 [ ("revert_range", M.read (| revert_range |)) ]))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -825,9 +904,9 @@ Module db.
                 self
             }
         *)
-        Definition state_address (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self; address ] =>
+        Definition state_address (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self; address ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let address := M.alloc (| address |) in
@@ -838,6 +917,7 @@ Module db.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "std::collections::hash::set::HashSet")
+                          []
                           [
                             Ty.path "alloy_primitives::bits::address::Address";
                             Ty.path "std::hash::random::RandomState"
@@ -857,7 +937,7 @@ Module db.
                   |) in
                 self
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_state_address :
@@ -870,9 +950,13 @@ Module db.
                 self
             }
         *)
-        Definition state_original_account_info (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self; address; original ] =>
+        Definition state_original_account_info
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          match ε, τ, α with
+          | [], [], [ self; address; original ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let address := M.alloc (| address |) in
@@ -884,6 +968,7 @@ Module db.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "std::collections::hash::set::HashSet")
+                          []
                           [
                             Ty.path "alloy_primitives::bits::address::Address";
                             Ty.path "std::hash::random::RandomState"
@@ -907,6 +992,7 @@ Module db.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "std::collections::hash::map::HashMap")
+                          []
                           [
                             Ty.path "alloy_primitives::bits::address::Address";
                             Ty.path "revm_primitives::state::AccountInfo";
@@ -928,7 +1014,7 @@ Module db.
                   |) in
                 self
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_state_original_account_info :
@@ -941,9 +1027,13 @@ Module db.
                 self
             }
         *)
-        Definition state_present_account_info (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self; address; present ] =>
+        Definition state_present_account_info
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          match ε, τ, α with
+          | [], [], [ self; address; present ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let address := M.alloc (| address |) in
@@ -955,6 +1045,7 @@ Module db.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "std::collections::hash::set::HashSet")
+                          []
                           [
                             Ty.path "alloy_primitives::bits::address::Address";
                             Ty.path "std::hash::random::RandomState"
@@ -978,6 +1069,7 @@ Module db.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "std::collections::hash::map::HashMap")
+                          []
                           [
                             Ty.path "alloy_primitives::bits::address::Address";
                             Ty.path "revm_primitives::state::AccountInfo";
@@ -999,7 +1091,7 @@ Module db.
                   |) in
                 self
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_state_present_account_info :
@@ -1012,9 +1104,9 @@ Module db.
                 self
             }
         *)
-        Definition state_storage (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self; address; storage ] =>
+        Definition state_storage (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self; address; storage ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let address := M.alloc (| address |) in
@@ -1026,6 +1118,7 @@ Module db.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "std::collections::hash::set::HashSet")
+                          []
                           [
                             Ty.path "alloy_primitives::bits::address::Address";
                             Ty.path "std::hash::random::RandomState"
@@ -1049,13 +1142,28 @@ Module db.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "std::collections::hash::map::HashMap")
+                          []
                           [
                             Ty.path "alloy_primitives::bits::address::Address";
                             Ty.apply
                               (Ty.path "std::collections::hash::map::HashMap")
+                              []
                               [
-                                Ty.path "ruint::Uint";
-                                Ty.tuple [ Ty.path "ruint::Uint"; Ty.path "ruint::Uint" ];
+                                Ty.apply
+                                  (Ty.path "ruint::Uint")
+                                  [ Value.Integer 256; Value.Integer 4 ]
+                                  [];
+                                Ty.tuple
+                                  [
+                                    Ty.apply
+                                      (Ty.path "ruint::Uint")
+                                      [ Value.Integer 256; Value.Integer 4 ]
+                                      [];
+                                    Ty.apply
+                                      (Ty.path "ruint::Uint")
+                                      [ Value.Integer 256; Value.Integer 4 ]
+                                      []
+                                  ];
                                 Ty.path "std::hash::random::RandomState"
                               ];
                             Ty.path "std::hash::random::RandomState"
@@ -1076,7 +1184,7 @@ Module db.
                   |) in
                 self
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_state_storage :
@@ -1088,9 +1196,9 @@ Module db.
                 self
             }
         *)
-        Definition revert_address (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self; block_number; address ] =>
+        Definition revert_address (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self; block_number; address ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let block_number := M.alloc (| block_number |) in
@@ -1102,6 +1210,7 @@ Module db.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "alloc::collections::btree::set::BTreeSet")
+                          []
                           [
                             Ty.tuple
                               [ Ty.path "u64"; Ty.path "alloy_primitives::bits::address::Address" ];
@@ -1122,7 +1231,7 @@ Module db.
                   |) in
                 self
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_revert_address :
@@ -1140,9 +1249,9 @@ Module db.
                 self
             }
         *)
-        Definition revert_account_info (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self; block_number; address; account ] =>
+        Definition revert_account_info (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self; block_number; address; account ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let block_number := M.alloc (| block_number |) in
@@ -1155,6 +1264,7 @@ Module db.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "alloc::collections::btree::set::BTreeSet")
+                          []
                           [
                             Ty.tuple
                               [ Ty.path "u64"; Ty.path "alloy_primitives::bits::address::Address" ];
@@ -1179,14 +1289,17 @@ Module db.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "std::collections::hash::map::HashMap")
+                          []
                           [
                             Ty.tuple
                               [ Ty.path "u64"; Ty.path "alloy_primitives::bits::address::Address" ];
                             Ty.apply
                               (Ty.path "core::option::Option")
+                              []
                               [
                                 Ty.apply
                                   (Ty.path "core::option::Option")
+                                  []
                                   [ Ty.path "revm_primitives::state::AccountInfo" ]
                               ];
                             Ty.path "std::hash::random::RandomState"
@@ -1207,7 +1320,7 @@ Module db.
                   |) in
                 self
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_revert_account_info :
@@ -1225,9 +1338,9 @@ Module db.
                 self
             }
         *)
-        Definition revert_storage (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self; block_number; address; storage ] =>
+        Definition revert_storage (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self; block_number; address; storage ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let block_number := M.alloc (| block_number |) in
@@ -1240,6 +1353,7 @@ Module db.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "alloc::collections::btree::set::BTreeSet")
+                          []
                           [
                             Ty.tuple
                               [ Ty.path "u64"; Ty.path "alloy_primitives::bits::address::Address" ];
@@ -1264,13 +1378,25 @@ Module db.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "std::collections::hash::map::HashMap")
+                          []
                           [
                             Ty.tuple
                               [ Ty.path "u64"; Ty.path "alloy_primitives::bits::address::Address" ];
                             Ty.apply
                               (Ty.path "alloc::vec::Vec")
+                              []
                               [
-                                Ty.tuple [ Ty.path "ruint::Uint"; Ty.path "ruint::Uint" ];
+                                Ty.tuple
+                                  [
+                                    Ty.apply
+                                      (Ty.path "ruint::Uint")
+                                      [ Value.Integer 256; Value.Integer 4 ]
+                                      [];
+                                    Ty.apply
+                                      (Ty.path "ruint::Uint")
+                                      [ Value.Integer 256; Value.Integer 4 ]
+                                      []
+                                  ];
                                 Ty.path "alloc::alloc::Global"
                               ];
                             Ty.path "std::hash::random::RandomState"
@@ -1291,7 +1417,7 @@ Module db.
                   |) in
                 self
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_revert_storage :
@@ -1303,9 +1429,9 @@ Module db.
                 self
             }
         *)
-        Definition contract (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self; address; bytecode ] =>
+        Definition contract (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self; address; bytecode ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let address := M.alloc (| address |) in
@@ -1317,8 +1443,12 @@ Module db.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "std::collections::hash::map::HashMap")
+                          []
                           [
-                            Ty.path "alloy_primitives::bits::fixed::FixedBytes";
+                            Ty.apply
+                              (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                              [ Value.Integer 32 ]
+                              [];
                             Ty.path "revm_primitives::bytecode::Bytecode";
                             Ty.path "std::hash::random::RandomState"
                           ],
@@ -1338,7 +1468,7 @@ Module db.
                   |) in
                 self
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_contract : M.IsAssociatedFunction Self "contract" contract.
@@ -1421,9 +1551,9 @@ Module db.
                 }
             }
         *)
-        Definition build (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self ] =>
+        Definition build (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
@@ -1435,9 +1565,11 @@ Module db.
                         "core::iter::traits::iterator::Iterator",
                         Ty.apply
                           (Ty.path "core::iter::adapters::map::Map")
+                          []
                           [
                             Ty.apply
                               (Ty.path "std::collections::hash::set::IntoIter")
+                              []
                               [ Ty.path "alloy_primitives::bits::address::Address" ];
                             Ty.function
                               [ Ty.tuple [ Ty.path "alloy_primitives::bits::address::Address" ] ]
@@ -1452,6 +1584,7 @@ Module db.
                         [
                           Ty.apply
                             (Ty.path "std::collections::hash::map::HashMap")
+                            []
                             [
                               Ty.path "alloy_primitives::bits::address::Address";
                               Ty.path "revm::db::states::bundle_account::BundleAccount";
@@ -1465,6 +1598,7 @@ Module db.
                             "core::iter::traits::iterator::Iterator",
                             Ty.apply
                               (Ty.path "std::collections::hash::set::IntoIter")
+                              []
                               [ Ty.path "alloy_primitives::bits::address::Address" ],
                             [],
                             "map",
@@ -1489,6 +1623,7 @@ Module db.
                                 "core::iter::traits::collect::IntoIterator",
                                 Ty.apply
                                   (Ty.path "std::collections::hash::set::HashSet")
+                                  []
                                   [
                                     Ty.path "alloy_primitives::bits::address::Address";
                                     Ty.path "std::hash::random::RandomState"
@@ -1525,12 +1660,18 @@ Module db.
                                                     M.get_associated_function (|
                                                       Ty.apply
                                                         (Ty.path "core::option::Option")
+                                                        []
                                                         [
                                                           Ty.apply
                                                             (Ty.path
                                                               "std::collections::hash::map::HashMap")
+                                                            []
                                                             [
-                                                              Ty.path "ruint::Uint";
+                                                              Ty.apply
+                                                                (Ty.path "ruint::Uint")
+                                                                [ Value.Integer 256; Value.Integer 4
+                                                                ]
+                                                                [];
                                                               Ty.path
                                                                 "revm_primitives::state::StorageSlot";
                                                               Ty.path
@@ -1545,16 +1686,36 @@ Module db.
                                                         M.get_associated_function (|
                                                           Ty.apply
                                                             (Ty.path "core::option::Option")
+                                                            []
                                                             [
                                                               Ty.apply
                                                                 (Ty.path
                                                                   "std::collections::hash::map::HashMap")
+                                                                []
                                                                 [
-                                                                  Ty.path "ruint::Uint";
+                                                                  Ty.apply
+                                                                    (Ty.path "ruint::Uint")
+                                                                    [
+                                                                      Value.Integer 256;
+                                                                      Value.Integer 4
+                                                                    ]
+                                                                    [];
                                                                   Ty.tuple
                                                                     [
-                                                                      Ty.path "ruint::Uint";
-                                                                      Ty.path "ruint::Uint"
+                                                                      Ty.apply
+                                                                        (Ty.path "ruint::Uint")
+                                                                        [
+                                                                          Value.Integer 256;
+                                                                          Value.Integer 4
+                                                                        ]
+                                                                        [];
+                                                                      Ty.apply
+                                                                        (Ty.path "ruint::Uint")
+                                                                        [
+                                                                          Value.Integer 256;
+                                                                          Value.Integer 4
+                                                                        ]
+                                                                        []
                                                                     ];
                                                                   Ty.path
                                                                     "std::hash::random::RandomState"
@@ -1565,8 +1726,15 @@ Module db.
                                                             Ty.apply
                                                               (Ty.path
                                                                 "std::collections::hash::map::HashMap")
+                                                              []
                                                               [
-                                                                Ty.path "ruint::Uint";
+                                                                Ty.apply
+                                                                  (Ty.path "ruint::Uint")
+                                                                  [
+                                                                    Value.Integer 256;
+                                                                    Value.Integer 4
+                                                                  ]
+                                                                  [];
                                                                 Ty.path
                                                                   "revm_primitives::state::StorageSlot";
                                                                 Ty.path
@@ -1579,12 +1747,33 @@ Module db.
                                                                     Ty.apply
                                                                       (Ty.path
                                                                         "std::collections::hash::map::HashMap")
+                                                                      []
                                                                       [
-                                                                        Ty.path "ruint::Uint";
+                                                                        Ty.apply
+                                                                          (Ty.path "ruint::Uint")
+                                                                          [
+                                                                            Value.Integer 256;
+                                                                            Value.Integer 4
+                                                                          ]
+                                                                          [];
                                                                         Ty.tuple
                                                                           [
-                                                                            Ty.path "ruint::Uint";
-                                                                            Ty.path "ruint::Uint"
+                                                                            Ty.apply
+                                                                              (Ty.path
+                                                                                "ruint::Uint")
+                                                                              [
+                                                                                Value.Integer 256;
+                                                                                Value.Integer 4
+                                                                              ]
+                                                                              [];
+                                                                            Ty.apply
+                                                                              (Ty.path
+                                                                                "ruint::Uint")
+                                                                              [
+                                                                                Value.Integer 256;
+                                                                                Value.Integer 4
+                                                                              ]
+                                                                              []
                                                                           ];
                                                                         Ty.path
                                                                           "std::hash::random::RandomState"
@@ -1594,8 +1783,15 @@ Module db.
                                                               (Ty.apply
                                                                 (Ty.path
                                                                   "std::collections::hash::map::HashMap")
+                                                                []
                                                                 [
-                                                                  Ty.path "ruint::Uint";
+                                                                  Ty.apply
+                                                                    (Ty.path "ruint::Uint")
+                                                                    [
+                                                                      Value.Integer 256;
+                                                                      Value.Integer 4
+                                                                    ]
+                                                                    [];
                                                                   Ty.path
                                                                     "revm_primitives::state::StorageSlot";
                                                                   Ty.path
@@ -1609,18 +1805,38 @@ Module db.
                                                               Ty.apply
                                                                 (Ty.path
                                                                   "std::collections::hash::map::HashMap")
+                                                                []
                                                                 [
                                                                   Ty.path
                                                                     "alloy_primitives::bits::address::Address";
                                                                   Ty.apply
                                                                     (Ty.path
                                                                       "std::collections::hash::map::HashMap")
+                                                                    []
                                                                     [
-                                                                      Ty.path "ruint::Uint";
+                                                                      Ty.apply
+                                                                        (Ty.path "ruint::Uint")
+                                                                        [
+                                                                          Value.Integer 256;
+                                                                          Value.Integer 4
+                                                                        ]
+                                                                        [];
                                                                       Ty.tuple
                                                                         [
-                                                                          Ty.path "ruint::Uint";
-                                                                          Ty.path "ruint::Uint"
+                                                                          Ty.apply
+                                                                            (Ty.path "ruint::Uint")
+                                                                            [
+                                                                              Value.Integer 256;
+                                                                              Value.Integer 4
+                                                                            ]
+                                                                            [];
+                                                                          Ty.apply
+                                                                            (Ty.path "ruint::Uint")
+                                                                            [
+                                                                              Value.Integer 256;
+                                                                              Value.Integer 4
+                                                                            ]
+                                                                            []
                                                                         ];
                                                                       Ty.path
                                                                         "std::hash::random::RandomState"
@@ -1661,19 +1877,45 @@ Module db.
                                                                               Ty.apply
                                                                                 (Ty.path
                                                                                   "core::iter::adapters::map::Map")
+                                                                                []
                                                                                 [
                                                                                   Ty.apply
                                                                                     (Ty.path
                                                                                       "std::collections::hash::map::IntoIter")
+                                                                                    []
                                                                                     [
-                                                                                      Ty.path
-                                                                                        "ruint::Uint";
+                                                                                      Ty.apply
+                                                                                        (Ty.path
+                                                                                          "ruint::Uint")
+                                                                                        [
+                                                                                          Value.Integer
+                                                                                            256;
+                                                                                          Value.Integer
+                                                                                            4
+                                                                                        ]
+                                                                                        [];
                                                                                       Ty.tuple
                                                                                         [
-                                                                                          Ty.path
-                                                                                            "ruint::Uint";
-                                                                                          Ty.path
-                                                                                            "ruint::Uint"
+                                                                                          Ty.apply
+                                                                                            (Ty.path
+                                                                                              "ruint::Uint")
+                                                                                            [
+                                                                                              Value.Integer
+                                                                                                256;
+                                                                                              Value.Integer
+                                                                                                4
+                                                                                            ]
+                                                                                            [];
+                                                                                          Ty.apply
+                                                                                            (Ty.path
+                                                                                              "ruint::Uint")
+                                                                                            [
+                                                                                              Value.Integer
+                                                                                                256;
+                                                                                              Value.Integer
+                                                                                                4
+                                                                                            ]
+                                                                                            []
                                                                                         ]
                                                                                     ];
                                                                                   Ty.function
@@ -1682,22 +1924,54 @@ Module db.
                                                                                         [
                                                                                           Ty.tuple
                                                                                             [
-                                                                                              Ty.path
-                                                                                                "ruint::Uint";
+                                                                                              Ty.apply
+                                                                                                (Ty.path
+                                                                                                  "ruint::Uint")
+                                                                                                [
+                                                                                                  Value.Integer
+                                                                                                    256;
+                                                                                                  Value.Integer
+                                                                                                    4
+                                                                                                ]
+                                                                                                [];
                                                                                               Ty.tuple
                                                                                                 [
-                                                                                                  Ty.path
-                                                                                                    "ruint::Uint";
-                                                                                                  Ty.path
-                                                                                                    "ruint::Uint"
+                                                                                                  Ty.apply
+                                                                                                    (Ty.path
+                                                                                                      "ruint::Uint")
+                                                                                                    [
+                                                                                                      Value.Integer
+                                                                                                        256;
+                                                                                                      Value.Integer
+                                                                                                        4
+                                                                                                    ]
+                                                                                                    [];
+                                                                                                  Ty.apply
+                                                                                                    (Ty.path
+                                                                                                      "ruint::Uint")
+                                                                                                    [
+                                                                                                      Value.Integer
+                                                                                                        256;
+                                                                                                      Value.Integer
+                                                                                                        4
+                                                                                                    ]
+                                                                                                    []
                                                                                                 ]
                                                                                             ]
                                                                                         ]
                                                                                     ]
                                                                                     (Ty.tuple
                                                                                       [
-                                                                                        Ty.path
-                                                                                          "ruint::Uint";
+                                                                                        Ty.apply
+                                                                                          (Ty.path
+                                                                                            "ruint::Uint")
+                                                                                          [
+                                                                                            Value.Integer
+                                                                                              256;
+                                                                                            Value.Integer
+                                                                                              4
+                                                                                          ]
+                                                                                          [];
                                                                                         Ty.path
                                                                                           "revm_primitives::state::StorageSlot"
                                                                                       ])
@@ -1708,9 +1982,18 @@ Module db.
                                                                                 Ty.apply
                                                                                   (Ty.path
                                                                                     "std::collections::hash::map::HashMap")
+                                                                                  []
                                                                                   [
-                                                                                    Ty.path
-                                                                                      "ruint::Uint";
+                                                                                    Ty.apply
+                                                                                      (Ty.path
+                                                                                        "ruint::Uint")
+                                                                                      [
+                                                                                        Value.Integer
+                                                                                          256;
+                                                                                        Value.Integer
+                                                                                          4
+                                                                                      ]
+                                                                                      [];
                                                                                     Ty.path
                                                                                       "revm_primitives::state::StorageSlot";
                                                                                     Ty.path
@@ -1725,15 +2008,40 @@ Module db.
                                                                                   Ty.apply
                                                                                     (Ty.path
                                                                                       "std::collections::hash::map::IntoIter")
+                                                                                    []
                                                                                     [
-                                                                                      Ty.path
-                                                                                        "ruint::Uint";
+                                                                                      Ty.apply
+                                                                                        (Ty.path
+                                                                                          "ruint::Uint")
+                                                                                        [
+                                                                                          Value.Integer
+                                                                                            256;
+                                                                                          Value.Integer
+                                                                                            4
+                                                                                        ]
+                                                                                        [];
                                                                                       Ty.tuple
                                                                                         [
-                                                                                          Ty.path
-                                                                                            "ruint::Uint";
-                                                                                          Ty.path
-                                                                                            "ruint::Uint"
+                                                                                          Ty.apply
+                                                                                            (Ty.path
+                                                                                              "ruint::Uint")
+                                                                                            [
+                                                                                              Value.Integer
+                                                                                                256;
+                                                                                              Value.Integer
+                                                                                                4
+                                                                                            ]
+                                                                                            [];
+                                                                                          Ty.apply
+                                                                                            (Ty.path
+                                                                                              "ruint::Uint")
+                                                                                            [
+                                                                                              Value.Integer
+                                                                                                256;
+                                                                                              Value.Integer
+                                                                                                4
+                                                                                            ]
+                                                                                            []
                                                                                         ]
                                                                                     ],
                                                                                   [],
@@ -1741,8 +2049,16 @@ Module db.
                                                                                   [
                                                                                     Ty.tuple
                                                                                       [
-                                                                                        Ty.path
-                                                                                          "ruint::Uint";
+                                                                                        Ty.apply
+                                                                                          (Ty.path
+                                                                                            "ruint::Uint")
+                                                                                          [
+                                                                                            Value.Integer
+                                                                                              256;
+                                                                                            Value.Integer
+                                                                                              4
+                                                                                          ]
+                                                                                          [];
                                                                                         Ty.path
                                                                                           "revm_primitives::state::StorageSlot"
                                                                                       ];
@@ -1752,22 +2068,54 @@ Module db.
                                                                                           [
                                                                                             Ty.tuple
                                                                                               [
-                                                                                                Ty.path
-                                                                                                  "ruint::Uint";
+                                                                                                Ty.apply
+                                                                                                  (Ty.path
+                                                                                                    "ruint::Uint")
+                                                                                                  [
+                                                                                                    Value.Integer
+                                                                                                      256;
+                                                                                                    Value.Integer
+                                                                                                      4
+                                                                                                  ]
+                                                                                                  [];
                                                                                                 Ty.tuple
                                                                                                   [
-                                                                                                    Ty.path
-                                                                                                      "ruint::Uint";
-                                                                                                    Ty.path
-                                                                                                      "ruint::Uint"
+                                                                                                    Ty.apply
+                                                                                                      (Ty.path
+                                                                                                        "ruint::Uint")
+                                                                                                      [
+                                                                                                        Value.Integer
+                                                                                                          256;
+                                                                                                        Value.Integer
+                                                                                                          4
+                                                                                                      ]
+                                                                                                      [];
+                                                                                                    Ty.apply
+                                                                                                      (Ty.path
+                                                                                                        "ruint::Uint")
+                                                                                                      [
+                                                                                                        Value.Integer
+                                                                                                          256;
+                                                                                                        Value.Integer
+                                                                                                          4
+                                                                                                      ]
+                                                                                                      []
                                                                                                   ]
                                                                                               ]
                                                                                           ]
                                                                                       ]
                                                                                       (Ty.tuple
                                                                                         [
-                                                                                          Ty.path
-                                                                                            "ruint::Uint";
+                                                                                          Ty.apply
+                                                                                            (Ty.path
+                                                                                              "ruint::Uint")
+                                                                                            [
+                                                                                              Value.Integer
+                                                                                                256;
+                                                                                              Value.Integer
+                                                                                                4
+                                                                                            ]
+                                                                                            [];
                                                                                           Ty.path
                                                                                             "revm_primitives::state::StorageSlot"
                                                                                         ])
@@ -1780,15 +2128,40 @@ Module db.
                                                                                       Ty.apply
                                                                                         (Ty.path
                                                                                           "std::collections::hash::map::HashMap")
+                                                                                        []
                                                                                         [
-                                                                                          Ty.path
-                                                                                            "ruint::Uint";
+                                                                                          Ty.apply
+                                                                                            (Ty.path
+                                                                                              "ruint::Uint")
+                                                                                            [
+                                                                                              Value.Integer
+                                                                                                256;
+                                                                                              Value.Integer
+                                                                                                4
+                                                                                            ]
+                                                                                            [];
                                                                                           Ty.tuple
                                                                                             [
-                                                                                              Ty.path
-                                                                                                "ruint::Uint";
-                                                                                              Ty.path
-                                                                                                "ruint::Uint"
+                                                                                              Ty.apply
+                                                                                                (Ty.path
+                                                                                                  "ruint::Uint")
+                                                                                                [
+                                                                                                  Value.Integer
+                                                                                                    256;
+                                                                                                  Value.Integer
+                                                                                                    4
+                                                                                                ]
+                                                                                                [];
+                                                                                              Ty.apply
+                                                                                                (Ty.path
+                                                                                                  "ruint::Uint")
+                                                                                                [
+                                                                                                  Value.Integer
+                                                                                                    256;
+                                                                                                  Value.Integer
+                                                                                                    4
+                                                                                                ]
+                                                                                                []
                                                                                             ];
                                                                                           Ty.path
                                                                                             "std::hash::random::RandomState"
@@ -1907,6 +2280,7 @@ Module db.
                                                           Ty.apply
                                                             (Ty.path
                                                               "std::collections::hash::map::HashMap")
+                                                            []
                                                             [
                                                               Ty.path
                                                                 "alloy_primitives::bits::address::Address";
@@ -1935,6 +2309,7 @@ Module db.
                                                           Ty.apply
                                                             (Ty.path
                                                               "std::collections::hash::map::HashMap")
+                                                            []
                                                             [
                                                               Ty.path
                                                                 "alloy_primitives::bits::address::Address";
@@ -2006,10 +2381,12 @@ Module db.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "alloc::collections::btree::map::BTreeMap")
+                          []
                           [
                             Ty.path "u64";
                             Ty.apply
                               (Ty.path "alloc::vec::Vec")
+                              []
                               [
                                 Ty.tuple
                                   [
@@ -2033,7 +2410,10 @@ Module db.
                         M.call_closure (|
                           M.get_trait_method (|
                             "core::iter::traits::collect::IntoIterator",
-                            Ty.apply (Ty.path "core::ops::range::RangeInclusive") [ Ty.path "u64" ],
+                            Ty.apply
+                              (Ty.path "core::ops::range::RangeInclusive")
+                              []
+                              [ Ty.path "u64" ],
                             [],
                             "into_iter",
                             []
@@ -2063,6 +2443,7 @@ Module db.
                                           "core::iter::traits::iterator::Iterator",
                                           Ty.apply
                                             (Ty.path "core::ops::range::RangeInclusive")
+                                            []
                                             [ Ty.path "u64" ],
                                           [],
                                           "next",
@@ -2098,10 +2479,12 @@ Module db.
                                                   Ty.apply
                                                     (Ty.path
                                                       "alloc::collections::btree::map::BTreeMap")
+                                                    []
                                                     [
                                                       Ty.path "u64";
                                                       Ty.apply
                                                         (Ty.path "alloc::vec::Vec")
+                                                        []
                                                         [
                                                           Ty.tuple
                                                             [
@@ -2124,6 +2507,7 @@ Module db.
                                                     M.get_associated_function (|
                                                       Ty.apply
                                                         (Ty.path "alloc::vec::Vec")
+                                                        []
                                                         [
                                                           Ty.tuple
                                                             [
@@ -2156,6 +2540,7 @@ Module db.
                         "core::iter::traits::iterator::Iterator",
                         Ty.apply
                           (Ty.path "alloc::collections::btree::set::IntoIter")
+                          []
                           [
                             Ty.tuple
                               [ Ty.path "u64"; Ty.path "alloy_primitives::bits::address::Address" ];
@@ -2184,6 +2569,7 @@ Module db.
                             "core::iter::traits::collect::IntoIterator",
                             Ty.apply
                               (Ty.path "alloc::collections::btree::set::BTreeSet")
+                              []
                               [
                                 Ty.tuple
                                   [
@@ -2229,12 +2615,15 @@ Module db.
                                                     M.get_associated_function (|
                                                       Ty.apply
                                                         (Ty.path "core::option::Option")
+                                                        []
                                                         [
                                                           Ty.apply
                                                             (Ty.path "core::option::Option")
+                                                            []
                                                             [
                                                               Ty.apply
                                                                 (Ty.path "core::option::Option")
+                                                                []
                                                                 [
                                                                   Ty.path
                                                                     "revm_primitives::state::AccountInfo"
@@ -2250,6 +2639,7 @@ Module db.
                                                           Ty.apply
                                                             (Ty.path
                                                               "std::collections::hash::map::HashMap")
+                                                            []
                                                             [
                                                               Ty.tuple
                                                                 [
@@ -2259,9 +2649,11 @@ Module db.
                                                                 ];
                                                               Ty.apply
                                                                 (Ty.path "core::option::Option")
+                                                                []
                                                                 [
                                                                   Ty.apply
                                                                     (Ty.path "core::option::Option")
+                                                                    []
                                                                     [
                                                                       Ty.path
                                                                         "revm_primitives::state::AccountInfo"
@@ -2358,12 +2750,17 @@ Module db.
                                                 M.get_associated_function (|
                                                   Ty.apply
                                                     (Ty.path "core::option::Option")
+                                                    []
                                                     [
                                                       Ty.apply
                                                         (Ty.path
                                                           "std::collections::hash::map::HashMap")
+                                                        []
                                                         [
-                                                          Ty.path "ruint::Uint";
+                                                          Ty.apply
+                                                            (Ty.path "ruint::Uint")
+                                                            [ Value.Integer 256; Value.Integer 4 ]
+                                                            [];
                                                           Ty.path
                                                             "revm::db::states::reverts::RevertToSlot";
                                                           Ty.path "std::hash::random::RandomState"
@@ -2377,14 +2774,28 @@ Module db.
                                                     M.get_associated_function (|
                                                       Ty.apply
                                                         (Ty.path "core::option::Option")
+                                                        []
                                                         [
                                                           Ty.apply
                                                             (Ty.path "alloc::vec::Vec")
+                                                            []
                                                             [
                                                               Ty.tuple
                                                                 [
-                                                                  Ty.path "ruint::Uint";
-                                                                  Ty.path "ruint::Uint"
+                                                                  Ty.apply
+                                                                    (Ty.path "ruint::Uint")
+                                                                    [
+                                                                      Value.Integer 256;
+                                                                      Value.Integer 4
+                                                                    ]
+                                                                    [];
+                                                                  Ty.apply
+                                                                    (Ty.path "ruint::Uint")
+                                                                    [
+                                                                      Value.Integer 256;
+                                                                      Value.Integer 4
+                                                                    ]
+                                                                    []
                                                                 ];
                                                               Ty.path "alloc::alloc::Global"
                                                             ]
@@ -2394,8 +2805,12 @@ Module db.
                                                         Ty.apply
                                                           (Ty.path
                                                             "std::collections::hash::map::HashMap")
+                                                          []
                                                           [
-                                                            Ty.path "ruint::Uint";
+                                                            Ty.apply
+                                                              (Ty.path "ruint::Uint")
+                                                              [ Value.Integer 256; Value.Integer 4 ]
+                                                              [];
                                                             Ty.path
                                                               "revm::db::states::reverts::RevertToSlot";
                                                             Ty.path "std::hash::random::RandomState"
@@ -2406,11 +2821,24 @@ Module db.
                                                               [
                                                                 Ty.apply
                                                                   (Ty.path "alloc::vec::Vec")
+                                                                  []
                                                                   [
                                                                     Ty.tuple
                                                                       [
-                                                                        Ty.path "ruint::Uint";
-                                                                        Ty.path "ruint::Uint"
+                                                                        Ty.apply
+                                                                          (Ty.path "ruint::Uint")
+                                                                          [
+                                                                            Value.Integer 256;
+                                                                            Value.Integer 4
+                                                                          ]
+                                                                          [];
+                                                                        Ty.apply
+                                                                          (Ty.path "ruint::Uint")
+                                                                          [
+                                                                            Value.Integer 256;
+                                                                            Value.Integer 4
+                                                                          ]
+                                                                          []
                                                                       ];
                                                                     Ty.path "alloc::alloc::Global"
                                                                   ]
@@ -2419,8 +2847,13 @@ Module db.
                                                           (Ty.apply
                                                             (Ty.path
                                                               "std::collections::hash::map::HashMap")
+                                                            []
                                                             [
-                                                              Ty.path "ruint::Uint";
+                                                              Ty.apply
+                                                                (Ty.path "ruint::Uint")
+                                                                [ Value.Integer 256; Value.Integer 4
+                                                                ]
+                                                                [];
                                                               Ty.path
                                                                 "revm::db::states::reverts::RevertToSlot";
                                                               Ty.path
@@ -2434,6 +2867,7 @@ Module db.
                                                           Ty.apply
                                                             (Ty.path
                                                               "std::collections::hash::map::HashMap")
+                                                            []
                                                             [
                                                               Ty.tuple
                                                                 [
@@ -2443,11 +2877,24 @@ Module db.
                                                                 ];
                                                               Ty.apply
                                                                 (Ty.path "alloc::vec::Vec")
+                                                                []
                                                                 [
                                                                   Ty.tuple
                                                                     [
-                                                                      Ty.path "ruint::Uint";
-                                                                      Ty.path "ruint::Uint"
+                                                                      Ty.apply
+                                                                        (Ty.path "ruint::Uint")
+                                                                        [
+                                                                          Value.Integer 256;
+                                                                          Value.Integer 4
+                                                                        ]
+                                                                        [];
+                                                                      Ty.apply
+                                                                        (Ty.path "ruint::Uint")
+                                                                        [
+                                                                          Value.Integer 256;
+                                                                          Value.Integer 4
+                                                                        ]
+                                                                        []
                                                                     ];
                                                                   Ty.path "alloc::alloc::Global"
                                                                 ];
@@ -2496,17 +2943,35 @@ Module db.
                                                                           Ty.apply
                                                                             (Ty.path
                                                                               "core::iter::adapters::map::Map")
+                                                                            []
                                                                             [
                                                                               Ty.apply
                                                                                 (Ty.path
                                                                                   "alloc::vec::into_iter::IntoIter")
+                                                                                []
                                                                                 [
                                                                                   Ty.tuple
                                                                                     [
-                                                                                      Ty.path
-                                                                                        "ruint::Uint";
-                                                                                      Ty.path
-                                                                                        "ruint::Uint"
+                                                                                      Ty.apply
+                                                                                        (Ty.path
+                                                                                          "ruint::Uint")
+                                                                                        [
+                                                                                          Value.Integer
+                                                                                            256;
+                                                                                          Value.Integer
+                                                                                            4
+                                                                                        ]
+                                                                                        [];
+                                                                                      Ty.apply
+                                                                                        (Ty.path
+                                                                                          "ruint::Uint")
+                                                                                        [
+                                                                                          Value.Integer
+                                                                                            256;
+                                                                                          Value.Integer
+                                                                                            4
+                                                                                        ]
+                                                                                        []
                                                                                     ];
                                                                                   Ty.path
                                                                                     "alloc::alloc::Global"
@@ -2517,17 +2982,41 @@ Module db.
                                                                                     [
                                                                                       Ty.tuple
                                                                                         [
-                                                                                          Ty.path
-                                                                                            "ruint::Uint";
-                                                                                          Ty.path
-                                                                                            "ruint::Uint"
+                                                                                          Ty.apply
+                                                                                            (Ty.path
+                                                                                              "ruint::Uint")
+                                                                                            [
+                                                                                              Value.Integer
+                                                                                                256;
+                                                                                              Value.Integer
+                                                                                                4
+                                                                                            ]
+                                                                                            [];
+                                                                                          Ty.apply
+                                                                                            (Ty.path
+                                                                                              "ruint::Uint")
+                                                                                            [
+                                                                                              Value.Integer
+                                                                                                256;
+                                                                                              Value.Integer
+                                                                                                4
+                                                                                            ]
+                                                                                            []
                                                                                         ]
                                                                                     ]
                                                                                 ]
                                                                                 (Ty.tuple
                                                                                   [
-                                                                                    Ty.path
-                                                                                      "ruint::Uint";
+                                                                                    Ty.apply
+                                                                                      (Ty.path
+                                                                                        "ruint::Uint")
+                                                                                      [
+                                                                                        Value.Integer
+                                                                                          256;
+                                                                                        Value.Integer
+                                                                                          4
+                                                                                      ]
+                                                                                      [];
                                                                                     Ty.path
                                                                                       "revm::db::states::reverts::RevertToSlot"
                                                                                   ])
@@ -2538,9 +3027,17 @@ Module db.
                                                                             Ty.apply
                                                                               (Ty.path
                                                                                 "std::collections::hash::map::HashMap")
+                                                                              []
                                                                               [
-                                                                                Ty.path
-                                                                                  "ruint::Uint";
+                                                                                Ty.apply
+                                                                                  (Ty.path
+                                                                                    "ruint::Uint")
+                                                                                  [
+                                                                                    Value.Integer
+                                                                                      256;
+                                                                                    Value.Integer 4
+                                                                                  ]
+                                                                                  [];
                                                                                 Ty.path
                                                                                   "revm::db::states::reverts::RevertToSlot";
                                                                                 Ty.path
@@ -2555,13 +3052,30 @@ Module db.
                                                                               Ty.apply
                                                                                 (Ty.path
                                                                                   "alloc::vec::into_iter::IntoIter")
+                                                                                []
                                                                                 [
                                                                                   Ty.tuple
                                                                                     [
-                                                                                      Ty.path
-                                                                                        "ruint::Uint";
-                                                                                      Ty.path
-                                                                                        "ruint::Uint"
+                                                                                      Ty.apply
+                                                                                        (Ty.path
+                                                                                          "ruint::Uint")
+                                                                                        [
+                                                                                          Value.Integer
+                                                                                            256;
+                                                                                          Value.Integer
+                                                                                            4
+                                                                                        ]
+                                                                                        [];
+                                                                                      Ty.apply
+                                                                                        (Ty.path
+                                                                                          "ruint::Uint")
+                                                                                        [
+                                                                                          Value.Integer
+                                                                                            256;
+                                                                                          Value.Integer
+                                                                                            4
+                                                                                        ]
+                                                                                        []
                                                                                     ];
                                                                                   Ty.path
                                                                                     "alloc::alloc::Global"
@@ -2571,8 +3085,16 @@ Module db.
                                                                               [
                                                                                 Ty.tuple
                                                                                   [
-                                                                                    Ty.path
-                                                                                      "ruint::Uint";
+                                                                                    Ty.apply
+                                                                                      (Ty.path
+                                                                                        "ruint::Uint")
+                                                                                      [
+                                                                                        Value.Integer
+                                                                                          256;
+                                                                                        Value.Integer
+                                                                                          4
+                                                                                      ]
+                                                                                      [];
                                                                                     Ty.path
                                                                                       "revm::db::states::reverts::RevertToSlot"
                                                                                   ];
@@ -2582,17 +3104,41 @@ Module db.
                                                                                       [
                                                                                         Ty.tuple
                                                                                           [
-                                                                                            Ty.path
-                                                                                              "ruint::Uint";
-                                                                                            Ty.path
-                                                                                              "ruint::Uint"
+                                                                                            Ty.apply
+                                                                                              (Ty.path
+                                                                                                "ruint::Uint")
+                                                                                              [
+                                                                                                Value.Integer
+                                                                                                  256;
+                                                                                                Value.Integer
+                                                                                                  4
+                                                                                              ]
+                                                                                              [];
+                                                                                            Ty.apply
+                                                                                              (Ty.path
+                                                                                                "ruint::Uint")
+                                                                                              [
+                                                                                                Value.Integer
+                                                                                                  256;
+                                                                                                Value.Integer
+                                                                                                  4
+                                                                                              ]
+                                                                                              []
                                                                                           ]
                                                                                       ]
                                                                                   ]
                                                                                   (Ty.tuple
                                                                                     [
-                                                                                      Ty.path
-                                                                                        "ruint::Uint";
+                                                                                      Ty.apply
+                                                                                        (Ty.path
+                                                                                          "ruint::Uint")
+                                                                                        [
+                                                                                          Value.Integer
+                                                                                            256;
+                                                                                          Value.Integer
+                                                                                            4
+                                                                                        ]
+                                                                                        [];
                                                                                       Ty.path
                                                                                         "revm::db::states::reverts::RevertToSlot"
                                                                                     ])
@@ -2605,13 +3151,30 @@ Module db.
                                                                                   Ty.apply
                                                                                     (Ty.path
                                                                                       "alloc::vec::Vec")
+                                                                                    []
                                                                                     [
                                                                                       Ty.tuple
                                                                                         [
-                                                                                          Ty.path
-                                                                                            "ruint::Uint";
-                                                                                          Ty.path
-                                                                                            "ruint::Uint"
+                                                                                          Ty.apply
+                                                                                            (Ty.path
+                                                                                              "ruint::Uint")
+                                                                                            [
+                                                                                              Value.Integer
+                                                                                                256;
+                                                                                              Value.Integer
+                                                                                                4
+                                                                                            ]
+                                                                                            [];
+                                                                                          Ty.apply
+                                                                                            (Ty.path
+                                                                                              "ruint::Uint")
+                                                                                            [
+                                                                                              Value.Integer
+                                                                                                256;
+                                                                                              Value.Integer
+                                                                                                4
+                                                                                            ]
+                                                                                            []
                                                                                         ];
                                                                                       Ty.path
                                                                                         "alloc::alloc::Global"
@@ -2714,10 +3277,12 @@ Module db.
                                                             Ty.apply
                                                               (Ty.path
                                                                 "alloc::collections::btree::map::BTreeMap")
+                                                              []
                                                               [
                                                                 Ty.path "u64";
                                                                 Ty.apply
                                                                   (Ty.path "alloc::vec::Vec")
+                                                                  []
                                                                   [
                                                                     Ty.tuple
                                                                       [
@@ -2764,6 +3329,7 @@ Module db.
                                                         M.get_associated_function (|
                                                           Ty.apply
                                                             (Ty.path "alloc::vec::Vec")
+                                                            []
                                                             [
                                                               Ty.tuple
                                                                 [
@@ -2783,10 +3349,12 @@ Module db.
                                                               Ty.apply
                                                                 (Ty.path
                                                                   "alloc::collections::btree::map::entry::Entry")
+                                                                []
                                                                 [
                                                                   Ty.path "u64";
                                                                   Ty.apply
                                                                     (Ty.path "alloc::vec::Vec")
+                                                                    []
                                                                     [
                                                                       Ty.tuple
                                                                         [
@@ -2808,10 +3376,12 @@ Module db.
                                                                   Ty.apply
                                                                     (Ty.path
                                                                       "alloc::collections::btree::map::BTreeMap")
+                                                                    []
                                                                     [
                                                                       Ty.path "u64";
                                                                       Ty.apply
                                                                         (Ty.path "alloc::vec::Vec")
+                                                                        []
                                                                         [
                                                                           Ty.tuple
                                                                             [
@@ -2837,6 +3407,7 @@ Module db.
                                                                 M.get_associated_function (|
                                                                   Ty.apply
                                                                     (Ty.path "alloc::vec::Vec")
+                                                                    []
                                                                     [
                                                                       Ty.tuple
                                                                         [
@@ -2901,10 +3472,12 @@ Module db.
                                 "core::iter::traits::iterator::Iterator",
                                 Ty.apply
                                   (Ty.path "alloc::collections::btree::map::IntoValues")
+                                  []
                                   [
                                     Ty.path "u64";
                                     Ty.apply
                                       (Ty.path "alloc::vec::Vec")
+                                      []
                                       [
                                         Ty.tuple
                                           [
@@ -2920,9 +3493,11 @@ Module db.
                                 [
                                   Ty.apply
                                     (Ty.path "alloc::vec::Vec")
+                                    []
                                     [
                                       Ty.apply
                                         (Ty.path "alloc::vec::Vec")
+                                        []
                                         [
                                           Ty.tuple
                                             [
@@ -2940,10 +3515,12 @@ Module db.
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "alloc::collections::btree::map::BTreeMap")
+                                      []
                                       [
                                         Ty.path "u64";
                                         Ty.apply
                                           (Ty.path "alloc::vec::Vec")
+                                          []
                                           [
                                             Ty.tuple
                                               [
@@ -2968,7 +3545,7 @@ Module db.
                     ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_build : M.IsAssociatedFunction Self "build" build.
@@ -2978,9 +3555,9 @@ Module db.
                 &self.states
             }
         *)
-        Definition get_states (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self ] =>
+        Definition get_states (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.SubPointer.get_struct_record_field (|
@@ -2988,7 +3565,7 @@ Module db.
                 "revm::db::states::bundle_state::BundleBuilder",
                 "states"
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_get_states : M.IsAssociatedFunction Self "get_states" get_states.
@@ -2997,6 +3574,7 @@ Module db.
       (*
       Enum BundleRetention
       {
+        const_params := [];
         ty_params := [];
         variants :=
           [
@@ -3018,9 +3596,9 @@ Module db.
         Definition Self : Ty.t := Ty.path "revm::db::states::bundle_state::BundleRetention".
         
         (* Debug *)
-        Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self; f ] =>
+        Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self; f ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let f := M.alloc (| f |) in
@@ -3055,7 +3633,7 @@ Module db.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -3074,9 +3652,9 @@ Module db.
                 matches!(self, Self::Reverts)
             }
         *)
-        Definition includes_reverts (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self ] =>
+        Definition includes_reverts (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
@@ -3096,7 +3674,7 @@ Module db.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_includes_reverts :
@@ -3106,12 +3684,14 @@ Module db.
       (* StructRecord
         {
           name := "BundleState";
+          const_params := [];
           ty_params := [];
           fields :=
             [
               ("state",
                 Ty.apply
                   (Ty.path "std::collections::hash::map::HashMap")
+                  []
                   [
                     Ty.path "alloy_primitives::bits::address::Address";
                     Ty.path "revm::db::states::bundle_account::BundleAccount";
@@ -3120,8 +3700,12 @@ Module db.
               ("contracts",
                 Ty.apply
                   (Ty.path "std::collections::hash::map::HashMap")
+                  []
                   [
-                    Ty.path "alloy_primitives::bits::fixed::FixedBytes";
+                    Ty.apply
+                      (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                      [ Value.Integer 32 ]
+                      [];
                     Ty.path "revm_primitives::bytecode::Bytecode";
                     Ty.path "std::hash::random::RandomState"
                   ]);
@@ -3135,9 +3719,9 @@ Module db.
         Definition Self : Ty.t := Ty.path "revm::db::states::bundle_state::BundleState".
         
         (* Default *)
-        Definition default (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [] =>
+        Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [] =>
             ltac:(M.monadic
               (Value.StructRecord
                 "revm::db::states::bundle_state::BundleState"
@@ -3148,6 +3732,7 @@ Module db.
                         "core::default::Default",
                         Ty.apply
                           (Ty.path "std::collections::hash::map::HashMap")
+                          []
                           [
                             Ty.path "alloy_primitives::bits::address::Address";
                             Ty.path "revm::db::states::bundle_account::BundleAccount";
@@ -3165,8 +3750,12 @@ Module db.
                         "core::default::Default",
                         Ty.apply
                           (Ty.path "std::collections::hash::map::HashMap")
+                          []
                           [
-                            Ty.path "alloy_primitives::bits::fixed::FixedBytes";
+                            Ty.apply
+                              (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                              [ Value.Integer 32 ]
+                              [];
                             Ty.path "revm_primitives::bytecode::Bytecode";
                             Ty.path "std::hash::random::RandomState"
                           ],
@@ -3210,7 +3799,7 @@ Module db.
                       []
                     |))
                 ]))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -3225,9 +3814,9 @@ Module db.
         Definition Self : Ty.t := Ty.path "revm::db::states::bundle_state::BundleState".
         
         (* Clone *)
-        Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self ] =>
+        Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               Value.StructRecord
@@ -3239,6 +3828,7 @@ Module db.
                         "core::clone::Clone",
                         Ty.apply
                           (Ty.path "std::collections::hash::map::HashMap")
+                          []
                           [
                             Ty.path "alloy_primitives::bits::address::Address";
                             Ty.path "revm::db::states::bundle_account::BundleAccount";
@@ -3262,8 +3852,12 @@ Module db.
                         "core::clone::Clone",
                         Ty.apply
                           (Ty.path "std::collections::hash::map::HashMap")
+                          []
                           [
-                            Ty.path "alloy_primitives::bits::fixed::FixedBytes";
+                            Ty.apply
+                              (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                              [ Value.Integer 32 ]
+                              [];
                             Ty.path "revm_primitives::bytecode::Bytecode";
                             Ty.path "std::hash::random::RandomState"
                           ],
@@ -3331,7 +3925,7 @@ Module db.
                       ]
                     |))
                 ]))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -3346,9 +3940,9 @@ Module db.
         Definition Self : Ty.t := Ty.path "revm::db::states::bundle_state::BundleState".
         
         (* Debug *)
-        Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self; f ] =>
+        Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self; f ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let f := M.alloc (| f |) in
@@ -3405,7 +3999,7 @@ Module db.
                     |))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -3431,9 +4025,9 @@ Module db.
         Definition Self : Ty.t := Ty.path "revm::db::states::bundle_state::BundleState".
         
         (* PartialEq *)
-        Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self; other ] =>
+        Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self; other ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let other := M.alloc (| other |) in
@@ -3446,6 +4040,7 @@ Module db.
                           "core::cmp::PartialEq",
                           Ty.apply
                             (Ty.path "std::collections::hash::map::HashMap")
+                            []
                             [
                               Ty.path "alloy_primitives::bits::address::Address";
                               Ty.path "revm::db::states::bundle_account::BundleAccount";
@@ -3454,6 +4049,7 @@ Module db.
                           [
                             Ty.apply
                               (Ty.path "std::collections::hash::map::HashMap")
+                              []
                               [
                                 Ty.path "alloy_primitives::bits::address::Address";
                                 Ty.path "revm::db::states::bundle_account::BundleAccount";
@@ -3482,16 +4078,24 @@ Module db.
                             "core::cmp::PartialEq",
                             Ty.apply
                               (Ty.path "std::collections::hash::map::HashMap")
+                              []
                               [
-                                Ty.path "alloy_primitives::bits::fixed::FixedBytes";
+                                Ty.apply
+                                  (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                                  [ Value.Integer 32 ]
+                                  [];
                                 Ty.path "revm_primitives::bytecode::Bytecode";
                                 Ty.path "std::hash::random::RandomState"
                               ],
                             [
                               Ty.apply
                                 (Ty.path "std::collections::hash::map::HashMap")
+                                []
                                 [
-                                  Ty.path "alloy_primitives::bits::fixed::FixedBytes";
+                                  Ty.apply
+                                    (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                                    [ Value.Integer 32 ]
+                                    [];
                                   Ty.path "revm_primitives::bytecode::Bytecode";
                                   Ty.path "std::hash::random::RandomState"
                                 ]
@@ -3570,7 +4174,7 @@ Module db.
                       |)
                     |))))
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -3596,9 +4200,13 @@ Module db.
         Definition Self : Ty.t := Ty.path "revm::db::states::bundle_state::BundleState".
         
         (* Eq *)
-        Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self ] =>
+        Definition assert_receiver_is_total_eq
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
@@ -3629,7 +4237,7 @@ Module db.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -3649,9 +4257,9 @@ Module db.
                 BundleBuilder::new(revert_range)
             }
         *)
-        Definition builder (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ revert_range ] =>
+        Definition builder (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ revert_range ] =>
             ltac:(M.monadic
               (let revert_range := M.alloc (| revert_range |) in
               M.call_closure (|
@@ -3662,7 +4270,7 @@ Module db.
                 |),
                 [ M.read (| revert_range |) ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_builder : M.IsAssociatedFunction Self "builder" builder.
@@ -3745,9 +4353,10 @@ Module db.
                 }
             }
         *)
-        Definition new (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [
+        Definition new (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [],
+              [
                 impl_IntoIterator_Item____Address__Option_AccountInfo___Option_AccountInfo___HashMap_U256___U256__U256____;
                 impl_IntoIterator_Item____U256__U256__;
                 impl_IntoIterator_Item____Address__Option_Option_AccountInfo____impl_IntoIterator_Item____U256__U256____;
@@ -3768,6 +4377,7 @@ Module db.
                         "core::iter::traits::iterator::Iterator",
                         Ty.apply
                           (Ty.path "core::iter::adapters::map::Map")
+                          []
                           [
                             Ty.associated;
                             Ty.function
@@ -3779,16 +4389,31 @@ Module db.
                                         Ty.path "alloy_primitives::bits::address::Address";
                                         Ty.apply
                                           (Ty.path "core::option::Option")
+                                          []
                                           [ Ty.path "revm_primitives::state::AccountInfo" ];
                                         Ty.apply
                                           (Ty.path "core::option::Option")
+                                          []
                                           [ Ty.path "revm_primitives::state::AccountInfo" ];
                                         Ty.apply
                                           (Ty.path "std::collections::hash::map::HashMap")
+                                          []
                                           [
-                                            Ty.path "ruint::Uint";
+                                            Ty.apply
+                                              (Ty.path "ruint::Uint")
+                                              [ Value.Integer 256; Value.Integer 4 ]
+                                              [];
                                             Ty.tuple
-                                              [ Ty.path "ruint::Uint"; Ty.path "ruint::Uint" ];
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "ruint::Uint")
+                                                  [ Value.Integer 256; Value.Integer 4 ]
+                                                  [];
+                                                Ty.apply
+                                                  (Ty.path "ruint::Uint")
+                                                  [ Value.Integer 256; Value.Integer 4 ]
+                                                  []
+                                              ];
                                             Ty.path "std::hash::random::RandomState"
                                           ]
                                       ]
@@ -3805,6 +4430,7 @@ Module db.
                         [
                           Ty.apply
                             (Ty.path "std::collections::hash::map::HashMap")
+                            []
                             [
                               Ty.path "alloy_primitives::bits::address::Address";
                               Ty.path "revm::db::states::bundle_account::BundleAccount";
@@ -3834,16 +4460,31 @@ Module db.
                                           Ty.path "alloy_primitives::bits::address::Address";
                                           Ty.apply
                                             (Ty.path "core::option::Option")
+                                            []
                                             [ Ty.path "revm_primitives::state::AccountInfo" ];
                                           Ty.apply
                                             (Ty.path "core::option::Option")
+                                            []
                                             [ Ty.path "revm_primitives::state::AccountInfo" ];
                                           Ty.apply
                                             (Ty.path "std::collections::hash::map::HashMap")
+                                            []
                                             [
-                                              Ty.path "ruint::Uint";
+                                              Ty.apply
+                                                (Ty.path "ruint::Uint")
+                                                [ Value.Integer 256; Value.Integer 4 ]
+                                                [];
                                               Ty.tuple
-                                                [ Ty.path "ruint::Uint"; Ty.path "ruint::Uint" ];
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "ruint::Uint")
+                                                    [ Value.Integer 256; Value.Integer 4 ]
+                                                    [];
+                                                  Ty.apply
+                                                    (Ty.path "ruint::Uint")
+                                                    [ Value.Integer 256; Value.Integer 4 ]
+                                                    []
+                                                ];
                                               Ty.path "std::hash::random::RandomState"
                                             ]
                                         ]
@@ -3904,16 +4545,36 @@ Module db.
                                                           Ty.apply
                                                             (Ty.path
                                                               "core::iter::adapters::map::Map")
+                                                            []
                                                             [
                                                               Ty.apply
                                                                 (Ty.path
                                                                   "std::collections::hash::map::IntoIter")
+                                                                []
                                                                 [
-                                                                  Ty.path "ruint::Uint";
+                                                                  Ty.apply
+                                                                    (Ty.path "ruint::Uint")
+                                                                    [
+                                                                      Value.Integer 256;
+                                                                      Value.Integer 4
+                                                                    ]
+                                                                    [];
                                                                   Ty.tuple
                                                                     [
-                                                                      Ty.path "ruint::Uint";
-                                                                      Ty.path "ruint::Uint"
+                                                                      Ty.apply
+                                                                        (Ty.path "ruint::Uint")
+                                                                        [
+                                                                          Value.Integer 256;
+                                                                          Value.Integer 4
+                                                                        ]
+                                                                        [];
+                                                                      Ty.apply
+                                                                        (Ty.path "ruint::Uint")
+                                                                        [
+                                                                          Value.Integer 256;
+                                                                          Value.Integer 4
+                                                                        ]
+                                                                        []
                                                                     ]
                                                                 ];
                                                               Ty.function
@@ -3922,18 +4583,44 @@ Module db.
                                                                     [
                                                                       Ty.tuple
                                                                         [
-                                                                          Ty.path "ruint::Uint";
+                                                                          Ty.apply
+                                                                            (Ty.path "ruint::Uint")
+                                                                            [
+                                                                              Value.Integer 256;
+                                                                              Value.Integer 4
+                                                                            ]
+                                                                            [];
                                                                           Ty.tuple
                                                                             [
-                                                                              Ty.path "ruint::Uint";
-                                                                              Ty.path "ruint::Uint"
+                                                                              Ty.apply
+                                                                                (Ty.path
+                                                                                  "ruint::Uint")
+                                                                                [
+                                                                                  Value.Integer 256;
+                                                                                  Value.Integer 4
+                                                                                ]
+                                                                                [];
+                                                                              Ty.apply
+                                                                                (Ty.path
+                                                                                  "ruint::Uint")
+                                                                                [
+                                                                                  Value.Integer 256;
+                                                                                  Value.Integer 4
+                                                                                ]
+                                                                                []
                                                                             ]
                                                                         ]
                                                                     ]
                                                                 ]
                                                                 (Ty.tuple
                                                                   [
-                                                                    Ty.path "ruint::Uint";
+                                                                    Ty.apply
+                                                                      (Ty.path "ruint::Uint")
+                                                                      [
+                                                                        Value.Integer 256;
+                                                                        Value.Integer 4
+                                                                      ]
+                                                                      [];
                                                                     Ty.path
                                                                       "revm_primitives::state::StorageSlot"
                                                                   ])
@@ -3944,8 +4631,15 @@ Module db.
                                                             Ty.apply
                                                               (Ty.path
                                                                 "std::collections::hash::map::HashMap")
+                                                              []
                                                               [
-                                                                Ty.path "ruint::Uint";
+                                                                Ty.apply
+                                                                  (Ty.path "ruint::Uint")
+                                                                  [
+                                                                    Value.Integer 256;
+                                                                    Value.Integer 4
+                                                                  ]
+                                                                  [];
                                                                 Ty.path
                                                                   "revm_primitives::state::StorageSlot";
                                                                 Ty.path
@@ -3960,12 +4654,31 @@ Module db.
                                                               Ty.apply
                                                                 (Ty.path
                                                                   "std::collections::hash::map::IntoIter")
+                                                                []
                                                                 [
-                                                                  Ty.path "ruint::Uint";
+                                                                  Ty.apply
+                                                                    (Ty.path "ruint::Uint")
+                                                                    [
+                                                                      Value.Integer 256;
+                                                                      Value.Integer 4
+                                                                    ]
+                                                                    [];
                                                                   Ty.tuple
                                                                     [
-                                                                      Ty.path "ruint::Uint";
-                                                                      Ty.path "ruint::Uint"
+                                                                      Ty.apply
+                                                                        (Ty.path "ruint::Uint")
+                                                                        [
+                                                                          Value.Integer 256;
+                                                                          Value.Integer 4
+                                                                        ]
+                                                                        [];
+                                                                      Ty.apply
+                                                                        (Ty.path "ruint::Uint")
+                                                                        [
+                                                                          Value.Integer 256;
+                                                                          Value.Integer 4
+                                                                        ]
+                                                                        []
                                                                     ]
                                                                 ],
                                                               [],
@@ -3973,7 +4686,13 @@ Module db.
                                                               [
                                                                 Ty.tuple
                                                                   [
-                                                                    Ty.path "ruint::Uint";
+                                                                    Ty.apply
+                                                                      (Ty.path "ruint::Uint")
+                                                                      [
+                                                                        Value.Integer 256;
+                                                                        Value.Integer 4
+                                                                      ]
+                                                                      [];
                                                                     Ty.path
                                                                       "revm_primitives::state::StorageSlot"
                                                                   ];
@@ -3983,20 +4702,47 @@ Module db.
                                                                       [
                                                                         Ty.tuple
                                                                           [
-                                                                            Ty.path "ruint::Uint";
+                                                                            Ty.apply
+                                                                              (Ty.path
+                                                                                "ruint::Uint")
+                                                                              [
+                                                                                Value.Integer 256;
+                                                                                Value.Integer 4
+                                                                              ]
+                                                                              [];
                                                                             Ty.tuple
                                                                               [
-                                                                                Ty.path
-                                                                                  "ruint::Uint";
-                                                                                Ty.path
-                                                                                  "ruint::Uint"
+                                                                                Ty.apply
+                                                                                  (Ty.path
+                                                                                    "ruint::Uint")
+                                                                                  [
+                                                                                    Value.Integer
+                                                                                      256;
+                                                                                    Value.Integer 4
+                                                                                  ]
+                                                                                  [];
+                                                                                Ty.apply
+                                                                                  (Ty.path
+                                                                                    "ruint::Uint")
+                                                                                  [
+                                                                                    Value.Integer
+                                                                                      256;
+                                                                                    Value.Integer 4
+                                                                                  ]
+                                                                                  []
                                                                               ]
                                                                           ]
                                                                       ]
                                                                   ]
                                                                   (Ty.tuple
                                                                     [
-                                                                      Ty.path "ruint::Uint";
+                                                                      Ty.apply
+                                                                        (Ty.path "ruint::Uint")
+                                                                        [
+                                                                          Value.Integer 256;
+                                                                          Value.Integer 4
+                                                                        ]
+                                                                        [];
                                                                       Ty.path
                                                                         "revm_primitives::state::StorageSlot"
                                                                     ])
@@ -4009,12 +4755,31 @@ Module db.
                                                                   Ty.apply
                                                                     (Ty.path
                                                                       "std::collections::hash::map::HashMap")
+                                                                    []
                                                                     [
-                                                                      Ty.path "ruint::Uint";
+                                                                      Ty.apply
+                                                                        (Ty.path "ruint::Uint")
+                                                                        [
+                                                                          Value.Integer 256;
+                                                                          Value.Integer 4
+                                                                        ]
+                                                                        [];
                                                                       Ty.tuple
                                                                         [
-                                                                          Ty.path "ruint::Uint";
-                                                                          Ty.path "ruint::Uint"
+                                                                          Ty.apply
+                                                                            (Ty.path "ruint::Uint")
+                                                                            [
+                                                                              Value.Integer 256;
+                                                                              Value.Integer 4
+                                                                            ]
+                                                                            [];
+                                                                          Ty.apply
+                                                                            (Ty.path "ruint::Uint")
+                                                                            [
+                                                                              Value.Integer 256;
+                                                                              Value.Integer 4
+                                                                            ]
+                                                                            []
                                                                         ];
                                                                       Ty.path
                                                                         "std::hash::random::RandomState"
@@ -4134,6 +4899,7 @@ Module db.
                         "core::iter::traits::iterator::Iterator",
                         Ty.apply
                           (Ty.path "core::iter::adapters::map::Map")
+                          []
                           [
                             Ty.associated;
                             Ty.function
@@ -4145,6 +4911,7 @@ Module db.
                               ]
                               (Ty.apply
                                 (Ty.path "alloc::vec::Vec")
+                                []
                                 [
                                   Ty.tuple
                                     [
@@ -4159,9 +4926,11 @@ Module db.
                         [
                           Ty.apply
                             (Ty.path "alloc::vec::Vec")
+                            []
                             [
                               Ty.apply
                                 (Ty.path "alloc::vec::Vec")
+                                []
                                 [
                                   Ty.tuple
                                     [
@@ -4184,6 +4953,7 @@ Module db.
                             [
                               Ty.apply
                                 (Ty.path "alloc::vec::Vec")
+                                []
                                 [
                                   Ty.tuple
                                     [
@@ -4201,6 +4971,7 @@ Module db.
                                 ]
                                 (Ty.apply
                                   (Ty.path "alloc::vec::Vec")
+                                  []
                                   [
                                     Ty.tuple
                                       [
@@ -4238,6 +5009,7 @@ Module db.
                                                 "core::iter::traits::iterator::Iterator",
                                                 Ty.apply
                                                   (Ty.path "core::iter::adapters::map::Map")
+                                                  []
                                                   [
                                                     Ty.associated;
                                                     Ty.function
@@ -4250,10 +5022,12 @@ Module db.
                                                                   "alloy_primitives::bits::address::Address";
                                                                 Ty.apply
                                                                   (Ty.path "core::option::Option")
+                                                                  []
                                                                   [
                                                                     Ty.apply
                                                                       (Ty.path
                                                                         "core::option::Option")
+                                                                      []
                                                                       [
                                                                         Ty.path
                                                                           "revm_primitives::state::AccountInfo"
@@ -4276,6 +5050,7 @@ Module db.
                                                 [
                                                   Ty.apply
                                                     (Ty.path "alloc::vec::Vec")
+                                                    []
                                                     [
                                                       Ty.tuple
                                                         [
@@ -4313,10 +5088,12 @@ Module db.
                                                                     "alloy_primitives::bits::address::Address";
                                                                   Ty.apply
                                                                     (Ty.path "core::option::Option")
+                                                                    []
                                                                     [
                                                                       Ty.apply
                                                                         (Ty.path
                                                                           "core::option::Option")
+                                                                        []
                                                                         [
                                                                           Ty.path
                                                                             "revm_primitives::state::AccountInfo"
@@ -4459,6 +5236,7 @@ Module db.
                                                                                     Ty.apply
                                                                                       (Ty.path
                                                                                         "core::iter::adapters::map::Map")
+                                                                                      []
                                                                                       [
                                                                                         Ty.associated;
                                                                                         Ty.function
@@ -4467,17 +5245,41 @@ Module db.
                                                                                               [
                                                                                                 Ty.tuple
                                                                                                   [
-                                                                                                    Ty.path
-                                                                                                      "ruint::Uint";
-                                                                                                    Ty.path
-                                                                                                      "ruint::Uint"
+                                                                                                    Ty.apply
+                                                                                                      (Ty.path
+                                                                                                        "ruint::Uint")
+                                                                                                      [
+                                                                                                        Value.Integer
+                                                                                                          256;
+                                                                                                        Value.Integer
+                                                                                                          4
+                                                                                                      ]
+                                                                                                      [];
+                                                                                                    Ty.apply
+                                                                                                      (Ty.path
+                                                                                                        "ruint::Uint")
+                                                                                                      [
+                                                                                                        Value.Integer
+                                                                                                          256;
+                                                                                                        Value.Integer
+                                                                                                          4
+                                                                                                      ]
+                                                                                                      []
                                                                                                   ]
                                                                                               ]
                                                                                           ]
                                                                                           (Ty.tuple
                                                                                             [
-                                                                                              Ty.path
-                                                                                                "ruint::Uint";
+                                                                                              Ty.apply
+                                                                                                (Ty.path
+                                                                                                  "ruint::Uint")
+                                                                                                [
+                                                                                                  Value.Integer
+                                                                                                    256;
+                                                                                                  Value.Integer
+                                                                                                    4
+                                                                                                ]
+                                                                                                [];
                                                                                               Ty.path
                                                                                                 "revm::db::states::reverts::RevertToSlot"
                                                                                             ])
@@ -4488,9 +5290,18 @@ Module db.
                                                                                       Ty.apply
                                                                                         (Ty.path
                                                                                           "std::collections::hash::map::HashMap")
+                                                                                        []
                                                                                         [
-                                                                                          Ty.path
-                                                                                            "ruint::Uint";
+                                                                                          Ty.apply
+                                                                                            (Ty.path
+                                                                                              "ruint::Uint")
+                                                                                            [
+                                                                                              Value.Integer
+                                                                                                256;
+                                                                                              Value.Integer
+                                                                                                4
+                                                                                            ]
+                                                                                            [];
                                                                                           Ty.path
                                                                                             "revm::db::states::reverts::RevertToSlot";
                                                                                           Ty.path
@@ -4508,8 +5319,16 @@ Module db.
                                                                                         [
                                                                                           Ty.tuple
                                                                                             [
-                                                                                              Ty.path
-                                                                                                "ruint::Uint";
+                                                                                              Ty.apply
+                                                                                                (Ty.path
+                                                                                                  "ruint::Uint")
+                                                                                                [
+                                                                                                  Value.Integer
+                                                                                                    256;
+                                                                                                  Value.Integer
+                                                                                                    4
+                                                                                                ]
+                                                                                                [];
                                                                                               Ty.path
                                                                                                 "revm::db::states::reverts::RevertToSlot"
                                                                                             ];
@@ -4519,17 +5338,41 @@ Module db.
                                                                                                 [
                                                                                                   Ty.tuple
                                                                                                     [
-                                                                                                      Ty.path
-                                                                                                        "ruint::Uint";
-                                                                                                      Ty.path
-                                                                                                        "ruint::Uint"
+                                                                                                      Ty.apply
+                                                                                                        (Ty.path
+                                                                                                          "ruint::Uint")
+                                                                                                        [
+                                                                                                          Value.Integer
+                                                                                                            256;
+                                                                                                          Value.Integer
+                                                                                                            4
+                                                                                                        ]
+                                                                                                        [];
+                                                                                                      Ty.apply
+                                                                                                        (Ty.path
+                                                                                                          "ruint::Uint")
+                                                                                                        [
+                                                                                                          Value.Integer
+                                                                                                            256;
+                                                                                                          Value.Integer
+                                                                                                            4
+                                                                                                        ]
+                                                                                                        []
                                                                                                     ]
                                                                                                 ]
                                                                                             ]
                                                                                             (Ty.tuple
                                                                                               [
-                                                                                                Ty.path
-                                                                                                  "ruint::Uint";
+                                                                                                Ty.apply
+                                                                                                  (Ty.path
+                                                                                                    "ruint::Uint")
+                                                                                                  [
+                                                                                                    Value.Integer
+                                                                                                      256;
+                                                                                                    Value.Integer
+                                                                                                      4
+                                                                                                  ]
+                                                                                                  [];
                                                                                                 Ty.path
                                                                                                   "revm::db::states::reverts::RevertToSlot"
                                                                                               ])
@@ -4675,8 +5518,12 @@ Module db.
                             [
                               Ty.apply
                                 (Ty.path "std::collections::hash::map::HashMap")
+                                []
                                 [
-                                  Ty.path "alloy_primitives::bits::fixed::FixedBytes";
+                                  Ty.apply
+                                    (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                                    [ Value.Integer 32 ]
+                                    [];
                                   Ty.path "revm_primitives::bytecode::Bytecode";
                                   Ty.path "std::hash::random::RandomState"
                                 ]
@@ -4709,7 +5556,7 @@ Module db.
                     ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -4719,9 +5566,9 @@ Module db.
                 self.state_size + self.reverts_size + self.contracts.len()
             }
         *)
-        Definition size_hint (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self ] =>
+        Definition size_hint (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               BinOp.Wrap.add
@@ -4746,8 +5593,12 @@ Module db.
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "std::collections::hash::map::HashMap")
+                      []
                       [
-                        Ty.path "alloy_primitives::bits::fixed::FixedBytes";
+                        Ty.apply
+                          (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                          [ Value.Integer 32 ]
+                          [];
                         Ty.path "revm_primitives::bytecode::Bytecode";
                         Ty.path "std::hash::random::RandomState"
                       ],
@@ -4762,7 +5613,7 @@ Module db.
                     |)
                   ]
                 |))))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_size_hint : M.IsAssociatedFunction Self "size_hint" size_hint.
@@ -4772,9 +5623,9 @@ Module db.
                 &self.state
             }
         *)
-        Definition state (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self ] =>
+        Definition state (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.SubPointer.get_struct_record_field (|
@@ -4782,7 +5633,7 @@ Module db.
                 "revm::db::states::bundle_state::BundleState",
                 "state"
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_state : M.IsAssociatedFunction Self "state" state.
@@ -4792,9 +5643,9 @@ Module db.
                 self.len() == 0
             }
         *)
-        Definition is_empty (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self ] =>
+        Definition is_empty (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               BinOp.Pure.eq
@@ -4807,7 +5658,7 @@ Module db.
                   [ M.read (| self |) ]
                 |))
                 (Value.Integer 0)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_is_empty : M.IsAssociatedFunction Self "is_empty" is_empty.
@@ -4817,15 +5668,16 @@ Module db.
                 self.state.len()
             }
         *)
-        Definition len (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self ] =>
+        Definition len (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.call_closure (|
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "std::collections::hash::map::HashMap")
+                    []
                     [
                       Ty.path "alloy_primitives::bits::address::Address";
                       Ty.path "revm::db::states::bundle_account::BundleAccount";
@@ -4842,7 +5694,7 @@ Module db.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_len : M.IsAssociatedFunction Self "len" len.
@@ -4852,9 +5704,9 @@ Module db.
                 self.state.get(address)
             }
         *)
-        Definition account (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self; address ] =>
+        Definition account (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self; address ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let address := M.alloc (| address |) in
@@ -4862,6 +5714,7 @@ Module db.
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "std::collections::hash::map::HashMap")
+                    []
                     [
                       Ty.path "alloy_primitives::bits::address::Address";
                       Ty.path "revm::db::states::bundle_account::BundleAccount";
@@ -4879,7 +5732,7 @@ Module db.
                   M.read (| address |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_account : M.IsAssociatedFunction Self "account" account.
@@ -4889,9 +5742,9 @@ Module db.
                 self.contracts.get(hash).cloned()
             }
         *)
-        Definition bytecode (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self; hash ] =>
+        Definition bytecode (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self; hash ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let hash := M.alloc (| hash |) in
@@ -4899,7 +5752,8 @@ Module db.
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "core::option::Option")
-                    [ Ty.apply (Ty.path "&") [ Ty.path "revm_primitives::bytecode::Bytecode" ] ],
+                    []
+                    [ Ty.apply (Ty.path "&") [] [ Ty.path "revm_primitives::bytecode::Bytecode" ] ],
                   "cloned",
                   []
                 |),
@@ -4908,13 +5762,22 @@ Module db.
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "std::collections::hash::map::HashMap")
+                        []
                         [
-                          Ty.path "alloy_primitives::bits::fixed::FixedBytes";
+                          Ty.apply
+                            (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                            [ Value.Integer 32 ]
+                            [];
                           Ty.path "revm_primitives::bytecode::Bytecode";
                           Ty.path "std::hash::random::RandomState"
                         ],
                       "get",
-                      [ Ty.path "alloy_primitives::bits::fixed::FixedBytes" ]
+                      [
+                        Ty.apply
+                          (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                          [ Value.Integer 32 ]
+                          []
+                      ]
                     |),
                     [
                       M.SubPointer.get_struct_record_field (|
@@ -4927,7 +5790,7 @@ Module db.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_bytecode : M.IsAssociatedFunction Self "bytecode" bytecode.
@@ -4985,9 +5848,13 @@ Module db.
                 self.reverts.push(reverts);
             }
         *)
-        Definition apply_transitions_and_create_reverts (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self; transitions; retention ] =>
+        Definition apply_transitions_and_create_reverts
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          match ε, τ, α with
+          | [], [], [ self; transitions; retention ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let transitions := M.alloc (| transitions |) in
@@ -5019,6 +5886,7 @@ Module db.
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "std::collections::hash::map::HashMap")
+                                    []
                                     [
                                       Ty.path "alloy_primitives::bits::address::Address";
                                       Ty.path
@@ -5047,6 +5915,7 @@ Module db.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "alloc::vec::Vec")
+                          []
                           [
                             Ty.tuple
                               [
@@ -5070,6 +5939,7 @@ Module db.
                             "core::iter::traits::collect::IntoIterator",
                             Ty.apply
                               (Ty.path "std::collections::hash::map::IntoIter")
+                              []
                               [
                                 Ty.path "alloy_primitives::bits::address::Address";
                                 Ty.path "revm::db::states::transition_account::TransitionAccount"
@@ -5084,6 +5954,7 @@ Module db.
                                 "core::iter::traits::collect::IntoIterator",
                                 Ty.apply
                                   (Ty.path "std::collections::hash::map::HashMap")
+                                  []
                                   [
                                     Ty.path "alloy_primitives::bits::address::Address";
                                     Ty.path
@@ -5121,6 +5992,7 @@ Module db.
                                           "core::iter::traits::iterator::Iterator",
                                           Ty.apply
                                             (Ty.path "std::collections::hash::map::IntoIter")
+                                            []
                                             [
                                               Ty.path "alloy_primitives::bits::address::Address";
                                               Ty.path
@@ -5193,9 +6065,13 @@ Module db.
                                                             Ty.apply
                                                               (Ty.path
                                                                 "std::collections::hash::map::HashMap")
+                                                              []
                                                               [
-                                                                Ty.path
-                                                                  "alloy_primitives::bits::fixed::FixedBytes";
+                                                                Ty.apply
+                                                                  (Ty.path
+                                                                    "alloy_primitives::bits::fixed::FixedBytes")
+                                                                  [ Value.Integer 32 ]
+                                                                  [];
                                                                 Ty.path
                                                                   "revm_primitives::bytecode::Bytecode";
                                                                 Ty.path
@@ -5239,6 +6115,7 @@ Module db.
                                                       Ty.apply
                                                         (Ty.path
                                                           "std::collections::hash::map::HashMap")
+                                                        []
                                                         [
                                                           Ty.path
                                                             "alloy_primitives::bits::address::Address";
@@ -5276,6 +6153,7 @@ Module db.
                                                               Ty.apply
                                                                 (Ty.path
                                                                   "std::collections::hash::map::OccupiedEntry")
+                                                                []
                                                                 [
                                                                   Ty.path
                                                                     "alloy_primitives::bits::address::Address";
@@ -5395,6 +6273,7 @@ Module db.
                                                                           Ty.apply
                                                                             (Ty.path
                                                                               "core::option::Option")
+                                                                            []
                                                                             [
                                                                               Ty.path
                                                                                 "revm::db::states::reverts::AccountRevert"
@@ -5439,6 +6318,7 @@ Module db.
                                                                         Ty.apply
                                                                           (Ty.path
                                                                             "std::collections::hash::map::VacantEntry")
+                                                                          []
                                                                           [
                                                                             Ty.path
                                                                               "alloy_primitives::bits::address::Address";
@@ -5475,6 +6355,7 @@ Module db.
                                                         M.get_associated_function (|
                                                           Ty.apply
                                                             (Ty.path "core::option::Option")
+                                                            []
                                                             [
                                                               Ty.path
                                                                 "revm::db::states::reverts::AccountRevert"
@@ -5487,6 +6368,7 @@ Module db.
                                                                   [
                                                                     Ty.apply
                                                                       (Ty.path "&")
+                                                                      []
                                                                       [
                                                                         Ty.path
                                                                           "revm::db::states::reverts::AccountRevert"
@@ -5553,6 +6435,7 @@ Module db.
                                                         M.get_associated_function (|
                                                           Ty.apply
                                                             (Ty.path "alloc::vec::Vec")
+                                                            []
                                                             [
                                                               Ty.tuple
                                                                 [
@@ -5593,9 +6476,11 @@ Module db.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "alloc::vec::Vec")
+                          []
                           [
                             Ty.apply
                               (Ty.path "alloc::vec::Vec")
+                              []
                               [
                                 Ty.tuple
                                   [
@@ -5632,7 +6517,7 @@ Module db.
                   |) in
                 M.alloc (| Value.Tuple [] |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_apply_transitions_and_create_reverts :
@@ -5701,9 +6586,9 @@ Module db.
                 }
             }
         *)
-        Definition into_plain_state (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self; is_value_known ] =>
+        Definition into_plain_state (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self; is_value_known ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let is_value_known := M.alloc (| is_value_known |) in
@@ -5714,6 +6599,7 @@ Module db.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "std::collections::hash::map::HashMap")
+                          []
                           [
                             Ty.path "alloy_primitives::bits::address::Address";
                             Ty.path "revm::db::states::bundle_account::BundleAccount";
@@ -5737,12 +6623,14 @@ Module db.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "alloc::vec::Vec")
+                          []
                           [
                             Ty.tuple
                               [
                                 Ty.path "alloy_primitives::bits::address::Address";
                                 Ty.apply
                                   (Ty.path "core::option::Option")
+                                  []
                                   [ Ty.path "revm_primitives::state::AccountInfo" ]
                               ];
                             Ty.path "alloc::alloc::Global"
@@ -5759,6 +6647,7 @@ Module db.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "alloc::vec::Vec")
+                          []
                           [
                             Ty.path "revm::db::states::changes::PlainStorageChangeset";
                             Ty.path "alloc::alloc::Global"
@@ -5778,6 +6667,7 @@ Module db.
                             "core::iter::traits::collect::IntoIterator",
                             Ty.apply
                               (Ty.path "std::collections::hash::map::HashMap")
+                              []
                               [
                                 Ty.path "alloy_primitives::bits::address::Address";
                                 Ty.path "revm::db::states::bundle_account::BundleAccount";
@@ -5812,6 +6702,7 @@ Module db.
                                           "core::iter::traits::iterator::Iterator",
                                           Ty.apply
                                             (Ty.path "std::collections::hash::map::IntoIter")
+                                            []
                                             [
                                               Ty.path "alloy_primitives::bits::address::Address";
                                               Ty.path
@@ -5901,6 +6792,7 @@ Module db.
                                                           M.get_associated_function (|
                                                             Ty.apply
                                                               (Ty.path "core::option::Option")
+                                                              []
                                                               [
                                                                 Ty.path
                                                                   "revm_primitives::state::AccountInfo"
@@ -5941,6 +6833,7 @@ Module db.
                                                           M.get_associated_function (|
                                                             Ty.apply
                                                               (Ty.path "alloc::vec::Vec")
+                                                              []
                                                               [
                                                                 Ty.tuple
                                                                   [
@@ -5949,6 +6842,7 @@ Module db.
                                                                     Ty.apply
                                                                       (Ty.path
                                                                         "core::option::Option")
+                                                                      []
                                                                       [
                                                                         Ty.path
                                                                           "revm_primitives::state::AccountInfo"
@@ -5980,11 +6874,18 @@ Module db.
                                                 M.get_associated_function (|
                                                   Ty.apply
                                                     (Ty.path "alloc::vec::Vec")
+                                                    []
                                                     [
                                                       Ty.tuple
                                                         [
-                                                          Ty.path "ruint::Uint";
-                                                          Ty.path "ruint::Uint"
+                                                          Ty.apply
+                                                            (Ty.path "ruint::Uint")
+                                                            [ Value.Integer 256; Value.Integer 4 ]
+                                                            [];
+                                                          Ty.apply
+                                                            (Ty.path "ruint::Uint")
+                                                            [ Value.Integer 256; Value.Integer 4 ]
+                                                            []
                                                         ];
                                                       Ty.path "alloc::alloc::Global"
                                                     ],
@@ -5997,8 +6898,12 @@ Module db.
                                                       Ty.apply
                                                         (Ty.path
                                                           "std::collections::hash::map::HashMap")
+                                                        []
                                                         [
-                                                          Ty.path "ruint::Uint";
+                                                          Ty.apply
+                                                            (Ty.path "ruint::Uint")
+                                                            [ Value.Integer 256; Value.Integer 4 ]
+                                                            [];
                                                           Ty.path
                                                             "revm_primitives::state::StorageSlot";
                                                           Ty.path "std::hash::random::RandomState"
@@ -6027,8 +6932,12 @@ Module db.
                                                       Ty.apply
                                                         (Ty.path
                                                           "std::collections::hash::map::HashMap")
+                                                        []
                                                         [
-                                                          Ty.path "ruint::Uint";
+                                                          Ty.apply
+                                                            (Ty.path "ruint::Uint")
+                                                            [ Value.Integer 256; Value.Integer 4 ]
+                                                            [];
                                                           Ty.path
                                                             "revm_primitives::state::StorageSlot";
                                                           Ty.path "std::hash::random::RandomState"
@@ -6063,8 +6972,15 @@ Module db.
                                                                     Ty.apply
                                                                       (Ty.path
                                                                         "std::collections::hash::map::IntoIter")
+                                                                      []
                                                                       [
-                                                                        Ty.path "ruint::Uint";
+                                                                        Ty.apply
+                                                                          (Ty.path "ruint::Uint")
+                                                                          [
+                                                                            Value.Integer 256;
+                                                                            Value.Integer 4
+                                                                          ]
+                                                                          [];
                                                                         Ty.path
                                                                           "revm_primitives::state::StorageSlot"
                                                                       ],
@@ -6118,11 +7034,26 @@ Module db.
                                                                             (M.call_closure (|
                                                                               M.get_trait_method (|
                                                                                 "core::cmp::PartialEq",
-                                                                                Ty.path
-                                                                                  "ruint::Uint",
+                                                                                Ty.apply
+                                                                                  (Ty.path
+                                                                                    "ruint::Uint")
+                                                                                  [
+                                                                                    Value.Integer
+                                                                                      256;
+                                                                                    Value.Integer 4
+                                                                                  ]
+                                                                                  [],
                                                                                 [
-                                                                                  Ty.path
-                                                                                    "ruint::Uint"
+                                                                                  Ty.apply
+                                                                                    (Ty.path
+                                                                                      "ruint::Uint")
+                                                                                    [
+                                                                                      Value.Integer
+                                                                                        256;
+                                                                                      Value.Integer
+                                                                                        4
+                                                                                    ]
+                                                                                    []
                                                                                 ],
                                                                                 "ne",
                                                                                 []
@@ -6204,13 +7135,30 @@ Module db.
                                                                                     Ty.apply
                                                                                       (Ty.path
                                                                                         "alloc::vec::Vec")
+                                                                                      []
                                                                                       [
                                                                                         Ty.tuple
                                                                                           [
-                                                                                            Ty.path
-                                                                                              "ruint::Uint";
-                                                                                            Ty.path
-                                                                                              "ruint::Uint"
+                                                                                            Ty.apply
+                                                                                              (Ty.path
+                                                                                                "ruint::Uint")
+                                                                                              [
+                                                                                                Value.Integer
+                                                                                                  256;
+                                                                                                Value.Integer
+                                                                                                  4
+                                                                                              ]
+                                                                                              [];
+                                                                                            Ty.apply
+                                                                                              (Ty.path
+                                                                                                "ruint::Uint")
+                                                                                              [
+                                                                                                Value.Integer
+                                                                                                  256;
+                                                                                                Value.Integer
+                                                                                                  4
+                                                                                              ]
+                                                                                              []
                                                                                           ];
                                                                                         Ty.path
                                                                                           "alloc::alloc::Global"
@@ -6266,11 +7214,24 @@ Module db.
                                                               M.get_associated_function (|
                                                                 Ty.apply
                                                                   (Ty.path "alloc::vec::Vec")
+                                                                  []
                                                                   [
                                                                     Ty.tuple
                                                                       [
-                                                                        Ty.path "ruint::Uint";
-                                                                        Ty.path "ruint::Uint"
+                                                                        Ty.apply
+                                                                          (Ty.path "ruint::Uint")
+                                                                          [
+                                                                            Value.Integer 256;
+                                                                            Value.Integer 4
+                                                                          ]
+                                                                          [];
+                                                                        Ty.apply
+                                                                          (Ty.path "ruint::Uint")
+                                                                          [
+                                                                            Value.Integer 256;
+                                                                            Value.Integer 4
+                                                                          ]
+                                                                          []
                                                                       ];
                                                                     Ty.path "alloc::alloc::Global"
                                                                   ],
@@ -6294,6 +7255,7 @@ Module db.
                                                         M.get_associated_function (|
                                                           Ty.apply
                                                             (Ty.path "alloc::vec::Vec")
+                                                            []
                                                             [
                                                               Ty.path
                                                                 "revm::db::states::changes::PlainStorageChangeset";
@@ -6336,11 +7298,16 @@ Module db.
                         "core::iter::traits::iterator::Iterator",
                         Ty.apply
                           (Ty.path "core::iter::adapters::filter::Filter")
+                          []
                           [
                             Ty.apply
                               (Ty.path "std::collections::hash::map::IntoIter")
+                              []
                               [
-                                Ty.path "alloy_primitives::bits::fixed::FixedBytes";
+                                Ty.apply
+                                  (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                                  [ Value.Integer 32 ]
+                                  [];
                                 Ty.path "revm_primitives::bytecode::Bytecode"
                               ];
                             Ty.function
@@ -6349,10 +7316,14 @@ Module db.
                                   [
                                     Ty.apply
                                       (Ty.path "&")
+                                      []
                                       [
                                         Ty.tuple
                                           [
-                                            Ty.path "alloy_primitives::bits::fixed::FixedBytes";
+                                            Ty.apply
+                                              (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                                              [ Value.Integer 32 ]
+                                              [];
                                             Ty.path "revm_primitives::bytecode::Bytecode"
                                           ]
                                       ]
@@ -6365,10 +7336,14 @@ Module db.
                         [
                           Ty.apply
                             (Ty.path "alloc::vec::Vec")
+                            []
                             [
                               Ty.tuple
                                 [
-                                  Ty.path "alloy_primitives::bits::fixed::FixedBytes";
+                                  Ty.apply
+                                    (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                                    [ Value.Integer 32 ]
+                                    [];
                                   Ty.path "revm_primitives::bytecode::Bytecode"
                                 ];
                               Ty.path "alloc::alloc::Global"
@@ -6381,8 +7356,12 @@ Module db.
                             "core::iter::traits::iterator::Iterator",
                             Ty.apply
                               (Ty.path "std::collections::hash::map::IntoIter")
+                              []
                               [
-                                Ty.path "alloy_primitives::bits::fixed::FixedBytes";
+                                Ty.apply
+                                  (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                                  [ Value.Integer 32 ]
+                                  [];
                                 Ty.path "revm_primitives::bytecode::Bytecode"
                               ],
                             [],
@@ -6394,10 +7373,15 @@ Module db.
                                     [
                                       Ty.apply
                                         (Ty.path "&")
+                                        []
                                         [
                                           Ty.tuple
                                             [
-                                              Ty.path "alloy_primitives::bits::fixed::FixedBytes";
+                                              Ty.apply
+                                                (Ty.path
+                                                  "alloy_primitives::bits::fixed::FixedBytes")
+                                                [ Value.Integer 32 ]
+                                                [];
                                               Ty.path "revm_primitives::bytecode::Bytecode"
                                             ]
                                         ]
@@ -6412,8 +7396,12 @@ Module db.
                                 "core::iter::traits::collect::IntoIterator",
                                 Ty.apply
                                   (Ty.path "std::collections::hash::map::HashMap")
+                                  []
                                   [
-                                    Ty.path "alloy_primitives::bits::fixed::FixedBytes";
+                                    Ty.apply
+                                      (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                                      [ Value.Integer 32 ]
+                                      [];
                                     Ty.path "revm_primitives::bytecode::Bytecode";
                                     Ty.path "std::hash::random::RandomState"
                                   ],
@@ -6448,10 +7436,17 @@ Module db.
                                             M.call_closure (|
                                               M.get_trait_method (|
                                                 "core::cmp::PartialEq",
-                                                Ty.path "alloy_primitives::bits::fixed::FixedBytes",
+                                                Ty.apply
+                                                  (Ty.path
+                                                    "alloy_primitives::bits::fixed::FixedBytes")
+                                                  [ Value.Integer 32 ]
+                                                  [],
                                                 [
-                                                  Ty.path
-                                                    "alloy_primitives::bits::fixed::FixedBytes"
+                                                  Ty.apply
+                                                    (Ty.path
+                                                      "alloy_primitives::bits::fixed::FixedBytes")
+                                                    [ Value.Integer 32 ]
+                                                    []
                                                 ],
                                                 "ne",
                                                 []
@@ -6482,7 +7477,7 @@ Module db.
                     ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_into_plain_state :
@@ -6498,9 +7493,13 @@ Module db.
                 (plain_state, reverts.into_plain_state_reverts())
             }
         *)
-        Definition into_plain_state_and_reverts (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self; is_value_known ] =>
+        Definition into_plain_state_and_reverts
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          match ε, τ, α with
+          | [], [], [ self; is_value_known ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let is_value_known := M.alloc (| is_value_known |) in
@@ -6542,7 +7541,7 @@ Module db.
                     ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_into_plain_state_and_reverts :
@@ -6585,9 +7584,9 @@ Module db.
                 }
             }
         *)
-        Definition extend_state (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self; other_state ] =>
+        Definition extend_state (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self; other_state ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let other_state := M.alloc (| other_state |) in
@@ -6600,6 +7599,7 @@ Module db.
                           "core::iter::traits::collect::IntoIterator",
                           Ty.apply
                             (Ty.path "std::collections::hash::map::HashMap")
+                            []
                             [
                               Ty.path "alloy_primitives::bits::address::Address";
                               Ty.path "revm::db::states::bundle_account::BundleAccount";
@@ -6626,6 +7626,7 @@ Module db.
                                         "core::iter::traits::iterator::Iterator",
                                         Ty.apply
                                           (Ty.path "std::collections::hash::map::IntoIter")
+                                          []
                                           [
                                             Ty.path "alloy_primitives::bits::address::Address";
                                             Ty.path
@@ -6664,6 +7665,7 @@ Module db.
                                               M.get_associated_function (|
                                                 Ty.apply
                                                   (Ty.path "std::collections::hash::map::HashMap")
+                                                  []
                                                   [
                                                     Ty.path
                                                       "alloy_primitives::bits::address::Address";
@@ -6701,6 +7703,7 @@ Module db.
                                                         Ty.apply
                                                           (Ty.path
                                                             "std::collections::hash::map::OccupiedEntry")
+                                                          []
                                                           [
                                                             Ty.path
                                                               "alloy_primitives::bits::address::Address";
@@ -6786,8 +7789,15 @@ Module db.
                                                                     Ty.apply
                                                                       (Ty.path
                                                                         "std::collections::hash::map::HashMap")
+                                                                      []
                                                                       [
-                                                                        Ty.path "ruint::Uint";
+                                                                        Ty.apply
+                                                                          (Ty.path "ruint::Uint")
+                                                                          [
+                                                                            Value.Integer 256;
+                                                                            Value.Integer 4
+                                                                          ]
+                                                                          [];
                                                                         Ty.path
                                                                           "revm_primitives::state::StorageSlot";
                                                                         Ty.path
@@ -6823,9 +7833,18 @@ Module db.
                                                                                   Ty.apply
                                                                                     (Ty.path
                                                                                       "std::collections::hash::map::IntoIter")
+                                                                                    []
                                                                                     [
-                                                                                      Ty.path
-                                                                                        "ruint::Uint";
+                                                                                      Ty.apply
+                                                                                        (Ty.path
+                                                                                          "ruint::Uint")
+                                                                                        [
+                                                                                          Value.Integer
+                                                                                            256;
+                                                                                          Value.Integer
+                                                                                            4
+                                                                                        ]
+                                                                                        [];
                                                                                       Ty.path
                                                                                         "revm_primitives::state::StorageSlot"
                                                                                     ],
@@ -6886,9 +7905,18 @@ Module db.
                                                                                             Ty.apply
                                                                                               (Ty.path
                                                                                                 "std::collections::hash::map::Entry")
+                                                                                              []
                                                                                               [
-                                                                                                Ty.path
-                                                                                                  "ruint::Uint";
+                                                                                                Ty.apply
+                                                                                                  (Ty.path
+                                                                                                    "ruint::Uint")
+                                                                                                  [
+                                                                                                    Value.Integer
+                                                                                                      256;
+                                                                                                    Value.Integer
+                                                                                                      4
+                                                                                                  ]
+                                                                                                  [];
                                                                                                 Ty.path
                                                                                                   "revm_primitives::state::StorageSlot"
                                                                                               ],
@@ -6901,9 +7929,18 @@ Module db.
                                                                                                 Ty.apply
                                                                                                   (Ty.path
                                                                                                     "std::collections::hash::map::HashMap")
+                                                                                                  []
                                                                                                   [
-                                                                                                    Ty.path
-                                                                                                      "ruint::Uint";
+                                                                                                    Ty.apply
+                                                                                                      (Ty.path
+                                                                                                        "ruint::Uint")
+                                                                                                      [
+                                                                                                        Value.Integer
+                                                                                                          256;
+                                                                                                        Value.Integer
+                                                                                                          4
+                                                                                                      ]
+                                                                                                      [];
                                                                                                     Ty.path
                                                                                                       "revm_primitives::state::StorageSlot";
                                                                                                     Ty.path
@@ -7055,6 +8092,7 @@ Module db.
                                                         Ty.apply
                                                           (Ty.path
                                                             "std::collections::hash::map::VacantEntry")
+                                                          []
                                                           [
                                                             Ty.path
                                                               "alloy_primitives::bits::address::Address";
@@ -7080,7 +8118,7 @@ Module db.
                     ]
                   |))
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_extend_state :
@@ -7122,9 +8160,9 @@ Module db.
                 self.reverts.extend(other.reverts);
             }
         *)
-        Definition extend (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self; other ] =>
+        Definition extend (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self; other ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let other := M.alloc (| other |) in
@@ -7138,12 +8176,15 @@ Module db.
                             "core::iter::traits::collect::IntoIterator",
                             Ty.apply
                               (Ty.path "core::iter::adapters::flatten::Flatten")
+                              []
                               [
                                 Ty.apply
                                   (Ty.path "core::slice::iter::IterMut")
+                                  []
                                   [
                                     Ty.apply
                                       (Ty.path "alloc::vec::Vec")
+                                      []
                                       [
                                         Ty.tuple
                                           [
@@ -7164,9 +8205,11 @@ Module db.
                                 "core::iter::traits::iterator::Iterator",
                                 Ty.apply
                                   (Ty.path "core::slice::iter::IterMut")
+                                  []
                                   [
                                     Ty.apply
                                       (Ty.path "alloc::vec::Vec")
+                                      []
                                       [
                                         Ty.tuple
                                           [
@@ -7185,9 +8228,11 @@ Module db.
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "slice")
+                                      []
                                       [
                                         Ty.apply
                                           (Ty.path "alloc::vec::Vec")
+                                          []
                                           [
                                             Ty.tuple
                                               [
@@ -7206,9 +8251,11 @@ Module db.
                                         "core::ops::deref::DerefMut",
                                         Ty.apply
                                           (Ty.path "alloc::vec::Vec")
+                                          []
                                           [
                                             Ty.apply
                                               (Ty.path "alloc::vec::Vec")
+                                              []
                                               [
                                                 Ty.tuple
                                                   [
@@ -7265,12 +8312,15 @@ Module db.
                                           "core::iter::traits::iterator::Iterator",
                                           Ty.apply
                                             (Ty.path "core::iter::adapters::flatten::Flatten")
+                                            []
                                             [
                                               Ty.apply
                                                 (Ty.path "core::slice::iter::IterMut")
+                                                []
                                                 [
                                                   Ty.apply
                                                     (Ty.path "alloc::vec::Vec")
+                                                    []
                                                     [
                                                       Ty.tuple
                                                         [
@@ -7344,6 +8394,7 @@ Module db.
                                                                     Ty.apply
                                                                       (Ty.path
                                                                         "std::collections::hash::map::HashMap")
+                                                                      []
                                                                       [
                                                                         Ty.path
                                                                           "alloy_primitives::bits::address::Address";
@@ -7385,8 +8436,16 @@ Module db.
                                                                         Ty.apply
                                                                           (Ty.path
                                                                             "std::collections::hash::map::Drain")
+                                                                          []
                                                                           [
-                                                                            Ty.path "ruint::Uint";
+                                                                            Ty.apply
+                                                                              (Ty.path
+                                                                                "ruint::Uint")
+                                                                              [
+                                                                                Value.Integer 256;
+                                                                                Value.Integer 4
+                                                                              ]
+                                                                              [];
                                                                             Ty.path
                                                                               "revm_primitives::state::StorageSlot"
                                                                           ],
@@ -7400,9 +8459,17 @@ Module db.
                                                                             Ty.apply
                                                                               (Ty.path
                                                                                 "std::collections::hash::map::HashMap")
+                                                                              []
                                                                               [
-                                                                                Ty.path
-                                                                                  "ruint::Uint";
+                                                                                Ty.apply
+                                                                                  (Ty.path
+                                                                                    "ruint::Uint")
+                                                                                  [
+                                                                                    Value.Integer
+                                                                                      256;
+                                                                                    Value.Integer 4
+                                                                                  ]
+                                                                                  [];
                                                                                 Ty.path
                                                                                   "revm_primitives::state::StorageSlot";
                                                                                 Ty.path
@@ -7440,9 +8507,18 @@ Module db.
                                                                                       Ty.apply
                                                                                         (Ty.path
                                                                                           "std::collections::hash::map::Drain")
+                                                                                        []
                                                                                         [
-                                                                                          Ty.path
-                                                                                            "ruint::Uint";
+                                                                                          Ty.apply
+                                                                                            (Ty.path
+                                                                                              "ruint::Uint")
+                                                                                            [
+                                                                                              Value.Integer
+                                                                                                256;
+                                                                                              Value.Integer
+                                                                                                4
+                                                                                            ]
+                                                                                            [];
                                                                                           Ty.path
                                                                                             "revm_primitives::state::StorageSlot"
                                                                                         ],
@@ -7501,9 +8577,18 @@ Module db.
                                                                                               Ty.apply
                                                                                                 (Ty.path
                                                                                                   "std::collections::hash::map::Entry")
+                                                                                                []
                                                                                                 [
-                                                                                                  Ty.path
-                                                                                                    "ruint::Uint";
+                                                                                                  Ty.apply
+                                                                                                    (Ty.path
+                                                                                                      "ruint::Uint")
+                                                                                                    [
+                                                                                                      Value.Integer
+                                                                                                        256;
+                                                                                                      Value.Integer
+                                                                                                        4
+                                                                                                    ]
+                                                                                                    [];
                                                                                                   Ty.path
                                                                                                     "revm::db::states::reverts::RevertToSlot"
                                                                                                 ],
@@ -7516,9 +8601,18 @@ Module db.
                                                                                                   Ty.apply
                                                                                                     (Ty.path
                                                                                                       "std::collections::hash::map::HashMap")
+                                                                                                    []
                                                                                                     [
-                                                                                                      Ty.path
-                                                                                                        "ruint::Uint";
+                                                                                                      Ty.apply
+                                                                                                        (Ty.path
+                                                                                                          "ruint::Uint")
+                                                                                                        [
+                                                                                                          Value.Integer
+                                                                                                            256;
+                                                                                                          Value.Integer
+                                                                                                            4
+                                                                                                        ]
+                                                                                                        [];
                                                                                                       Ty.path
                                                                                                         "revm::db::states::reverts::RevertToSlot";
                                                                                                       Ty.path
@@ -7673,15 +8767,22 @@ Module db.
                         "core::iter::traits::collect::Extend",
                         Ty.apply
                           (Ty.path "std::collections::hash::map::HashMap")
+                          []
                           [
-                            Ty.path "alloy_primitives::bits::fixed::FixedBytes";
+                            Ty.apply
+                              (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                              [ Value.Integer 32 ]
+                              [];
                             Ty.path "revm_primitives::bytecode::Bytecode";
                             Ty.path "std::hash::random::RandomState"
                           ],
                         [
                           Ty.tuple
                             [
-                              Ty.path "alloy_primitives::bits::fixed::FixedBytes";
+                              Ty.apply
+                                (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                                [ Value.Integer 32 ]
+                                [];
                               Ty.path "revm_primitives::bytecode::Bytecode"
                             ]
                         ],
@@ -7689,8 +8790,12 @@ Module db.
                         [
                           Ty.apply
                             (Ty.path "std::collections::hash::map::HashMap")
+                            []
                             [
-                              Ty.path "alloy_primitives::bits::fixed::FixedBytes";
+                              Ty.apply
+                                (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                                [ Value.Integer 32 ]
+                                [];
                               Ty.path "revm_primitives::bytecode::Bytecode";
                               Ty.path "std::hash::random::RandomState"
                             ]
@@ -7738,7 +8843,7 @@ Module db.
                   |) in
                 M.alloc (| Value.Tuple [] |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_extend : M.IsAssociatedFunction Self "extend" extend.
@@ -7759,9 +8864,9 @@ Module db.
                 detached_reverts
             }
         *)
-        Definition take_n_reverts (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self; reverts_to_take ] =>
+        Definition take_n_reverts (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self; reverts_to_take ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let reverts_to_take := M.alloc (| reverts_to_take |) in
@@ -7783,9 +8888,11 @@ Module db.
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "alloc::vec::Vec")
+                                            []
                                             [
                                               Ty.apply
                                                 (Ty.path "alloc::vec::Vec")
+                                                []
                                                 [
                                                   Ty.tuple
                                                     [
@@ -7851,9 +8958,11 @@ Module db.
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "slice")
+                              []
                               [
                                 Ty.apply
                                   (Ty.path "alloc::vec::Vec")
+                                  []
                                   [
                                     Ty.tuple
                                       [
@@ -7872,9 +8981,11 @@ Module db.
                                 "core::ops::deref::Deref",
                                 Ty.apply
                                   (Ty.path "alloc::vec::Vec")
+                                  []
                                   [
                                     Ty.apply
                                       (Ty.path "alloc::vec::Vec")
+                                      []
                                       [
                                         Ty.tuple
                                           [
@@ -7932,9 +9043,11 @@ Module db.
                                       M.get_associated_function (|
                                         Ty.apply
                                           (Ty.path "slice")
+                                          []
                                           [
                                             Ty.apply
                                               (Ty.path "alloc::vec::Vec")
+                                              []
                                               [
                                                 Ty.tuple
                                                   [
@@ -7966,12 +9079,15 @@ Module db.
                                     "core::iter::traits::iterator::Iterator",
                                     Ty.apply
                                       (Ty.path "core::iter::adapters::flatten::Flatten")
+                                      []
                                       [
                                         Ty.apply
                                           (Ty.path "core::slice::iter::Iter")
+                                          []
                                           [
                                             Ty.apply
                                               (Ty.path "alloc::vec::Vec")
+                                              []
                                               [
                                                 Ty.tuple
                                                   [
@@ -7995,6 +9111,7 @@ Module db.
                                               Ty.path "usize";
                                               Ty.apply
                                                 (Ty.path "&")
+                                                []
                                                 [
                                                   Ty.tuple
                                                     [
@@ -8015,9 +9132,11 @@ Module db.
                                         "core::iter::traits::iterator::Iterator",
                                         Ty.apply
                                           (Ty.path "core::slice::iter::Iter")
+                                          []
                                           [
                                             Ty.apply
                                               (Ty.path "alloc::vec::Vec")
+                                              []
                                               [
                                                 Ty.tuple
                                                   [
@@ -8038,9 +9157,11 @@ Module db.
                                           M.get_associated_function (|
                                             Ty.apply
                                               (Ty.path "slice")
+                                              []
                                               [
                                                 Ty.apply
                                                   (Ty.path "alloc::vec::Vec")
+                                                  []
                                                   [
                                                     Ty.tuple
                                                       [
@@ -8127,9 +9248,11 @@ Module db.
                                       M.get_associated_function (|
                                         Ty.apply
                                           (Ty.path "slice")
+                                          []
                                           [
                                             Ty.apply
                                               (Ty.path "alloc::vec::Vec")
+                                              []
                                               [
                                                 Ty.tuple
                                                   [
@@ -8154,7 +9277,7 @@ Module db.
                     |)
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_take_n_reverts :
@@ -8166,9 +9289,9 @@ Module db.
                 core::mem::take(&mut self.reverts)
             }
         *)
-        Definition take_all_reverts (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self ] =>
+        Definition take_all_reverts (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
@@ -8197,7 +9320,7 @@ Module db.
                   |)
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_take_all_reverts :
@@ -8241,9 +9364,9 @@ Module db.
                 false
             }
         *)
-        Definition revert_latest (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self ] =>
+        Definition revert_latest (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.catch_return (|
@@ -8261,9 +9384,11 @@ Module db.
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "alloc::vec::Vec")
+                                        []
                                         [
                                           Ty.apply
                                             (Ty.path "alloc::vec::Vec")
+                                            []
                                             [
                                               Ty.tuple
                                                 [
@@ -8317,6 +9442,7 @@ Module db.
                                                 "core::iter::traits::collect::IntoIterator",
                                                 Ty.apply
                                                   (Ty.path "alloc::vec::into_iter::IntoIter")
+                                                  []
                                                   [
                                                     Ty.tuple
                                                       [
@@ -8337,6 +9463,7 @@ Module db.
                                                     "core::iter::traits::collect::IntoIterator",
                                                     Ty.apply
                                                       (Ty.path "alloc::vec::Vec")
+                                                      []
                                                       [
                                                         Ty.tuple
                                                           [
@@ -8371,6 +9498,7 @@ Module db.
                                                               Ty.apply
                                                                 (Ty.path
                                                                   "alloc::vec::into_iter::IntoIter")
+                                                                []
                                                                 [
                                                                   Ty.tuple
                                                                     [
@@ -8451,6 +9579,7 @@ Module db.
                                                                       Ty.apply
                                                                         (Ty.path
                                                                           "std::collections::hash::map::HashMap")
+                                                                        []
                                                                         [
                                                                           Ty.path
                                                                             "alloy_primitives::bits::address::Address";
@@ -8490,6 +9619,7 @@ Module db.
                                                                               Ty.apply
                                                                                 (Ty.path
                                                                                   "std::collections::hash::map::OccupiedEntry")
+                                                                                []
                                                                                 [
                                                                                   Ty.path
                                                                                     "alloy_primitives::bits::address::Address";
@@ -8564,6 +9694,7 @@ Module db.
                                                                                       Ty.apply
                                                                                         (Ty.path
                                                                                           "std::collections::hash::map::OccupiedEntry")
+                                                                                        []
                                                                                         [
                                                                                           Ty.path
                                                                                             "alloy_primitives::bits::address::Address";
@@ -8649,9 +9780,18 @@ Module db.
                                                                                   Ty.apply
                                                                                     (Ty.path
                                                                                       "std::collections::hash::map::HashMap")
+                                                                                    []
                                                                                     [
-                                                                                      Ty.path
-                                                                                        "ruint::Uint";
+                                                                                      Ty.apply
+                                                                                        (Ty.path
+                                                                                          "ruint::Uint")
+                                                                                        [
+                                                                                          Value.Integer
+                                                                                            256;
+                                                                                          Value.Integer
+                                                                                            4
+                                                                                        ]
+                                                                                        [];
                                                                                       Ty.path
                                                                                         "revm_primitives::state::StorageSlot";
                                                                                       Ty.path
@@ -8730,6 +9870,7 @@ Module db.
                                                                                       Ty.apply
                                                                                         (Ty.path
                                                                                           "std::collections::hash::map::VacantEntry")
+                                                                                        []
                                                                                         [
                                                                                           Ty.path
                                                                                             "alloy_primitives::bits::address::Address";
@@ -8777,7 +9918,7 @@ Module db.
                     M.alloc (| Value.Bool false |)
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_revert_latest :
@@ -8798,9 +9939,9 @@ Module db.
                 }
             }
         *)
-        Definition revert (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self; num_transitions ] =>
+        Definition revert (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self; num_transitions ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let num_transitions := M.alloc (| num_transitions |) in
@@ -8900,7 +10041,7 @@ Module db.
                     |)
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_revert : M.IsAssociatedFunction Self "revert" revert.
@@ -8917,9 +10058,9 @@ Module db.
                 mem::swap(self, &mut other)
             }
         *)
-        Definition prepend_state (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self; other ] =>
+        Definition prepend_state (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self; other ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let other := M.alloc (| other |) in
@@ -8961,15 +10102,22 @@ Module db.
                         "core::iter::traits::collect::Extend",
                         Ty.apply
                           (Ty.path "std::collections::hash::map::HashMap")
+                          []
                           [
-                            Ty.path "alloy_primitives::bits::fixed::FixedBytes";
+                            Ty.apply
+                              (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                              [ Value.Integer 32 ]
+                              [];
                             Ty.path "revm_primitives::bytecode::Bytecode";
                             Ty.path "std::hash::random::RandomState"
                           ],
                         [
                           Ty.tuple
                             [
-                              Ty.path "alloy_primitives::bits::fixed::FixedBytes";
+                              Ty.apply
+                                (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                                [ Value.Integer 32 ]
+                                [];
                               Ty.path "revm_primitives::bytecode::Bytecode"
                             ]
                         ],
@@ -8977,8 +10125,12 @@ Module db.
                         [
                           Ty.apply
                             (Ty.path "std::collections::hash::map::HashMap")
+                            []
                             [
-                              Ty.path "alloy_primitives::bits::fixed::FixedBytes";
+                              Ty.apply
+                                (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                                [ Value.Integer 32 ]
+                                [];
                               Ty.path "revm_primitives::bytecode::Bytecode";
                               Ty.path "std::hash::random::RandomState"
                             ]
@@ -9010,7 +10162,7 @@ Module db.
                   |)
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_prepend_state :

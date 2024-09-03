@@ -4,19 +4,19 @@ Require Import CoqOfRust.CoqOfRust.
 Module error.
   (* Trait *)
   Module Error.
-    Definition source (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition source (Self : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           Value.StructTuple "core::option::Option::None" []))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom ProvidedMethod_source : M.IsProvidedMethod "core::error::Error" "source" source.
-    Definition type_id (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; β1 ] =>
+    Definition type_id (Self : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; β1 ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let β1 := M.alloc (| β1 |) in
@@ -31,42 +31,47 @@ Module error.
                   |)))
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom ProvidedMethod_type_id : M.IsProvidedMethod "core::error::Error" "type_id" type_id.
-    Definition description (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition description
+        (Self : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (| Value.String "description() is deprecated; use Display" |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom ProvidedMethod_description :
       M.IsProvidedMethod "core::error::Error" "description" description.
-    Definition cause (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition cause (Self : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
             M.get_trait_method (| "core::error::Error", Self, [], "source", [] |),
             [ M.read (| self |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom ProvidedMethod_cause : M.IsProvidedMethod "core::error::Error" "cause" cause.
-    Definition provide (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; request ] =>
+    Definition provide (Self : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; request ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let request := M.alloc (| request |) in
           Value.Tuple []))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom ProvidedMethod_provide : M.IsProvidedMethod "core::error::Error" "provide" provide.
@@ -76,6 +81,7 @@ Module error.
     (* StructTuple
       {
         name := "Internal";
+        const_params := [];
         ty_params := [];
         fields := [];
       } *)
@@ -84,9 +90,9 @@ Module error.
       Definition Self : Ty.t := Ty.path "core::error::private::Internal".
       
       (*     Debug *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -94,7 +100,7 @@ Module error.
               M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
               [ M.read (| f |); M.read (| Value.String "Internal" |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -132,9 +138,9 @@ Module error.
             t == concrete
         }
     *)
-    Definition is (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ T ], [ self ] =>
+    Definition is (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ T ], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -171,7 +177,7 @@ Module error.
               |)
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_is : M.IsAssociatedFunction Self "is" is.
@@ -186,9 +192,9 @@ Module error.
             }
         }
     *)
-    Definition downcast_ref (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ T ], [ self ] =>
+    Definition downcast_ref (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ T ], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -226,7 +232,7 @@ Module error.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_downcast_ref : M.IsAssociatedFunction Self "downcast_ref" downcast_ref.
@@ -241,9 +247,9 @@ Module error.
             }
         }
     *)
-    Definition downcast_mut (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ T ], [ self ] =>
+    Definition downcast_mut (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ T ], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -281,7 +287,7 @@ Module error.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_downcast_mut : M.IsAssociatedFunction Self "downcast_mut" downcast_mut.
@@ -301,9 +307,9 @@ Module error.
             Source { current: Some(self) }
         }
     *)
-    Definition sources (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition sources (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           Value.StructRecord
@@ -314,7 +320,7 @@ Module error.
                   "core::option::Option::Some"
                   [ (* Unsize *) M.pointer_coercion (M.read (| self |)) ])
             ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_sources : M.IsAssociatedFunction Self "sources" sources.
@@ -329,9 +335,9 @@ Module error.
             <dyn Error + 'static>::is::<T>(self)
         }
     *)
-    Definition is (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ T ], [ self ] =>
+    Definition is (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ T ], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
@@ -342,7 +348,7 @@ Module error.
             |),
             [ (* Unsize *) M.pointer_coercion (M.read (| self |)) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_is : M.IsAssociatedFunction Self "is" is.
@@ -352,9 +358,9 @@ Module error.
             <dyn Error + 'static>::downcast_ref::<T>(self)
         }
     *)
-    Definition downcast_ref (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ T ], [ self ] =>
+    Definition downcast_ref (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ T ], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
@@ -365,7 +371,7 @@ Module error.
             |),
             [ (* Unsize *) M.pointer_coercion (M.read (| self |)) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_downcast_ref : M.IsAssociatedFunction Self "downcast_ref" downcast_ref.
@@ -375,9 +381,9 @@ Module error.
             <dyn Error + 'static>::downcast_mut::<T>(self)
         }
     *)
-    Definition downcast_mut (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ T ], [ self ] =>
+    Definition downcast_mut (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ T ], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
@@ -388,7 +394,7 @@ Module error.
             |),
             [ (* Unsize *) M.pointer_coercion (M.read (| self |)) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_downcast_mut : M.IsAssociatedFunction Self "downcast_mut" downcast_mut.
@@ -408,9 +414,9 @@ Module error.
             <dyn Error + 'static>::is::<T>(self)
         }
     *)
-    Definition is (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ T ], [ self ] =>
+    Definition is (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ T ], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
@@ -421,7 +427,7 @@ Module error.
             |),
             [ (* Unsize *) M.pointer_coercion (M.read (| self |)) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_is : M.IsAssociatedFunction Self "is" is.
@@ -431,9 +437,9 @@ Module error.
             <dyn Error + 'static>::downcast_ref::<T>(self)
         }
     *)
-    Definition downcast_ref (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ T ], [ self ] =>
+    Definition downcast_ref (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ T ], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
@@ -444,7 +450,7 @@ Module error.
             |),
             [ (* Unsize *) M.pointer_coercion (M.read (| self |)) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_downcast_ref : M.IsAssociatedFunction Self "downcast_ref" downcast_ref.
@@ -454,9 +460,9 @@ Module error.
             <dyn Error + 'static>::downcast_mut::<T>(self)
         }
     *)
-    Definition downcast_mut (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ T ], [ self ] =>
+    Definition downcast_mut (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ T ], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
@@ -467,7 +473,7 @@ Module error.
             |),
             [ (* Unsize *) M.pointer_coercion (M.read (| self |)) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_downcast_mut : M.IsAssociatedFunction Self "downcast_mut" downcast_mut.
@@ -482,19 +488,19 @@ Module error.
       request_by_type_tag::<'a, tags::Value<T>>(err)
   }
   *)
-  Definition request_value (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [ T; impl_Error__plus___Sized ], [ err ] =>
+  Definition request_value (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [ T; impl_Error__plus___Sized ], [ err ] =>
       ltac:(M.monadic
         (let err := M.alloc (| err |) in
         M.call_closure (|
           M.get_function (|
             "core::error::request_by_type_tag",
-            [ Ty.apply (Ty.path "core::error::tags::Value") [ T ]; impl_Error__plus___Sized ]
+            [ Ty.apply (Ty.path "core::error::tags::Value") [] [ T ]; impl_Error__plus___Sized ]
           |),
           [ M.read (| err |) ]
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Function_request_value : M.IsFunction "core::error::request_value" request_value.
@@ -507,9 +513,9 @@ Module error.
       request_by_type_tag::<'a, tags::Ref<tags::MaybeSizedValue<T>>>(err)
   }
   *)
-  Definition request_ref (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [ T; impl_Error__plus___Sized ], [ err ] =>
+  Definition request_ref (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [ T; impl_Error__plus___Sized ], [ err ] =>
       ltac:(M.monadic
         (let err := M.alloc (| err |) in
         M.call_closure (|
@@ -518,13 +524,14 @@ Module error.
             [
               Ty.apply
                 (Ty.path "core::error::tags::Ref")
-                [ Ty.apply (Ty.path "core::error::tags::MaybeSizedValue") [ T ] ];
+                []
+                [ Ty.apply (Ty.path "core::error::tags::MaybeSizedValue") [] [ T ] ];
               impl_Error__plus___Sized
             ]
           |),
           [ M.read (| err |) ]
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Function_request_ref : M.IsFunction "core::error::request_ref" request_ref.
@@ -539,9 +546,9 @@ Module error.
       tagged.0
   }
   *)
-  Definition request_by_type_tag (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [ _ as I; impl_Error__plus___Sized ], [ err ] =>
+  Definition request_by_type_tag (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [ _ as I; impl_Error__plus___Sized ], [ err ] =>
       ltac:(M.monadic
         (let err := M.alloc (| err |) in
         M.read (|
@@ -565,7 +572,7 @@ Module error.
                   M.read (| err |);
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "core::error::TaggedOption") [ I ],
+                      Ty.apply (Ty.path "core::error::TaggedOption") [] [ I ],
                       "as_request",
                       []
                     |),
@@ -576,7 +583,7 @@ Module error.
             |) in
           M.SubPointer.get_struct_tuple_field (| tagged, "core::error::TaggedOption", 0 |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Function_request_by_type_tag :
@@ -585,6 +592,7 @@ Module error.
   (* StructTuple
     {
       name := "Request";
+      const_params := [];
       ty_params := [];
       fields := [ Ty.dyn [ ("core::error::Erased::Trait", []) ] ];
     } *)
@@ -599,16 +607,16 @@ Module error.
             unsafe { &mut *(erased as *mut dyn Erased<'a> as *mut Request<'a>) }
         }
     *)
-    Definition new (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ erased ] =>
+    Definition new (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ erased ] =>
         ltac:(M.monadic
           (let erased := M.alloc (| erased |) in
           M.rust_cast
             (M.read (|
               M.use (M.alloc (| (* Unsize *) M.pointer_coercion (M.read (| erased |)) |))
             |))))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -621,9 +629,9 @@ Module error.
             self.provide::<tags::Value<T>>(value)
         }
     *)
-    Definition provide_value (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ T ], [ self; value ] =>
+    Definition provide_value (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ T ], [ self; value ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let value := M.alloc (| value |) in
@@ -631,11 +639,11 @@ Module error.
             M.get_associated_function (|
               Ty.path "core::error::Request",
               "provide",
-              [ Ty.apply (Ty.path "core::error::tags::Value") [ T ] ]
+              [ Ty.apply (Ty.path "core::error::tags::Value") [] [ T ] ]
             |),
             [ M.read (| self |); M.read (| value |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_provide_value :
@@ -649,9 +657,9 @@ Module error.
             self.provide_with::<tags::Value<T>>(fulfil)
         }
     *)
-    Definition provide_value_with (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ T; impl_FnOnce___arrow_T ], [ self; fulfil ] =>
+    Definition provide_value_with (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ T; impl_FnOnce___arrow_T ], [ self; fulfil ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let fulfil := M.alloc (| fulfil |) in
@@ -659,11 +667,11 @@ Module error.
             M.get_associated_function (|
               Ty.path "core::error::Request",
               "provide_with",
-              [ Ty.apply (Ty.path "core::error::tags::Value") [ T ]; impl_FnOnce___arrow_T ]
+              [ Ty.apply (Ty.path "core::error::tags::Value") [] [ T ]; impl_FnOnce___arrow_T ]
             |),
             [ M.read (| self |); M.read (| fulfil |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_provide_value_with :
@@ -674,9 +682,9 @@ Module error.
             self.provide::<tags::Ref<tags::MaybeSizedValue<T>>>(value)
         }
     *)
-    Definition provide_ref (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ T ], [ self; value ] =>
+    Definition provide_ref (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ T ], [ self; value ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let value := M.alloc (| value |) in
@@ -687,12 +695,13 @@ Module error.
               [
                 Ty.apply
                   (Ty.path "core::error::tags::Ref")
-                  [ Ty.apply (Ty.path "core::error::tags::MaybeSizedValue") [ T ] ]
+                  []
+                  [ Ty.apply (Ty.path "core::error::tags::MaybeSizedValue") [] [ T ] ]
               ]
             |),
             [ M.read (| self |); M.read (| value |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_provide_ref : M.IsAssociatedFunction Self "provide_ref" provide_ref.
@@ -705,9 +714,9 @@ Module error.
             self.provide_with::<tags::Ref<tags::MaybeSizedValue<T>>>(fulfil)
         }
     *)
-    Definition provide_ref_with (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ T; impl_FnOnce___arrow__'a_T ], [ self; fulfil ] =>
+    Definition provide_ref_with (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ T; impl_FnOnce___arrow__'a_T ], [ self; fulfil ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let fulfil := M.alloc (| fulfil |) in
@@ -718,13 +727,14 @@ Module error.
               [
                 Ty.apply
                   (Ty.path "core::error::tags::Ref")
-                  [ Ty.apply (Ty.path "core::error::tags::MaybeSizedValue") [ T ] ];
+                  []
+                  [ Ty.apply (Ty.path "core::error::tags::MaybeSizedValue") [] [ T ] ];
                 impl_FnOnce___arrow__'a_T
               ]
             |),
             [ M.read (| self |); M.read (| fulfil |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_provide_ref_with :
@@ -741,9 +751,9 @@ Module error.
             self
         }
     *)
-    Definition provide (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ _ as I ], [ self; value ] =>
+    Definition provide (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ _ as I ], [ self; value ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let value := M.alloc (| value |) in
@@ -801,7 +811,7 @@ Module error.
               |) in
             M.alloc (| M.read (| self |) |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_provide : M.IsAssociatedFunction Self "provide" provide.
@@ -817,9 +827,9 @@ Module error.
             self
         }
     *)
-    Definition provide_with (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ _ as I; impl_FnOnce___arrow_I_Reified ], [ self; fulfil ] =>
+    Definition provide_with (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ _ as I; impl_FnOnce___arrow_I_Reified ], [ self; fulfil ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let fulfil := M.alloc (| fulfil |) in
@@ -890,7 +900,7 @@ Module error.
               |) in
             M.alloc (| M.read (| self |) |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_provide_with : M.IsAssociatedFunction Self "provide_with" provide_with.
@@ -903,20 +913,24 @@ Module error.
             self.would_be_satisfied_by::<tags::Value<T>>()
         }
     *)
-    Definition would_be_satisfied_by_value_of (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ T ], [ self ] =>
+    Definition would_be_satisfied_by_value_of
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      match ε, τ, α with
+      | [], [ T ], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
             M.get_associated_function (|
               Ty.path "core::error::Request",
               "would_be_satisfied_by",
-              [ Ty.apply (Ty.path "core::error::tags::Value") [ T ] ]
+              [ Ty.apply (Ty.path "core::error::tags::Value") [] [ T ] ]
             |),
             [ M.read (| self |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_would_be_satisfied_by_value_of :
@@ -930,9 +944,13 @@ Module error.
             self.would_be_satisfied_by::<tags::Ref<tags::MaybeSizedValue<T>>>()
         }
     *)
-    Definition would_be_satisfied_by_ref_of (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ T ], [ self ] =>
+    Definition would_be_satisfied_by_ref_of
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      match ε, τ, α with
+      | [], [ T ], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
@@ -942,12 +960,13 @@ Module error.
               [
                 Ty.apply
                   (Ty.path "core::error::tags::Ref")
-                  [ Ty.apply (Ty.path "core::error::tags::MaybeSizedValue") [ T ] ]
+                  []
+                  [ Ty.apply (Ty.path "core::error::tags::MaybeSizedValue") [] [ T ] ]
               ]
             |),
             [ M.read (| self |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_would_be_satisfied_by_ref_of :
@@ -961,9 +980,9 @@ Module error.
             matches!(self.0.downcast::<I>(), Some(TaggedOption(None)))
         }
     *)
-    Definition would_be_satisfied_by (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ _ as I ], [ self ] =>
+    Definition would_be_satisfied_by (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ _ as I ], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -1006,7 +1025,7 @@ Module error.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_would_be_satisfied_by :
@@ -1021,9 +1040,9 @@ Module error.
             f.debug_struct("Request").finish_non_exhaustive()
         }
     *)
-    Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; f ] =>
+    Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; f ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
@@ -1046,7 +1065,7 @@ Module error.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -1082,18 +1101,19 @@ Module error.
     (* StructTuple
       {
         name := "Value";
+        const_params := [];
         ty_params := [ "T" ];
-        fields := [ Ty.apply (Ty.path "core::marker::PhantomData") [ T ] ];
+        fields := [ Ty.apply (Ty.path "core::marker::PhantomData") [] [ T ] ];
       } *)
     
     Module Impl_core_fmt_Debug_where_core_fmt_Debug_T_for_core_error_tags_Value_T.
-      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::error::tags::Value") [ T ].
+      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::error::tags::Value") [] [ T ].
       
       (*     Debug *)
-      Definition fmt (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self; f ] =>
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -1117,7 +1137,7 @@ Module error.
                   |))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1130,7 +1150,7 @@ Module error.
     End Impl_core_fmt_Debug_where_core_fmt_Debug_T_for_core_error_tags_Value_T.
     
     Module Impl_core_error_tags_Type_for_core_error_tags_Value_T.
-      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::error::tags::Value") [ T ].
+      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::error::tags::Value") [] [ T ].
       
       (*         type Reified = T; *)
       Definition _Reified (T : Ty.t) : Ty.t := T.
@@ -1147,19 +1167,20 @@ Module error.
     (* StructTuple
       {
         name := "MaybeSizedValue";
+        const_params := [];
         ty_params := [ "T" ];
-        fields := [ Ty.apply (Ty.path "core::marker::PhantomData") [ T ] ];
+        fields := [ Ty.apply (Ty.path "core::marker::PhantomData") [] [ T ] ];
       } *)
     
     Module Impl_core_fmt_Debug_where_core_fmt_Debug_T_where_core_marker_Sized_T_for_core_error_tags_MaybeSizedValue_T.
       Definition Self (T : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::error::tags::MaybeSizedValue") [ T ].
+        Ty.apply (Ty.path "core::error::tags::MaybeSizedValue") [] [ T ].
       
       (*     Debug *)
-      Definition fmt (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self; f ] =>
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -1183,7 +1204,7 @@ Module error.
                   |))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1197,7 +1218,7 @@ Module error.
     
     Module Impl_core_error_tags_MaybeSizedType_where_core_marker_Sized_T_for_core_error_tags_MaybeSizedValue_T.
       Definition Self (T : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::error::tags::MaybeSizedValue") [ T ].
+        Ty.apply (Ty.path "core::error::tags::MaybeSizedValue") [] [ T ].
       
       (*         type Reified = T; *)
       Definition _Reified (T : Ty.t) : Ty.t := T.
@@ -1214,18 +1235,19 @@ Module error.
     (* StructTuple
       {
         name := "Ref";
+        const_params := [];
         ty_params := [ "I" ];
-        fields := [ Ty.apply (Ty.path "core::marker::PhantomData") [ I ] ];
+        fields := [ Ty.apply (Ty.path "core::marker::PhantomData") [] [ I ] ];
       } *)
     
     Module Impl_core_fmt_Debug_where_core_fmt_Debug_I_for_core_error_tags_Ref_I.
-      Definition Self (I : Ty.t) : Ty.t := Ty.apply (Ty.path "core::error::tags::Ref") [ I ].
+      Definition Self (I : Ty.t) : Ty.t := Ty.apply (Ty.path "core::error::tags::Ref") [] [ I ].
       
       (*     Debug *)
-      Definition fmt (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (I : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self I in
-        match τ, α with
-        | [], [ self; f ] =>
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -1249,7 +1271,7 @@ Module error.
                   |))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1262,10 +1284,10 @@ Module error.
     End Impl_core_fmt_Debug_where_core_fmt_Debug_I_for_core_error_tags_Ref_I.
     
     Module Impl_core_error_tags_Type_where_core_error_tags_MaybeSizedType_I_for_core_error_tags_Ref_I.
-      Definition Self (I : Ty.t) : Ty.t := Ty.apply (Ty.path "core::error::tags::Ref") [ I ].
+      Definition Self (I : Ty.t) : Ty.t := Ty.apply (Ty.path "core::error::tags::Ref") [] [ I ].
       
       (*         type Reified = &'a I::Reified; *)
-      Definition _Reified (I : Ty.t) : Ty.t := Ty.apply (Ty.path "&") [ Ty.associated ].
+      Definition _Reified (I : Ty.t) : Ty.t := Ty.apply (Ty.path "&") [] [ Ty.associated ].
       
       Axiom Implements :
         forall (I : Ty.t),
@@ -1280,22 +1302,23 @@ Module error.
   (* StructTuple
     {
       name := "TaggedOption";
+      const_params := [];
       ty_params := [ "I" ];
-      fields := [ Ty.apply (Ty.path "core::option::Option") [ Ty.associated ] ];
+      fields := [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ] ];
     } *)
   
   Module Impl_core_error_TaggedOption_I.
-    Definition Self (I : Ty.t) : Ty.t := Ty.apply (Ty.path "core::error::TaggedOption") [ I ].
+    Definition Self (I : Ty.t) : Ty.t := Ty.apply (Ty.path "core::error::TaggedOption") [] [ I ].
     
     (*
         pub(crate) fn as_request(&mut self) -> &mut Request<'a> {
             Request::new(self as &mut (dyn Erased<'a> + 'a))
         }
     *)
-    Definition as_request (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition as_request (I : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self I in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
@@ -1308,7 +1331,7 @@ Module error.
                 |))
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_as_request :
@@ -1320,24 +1343,24 @@ Module error.
   (* Empty module 'Erased' *)
   
   Module Impl_core_error_Erased_where_core_error_tags_Type_I_for_core_error_TaggedOption_I.
-    Definition Self (I : Ty.t) : Ty.t := Ty.apply (Ty.path "core::error::TaggedOption") [ I ].
+    Definition Self (I : Ty.t) : Ty.t := Ty.apply (Ty.path "core::error::TaggedOption") [] [ I ].
     
     (*
         fn tag_id(&self) -> TypeId {
             TypeId::of::<I>()
         }
     *)
-    Definition tag_id (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition tag_id (I : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self I in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
             M.get_associated_function (| Ty.path "core::any::TypeId", "of", [ I ] |),
             []
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -1365,9 +1388,9 @@ Module error.
             }
         }
     *)
-    Definition downcast (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ _ as I ], [ self ] =>
+    Definition downcast (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ _ as I ], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -1422,9 +1445,10 @@ Module error.
                             M.get_associated_function (|
                               Ty.apply
                                 (Ty.path "*const")
+                                []
                                 [ Ty.dyn [ ("core::error::Erased::Trait", []) ] ],
                               "cast",
-                              [ Ty.apply (Ty.path "core::error::TaggedOption") [ I ] ]
+                              [ Ty.apply (Ty.path "core::error::TaggedOption") [] [ I ] ]
                             |),
                             [
                               M.read (|
@@ -1442,7 +1466,7 @@ Module error.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_downcast : M.IsAssociatedFunction Self "downcast" downcast.
@@ -1460,9 +1484,9 @@ Module error.
             }
         }
     *)
-    Definition downcast_mut (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ _ as I ], [ self ] =>
+    Definition downcast_mut (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ _ as I ], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -1517,9 +1541,10 @@ Module error.
                             M.get_associated_function (|
                               Ty.apply
                                 (Ty.path "*mut")
+                                []
                                 [ Ty.dyn [ ("core::error::Erased::Trait", []) ] ],
                               "cast",
-                              [ Ty.apply (Ty.path "core::error::TaggedOption") [ I ] ]
+                              [ Ty.apply (Ty.path "core::error::TaggedOption") [] [ I ] ]
                             |),
                             [
                               M.read (|
@@ -1537,7 +1562,7 @@ Module error.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_downcast_mut : M.IsAssociatedFunction Self "downcast_mut" downcast_mut.
@@ -1546,13 +1571,15 @@ Module error.
   (* StructRecord
     {
       name := "Source";
+      const_params := [];
       ty_params := [];
       fields :=
         [
           ("current",
             Ty.apply
               (Ty.path "core::option::Option")
-              [ Ty.apply (Ty.path "&") [ Ty.dyn [ ("core::error::Error::Trait", []) ] ] ])
+              []
+              [ Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::error::Error::Trait", []) ] ] ])
         ];
     } *)
   
@@ -1560,9 +1587,9 @@ Module error.
     Definition Self : Ty.t := Ty.path "core::error::Source".
     
     (* Clone *)
-    Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           Value.StructRecord
@@ -1574,7 +1601,9 @@ Module error.
                     "core::clone::Clone",
                     Ty.apply
                       (Ty.path "core::option::Option")
-                      [ Ty.apply (Ty.path "&") [ Ty.dyn [ ("core::error::Error::Trait", []) ] ] ],
+                      []
+                      [ Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::error::Error::Trait", []) ] ]
+                      ],
                     [],
                     "clone",
                     []
@@ -1588,7 +1617,7 @@ Module error.
                   ]
                 |))
             ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -1603,9 +1632,9 @@ Module error.
     Definition Self : Ty.t := Ty.path "core::error::Source".
     
     (* Debug *)
-    Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; f ] =>
+    Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; f ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
@@ -1630,7 +1659,7 @@ Module error.
                 |))
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -1646,7 +1675,7 @@ Module error.
     
     (*     type Item = &'a (dyn Error + 'static); *)
     Definition _Item : Ty.t :=
-      Ty.apply (Ty.path "&") [ Ty.dyn [ ("core::error::Error::Trait", []) ] ].
+      Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::error::Error::Trait", []) ] ].
     
     (*
         fn next(&mut self) -> Option<Self::Item> {
@@ -1655,9 +1684,9 @@ Module error.
             current
         }
     *)
-    Definition next (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition next (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -1680,15 +1709,23 @@ Module error.
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "core::option::Option")
-                      [ Ty.apply (Ty.path "&") [ Ty.dyn [ ("core::error::Error::Trait", []) ] ] ],
+                      []
+                      [ Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::error::Error::Trait", []) ] ]
+                      ],
                     "and_then",
                     [
-                      Ty.apply (Ty.path "&") [ Ty.dyn [ ("core::error::Error::Trait", []) ] ];
+                      Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::error::Error::Trait", []) ] ];
                       Ty.function
-                        [ Ty.apply (Ty.path "&") [ Ty.dyn [ ("core::error::Error::Trait", []) ] ] ]
+                        [ Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::error::Error::Trait", []) ] ]
+                        ]
                         (Ty.apply
                           (Ty.path "core::option::Option")
-                          [ Ty.apply (Ty.path "&") [ Ty.dyn [ ("core::error::Error::Trait", []) ] ]
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.dyn [ ("core::error::Error::Trait", []) ] ]
                           ])
                     ]
                   |),
@@ -1712,7 +1749,7 @@ Module error.
               |) in
             current
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -1724,24 +1761,24 @@ Module error.
   End Impl_core_iter_traits_iterator_Iterator_for_core_error_Source.
   
   Module Impl_core_error_Error_where_core_error_Error_T_where_core_marker_Sized_T_for_ref__T.
-    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "&") [ T ].
+    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "&") [] [ T ].
     
     (*
         fn description(&self) -> &str {
             Error::description(&**self)
         }
     *)
-    Definition description (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition description (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
             M.get_trait_method (| "core::error::Error", T, [], "description", [] |),
             [ M.read (| M.read (| self |) |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     (*
@@ -1749,17 +1786,17 @@ Module error.
             Error::cause(&**self)
         }
     *)
-    Definition cause (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition cause (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
             M.get_trait_method (| "core::error::Error", T, [], "cause", [] |),
             [ M.read (| M.read (| self |) |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     (*
@@ -1767,17 +1804,17 @@ Module error.
             Error::source(&**self)
         }
     *)
-    Definition source (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition source (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
             M.get_trait_method (| "core::error::Error", T, [], "source", [] |),
             [ M.read (| M.read (| self |) |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     (*
@@ -1785,10 +1822,10 @@ Module error.
             Error::provide(&**self, request);
         }
     *)
-    Definition provide (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition provide (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [ self; request ] =>
+      match ε, τ, α with
+      | [], [], [ self; request ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let request := M.alloc (| request |) in
@@ -1802,7 +1839,7 @@ Module error.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -1828,13 +1865,13 @@ Module error.
             "an error occurred when formatting an argument"
         }
     *)
-    Definition description (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition description (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (| Value.String "an error occurred when formatting an argument" |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -1853,13 +1890,13 @@ Module error.
             "already mutably borrowed"
         }
     *)
-    Definition description (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition description (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (| Value.String "already mutably borrowed" |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -1878,13 +1915,13 @@ Module error.
             "already borrowed"
         }
     *)
-    Definition description (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition description (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (| Value.String "already borrowed" |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -1903,13 +1940,13 @@ Module error.
             "converted integer out of range for `char`"
         }
     *)
-    Definition description (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition description (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (| Value.String "converted integer out of range for `char`" |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -1942,14 +1979,16 @@ Module error.
         (* Instance *) [].
   End Impl_core_error_Error_for_core_ffi_c_str_FromBytesUntilNulError.
   
-  Module Impl_core_error_Error_for_core_slice_GetManyMutError.
-    Definition Self : Ty.t := Ty.path "core::slice::GetManyMutError".
+  Module Impl_core_error_Error_for_core_slice_GetManyMutError_N.
+    Definition Self (N : Value.t) : Ty.t :=
+      Ty.apply (Ty.path "core::slice::GetManyMutError") [ N ] [].
     
     Axiom Implements :
+      forall (N : Value.t),
       M.IsTraitInstance
         "core::error::Error"
-        Self
+        (Self N)
         (* Trait polymorphic types *) []
         (* Instance *) [].
-  End Impl_core_error_Error_for_core_slice_GetManyMutError.
+  End Impl_core_error_Error_for_core_slice_GetManyMutError_N.
 End error.

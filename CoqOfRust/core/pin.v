@@ -5,12 +5,13 @@ Module pin.
   (* StructRecord
     {
       name := "Pin";
+      const_params := [];
       ty_params := [ "P" ];
       fields := [ ("pointer", P) ];
     } *)
   
   Module Impl_core_marker_Copy_where_core_marker_Copy_P_for_core_pin_Pin_P.
-    Definition Self (P : Ty.t) : Ty.t := Ty.apply (Ty.path "core::pin::Pin") [ P ].
+    Definition Self (P : Ty.t) : Ty.t := Ty.apply (Ty.path "core::pin::Pin") [] [ P ].
     
     Axiom Implements :
       forall (P : Ty.t),
@@ -22,13 +23,13 @@ Module pin.
   End Impl_core_marker_Copy_where_core_marker_Copy_P_for_core_pin_Pin_P.
   
   Module Impl_core_clone_Clone_where_core_clone_Clone_P_for_core_pin_Pin_P.
-    Definition Self (P : Ty.t) : Ty.t := Ty.apply (Ty.path "core::pin::Pin") [ P ].
+    Definition Self (P : Ty.t) : Ty.t := Ty.apply (Ty.path "core::pin::Pin") [] [ P ].
     
     (* Clone *)
-    Definition clone (P : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition clone (P : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self P in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           Value.StructRecord
@@ -46,7 +47,7 @@ Module pin.
                   ]
                 |))
             ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -59,17 +60,17 @@ Module pin.
   End Impl_core_clone_Clone_where_core_clone_Clone_P_for_core_pin_Pin_P.
   
   Module Impl_core_cmp_PartialEq_where_core_ops_deref_Deref_P_where_core_ops_deref_Deref_Q_where_core_cmp_PartialEq_associated_type_associated_type_core_pin_Pin_Q_for_core_pin_Pin_P.
-    Definition Self (P Q : Ty.t) : Ty.t := Ty.apply (Ty.path "core::pin::Pin") [ P ].
+    Definition Self (P Q : Ty.t) : Ty.t := Ty.apply (Ty.path "core::pin::Pin") [] [ P ].
     
     (*
         fn eq(&self, other: &Pin<Q>) -> bool {
             P::Target::eq(self, other)
         }
     *)
-    Definition eq (P Q : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition eq (P Q : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self P Q in
-      match τ, α with
-      | [], [ self; other ] =>
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
@@ -85,7 +86,7 @@ Module pin.
               M.call_closure (|
                 M.get_trait_method (|
                   "core::ops::deref::Deref",
-                  Ty.apply (Ty.path "core::pin::Pin") [ P ],
+                  Ty.apply (Ty.path "core::pin::Pin") [] [ P ],
                   [],
                   "deref",
                   []
@@ -95,7 +96,7 @@ Module pin.
               M.call_closure (|
                 M.get_trait_method (|
                   "core::ops::deref::Deref",
-                  Ty.apply (Ty.path "core::pin::Pin") [ Q ],
+                  Ty.apply (Ty.path "core::pin::Pin") [] [ Q ],
                   [],
                   "deref",
                   []
@@ -104,7 +105,7 @@ Module pin.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     (*
@@ -112,10 +113,10 @@ Module pin.
             P::Target::ne(self, other)
         }
     *)
-    Definition ne (P Q : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition ne (P Q : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self P Q in
-      match τ, α with
-      | [], [ self; other ] =>
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
@@ -131,7 +132,7 @@ Module pin.
               M.call_closure (|
                 M.get_trait_method (|
                   "core::ops::deref::Deref",
-                  Ty.apply (Ty.path "core::pin::Pin") [ P ],
+                  Ty.apply (Ty.path "core::pin::Pin") [] [ P ],
                   [],
                   "deref",
                   []
@@ -141,7 +142,7 @@ Module pin.
               M.call_closure (|
                 M.get_trait_method (|
                   "core::ops::deref::Deref",
-                  Ty.apply (Ty.path "core::pin::Pin") [ Q ],
+                  Ty.apply (Ty.path "core::pin::Pin") [] [ Q ],
                   [],
                   "deref",
                   []
@@ -150,7 +151,7 @@ Module pin.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -158,13 +159,13 @@ Module pin.
       M.IsTraitInstance
         "core::cmp::PartialEq"
         (Self P Q)
-        (* Trait polymorphic types *) [ (* Rhs *) Ty.apply (Ty.path "core::pin::Pin") [ Q ] ]
+        (* Trait polymorphic types *) [ (* Rhs *) Ty.apply (Ty.path "core::pin::Pin") [] [ Q ] ]
         (* Instance *)
         [ ("eq", InstanceField.Method (eq P Q)); ("ne", InstanceField.Method (ne P Q)) ].
   End Impl_core_cmp_PartialEq_where_core_ops_deref_Deref_P_where_core_ops_deref_Deref_Q_where_core_cmp_PartialEq_associated_type_associated_type_core_pin_Pin_Q_for_core_pin_Pin_P.
   
   Module Impl_core_cmp_Eq_where_core_ops_deref_Deref_P_for_core_pin_Pin_P.
-    Definition Self (P : Ty.t) : Ty.t := Ty.apply (Ty.path "core::pin::Pin") [ P ].
+    Definition Self (P : Ty.t) : Ty.t := Ty.apply (Ty.path "core::pin::Pin") [] [ P ].
     
     Axiom Implements :
       forall (P : Ty.t),
@@ -172,17 +173,17 @@ Module pin.
   End Impl_core_cmp_Eq_where_core_ops_deref_Deref_P_for_core_pin_Pin_P.
   
   Module Impl_core_cmp_PartialOrd_where_core_ops_deref_Deref_P_where_core_ops_deref_Deref_Q_where_core_cmp_PartialOrd_associated_type_associated_type_core_pin_Pin_Q_for_core_pin_Pin_P.
-    Definition Self (P Q : Ty.t) : Ty.t := Ty.apply (Ty.path "core::pin::Pin") [ P ].
+    Definition Self (P Q : Ty.t) : Ty.t := Ty.apply (Ty.path "core::pin::Pin") [] [ P ].
     
     (*
         fn partial_cmp(&self, other: &Pin<Q>) -> Option<cmp::Ordering> {
             P::Target::partial_cmp(self, other)
         }
     *)
-    Definition partial_cmp (P Q : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition partial_cmp (P Q : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self P Q in
-      match τ, α with
-      | [], [ self; other ] =>
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
@@ -198,7 +199,7 @@ Module pin.
               M.call_closure (|
                 M.get_trait_method (|
                   "core::ops::deref::Deref",
-                  Ty.apply (Ty.path "core::pin::Pin") [ P ],
+                  Ty.apply (Ty.path "core::pin::Pin") [] [ P ],
                   [],
                   "deref",
                   []
@@ -208,7 +209,7 @@ Module pin.
               M.call_closure (|
                 M.get_trait_method (|
                   "core::ops::deref::Deref",
-                  Ty.apply (Ty.path "core::pin::Pin") [ Q ],
+                  Ty.apply (Ty.path "core::pin::Pin") [] [ Q ],
                   [],
                   "deref",
                   []
@@ -217,7 +218,7 @@ Module pin.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     (*
@@ -225,10 +226,10 @@ Module pin.
             P::Target::lt(self, other)
         }
     *)
-    Definition lt (P Q : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition lt (P Q : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self P Q in
-      match τ, α with
-      | [], [ self; other ] =>
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
@@ -244,7 +245,7 @@ Module pin.
               M.call_closure (|
                 M.get_trait_method (|
                   "core::ops::deref::Deref",
-                  Ty.apply (Ty.path "core::pin::Pin") [ P ],
+                  Ty.apply (Ty.path "core::pin::Pin") [] [ P ],
                   [],
                   "deref",
                   []
@@ -254,7 +255,7 @@ Module pin.
               M.call_closure (|
                 M.get_trait_method (|
                   "core::ops::deref::Deref",
-                  Ty.apply (Ty.path "core::pin::Pin") [ Q ],
+                  Ty.apply (Ty.path "core::pin::Pin") [] [ Q ],
                   [],
                   "deref",
                   []
@@ -263,7 +264,7 @@ Module pin.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     (*
@@ -271,10 +272,10 @@ Module pin.
             P::Target::le(self, other)
         }
     *)
-    Definition le (P Q : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition le (P Q : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self P Q in
-      match τ, α with
-      | [], [ self; other ] =>
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
@@ -290,7 +291,7 @@ Module pin.
               M.call_closure (|
                 M.get_trait_method (|
                   "core::ops::deref::Deref",
-                  Ty.apply (Ty.path "core::pin::Pin") [ P ],
+                  Ty.apply (Ty.path "core::pin::Pin") [] [ P ],
                   [],
                   "deref",
                   []
@@ -300,7 +301,7 @@ Module pin.
               M.call_closure (|
                 M.get_trait_method (|
                   "core::ops::deref::Deref",
-                  Ty.apply (Ty.path "core::pin::Pin") [ Q ],
+                  Ty.apply (Ty.path "core::pin::Pin") [] [ Q ],
                   [],
                   "deref",
                   []
@@ -309,7 +310,7 @@ Module pin.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     (*
@@ -317,10 +318,10 @@ Module pin.
             P::Target::gt(self, other)
         }
     *)
-    Definition gt (P Q : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition gt (P Q : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self P Q in
-      match τ, α with
-      | [], [ self; other ] =>
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
@@ -336,7 +337,7 @@ Module pin.
               M.call_closure (|
                 M.get_trait_method (|
                   "core::ops::deref::Deref",
-                  Ty.apply (Ty.path "core::pin::Pin") [ P ],
+                  Ty.apply (Ty.path "core::pin::Pin") [] [ P ],
                   [],
                   "deref",
                   []
@@ -346,7 +347,7 @@ Module pin.
               M.call_closure (|
                 M.get_trait_method (|
                   "core::ops::deref::Deref",
-                  Ty.apply (Ty.path "core::pin::Pin") [ Q ],
+                  Ty.apply (Ty.path "core::pin::Pin") [] [ Q ],
                   [],
                   "deref",
                   []
@@ -355,7 +356,7 @@ Module pin.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     (*
@@ -363,10 +364,10 @@ Module pin.
             P::Target::ge(self, other)
         }
     *)
-    Definition ge (P Q : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition ge (P Q : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self P Q in
-      match τ, α with
-      | [], [ self; other ] =>
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
@@ -382,7 +383,7 @@ Module pin.
               M.call_closure (|
                 M.get_trait_method (|
                   "core::ops::deref::Deref",
-                  Ty.apply (Ty.path "core::pin::Pin") [ P ],
+                  Ty.apply (Ty.path "core::pin::Pin") [] [ P ],
                   [],
                   "deref",
                   []
@@ -392,7 +393,7 @@ Module pin.
               M.call_closure (|
                 M.get_trait_method (|
                   "core::ops::deref::Deref",
-                  Ty.apply (Ty.path "core::pin::Pin") [ Q ],
+                  Ty.apply (Ty.path "core::pin::Pin") [] [ Q ],
                   [],
                   "deref",
                   []
@@ -401,7 +402,7 @@ Module pin.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -409,7 +410,7 @@ Module pin.
       M.IsTraitInstance
         "core::cmp::PartialOrd"
         (Self P Q)
-        (* Trait polymorphic types *) [ (* Rhs *) Ty.apply (Ty.path "core::pin::Pin") [ Q ] ]
+        (* Trait polymorphic types *) [ (* Rhs *) Ty.apply (Ty.path "core::pin::Pin") [] [ Q ] ]
         (* Instance *)
         [
           ("partial_cmp", InstanceField.Method (partial_cmp P Q));
@@ -421,17 +422,17 @@ Module pin.
   End Impl_core_cmp_PartialOrd_where_core_ops_deref_Deref_P_where_core_ops_deref_Deref_Q_where_core_cmp_PartialOrd_associated_type_associated_type_core_pin_Pin_Q_for_core_pin_Pin_P.
   
   Module Impl_core_cmp_Ord_where_core_ops_deref_Deref_P_for_core_pin_Pin_P.
-    Definition Self (P : Ty.t) : Ty.t := Ty.apply (Ty.path "core::pin::Pin") [ P ].
+    Definition Self (P : Ty.t) : Ty.t := Ty.apply (Ty.path "core::pin::Pin") [] [ P ].
     
     (*
         fn cmp(&self, other: &Self) -> cmp::Ordering {
             P::Target::cmp(self, other)
         }
     *)
-    Definition cmp (P : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition cmp (P : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self P in
-      match τ, α with
-      | [], [ self; other ] =>
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
@@ -441,7 +442,7 @@ Module pin.
               M.call_closure (|
                 M.get_trait_method (|
                   "core::ops::deref::Deref",
-                  Ty.apply (Ty.path "core::pin::Pin") [ P ],
+                  Ty.apply (Ty.path "core::pin::Pin") [] [ P ],
                   [],
                   "deref",
                   []
@@ -451,7 +452,7 @@ Module pin.
               M.call_closure (|
                 M.get_trait_method (|
                   "core::ops::deref::Deref",
-                  Ty.apply (Ty.path "core::pin::Pin") [ P ],
+                  Ty.apply (Ty.path "core::pin::Pin") [] [ P ],
                   [],
                   "deref",
                   []
@@ -460,7 +461,7 @@ Module pin.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -473,17 +474,17 @@ Module pin.
   End Impl_core_cmp_Ord_where_core_ops_deref_Deref_P_for_core_pin_Pin_P.
   
   Module Impl_core_hash_Hash_where_core_ops_deref_Deref_P_for_core_pin_Pin_P.
-    Definition Self (P : Ty.t) : Ty.t := Ty.apply (Ty.path "core::pin::Pin") [ P ].
+    Definition Self (P : Ty.t) : Ty.t := Ty.apply (Ty.path "core::pin::Pin") [] [ P ].
     
     (*
         fn hash<H: Hasher>(&self, state: &mut H) {
             P::Target::hash(self, state);
         }
     *)
-    Definition hash (P : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition hash (P : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self P in
-      match τ, α with
-      | [ H ], [ self; state ] =>
+      match ε, τ, α with
+      | [], [ H ], [ self; state ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
@@ -496,7 +497,7 @@ Module pin.
                     M.call_closure (|
                       M.get_trait_method (|
                         "core::ops::deref::Deref",
-                        Ty.apply (Ty.path "core::pin::Pin") [ P ],
+                        Ty.apply (Ty.path "core::pin::Pin") [] [ P ],
                         [],
                         "deref",
                         []
@@ -509,7 +510,7 @@ Module pin.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -522,7 +523,7 @@ Module pin.
   End Impl_core_hash_Hash_where_core_ops_deref_Deref_P_for_core_pin_Pin_P.
   
   Module Impl_core_pin_Pin_P.
-    Definition Self (P : Ty.t) : Ty.t := Ty.apply (Ty.path "core::pin::Pin") [ P ].
+    Definition Self (P : Ty.t) : Ty.t := Ty.apply (Ty.path "core::pin::Pin") [] [ P ].
     
     (*
         pub const fn new(pointer: P) -> Pin<P> {
@@ -531,21 +532,21 @@ Module pin.
             unsafe { Pin::new_unchecked(pointer) }
         }
     *)
-    Definition new (P : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition new (P : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self P in
-      match τ, α with
-      | [], [ pointer ] =>
+      match ε, τ, α with
+      | [ host ], [], [ pointer ] =>
         ltac:(M.monadic
           (let pointer := M.alloc (| pointer |) in
           M.call_closure (|
             M.get_associated_function (|
-              Ty.apply (Ty.path "core::pin::Pin") [ P ],
+              Ty.apply (Ty.path "core::pin::Pin") [] [ P ],
               "new_unchecked",
               []
             |),
             [ M.read (| pointer |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_new : forall (P : Ty.t), M.IsAssociatedFunction (Self P) "new" (new P).
@@ -555,14 +556,14 @@ Module pin.
             pin.pointer
         }
     *)
-    Definition into_inner (P : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition into_inner (P : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self P in
-      match τ, α with
-      | [], [ pin ] =>
+      match ε, τ, α with
+      | [ host ], [], [ pin ] =>
         ltac:(M.monadic
           (let pin := M.alloc (| pin |) in
           M.read (| M.SubPointer.get_struct_record_field (| pin, "core::pin::Pin", "pointer" |) |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_into_inner :
@@ -573,14 +574,14 @@ Module pin.
             Pin { pointer }
         }
     *)
-    Definition new_unchecked (P : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition new_unchecked (P : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self P in
-      match τ, α with
-      | [], [ pointer ] =>
+      match ε, τ, α with
+      | [ host ], [], [ pointer ] =>
         ltac:(M.monadic
           (let pointer := M.alloc (| pointer |) in
           Value.StructRecord "core::pin::Pin" [ ("pointer", M.read (| pointer |)) ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_new_unchecked :
@@ -593,15 +594,18 @@ Module pin.
             unsafe { Pin::new_unchecked(&*self.pointer) }
         }
     *)
-    Definition as_ref (P : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition as_ref (P : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self P in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
             M.get_associated_function (|
-              Ty.apply (Ty.path "core::pin::Pin") [ Ty.apply (Ty.path "&") [ Ty.associated ] ],
+              Ty.apply
+                (Ty.path "core::pin::Pin")
+                []
+                [ Ty.apply (Ty.path "&") [] [ Ty.associated ] ],
               "new_unchecked",
               []
             |),
@@ -618,7 +622,7 @@ Module pin.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_as_ref :
@@ -630,14 +634,19 @@ Module pin.
             pin.pointer
         }
     *)
-    Definition into_inner_unchecked (P : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition into_inner_unchecked
+        (P : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
       let Self : Ty.t := Self P in
-      match τ, α with
-      | [], [ pin ] =>
+      match ε, τ, α with
+      | [ host ], [], [ pin ] =>
         ltac:(M.monadic
           (let pin := M.alloc (| pin |) in
           M.read (| M.SubPointer.get_struct_record_field (| pin, "core::pin::Pin", "pointer" |) |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_into_inner_unchecked :
@@ -649,15 +658,18 @@ Module pin.
             unsafe { Pin::new_unchecked(&mut *self.pointer) }
         }
     *)
-    Definition as_mut (P : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition as_mut (P : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self P in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
             M.get_associated_function (|
-              Ty.apply (Ty.path "core::pin::Pin") [ Ty.apply (Ty.path "&mut") [ Ty.associated ] ],
+              Ty.apply
+                (Ty.path "core::pin::Pin")
+                []
+                [ Ty.apply (Ty.path "&mut") [] [ Ty.associated ] ],
               "new_unchecked",
               []
             |),
@@ -674,7 +686,7 @@ Module pin.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_as_mut :
@@ -689,10 +701,10 @@ Module pin.
             *(self.pointer) = value;
         }
     *)
-    Definition set (P : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition set (P : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self P in
-      match τ, α with
-      | [], [ self; value ] =>
+      match ε, τ, α with
+      | [], [], [ self; value ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let value := M.alloc (| value |) in
@@ -713,7 +725,7 @@ Module pin.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_set : forall (P : Ty.t), M.IsAssociatedFunction (Self P) "set" (set P).
@@ -723,7 +735,7 @@ Module pin.
   
   Module Impl_core_pin_Pin_ref__T.
     Definition Self (T : Ty.t) : Ty.t :=
-      Ty.apply (Ty.path "core::pin::Pin") [ Ty.apply (Ty.path "&") [ T ] ].
+      Ty.apply (Ty.path "core::pin::Pin") [] [ Ty.apply (Ty.path "&") [] [ T ] ].
     
     (*
         pub unsafe fn map_unchecked<U, F>(self, func: F) -> Pin<&'a U>
@@ -739,10 +751,10 @@ Module pin.
             unsafe { Pin::new_unchecked(new_pointer) }
         }
     *)
-    Definition map_unchecked (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition map_unchecked (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [ U; F ], [ self; func ] =>
+      match ε, τ, α with
+      | [], [ U; F ], [ self; func ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let func := M.alloc (| func |) in
@@ -759,7 +771,7 @@ Module pin.
                   M.get_trait_method (|
                     "core::ops::function::FnOnce",
                     F,
-                    [ Ty.tuple [ Ty.apply (Ty.path "&") [ T ] ] ],
+                    [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ] ],
                     "call_once",
                     []
                   |),
@@ -769,7 +781,7 @@ Module pin.
             M.alloc (|
               M.call_closure (|
                 M.get_associated_function (|
-                  Ty.apply (Ty.path "core::pin::Pin") [ Ty.apply (Ty.path "&") [ U ] ],
+                  Ty.apply (Ty.path "core::pin::Pin") [] [ Ty.apply (Ty.path "&") [] [ U ] ],
                   "new_unchecked",
                   []
                 |),
@@ -777,7 +789,7 @@ Module pin.
               |)
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_map_unchecked :
@@ -789,16 +801,16 @@ Module pin.
             self.pointer
         }
     *)
-    Definition get_ref (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition get_ref (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [ host ], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
             M.SubPointer.get_struct_record_field (| self, "core::pin::Pin", "pointer" |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_get_ref :
@@ -811,21 +823,21 @@ Module pin.
             unsafe { Pin::new_unchecked(r) }
         }
     *)
-    Definition static_ref (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition static_ref (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [ r ] =>
+      match ε, τ, α with
+      | [ host ], [], [ r ] =>
         ltac:(M.monadic
           (let r := M.alloc (| r |) in
           M.call_closure (|
             M.get_associated_function (|
-              Ty.apply (Ty.path "core::pin::Pin") [ Ty.apply (Ty.path "&") [ T ] ],
+              Ty.apply (Ty.path "core::pin::Pin") [] [ Ty.apply (Ty.path "&") [] [ T ] ],
               "new_unchecked",
               []
             |),
             [ M.read (| r |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_static_ref :
@@ -835,17 +847,17 @@ Module pin.
   
   Module Impl_core_pin_Pin_ref_mut_T.
     Definition Self (T : Ty.t) : Ty.t :=
-      Ty.apply (Ty.path "core::pin::Pin") [ Ty.apply (Ty.path "&mut") [ T ] ].
+      Ty.apply (Ty.path "core::pin::Pin") [] [ Ty.apply (Ty.path "&mut") [] [ T ] ].
     
     (*
         pub const fn into_ref(self) -> Pin<&'a T> {
             Pin { pointer: self.pointer }
         }
     *)
-    Definition into_ref (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition into_ref (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [ host ], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           Value.StructRecord
@@ -856,7 +868,7 @@ Module pin.
                   M.SubPointer.get_struct_record_field (| self, "core::pin::Pin", "pointer" |)
                 |))
             ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_into_ref :
@@ -871,16 +883,16 @@ Module pin.
             self.pointer
         }
     *)
-    Definition get_mut (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition get_mut (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [ host ], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
             M.SubPointer.get_struct_record_field (| self, "core::pin::Pin", "pointer" |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_get_mut :
@@ -892,16 +904,21 @@ Module pin.
             self.pointer
         }
     *)
-    Definition get_unchecked_mut (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition get_unchecked_mut
+        (T : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [ host ], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
             M.SubPointer.get_struct_record_field (| self, "core::pin::Pin", "pointer" |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_get_unchecked_mut :
@@ -923,10 +940,15 @@ Module pin.
             unsafe { Pin::new_unchecked(new_pointer) }
         }
     *)
-    Definition map_unchecked_mut (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition map_unchecked_mut
+        (T : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [ U; F ], [ self; func ] =>
+      match ε, τ, α with
+      | [], [ U; F ], [ self; func ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let func := M.alloc (| func |) in
@@ -935,7 +957,7 @@ Module pin.
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::pin::Pin") [ Ty.apply (Ty.path "&mut") [ T ] ],
+                    Ty.apply (Ty.path "core::pin::Pin") [] [ Ty.apply (Ty.path "&mut") [] [ T ] ],
                     "get_unchecked_mut",
                     []
                   |),
@@ -948,7 +970,7 @@ Module pin.
                   M.get_trait_method (|
                     "core::ops::function::FnOnce",
                     F,
-                    [ Ty.tuple [ Ty.apply (Ty.path "&mut") [ T ] ] ],
+                    [ Ty.tuple [ Ty.apply (Ty.path "&mut") [] [ T ] ] ],
                     "call_once",
                     []
                   |),
@@ -958,7 +980,7 @@ Module pin.
             M.alloc (|
               M.call_closure (|
                 M.get_associated_function (|
-                  Ty.apply (Ty.path "core::pin::Pin") [ Ty.apply (Ty.path "&mut") [ U ] ],
+                  Ty.apply (Ty.path "core::pin::Pin") [] [ Ty.apply (Ty.path "&mut") [] [ U ] ],
                   "new_unchecked",
                   []
                 |),
@@ -966,7 +988,7 @@ Module pin.
               |)
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_map_unchecked_mut :
@@ -979,21 +1001,21 @@ Module pin.
             unsafe { Pin::new_unchecked(r) }
         }
     *)
-    Definition static_mut (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition static_mut (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [ r ] =>
+      match ε, τ, α with
+      | [ host ], [], [ r ] =>
         ltac:(M.monadic
           (let r := M.alloc (| r |) in
           M.call_closure (|
             M.get_associated_function (|
-              Ty.apply (Ty.path "core::pin::Pin") [ Ty.apply (Ty.path "&mut") [ T ] ],
+              Ty.apply (Ty.path "core::pin::Pin") [] [ Ty.apply (Ty.path "&mut") [] [ T ] ],
               "new_unchecked",
               []
             |),
             [ M.read (| r |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_static_mut :
@@ -1006,7 +1028,8 @@ Module pin.
     Definition Self (P : Ty.t) : Ty.t :=
       Ty.apply
         (Ty.path "core::pin::Pin")
-        [ Ty.apply (Ty.path "&mut") [ Ty.apply (Ty.path "core::pin::Pin") [ P ] ] ].
+        []
+        [ Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "core::pin::Pin") [] [ P ] ] ].
     
     (*
         pub fn as_deref_mut(self) -> Pin<&'a mut P::Target> {
@@ -1036,20 +1059,26 @@ Module pin.
             unsafe { self.get_unchecked_mut() }.as_mut()
         }
     *)
-    Definition as_deref_mut (P : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition as_deref_mut (P : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self P in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.apply (Ty.path "core::pin::Pin") [ P ], "as_mut", [] |),
+            M.get_associated_function (|
+              Ty.apply (Ty.path "core::pin::Pin") [] [ P ],
+              "as_mut",
+              []
+            |),
             [
               M.call_closure (|
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "core::pin::Pin")
-                    [ Ty.apply (Ty.path "&mut") [ Ty.apply (Ty.path "core::pin::Pin") [ P ] ] ],
+                    []
+                    [ Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "core::pin::Pin") [] [ P ] ]
+                    ],
                   "get_unchecked_mut",
                   []
                 |),
@@ -1057,7 +1086,7 @@ Module pin.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_as_deref_mut :
@@ -1067,7 +1096,7 @@ Module pin.
   
   
   Module Impl_core_ops_deref_Deref_where_core_ops_deref_Deref_P_for_core_pin_Pin_P.
-    Definition Self (P : Ty.t) : Ty.t := Ty.apply (Ty.path "core::pin::Pin") [ P ].
+    Definition Self (P : Ty.t) : Ty.t := Ty.apply (Ty.path "core::pin::Pin") [] [ P ].
     
     (*     type Target = P::Target; *)
     Definition _Target (P : Ty.t) : Ty.t := Ty.associated.
@@ -1077,22 +1106,25 @@ Module pin.
             Pin::get_ref(Pin::as_ref(self))
         }
     *)
-    Definition deref (P : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition deref (P : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self P in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
             M.get_associated_function (|
-              Ty.apply (Ty.path "core::pin::Pin") [ Ty.apply (Ty.path "&") [ Ty.associated ] ],
+              Ty.apply
+                (Ty.path "core::pin::Pin")
+                []
+                [ Ty.apply (Ty.path "&") [] [ Ty.associated ] ],
               "get_ref",
               []
             |),
             [
               M.call_closure (|
                 M.get_associated_function (|
-                  Ty.apply (Ty.path "core::pin::Pin") [ P ],
+                  Ty.apply (Ty.path "core::pin::Pin") [] [ P ],
                   "as_ref",
                   []
                 |),
@@ -1100,7 +1132,7 @@ Module pin.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -1114,29 +1146,32 @@ Module pin.
   End Impl_core_ops_deref_Deref_where_core_ops_deref_Deref_P_for_core_pin_Pin_P.
   
   Module Impl_core_ops_deref_DerefMut_where_core_ops_deref_DerefMut_P_for_core_pin_Pin_P.
-    Definition Self (P : Ty.t) : Ty.t := Ty.apply (Ty.path "core::pin::Pin") [ P ].
+    Definition Self (P : Ty.t) : Ty.t := Ty.apply (Ty.path "core::pin::Pin") [] [ P ].
     
     (*
         fn deref_mut(&mut self) -> &mut P::Target {
             Pin::get_mut(Pin::as_mut(self))
         }
     *)
-    Definition deref_mut (P : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition deref_mut (P : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self P in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
             M.get_associated_function (|
-              Ty.apply (Ty.path "core::pin::Pin") [ Ty.apply (Ty.path "&mut") [ Ty.associated ] ],
+              Ty.apply
+                (Ty.path "core::pin::Pin")
+                []
+                [ Ty.apply (Ty.path "&mut") [] [ Ty.associated ] ],
               "get_mut",
               []
             |),
             [
               M.call_closure (|
                 M.get_associated_function (|
-                  Ty.apply (Ty.path "core::pin::Pin") [ P ],
+                  Ty.apply (Ty.path "core::pin::Pin") [] [ P ],
                   "as_mut",
                   []
                 |),
@@ -1144,7 +1179,7 @@ Module pin.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -1157,7 +1192,7 @@ Module pin.
   End Impl_core_ops_deref_DerefMut_where_core_ops_deref_DerefMut_P_for_core_pin_Pin_P.
   
   Module Impl_core_ops_deref_Receiver_where_core_ops_deref_Receiver_P_for_core_pin_Pin_P.
-    Definition Self (P : Ty.t) : Ty.t := Ty.apply (Ty.path "core::pin::Pin") [ P ].
+    Definition Self (P : Ty.t) : Ty.t := Ty.apply (Ty.path "core::pin::Pin") [] [ P ].
     
     Axiom Implements :
       forall (P : Ty.t),
@@ -1169,17 +1204,17 @@ Module pin.
   End Impl_core_ops_deref_Receiver_where_core_ops_deref_Receiver_P_for_core_pin_Pin_P.
   
   Module Impl_core_fmt_Debug_where_core_fmt_Debug_P_for_core_pin_Pin_P.
-    Definition Self (P : Ty.t) : Ty.t := Ty.apply (Ty.path "core::pin::Pin") [ P ].
+    Definition Self (P : Ty.t) : Ty.t := Ty.apply (Ty.path "core::pin::Pin") [] [ P ].
     
     (*
         fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
             fmt::Debug::fmt(&self.pointer, f)
         }
     *)
-    Definition fmt (P : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition fmt (P : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self P in
-      match τ, α with
-      | [], [ self; f ] =>
+      match ε, τ, α with
+      | [], [], [ self; f ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
@@ -1194,7 +1229,7 @@ Module pin.
               M.read (| f |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -1207,17 +1242,17 @@ Module pin.
   End Impl_core_fmt_Debug_where_core_fmt_Debug_P_for_core_pin_Pin_P.
   
   Module Impl_core_fmt_Display_where_core_fmt_Display_P_for_core_pin_Pin_P.
-    Definition Self (P : Ty.t) : Ty.t := Ty.apply (Ty.path "core::pin::Pin") [ P ].
+    Definition Self (P : Ty.t) : Ty.t := Ty.apply (Ty.path "core::pin::Pin") [] [ P ].
     
     (*
         fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
             fmt::Display::fmt(&self.pointer, f)
         }
     *)
-    Definition fmt (P : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition fmt (P : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self P in
-      match τ, α with
-      | [], [ self; f ] =>
+      match ε, τ, α with
+      | [], [], [ self; f ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
@@ -1232,7 +1267,7 @@ Module pin.
               M.read (| f |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -1245,17 +1280,17 @@ Module pin.
   End Impl_core_fmt_Display_where_core_fmt_Display_P_for_core_pin_Pin_P.
   
   Module Impl_core_fmt_Pointer_where_core_fmt_Pointer_P_for_core_pin_Pin_P.
-    Definition Self (P : Ty.t) : Ty.t := Ty.apply (Ty.path "core::pin::Pin") [ P ].
+    Definition Self (P : Ty.t) : Ty.t := Ty.apply (Ty.path "core::pin::Pin") [] [ P ].
     
     (*
         fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
             fmt::Pointer::fmt(&self.pointer, f)
         }
     *)
-    Definition fmt (P : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition fmt (P : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self P in
-      match τ, α with
-      | [], [ self; f ] =>
+      match ε, τ, α with
+      | [], [], [ self; f ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
@@ -1270,7 +1305,7 @@ Module pin.
               M.read (| f |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -1283,26 +1318,26 @@ Module pin.
   End Impl_core_fmt_Pointer_where_core_fmt_Pointer_P_for_core_pin_Pin_P.
   
   Module Impl_core_ops_unsize_CoerceUnsized_where_core_ops_unsize_CoerceUnsized_P_U_core_pin_Pin_U_for_core_pin_Pin_P.
-    Definition Self (P U : Ty.t) : Ty.t := Ty.apply (Ty.path "core::pin::Pin") [ P ].
+    Definition Self (P U : Ty.t) : Ty.t := Ty.apply (Ty.path "core::pin::Pin") [] [ P ].
     
     Axiom Implements :
       forall (P U : Ty.t),
       M.IsTraitInstance
         "core::ops::unsize::CoerceUnsized"
         (Self P U)
-        (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "core::pin::Pin") [ U ] ]
+        (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "core::pin::Pin") [] [ U ] ]
         (* Instance *) [].
   End Impl_core_ops_unsize_CoerceUnsized_where_core_ops_unsize_CoerceUnsized_P_U_core_pin_Pin_U_for_core_pin_Pin_P.
   
   Module Impl_core_ops_unsize_DispatchFromDyn_where_core_ops_unsize_DispatchFromDyn_P_U_core_pin_Pin_U_for_core_pin_Pin_P.
-    Definition Self (P U : Ty.t) : Ty.t := Ty.apply (Ty.path "core::pin::Pin") [ P ].
+    Definition Self (P U : Ty.t) : Ty.t := Ty.apply (Ty.path "core::pin::Pin") [] [ P ].
     
     Axiom Implements :
       forall (P U : Ty.t),
       M.IsTraitInstance
         "core::ops::unsize::DispatchFromDyn"
         (Self P U)
-        (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "core::pin::Pin") [ U ] ]
+        (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "core::pin::Pin") [] [ U ] ]
         (* Instance *) [].
   End Impl_core_ops_unsize_DispatchFromDyn_where_core_ops_unsize_DispatchFromDyn_P_U_core_pin_Pin_U_for_core_pin_Pin_P.
 End pin.

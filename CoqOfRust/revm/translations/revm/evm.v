@@ -8,19 +8,21 @@ Module evm.
   (* StructRecord
     {
       name := "Evm";
+      const_params := [];
       ty_params := [ "EXT"; "DB" ];
       fields :=
         [
-          ("context", Ty.apply (Ty.path "revm::context::Context") [ EXT; DB ]);
+          ("context", Ty.apply (Ty.path "revm::context::Context") [] [ EXT; DB ]);
           ("handler",
             Ty.apply
               (Ty.path "revm::handler::Handler")
-              [ Ty.apply (Ty.path "revm::evm::Evm") [ EXT; DB ]; EXT; DB ])
+              []
+              [ Ty.apply (Ty.path "revm::evm::Evm") [] [ EXT; DB ]; EXT; DB ])
         ];
     } *)
   
   Module Impl_core_fmt_Debug_where_core_fmt_Debug_EXT_where_revm_primitives_db_Database_DB_where_core_fmt_Debug_DB_where_core_fmt_Debug_associated_type_for_revm_evm_Evm_EXT_DB.
-    Definition Self (EXT DB : Ty.t) : Ty.t := Ty.apply (Ty.path "revm::evm::Evm") [ EXT; DB ].
+    Definition Self (EXT DB : Ty.t) : Ty.t := Ty.apply (Ty.path "revm::evm::Evm") [] [ EXT; DB ].
     
     (*
         fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
@@ -29,10 +31,10 @@ Module evm.
                 .finish_non_exhaustive()
         }
     *)
-    Definition fmt (EXT DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition fmt (EXT DB : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self EXT DB in
-      match τ, α with
-      | [], [ self; f ] =>
+      match ε, τ, α with
+      | [], [], [ self; f ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
@@ -76,7 +78,7 @@ Module evm.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -89,7 +91,7 @@ Module evm.
   End Impl_core_fmt_Debug_where_core_fmt_Debug_EXT_where_revm_primitives_db_Database_DB_where_core_fmt_Debug_DB_where_core_fmt_Debug_associated_type_for_revm_evm_Evm_EXT_DB.
   
   Module Impl_revm_evm_Evm_EXT_DB.
-    Definition Self (EXT DB : Ty.t) : Ty.t := Ty.apply (Ty.path "revm::evm::Evm") [ EXT; DB ].
+    Definition Self (EXT DB : Ty.t) : Ty.t := Ty.apply (Ty.path "revm::evm::Evm") [] [ EXT; DB ].
     
     (*
         pub fn transact_commit(&mut self) -> Result<ExecutionResult, EVMError<DB::Error>> {
@@ -98,10 +100,15 @@ Module evm.
             Ok(result)
         }
     *)
-    Definition transact_commit (EXT DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition transact_commit
+        (EXT DB : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
       let Self : Ty.t := Self EXT DB in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.catch_return (|
@@ -115,10 +122,12 @@ Module evm.
                           "core::ops::try_trait::Try",
                           Ty.apply
                             (Ty.path "core::result::Result")
+                            []
                             [
                               Ty.path "revm_primitives::result::ResultAndState";
                               Ty.apply
                                 (Ty.path "revm_primitives::result::EVMError")
+                                []
                                 [ Ty.associated ]
                             ],
                           [],
@@ -128,7 +137,7 @@ Module evm.
                         [
                           M.call_closure (|
                             M.get_associated_function (|
-                              Ty.apply (Ty.path "revm::evm::Evm") [ EXT; DB ],
+                              Ty.apply (Ty.path "revm::evm::Evm") [] [ EXT; DB ],
                               "transact",
                               []
                             |),
@@ -156,19 +165,23 @@ Module evm.
                                       "core::ops::try_trait::FromResidual",
                                       Ty.apply
                                         (Ty.path "core::result::Result")
+                                        []
                                         [
                                           Ty.path "revm_primitives::result::ExecutionResult";
                                           Ty.apply
                                             (Ty.path "revm_primitives::result::EVMError")
+                                            []
                                             [ Ty.associated ]
                                         ],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
+                                          []
                                           [
                                             Ty.path "core::convert::Infallible";
                                             Ty.apply
                                               (Ty.path "revm_primitives::result::EVMError")
+                                              []
                                               [ Ty.associated ]
                                           ]
                                       ],
@@ -227,6 +240,7 @@ Module evm.
                                       "core::ops::deref::DerefMut",
                                       Ty.apply
                                         (Ty.path "revm::context::evm_context::EvmContext")
+                                        []
                                         [ DB ],
                                       [],
                                       "deref_mut",
@@ -258,7 +272,7 @@ Module evm.
                 |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_transact_commit :
@@ -273,10 +287,10 @@ Module evm.
             Evm { context, handler }
         }
     *)
-    Definition new (EXT DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition new (EXT DB : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self EXT DB in
-      match τ, α with
-      | [], [ context; handler ] =>
+      match ε, τ, α with
+      | [], [], [ context; handler ] =>
         ltac:(M.monadic
           (let context := M.alloc (| context |) in
           let handler := M.alloc (| handler |) in
@@ -294,7 +308,7 @@ Module evm.
                       M.call_closure (|
                         M.get_trait_method (|
                           "core::ops::deref::DerefMut",
-                          Ty.apply (Ty.path "revm::context::evm_context::EvmContext") [ DB ],
+                          Ty.apply (Ty.path "revm::context::evm_context::EvmContext") [] [ DB ],
                           [],
                           "deref_mut",
                           []
@@ -330,7 +344,7 @@ Module evm.
                 [ ("context", M.read (| context |)); ("handler", M.read (| handler |)) ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_new :
@@ -342,23 +356,24 @@ Module evm.
             EvmBuilder::new(self)
         }
     *)
-    Definition modify (EXT DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition modify (EXT DB : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self EXT DB in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
             M.get_associated_function (|
               Ty.apply
                 (Ty.path "revm::builder::EvmBuilder")
+                []
                 [ Ty.path "revm::builder::HandlerStage"; EXT; DB ],
               "new",
               []
             |),
             [ M.read (| self |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_modify :
@@ -369,10 +384,10 @@ Module evm.
             self.handler.cfg.spec_id
         }
     *)
-    Definition spec_id (EXT DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition spec_id (EXT DB : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self EXT DB in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -390,7 +405,7 @@ Module evm.
               "spec_id"
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_spec_id :
@@ -404,10 +419,15 @@ Module evm.
             output
         }
     *)
-    Definition preverify_transaction (EXT DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition preverify_transaction
+        (EXT DB : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
       let Self : Ty.t := Self EXT DB in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -417,9 +437,10 @@ Module evm.
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "core::result::Result")
+                      []
                       [
                         Ty.path "u64";
-                        Ty.apply (Ty.path "revm_primitives::result::EVMError") [ Ty.associated ]
+                        Ty.apply (Ty.path "revm_primitives::result::EVMError") [] [ Ty.associated ]
                       ],
                     "map",
                     [ Ty.tuple []; Ty.function [ Ty.tuple [ Ty.path "u64" ] ] (Ty.tuple []) ]
@@ -427,7 +448,7 @@ Module evm.
                   [
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "revm::evm::Evm") [ EXT; DB ],
+                        Ty.apply (Ty.path "revm::evm::Evm") [] [ EXT; DB ],
                         "preverify_transaction_inner",
                         []
                       |),
@@ -451,7 +472,7 @@ Module evm.
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "revm::evm::Evm") [ EXT; DB ],
+                    Ty.apply (Ty.path "revm::evm::Evm") [] [ EXT; DB ],
                     "clear",
                     []
                   |),
@@ -460,7 +481,7 @@ Module evm.
               |) in
             output
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_preverify_transaction :
@@ -472,10 +493,10 @@ Module evm.
             self.handler.post_execution().clear(&mut self.context);
         }
     *)
-    Definition clear (EXT DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition clear (EXT DB : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self EXT DB in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -485,6 +506,7 @@ Module evm.
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "revm::handler::handle_types::post_execution::PostExecutionHandler")
+                      []
                       [ EXT; DB ],
                     "clear",
                     []
@@ -494,7 +516,8 @@ Module evm.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "revm::handler::Handler")
-                          [ Ty.apply (Ty.path "revm::evm::Evm") [ EXT; DB ]; EXT; DB ],
+                          []
+                          [ Ty.apply (Ty.path "revm::evm::Evm") [] [ EXT; DB ]; EXT; DB ],
                         "post_execution",
                         []
                       |),
@@ -516,7 +539,7 @@ Module evm.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_clear :
@@ -539,10 +562,15 @@ Module evm.
             output
         }
     *)
-    Definition transact_preverified (EXT DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition transact_preverified
+        (EXT DB : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
       let Self : Ty.t := Self EXT DB in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.catch_return (|
@@ -557,10 +585,12 @@ Module evm.
                             "core::ops::try_trait::Try",
                             Ty.apply
                               (Ty.path "core::result::Result")
+                              []
                               [
                                 Ty.path "u64";
                                 Ty.apply
                                   (Ty.path "revm_primitives::result::EVMError")
+                                  []
                                   [ Ty.associated ]
                               ],
                             [],
@@ -572,16 +602,19 @@ Module evm.
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "core::result::Result")
+                                  []
                                   [
                                     Ty.path "u64";
                                     Ty.apply
                                       (Ty.path "revm_primitives::result::EVMError")
+                                      []
                                       [ Ty.associated ]
                                   ],
                                 "map_err",
                                 [
                                   Ty.apply
                                     (Ty.path "revm_primitives::result::EVMError")
+                                    []
                                     [ Ty.associated ];
                                   Ty.function
                                     [
@@ -589,11 +622,13 @@ Module evm.
                                         [
                                           Ty.apply
                                             (Ty.path "revm_primitives::result::EVMError")
+                                            []
                                             [ Ty.associated ]
                                         ]
                                     ]
                                     (Ty.apply
                                       (Ty.path "revm_primitives::result::EVMError")
+                                      []
                                       [ Ty.associated ])
                                 ]
                               |),
@@ -603,6 +638,7 @@ Module evm.
                                     Ty.apply
                                       (Ty.path
                                         "revm::handler::handle_types::validation::ValidationHandler")
+                                      []
                                       [ EXT; DB ],
                                     "initial_tx_gas",
                                     []
@@ -612,7 +648,11 @@ Module evm.
                                       M.get_associated_function (|
                                         Ty.apply
                                           (Ty.path "revm::handler::Handler")
-                                          [ Ty.apply (Ty.path "revm::evm::Evm") [ EXT; DB ]; EXT; DB
+                                          []
+                                          [
+                                            Ty.apply (Ty.path "revm::evm::Evm") [] [ EXT; DB ];
+                                            EXT;
+                                            DB
                                           ],
                                         "validation",
                                         []
@@ -632,6 +672,7 @@ Module evm.
                                             "core::ops::deref::Deref",
                                             Ty.apply
                                               (Ty.path "revm::context::evm_context::EvmContext")
+                                              []
                                               [ DB ],
                                             [],
                                             "deref",
@@ -673,6 +714,7 @@ Module evm.
                                                         M.get_associated_function (|
                                                           Ty.apply
                                                             (Ty.path "revm::evm::Evm")
+                                                            []
                                                             [ EXT; DB ],
                                                           "clear",
                                                           []
@@ -710,19 +752,23 @@ Module evm.
                                         "core::ops::try_trait::FromResidual",
                                         Ty.apply
                                           (Ty.path "core::result::Result")
+                                          []
                                           [
                                             Ty.path "revm_primitives::result::ResultAndState";
                                             Ty.apply
                                               (Ty.path "revm_primitives::result::EVMError")
+                                              []
                                               [ Ty.associated ]
                                           ],
                                         [
                                           Ty.apply
                                             (Ty.path "core::result::Result")
+                                            []
                                             [
                                               Ty.path "core::convert::Infallible";
                                               Ty.apply
                                                 (Ty.path "revm_primitives::result::EVMError")
+                                                []
                                                 [ Ty.associated ]
                                             ]
                                         ],
@@ -752,7 +798,7 @@ Module evm.
                   M.alloc (|
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "revm::evm::Evm") [ EXT; DB ],
+                        Ty.apply (Ty.path "revm::evm::Evm") [] [ EXT; DB ],
                         "transact_preverified_inner",
                         []
                       |),
@@ -766,6 +812,7 @@ Module evm.
                         Ty.apply
                           (Ty.path
                             "revm::handler::handle_types::post_execution::PostExecutionHandler")
+                          []
                           [ EXT; DB ],
                         "end",
                         []
@@ -775,7 +822,8 @@ Module evm.
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "revm::handler::Handler")
-                              [ Ty.apply (Ty.path "revm::evm::Evm") [ EXT; DB ]; EXT; DB ],
+                              []
+                              [ Ty.apply (Ty.path "revm::evm::Evm") [] [ EXT; DB ]; EXT; DB ],
                             "post_execution",
                             []
                           |),
@@ -800,7 +848,7 @@ Module evm.
                   M.alloc (|
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "revm::evm::Evm") [ EXT; DB ],
+                        Ty.apply (Ty.path "revm::evm::Evm") [] [ EXT; DB ],
                         "clear",
                         []
                       |),
@@ -810,7 +858,7 @@ Module evm.
                 output
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_transact_preverified :
@@ -830,10 +878,15 @@ Module evm.
             Ok(initial_gas_spend)
         }
     *)
-    Definition preverify_transaction_inner (EXT DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition preverify_transaction_inner
+        (EXT DB : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
       let Self : Ty.t := Self EXT DB in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.catch_return (|
@@ -847,10 +900,12 @@ Module evm.
                           "core::ops::try_trait::Try",
                           Ty.apply
                             (Ty.path "core::result::Result")
+                            []
                             [
                               Ty.tuple [];
                               Ty.apply
                                 (Ty.path "revm_primitives::result::EVMError")
+                                []
                                 [ Ty.associated ]
                             ],
                           [],
@@ -863,6 +918,7 @@ Module evm.
                               Ty.apply
                                 (Ty.path
                                   "revm::handler::handle_types::validation::ValidationHandler")
+                                []
                                 [ EXT; DB ],
                               "env",
                               []
@@ -872,7 +928,8 @@ Module evm.
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "revm::handler::Handler")
-                                    [ Ty.apply (Ty.path "revm::evm::Evm") [ EXT; DB ]; EXT; DB ],
+                                    []
+                                    [ Ty.apply (Ty.path "revm::evm::Evm") [] [ EXT; DB ]; EXT; DB ],
                                   "validation",
                                   []
                                 |),
@@ -891,6 +948,7 @@ Module evm.
                                       "core::ops::deref::Deref",
                                       Ty.apply
                                         (Ty.path "revm::context::evm_context::EvmContext")
+                                        []
                                         [ DB ],
                                       [],
                                       "deref",
@@ -936,19 +994,23 @@ Module evm.
                                       "core::ops::try_trait::FromResidual",
                                       Ty.apply
                                         (Ty.path "core::result::Result")
+                                        []
                                         [
                                           Ty.path "u64";
                                           Ty.apply
                                             (Ty.path "revm_primitives::result::EVMError")
+                                            []
                                             [ Ty.associated ]
                                         ],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
+                                          []
                                           [
                                             Ty.path "core::convert::Infallible";
                                             Ty.apply
                                               (Ty.path "revm_primitives::result::EVMError")
+                                              []
                                               [ Ty.associated ]
                                           ]
                                       ],
@@ -982,10 +1044,12 @@ Module evm.
                             "core::ops::try_trait::Try",
                             Ty.apply
                               (Ty.path "core::result::Result")
+                              []
                               [
                                 Ty.path "u64";
                                 Ty.apply
                                   (Ty.path "revm_primitives::result::EVMError")
+                                  []
                                   [ Ty.associated ]
                               ],
                             [],
@@ -998,6 +1062,7 @@ Module evm.
                                 Ty.apply
                                   (Ty.path
                                     "revm::handler::handle_types::validation::ValidationHandler")
+                                  []
                                   [ EXT; DB ],
                                 "initial_tx_gas",
                                 []
@@ -1007,7 +1072,9 @@ Module evm.
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "revm::handler::Handler")
-                                      [ Ty.apply (Ty.path "revm::evm::Evm") [ EXT; DB ]; EXT; DB ],
+                                      []
+                                      [ Ty.apply (Ty.path "revm::evm::Evm") [] [ EXT; DB ]; EXT; DB
+                                      ],
                                     "validation",
                                     []
                                   |),
@@ -1026,6 +1093,7 @@ Module evm.
                                         "core::ops::deref::Deref",
                                         Ty.apply
                                           (Ty.path "revm::context::evm_context::EvmContext")
+                                          []
                                           [ DB ],
                                         [],
                                         "deref",
@@ -1071,19 +1139,23 @@ Module evm.
                                         "core::ops::try_trait::FromResidual",
                                         Ty.apply
                                           (Ty.path "core::result::Result")
+                                          []
                                           [
                                             Ty.path "u64";
                                             Ty.apply
                                               (Ty.path "revm_primitives::result::EVMError")
+                                              []
                                               [ Ty.associated ]
                                           ],
                                         [
                                           Ty.apply
                                             (Ty.path "core::result::Result")
+                                            []
                                             [
                                               Ty.path "core::convert::Infallible";
                                               Ty.apply
                                                 (Ty.path "revm_primitives::result::EVMError")
+                                                []
                                                 [ Ty.associated ]
                                             ]
                                         ],
@@ -1117,10 +1189,12 @@ Module evm.
                           "core::ops::try_trait::Try",
                           Ty.apply
                             (Ty.path "core::result::Result")
+                            []
                             [
                               Ty.tuple [];
                               Ty.apply
                                 (Ty.path "revm_primitives::result::EVMError")
+                                []
                                 [ Ty.associated ]
                             ],
                           [],
@@ -1133,6 +1207,7 @@ Module evm.
                               Ty.apply
                                 (Ty.path
                                   "revm::handler::handle_types::validation::ValidationHandler")
+                                []
                                 [ EXT; DB ],
                               "tx_against_state",
                               []
@@ -1142,7 +1217,8 @@ Module evm.
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "revm::handler::Handler")
-                                    [ Ty.apply (Ty.path "revm::evm::Evm") [ EXT; DB ]; EXT; DB ],
+                                    []
+                                    [ Ty.apply (Ty.path "revm::evm::Evm") [] [ EXT; DB ]; EXT; DB ],
                                   "validation",
                                   []
                                 |),
@@ -1183,19 +1259,23 @@ Module evm.
                                       "core::ops::try_trait::FromResidual",
                                       Ty.apply
                                         (Ty.path "core::result::Result")
+                                        []
                                         [
                                           Ty.path "u64";
                                           Ty.apply
                                             (Ty.path "revm_primitives::result::EVMError")
+                                            []
                                             [ Ty.associated ]
                                         ],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
+                                          []
                                           [
                                             Ty.path "core::convert::Infallible";
                                             Ty.apply
                                               (Ty.path "revm_primitives::result::EVMError")
+                                              []
                                               [ Ty.associated ]
                                           ]
                                       ],
@@ -1225,7 +1305,7 @@ Module evm.
                 |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_preverify_transaction_inner :
@@ -1248,10 +1328,10 @@ Module evm.
             output
         }
     *)
-    Definition transact (EXT DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition transact (EXT DB : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self EXT DB in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.catch_return (|
@@ -1266,10 +1346,12 @@ Module evm.
                             "core::ops::try_trait::Try",
                             Ty.apply
                               (Ty.path "core::result::Result")
+                              []
                               [
                                 Ty.path "u64";
                                 Ty.apply
                                   (Ty.path "revm_primitives::result::EVMError")
+                                  []
                                   [ Ty.associated ]
                               ],
                             [],
@@ -1281,16 +1363,19 @@ Module evm.
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "core::result::Result")
+                                  []
                                   [
                                     Ty.path "u64";
                                     Ty.apply
                                       (Ty.path "revm_primitives::result::EVMError")
+                                      []
                                       [ Ty.associated ]
                                   ],
                                 "map_err",
                                 [
                                   Ty.apply
                                     (Ty.path "revm_primitives::result::EVMError")
+                                    []
                                     [ Ty.associated ];
                                   Ty.function
                                     [
@@ -1298,18 +1383,20 @@ Module evm.
                                         [
                                           Ty.apply
                                             (Ty.path "revm_primitives::result::EVMError")
+                                            []
                                             [ Ty.associated ]
                                         ]
                                     ]
                                     (Ty.apply
                                       (Ty.path "revm_primitives::result::EVMError")
+                                      []
                                       [ Ty.associated ])
                                 ]
                               |),
                               [
                                 M.call_closure (|
                                   M.get_associated_function (|
-                                    Ty.apply (Ty.path "revm::evm::Evm") [ EXT; DB ],
+                                    Ty.apply (Ty.path "revm::evm::Evm") [] [ EXT; DB ],
                                     "preverify_transaction_inner",
                                     []
                                   |),
@@ -1333,6 +1420,7 @@ Module evm.
                                                         M.get_associated_function (|
                                                           Ty.apply
                                                             (Ty.path "revm::evm::Evm")
+                                                            []
                                                             [ EXT; DB ],
                                                           "clear",
                                                           []
@@ -1370,19 +1458,23 @@ Module evm.
                                         "core::ops::try_trait::FromResidual",
                                         Ty.apply
                                           (Ty.path "core::result::Result")
+                                          []
                                           [
                                             Ty.path "revm_primitives::result::ResultAndState";
                                             Ty.apply
                                               (Ty.path "revm_primitives::result::EVMError")
+                                              []
                                               [ Ty.associated ]
                                           ],
                                         [
                                           Ty.apply
                                             (Ty.path "core::result::Result")
+                                            []
                                             [
                                               Ty.path "core::convert::Infallible";
                                               Ty.apply
                                                 (Ty.path "revm_primitives::result::EVMError")
+                                                []
                                                 [ Ty.associated ]
                                             ]
                                         ],
@@ -1412,7 +1504,7 @@ Module evm.
                   M.alloc (|
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "revm::evm::Evm") [ EXT; DB ],
+                        Ty.apply (Ty.path "revm::evm::Evm") [] [ EXT; DB ],
                         "transact_preverified_inner",
                         []
                       |),
@@ -1426,6 +1518,7 @@ Module evm.
                         Ty.apply
                           (Ty.path
                             "revm::handler::handle_types::post_execution::PostExecutionHandler")
+                          []
                           [ EXT; DB ],
                         "end",
                         []
@@ -1435,7 +1528,8 @@ Module evm.
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "revm::handler::Handler")
-                              [ Ty.apply (Ty.path "revm::evm::Evm") [ EXT; DB ]; EXT; DB ],
+                              []
+                              [ Ty.apply (Ty.path "revm::evm::Evm") [] [ EXT; DB ]; EXT; DB ],
                             "post_execution",
                             []
                           |),
@@ -1460,7 +1554,7 @@ Module evm.
                   M.alloc (|
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "revm::evm::Evm") [ EXT; DB ],
+                        Ty.apply (Ty.path "revm::evm::Evm") [] [ EXT; DB ],
                         "clear",
                         []
                       |),
@@ -1470,7 +1564,7 @@ Module evm.
                 output
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_transact :
@@ -1482,10 +1576,15 @@ Module evm.
             &self.handler.cfg
         }
     *)
-    Definition handler_cfg (EXT DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition handler_cfg
+        (EXT DB : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
       let Self : Ty.t := Self EXT DB in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.SubPointer.get_struct_record_field (|
@@ -1497,7 +1596,7 @@ Module evm.
             "revm::handler::Handler",
             "cfg"
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_handler_cfg :
@@ -1509,17 +1608,17 @@ Module evm.
             &self.env().cfg
         }
     *)
-    Definition cfg (EXT DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition cfg (EXT DB : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self EXT DB in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.SubPointer.get_struct_record_field (|
             M.call_closure (|
               M.get_trait_method (|
                 "revm_interpreter::host::Host",
-                Ty.apply (Ty.path "revm::evm::Evm") [ EXT; DB ],
+                Ty.apply (Ty.path "revm::evm::Evm") [] [ EXT; DB ],
                 [],
                 "env",
                 []
@@ -1529,7 +1628,7 @@ Module evm.
             "revm_primitives::env::Env",
             "cfg"
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_cfg :
@@ -1541,10 +1640,10 @@ Module evm.
             &mut self.context.evm.env.cfg
         }
     *)
-    Definition cfg_mut (EXT DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition cfg_mut (EXT DB : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self EXT DB in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.SubPointer.get_struct_record_field (|
@@ -1553,7 +1652,7 @@ Module evm.
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::ops::deref::DerefMut",
-                    Ty.apply (Ty.path "revm::context::evm_context::EvmContext") [ DB ],
+                    Ty.apply (Ty.path "revm::context::evm_context::EvmContext") [] [ DB ],
                     [],
                     "deref_mut",
                     []
@@ -1577,7 +1676,7 @@ Module evm.
             "revm_primitives::env::Env",
             "cfg"
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_cfg_mut :
@@ -1589,10 +1688,10 @@ Module evm.
             &self.context.evm.env.tx
         }
     *)
-    Definition tx (EXT DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition tx (EXT DB : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self EXT DB in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.SubPointer.get_struct_record_field (|
@@ -1601,7 +1700,7 @@ Module evm.
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::ops::deref::Deref",
-                    Ty.apply (Ty.path "revm::context::evm_context::EvmContext") [ DB ],
+                    Ty.apply (Ty.path "revm::context::evm_context::EvmContext") [] [ DB ],
                     [],
                     "deref",
                     []
@@ -1625,7 +1724,7 @@ Module evm.
             "revm_primitives::env::Env",
             "tx"
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_tx :
@@ -1637,10 +1736,10 @@ Module evm.
             &mut self.context.evm.env.tx
         }
     *)
-    Definition tx_mut (EXT DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition tx_mut (EXT DB : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self EXT DB in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.SubPointer.get_struct_record_field (|
@@ -1649,7 +1748,7 @@ Module evm.
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::ops::deref::DerefMut",
-                    Ty.apply (Ty.path "revm::context::evm_context::EvmContext") [ DB ],
+                    Ty.apply (Ty.path "revm::context::evm_context::EvmContext") [] [ DB ],
                     [],
                     "deref_mut",
                     []
@@ -1673,7 +1772,7 @@ Module evm.
             "revm_primitives::env::Env",
             "tx"
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_tx_mut :
@@ -1685,17 +1784,17 @@ Module evm.
             &self.context.evm.db
         }
     *)
-    Definition db (EXT DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition db (EXT DB : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self EXT DB in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.SubPointer.get_struct_record_field (|
             M.call_closure (|
               M.get_trait_method (|
                 "core::ops::deref::Deref",
-                Ty.apply (Ty.path "revm::context::evm_context::EvmContext") [ DB ],
+                Ty.apply (Ty.path "revm::context::evm_context::EvmContext") [] [ DB ],
                 [],
                 "deref",
                 []
@@ -1715,7 +1814,7 @@ Module evm.
             "revm::context::inner_evm_context::InnerEvmContext",
             "db"
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_db :
@@ -1727,17 +1826,17 @@ Module evm.
             &mut self.context.evm.db
         }
     *)
-    Definition db_mut (EXT DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition db_mut (EXT DB : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self EXT DB in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.SubPointer.get_struct_record_field (|
             M.call_closure (|
               M.get_trait_method (|
                 "core::ops::deref::DerefMut",
-                Ty.apply (Ty.path "revm::context::evm_context::EvmContext") [ DB ],
+                Ty.apply (Ty.path "revm::context::evm_context::EvmContext") [] [ DB ],
                 [],
                 "deref_mut",
                 []
@@ -1757,7 +1856,7 @@ Module evm.
             "revm::context::inner_evm_context::InnerEvmContext",
             "db"
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_db_mut :
@@ -1769,10 +1868,10 @@ Module evm.
             &self.context.evm.env.block
         }
     *)
-    Definition block (EXT DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition block (EXT DB : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self EXT DB in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.SubPointer.get_struct_record_field (|
@@ -1781,7 +1880,7 @@ Module evm.
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::ops::deref::Deref",
-                    Ty.apply (Ty.path "revm::context::evm_context::EvmContext") [ DB ],
+                    Ty.apply (Ty.path "revm::context::evm_context::EvmContext") [] [ DB ],
                     [],
                     "deref",
                     []
@@ -1805,7 +1904,7 @@ Module evm.
             "revm_primitives::env::Env",
             "block"
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_block :
@@ -1817,10 +1916,15 @@ Module evm.
             &mut self.context.evm.env.block
         }
     *)
-    Definition block_mut (EXT DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition block_mut
+        (EXT DB : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
       let Self : Ty.t := Self EXT DB in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.SubPointer.get_struct_record_field (|
@@ -1829,7 +1933,7 @@ Module evm.
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::ops::deref::DerefMut",
-                    Ty.apply (Ty.path "revm::context::evm_context::EvmContext") [ DB ],
+                    Ty.apply (Ty.path "revm::context::evm_context::EvmContext") [] [ DB ],
                     [],
                     "deref_mut",
                     []
@@ -1853,7 +1957,7 @@ Module evm.
             "revm_primitives::env::Env",
             "block"
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_block_mut :
@@ -1865,10 +1969,15 @@ Module evm.
             self.handler.modify_spec_id(spec_id);
         }
     *)
-    Definition modify_spec_id (EXT DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition modify_spec_id
+        (EXT DB : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
       let Self : Ty.t := Self EXT DB in
-      match τ, α with
-      | [], [ self; spec_id ] =>
+      match ε, τ, α with
+      | [], [], [ self; spec_id ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let spec_id := M.alloc (| spec_id |) in
@@ -1879,7 +1988,8 @@ Module evm.
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "revm::handler::Handler")
-                      [ Ty.apply (Ty.path "revm::evm::Evm") [ EXT; DB ]; EXT; DB ],
+                      []
+                      [ Ty.apply (Ty.path "revm::evm::Evm") [] [ EXT; DB ]; EXT; DB ],
                     "modify_spec_id",
                     []
                   |),
@@ -1895,7 +2005,7 @@ Module evm.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_modify_spec_id :
@@ -1907,16 +2017,21 @@ Module evm.
             self.context
         }
     *)
-    Definition into_context (EXT DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition into_context
+        (EXT DB : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
       let Self : Ty.t := Self EXT DB in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
             M.SubPointer.get_struct_record_field (| self, "revm::evm::Evm", "context" |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_into_context :
@@ -1936,12 +2051,13 @@ Module evm.
     *)
     Definition into_db_and_env_with_handler_cfg
         (EXT DB : Ty.t)
+        (ε : list Value.t)
         (τ : list Ty.t)
         (α : list Value.t)
         : M :=
       let Self : Ty.t := Self EXT DB in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           Value.Tuple
@@ -1998,7 +2114,7 @@ Module evm.
                     |))
                 ]
             ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_into_db_and_env_with_handler_cfg :
@@ -2015,17 +2131,18 @@ Module evm.
     *)
     Definition into_context_with_handler_cfg
         (EXT DB : Ty.t)
+        (ε : list Value.t)
         (τ : list Ty.t)
         (α : list Value.t)
         : M :=
       let Self : Ty.t := Self EXT DB in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
             M.get_associated_function (|
-              Ty.apply (Ty.path "revm::context::ContextWithHandlerCfg") [ EXT; DB ],
+              Ty.apply (Ty.path "revm::context::ContextWithHandlerCfg") [] [ EXT; DB ],
               "new",
               []
             |),
@@ -2042,7 +2159,7 @@ Module evm.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_into_context_with_handler_cfg :
@@ -2075,10 +2192,15 @@ Module evm.
             frame_result
         }
     *)
-    Definition start_the_loop (EXT DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition start_the_loop
+        (EXT DB : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
       let Self : Ty.t := Self EXT DB in
-      match τ, α with
-      | [], [ self; first_frame ] =>
+      match ε, τ, α with
+      | [], [], [ self; first_frame ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let first_frame := M.alloc (| first_frame |) in
@@ -2089,10 +2211,12 @@ Module evm.
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "core::option::Option")
+                      []
                       [
                         Ty.apply
                           (Ty.path "revm_interpreter::opcode::InstructionTables")
-                          [ Ty.apply (Ty.path "revm::evm::Evm") [ EXT; DB ] ]
+                          []
+                          [ Ty.apply (Ty.path "revm::evm::Evm") [] [ EXT; DB ] ]
                       ],
                     "expect",
                     []
@@ -2102,7 +2226,8 @@ Module evm.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "revm::handler::Handler")
-                          [ Ty.apply (Ty.path "revm::evm::Evm") [ EXT; DB ]; EXT; DB ],
+                          []
+                          [ Ty.apply (Ty.path "revm::evm::Evm") [] [ EXT; DB ]; EXT; DB ],
                         "take_instruction_table",
                         []
                       |),
@@ -2136,17 +2261,19 @@ Module evm.
                         M.alloc (|
                           M.call_closure (|
                             M.get_associated_function (|
-                              Ty.apply (Ty.path "revm::evm::Evm") [ EXT; DB ],
+                              Ty.apply (Ty.path "revm::evm::Evm") [] [ EXT; DB ],
                               "run_the_loop",
                               [
                                 Ty.function
                                   [
                                     Ty.apply
                                       (Ty.path "&mut")
+                                      []
                                       [ Ty.path "revm_interpreter::interpreter::Interpreter" ];
                                     Ty.apply
                                       (Ty.path "&mut")
-                                      [ Ty.apply (Ty.path "revm::evm::Evm") [ EXT; DB ] ]
+                                      []
+                                      [ Ty.apply (Ty.path "revm::evm::Evm") [] [ EXT; DB ] ]
                                   ]
                                   (Ty.tuple [])
                               ]
@@ -2167,11 +2294,12 @@ Module evm.
                         M.alloc (|
                           M.call_closure (|
                             M.get_associated_function (|
-                              Ty.apply (Ty.path "revm::evm::Evm") [ EXT; DB ],
+                              Ty.apply (Ty.path "revm::evm::Evm") [] [ EXT; DB ],
                               "run_the_loop",
                               [
                                 Ty.apply
                                   (Ty.path "alloc::boxed::Box")
+                                  []
                                   [
                                     Ty.dyn
                                       [
@@ -2194,7 +2322,8 @@ Module evm.
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "revm::handler::Handler")
-                      [ Ty.apply (Ty.path "revm::evm::Evm") [ EXT; DB ]; EXT; DB ],
+                      []
+                      [ Ty.apply (Ty.path "revm::evm::Evm") [] [ EXT; DB ]; EXT; DB ],
                     "set_instruction_table",
                     []
                   |),
@@ -2210,7 +2339,7 @@ Module evm.
               |) in
             frame_result
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_start_the_loop :
@@ -2320,10 +2449,15 @@ Module evm.
             }
         }
     *)
-    Definition run_the_loop (EXT DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition run_the_loop
+        (EXT DB : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
       let Self : Ty.t := Self EXT DB in
-      match τ, α with
-      | [ FN ], [ self; instruction_table; first_frame ] =>
+      match ε, τ, α with
+      | [], [ FN ], [ self; instruction_table; first_frame ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let instruction_table := M.alloc (| instruction_table |) in
@@ -2337,6 +2471,7 @@ Module evm.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "alloc::vec::Vec")
+                          []
                           [ Ty.path "revm::frame::Frame"; Ty.path "alloc::alloc::Global" ],
                         "with_capacity",
                         []
@@ -2350,6 +2485,7 @@ Module evm.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "alloc::vec::Vec")
+                          []
                           [ Ty.path "revm::frame::Frame"; Ty.path "alloc::alloc::Global" ],
                         "push",
                         []
@@ -2385,14 +2521,15 @@ Module evm.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "core::option::Option")
-                          [ Ty.apply (Ty.path "&mut") [ Ty.path "revm::frame::Frame" ] ],
+                          []
+                          [ Ty.apply (Ty.path "&mut") [] [ Ty.path "revm::frame::Frame" ] ],
                         "unwrap",
                         []
                       |),
                       [
                         M.call_closure (|
                           M.get_associated_function (|
-                            Ty.apply (Ty.path "slice") [ Ty.path "revm::frame::Frame" ],
+                            Ty.apply (Ty.path "slice") [] [ Ty.path "revm::frame::Frame" ],
                             "last_mut",
                             []
                           |),
@@ -2402,6 +2539,7 @@ Module evm.
                                 "core::ops::deref::DerefMut",
                                 Ty.apply
                                   (Ty.path "alloc::vec::Vec")
+                                  []
                                   [ Ty.path "revm::frame::Frame"; Ty.path "alloc::alloc::Global" ],
                                 [],
                                 "deref_mut",
@@ -2440,7 +2578,7 @@ Module evm.
                                 M.get_associated_function (|
                                   Ty.path "revm_interpreter::interpreter::Interpreter",
                                   "run",
-                                  [ FN; Ty.apply (Ty.path "revm::evm::Evm") [ EXT; DB ] ]
+                                  [ FN; Ty.apply (Ty.path "revm::evm::Evm") [] [ EXT; DB ] ]
                                 |),
                                 [
                                   M.read (| interpreter |);
@@ -2458,10 +2596,12 @@ Module evm.
                                     "core::ops::try_trait::Try",
                                     Ty.apply
                                       (Ty.path "core::result::Result")
+                                      []
                                       [
                                         Ty.tuple [];
                                         Ty.apply
                                           (Ty.path "revm_primitives::result::EVMError")
+                                          []
                                           [ Ty.associated ]
                                       ],
                                     [],
@@ -2474,6 +2614,7 @@ Module evm.
                                         Ty.apply
                                           (Ty.path
                                             "revm::context::inner_evm_context::InnerEvmContext")
+                                          []
                                           [ DB ],
                                         "take_error",
                                         []
@@ -2484,6 +2625,7 @@ Module evm.
                                             "core::ops::deref::DerefMut",
                                             Ty.apply
                                               (Ty.path "revm::context::evm_context::EvmContext")
+                                              []
                                               [ DB ],
                                             [],
                                             "deref_mut",
@@ -2525,20 +2667,24 @@ Module evm.
                                                 "core::ops::try_trait::FromResidual",
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
+                                                  []
                                                   [
                                                     Ty.path "revm::frame::FrameResult";
                                                     Ty.apply
                                                       (Ty.path "revm_primitives::result::EVMError")
+                                                      []
                                                       [ Ty.associated ]
                                                   ],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::result::Result")
+                                                    []
                                                     [
                                                       Ty.path "core::convert::Infallible";
                                                       Ty.apply
                                                         (Ty.path
                                                           "revm_primitives::result::EVMError")
+                                                        []
                                                         [ Ty.associated ]
                                                     ]
                                                 ],
@@ -2608,10 +2754,12 @@ Module evm.
                                               "core::ops::try_trait::Try",
                                               Ty.apply
                                                 (Ty.path "core::result::Result")
+                                                []
                                                 [
                                                   Ty.path "revm::frame::FrameOrResult";
                                                   Ty.apply
                                                     (Ty.path "revm_primitives::result::EVMError")
+                                                    []
                                                     [ Ty.associated ]
                                                 ],
                                               [],
@@ -2624,6 +2772,7 @@ Module evm.
                                                   Ty.apply
                                                     (Ty.path
                                                       "revm::handler::handle_types::execution::ExecutionHandler")
+                                                    []
                                                     [ EXT; DB ],
                                                   "call",
                                                   []
@@ -2660,21 +2809,25 @@ Module evm.
                                                           "core::ops::try_trait::FromResidual",
                                                           Ty.apply
                                                             (Ty.path "core::result::Result")
+                                                            []
                                                             [
                                                               Ty.path "revm::frame::FrameResult";
                                                               Ty.apply
                                                                 (Ty.path
                                                                   "revm_primitives::result::EVMError")
+                                                                []
                                                                 [ Ty.associated ]
                                                             ],
                                                           [
                                                             Ty.apply
                                                               (Ty.path "core::result::Result")
+                                                              []
                                                               [
                                                                 Ty.path "core::convert::Infallible";
                                                                 Ty.apply
                                                                   (Ty.path
                                                                     "revm_primitives::result::EVMError")
+                                                                  []
                                                                   [ Ty.associated ]
                                                               ]
                                                           ],
@@ -2715,10 +2868,12 @@ Module evm.
                                               "core::ops::try_trait::Try",
                                               Ty.apply
                                                 (Ty.path "core::result::Result")
+                                                []
                                                 [
                                                   Ty.path "revm::frame::FrameOrResult";
                                                   Ty.apply
                                                     (Ty.path "revm_primitives::result::EVMError")
+                                                    []
                                                     [ Ty.associated ]
                                                 ],
                                               [],
@@ -2731,6 +2886,7 @@ Module evm.
                                                   Ty.apply
                                                     (Ty.path
                                                       "revm::handler::handle_types::execution::ExecutionHandler")
+                                                    []
                                                     [ EXT; DB ],
                                                   "create",
                                                   []
@@ -2767,21 +2923,25 @@ Module evm.
                                                           "core::ops::try_trait::FromResidual",
                                                           Ty.apply
                                                             (Ty.path "core::result::Result")
+                                                            []
                                                             [
                                                               Ty.path "revm::frame::FrameResult";
                                                               Ty.apply
                                                                 (Ty.path
                                                                   "revm_primitives::result::EVMError")
+                                                                []
                                                                 [ Ty.associated ]
                                                             ],
                                                           [
                                                             Ty.apply
                                                               (Ty.path "core::result::Result")
+                                                              []
                                                               [
                                                                 Ty.path "core::convert::Infallible";
                                                                 Ty.apply
                                                                   (Ty.path
                                                                     "revm_primitives::result::EVMError")
+                                                                  []
                                                                   [ Ty.associated ]
                                                               ]
                                                           ],
@@ -2822,10 +2982,12 @@ Module evm.
                                               "core::ops::try_trait::Try",
                                               Ty.apply
                                                 (Ty.path "core::result::Result")
+                                                []
                                                 [
                                                   Ty.path "revm::frame::FrameOrResult";
                                                   Ty.apply
                                                     (Ty.path "revm_primitives::result::EVMError")
+                                                    []
                                                     [ Ty.associated ]
                                                 ],
                                               [],
@@ -2838,6 +3000,7 @@ Module evm.
                                                   Ty.apply
                                                     (Ty.path
                                                       "revm::handler::handle_types::execution::ExecutionHandler")
+                                                    []
                                                     [ EXT; DB ],
                                                   "eofcreate",
                                                   []
@@ -2874,21 +3037,25 @@ Module evm.
                                                           "core::ops::try_trait::FromResidual",
                                                           Ty.apply
                                                             (Ty.path "core::result::Result")
+                                                            []
                                                             [
                                                               Ty.path "revm::frame::FrameResult";
                                                               Ty.apply
                                                                 (Ty.path
                                                                   "revm_primitives::result::EVMError")
+                                                                []
                                                                 [ Ty.associated ]
                                                             ],
                                                           [
                                                             Ty.apply
                                                               (Ty.path "core::result::Result")
+                                                              []
                                                               [
                                                                 Ty.path "core::convert::Infallible";
                                                                 Ty.apply
                                                                   (Ty.path
                                                                     "revm_primitives::result::EVMError")
+                                                                  []
                                                                   [ Ty.associated ]
                                                               ]
                                                           ],
@@ -2940,6 +3107,7 @@ Module evm.
                                             M.get_associated_function (|
                                               Ty.apply
                                                 (Ty.path "core::option::Option")
+                                                []
                                                 [ Ty.path "revm::frame::Frame" ],
                                               "expect",
                                               []
@@ -2949,6 +3117,7 @@ Module evm.
                                                 M.get_associated_function (|
                                                   Ty.apply
                                                     (Ty.path "alloc::vec::Vec")
+                                                    []
                                                     [
                                                       Ty.path "revm::frame::Frame";
                                                       Ty.path "alloc::alloc::Global"
@@ -3003,12 +3172,14 @@ Module evm.
                                                                       Ty.apply
                                                                         (Ty.path
                                                                           "core::result::Result")
+                                                                        []
                                                                         [
                                                                           Ty.path
                                                                             "revm_interpreter::interpreter_action::call_outcome::CallOutcome";
                                                                           Ty.apply
                                                                             (Ty.path
                                                                               "revm_primitives::result::EVMError")
+                                                                            []
                                                                             [ Ty.associated ]
                                                                         ],
                                                                       [],
@@ -3021,6 +3192,7 @@ Module evm.
                                                                           Ty.apply
                                                                             (Ty.path
                                                                               "revm::handler::handle_types::execution::ExecutionHandler")
+                                                                            []
                                                                             [ EXT; DB ],
                                                                           "call_return",
                                                                           []
@@ -3056,12 +3228,14 @@ Module evm.
                                                                                   Ty.apply
                                                                                     (Ty.path
                                                                                       "core::result::Result")
+                                                                                    []
                                                                                     [
                                                                                       Ty.path
                                                                                         "revm::frame::FrameResult";
                                                                                       Ty.apply
                                                                                         (Ty.path
                                                                                           "revm_primitives::result::EVMError")
+                                                                                        []
                                                                                         [
                                                                                           Ty.associated
                                                                                         ]
@@ -3070,12 +3244,14 @@ Module evm.
                                                                                     Ty.apply
                                                                                       (Ty.path
                                                                                         "core::result::Result")
+                                                                                      []
                                                                                       [
                                                                                         Ty.path
                                                                                           "core::convert::Infallible";
                                                                                         Ty.apply
                                                                                           (Ty.path
                                                                                             "revm_primitives::result::EVMError")
+                                                                                          []
                                                                                           [
                                                                                             Ty.associated
                                                                                           ]
@@ -3132,12 +3308,14 @@ Module evm.
                                                                       Ty.apply
                                                                         (Ty.path
                                                                           "core::result::Result")
+                                                                        []
                                                                         [
                                                                           Ty.path
                                                                             "revm_interpreter::interpreter_action::create_outcome::CreateOutcome";
                                                                           Ty.apply
                                                                             (Ty.path
                                                                               "revm_primitives::result::EVMError")
+                                                                            []
                                                                             [ Ty.associated ]
                                                                         ],
                                                                       [],
@@ -3150,6 +3328,7 @@ Module evm.
                                                                           Ty.apply
                                                                             (Ty.path
                                                                               "revm::handler::handle_types::execution::ExecutionHandler")
+                                                                            []
                                                                             [ EXT; DB ],
                                                                           "create_return",
                                                                           []
@@ -3185,12 +3364,14 @@ Module evm.
                                                                                   Ty.apply
                                                                                     (Ty.path
                                                                                       "core::result::Result")
+                                                                                    []
                                                                                     [
                                                                                       Ty.path
                                                                                         "revm::frame::FrameResult";
                                                                                       Ty.apply
                                                                                         (Ty.path
                                                                                           "revm_primitives::result::EVMError")
+                                                                                        []
                                                                                         [
                                                                                           Ty.associated
                                                                                         ]
@@ -3199,12 +3380,14 @@ Module evm.
                                                                                     Ty.apply
                                                                                       (Ty.path
                                                                                         "core::result::Result")
+                                                                                      []
                                                                                       [
                                                                                         Ty.path
                                                                                           "core::convert::Infallible";
                                                                                         Ty.apply
                                                                                           (Ty.path
                                                                                             "revm_primitives::result::EVMError")
+                                                                                          []
                                                                                           [
                                                                                             Ty.associated
                                                                                           ]
@@ -3261,12 +3444,14 @@ Module evm.
                                                                       Ty.apply
                                                                         (Ty.path
                                                                           "core::result::Result")
+                                                                        []
                                                                         [
                                                                           Ty.path
                                                                             "revm_interpreter::interpreter_action::eof_create_outcome::EOFCreateOutcome";
                                                                           Ty.apply
                                                                             (Ty.path
                                                                               "revm_primitives::result::EVMError")
+                                                                            []
                                                                             [ Ty.associated ]
                                                                         ],
                                                                       [],
@@ -3279,6 +3464,7 @@ Module evm.
                                                                           Ty.apply
                                                                             (Ty.path
                                                                               "revm::handler::handle_types::execution::ExecutionHandler")
+                                                                            []
                                                                             [ EXT; DB ],
                                                                           "eofcreate_return",
                                                                           []
@@ -3314,12 +3500,14 @@ Module evm.
                                                                                   Ty.apply
                                                                                     (Ty.path
                                                                                       "core::result::Result")
+                                                                                    []
                                                                                     [
                                                                                       Ty.path
                                                                                         "revm::frame::FrameResult";
                                                                                       Ty.apply
                                                                                         (Ty.path
                                                                                           "revm_primitives::result::EVMError")
+                                                                                        []
                                                                                         [
                                                                                           Ty.associated
                                                                                         ]
@@ -3328,12 +3516,14 @@ Module evm.
                                                                                     Ty.apply
                                                                                       (Ty.path
                                                                                         "core::result::Result")
+                                                                                      []
                                                                                       [
                                                                                         Ty.path
                                                                                           "core::convert::Infallible";
                                                                                         Ty.apply
                                                                                           (Ty.path
                                                                                             "revm_primitives::result::EVMError")
+                                                                                          []
                                                                                           [
                                                                                             Ty.associated
                                                                                           ]
@@ -3454,6 +3644,7 @@ Module evm.
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "alloc::vec::Vec")
+                                            []
                                             [
                                               Ty.path "revm::frame::Frame";
                                               Ty.path "alloc::alloc::Global"
@@ -3471,9 +3662,11 @@ Module evm.
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "core::option::Option")
+                                            []
                                             [
                                               Ty.apply
                                                 (Ty.path "&mut")
+                                                []
                                                 [ Ty.path "revm::frame::Frame" ]
                                             ],
                                           "unwrap",
@@ -3484,6 +3677,7 @@ Module evm.
                                             M.get_associated_function (|
                                               Ty.apply
                                                 (Ty.path "slice")
+                                                []
                                                 [ Ty.path "revm::frame::Frame" ],
                                               "last_mut",
                                               []
@@ -3494,6 +3688,7 @@ Module evm.
                                                   "core::ops::deref::DerefMut",
                                                   Ty.apply
                                                     (Ty.path "alloc::vec::Vec")
+                                                    []
                                                     [
                                                       Ty.path "revm::frame::Frame";
                                                       Ty.path "alloc::alloc::Global"
@@ -3525,6 +3720,7 @@ Module evm.
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "slice")
+                                            []
                                             [ Ty.path "revm::frame::Frame" ],
                                           "last_mut",
                                           []
@@ -3535,6 +3731,7 @@ Module evm.
                                               "core::ops::deref::DerefMut",
                                               Ty.apply
                                                 (Ty.path "alloc::vec::Vec")
+                                                []
                                                 [
                                                   Ty.path "revm::frame::Frame";
                                                   Ty.path "alloc::alloc::Global"
@@ -3587,11 +3784,13 @@ Module evm.
                                                           "core::ops::try_trait::Try",
                                                           Ty.apply
                                                             (Ty.path "core::result::Result")
+                                                            []
                                                             [
                                                               Ty.tuple [];
                                                               Ty.apply
                                                                 (Ty.path
                                                                   "revm_primitives::result::EVMError")
+                                                                []
                                                                 [ Ty.associated ]
                                                             ],
                                                           [],
@@ -3604,6 +3803,7 @@ Module evm.
                                                               Ty.apply
                                                                 (Ty.path
                                                                   "revm::handler::handle_types::execution::ExecutionHandler")
+                                                                []
                                                                 [ EXT; DB ],
                                                               "insert_call_outcome",
                                                               []
@@ -3639,24 +3839,28 @@ Module evm.
                                                                       Ty.apply
                                                                         (Ty.path
                                                                           "core::result::Result")
+                                                                        []
                                                                         [
                                                                           Ty.path
                                                                             "revm::frame::FrameResult";
                                                                           Ty.apply
                                                                             (Ty.path
                                                                               "revm_primitives::result::EVMError")
+                                                                            []
                                                                             [ Ty.associated ]
                                                                         ],
                                                                       [
                                                                         Ty.apply
                                                                           (Ty.path
                                                                             "core::result::Result")
+                                                                          []
                                                                           [
                                                                             Ty.path
                                                                               "core::convert::Infallible";
                                                                             Ty.apply
                                                                               (Ty.path
                                                                                 "revm_primitives::result::EVMError")
+                                                                              []
                                                                               [ Ty.associated ]
                                                                           ]
                                                                       ],
@@ -3697,11 +3901,13 @@ Module evm.
                                                           "core::ops::try_trait::Try",
                                                           Ty.apply
                                                             (Ty.path "core::result::Result")
+                                                            []
                                                             [
                                                               Ty.tuple [];
                                                               Ty.apply
                                                                 (Ty.path
                                                                   "revm_primitives::result::EVMError")
+                                                                []
                                                                 [ Ty.associated ]
                                                             ],
                                                           [],
@@ -3714,6 +3920,7 @@ Module evm.
                                                               Ty.apply
                                                                 (Ty.path
                                                                   "revm::handler::handle_types::execution::ExecutionHandler")
+                                                                []
                                                                 [ EXT; DB ],
                                                               "insert_create_outcome",
                                                               []
@@ -3748,24 +3955,28 @@ Module evm.
                                                                       Ty.apply
                                                                         (Ty.path
                                                                           "core::result::Result")
+                                                                        []
                                                                         [
                                                                           Ty.path
                                                                             "revm::frame::FrameResult";
                                                                           Ty.apply
                                                                             (Ty.path
                                                                               "revm_primitives::result::EVMError")
+                                                                            []
                                                                             [ Ty.associated ]
                                                                         ],
                                                                       [
                                                                         Ty.apply
                                                                           (Ty.path
                                                                             "core::result::Result")
+                                                                          []
                                                                           [
                                                                             Ty.path
                                                                               "core::convert::Infallible";
                                                                             Ty.apply
                                                                               (Ty.path
                                                                                 "revm_primitives::result::EVMError")
+                                                                              []
                                                                               [ Ty.associated ]
                                                                           ]
                                                                       ],
@@ -3806,11 +4017,13 @@ Module evm.
                                                           "core::ops::try_trait::Try",
                                                           Ty.apply
                                                             (Ty.path "core::result::Result")
+                                                            []
                                                             [
                                                               Ty.tuple [];
                                                               Ty.apply
                                                                 (Ty.path
                                                                   "revm_primitives::result::EVMError")
+                                                                []
                                                                 [ Ty.associated ]
                                                             ],
                                                           [],
@@ -3823,6 +4036,7 @@ Module evm.
                                                               Ty.apply
                                                                 (Ty.path
                                                                   "revm::handler::handle_types::execution::ExecutionHandler")
+                                                                []
                                                                 [ EXT; DB ],
                                                               "insert_eofcreate_outcome",
                                                               []
@@ -3857,24 +4071,28 @@ Module evm.
                                                                       Ty.apply
                                                                         (Ty.path
                                                                           "core::result::Result")
+                                                                        []
                                                                         [
                                                                           Ty.path
                                                                             "revm::frame::FrameResult";
                                                                           Ty.apply
                                                                             (Ty.path
                                                                               "revm_primitives::result::EVMError")
+                                                                            []
                                                                             [ Ty.associated ]
                                                                         ],
                                                                       [
                                                                         Ty.apply
                                                                           (Ty.path
                                                                             "core::result::Result")
+                                                                          []
                                                                           [
                                                                             Ty.path
                                                                               "core::convert::Infallible";
                                                                             Ty.apply
                                                                               (Ty.path
                                                                                 "revm_primitives::result::EVMError")
+                                                                              []
                                                                               [ Ty.associated ]
                                                                           ]
                                                                       ],
@@ -3911,7 +4129,7 @@ Module evm.
                 |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_run_the_loop :
@@ -3970,10 +4188,15 @@ Module evm.
             post_exec.output(ctx, result)
         }
     *)
-    Definition transact_preverified_inner (EXT DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition transact_preverified_inner
+        (EXT DB : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
       let Self : Ty.t := Self EXT DB in
-      match τ, α with
-      | [], [ self; initial_gas_spend ] =>
+      match ε, τ, α with
+      | [], [], [ self; initial_gas_spend ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let initial_gas_spend := M.alloc (| initial_gas_spend |) in
@@ -3994,7 +4217,8 @@ Module evm.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "revm::handler::Handler")
-                          [ Ty.apply (Ty.path "revm::evm::Evm") [ EXT; DB ]; EXT; DB ],
+                          []
+                          [ Ty.apply (Ty.path "revm::evm::Evm") [] [ EXT; DB ]; EXT; DB ],
                         "pre_execution",
                         []
                       |),
@@ -4015,10 +4239,12 @@ Module evm.
                           "core::ops::try_trait::Try",
                           Ty.apply
                             (Ty.path "core::result::Result")
+                            []
                             [
                               Ty.tuple [];
                               Ty.apply
                                 (Ty.path "revm_primitives::result::EVMError")
+                                []
                                 [ Ty.associated ]
                             ],
                           [],
@@ -4031,6 +4257,7 @@ Module evm.
                               Ty.apply
                                 (Ty.path
                                   "revm::handler::handle_types::pre_execution::PreExecutionHandler")
+                                []
                                 [ EXT; DB ],
                               "load_accounts",
                               []
@@ -4059,19 +4286,23 @@ Module evm.
                                       "core::ops::try_trait::FromResidual",
                                       Ty.apply
                                         (Ty.path "core::result::Result")
+                                        []
                                         [
                                           Ty.path "revm_primitives::result::ResultAndState";
                                           Ty.apply
                                             (Ty.path "revm_primitives::result::EVMError")
+                                            []
                                             [ Ty.associated ]
                                         ],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
+                                          []
                                           [
                                             Ty.path "core::convert::Infallible";
                                             Ty.apply
                                               (Ty.path "revm_primitives::result::EVMError")
+                                              []
                                               [ Ty.associated ]
                                           ]
                                       ],
@@ -4103,6 +4334,7 @@ Module evm.
                         Ty.apply
                           (Ty.path
                             "revm::handler::handle_types::pre_execution::PreExecutionHandler")
+                          []
                           [ EXT; DB ],
                         "load_precompiles",
                         []
@@ -4114,7 +4346,7 @@ Module evm.
                   M.alloc (|
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "revm::context::evm_context::EvmContext") [ DB ],
+                        Ty.apply (Ty.path "revm::context::evm_context::EvmContext") [] [ DB ],
                         "set_precompiles",
                         []
                       |),
@@ -4136,10 +4368,12 @@ Module evm.
                           "core::ops::try_trait::Try",
                           Ty.apply
                             (Ty.path "core::result::Result")
+                            []
                             [
                               Ty.tuple [];
                               Ty.apply
                                 (Ty.path "revm_primitives::result::EVMError")
+                                []
                                 [ Ty.associated ]
                             ],
                           [],
@@ -4152,6 +4386,7 @@ Module evm.
                               Ty.apply
                                 (Ty.path
                                   "revm::handler::handle_types::pre_execution::PreExecutionHandler")
+                                []
                                 [ EXT; DB ],
                               "deduct_caller",
                               []
@@ -4180,19 +4415,23 @@ Module evm.
                                       "core::ops::try_trait::FromResidual",
                                       Ty.apply
                                         (Ty.path "core::result::Result")
+                                        []
                                         [
                                           Ty.path "revm_primitives::result::ResultAndState";
                                           Ty.apply
                                             (Ty.path "revm_primitives::result::EVMError")
+                                            []
                                             [ Ty.associated ]
                                         ],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
+                                          []
                                           [
                                             Ty.path "core::convert::Infallible";
                                             Ty.apply
                                               (Ty.path "revm_primitives::result::EVMError")
+                                              []
                                               [ Ty.associated ]
                                           ]
                                       ],
@@ -4231,6 +4470,7 @@ Module evm.
                                     "core::ops::deref::Deref",
                                     Ty.apply
                                       (Ty.path "revm::context::evm_context::EvmContext")
+                                      []
                                       [ DB ],
                                     [],
                                     "deref",
@@ -4263,7 +4503,8 @@ Module evm.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "revm::handler::Handler")
-                          [ Ty.apply (Ty.path "revm::evm::Evm") [ EXT; DB ]; EXT; DB ],
+                          []
+                          [ Ty.apply (Ty.path "revm::evm::Evm") [] [ EXT; DB ]; EXT; DB ],
                         "execution",
                         []
                       |),
@@ -4288,6 +4529,7 @@ Module evm.
                                   "core::ops::deref::Deref",
                                   Ty.apply
                                     (Ty.path "revm::context::evm_context::EvmContext")
+                                    []
                                     [ DB ],
                                   [],
                                   "deref",
@@ -4327,10 +4569,12 @@ Module evm.
                                     "core::ops::try_trait::Try",
                                     Ty.apply
                                       (Ty.path "core::result::Result")
+                                      []
                                       [
                                         Ty.path "revm::frame::FrameOrResult";
                                         Ty.apply
                                           (Ty.path "revm_primitives::result::EVMError")
+                                          []
                                           [ Ty.associated ]
                                       ],
                                     [],
@@ -4343,6 +4587,7 @@ Module evm.
                                         Ty.apply
                                           (Ty.path
                                             "revm::handler::handle_types::execution::ExecutionHandler")
+                                          []
                                           [ EXT; DB ],
                                         "call",
                                         []
@@ -4354,9 +4599,11 @@ Module evm.
                                           M.get_associated_function (|
                                             Ty.apply
                                               (Ty.path "core::option::Option")
+                                              []
                                               [
                                                 Ty.apply
                                                   (Ty.path "alloc::boxed::Box")
+                                                  []
                                                   [
                                                     Ty.path
                                                       "revm_interpreter::interpreter_action::call_inputs::CallInputs";
@@ -4384,6 +4631,7 @@ Module evm.
                                                           Ty.apply
                                                             (Ty.path
                                                               "revm::context::evm_context::EvmContext")
+                                                            []
                                                             [ DB ],
                                                           [],
                                                           "deref",
@@ -4433,21 +4681,25 @@ Module evm.
                                                 "core::ops::try_trait::FromResidual",
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
+                                                  []
                                                   [
                                                     Ty.path
                                                       "revm_primitives::result::ResultAndState";
                                                     Ty.apply
                                                       (Ty.path "revm_primitives::result::EVMError")
+                                                      []
                                                       [ Ty.associated ]
                                                   ],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::result::Result")
+                                                    []
                                                     [
                                                       Ty.path "core::convert::Infallible";
                                                       Ty.apply
                                                         (Ty.path
                                                           "revm_primitives::result::EVMError")
+                                                        []
                                                         [ Ty.associated ]
                                                     ]
                                                 ],
@@ -4486,10 +4738,12 @@ Module evm.
                                     "core::ops::try_trait::Try",
                                     Ty.apply
                                       (Ty.path "core::result::Result")
+                                      []
                                       [
                                         Ty.path "revm::frame::FrameOrResult";
                                         Ty.apply
                                           (Ty.path "revm_primitives::result::EVMError")
+                                          []
                                           [ Ty.associated ]
                                       ],
                                     [],
@@ -4502,6 +4756,7 @@ Module evm.
                                         Ty.apply
                                           (Ty.path
                                             "revm::handler::handle_types::execution::ExecutionHandler")
+                                          []
                                           [ EXT; DB ],
                                         "create",
                                         []
@@ -4513,9 +4768,11 @@ Module evm.
                                           M.get_associated_function (|
                                             Ty.apply
                                               (Ty.path "core::option::Option")
+                                              []
                                               [
                                                 Ty.apply
                                                   (Ty.path "alloc::boxed::Box")
+                                                  []
                                                   [
                                                     Ty.path
                                                       "revm_interpreter::interpreter_action::create_inputs::CreateInputs";
@@ -4543,6 +4800,7 @@ Module evm.
                                                           Ty.apply
                                                             (Ty.path
                                                               "revm::context::evm_context::EvmContext")
+                                                            []
                                                             [ DB ],
                                                           [],
                                                           "deref",
@@ -4592,21 +4850,25 @@ Module evm.
                                                 "core::ops::try_trait::FromResidual",
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
+                                                  []
                                                   [
                                                     Ty.path
                                                       "revm_primitives::result::ResultAndState";
                                                     Ty.apply
                                                       (Ty.path "revm_primitives::result::EVMError")
+                                                      []
                                                       [ Ty.associated ]
                                                   ],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::result::Result")
+                                                    []
                                                     [
                                                       Ty.path "core::convert::Infallible";
                                                       Ty.apply
                                                         (Ty.path
                                                           "revm_primitives::result::EVMError")
+                                                        []
                                                         [ Ty.associated ]
                                                     ]
                                                 ],
@@ -4655,10 +4917,12 @@ Module evm.
                                     "core::ops::try_trait::Try",
                                     Ty.apply
                                       (Ty.path "core::result::Result")
+                                      []
                                       [
                                         Ty.path "revm::frame::FrameResult";
                                         Ty.apply
                                           (Ty.path "revm_primitives::result::EVMError")
+                                          []
                                           [ Ty.associated ]
                                       ],
                                     [],
@@ -4668,7 +4932,7 @@ Module evm.
                                   [
                                     M.call_closure (|
                                       M.get_associated_function (|
-                                        Ty.apply (Ty.path "revm::evm::Evm") [ EXT; DB ],
+                                        Ty.apply (Ty.path "revm::evm::Evm") [] [ EXT; DB ],
                                         "start_the_loop",
                                         []
                                       |),
@@ -4696,21 +4960,25 @@ Module evm.
                                                 "core::ops::try_trait::FromResidual",
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
+                                                  []
                                                   [
                                                     Ty.path
                                                       "revm_primitives::result::ResultAndState";
                                                     Ty.apply
                                                       (Ty.path "revm_primitives::result::EVMError")
+                                                      []
                                                       [ Ty.associated ]
                                                   ],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::result::Result")
+                                                    []
                                                     [
                                                       Ty.path "core::convert::Infallible";
                                                       Ty.apply
                                                         (Ty.path
                                                           "revm_primitives::result::EVMError")
+                                                        []
                                                         [ Ty.associated ]
                                                     ]
                                                 ],
@@ -4764,10 +5032,12 @@ Module evm.
                           "core::ops::try_trait::Try",
                           Ty.apply
                             (Ty.path "core::result::Result")
+                            []
                             [
                               Ty.tuple [];
                               Ty.apply
                                 (Ty.path "revm_primitives::result::EVMError")
+                                []
                                 [ Ty.associated ]
                             ],
                           [],
@@ -4779,6 +5049,7 @@ Module evm.
                             M.get_associated_function (|
                               Ty.apply
                                 (Ty.path "revm::handler::handle_types::execution::ExecutionHandler")
+                                []
                                 [ EXT; DB ],
                               "last_frame_return",
                               []
@@ -4788,7 +5059,8 @@ Module evm.
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "revm::handler::Handler")
-                                    [ Ty.apply (Ty.path "revm::evm::Evm") [ EXT; DB ]; EXT; DB ],
+                                    []
+                                    [ Ty.apply (Ty.path "revm::evm::Evm") [] [ EXT; DB ]; EXT; DB ],
                                   "execution",
                                   []
                                 |),
@@ -4826,19 +5098,23 @@ Module evm.
                                       "core::ops::try_trait::FromResidual",
                                       Ty.apply
                                         (Ty.path "core::result::Result")
+                                        []
                                         [
                                           Ty.path "revm_primitives::result::ResultAndState";
                                           Ty.apply
                                             (Ty.path "revm_primitives::result::EVMError")
+                                            []
                                             [ Ty.associated ]
                                         ],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
+                                          []
                                           [
                                             Ty.path "core::convert::Infallible";
                                             Ty.apply
                                               (Ty.path "revm_primitives::result::EVMError")
+                                              []
                                               [ Ty.associated ]
                                           ]
                                       ],
@@ -4869,7 +5145,8 @@ Module evm.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "revm::handler::Handler")
-                          [ Ty.apply (Ty.path "revm::evm::Evm") [ EXT; DB ]; EXT; DB ],
+                          []
+                          [ Ty.apply (Ty.path "revm::evm::Evm") [] [ EXT; DB ]; EXT; DB ],
                         "post_execution",
                         []
                       |),
@@ -4890,10 +5167,12 @@ Module evm.
                           "core::ops::try_trait::Try",
                           Ty.apply
                             (Ty.path "core::result::Result")
+                            []
                             [
                               Ty.tuple [];
                               Ty.apply
                                 (Ty.path "revm_primitives::result::EVMError")
+                                []
                                 [ Ty.associated ]
                             ],
                           [],
@@ -4906,6 +5185,7 @@ Module evm.
                               Ty.apply
                                 (Ty.path
                                   "revm::handler::handle_types::post_execution::PostExecutionHandler")
+                                []
                                 [ EXT; DB ],
                               "reimburse_caller",
                               []
@@ -4945,19 +5225,23 @@ Module evm.
                                       "core::ops::try_trait::FromResidual",
                                       Ty.apply
                                         (Ty.path "core::result::Result")
+                                        []
                                         [
                                           Ty.path "revm_primitives::result::ResultAndState";
                                           Ty.apply
                                             (Ty.path "revm_primitives::result::EVMError")
+                                            []
                                             [ Ty.associated ]
                                         ],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
+                                          []
                                           [
                                             Ty.path "core::convert::Infallible";
                                             Ty.apply
                                               (Ty.path "revm_primitives::result::EVMError")
+                                              []
                                               [ Ty.associated ]
                                           ]
                                       ],
@@ -4990,10 +5274,12 @@ Module evm.
                           "core::ops::try_trait::Try",
                           Ty.apply
                             (Ty.path "core::result::Result")
+                            []
                             [
                               Ty.tuple [];
                               Ty.apply
                                 (Ty.path "revm_primitives::result::EVMError")
+                                []
                                 [ Ty.associated ]
                             ],
                           [],
@@ -5006,6 +5292,7 @@ Module evm.
                               Ty.apply
                                 (Ty.path
                                   "revm::handler::handle_types::post_execution::PostExecutionHandler")
+                                []
                                 [ EXT; DB ],
                               "reward_beneficiary",
                               []
@@ -5045,19 +5332,23 @@ Module evm.
                                       "core::ops::try_trait::FromResidual",
                                       Ty.apply
                                         (Ty.path "core::result::Result")
+                                        []
                                         [
                                           Ty.path "revm_primitives::result::ResultAndState";
                                           Ty.apply
                                             (Ty.path "revm_primitives::result::EVMError")
+                                            []
                                             [ Ty.associated ]
                                         ],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
+                                          []
                                           [
                                             Ty.path "core::convert::Infallible";
                                             Ty.apply
                                               (Ty.path "revm_primitives::result::EVMError")
+                                              []
                                               [ Ty.associated ]
                                           ]
                                       ],
@@ -5088,6 +5379,7 @@ Module evm.
                       Ty.apply
                         (Ty.path
                           "revm::handler::handle_types::post_execution::PostExecutionHandler")
+                        []
                         [ EXT; DB ],
                       "output",
                       []
@@ -5097,7 +5389,7 @@ Module evm.
                 |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_transact_preverified_inner :
@@ -5112,10 +5404,12 @@ Module evm.
     Definition Self : Ty.t :=
       Ty.apply
         (Ty.path "revm::evm::Evm")
+        []
         [
           Ty.tuple [];
           Ty.apply
             (Ty.path "revm::db::emptydb::EmptyDBTyped")
+            []
             [ Ty.path "core::convert::Infallible" ]
         ].
     
@@ -5124,20 +5418,22 @@ Module evm.
             EvmBuilder::default()
         }
     *)
-    Definition builder (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [] =>
+    Definition builder (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [] =>
         ltac:(M.monadic
           (M.call_closure (|
             M.get_trait_method (|
               "core::default::Default",
               Ty.apply
                 (Ty.path "revm::builder::EvmBuilder")
+                []
                 [
                   Ty.path "revm::builder::SetGenericStage";
                   Ty.tuple [];
                   Ty.apply
                     (Ty.path "revm::db::emptydb::EmptyDBTyped")
+                    []
                     [ Ty.path "core::convert::Infallible" ]
                 ],
               [],
@@ -5146,7 +5442,7 @@ Module evm.
             |),
             []
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_builder : M.IsAssociatedFunction Self "builder" builder.
@@ -5155,17 +5451,17 @@ Module evm.
   
   
   Module Impl_revm_interpreter_host_Host_where_revm_primitives_db_Database_DB_for_revm_evm_Evm_EXT_DB.
-    Definition Self (EXT DB : Ty.t) : Ty.t := Ty.apply (Ty.path "revm::evm::Evm") [ EXT; DB ].
+    Definition Self (EXT DB : Ty.t) : Ty.t := Ty.apply (Ty.path "revm::evm::Evm") [] [ EXT; DB ].
     
     (*
         fn env(&self) -> &Env {
             &self.context.evm.env
         }
     *)
-    Definition env (EXT DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition env (EXT DB : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self EXT DB in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -5173,7 +5469,7 @@ Module evm.
               M.call_closure (|
                 M.get_trait_method (|
                   "core::ops::deref::Deref",
-                  Ty.apply (Ty.path "revm::context::evm_context::EvmContext") [ DB ],
+                  Ty.apply (Ty.path "revm::context::evm_context::EvmContext") [] [ DB ],
                   [],
                   "deref",
                   []
@@ -5194,7 +5490,7 @@ Module evm.
               "env"
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     (*
@@ -5202,10 +5498,10 @@ Module evm.
             &mut self.context.evm.env
         }
     *)
-    Definition env_mut (EXT DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition env_mut (EXT DB : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self EXT DB in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -5213,7 +5509,7 @@ Module evm.
               M.call_closure (|
                 M.get_trait_method (|
                   "core::ops::deref::DerefMut",
-                  Ty.apply (Ty.path "revm::context::evm_context::EvmContext") [ DB ],
+                  Ty.apply (Ty.path "revm::context::evm_context::EvmContext") [] [ DB ],
                   [],
                   "deref_mut",
                   []
@@ -5234,7 +5530,7 @@ Module evm.
               "env"
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     (*
@@ -5246,10 +5542,15 @@ Module evm.
                 .ok()
         }
     *)
-    Definition block_hash (EXT DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition block_hash
+        (EXT DB : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
       let Self : Ty.t := Self EXT DB in
-      match τ, α with
-      | [], [ self; number ] =>
+      match ε, τ, α with
+      | [], [], [ self; number ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let number := M.alloc (| number |) in
@@ -5257,7 +5558,14 @@ Module evm.
             M.get_associated_function (|
               Ty.apply
                 (Ty.path "core::result::Result")
-                [ Ty.path "alloy_primitives::bits::fixed::FixedBytes"; Ty.tuple [] ],
+                []
+                [
+                  Ty.apply
+                    (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                    [ Value.Integer 32 ]
+                    [];
+                  Ty.tuple []
+                ],
               "ok",
               []
             |),
@@ -5266,9 +5574,13 @@ Module evm.
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "core::result::Result")
+                    []
                     [
-                      Ty.path "alloy_primitives::bits::fixed::FixedBytes";
-                      Ty.apply (Ty.path "revm_primitives::result::EVMError") [ Ty.associated ]
+                      Ty.apply
+                        (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                        [ Value.Integer 32 ]
+                        [];
+                      Ty.apply (Ty.path "revm_primitives::result::EVMError") [] [ Ty.associated ]
                     ],
                   "map_err",
                   [
@@ -5276,7 +5588,11 @@ Module evm.
                     Ty.function
                       [
                         Ty.tuple
-                          [ Ty.apply (Ty.path "revm_primitives::result::EVMError") [ Ty.associated ]
+                          [
+                            Ty.apply
+                              (Ty.path "revm_primitives::result::EVMError")
+                              []
+                              [ Ty.associated ]
                           ]
                       ]
                       (Ty.tuple [])
@@ -5285,7 +5601,10 @@ Module evm.
                 [
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "revm::context::inner_evm_context::InnerEvmContext") [ DB ],
+                      Ty.apply
+                        (Ty.path "revm::context::inner_evm_context::InnerEvmContext")
+                        []
+                        [ DB ],
                       "block_hash",
                       []
                     |),
@@ -5293,7 +5612,7 @@ Module evm.
                       M.call_closure (|
                         M.get_trait_method (|
                           "core::ops::deref::DerefMut",
-                          Ty.apply (Ty.path "revm::context::evm_context::EvmContext") [ DB ],
+                          Ty.apply (Ty.path "revm::context::evm_context::EvmContext") [] [ DB ],
                           [],
                           "deref_mut",
                           []
@@ -5332,6 +5651,7 @@ Module evm.
                                             "core::ops::deref::DerefMut",
                                             Ty.apply
                                               (Ty.path "revm::context::evm_context::EvmContext")
+                                              []
                                               [ DB ],
                                             [],
                                             "deref_mut",
@@ -5365,7 +5685,7 @@ Module evm.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     (*
@@ -5377,10 +5697,15 @@ Module evm.
                 .ok()
         }
     *)
-    Definition load_account (EXT DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition load_account
+        (EXT DB : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
       let Self : Ty.t := Self EXT DB in
-      match τ, α with
-      | [], [ self; address ] =>
+      match ε, τ, α with
+      | [], [], [ self; address ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let address := M.alloc (| address |) in
@@ -5388,6 +5713,7 @@ Module evm.
             M.get_associated_function (|
               Ty.apply
                 (Ty.path "core::result::Result")
+                []
                 [ Ty.path "revm_interpreter::host::LoadAccountResult"; Ty.tuple [] ],
               "ok",
               []
@@ -5397,9 +5723,10 @@ Module evm.
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "core::result::Result")
+                    []
                     [
                       Ty.path "revm_interpreter::host::LoadAccountResult";
-                      Ty.apply (Ty.path "revm_primitives::result::EVMError") [ Ty.associated ]
+                      Ty.apply (Ty.path "revm_primitives::result::EVMError") [] [ Ty.associated ]
                     ],
                   "map_err",
                   [
@@ -5407,7 +5734,11 @@ Module evm.
                     Ty.function
                       [
                         Ty.tuple
-                          [ Ty.apply (Ty.path "revm_primitives::result::EVMError") [ Ty.associated ]
+                          [
+                            Ty.apply
+                              (Ty.path "revm_primitives::result::EVMError")
+                              []
+                              [ Ty.associated ]
                           ]
                       ]
                       (Ty.tuple [])
@@ -5416,7 +5747,10 @@ Module evm.
                 [
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "revm::context::inner_evm_context::InnerEvmContext") [ DB ],
+                      Ty.apply
+                        (Ty.path "revm::context::inner_evm_context::InnerEvmContext")
+                        []
+                        [ DB ],
                       "load_account_exist",
                       []
                     |),
@@ -5424,7 +5758,7 @@ Module evm.
                       M.call_closure (|
                         M.get_trait_method (|
                           "core::ops::deref::DerefMut",
-                          Ty.apply (Ty.path "revm::context::evm_context::EvmContext") [ DB ],
+                          Ty.apply (Ty.path "revm::context::evm_context::EvmContext") [] [ DB ],
                           [],
                           "deref_mut",
                           []
@@ -5463,6 +5797,7 @@ Module evm.
                                             "core::ops::deref::DerefMut",
                                             Ty.apply
                                               (Ty.path "revm::context::evm_context::EvmContext")
+                                              []
                                               [ DB ],
                                             [],
                                             "deref_mut",
@@ -5496,7 +5831,7 @@ Module evm.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     (*
@@ -5508,10 +5843,10 @@ Module evm.
                 .ok()
         }
     *)
-    Definition balance (EXT DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition balance (EXT DB : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self EXT DB in
-      match τ, α with
-      | [], [ self; address ] =>
+      match ε, τ, α with
+      | [], [], [ self; address ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let address := M.alloc (| address |) in
@@ -5519,7 +5854,15 @@ Module evm.
             M.get_associated_function (|
               Ty.apply
                 (Ty.path "core::result::Result")
-                [ Ty.tuple [ Ty.path "ruint::Uint"; Ty.path "bool" ]; Ty.tuple [] ],
+                []
+                [
+                  Ty.tuple
+                    [
+                      Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [];
+                      Ty.path "bool"
+                    ];
+                  Ty.tuple []
+                ],
               "ok",
               []
             |),
@@ -5528,9 +5871,17 @@ Module evm.
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "core::result::Result")
+                    []
                     [
-                      Ty.tuple [ Ty.path "ruint::Uint"; Ty.path "bool" ];
-                      Ty.apply (Ty.path "revm_primitives::result::EVMError") [ Ty.associated ]
+                      Ty.tuple
+                        [
+                          Ty.apply
+                            (Ty.path "ruint::Uint")
+                            [ Value.Integer 256; Value.Integer 4 ]
+                            [];
+                          Ty.path "bool"
+                        ];
+                      Ty.apply (Ty.path "revm_primitives::result::EVMError") [] [ Ty.associated ]
                     ],
                   "map_err",
                   [
@@ -5538,7 +5889,11 @@ Module evm.
                     Ty.function
                       [
                         Ty.tuple
-                          [ Ty.apply (Ty.path "revm_primitives::result::EVMError") [ Ty.associated ]
+                          [
+                            Ty.apply
+                              (Ty.path "revm_primitives::result::EVMError")
+                              []
+                              [ Ty.associated ]
                           ]
                       ]
                       (Ty.tuple [])
@@ -5547,7 +5902,10 @@ Module evm.
                 [
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "revm::context::inner_evm_context::InnerEvmContext") [ DB ],
+                      Ty.apply
+                        (Ty.path "revm::context::inner_evm_context::InnerEvmContext")
+                        []
+                        [ DB ],
                       "balance",
                       []
                     |),
@@ -5555,7 +5913,7 @@ Module evm.
                       M.call_closure (|
                         M.get_trait_method (|
                           "core::ops::deref::DerefMut",
-                          Ty.apply (Ty.path "revm::context::evm_context::EvmContext") [ DB ],
+                          Ty.apply (Ty.path "revm::context::evm_context::EvmContext") [] [ DB ],
                           [],
                           "deref_mut",
                           []
@@ -5594,6 +5952,7 @@ Module evm.
                                             "core::ops::deref::DerefMut",
                                             Ty.apply
                                               (Ty.path "revm::context::evm_context::EvmContext")
+                                              []
                                               [ DB ],
                                             [],
                                             "deref_mut",
@@ -5627,7 +5986,7 @@ Module evm.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     (*
@@ -5639,10 +5998,10 @@ Module evm.
                 .ok()
         }
     *)
-    Definition code (EXT DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition code (EXT DB : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self EXT DB in
-      match τ, α with
-      | [], [ self; address ] =>
+      match ε, τ, α with
+      | [], [], [ self; address ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let address := M.alloc (| address |) in
@@ -5650,6 +6009,7 @@ Module evm.
             M.get_associated_function (|
               Ty.apply
                 (Ty.path "core::result::Result")
+                []
                 [
                   Ty.tuple [ Ty.path "revm_primitives::bytecode::Bytecode"; Ty.path "bool" ];
                   Ty.tuple []
@@ -5662,9 +6022,10 @@ Module evm.
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "core::result::Result")
+                    []
                     [
                       Ty.tuple [ Ty.path "revm_primitives::bytecode::Bytecode"; Ty.path "bool" ];
-                      Ty.apply (Ty.path "revm_primitives::result::EVMError") [ Ty.associated ]
+                      Ty.apply (Ty.path "revm_primitives::result::EVMError") [] [ Ty.associated ]
                     ],
                   "map_err",
                   [
@@ -5672,7 +6033,11 @@ Module evm.
                     Ty.function
                       [
                         Ty.tuple
-                          [ Ty.apply (Ty.path "revm_primitives::result::EVMError") [ Ty.associated ]
+                          [
+                            Ty.apply
+                              (Ty.path "revm_primitives::result::EVMError")
+                              []
+                              [ Ty.associated ]
                           ]
                       ]
                       (Ty.tuple [])
@@ -5681,7 +6046,10 @@ Module evm.
                 [
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "revm::context::inner_evm_context::InnerEvmContext") [ DB ],
+                      Ty.apply
+                        (Ty.path "revm::context::inner_evm_context::InnerEvmContext")
+                        []
+                        [ DB ],
                       "code",
                       []
                     |),
@@ -5689,7 +6057,7 @@ Module evm.
                       M.call_closure (|
                         M.get_trait_method (|
                           "core::ops::deref::DerefMut",
-                          Ty.apply (Ty.path "revm::context::evm_context::EvmContext") [ DB ],
+                          Ty.apply (Ty.path "revm::context::evm_context::EvmContext") [] [ DB ],
                           [],
                           "deref_mut",
                           []
@@ -5728,6 +6096,7 @@ Module evm.
                                             "core::ops::deref::DerefMut",
                                             Ty.apply
                                               (Ty.path "revm::context::evm_context::EvmContext")
+                                              []
                                               [ DB ],
                                             [],
                                             "deref_mut",
@@ -5761,7 +6130,7 @@ Module evm.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     (*
@@ -5773,10 +6142,15 @@ Module evm.
                 .ok()
         }
     *)
-    Definition code_hash (EXT DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition code_hash
+        (EXT DB : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
       let Self : Ty.t := Self EXT DB in
-      match τ, α with
-      | [], [ self; address ] =>
+      match ε, τ, α with
+      | [], [], [ self; address ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let address := M.alloc (| address |) in
@@ -5784,8 +6158,16 @@ Module evm.
             M.get_associated_function (|
               Ty.apply
                 (Ty.path "core::result::Result")
+                []
                 [
-                  Ty.tuple [ Ty.path "alloy_primitives::bits::fixed::FixedBytes"; Ty.path "bool" ];
+                  Ty.tuple
+                    [
+                      Ty.apply
+                        (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                        [ Value.Integer 32 ]
+                        [];
+                      Ty.path "bool"
+                    ];
                   Ty.tuple []
                 ],
               "ok",
@@ -5796,10 +6178,17 @@ Module evm.
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "core::result::Result")
+                    []
                     [
                       Ty.tuple
-                        [ Ty.path "alloy_primitives::bits::fixed::FixedBytes"; Ty.path "bool" ];
-                      Ty.apply (Ty.path "revm_primitives::result::EVMError") [ Ty.associated ]
+                        [
+                          Ty.apply
+                            (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                            [ Value.Integer 32 ]
+                            [];
+                          Ty.path "bool"
+                        ];
+                      Ty.apply (Ty.path "revm_primitives::result::EVMError") [] [ Ty.associated ]
                     ],
                   "map_err",
                   [
@@ -5807,7 +6196,11 @@ Module evm.
                     Ty.function
                       [
                         Ty.tuple
-                          [ Ty.apply (Ty.path "revm_primitives::result::EVMError") [ Ty.associated ]
+                          [
+                            Ty.apply
+                              (Ty.path "revm_primitives::result::EVMError")
+                              []
+                              [ Ty.associated ]
                           ]
                       ]
                       (Ty.tuple [])
@@ -5816,7 +6209,10 @@ Module evm.
                 [
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "revm::context::inner_evm_context::InnerEvmContext") [ DB ],
+                      Ty.apply
+                        (Ty.path "revm::context::inner_evm_context::InnerEvmContext")
+                        []
+                        [ DB ],
                       "code_hash",
                       []
                     |),
@@ -5824,7 +6220,7 @@ Module evm.
                       M.call_closure (|
                         M.get_trait_method (|
                           "core::ops::deref::DerefMut",
-                          Ty.apply (Ty.path "revm::context::evm_context::EvmContext") [ DB ],
+                          Ty.apply (Ty.path "revm::context::evm_context::EvmContext") [] [ DB ],
                           [],
                           "deref_mut",
                           []
@@ -5863,6 +6259,7 @@ Module evm.
                                             "core::ops::deref::DerefMut",
                                             Ty.apply
                                               (Ty.path "revm::context::evm_context::EvmContext")
+                                              []
                                               [ DB ],
                                             [],
                                             "deref_mut",
@@ -5896,7 +6293,7 @@ Module evm.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     (*
@@ -5908,10 +6305,10 @@ Module evm.
                 .ok()
         }
     *)
-    Definition sload (EXT DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition sload (EXT DB : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self EXT DB in
-      match τ, α with
-      | [], [ self; address; index ] =>
+      match ε, τ, α with
+      | [], [], [ self; address; index ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let address := M.alloc (| address |) in
@@ -5920,7 +6317,15 @@ Module evm.
             M.get_associated_function (|
               Ty.apply
                 (Ty.path "core::result::Result")
-                [ Ty.tuple [ Ty.path "ruint::Uint"; Ty.path "bool" ]; Ty.tuple [] ],
+                []
+                [
+                  Ty.tuple
+                    [
+                      Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [];
+                      Ty.path "bool"
+                    ];
+                  Ty.tuple []
+                ],
               "ok",
               []
             |),
@@ -5929,9 +6334,17 @@ Module evm.
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "core::result::Result")
+                    []
                     [
-                      Ty.tuple [ Ty.path "ruint::Uint"; Ty.path "bool" ];
-                      Ty.apply (Ty.path "revm_primitives::result::EVMError") [ Ty.associated ]
+                      Ty.tuple
+                        [
+                          Ty.apply
+                            (Ty.path "ruint::Uint")
+                            [ Value.Integer 256; Value.Integer 4 ]
+                            [];
+                          Ty.path "bool"
+                        ];
+                      Ty.apply (Ty.path "revm_primitives::result::EVMError") [] [ Ty.associated ]
                     ],
                   "map_err",
                   [
@@ -5939,7 +6352,11 @@ Module evm.
                     Ty.function
                       [
                         Ty.tuple
-                          [ Ty.apply (Ty.path "revm_primitives::result::EVMError") [ Ty.associated ]
+                          [
+                            Ty.apply
+                              (Ty.path "revm_primitives::result::EVMError")
+                              []
+                              [ Ty.associated ]
                           ]
                       ]
                       (Ty.tuple [])
@@ -5948,7 +6365,10 @@ Module evm.
                 [
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "revm::context::inner_evm_context::InnerEvmContext") [ DB ],
+                      Ty.apply
+                        (Ty.path "revm::context::inner_evm_context::InnerEvmContext")
+                        []
+                        [ DB ],
                       "sload",
                       []
                     |),
@@ -5956,7 +6376,7 @@ Module evm.
                       M.call_closure (|
                         M.get_trait_method (|
                           "core::ops::deref::DerefMut",
-                          Ty.apply (Ty.path "revm::context::evm_context::EvmContext") [ DB ],
+                          Ty.apply (Ty.path "revm::context::evm_context::EvmContext") [] [ DB ],
                           [],
                           "deref_mut",
                           []
@@ -5996,6 +6416,7 @@ Module evm.
                                             "core::ops::deref::DerefMut",
                                             Ty.apply
                                               (Ty.path "revm::context::evm_context::EvmContext")
+                                              []
                                               [ DB ],
                                             [],
                                             "deref_mut",
@@ -6029,7 +6450,7 @@ Module evm.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     (*
@@ -6041,10 +6462,10 @@ Module evm.
                 .ok()
         }
     *)
-    Definition sstore (EXT DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition sstore (EXT DB : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self EXT DB in
-      match τ, α with
-      | [], [ self; address; index; value ] =>
+      match ε, τ, α with
+      | [], [], [ self; address; index; value ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let address := M.alloc (| address |) in
@@ -6054,6 +6475,7 @@ Module evm.
             M.get_associated_function (|
               Ty.apply
                 (Ty.path "core::result::Result")
+                []
                 [ Ty.path "revm_interpreter::host::SStoreResult"; Ty.tuple [] ],
               "ok",
               []
@@ -6063,9 +6485,10 @@ Module evm.
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "core::result::Result")
+                    []
                     [
                       Ty.path "revm_interpreter::host::SStoreResult";
-                      Ty.apply (Ty.path "revm_primitives::result::EVMError") [ Ty.associated ]
+                      Ty.apply (Ty.path "revm_primitives::result::EVMError") [] [ Ty.associated ]
                     ],
                   "map_err",
                   [
@@ -6073,7 +6496,11 @@ Module evm.
                     Ty.function
                       [
                         Ty.tuple
-                          [ Ty.apply (Ty.path "revm_primitives::result::EVMError") [ Ty.associated ]
+                          [
+                            Ty.apply
+                              (Ty.path "revm_primitives::result::EVMError")
+                              []
+                              [ Ty.associated ]
                           ]
                       ]
                       (Ty.tuple [])
@@ -6082,7 +6509,10 @@ Module evm.
                 [
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "revm::context::inner_evm_context::InnerEvmContext") [ DB ],
+                      Ty.apply
+                        (Ty.path "revm::context::inner_evm_context::InnerEvmContext")
+                        []
+                        [ DB ],
                       "sstore",
                       []
                     |),
@@ -6090,7 +6520,7 @@ Module evm.
                       M.call_closure (|
                         M.get_trait_method (|
                           "core::ops::deref::DerefMut",
-                          Ty.apply (Ty.path "revm::context::evm_context::EvmContext") [ DB ],
+                          Ty.apply (Ty.path "revm::context::evm_context::EvmContext") [] [ DB ],
                           [],
                           "deref_mut",
                           []
@@ -6131,6 +6561,7 @@ Module evm.
                                             "core::ops::deref::DerefMut",
                                             Ty.apply
                                               (Ty.path "revm::context::evm_context::EvmContext")
+                                              []
                                               [ DB ],
                                             [],
                                             "deref_mut",
@@ -6164,7 +6595,7 @@ Module evm.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     (*
@@ -6172,17 +6603,17 @@ Module evm.
             self.context.evm.tload(address, index)
         }
     *)
-    Definition tload (EXT DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition tload (EXT DB : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self EXT DB in
-      match τ, α with
-      | [], [ self; address; index ] =>
+      match ε, τ, α with
+      | [], [], [ self; address; index ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let address := M.alloc (| address |) in
           let index := M.alloc (| index |) in
           M.call_closure (|
             M.get_associated_function (|
-              Ty.apply (Ty.path "revm::context::inner_evm_context::InnerEvmContext") [ DB ],
+              Ty.apply (Ty.path "revm::context::inner_evm_context::InnerEvmContext") [] [ DB ],
               "tload",
               []
             |),
@@ -6190,7 +6621,7 @@ Module evm.
               M.call_closure (|
                 M.get_trait_method (|
                   "core::ops::deref::DerefMut",
-                  Ty.apply (Ty.path "revm::context::evm_context::EvmContext") [ DB ],
+                  Ty.apply (Ty.path "revm::context::evm_context::EvmContext") [] [ DB ],
                   [],
                   "deref_mut",
                   []
@@ -6211,7 +6642,7 @@ Module evm.
               M.read (| index |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     (*
@@ -6219,10 +6650,10 @@ Module evm.
             self.context.evm.tstore(address, index, value)
         }
     *)
-    Definition tstore (EXT DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition tstore (EXT DB : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self EXT DB in
-      match τ, α with
-      | [], [ self; address; index; value ] =>
+      match ε, τ, α with
+      | [], [], [ self; address; index; value ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let address := M.alloc (| address |) in
@@ -6230,7 +6661,7 @@ Module evm.
           let value := M.alloc (| value |) in
           M.call_closure (|
             M.get_associated_function (|
-              Ty.apply (Ty.path "revm::context::inner_evm_context::InnerEvmContext") [ DB ],
+              Ty.apply (Ty.path "revm::context::inner_evm_context::InnerEvmContext") [] [ DB ],
               "tstore",
               []
             |),
@@ -6238,7 +6669,7 @@ Module evm.
               M.call_closure (|
                 M.get_trait_method (|
                   "core::ops::deref::DerefMut",
-                  Ty.apply (Ty.path "revm::context::evm_context::EvmContext") [ DB ],
+                  Ty.apply (Ty.path "revm::context::evm_context::EvmContext") [] [ DB ],
                   [],
                   "deref_mut",
                   []
@@ -6260,7 +6691,7 @@ Module evm.
               M.read (| value |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     (*
@@ -6268,10 +6699,10 @@ Module evm.
             self.context.evm.journaled_state.log(log);
         }
     *)
-    Definition log (EXT DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition log (EXT DB : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self EXT DB in
-      match τ, α with
-      | [], [ self; log ] =>
+      match ε, τ, α with
+      | [], [], [ self; log ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let log := M.alloc (| log |) in
@@ -6289,7 +6720,7 @@ Module evm.
                       M.call_closure (|
                         M.get_trait_method (|
                           "core::ops::deref::DerefMut",
-                          Ty.apply (Ty.path "revm::context::evm_context::EvmContext") [ DB ],
+                          Ty.apply (Ty.path "revm::context::evm_context::EvmContext") [] [ DB ],
                           [],
                           "deref_mut",
                           []
@@ -6315,7 +6746,7 @@ Module evm.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     (*
@@ -6329,10 +6760,15 @@ Module evm.
                 .ok()
         }
     *)
-    Definition selfdestruct (EXT DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition selfdestruct
+        (EXT DB : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
       let Self : Ty.t := Self EXT DB in
-      match τ, α with
-      | [], [ self; address; target ] =>
+      match ε, τ, α with
+      | [], [], [ self; address; target ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let address := M.alloc (| address |) in
@@ -6341,6 +6777,7 @@ Module evm.
             M.get_associated_function (|
               Ty.apply
                 (Ty.path "core::result::Result")
+                []
                 [ Ty.path "revm_interpreter::host::SelfDestructResult"; Ty.tuple [] ],
               "ok",
               []
@@ -6350,9 +6787,10 @@ Module evm.
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "core::result::Result")
+                    []
                     [
                       Ty.path "revm_interpreter::host::SelfDestructResult";
-                      Ty.apply (Ty.path "revm_primitives::result::EVMError") [ Ty.associated ]
+                      Ty.apply (Ty.path "revm_primitives::result::EVMError") [] [ Ty.associated ]
                     ],
                   "map_err",
                   [
@@ -6360,7 +6798,11 @@ Module evm.
                     Ty.function
                       [
                         Ty.tuple
-                          [ Ty.apply (Ty.path "revm_primitives::result::EVMError") [ Ty.associated ]
+                          [
+                            Ty.apply
+                              (Ty.path "revm_primitives::result::EVMError")
+                              []
+                              [ Ty.associated ]
                           ]
                       ]
                       (Ty.tuple [])
@@ -6431,6 +6873,7 @@ Module evm.
                                             "core::ops::deref::DerefMut",
                                             Ty.apply
                                               (Ty.path "revm::context::evm_context::EvmContext")
+                                              []
                                               [ DB ],
                                             [],
                                             "deref_mut",
@@ -6464,7 +6907,7 @@ Module evm.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :

@@ -5,6 +5,7 @@ Module bytecode.
   (*
   Enum Bytecode
   {
+    const_params := [];
     ty_params := [];
     variants :=
       [
@@ -32,9 +33,9 @@ Module bytecode.
     Definition Self : Ty.t := Ty.path "revm_primitives::bytecode::Bytecode".
     
     (* Clone *)
-    Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -122,7 +123,7 @@ Module bytecode.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -137,9 +138,9 @@ Module bytecode.
     Definition Self : Ty.t := Ty.path "revm_primitives::bytecode::Bytecode".
     
     (* Debug *)
-    Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; f ] =>
+    Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; f ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
@@ -222,7 +223,7 @@ Module bytecode.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -248,9 +249,9 @@ Module bytecode.
     Definition Self : Ty.t := Ty.path "revm_primitives::bytecode::Bytecode".
     
     (* PartialEq *)
-    Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; other ] =>
+    Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
@@ -399,7 +400,7 @@ Module bytecode.
               |)
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -425,9 +426,13 @@ Module bytecode.
     Definition Self : Ty.t := Ty.path "revm_primitives::bytecode::Bytecode".
     
     (* Eq *)
-    Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition assert_receiver_is_total_eq
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -450,7 +455,7 @@ Module bytecode.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -466,9 +471,9 @@ Module bytecode.
     Definition Self : Ty.t := Ty.path "revm_primitives::bytecode::Bytecode".
     
     (* Hash *)
-    Definition hash (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ __H ], [ self; state ] =>
+    Definition hash (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ __H ], [ self; state ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
@@ -562,7 +567,7 @@ Module bytecode.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -582,9 +587,9 @@ Module bytecode.
             Self::new()
         }
     *)
-    Definition default (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [] =>
+    Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [] =>
         ltac:(M.monadic
           (M.call_closure (|
             M.get_associated_function (|
@@ -594,7 +599,7 @@ Module bytecode.
             |),
             []
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -613,9 +618,9 @@ Module bytecode.
             Self::LegacyAnalyzed(LegacyAnalyzedBytecode::default())
         }
     *)
-    Definition new (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [] =>
+    Definition new (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [] =>
         ltac:(M.monadic
           (Value.StructTuple
             "revm_primitives::bytecode::Bytecode::LegacyAnalyzed"
@@ -631,7 +636,7 @@ Module bytecode.
                 []
               |)
             ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -644,9 +649,9 @@ Module bytecode.
             }
         }
     *)
-    Definition legacy_jump_table (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition legacy_jump_table (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -683,7 +688,7 @@ Module bytecode.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_legacy_jump_table :
@@ -698,9 +703,9 @@ Module bytecode.
             }
         }
     *)
-    Definition hash_slow (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition hash_slow (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -729,7 +734,12 @@ Module bytecode.
                       M.call_closure (|
                         M.get_function (|
                           "alloy_primitives::utils::keccak256",
-                          [ Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "slice") [ Ty.path "u8" ] ] ]
+                          [
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
+                          ]
                         |),
                         [
                           M.call_closure (|
@@ -746,7 +756,7 @@ Module bytecode.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_hash_slow : M.IsAssociatedFunction Self "hash_slow" hash_slow.
@@ -759,9 +769,9 @@ Module bytecode.
             }
         }
     *)
-    Definition eof (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition eof (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -786,7 +796,7 @@ Module bytecode.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_eof : M.IsAssociatedFunction Self "eof" eof.
@@ -796,9 +806,9 @@ Module bytecode.
             matches!(self, Self::Eof(_))
         }
     *)
-    Definition is_eof (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition is_eof (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -819,7 +829,7 @@ Module bytecode.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_is_eof : M.IsAssociatedFunction Self "is_eof" is_eof.
@@ -829,15 +839,15 @@ Module bytecode.
             Self::LegacyRaw(bytecode)
         }
     *)
-    Definition new_raw (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ bytecode ] =>
+    Definition new_raw (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ bytecode ] =>
         ltac:(M.monadic
           (let bytecode := M.alloc (| bytecode |) in
           Value.StructTuple
             "revm_primitives::bytecode::Bytecode::LegacyRaw"
             [ M.read (| bytecode |) ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_new_raw : M.IsAssociatedFunction Self "new_raw" new_raw.
@@ -855,9 +865,9 @@ Module bytecode.
             ))
         }
     *)
-    Definition new_analyzed (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ bytecode; original_len; jump_table ] =>
+    Definition new_analyzed (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ bytecode; original_len; jump_table ] =>
         ltac:(M.monadic
           (let bytecode := M.alloc (| bytecode |) in
           let original_len := M.alloc (| original_len |) in
@@ -874,7 +884,7 @@ Module bytecode.
                 [ M.read (| bytecode |); M.read (| original_len |); M.read (| jump_table |) ]
               |)
             ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_new_analyzed : M.IsAssociatedFunction Self "new_analyzed" new_analyzed.
@@ -891,9 +901,9 @@ Module bytecode.
             }
         }
     *)
-    Definition bytecode (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition bytecode (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -946,7 +956,12 @@ Module bytecode.
                         M.get_associated_function (|
                           Ty.apply
                             (Ty.path "core::option::Option")
-                            [ Ty.apply (Ty.path "&") [ Ty.path "alloy_primitives::bytes_::Bytes" ]
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.path "alloy_primitives::bytes_::Bytes" ]
                             ],
                           "expect",
                           []
@@ -974,7 +989,7 @@ Module bytecode.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_bytecode : M.IsAssociatedFunction Self "bytecode" bytecode.
@@ -984,9 +999,9 @@ Module bytecode.
             !matches!(self, Self::LegacyRaw(_))
         }
     *)
-    Definition is_execution_ready (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition is_execution_ready (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           UnOp.Pure.not
@@ -1008,7 +1023,7 @@ Module bytecode.
                 ]
               |)
             |))))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_is_execution_ready :
@@ -1023,9 +1038,9 @@ Module bytecode.
             }
         }
     *)
-    Definition original_bytes (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition original_bytes (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -1108,7 +1123,7 @@ Module bytecode.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_original_bytes :
@@ -1123,9 +1138,9 @@ Module bytecode.
             }
         }
     *)
-    Definition original_byte_slice (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition original_byte_slice (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -1230,7 +1245,7 @@ Module bytecode.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_original_byte_slice :
@@ -1245,9 +1260,9 @@ Module bytecode.
             }
         }
     *)
-    Definition len (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition len (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -1324,7 +1339,7 @@ Module bytecode.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_len : M.IsAssociatedFunction Self "len" len.
@@ -1334,9 +1349,9 @@ Module bytecode.
             self.len() == 0
         }
     *)
-    Definition is_empty (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition is_empty (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           BinOp.Pure.eq
@@ -1349,7 +1364,7 @@ Module bytecode.
               [ M.read (| self |) ]
             |))
             (Value.Integer 0)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_is_empty : M.IsAssociatedFunction Self "is_empty" is_empty.

@@ -6,40 +6,44 @@ Module collections.
     (* StructRecord
       {
         name := "BinaryHeap";
+        const_params := [];
         ty_params := [ "T"; "A" ];
-        fields := [ ("data", Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ]) ];
+        fields := [ ("data", Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ]) ];
       } *)
     
     (* StructRecord
       {
         name := "PeekMut";
+        const_params := [];
         ty_params := [ "T"; "A" ];
         fields :=
           [
             ("heap",
               Ty.apply
                 (Ty.path "&mut")
-                [ Ty.apply (Ty.path "alloc::collections::binary_heap::BinaryHeap") [ T; A ] ]);
+                []
+                [ Ty.apply (Ty.path "alloc::collections::binary_heap::BinaryHeap") [] [ T; A ] ]);
             ("original_len",
               Ty.apply
                 (Ty.path "core::option::Option")
+                []
                 [ Ty.path "core::num::nonzero::NonZeroUsize" ])
           ];
       } *)
     
     Module Impl_core_fmt_Debug_where_core_cmp_Ord_T_where_core_fmt_Debug_T_where_core_alloc_Allocator_A_for_alloc_collections_binary_heap_PeekMut_T_A.
       Definition Self (T A : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "alloc::collections::binary_heap::PeekMut") [ T; A ].
+        Ty.apply (Ty.path "alloc::collections::binary_heap::PeekMut") [] [ T; A ].
       
       (*
           fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
               f.debug_tuple("PeekMut").field(&self.heap.data[0]).finish()
           }
       *)
-      Definition fmt (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [], [ self; f ] =>
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -72,7 +76,7 @@ Module collections.
                       (M.call_closure (|
                         M.get_trait_method (|
                           "core::ops::index::Index",
-                          Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                          Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                           [ Ty.path "usize" ],
                           "index",
                           []
@@ -96,7 +100,7 @@ Module collections.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -110,7 +114,7 @@ Module collections.
     
     Module Impl_core_ops_drop_Drop_where_core_cmp_Ord_T_where_core_alloc_Allocator_A_for_alloc_collections_binary_heap_PeekMut_T_A.
       Definition Self (T A : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "alloc::collections::binary_heap::PeekMut") [ T; A ].
+        Ty.apply (Ty.path "alloc::collections::binary_heap::PeekMut") [] [ T; A ].
       
       (*
           fn drop(&mut self) {
@@ -127,10 +131,10 @@ Module collections.
               }
           }
       *)
-      Definition drop (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition drop (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -156,7 +160,7 @@ Module collections.
                         M.alloc (|
                           M.call_closure (|
                             M.get_associated_function (|
-                              Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                              Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                               "set_len",
                               []
                             |),
@@ -189,6 +193,7 @@ Module collections.
                             M.get_associated_function (|
                               Ty.apply
                                 (Ty.path "alloc::collections::binary_heap::BinaryHeap")
+                                []
                                 [ T; A ],
                               "sift_down",
                               []
@@ -210,7 +215,7 @@ Module collections.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -224,7 +229,7 @@ Module collections.
     
     Module Impl_core_ops_deref_Deref_where_core_cmp_Ord_T_where_core_alloc_Allocator_A_for_alloc_collections_binary_heap_PeekMut_T_A.
       Definition Self (T A : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "alloc::collections::binary_heap::PeekMut") [ T; A ].
+        Ty.apply (Ty.path "alloc::collections::binary_heap::PeekMut") [] [ T; A ].
       
       (*     type Target = T; *)
       Definition _Target (T A : Ty.t) : Ty.t := T.
@@ -236,10 +241,10 @@ Module collections.
               unsafe { self.heap.data.get_unchecked(0) }
           }
       *)
-      Definition deref (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition deref (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -268,6 +273,7 @@ Module collections.
                                                 Ty.apply
                                                   (Ty.path
                                                     "alloc::collections::binary_heap::BinaryHeap")
+                                                  []
                                                   [ T; A ],
                                                 "is_empty",
                                                 []
@@ -310,7 +316,7 @@ Module collections.
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "slice") [ T ],
+                    Ty.apply (Ty.path "slice") [] [ T ],
                     "get_unchecked",
                     [ Ty.path "usize" ]
                   |),
@@ -318,7 +324,7 @@ Module collections.
                     M.call_closure (|
                       M.get_trait_method (|
                         "core::ops::deref::Deref",
-                        Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                        Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                         [],
                         "deref",
                         []
@@ -342,7 +348,7 @@ Module collections.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -358,7 +364,7 @@ Module collections.
     
     Module Impl_core_ops_deref_DerefMut_where_core_cmp_Ord_T_where_core_alloc_Allocator_A_for_alloc_collections_binary_heap_PeekMut_T_A.
       Definition Self (T A : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "alloc::collections::binary_heap::PeekMut") [ T; A ].
+        Ty.apply (Ty.path "alloc::collections::binary_heap::PeekMut") [] [ T; A ].
       
       (*
           fn deref_mut(&mut self) -> &mut T {
@@ -387,10 +393,10 @@ Module collections.
               unsafe { self.heap.data.get_unchecked_mut(0) }
           }
       *)
-      Definition deref_mut (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition deref_mut (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -419,6 +425,7 @@ Module collections.
                                                 Ty.apply
                                                   (Ty.path
                                                     "alloc::collections::binary_heap::BinaryHeap")
+                                                  []
                                                   [ T; A ],
                                                 "is_empty",
                                                 []
@@ -462,7 +469,7 @@ Module collections.
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "alloc::collections::binary_heap::BinaryHeap") [ T; A ],
+                      Ty.apply (Ty.path "alloc::collections::binary_heap::BinaryHeap") [] [ T; A ],
                       "len",
                       []
                     |),
@@ -512,7 +519,7 @@ Module collections.
                           M.alloc (|
                             M.call_closure (|
                               M.get_associated_function (|
-                                Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                                Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                                 "set_len",
                                 []
                               |),
@@ -539,7 +546,7 @@ Module collections.
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "slice") [ T ],
+                    Ty.apply (Ty.path "slice") [] [ T ],
                     "get_unchecked_mut",
                     [ Ty.path "usize" ]
                   |),
@@ -547,7 +554,7 @@ Module collections.
                     M.call_closure (|
                       M.get_trait_method (|
                         "core::ops::deref::DerefMut",
-                        Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                        Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                         [],
                         "deref_mut",
                         []
@@ -571,7 +578,7 @@ Module collections.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -585,7 +592,7 @@ Module collections.
     
     Module Impl_alloc_collections_binary_heap_PeekMut_T_A.
       Definition Self (T A : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "alloc::collections::binary_heap::PeekMut") [ T; A ].
+        Ty.apply (Ty.path "alloc::collections::binary_heap::PeekMut") [] [ T; A ].
       
       (*
           pub fn pop(mut this: PeekMut<'a, T, A>) -> T {
@@ -601,10 +608,10 @@ Module collections.
               this.heap.pop().unwrap()
           }
       *)
-      Definition pop (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition pop (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [], [ this ] =>
+        match ε, τ, α with
+        | [], [], [ this ] =>
           ltac:(M.monadic
             (let this := M.alloc (| this |) in
             M.read (|
@@ -620,6 +627,7 @@ Module collections.
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "core::option::Option")
+                                  []
                                   [ Ty.path "core::num::nonzero::NonZeroUsize" ],
                                 "take",
                                 []
@@ -644,7 +652,7 @@ Module collections.
                           M.alloc (|
                             M.call_closure (|
                               M.get_associated_function (|
-                                Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                                Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                                 "set_len",
                                 []
                               |),
@@ -678,14 +686,17 @@ Module collections.
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::option::Option") [ T ],
+                    Ty.apply (Ty.path "core::option::Option") [] [ T ],
                     "unwrap",
                     []
                   |),
                   [
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "alloc::collections::binary_heap::BinaryHeap") [ T; A ],
+                        Ty.apply
+                          (Ty.path "alloc::collections::binary_heap::BinaryHeap")
+                          []
+                          [ T; A ],
                         "pop",
                         []
                       |),
@@ -703,7 +714,7 @@ Module collections.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_pop :
@@ -713,17 +724,17 @@ Module collections.
     
     Module Impl_core_clone_Clone_where_core_clone_Clone_T_where_core_alloc_Allocator_A_where_core_clone_Clone_A_for_alloc_collections_binary_heap_BinaryHeap_T_A.
       Definition Self (T A : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "alloc::collections::binary_heap::BinaryHeap") [ T; A ].
+        Ty.apply (Ty.path "alloc::collections::binary_heap::BinaryHeap") [] [ T; A ].
       
       (*
           fn clone(&self) -> Self {
               BinaryHeap { data: self.data.clone() }
           }
       *)
-      Definition clone (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition clone (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructRecord
@@ -733,7 +744,7 @@ Module collections.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::clone::Clone",
-                      Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                      Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                       [],
                       "clone",
                       []
@@ -747,7 +758,7 @@ Module collections.
                     ]
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -755,10 +766,15 @@ Module collections.
               self.data.clone_from(&source.data);
           }
       *)
-      Definition clone_from (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition clone_from
+          (T A : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [], [ self; source ] =>
+        match ε, τ, α with
+        | [], [], [ self; source ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let source := M.alloc (| source |) in
@@ -768,7 +784,7 @@ Module collections.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::clone::Clone",
-                      Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                      Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                       [],
                       "clone_from",
                       []
@@ -789,7 +805,7 @@ Module collections.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -809,6 +825,7 @@ Module collections.
       Definition Self (T : Ty.t) : Ty.t :=
         Ty.apply
           (Ty.path "alloc::collections::binary_heap::BinaryHeap")
+          []
           [ T; Ty.path "alloc::alloc::Global" ].
       
       (*
@@ -816,22 +833,23 @@ Module collections.
               BinaryHeap::new()
           }
       *)
-      Definition default (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition default (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [] =>
+        match ε, τ, α with
+        | [], [], [] =>
           ltac:(M.monadic
             (M.call_closure (|
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "alloc::collections::binary_heap::BinaryHeap")
+                  []
                   [ T; Ty.path "alloc::alloc::Global" ],
                 "new",
                 []
               |),
               []
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -845,17 +863,17 @@ Module collections.
     
     Module Impl_core_fmt_Debug_where_core_fmt_Debug_T_where_core_alloc_Allocator_A_for_alloc_collections_binary_heap_BinaryHeap_T_A.
       Definition Self (T A : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "alloc::collections::binary_heap::BinaryHeap") [ T; A ].
+        Ty.apply (Ty.path "alloc::collections::binary_heap::BinaryHeap") [] [ T; A ].
       
       (*
           fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
               f.debug_list().entries(self.iter()).finish()
           }
       *)
-      Definition fmt (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [], [ self; f ] =>
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -871,8 +889,8 @@ Module collections.
                     Ty.path "core::fmt::builders::DebugList",
                     "entries",
                     [
-                      Ty.apply (Ty.path "&") [ T ];
-                      Ty.apply (Ty.path "alloc::collections::binary_heap::Iter") [ T ]
+                      Ty.apply (Ty.path "&") [] [ T ];
+                      Ty.apply (Ty.path "alloc::collections::binary_heap::Iter") [] [ T ]
                     ]
                   |),
                   [
@@ -888,7 +906,10 @@ Module collections.
                     |);
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "alloc::collections::binary_heap::BinaryHeap") [ T; A ],
+                        Ty.apply
+                          (Ty.path "alloc::collections::binary_heap::BinaryHeap")
+                          []
+                          [ T; A ],
                         "iter",
                         []
                       |),
@@ -898,7 +919,7 @@ Module collections.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -913,30 +934,32 @@ Module collections.
     (* StructRecord
       {
         name := "RebuildOnDrop";
+        const_params := [];
         ty_params := [ "T"; "A" ];
         fields :=
           [
             ("heap",
               Ty.apply
                 (Ty.path "&mut")
-                [ Ty.apply (Ty.path "alloc::collections::binary_heap::BinaryHeap") [ T; A ] ]);
+                []
+                [ Ty.apply (Ty.path "alloc::collections::binary_heap::BinaryHeap") [] [ T; A ] ]);
             ("rebuild_from", Ty.path "usize")
           ];
       } *)
     
     Module Impl_core_ops_drop_Drop_where_core_cmp_Ord_T_where_core_alloc_Allocator_A_for_alloc_collections_binary_heap_RebuildOnDrop_T_A.
       Definition Self (T A : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "alloc::collections::binary_heap::RebuildOnDrop") [ T; A ].
+        Ty.apply (Ty.path "alloc::collections::binary_heap::RebuildOnDrop") [] [ T; A ].
       
       (*
           fn drop(&mut self) {
               self.heap.rebuild_tail(self.rebuild_from);
           }
       *)
-      Definition drop (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition drop (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -944,7 +967,7 @@ Module collections.
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "alloc::collections::binary_heap::BinaryHeap") [ T; A ],
+                      Ty.apply (Ty.path "alloc::collections::binary_heap::BinaryHeap") [] [ T; A ],
                       "rebuild_tail",
                       []
                     |),
@@ -968,7 +991,7 @@ Module collections.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -984,6 +1007,7 @@ Module collections.
       Definition Self (T : Ty.t) : Ty.t :=
         Ty.apply
           (Ty.path "alloc::collections::binary_heap::BinaryHeap")
+          []
           [ T; Ty.path "alloc::alloc::Global" ].
       
       (*
@@ -991,10 +1015,10 @@ Module collections.
               BinaryHeap { data: vec![] }
           }
       *)
-      Definition new (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition new (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [] =>
+        match ε, τ, α with
+        | [], [], [] =>
           ltac:(M.monadic
             (Value.StructRecord
               "alloc::collections::binary_heap::BinaryHeap"
@@ -1002,14 +1026,14 @@ Module collections.
                 ("data",
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "alloc::vec::Vec") [ T; Ty.path "alloc::alloc::Global" ],
+                      Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; Ty.path "alloc::alloc::Global" ],
                       "new",
                       []
                     |),
                     []
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_new :
@@ -1021,10 +1045,15 @@ Module collections.
               BinaryHeap { data: Vec::with_capacity(capacity) }
           }
       *)
-      Definition with_capacity (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition with_capacity
+          (T : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ capacity ] =>
+        match ε, τ, α with
+        | [], [], [ capacity ] =>
           ltac:(M.monadic
             (let capacity := M.alloc (| capacity |) in
             Value.StructRecord
@@ -1033,14 +1062,14 @@ Module collections.
                 ("data",
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "alloc::vec::Vec") [ T; Ty.path "alloc::alloc::Global" ],
+                      Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; Ty.path "alloc::alloc::Global" ],
                       "with_capacity",
                       []
                     |),
                     [ M.read (| capacity |) ]
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_with_capacity :
@@ -1050,17 +1079,17 @@ Module collections.
     
     Module Impl_alloc_collections_binary_heap_BinaryHeap_T_A.
       Definition Self (T A : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "alloc::collections::binary_heap::BinaryHeap") [ T; A ].
+        Ty.apply (Ty.path "alloc::collections::binary_heap::BinaryHeap") [] [ T; A ].
       
       (*
           pub const fn new_in(alloc: A) -> BinaryHeap<T, A> {
               BinaryHeap { data: Vec::new_in(alloc) }
           }
       *)
-      Definition new_in (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition new_in (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [], [ alloc ] =>
+        match ε, τ, α with
+        | [], [], [ alloc ] =>
           ltac:(M.monadic
             (let alloc := M.alloc (| alloc |) in
             Value.StructRecord
@@ -1069,14 +1098,14 @@ Module collections.
                 ("data",
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                      Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                       "new_in",
                       []
                     |),
                     [ M.read (| alloc |) ]
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_new_in :
@@ -1088,10 +1117,15 @@ Module collections.
               BinaryHeap { data: Vec::with_capacity_in(capacity, alloc) }
           }
       *)
-      Definition with_capacity_in (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition with_capacity_in
+          (T A : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [], [ capacity; alloc ] =>
+        match ε, τ, α with
+        | [], [], [ capacity; alloc ] =>
           ltac:(M.monadic
             (let capacity := M.alloc (| capacity |) in
             let alloc := M.alloc (| alloc |) in
@@ -1101,14 +1135,14 @@ Module collections.
                 ("data",
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                      Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                       "with_capacity_in",
                       []
                     |),
                     [ M.read (| capacity |); M.read (| alloc |) ]
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_with_capacity_in :
@@ -1120,10 +1154,10 @@ Module collections.
               if self.is_empty() { None } else { Some(PeekMut { heap: self, original_len: None }) }
           }
       *)
-      Definition peek_mut (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition peek_mut (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -1139,6 +1173,7 @@ Module collections.
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "alloc::collections::binary_heap::BinaryHeap")
+                                  []
                                   [ T; A ],
                                 "is_empty",
                                 []
@@ -1165,7 +1200,7 @@ Module collections.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_peek_mut :
@@ -1184,22 +1219,22 @@ Module collections.
               })
           }
       *)
-      Definition pop (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition pop (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "core::option::Option") [ T ],
+                Ty.apply (Ty.path "core::option::Option") [] [ T ],
                 "map",
                 [ T; Ty.function [ Ty.tuple [ T ] ] T ]
               |),
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                    Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                     "pop",
                     []
                   |),
@@ -1238,6 +1273,7 @@ Module collections.
                                                         Ty.apply
                                                           (Ty.path
                                                             "alloc::collections::binary_heap::BinaryHeap")
+                                                          []
                                                           [ T; A ],
                                                         "is_empty",
                                                         []
@@ -1261,6 +1297,7 @@ Module collections.
                                                         "core::ops::index::IndexMut",
                                                         Ty.apply
                                                           (Ty.path "alloc::vec::Vec")
+                                                          []
                                                           [ T; A ],
                                                         [ Ty.path "usize" ],
                                                         "index_mut",
@@ -1285,6 +1322,7 @@ Module collections.
                                                     Ty.apply
                                                       (Ty.path
                                                         "alloc::collections::binary_heap::BinaryHeap")
+                                                      []
                                                       [ T; A ],
                                                     "sift_down_to_bottom",
                                                     []
@@ -1304,7 +1342,7 @@ Module collections.
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_pop :
@@ -1320,10 +1358,10 @@ Module collections.
               unsafe { self.sift_up(0, old_len) };
           }
       *)
-      Definition push (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition push (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [], [ self; item ] =>
+        match ε, τ, α with
+        | [], [], [ self; item ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let item := M.alloc (| item |) in
@@ -1332,7 +1370,7 @@ Module collections.
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "alloc::collections::binary_heap::BinaryHeap") [ T; A ],
+                      Ty.apply (Ty.path "alloc::collections::binary_heap::BinaryHeap") [] [ T; A ],
                       "len",
                       []
                     |),
@@ -1343,7 +1381,7 @@ Module collections.
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                      Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                       "push",
                       []
                     |),
@@ -1361,7 +1399,7 @@ Module collections.
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "alloc::collections::binary_heap::BinaryHeap") [ T; A ],
+                      Ty.apply (Ty.path "alloc::collections::binary_heap::BinaryHeap") [] [ T; A ],
                       "sift_up",
                       []
                     |),
@@ -1370,7 +1408,7 @@ Module collections.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_push :
@@ -1398,10 +1436,15 @@ Module collections.
               self.into_vec()
           }
       *)
-      Definition into_sorted_vec (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition into_sorted_vec
+          (T A : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -1409,7 +1452,7 @@ Module collections.
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "alloc::collections::binary_heap::BinaryHeap") [ T; A ],
+                      Ty.apply (Ty.path "alloc::collections::binary_heap::BinaryHeap") [] [ T; A ],
                       "len",
                       []
                     |),
@@ -1442,7 +1485,7 @@ Module collections.
                                 M.alloc (|
                                   M.call_closure (|
                                     M.get_associated_function (|
-                                      Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                                      Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                                       "as_mut_ptr",
                                       []
                                     |),
@@ -1463,7 +1506,7 @@ Module collections.
                                       M.read (| ptr |);
                                       M.call_closure (|
                                         M.get_associated_function (|
-                                          Ty.apply (Ty.path "*mut") [ T ],
+                                          Ty.apply (Ty.path "*mut") [] [ T ],
                                           "add",
                                           []
                                         |),
@@ -1479,6 +1522,7 @@ Module collections.
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "alloc::collections::binary_heap::BinaryHeap")
+                                      []
                                       [ T; A ],
                                     "sift_down_range",
                                     []
@@ -1504,7 +1548,7 @@ Module collections.
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "alloc::collections::binary_heap::BinaryHeap") [ T; A ],
+                    Ty.apply (Ty.path "alloc::collections::binary_heap::BinaryHeap") [] [ T; A ],
                     "into_vec",
                     []
                   |),
@@ -1512,7 +1556,7 @@ Module collections.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_into_sorted_vec :
@@ -1543,10 +1587,10 @@ Module collections.
               hole.pos()
           }
       *)
-      Definition sift_up (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition sift_up (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [], [ self; start; pos ] =>
+        match ε, τ, α with
+        | [], [], [ self; start; pos ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let start := M.alloc (| start |) in
@@ -1556,7 +1600,7 @@ Module collections.
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "alloc::collections::binary_heap::Hole") [ T ],
+                      Ty.apply (Ty.path "alloc::collections::binary_heap::Hole") [] [ T ],
                       "new",
                       []
                     |),
@@ -1564,7 +1608,7 @@ Module collections.
                       M.call_closure (|
                         M.get_trait_method (|
                           "core::ops::deref::DerefMut",
-                          Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                          Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                           [],
                           "deref_mut",
                           []
@@ -1597,6 +1641,7 @@ Module collections.
                                       M.get_associated_function (|
                                         Ty.apply
                                           (Ty.path "alloc::collections::binary_heap::Hole")
+                                          []
                                           [ T ],
                                         "pos",
                                         []
@@ -1617,6 +1662,7 @@ Module collections.
                                       M.get_associated_function (|
                                         Ty.apply
                                           (Ty.path "alloc::collections::binary_heap::Hole")
+                                          []
                                           [ T ],
                                         "pos",
                                         []
@@ -1638,8 +1684,8 @@ Module collections.
                                             M.call_closure (|
                                               M.get_trait_method (|
                                                 "core::cmp::PartialOrd",
-                                                Ty.apply (Ty.path "&") [ T ],
-                                                [ Ty.apply (Ty.path "&") [ T ] ],
+                                                Ty.apply (Ty.path "&") [] [ T ],
+                                                [ Ty.apply (Ty.path "&") [] [ T ] ],
                                                 "le",
                                                 []
                                               |),
@@ -1650,6 +1696,7 @@ Module collections.
                                                       Ty.apply
                                                         (Ty.path
                                                           "alloc::collections::binary_heap::Hole")
+                                                        []
                                                         [ T ],
                                                       "element",
                                                       []
@@ -1663,6 +1710,7 @@ Module collections.
                                                       Ty.apply
                                                         (Ty.path
                                                           "alloc::collections::binary_heap::Hole")
+                                                        []
                                                         [ T ],
                                                       "get",
                                                       []
@@ -1690,6 +1738,7 @@ Module collections.
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "alloc::collections::binary_heap::Hole")
+                                      []
                                       [ T ],
                                     "move_to",
                                     []
@@ -1715,7 +1764,7 @@ Module collections.
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "alloc::collections::binary_heap::Hole") [ T ],
+                    Ty.apply (Ty.path "alloc::collections::binary_heap::Hole") [] [ T ],
                     "pos",
                     []
                   |),
@@ -1723,7 +1772,7 @@ Module collections.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_sift_up :
@@ -1768,10 +1817,15 @@ Module collections.
               }
           }
       *)
-      Definition sift_down_range (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition sift_down_range
+          (T A : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [], [ self; pos; end_ ] =>
+        match ε, τ, α with
+        | [], [], [ self; pos; end_ ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let pos := M.alloc (| pos |) in
@@ -1783,7 +1837,7 @@ Module collections.
                     M.alloc (|
                       M.call_closure (|
                         M.get_associated_function (|
-                          Ty.apply (Ty.path "alloc::collections::binary_heap::Hole") [ T ],
+                          Ty.apply (Ty.path "alloc::collections::binary_heap::Hole") [] [ T ],
                           "new",
                           []
                         |),
@@ -1791,7 +1845,7 @@ Module collections.
                           M.call_closure (|
                             M.get_trait_method (|
                               "core::ops::deref::DerefMut",
-                              Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                              Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                               [],
                               "deref_mut",
                               []
@@ -1817,7 +1871,7 @@ Module collections.
                           (Value.Integer 2)
                           (M.call_closure (|
                             M.get_associated_function (|
-                              Ty.apply (Ty.path "alloc::collections::binary_heap::Hole") [ T ],
+                              Ty.apply (Ty.path "alloc::collections::binary_heap::Hole") [] [ T ],
                               "pos",
                               []
                             |),
@@ -1863,8 +1917,8 @@ Module collections.
                                         (M.call_closure (|
                                           M.get_trait_method (|
                                             "core::cmp::PartialOrd",
-                                            Ty.apply (Ty.path "&") [ T ],
-                                            [ Ty.apply (Ty.path "&") [ T ] ],
+                                            Ty.apply (Ty.path "&") [] [ T ],
+                                            [ Ty.apply (Ty.path "&") [] [ T ] ],
                                             "le",
                                             []
                                           |),
@@ -1875,6 +1929,7 @@ Module collections.
                                                   Ty.apply
                                                     (Ty.path
                                                       "alloc::collections::binary_heap::Hole")
+                                                    []
                                                     [ T ],
                                                   "get",
                                                   []
@@ -1888,6 +1943,7 @@ Module collections.
                                                   Ty.apply
                                                     (Ty.path
                                                       "alloc::collections::binary_heap::Hole")
+                                                    []
                                                     [ T ],
                                                   "get",
                                                   []
@@ -1916,8 +1972,8 @@ Module collections.
                                                 M.call_closure (|
                                                   M.get_trait_method (|
                                                     "core::cmp::PartialOrd",
-                                                    Ty.apply (Ty.path "&") [ T ],
-                                                    [ Ty.apply (Ty.path "&") [ T ] ],
+                                                    Ty.apply (Ty.path "&") [] [ T ],
+                                                    [ Ty.apply (Ty.path "&") [] [ T ] ],
                                                     "ge",
                                                     []
                                                   |),
@@ -1928,6 +1984,7 @@ Module collections.
                                                           Ty.apply
                                                             (Ty.path
                                                               "alloc::collections::binary_heap::Hole")
+                                                            []
                                                             [ T ],
                                                           "element",
                                                           []
@@ -1941,6 +1998,7 @@ Module collections.
                                                           Ty.apply
                                                             (Ty.path
                                                               "alloc::collections::binary_heap::Hole")
+                                                            []
                                                             [ T ],
                                                           "get",
                                                           []
@@ -1970,6 +2028,7 @@ Module collections.
                                       M.get_associated_function (|
                                         Ty.apply
                                           (Ty.path "alloc::collections::binary_heap::Hole")
+                                          []
                                           [ T ],
                                         "move_to",
                                         []
@@ -1989,6 +2048,7 @@ Module collections.
                                           M.get_associated_function (|
                                             Ty.apply
                                               (Ty.path "alloc::collections::binary_heap::Hole")
+                                              []
                                               [ T ],
                                             "pos",
                                             []
@@ -2033,8 +2093,8 @@ Module collections.
                                     (M.call_closure (|
                                       M.get_trait_method (|
                                         "core::cmp::PartialOrd",
-                                        Ty.apply (Ty.path "&") [ T ],
-                                        [ Ty.apply (Ty.path "&") [ T ] ],
+                                        Ty.apply (Ty.path "&") [] [ T ],
+                                        [ Ty.apply (Ty.path "&") [] [ T ] ],
                                         "lt",
                                         []
                                       |),
@@ -2044,6 +2104,7 @@ Module collections.
                                             M.get_associated_function (|
                                               Ty.apply
                                                 (Ty.path "alloc::collections::binary_heap::Hole")
+                                                []
                                                 [ T ],
                                               "element",
                                               []
@@ -2056,6 +2117,7 @@ Module collections.
                                             M.get_associated_function (|
                                               Ty.apply
                                                 (Ty.path "alloc::collections::binary_heap::Hole")
+                                                []
                                                 [ T ],
                                               "get",
                                               []
@@ -2073,7 +2135,10 @@ Module collections.
                             M.alloc (|
                               M.call_closure (|
                                 M.get_associated_function (|
-                                  Ty.apply (Ty.path "alloc::collections::binary_heap::Hole") [ T ],
+                                  Ty.apply
+                                    (Ty.path "alloc::collections::binary_heap::Hole")
+                                    []
+                                    [ T ],
                                   "move_to",
                                   []
                                 |),
@@ -2086,7 +2151,7 @@ Module collections.
                   |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_sift_down_range :
@@ -2101,10 +2166,10 @@ Module collections.
               unsafe { self.sift_down_range(pos, len) };
           }
       *)
-      Definition sift_down (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition sift_down (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [], [ self; pos ] =>
+        match ε, τ, α with
+        | [], [], [ self; pos ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let pos := M.alloc (| pos |) in
@@ -2113,7 +2178,7 @@ Module collections.
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "alloc::collections::binary_heap::BinaryHeap") [ T; A ],
+                      Ty.apply (Ty.path "alloc::collections::binary_heap::BinaryHeap") [] [ T; A ],
                       "len",
                       []
                     |),
@@ -2124,7 +2189,7 @@ Module collections.
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "alloc::collections::binary_heap::BinaryHeap") [ T; A ],
+                      Ty.apply (Ty.path "alloc::collections::binary_heap::BinaryHeap") [] [ T; A ],
                       "sift_down_range",
                       []
                     |),
@@ -2133,7 +2198,7 @@ Module collections.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_sift_down :
@@ -2177,10 +2242,15 @@ Module collections.
               unsafe { self.sift_up(start, pos) };
           }
       *)
-      Definition sift_down_to_bottom (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition sift_down_to_bottom
+          (T A : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [], [ self; pos ] =>
+        match ε, τ, α with
+        | [], [], [ self; pos ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let pos := M.alloc (| pos |) in
@@ -2189,7 +2259,7 @@ Module collections.
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "alloc::collections::binary_heap::BinaryHeap") [ T; A ],
+                      Ty.apply (Ty.path "alloc::collections::binary_heap::BinaryHeap") [] [ T; A ],
                       "len",
                       []
                     |),
@@ -2201,7 +2271,7 @@ Module collections.
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "alloc::collections::binary_heap::Hole") [ T ],
+                      Ty.apply (Ty.path "alloc::collections::binary_heap::Hole") [] [ T ],
                       "new",
                       []
                     |),
@@ -2209,7 +2279,7 @@ Module collections.
                       M.call_closure (|
                         M.get_trait_method (|
                           "core::ops::deref::DerefMut",
-                          Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                          Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                           [],
                           "deref_mut",
                           []
@@ -2235,7 +2305,7 @@ Module collections.
                       (Value.Integer 2)
                       (M.call_closure (|
                         M.get_associated_function (|
-                          Ty.apply (Ty.path "alloc::collections::binary_heap::Hole") [ T ],
+                          Ty.apply (Ty.path "alloc::collections::binary_heap::Hole") [] [ T ],
                           "pos",
                           []
                         |),
@@ -2278,8 +2348,8 @@ Module collections.
                                     (M.call_closure (|
                                       M.get_trait_method (|
                                         "core::cmp::PartialOrd",
-                                        Ty.apply (Ty.path "&") [ T ],
-                                        [ Ty.apply (Ty.path "&") [ T ] ],
+                                        Ty.apply (Ty.path "&") [] [ T ],
+                                        [ Ty.apply (Ty.path "&") [] [ T ] ],
                                         "le",
                                         []
                                       |),
@@ -2289,6 +2359,7 @@ Module collections.
                                             M.get_associated_function (|
                                               Ty.apply
                                                 (Ty.path "alloc::collections::binary_heap::Hole")
+                                                []
                                                 [ T ],
                                               "get",
                                               []
@@ -2301,6 +2372,7 @@ Module collections.
                                             M.get_associated_function (|
                                               Ty.apply
                                                 (Ty.path "alloc::collections::binary_heap::Hole")
+                                                []
                                                 [ T ],
                                               "get",
                                               []
@@ -2323,6 +2395,7 @@ Module collections.
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "alloc::collections::binary_heap::Hole")
+                                      []
                                       [ T ],
                                     "move_to",
                                     []
@@ -2342,6 +2415,7 @@ Module collections.
                                       M.get_associated_function (|
                                         Ty.apply
                                           (Ty.path "alloc::collections::binary_heap::Hole")
+                                          []
                                           [ T ],
                                         "pos",
                                         []
@@ -2384,7 +2458,7 @@ Module collections.
                           M.alloc (|
                             M.call_closure (|
                               M.get_associated_function (|
-                                Ty.apply (Ty.path "alloc::collections::binary_heap::Hole") [ T ],
+                                Ty.apply (Ty.path "alloc::collections::binary_heap::Hole") [] [ T ],
                                 "move_to",
                                 []
                               |),
@@ -2400,7 +2474,7 @@ Module collections.
                   pos,
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "alloc::collections::binary_heap::Hole") [ T ],
+                      Ty.apply (Ty.path "alloc::collections::binary_heap::Hole") [] [ T ],
                       "pos",
                       []
                     |),
@@ -2412,7 +2486,7 @@ Module collections.
                   M.call_closure (|
                     M.get_function (|
                       "core::mem::drop",
-                      [ Ty.apply (Ty.path "alloc::collections::binary_heap::Hole") [ T ] ]
+                      [ Ty.apply (Ty.path "alloc::collections::binary_heap::Hole") [] [ T ] ]
                     |),
                     [ M.read (| hole |) ]
                   |)
@@ -2421,7 +2495,7 @@ Module collections.
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "alloc::collections::binary_heap::BinaryHeap") [ T; A ],
+                      Ty.apply (Ty.path "alloc::collections::binary_heap::BinaryHeap") [] [ T; A ],
                       "sift_up",
                       []
                     |),
@@ -2430,7 +2504,7 @@ Module collections.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_sift_down_to_bottom :
@@ -2474,10 +2548,15 @@ Module collections.
               }
           }
       *)
-      Definition rebuild_tail (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition rebuild_tail
+          (T A : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [], [ self; start ] =>
+        match ε, τ, α with
+        | [], [], [ self; start ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let start := M.alloc (| start |) in
@@ -2499,6 +2578,7 @@ Module collections.
                                       M.get_associated_function (|
                                         Ty.apply
                                           (Ty.path "alloc::collections::binary_heap::BinaryHeap")
+                                          []
                                           [ T; A ],
                                         "len",
                                         []
@@ -2522,6 +2602,7 @@ Module collections.
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "alloc::collections::binary_heap::BinaryHeap")
+                              []
                               [ T; A ],
                             "len",
                             []
@@ -2564,6 +2645,7 @@ Module collections.
                                                   Ty.apply
                                                     (Ty.path
                                                       "alloc::collections::binary_heap::BinaryHeap")
+                                                    []
                                                     [ T; A ],
                                                   "len",
                                                   []
@@ -2587,6 +2669,7 @@ Module collections.
                                                 Ty.apply
                                                   (Ty.path
                                                     "alloc::collections::binary_heap::BinaryHeap")
+                                                  []
                                                   [ T; A ],
                                                 "len",
                                                 []
@@ -2617,6 +2700,7 @@ Module collections.
                                                 Ty.apply
                                                   (Ty.path
                                                     "alloc::collections::binary_heap::BinaryHeap")
+                                                  []
                                                   [ T; A ],
                                                 "len",
                                                 []
@@ -2647,6 +2731,7 @@ Module collections.
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "alloc::collections::binary_heap::BinaryHeap")
+                                    []
                                     [ T; A ],
                                   "rebuild",
                                   []
@@ -2665,6 +2750,7 @@ Module collections.
                                     "core::iter::traits::collect::IntoIterator",
                                     Ty.apply
                                       (Ty.path "core::ops::range::Range")
+                                      []
                                       [ Ty.path "usize" ],
                                     [],
                                     "into_iter",
@@ -2681,6 +2767,7 @@ Module collections.
                                               Ty.apply
                                                 (Ty.path
                                                   "alloc::collections::binary_heap::BinaryHeap")
+                                                []
                                                 [ T; A ],
                                               "len",
                                               []
@@ -2705,6 +2792,7 @@ Module collections.
                                                   "core::iter::traits::iterator::Iterator",
                                                   Ty.apply
                                                     (Ty.path "core::ops::range::Range")
+                                                    []
                                                     [ Ty.path "usize" ],
                                                   [],
                                                   "next",
@@ -2740,6 +2828,7 @@ Module collections.
                                                           Ty.apply
                                                             (Ty.path
                                                               "alloc::collections::binary_heap::BinaryHeap")
+                                                            []
                                                             [ T; A ],
                                                           "sift_up",
                                                           []
@@ -2762,7 +2851,7 @@ Module collections.
                   |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_rebuild_tail :
@@ -2781,10 +2870,10 @@ Module collections.
               }
           }
       *)
-      Definition rebuild (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition rebuild (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -2794,7 +2883,10 @@ Module collections.
                     Integer.Usize
                     (M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "alloc::collections::binary_heap::BinaryHeap") [ T; A ],
+                        Ty.apply
+                          (Ty.path "alloc::collections::binary_heap::BinaryHeap")
+                          []
+                          [ T; A ],
                         "len",
                         []
                       |),
@@ -2826,6 +2918,7 @@ Module collections.
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "alloc::collections::binary_heap::BinaryHeap")
+                                    []
                                     [ T; A ],
                                   "sift_down",
                                   []
@@ -2849,7 +2942,7 @@ Module collections.
                   |)))
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_rebuild :
@@ -2869,10 +2962,10 @@ Module collections.
               self.rebuild_tail(start);
           }
       *)
-      Definition append (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition append (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [], [ self; other ] =>
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -2891,6 +2984,7 @@ Module collections.
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "alloc::collections::binary_heap::BinaryHeap")
+                                      []
                                       [ T; A ],
                                     "len",
                                     []
@@ -2901,6 +2995,7 @@ Module collections.
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "alloc::collections::binary_heap::BinaryHeap")
+                                      []
                                       [ T; A ],
                                     "len",
                                     []
@@ -2918,6 +3013,7 @@ Module collections.
                                 [
                                   Ty.apply
                                     (Ty.path "alloc::collections::binary_heap::BinaryHeap")
+                                    []
                                     [ T; A ]
                                 ]
                               |),
@@ -2932,7 +3028,7 @@ Module collections.
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                      Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                       "len",
                       []
                     |),
@@ -2949,7 +3045,7 @@ Module collections.
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                      Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                       "append",
                       []
                     |),
@@ -2971,7 +3067,7 @@ Module collections.
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "alloc::collections::binary_heap::BinaryHeap") [ T; A ],
+                      Ty.apply (Ty.path "alloc::collections::binary_heap::BinaryHeap") [] [ T; A ],
                       "rebuild_tail",
                       []
                     |),
@@ -2980,7 +3076,7 @@ Module collections.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_append :
@@ -2992,16 +3088,21 @@ Module collections.
               DrainSorted { inner: self }
           }
       *)
-      Definition drain_sorted (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition drain_sorted
+          (T A : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructRecord
               "alloc::collections::binary_heap::DrainSorted"
               [ ("inner", M.read (| self |)) ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_drain_sorted :
@@ -3028,10 +3129,10 @@ Module collections.
               });
           }
       *)
-      Definition retain (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition retain (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [ F ], [ self; f ] =>
+        match ε, τ, α with
+        | [], [ F ], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -3046,6 +3147,7 @@ Module collections.
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "alloc::collections::binary_heap::BinaryHeap")
+                              []
                               [ T; A ],
                             "len",
                             []
@@ -3060,9 +3162,13 @@ Module collections.
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                      Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                       "retain",
-                      [ Ty.function [ Ty.tuple [ Ty.apply (Ty.path "&") [ T ] ] ] (Ty.path "bool") ]
+                      [
+                        Ty.function
+                          [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ] ]
+                          (Ty.path "bool")
+                      ]
                     |),
                     [
                       M.SubPointer.get_struct_record_field (|
@@ -3094,7 +3200,7 @@ Module collections.
                                               M.get_trait_method (|
                                                 "core::ops::function::FnMut",
                                                 F,
-                                                [ Ty.tuple [ Ty.apply (Ty.path "&") [ T ] ] ],
+                                                [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ] ],
                                                 "call_mut",
                                                 []
                                               |),
@@ -3163,7 +3269,7 @@ Module collections.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_retain :
@@ -3174,10 +3280,10 @@ Module collections.
               Iter { iter: self.data.iter() }
           }
       *)
-      Definition iter (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition iter (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructRecord
@@ -3185,12 +3291,12 @@ Module collections.
               [
                 ("iter",
                   M.call_closure (|
-                    M.get_associated_function (| Ty.apply (Ty.path "slice") [ T ], "iter", [] |),
+                    M.get_associated_function (| Ty.apply (Ty.path "slice") [] [ T ], "iter", [] |),
                     [
                       M.call_closure (|
                         M.get_trait_method (|
                           "core::ops::deref::Deref",
-                          Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                          Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                           [],
                           "deref",
                           []
@@ -3206,7 +3312,7 @@ Module collections.
                     ]
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_iter :
@@ -3218,16 +3324,21 @@ Module collections.
               IntoIterSorted { inner: self }
           }
       *)
-      Definition into_iter_sorted (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition into_iter_sorted
+          (T A : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructRecord
               "alloc::collections::binary_heap::IntoIterSorted"
               [ ("inner", M.read (| self |)) ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_into_iter_sorted :
@@ -3239,15 +3350,15 @@ Module collections.
               self.data.get(0)
           }
       *)
-      Definition peek (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition peek (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "slice") [ T ],
+                Ty.apply (Ty.path "slice") [] [ T ],
                 "get",
                 [ Ty.path "usize" ]
               |),
@@ -3255,7 +3366,7 @@ Module collections.
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::ops::deref::Deref",
-                    Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                    Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                     [],
                     "deref",
                     []
@@ -3271,7 +3382,7 @@ Module collections.
                 Value.Integer 0
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_peek :
@@ -3283,15 +3394,15 @@ Module collections.
               self.data.capacity()
           }
       *)
-      Definition capacity (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition capacity (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                 "capacity",
                 []
               |),
@@ -3303,7 +3414,7 @@ Module collections.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_capacity :
@@ -3315,10 +3426,15 @@ Module collections.
               self.data.reserve_exact(additional);
           }
       *)
-      Definition reserve_exact (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition reserve_exact
+          (T A : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [], [ self; additional ] =>
+        match ε, τ, α with
+        | [], [], [ self; additional ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let additional := M.alloc (| additional |) in
@@ -3327,7 +3443,7 @@ Module collections.
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                      Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                       "reserve_exact",
                       []
                     |),
@@ -3343,7 +3459,7 @@ Module collections.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_reserve_exact :
@@ -3355,10 +3471,10 @@ Module collections.
               self.data.reserve(additional);
           }
       *)
-      Definition reserve (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition reserve (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [], [ self; additional ] =>
+        match ε, τ, α with
+        | [], [], [ self; additional ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let additional := M.alloc (| additional |) in
@@ -3367,7 +3483,7 @@ Module collections.
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                      Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                       "reserve",
                       []
                     |),
@@ -3383,7 +3499,7 @@ Module collections.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_reserve :
@@ -3395,16 +3511,21 @@ Module collections.
               self.data.try_reserve_exact(additional)
           }
       *)
-      Definition try_reserve_exact (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_reserve_exact
+          (T A : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [], [ self; additional ] =>
+        match ε, τ, α with
+        | [], [], [ self; additional ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let additional := M.alloc (| additional |) in
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                 "try_reserve_exact",
                 []
               |),
@@ -3417,7 +3538,7 @@ Module collections.
                 M.read (| additional |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_try_reserve_exact :
@@ -3429,16 +3550,21 @@ Module collections.
               self.data.try_reserve(additional)
           }
       *)
-      Definition try_reserve (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_reserve
+          (T A : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [], [ self; additional ] =>
+        match ε, τ, α with
+        | [], [], [ self; additional ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let additional := M.alloc (| additional |) in
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                 "try_reserve",
                 []
               |),
@@ -3451,7 +3577,7 @@ Module collections.
                 M.read (| additional |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_try_reserve :
@@ -3463,10 +3589,15 @@ Module collections.
               self.data.shrink_to_fit();
           }
       *)
-      Definition shrink_to_fit (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shrink_to_fit
+          (T A : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -3474,7 +3605,7 @@ Module collections.
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                      Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                       "shrink_to_fit",
                       []
                     |),
@@ -3489,7 +3620,7 @@ Module collections.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_shrink_to_fit :
@@ -3501,16 +3632,16 @@ Module collections.
               self.data.shrink_to(min_capacity)
           }
       *)
-      Definition shrink_to (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition shrink_to (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [], [ self; min_capacity ] =>
+        match ε, τ, α with
+        | [], [], [ self; min_capacity ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let min_capacity := M.alloc (| min_capacity |) in
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                 "shrink_to",
                 []
               |),
@@ -3523,7 +3654,7 @@ Module collections.
                 M.read (| min_capacity |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_shrink_to :
@@ -3535,15 +3666,15 @@ Module collections.
               self.data.as_slice()
           }
       *)
-      Definition as_slice (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition as_slice (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                 "as_slice",
                 []
               |),
@@ -3555,7 +3686,7 @@ Module collections.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_as_slice :
@@ -3567,23 +3698,23 @@ Module collections.
               self.into()
           }
       *)
-      Definition into_vec (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition into_vec (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_trait_method (|
                 "core::convert::Into",
-                Ty.apply (Ty.path "alloc::collections::binary_heap::BinaryHeap") [ T; A ],
-                [ Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ] ],
+                Ty.apply (Ty.path "alloc::collections::binary_heap::BinaryHeap") [] [ T; A ],
+                [ Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ] ],
                 "into",
                 []
               |),
               [ M.read (| self |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_into_vec :
@@ -3595,15 +3726,15 @@ Module collections.
               self.data.allocator()
           }
       *)
-      Definition allocator (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition allocator (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                 "allocator",
                 []
               |),
@@ -3615,7 +3746,7 @@ Module collections.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_allocator :
@@ -3627,15 +3758,15 @@ Module collections.
               self.data.len()
           }
       *)
-      Definition len (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition len (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                 "len",
                 []
               |),
@@ -3647,7 +3778,7 @@ Module collections.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_len :
@@ -3659,23 +3790,23 @@ Module collections.
               self.len() == 0
           }
       *)
-      Definition is_empty (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_empty (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             BinOp.Pure.eq
               (M.call_closure (|
                 M.get_associated_function (|
-                  Ty.apply (Ty.path "alloc::collections::binary_heap::BinaryHeap") [ T; A ],
+                  Ty.apply (Ty.path "alloc::collections::binary_heap::BinaryHeap") [] [ T; A ],
                   "len",
                   []
                 |),
                 [ M.read (| self |) ]
               |))
               (Value.Integer 0)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_is_empty :
@@ -3687,10 +3818,10 @@ Module collections.
               Drain { iter: self.data.drain(..) }
           }
       *)
-      Definition drain (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition drain (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructRecord
@@ -3699,7 +3830,7 @@ Module collections.
                 ("iter",
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                      Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                       "drain",
                       [ Ty.path "core::ops::range::RangeFull" ]
                     |),
@@ -3713,7 +3844,7 @@ Module collections.
                     ]
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_drain :
@@ -3725,10 +3856,10 @@ Module collections.
               self.drain();
           }
       *)
-      Definition clear (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition clear (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -3736,7 +3867,7 @@ Module collections.
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "alloc::collections::binary_heap::BinaryHeap") [ T; A ],
+                      Ty.apply (Ty.path "alloc::collections::binary_heap::BinaryHeap") [] [ T; A ],
                       "drain",
                       []
                     |),
@@ -3745,7 +3876,7 @@ Module collections.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_clear :
@@ -3757,18 +3888,19 @@ Module collections.
     (* StructRecord
       {
         name := "Hole";
+        const_params := [];
         ty_params := [ "T" ];
         fields :=
           [
-            ("data", Ty.apply (Ty.path "&mut") [ Ty.apply (Ty.path "slice") [ T ] ]);
-            ("elt", Ty.apply (Ty.path "core::mem::manually_drop::ManuallyDrop") [ T ]);
+            ("data", Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ]);
+            ("elt", Ty.apply (Ty.path "core::mem::manually_drop::ManuallyDrop") [] [ T ]);
             ("pos", Ty.path "usize")
           ];
       } *)
     
     Module Impl_alloc_collections_binary_heap_Hole_T.
       Definition Self (T : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "alloc::collections::binary_heap::Hole") [ T ].
+        Ty.apply (Ty.path "alloc::collections::binary_heap::Hole") [] [ T ].
       
       (*
           unsafe fn new(data: &'a mut [T], pos: usize) -> Self {
@@ -3778,10 +3910,10 @@ Module collections.
               Hole { data, elt: ManuallyDrop::new(elt), pos }
           }
       *)
-      Definition new (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition new (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ data; pos ] =>
+        match ε, τ, α with
+        | [], [], [ data; pos ] =>
           ltac:(M.monadic
             (let data := M.alloc (| data |) in
             let pos := M.alloc (| pos |) in
@@ -3809,7 +3941,7 @@ Module collections.
                                             (M.read (| pos |))
                                             (M.call_closure (|
                                               M.get_associated_function (|
-                                                Ty.apply (Ty.path "slice") [ T ],
+                                                Ty.apply (Ty.path "slice") [] [ T ],
                                                 "len",
                                                 []
                                               |),
@@ -3847,7 +3979,7 @@ Module collections.
                     [
                       M.call_closure (|
                         M.get_associated_function (|
-                          Ty.apply (Ty.path "slice") [ T ],
+                          Ty.apply (Ty.path "slice") [] [ T ],
                           "get_unchecked",
                           [ Ty.path "usize" ]
                         |),
@@ -3864,7 +3996,7 @@ Module collections.
                     ("elt",
                       M.call_closure (|
                         M.get_associated_function (|
-                          Ty.apply (Ty.path "core::mem::manually_drop::ManuallyDrop") [ T ],
+                          Ty.apply (Ty.path "core::mem::manually_drop::ManuallyDrop") [] [ T ],
                           "new",
                           []
                         |),
@@ -3874,7 +4006,7 @@ Module collections.
                   ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_new :
@@ -3886,10 +4018,10 @@ Module collections.
               self.pos
           }
       *)
-      Definition pos (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition pos (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -3899,7 +4031,7 @@ Module collections.
                 "pos"
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_pos :
@@ -3911,16 +4043,16 @@ Module collections.
               &self.elt
           }
       *)
-      Definition element (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition element (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_trait_method (|
                 "core::ops::deref::Deref",
-                Ty.apply (Ty.path "core::mem::manually_drop::ManuallyDrop") [ T ],
+                Ty.apply (Ty.path "core::mem::manually_drop::ManuallyDrop") [] [ T ],
                 [],
                 "deref",
                 []
@@ -3933,7 +4065,7 @@ Module collections.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_element :
@@ -3947,10 +4079,10 @@ Module collections.
               unsafe { self.data.get_unchecked(index) }
           }
       *)
-      Definition get (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition get (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self; index ] =>
+        match ε, τ, α with
+        | [], [], [ self; index ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let index := M.alloc (| index |) in
@@ -4031,7 +4163,7 @@ Module collections.
                                             (M.read (| index |))
                                             (M.call_closure (|
                                               M.get_associated_function (|
-                                                Ty.apply (Ty.path "slice") [ T ],
+                                                Ty.apply (Ty.path "slice") [] [ T ],
                                                 "len",
                                                 []
                                               |),
@@ -4073,7 +4205,7 @@ Module collections.
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "slice") [ T ],
+                    Ty.apply (Ty.path "slice") [] [ T ],
                     "get_unchecked",
                     [ Ty.path "usize" ]
                   |),
@@ -4090,7 +4222,7 @@ Module collections.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_get :
@@ -4110,10 +4242,10 @@ Module collections.
               self.pos = index;
           }
       *)
-      Definition move_to (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition move_to (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self; index ] =>
+        match ε, τ, α with
+        | [], [], [ self; index ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let index := M.alloc (| index |) in
@@ -4194,7 +4326,7 @@ Module collections.
                                             (M.read (| index |))
                                             (M.call_closure (|
                                               M.get_associated_function (|
-                                                Ty.apply (Ty.path "slice") [ T ],
+                                                Ty.apply (Ty.path "slice") [] [ T ],
                                                 "len",
                                                 []
                                               |),
@@ -4238,7 +4370,7 @@ Module collections.
                   M.alloc (|
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "slice") [ T ],
+                        Ty.apply (Ty.path "slice") [] [ T ],
                         "as_mut_ptr",
                         []
                       |),
@@ -4258,14 +4390,18 @@ Module collections.
                     (* MutToConstPointer *)
                     M.pointer_coercion
                       (M.call_closure (|
-                        M.get_associated_function (| Ty.apply (Ty.path "*mut") [ T ], "add", [] |),
+                        M.get_associated_function (|
+                          Ty.apply (Ty.path "*mut") [] [ T ],
+                          "add",
+                          []
+                        |),
                         [ M.read (| ptr |); M.read (| index |) ]
                       |))
                   |) in
                 let~ hole_ptr :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_associated_function (| Ty.apply (Ty.path "*mut") [ T ], "add", [] |),
+                      M.get_associated_function (| Ty.apply (Ty.path "*mut") [] [ T ], "add", [] |),
                       [
                         M.read (| ptr |);
                         M.read (|
@@ -4297,7 +4433,7 @@ Module collections.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_move_to :
@@ -4307,7 +4443,7 @@ Module collections.
     
     Module Impl_core_ops_drop_Drop_for_alloc_collections_binary_heap_Hole_T.
       Definition Self (T : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "alloc::collections::binary_heap::Hole") [ T ].
+        Ty.apply (Ty.path "alloc::collections::binary_heap::Hole") [] [ T ].
       
       (*
           fn drop(&mut self) {
@@ -4318,10 +4454,10 @@ Module collections.
               }
           }
       *)
-      Definition drop (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition drop (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -4341,7 +4477,7 @@ Module collections.
                       M.call_closure (|
                         M.get_trait_method (|
                           "core::ops::deref::Deref",
-                          Ty.apply (Ty.path "core::mem::manually_drop::ManuallyDrop") [ T ],
+                          Ty.apply (Ty.path "core::mem::manually_drop::ManuallyDrop") [] [ T ],
                           [],
                           "deref",
                           []
@@ -4356,7 +4492,7 @@ Module collections.
                       |);
                       M.call_closure (|
                         M.get_associated_function (|
-                          Ty.apply (Ty.path "slice") [ T ],
+                          Ty.apply (Ty.path "slice") [] [ T ],
                           "get_unchecked_mut",
                           [ Ty.path "usize" ]
                         |),
@@ -4377,7 +4513,7 @@ Module collections.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -4392,23 +4528,24 @@ Module collections.
     (* StructRecord
       {
         name := "Iter";
+        const_params := [];
         ty_params := [ "T" ];
-        fields := [ ("iter", Ty.apply (Ty.path "core::slice::iter::Iter") [ T ]) ];
+        fields := [ ("iter", Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ]) ];
       } *)
     
     Module Impl_core_fmt_Debug_where_core_fmt_Debug_T_for_alloc_collections_binary_heap_Iter_T.
       Definition Self (T : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "alloc::collections::binary_heap::Iter") [ T ].
+        Ty.apply (Ty.path "alloc::collections::binary_heap::Iter") [] [ T ].
       
       (*
           fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
               f.debug_tuple("Iter").field(&self.iter.as_slice()).finish()
           }
       *)
-      Definition fmt (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self; f ] =>
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -4441,7 +4578,7 @@ Module collections.
                       (M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
-                            Ty.apply (Ty.path "core::slice::iter::Iter") [ T ],
+                            Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ],
                             "as_slice",
                             []
                           |),
@@ -4458,7 +4595,7 @@ Module collections.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -4472,17 +4609,17 @@ Module collections.
     
     Module Impl_core_clone_Clone_for_alloc_collections_binary_heap_Iter_T.
       Definition Self (T : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "alloc::collections::binary_heap::Iter") [ T ].
+        Ty.apply (Ty.path "alloc::collections::binary_heap::Iter") [] [ T ].
       
       (*
           fn clone(&self) -> Self {
               Iter { iter: self.iter.clone() }
           }
       *)
-      Definition clone (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition clone (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructRecord
@@ -4492,7 +4629,7 @@ Module collections.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::clone::Clone",
-                      Ty.apply (Ty.path "core::slice::iter::Iter") [ T ],
+                      Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ],
                       [],
                       "clone",
                       []
@@ -4506,7 +4643,7 @@ Module collections.
                     ]
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -4520,26 +4657,26 @@ Module collections.
     
     Module Impl_core_iter_traits_iterator_Iterator_for_alloc_collections_binary_heap_Iter_T.
       Definition Self (T : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "alloc::collections::binary_heap::Iter") [ T ].
+        Ty.apply (Ty.path "alloc::collections::binary_heap::Iter") [] [ T ].
       
       (*     type Item = &'a T; *)
-      Definition _Item (T : Ty.t) : Ty.t := Ty.apply (Ty.path "&") [ T ].
+      Definition _Item (T : Ty.t) : Ty.t := Ty.apply (Ty.path "&") [] [ T ].
       
       (*
           fn next(&mut self) -> Option<&'a T> {
               self.iter.next()
           }
       *)
-      Definition next (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition next (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_trait_method (|
                 "core::iter::traits::iterator::Iterator",
-                Ty.apply (Ty.path "core::slice::iter::Iter") [ T ],
+                Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ],
                 [],
                 "next",
                 []
@@ -4552,7 +4689,7 @@ Module collections.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -4560,16 +4697,16 @@ Module collections.
               self.iter.size_hint()
           }
       *)
-      Definition size_hint (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition size_hint (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_trait_method (|
                 "core::iter::traits::iterator::Iterator",
-                Ty.apply (Ty.path "core::slice::iter::Iter") [ T ],
+                Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ],
                 [],
                 "size_hint",
                 []
@@ -4582,7 +4719,7 @@ Module collections.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -4590,16 +4727,16 @@ Module collections.
               self.iter.last()
           }
       *)
-      Definition last (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition last (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_trait_method (|
                 "core::iter::traits::iterator::Iterator",
-                Ty.apply (Ty.path "core::slice::iter::Iter") [ T ],
+                Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ],
                 [],
                 "last",
                 []
@@ -4614,7 +4751,7 @@ Module collections.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -4634,23 +4771,23 @@ Module collections.
     
     Module Impl_core_iter_traits_double_ended_DoubleEndedIterator_for_alloc_collections_binary_heap_Iter_T.
       Definition Self (T : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "alloc::collections::binary_heap::Iter") [ T ].
+        Ty.apply (Ty.path "alloc::collections::binary_heap::Iter") [] [ T ].
       
       (*
           fn next_back(&mut self) -> Option<&'a T> {
               self.iter.next_back()
           }
       *)
-      Definition next_back (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition next_back (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_trait_method (|
                 "core::iter::traits::double_ended::DoubleEndedIterator",
-                Ty.apply (Ty.path "core::slice::iter::Iter") [ T ],
+                Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ],
                 [],
                 "next_back",
                 []
@@ -4663,7 +4800,7 @@ Module collections.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -4677,23 +4814,23 @@ Module collections.
     
     Module Impl_core_iter_traits_exact_size_ExactSizeIterator_for_alloc_collections_binary_heap_Iter_T.
       Definition Self (T : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "alloc::collections::binary_heap::Iter") [ T ].
+        Ty.apply (Ty.path "alloc::collections::binary_heap::Iter") [] [ T ].
       
       (*
           fn is_empty(&self) -> bool {
               self.iter.is_empty()
           }
       *)
-      Definition is_empty (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_empty (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_trait_method (|
                 "core::iter::traits::exact_size::ExactSizeIterator",
-                Ty.apply (Ty.path "core::slice::iter::Iter") [ T ],
+                Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ],
                 [],
                 "is_empty",
                 []
@@ -4706,7 +4843,7 @@ Module collections.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -4720,7 +4857,7 @@ Module collections.
     
     Module Impl_core_iter_traits_marker_FusedIterator_for_alloc_collections_binary_heap_Iter_T.
       Definition Self (T : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "alloc::collections::binary_heap::Iter") [ T ].
+        Ty.apply (Ty.path "alloc::collections::binary_heap::Iter") [] [ T ].
       
       Axiom Implements :
         forall (T : Ty.t),
@@ -4734,19 +4871,20 @@ Module collections.
     (* StructRecord
       {
         name := "IntoIter";
+        const_params := [];
         ty_params := [ "T"; "A" ];
-        fields := [ ("iter", Ty.apply (Ty.path "alloc::vec::into_iter::IntoIter") [ T; A ]) ];
+        fields := [ ("iter", Ty.apply (Ty.path "alloc::vec::into_iter::IntoIter") [] [ T; A ]) ];
       } *)
     
     Module Impl_core_clone_Clone_where_core_clone_Clone_T_where_core_clone_Clone_A_where_core_alloc_Allocator_A_for_alloc_collections_binary_heap_IntoIter_T_A.
       Definition Self (T A : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "alloc::collections::binary_heap::IntoIter") [ T; A ].
+        Ty.apply (Ty.path "alloc::collections::binary_heap::IntoIter") [] [ T; A ].
       
       (* Clone *)
-      Definition clone (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition clone (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructRecord
@@ -4756,7 +4894,7 @@ Module collections.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::clone::Clone",
-                      Ty.apply (Ty.path "alloc::vec::into_iter::IntoIter") [ T; A ],
+                      Ty.apply (Ty.path "alloc::vec::into_iter::IntoIter") [] [ T; A ],
                       [],
                       "clone",
                       []
@@ -4770,7 +4908,7 @@ Module collections.
                     ]
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -4784,22 +4922,22 @@ Module collections.
     
     Module Impl_alloc_collections_binary_heap_IntoIter_T_A.
       Definition Self (T A : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "alloc::collections::binary_heap::IntoIter") [ T; A ].
+        Ty.apply (Ty.path "alloc::collections::binary_heap::IntoIter") [] [ T; A ].
       
       (*
           pub fn allocator(&self) -> &A {
               self.iter.allocator()
           }
       *)
-      Definition allocator (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition allocator (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "alloc::vec::into_iter::IntoIter") [ T; A ],
+                Ty.apply (Ty.path "alloc::vec::into_iter::IntoIter") [] [ T; A ],
                 "allocator",
                 []
               |),
@@ -4811,7 +4949,7 @@ Module collections.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_allocator :
@@ -4821,17 +4959,17 @@ Module collections.
     
     Module Impl_core_fmt_Debug_where_core_fmt_Debug_T_where_core_alloc_Allocator_A_for_alloc_collections_binary_heap_IntoIter_T_A.
       Definition Self (T A : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "alloc::collections::binary_heap::IntoIter") [ T; A ].
+        Ty.apply (Ty.path "alloc::collections::binary_heap::IntoIter") [] [ T; A ].
       
       (*
           fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
               f.debug_tuple("IntoIter").field(&self.iter.as_slice()).finish()
           }
       *)
-      Definition fmt (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [], [ self; f ] =>
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -4864,7 +5002,7 @@ Module collections.
                       (M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
-                            Ty.apply (Ty.path "alloc::vec::into_iter::IntoIter") [ T; A ],
+                            Ty.apply (Ty.path "alloc::vec::into_iter::IntoIter") [] [ T; A ],
                             "as_slice",
                             []
                           |),
@@ -4881,7 +5019,7 @@ Module collections.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -4895,7 +5033,7 @@ Module collections.
     
     Module Impl_core_iter_traits_iterator_Iterator_where_core_alloc_Allocator_A_for_alloc_collections_binary_heap_IntoIter_T_A.
       Definition Self (T A : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "alloc::collections::binary_heap::IntoIter") [ T; A ].
+        Ty.apply (Ty.path "alloc::collections::binary_heap::IntoIter") [] [ T; A ].
       
       (*     type Item = T; *)
       Definition _Item (T A : Ty.t) : Ty.t := T.
@@ -4905,16 +5043,16 @@ Module collections.
               self.iter.next()
           }
       *)
-      Definition next (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition next (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_trait_method (|
                 "core::iter::traits::iterator::Iterator",
-                Ty.apply (Ty.path "alloc::vec::into_iter::IntoIter") [ T; A ],
+                Ty.apply (Ty.path "alloc::vec::into_iter::IntoIter") [] [ T; A ],
                 [],
                 "next",
                 []
@@ -4927,7 +5065,7 @@ Module collections.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -4935,16 +5073,16 @@ Module collections.
               self.iter.size_hint()
           }
       *)
-      Definition size_hint (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition size_hint (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_trait_method (|
                 "core::iter::traits::iterator::Iterator",
-                Ty.apply (Ty.path "alloc::vec::into_iter::IntoIter") [ T; A ],
+                Ty.apply (Ty.path "alloc::vec::into_iter::IntoIter") [] [ T; A ],
                 [],
                 "size_hint",
                 []
@@ -4957,7 +5095,7 @@ Module collections.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -4976,23 +5114,23 @@ Module collections.
     
     Module Impl_core_iter_traits_double_ended_DoubleEndedIterator_where_core_alloc_Allocator_A_for_alloc_collections_binary_heap_IntoIter_T_A.
       Definition Self (T A : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "alloc::collections::binary_heap::IntoIter") [ T; A ].
+        Ty.apply (Ty.path "alloc::collections::binary_heap::IntoIter") [] [ T; A ].
       
       (*
           fn next_back(&mut self) -> Option<T> {
               self.iter.next_back()
           }
       *)
-      Definition next_back (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition next_back (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_trait_method (|
                 "core::iter::traits::double_ended::DoubleEndedIterator",
-                Ty.apply (Ty.path "alloc::vec::into_iter::IntoIter") [ T; A ],
+                Ty.apply (Ty.path "alloc::vec::into_iter::IntoIter") [] [ T; A ],
                 [],
                 "next_back",
                 []
@@ -5005,7 +5143,7 @@ Module collections.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -5019,23 +5157,23 @@ Module collections.
     
     Module Impl_core_iter_traits_exact_size_ExactSizeIterator_where_core_alloc_Allocator_A_for_alloc_collections_binary_heap_IntoIter_T_A.
       Definition Self (T A : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "alloc::collections::binary_heap::IntoIter") [ T; A ].
+        Ty.apply (Ty.path "alloc::collections::binary_heap::IntoIter") [] [ T; A ].
       
       (*
           fn is_empty(&self) -> bool {
               self.iter.is_empty()
           }
       *)
-      Definition is_empty (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_empty (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_trait_method (|
                 "core::iter::traits::exact_size::ExactSizeIterator",
-                Ty.apply (Ty.path "alloc::vec::into_iter::IntoIter") [ T; A ],
+                Ty.apply (Ty.path "alloc::vec::into_iter::IntoIter") [] [ T; A ],
                 [],
                 "is_empty",
                 []
@@ -5048,7 +5186,7 @@ Module collections.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -5062,7 +5200,7 @@ Module collections.
     
     Module Impl_core_iter_traits_marker_FusedIterator_where_core_alloc_Allocator_A_for_alloc_collections_binary_heap_IntoIter_T_A.
       Definition Self (T A : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "alloc::collections::binary_heap::IntoIter") [ T; A ].
+        Ty.apply (Ty.path "alloc::collections::binary_heap::IntoIter") [] [ T; A ].
       
       Axiom Implements :
         forall (T A : Ty.t),
@@ -5075,7 +5213,7 @@ Module collections.
     
     Module Impl_core_iter_traits_marker_TrustedFused_where_core_alloc_Allocator_A_for_alloc_collections_binary_heap_IntoIter_T_A.
       Definition Self (T A : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "alloc::collections::binary_heap::IntoIter") [ T; A ].
+        Ty.apply (Ty.path "alloc::collections::binary_heap::IntoIter") [] [ T; A ].
       
       Axiom Implements :
         forall (T A : Ty.t),
@@ -5090,6 +5228,7 @@ Module collections.
       Definition Self (T : Ty.t) : Ty.t :=
         Ty.apply
           (Ty.path "alloc::collections::binary_heap::IntoIter")
+          []
           [ T; Ty.path "alloc::alloc::Global" ].
       
       (*
@@ -5097,10 +5236,10 @@ Module collections.
               IntoIter { iter: Default::default() }
           }
       *)
-      Definition default (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition default (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [] =>
+        match ε, τ, α with
+        | [], [], [] =>
           ltac:(M.monadic
             (Value.StructRecord
               "alloc::collections::binary_heap::IntoIter"
@@ -5111,6 +5250,7 @@ Module collections.
                       "core::default::Default",
                       Ty.apply
                         (Ty.path "alloc::vec::into_iter::IntoIter")
+                        []
                         [ T; Ty.path "alloc::alloc::Global" ],
                       [],
                       "default",
@@ -5119,7 +5259,7 @@ Module collections.
                     []
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -5133,25 +5273,25 @@ Module collections.
     
     Module Impl_core_iter_adapters_SourceIter_where_core_alloc_Allocator_A_for_alloc_collections_binary_heap_IntoIter_T_A.
       Definition Self (T A : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "alloc::collections::binary_heap::IntoIter") [ T; A ].
+        Ty.apply (Ty.path "alloc::collections::binary_heap::IntoIter") [] [ T; A ].
       
       (*     type Source = IntoIter<T, A>; *)
       Definition _Source (T A : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "alloc::collections::binary_heap::IntoIter") [ T; A ].
+        Ty.apply (Ty.path "alloc::collections::binary_heap::IntoIter") [] [ T; A ].
       
       (*
           unsafe fn as_inner(&mut self) -> &mut Self::Source {
               self
           }
       *)
-      Definition as_inner (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition as_inner (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (| self |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -5169,10 +5309,13 @@ Module collections.
     
     Module Impl_core_iter_traits_marker_InPlaceIterable_where_core_alloc_Allocator_A_for_alloc_collections_binary_heap_IntoIter_I_A.
       Definition Self (I A : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "alloc::collections::binary_heap::IntoIter") [ I; A ].
+        Ty.apply (Ty.path "alloc::collections::binary_heap::IntoIter") [] [ I; A ].
       
       (*     const EXPAND_BY: Option<NonZeroUsize> = NonZeroUsize::new(1); *)
-      (* Ty.apply (Ty.path "core::option::Option") [ Ty.path "core::num::nonzero::NonZeroUsize" ] *)
+      (* Ty.apply
+        (Ty.path "core::option::Option")
+        []
+        [ Ty.path "core::num::nonzero::NonZeroUsize" ] *)
       Definition value_EXPAND_BY (I A : Ty.t) : Value.t :=
         let Self : Ty.t := Self I A in
         M.run
@@ -5189,7 +5332,10 @@ Module collections.
             |))).
       
       (*     const MERGE_BY: Option<NonZeroUsize> = NonZeroUsize::new(1); *)
-      (* Ty.apply (Ty.path "core::option::Option") [ Ty.path "core::num::nonzero::NonZeroUsize" ] *)
+      (* Ty.apply
+        (Ty.path "core::option::Option")
+        []
+        [ Ty.path "core::num::nonzero::NonZeroUsize" ] *)
       Definition value_MERGE_BY (I A : Ty.t) : Value.t :=
         let Self : Ty.t := Self I A in
         M.run
@@ -5222,6 +5368,7 @@ Module collections.
       Definition Self (I : Ty.t) : Ty.t :=
         Ty.apply
           (Ty.path "alloc::collections::binary_heap::IntoIter")
+          []
           [ I; Ty.path "alloc::alloc::Global" ].
       
       (*     type Item = I; *)
@@ -5232,10 +5379,15 @@ Module collections.
               &mut self.iter
           }
       *)
-      Definition as_into_iter (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition as_into_iter
+          (I : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self I in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.SubPointer.get_struct_record_field (|
@@ -5243,7 +5395,7 @@ Module collections.
               "alloc::collections::binary_heap::IntoIter",
               "iter"
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -5262,20 +5414,22 @@ Module collections.
     (* StructRecord
       {
         name := "IntoIterSorted";
+        const_params := [];
         ty_params := [ "T"; "A" ];
         fields :=
-          [ ("inner", Ty.apply (Ty.path "alloc::collections::binary_heap::BinaryHeap") [ T; A ]) ];
+          [ ("inner", Ty.apply (Ty.path "alloc::collections::binary_heap::BinaryHeap") [] [ T; A ])
+          ];
       } *)
     
     Module Impl_core_clone_Clone_where_core_clone_Clone_T_where_core_clone_Clone_A_where_core_alloc_Allocator_A_for_alloc_collections_binary_heap_IntoIterSorted_T_A.
       Definition Self (T A : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "alloc::collections::binary_heap::IntoIterSorted") [ T; A ].
+        Ty.apply (Ty.path "alloc::collections::binary_heap::IntoIterSorted") [] [ T; A ].
       
       (* Clone *)
-      Definition clone (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition clone (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructRecord
@@ -5285,7 +5439,7 @@ Module collections.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::clone::Clone",
-                      Ty.apply (Ty.path "alloc::collections::binary_heap::BinaryHeap") [ T; A ],
+                      Ty.apply (Ty.path "alloc::collections::binary_heap::BinaryHeap") [] [ T; A ],
                       [],
                       "clone",
                       []
@@ -5299,7 +5453,7 @@ Module collections.
                     ]
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -5313,13 +5467,13 @@ Module collections.
     
     Module Impl_core_fmt_Debug_where_core_fmt_Debug_T_where_core_fmt_Debug_A_where_core_alloc_Allocator_A_for_alloc_collections_binary_heap_IntoIterSorted_T_A.
       Definition Self (T A : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "alloc::collections::binary_heap::IntoIterSorted") [ T; A ].
+        Ty.apply (Ty.path "alloc::collections::binary_heap::IntoIterSorted") [] [ T; A ].
       
       (* Debug *)
-      Definition fmt (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [], [ self; f ] =>
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -5344,7 +5498,7 @@ Module collections.
                   |))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -5358,22 +5512,22 @@ Module collections.
     
     Module Impl_alloc_collections_binary_heap_IntoIterSorted_T_A.
       Definition Self (T A : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "alloc::collections::binary_heap::IntoIterSorted") [ T; A ].
+        Ty.apply (Ty.path "alloc::collections::binary_heap::IntoIterSorted") [] [ T; A ].
       
       (*
           pub fn allocator(&self) -> &A {
               self.inner.allocator()
           }
       *)
-      Definition allocator (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition allocator (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "alloc::collections::binary_heap::BinaryHeap") [ T; A ],
+                Ty.apply (Ty.path "alloc::collections::binary_heap::BinaryHeap") [] [ T; A ],
                 "allocator",
                 []
               |),
@@ -5385,7 +5539,7 @@ Module collections.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_allocator :
@@ -5395,7 +5549,7 @@ Module collections.
     
     Module Impl_core_iter_traits_iterator_Iterator_where_core_cmp_Ord_T_where_core_alloc_Allocator_A_for_alloc_collections_binary_heap_IntoIterSorted_T_A.
       Definition Self (T A : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "alloc::collections::binary_heap::IntoIterSorted") [ T; A ].
+        Ty.apply (Ty.path "alloc::collections::binary_heap::IntoIterSorted") [] [ T; A ].
       
       (*     type Item = T; *)
       Definition _Item (T A : Ty.t) : Ty.t := T.
@@ -5405,15 +5559,15 @@ Module collections.
               self.inner.pop()
           }
       *)
-      Definition next (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition next (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "alloc::collections::binary_heap::BinaryHeap") [ T; A ],
+                Ty.apply (Ty.path "alloc::collections::binary_heap::BinaryHeap") [] [ T; A ],
                 "pop",
                 []
               |),
@@ -5425,7 +5579,7 @@ Module collections.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -5434,10 +5588,10 @@ Module collections.
               (exact, Some(exact))
           }
       *)
-      Definition size_hint (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition size_hint (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -5445,7 +5599,7 @@ Module collections.
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "alloc::collections::binary_heap::BinaryHeap") [ T; A ],
+                      Ty.apply (Ty.path "alloc::collections::binary_heap::BinaryHeap") [] [ T; A ],
                       "len",
                       []
                     |),
@@ -5466,7 +5620,7 @@ Module collections.
                   ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -5485,7 +5639,7 @@ Module collections.
     
     Module Impl_core_iter_traits_exact_size_ExactSizeIterator_where_core_cmp_Ord_T_where_core_alloc_Allocator_A_for_alloc_collections_binary_heap_IntoIterSorted_T_A.
       Definition Self (T A : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "alloc::collections::binary_heap::IntoIterSorted") [ T; A ].
+        Ty.apply (Ty.path "alloc::collections::binary_heap::IntoIterSorted") [] [ T; A ].
       
       Axiom Implements :
         forall (T A : Ty.t),
@@ -5498,7 +5652,7 @@ Module collections.
     
     Module Impl_core_iter_traits_marker_FusedIterator_where_core_cmp_Ord_T_where_core_alloc_Allocator_A_for_alloc_collections_binary_heap_IntoIterSorted_T_A.
       Definition Self (T A : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "alloc::collections::binary_heap::IntoIterSorted") [ T; A ].
+        Ty.apply (Ty.path "alloc::collections::binary_heap::IntoIterSorted") [] [ T; A ].
       
       Axiom Implements :
         forall (T A : Ty.t),
@@ -5511,7 +5665,7 @@ Module collections.
     
     Module Impl_core_iter_traits_marker_TrustedLen_where_core_cmp_Ord_T_where_core_alloc_Allocator_A_for_alloc_collections_binary_heap_IntoIterSorted_T_A.
       Definition Self (T A : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "alloc::collections::binary_heap::IntoIterSorted") [ T; A ].
+        Ty.apply (Ty.path "alloc::collections::binary_heap::IntoIterSorted") [] [ T; A ].
       
       Axiom Implements :
         forall (T A : Ty.t),
@@ -5525,19 +5679,20 @@ Module collections.
     (* StructRecord
       {
         name := "Drain";
+        const_params := [];
         ty_params := [ "T"; "A" ];
-        fields := [ ("iter", Ty.apply (Ty.path "alloc::vec::drain::Drain") [ T; A ]) ];
+        fields := [ ("iter", Ty.apply (Ty.path "alloc::vec::drain::Drain") [] [ T; A ]) ];
       } *)
     
     Module Impl_core_fmt_Debug_where_core_fmt_Debug_T_where_core_fmt_Debug_A_where_core_alloc_Allocator_A_for_alloc_collections_binary_heap_Drain_T_A.
       Definition Self (T A : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "alloc::collections::binary_heap::Drain") [ T; A ].
+        Ty.apply (Ty.path "alloc::collections::binary_heap::Drain") [] [ T; A ].
       
       (* Debug *)
-      Definition fmt (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [], [ self; f ] =>
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -5562,7 +5717,7 @@ Module collections.
                   |))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -5576,22 +5731,22 @@ Module collections.
     
     Module Impl_alloc_collections_binary_heap_Drain_T_A.
       Definition Self (T A : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "alloc::collections::binary_heap::Drain") [ T; A ].
+        Ty.apply (Ty.path "alloc::collections::binary_heap::Drain") [] [ T; A ].
       
       (*
           pub fn allocator(&self) -> &A {
               self.iter.allocator()
           }
       *)
-      Definition allocator (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition allocator (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "alloc::vec::drain::Drain") [ T; A ],
+                Ty.apply (Ty.path "alloc::vec::drain::Drain") [] [ T; A ],
                 "allocator",
                 []
               |),
@@ -5603,7 +5758,7 @@ Module collections.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_allocator :
@@ -5613,7 +5768,7 @@ Module collections.
     
     Module Impl_core_iter_traits_iterator_Iterator_where_core_alloc_Allocator_A_for_alloc_collections_binary_heap_Drain_T_A.
       Definition Self (T A : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "alloc::collections::binary_heap::Drain") [ T; A ].
+        Ty.apply (Ty.path "alloc::collections::binary_heap::Drain") [] [ T; A ].
       
       (*     type Item = T; *)
       Definition _Item (T A : Ty.t) : Ty.t := T.
@@ -5623,16 +5778,16 @@ Module collections.
               self.iter.next()
           }
       *)
-      Definition next (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition next (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_trait_method (|
                 "core::iter::traits::iterator::Iterator",
-                Ty.apply (Ty.path "alloc::vec::drain::Drain") [ T; A ],
+                Ty.apply (Ty.path "alloc::vec::drain::Drain") [] [ T; A ],
                 [],
                 "next",
                 []
@@ -5645,7 +5800,7 @@ Module collections.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -5653,16 +5808,16 @@ Module collections.
               self.iter.size_hint()
           }
       *)
-      Definition size_hint (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition size_hint (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_trait_method (|
                 "core::iter::traits::iterator::Iterator",
-                Ty.apply (Ty.path "alloc::vec::drain::Drain") [ T; A ],
+                Ty.apply (Ty.path "alloc::vec::drain::Drain") [] [ T; A ],
                 [],
                 "size_hint",
                 []
@@ -5675,7 +5830,7 @@ Module collections.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -5694,23 +5849,23 @@ Module collections.
     
     Module Impl_core_iter_traits_double_ended_DoubleEndedIterator_where_core_alloc_Allocator_A_for_alloc_collections_binary_heap_Drain_T_A.
       Definition Self (T A : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "alloc::collections::binary_heap::Drain") [ T; A ].
+        Ty.apply (Ty.path "alloc::collections::binary_heap::Drain") [] [ T; A ].
       
       (*
           fn next_back(&mut self) -> Option<T> {
               self.iter.next_back()
           }
       *)
-      Definition next_back (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition next_back (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_trait_method (|
                 "core::iter::traits::double_ended::DoubleEndedIterator",
-                Ty.apply (Ty.path "alloc::vec::drain::Drain") [ T; A ],
+                Ty.apply (Ty.path "alloc::vec::drain::Drain") [] [ T; A ],
                 [],
                 "next_back",
                 []
@@ -5723,7 +5878,7 @@ Module collections.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -5737,23 +5892,23 @@ Module collections.
     
     Module Impl_core_iter_traits_exact_size_ExactSizeIterator_where_core_alloc_Allocator_A_for_alloc_collections_binary_heap_Drain_T_A.
       Definition Self (T A : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "alloc::collections::binary_heap::Drain") [ T; A ].
+        Ty.apply (Ty.path "alloc::collections::binary_heap::Drain") [] [ T; A ].
       
       (*
           fn is_empty(&self) -> bool {
               self.iter.is_empty()
           }
       *)
-      Definition is_empty (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_empty (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_trait_method (|
                 "core::iter::traits::exact_size::ExactSizeIterator",
-                Ty.apply (Ty.path "alloc::vec::drain::Drain") [ T; A ],
+                Ty.apply (Ty.path "alloc::vec::drain::Drain") [] [ T; A ],
                 [],
                 "is_empty",
                 []
@@ -5766,7 +5921,7 @@ Module collections.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -5780,7 +5935,7 @@ Module collections.
     
     Module Impl_core_iter_traits_marker_FusedIterator_where_core_alloc_Allocator_A_for_alloc_collections_binary_heap_Drain_T_A.
       Definition Self (T A : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "alloc::collections::binary_heap::Drain") [ T; A ].
+        Ty.apply (Ty.path "alloc::collections::binary_heap::Drain") [] [ T; A ].
       
       Axiom Implements :
         forall (T A : Ty.t),
@@ -5794,25 +5949,27 @@ Module collections.
     (* StructRecord
       {
         name := "DrainSorted";
+        const_params := [];
         ty_params := [ "T"; "A" ];
         fields :=
           [
             ("inner",
               Ty.apply
                 (Ty.path "&mut")
-                [ Ty.apply (Ty.path "alloc::collections::binary_heap::BinaryHeap") [ T; A ] ])
+                []
+                [ Ty.apply (Ty.path "alloc::collections::binary_heap::BinaryHeap") [] [ T; A ] ])
           ];
       } *)
     
     Module Impl_core_fmt_Debug_where_core_fmt_Debug_T_where_core_cmp_Ord_T_where_core_fmt_Debug_A_where_core_alloc_Allocator_A_for_alloc_collections_binary_heap_DrainSorted_T_A.
       Definition Self (T A : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "alloc::collections::binary_heap::DrainSorted") [ T; A ].
+        Ty.apply (Ty.path "alloc::collections::binary_heap::DrainSorted") [] [ T; A ].
       
       (* Debug *)
-      Definition fmt (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [], [ self; f ] =>
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -5837,7 +5994,7 @@ Module collections.
                   |))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -5851,22 +6008,22 @@ Module collections.
     
     Module Impl_alloc_collections_binary_heap_DrainSorted_T_A.
       Definition Self (T A : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "alloc::collections::binary_heap::DrainSorted") [ T; A ].
+        Ty.apply (Ty.path "alloc::collections::binary_heap::DrainSorted") [] [ T; A ].
       
       (*
           pub fn allocator(&self) -> &A {
               self.inner.allocator()
           }
       *)
-      Definition allocator (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition allocator (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "alloc::collections::binary_heap::BinaryHeap") [ T; A ],
+                Ty.apply (Ty.path "alloc::collections::binary_heap::BinaryHeap") [] [ T; A ],
                 "allocator",
                 []
               |),
@@ -5880,7 +6037,7 @@ Module collections.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_allocator :
@@ -5890,7 +6047,7 @@ Module collections.
     
     Module Impl_core_ops_drop_Drop_where_core_cmp_Ord_T_where_core_alloc_Allocator_A_for_alloc_collections_binary_heap_DrainSorted_T_A.
       Definition Self (T A : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "alloc::collections::binary_heap::DrainSorted") [ T; A ].
+        Ty.apply (Ty.path "alloc::collections::binary_heap::DrainSorted") [] [ T; A ].
       
       (*
           fn drop(&mut self) {
@@ -5909,10 +6066,10 @@ Module collections.
               }
           }
       *)
-      Definition drop (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition drop (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -5929,6 +6086,7 @@ Module collections.
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "alloc::collections::binary_heap::BinaryHeap")
+                                    []
                                     [ T; A ],
                                   "pop",
                                   []
@@ -5972,6 +6130,7 @@ Module collections.
                                   [
                                     Ty.apply
                                       (Ty.path "alloc::collections::binary_heap::drop::DropGuard")
+                                      []
                                       [ T; A ]
                                   ]
                                 |),
@@ -5994,7 +6153,7 @@ Module collections.
                   |)))
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -6008,7 +6167,7 @@ Module collections.
     
     Module Impl_core_iter_traits_iterator_Iterator_where_core_cmp_Ord_T_where_core_alloc_Allocator_A_for_alloc_collections_binary_heap_DrainSorted_T_A.
       Definition Self (T A : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "alloc::collections::binary_heap::DrainSorted") [ T; A ].
+        Ty.apply (Ty.path "alloc::collections::binary_heap::DrainSorted") [] [ T; A ].
       
       (*     type Item = T; *)
       Definition _Item (T A : Ty.t) : Ty.t := T.
@@ -6018,15 +6177,15 @@ Module collections.
               self.inner.pop()
           }
       *)
-      Definition next (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition next (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "alloc::collections::binary_heap::BinaryHeap") [ T; A ],
+                Ty.apply (Ty.path "alloc::collections::binary_heap::BinaryHeap") [] [ T; A ],
                 "pop",
                 []
               |),
@@ -6040,7 +6199,7 @@ Module collections.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -6049,10 +6208,10 @@ Module collections.
               (exact, Some(exact))
           }
       *)
-      Definition size_hint (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition size_hint (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -6060,7 +6219,7 @@ Module collections.
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "alloc::collections::binary_heap::BinaryHeap") [ T; A ],
+                      Ty.apply (Ty.path "alloc::collections::binary_heap::BinaryHeap") [] [ T; A ],
                       "len",
                       []
                     |),
@@ -6083,7 +6242,7 @@ Module collections.
                   ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -6102,7 +6261,7 @@ Module collections.
     
     Module Impl_core_iter_traits_exact_size_ExactSizeIterator_where_core_cmp_Ord_T_where_core_alloc_Allocator_A_for_alloc_collections_binary_heap_DrainSorted_T_A.
       Definition Self (T A : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "alloc::collections::binary_heap::DrainSorted") [ T; A ].
+        Ty.apply (Ty.path "alloc::collections::binary_heap::DrainSorted") [] [ T; A ].
       
       Axiom Implements :
         forall (T A : Ty.t),
@@ -6115,7 +6274,7 @@ Module collections.
     
     Module Impl_core_iter_traits_marker_FusedIterator_where_core_cmp_Ord_T_where_core_alloc_Allocator_A_for_alloc_collections_binary_heap_DrainSorted_T_A.
       Definition Self (T A : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "alloc::collections::binary_heap::DrainSorted") [ T; A ].
+        Ty.apply (Ty.path "alloc::collections::binary_heap::DrainSorted") [] [ T; A ].
       
       Axiom Implements :
         forall (T A : Ty.t),
@@ -6128,7 +6287,7 @@ Module collections.
     
     Module Impl_core_iter_traits_marker_TrustedLen_where_core_cmp_Ord_T_where_core_alloc_Allocator_A_for_alloc_collections_binary_heap_DrainSorted_T_A.
       Definition Self (T A : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "alloc::collections::binary_heap::DrainSorted") [ T; A ].
+        Ty.apply (Ty.path "alloc::collections::binary_heap::DrainSorted") [] [ T; A ].
       
       Axiom Implements :
         forall (T A : Ty.t),
@@ -6141,7 +6300,7 @@ Module collections.
     
     Module Impl_core_convert_From_where_core_cmp_Ord_T_where_core_alloc_Allocator_A_alloc_vec_Vec_T_A_for_alloc_collections_binary_heap_BinaryHeap_T_A.
       Definition Self (T A : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "alloc::collections::binary_heap::BinaryHeap") [ T; A ].
+        Ty.apply (Ty.path "alloc::collections::binary_heap::BinaryHeap") [] [ T; A ].
       
       (*
           fn from(vec: Vec<T, A>) -> BinaryHeap<T, A> {
@@ -6150,10 +6309,10 @@ Module collections.
               heap
           }
       *)
-      Definition from (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [], [ vec ] =>
+        match ε, τ, α with
+        | [], [], [ vec ] =>
           ltac:(M.monadic
             (let vec := M.alloc (| vec |) in
             M.read (|
@@ -6167,7 +6326,7 @@ Module collections.
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "alloc::collections::binary_heap::BinaryHeap") [ T; A ],
+                      Ty.apply (Ty.path "alloc::collections::binary_heap::BinaryHeap") [] [ T; A ],
                       "rebuild",
                       []
                     |),
@@ -6176,7 +6335,7 @@ Module collections.
                 |) in
               heap
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -6184,14 +6343,15 @@ Module collections.
         M.IsTraitInstance
           "core::convert::From"
           (Self T A)
-          (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ] ]
+          (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ] ]
           (* Instance *) [ ("from", InstanceField.Method (from T A)) ].
     End Impl_core_convert_From_where_core_cmp_Ord_T_where_core_alloc_Allocator_A_alloc_vec_Vec_T_A_for_alloc_collections_binary_heap_BinaryHeap_T_A.
     
-    Module Impl_core_convert_From_where_core_cmp_Ord_T_array_T_for_alloc_collections_binary_heap_BinaryHeap_T_alloc_alloc_Global.
-      Definition Self (T : Ty.t) : Ty.t :=
+    Module Impl_core_convert_From_where_core_cmp_Ord_T_array_N_T_for_alloc_collections_binary_heap_BinaryHeap_T_alloc_alloc_Global.
+      Definition Self (N : Value.t) (T : Ty.t) : Ty.t :=
         Ty.apply
           (Ty.path "alloc::collections::binary_heap::BinaryHeap")
+          []
           [ T; Ty.path "alloc::alloc::Global" ].
       
       (*
@@ -6199,10 +6359,16 @@ Module collections.
               Self::from_iter(arr)
           }
       *)
-      Definition from (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ arr ] =>
+      Definition from
+          (N : Value.t)
+          (T : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        let Self : Ty.t := Self N T in
+        match ε, τ, α with
+        | [], [], [ arr ] =>
           ltac:(M.monadic
             (let arr := M.alloc (| arr |) in
             M.call_closure (|
@@ -6210,37 +6376,38 @@ Module collections.
                 "core::iter::traits::collect::FromIterator",
                 Ty.apply
                   (Ty.path "alloc::collections::binary_heap::BinaryHeap")
+                  []
                   [ T; Ty.path "alloc::alloc::Global" ],
                 [ T ],
                 "from_iter",
-                [ Ty.apply (Ty.path "array") [ T ] ]
+                [ Ty.apply (Ty.path "array") [ N ] [ T ] ]
               |),
               [ M.read (| arr |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
-        forall (T : Ty.t),
+        forall (N : Value.t) (T : Ty.t),
         M.IsTraitInstance
           "core::convert::From"
-          (Self T)
-          (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "array") [ T ] ]
-          (* Instance *) [ ("from", InstanceField.Method (from T)) ].
-    End Impl_core_convert_From_where_core_cmp_Ord_T_array_T_for_alloc_collections_binary_heap_BinaryHeap_T_alloc_alloc_Global.
+          (Self N T)
+          (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "array") [ N ] [ T ] ]
+          (* Instance *) [ ("from", InstanceField.Method (from N T)) ].
+    End Impl_core_convert_From_where_core_cmp_Ord_T_array_N_T_for_alloc_collections_binary_heap_BinaryHeap_T_alloc_alloc_Global.
     
     Module Impl_core_convert_From_where_core_alloc_Allocator_A_alloc_collections_binary_heap_BinaryHeap_T_A_for_alloc_vec_Vec_T_A.
-      Definition Self (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ].
+      Definition Self (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ].
       
       (*
           fn from(heap: BinaryHeap<T, A>) -> Vec<T, A> {
               heap.data
           }
       *)
-      Definition from (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [], [ heap ] =>
+        match ε, τ, α with
+        | [], [], [ heap ] =>
           ltac:(M.monadic
             (let heap := M.alloc (| heap |) in
             M.read (|
@@ -6250,7 +6417,7 @@ Module collections.
                 "data"
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -6259,7 +6426,7 @@ Module collections.
           "core::convert::From"
           (Self T A)
           (* Trait polymorphic types *)
-          [ (* T *) Ty.apply (Ty.path "alloc::collections::binary_heap::BinaryHeap") [ T; A ] ]
+          [ (* T *) Ty.apply (Ty.path "alloc::collections::binary_heap::BinaryHeap") [] [ T; A ] ]
           (* Instance *) [ ("from", InstanceField.Method (from T A)) ].
     End Impl_core_convert_From_where_core_alloc_Allocator_A_alloc_collections_binary_heap_BinaryHeap_T_A_for_alloc_vec_Vec_T_A.
     
@@ -6267,6 +6434,7 @@ Module collections.
       Definition Self (T : Ty.t) : Ty.t :=
         Ty.apply
           (Ty.path "alloc::collections::binary_heap::BinaryHeap")
+          []
           [ T; Ty.path "alloc::alloc::Global" ].
       
       (*
@@ -6274,10 +6442,10 @@ Module collections.
               BinaryHeap::from(iter.into_iter().collect::<Vec<_>>())
           }
       *)
-      Definition from_iter (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from_iter (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [ _ as I ], [ iter ] =>
+        match ε, τ, α with
+        | [], [ _ as I ], [ iter ] =>
           ltac:(M.monadic
             (let iter := M.alloc (| iter |) in
             M.call_closure (|
@@ -6285,8 +6453,9 @@ Module collections.
                 "core::convert::From",
                 Ty.apply
                   (Ty.path "alloc::collections::binary_heap::BinaryHeap")
+                  []
                   [ T; Ty.path "alloc::alloc::Global" ],
-                [ Ty.apply (Ty.path "alloc::vec::Vec") [ T; Ty.path "alloc::alloc::Global" ] ],
+                [ Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; Ty.path "alloc::alloc::Global" ] ],
                 "from",
                 []
               |),
@@ -6297,7 +6466,8 @@ Module collections.
                     Ty.associated,
                     [],
                     "collect",
-                    [ Ty.apply (Ty.path "alloc::vec::Vec") [ T; Ty.path "alloc::alloc::Global" ] ]
+                    [ Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; Ty.path "alloc::alloc::Global" ]
+                    ]
                   |),
                   [
                     M.call_closure (|
@@ -6314,7 +6484,7 @@ Module collections.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -6328,24 +6498,24 @@ Module collections.
     
     Module Impl_core_iter_traits_collect_IntoIterator_where_core_alloc_Allocator_A_for_alloc_collections_binary_heap_BinaryHeap_T_A.
       Definition Self (T A : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "alloc::collections::binary_heap::BinaryHeap") [ T; A ].
+        Ty.apply (Ty.path "alloc::collections::binary_heap::BinaryHeap") [] [ T; A ].
       
       (*     type Item = T; *)
       Definition _Item (T A : Ty.t) : Ty.t := T.
       
       (*     type IntoIter = IntoIter<T, A>; *)
       Definition _IntoIter (T A : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "alloc::collections::binary_heap::IntoIter") [ T; A ].
+        Ty.apply (Ty.path "alloc::collections::binary_heap::IntoIter") [] [ T; A ].
       
       (*
           fn into_iter(self) -> IntoIter<T, A> {
               IntoIter { iter: self.data.into_iter() }
           }
       *)
-      Definition into_iter (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition into_iter (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructRecord
@@ -6355,7 +6525,7 @@ Module collections.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::iter::traits::collect::IntoIterator",
-                      Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                      Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                       [],
                       "into_iter",
                       []
@@ -6371,7 +6541,7 @@ Module collections.
                     ]
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -6392,35 +6562,36 @@ Module collections.
       Definition Self (T A : Ty.t) : Ty.t :=
         Ty.apply
           (Ty.path "&")
-          [ Ty.apply (Ty.path "alloc::collections::binary_heap::BinaryHeap") [ T; A ] ].
+          []
+          [ Ty.apply (Ty.path "alloc::collections::binary_heap::BinaryHeap") [] [ T; A ] ].
       
       (*     type Item = &'a T; *)
-      Definition _Item (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "&") [ T ].
+      Definition _Item (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "&") [] [ T ].
       
       (*     type IntoIter = Iter<'a, T>; *)
       Definition _IntoIter (T A : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "alloc::collections::binary_heap::Iter") [ T ].
+        Ty.apply (Ty.path "alloc::collections::binary_heap::Iter") [] [ T ].
       
       (*
           fn into_iter(self) -> Iter<'a, T> {
               self.iter()
           }
       *)
-      Definition into_iter (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition into_iter (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "alloc::collections::binary_heap::BinaryHeap") [ T; A ],
+                Ty.apply (Ty.path "alloc::collections::binary_heap::BinaryHeap") [] [ T; A ],
                 "iter",
                 []
               |),
               [ M.read (| self |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -6439,7 +6610,7 @@ Module collections.
     
     Module Impl_core_iter_traits_collect_Extend_where_core_cmp_Ord_T_where_core_alloc_Allocator_A_T_for_alloc_collections_binary_heap_BinaryHeap_T_A.
       Definition Self (T A : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "alloc::collections::binary_heap::BinaryHeap") [ T; A ].
+        Ty.apply (Ty.path "alloc::collections::binary_heap::BinaryHeap") [] [ T; A ].
       
       (*
           fn extend<I: IntoIterator<Item = T>>(&mut self, iter: I) {
@@ -6447,10 +6618,10 @@ Module collections.
               guard.heap.data.extend(iter);
           }
       *)
-      Definition extend (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition extend (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [ _ as I ], [ self; iter ] =>
+        match ε, τ, α with
+        | [], [ _ as I ], [ self; iter ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let iter := M.alloc (| iter |) in
@@ -6465,6 +6636,7 @@ Module collections.
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "alloc::collections::binary_heap::BinaryHeap")
+                              []
                               [ T; A ],
                             "len",
                             []
@@ -6479,7 +6651,7 @@ Module collections.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::iter::traits::collect::Extend",
-                      Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                      Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                       [ T ],
                       "extend",
                       [ I ]
@@ -6502,7 +6674,7 @@ Module collections.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -6510,10 +6682,15 @@ Module collections.
               self.push(item);
           }
       *)
-      Definition extend_one (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition extend_one
+          (T A : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [], [ self; item ] =>
+        match ε, τ, α with
+        | [], [], [ self; item ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let item := M.alloc (| item |) in
@@ -6522,7 +6699,7 @@ Module collections.
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "alloc::collections::binary_heap::BinaryHeap") [ T; A ],
+                      Ty.apply (Ty.path "alloc::collections::binary_heap::BinaryHeap") [] [ T; A ],
                       "push",
                       []
                     |),
@@ -6531,7 +6708,7 @@ Module collections.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -6539,10 +6716,15 @@ Module collections.
               self.reserve(additional);
           }
       *)
-      Definition extend_reserve (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition extend_reserve
+          (T A : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [], [ self; additional ] =>
+        match ε, τ, α with
+        | [], [], [ self; additional ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let additional := M.alloc (| additional |) in
@@ -6551,7 +6733,7 @@ Module collections.
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "alloc::collections::binary_heap::BinaryHeap") [ T; A ],
+                      Ty.apply (Ty.path "alloc::collections::binary_heap::BinaryHeap") [] [ T; A ],
                       "reserve",
                       []
                     |),
@@ -6560,7 +6742,7 @@ Module collections.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -6579,17 +6761,17 @@ Module collections.
     
     Module Impl_core_iter_traits_collect_Extend_where_core_cmp_Ord_T_where_core_marker_Copy_T_where_core_alloc_Allocator_A_ref__T_for_alloc_collections_binary_heap_BinaryHeap_T_A.
       Definition Self (T A : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "alloc::collections::binary_heap::BinaryHeap") [ T; A ].
+        Ty.apply (Ty.path "alloc::collections::binary_heap::BinaryHeap") [] [ T; A ].
       
       (*
           fn extend<I: IntoIterator<Item = &'a T>>(&mut self, iter: I) {
               self.extend(iter.into_iter().cloned());
           }
       *)
-      Definition extend (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition extend (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [ _ as I ], [ self; iter ] =>
+        match ε, τ, α with
+        | [], [ _ as I ], [ self; iter ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let iter := M.alloc (| iter |) in
@@ -6599,10 +6781,14 @@ Module collections.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::iter::traits::collect::Extend",
-                      Ty.apply (Ty.path "alloc::collections::binary_heap::BinaryHeap") [ T; A ],
+                      Ty.apply (Ty.path "alloc::collections::binary_heap::BinaryHeap") [] [ T; A ],
                       [ T ],
                       "extend",
-                      [ Ty.apply (Ty.path "core::iter::adapters::cloned::Cloned") [ Ty.associated ]
+                      [
+                        Ty.apply
+                          (Ty.path "core::iter::adapters::cloned::Cloned")
+                          []
+                          [ Ty.associated ]
                       ]
                     |),
                     [
@@ -6633,7 +6819,7 @@ Module collections.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -6641,10 +6827,15 @@ Module collections.
               self.push(item);
           }
       *)
-      Definition extend_one (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition extend_one
+          (T A : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [], [ self; β1 ] =>
+        match ε, τ, α with
+        | [], [], [ self; β1 ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let β1 := M.alloc (| β1 |) in
@@ -6662,6 +6853,7 @@ Module collections.
                             M.get_associated_function (|
                               Ty.apply
                                 (Ty.path "alloc::collections::binary_heap::BinaryHeap")
+                                []
                                 [ T; A ],
                               "push",
                               []
@@ -6673,7 +6865,7 @@ Module collections.
                     |)))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -6681,10 +6873,15 @@ Module collections.
               self.reserve(additional);
           }
       *)
-      Definition extend_reserve (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition extend_reserve
+          (T A : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [], [ self; additional ] =>
+        match ε, τ, α with
+        | [], [], [ self; additional ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let additional := M.alloc (| additional |) in
@@ -6693,7 +6890,7 @@ Module collections.
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "alloc::collections::binary_heap::BinaryHeap") [ T; A ],
+                      Ty.apply (Ty.path "alloc::collections::binary_heap::BinaryHeap") [] [ T; A ],
                       "reserve",
                       []
                     |),
@@ -6702,7 +6899,7 @@ Module collections.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -6710,7 +6907,7 @@ Module collections.
         M.IsTraitInstance
           "core::iter::traits::collect::Extend"
           (Self T A)
-          (* Trait polymorphic types *) [ (* A *) Ty.apply (Ty.path "&") [ T ] ]
+          (* Trait polymorphic types *) [ (* A *) Ty.apply (Ty.path "&") [] [ T ] ]
           (* Instance *)
           [
             ("extend", InstanceField.Method (extend T A));

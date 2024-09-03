@@ -7,14 +7,17 @@ Module bytecode.
       (* StructTuple
         {
           name := "JumpTable";
+          const_params := [];
           ty_params := [];
           fields :=
             [
               Ty.apply
                 (Ty.path "alloc::sync::Arc")
+                []
                 [
                   Ty.apply
                     (Ty.path "bitvec::vec::BitVec")
+                    []
                     [ Ty.path "u8"; Ty.path "bitvec::order::Lsb0" ];
                   Ty.path "alloc::alloc::Global"
                 ]
@@ -25,9 +28,9 @@ Module bytecode.
         Definition Self : Ty.t := Ty.path "revm_primitives::bytecode::legacy::jump_map::JumpTable".
         
         (* Clone *)
-        Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self ] =>
+        Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               Value.StructTuple
@@ -38,9 +41,11 @@ Module bytecode.
                       "core::clone::Clone",
                       Ty.apply
                         (Ty.path "alloc::sync::Arc")
+                        []
                         [
                           Ty.apply
                             (Ty.path "bitvec::vec::BitVec")
+                            []
                             [ Ty.path "u8"; Ty.path "bitvec::order::Lsb0" ];
                           Ty.path "alloc::alloc::Global"
                         ],
@@ -57,7 +62,7 @@ Module bytecode.
                     ]
                   |)
                 ]))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -72,9 +77,9 @@ Module bytecode.
         Definition Self : Ty.t := Ty.path "revm_primitives::bytecode::legacy::jump_map::JumpTable".
         
         (* Default *)
-        Definition default (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [] =>
+        Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [] =>
             ltac:(M.monadic
               (Value.StructTuple
                 "revm_primitives::bytecode::legacy::jump_map::JumpTable"
@@ -84,9 +89,11 @@ Module bytecode.
                       "core::default::Default",
                       Ty.apply
                         (Ty.path "alloc::sync::Arc")
+                        []
                         [
                           Ty.apply
                             (Ty.path "bitvec::vec::BitVec")
+                            []
                             [ Ty.path "u8"; Ty.path "bitvec::order::Lsb0" ];
                           Ty.path "alloc::alloc::Global"
                         ],
@@ -97,7 +104,7 @@ Module bytecode.
                     []
                   |)
                 ]))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -123,9 +130,9 @@ Module bytecode.
         Definition Self : Ty.t := Ty.path "revm_primitives::bytecode::legacy::jump_map::JumpTable".
         
         (* PartialEq *)
-        Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self; other ] =>
+        Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self; other ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let other := M.alloc (| other |) in
@@ -134,18 +141,22 @@ Module bytecode.
                   "core::cmp::PartialEq",
                   Ty.apply
                     (Ty.path "alloc::sync::Arc")
+                    []
                     [
                       Ty.apply
                         (Ty.path "bitvec::vec::BitVec")
+                        []
                         [ Ty.path "u8"; Ty.path "bitvec::order::Lsb0" ];
                       Ty.path "alloc::alloc::Global"
                     ],
                   [
                     Ty.apply
                       (Ty.path "alloc::sync::Arc")
+                      []
                       [
                         Ty.apply
                           (Ty.path "bitvec::vec::BitVec")
+                          []
                           [ Ty.path "u8"; Ty.path "bitvec::order::Lsb0" ];
                         Ty.path "alloc::alloc::Global"
                       ]
@@ -166,7 +177,7 @@ Module bytecode.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -192,9 +203,13 @@ Module bytecode.
         Definition Self : Ty.t := Ty.path "revm_primitives::bytecode::legacy::jump_map::JumpTable".
         
         (* Eq *)
-        Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self ] =>
+        Definition assert_receiver_is_total_eq
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
@@ -203,7 +218,7 @@ Module bytecode.
                   [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -219,9 +234,9 @@ Module bytecode.
         Definition Self : Ty.t := Ty.path "revm_primitives::bytecode::legacy::jump_map::JumpTable".
         
         (* Hash *)
-        Definition hash (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ __H ], [ self; state ] =>
+        Definition hash (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [ __H ], [ self; state ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let state := M.alloc (| state |) in
@@ -230,9 +245,11 @@ Module bytecode.
                   "core::hash::Hash",
                   Ty.apply
                     (Ty.path "alloc::sync::Arc")
+                    []
                     [
                       Ty.apply
                         (Ty.path "bitvec::vec::BitVec")
+                        []
                         [ Ty.path "u8"; Ty.path "bitvec::order::Lsb0" ];
                       Ty.path "alloc::alloc::Global"
                     ],
@@ -249,7 +266,7 @@ Module bytecode.
                   M.read (| state |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -270,9 +287,9 @@ Module bytecode.
                     .finish()
             }
         *)
-        Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self; f ] =>
+        Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self; f ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let f := M.alloc (| f |) in
@@ -310,7 +327,8 @@ Module bytecode.
                               [
                                 Ty.apply
                                   (Ty.path "&")
-                                  [ Ty.apply (Ty.path "slice") [ Ty.path "u8" ] ]
+                                  []
+                                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
                               ]
                             |),
                             [
@@ -318,6 +336,7 @@ Module bytecode.
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "bitvec::vec::BitVec")
+                                    []
                                     [ Ty.path "u8"; Ty.path "bitvec::order::Lsb0" ],
                                   "as_raw_slice",
                                   []
@@ -328,9 +347,11 @@ Module bytecode.
                                       "core::ops::deref::Deref",
                                       Ty.apply
                                         (Ty.path "alloc::sync::Arc")
+                                        []
                                         [
                                           Ty.apply
                                             (Ty.path "bitvec::vec::BitVec")
+                                            []
                                             [ Ty.path "u8"; Ty.path "bitvec::order::Lsb0" ];
                                           Ty.path "alloc::alloc::Global"
                                         ],
@@ -355,7 +376,7 @@ Module bytecode.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -374,15 +395,16 @@ Module bytecode.
                 self.0.as_raw_slice()
             }
         *)
-        Definition as_slice (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self ] =>
+        Definition as_slice (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.call_closure (|
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "bitvec::vec::BitVec")
+                    []
                     [ Ty.path "u8"; Ty.path "bitvec::order::Lsb0" ],
                   "as_raw_slice",
                   []
@@ -393,9 +415,11 @@ Module bytecode.
                       "core::ops::deref::Deref",
                       Ty.apply
                         (Ty.path "alloc::sync::Arc")
+                        []
                         [
                           Ty.apply
                             (Ty.path "bitvec::vec::BitVec")
+                            []
                             [ Ty.path "u8"; Ty.path "bitvec::order::Lsb0" ];
                           Ty.path "alloc::alloc::Global"
                         ],
@@ -413,7 +437,7 @@ Module bytecode.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_as_slice : M.IsAssociatedFunction Self "as_slice" as_slice.
@@ -423,9 +447,9 @@ Module bytecode.
                 Self(Arc::new(BitVec::from_slice(slice)))
             }
         *)
-        Definition from_slice (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ slice ] =>
+        Definition from_slice (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ slice ] =>
             ltac:(M.monadic
               (let slice := M.alloc (| slice |) in
               Value.StructTuple
@@ -435,9 +459,11 @@ Module bytecode.
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "alloc::sync::Arc")
+                        []
                         [
                           Ty.apply
                             (Ty.path "bitvec::vec::BitVec")
+                            []
                             [ Ty.path "u8"; Ty.path "bitvec::order::Lsb0" ];
                           Ty.path "alloc::alloc::Global"
                         ],
@@ -449,6 +475,7 @@ Module bytecode.
                         M.get_associated_function (|
                           Ty.apply
                             (Ty.path "bitvec::vec::BitVec")
+                            []
                             [ Ty.path "u8"; Ty.path "bitvec::order::Lsb0" ],
                           "from_slice",
                           []
@@ -458,7 +485,7 @@ Module bytecode.
                     ]
                   |)
                 ]))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_from_slice : M.IsAssociatedFunction Self "from_slice" from_slice.
@@ -468,9 +495,9 @@ Module bytecode.
                 pc < self.0.len() && self.0[pc]
             }
         *)
-        Definition is_valid (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self; pc ] =>
+        Definition is_valid (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self; pc ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let pc := M.alloc (| pc |) in
@@ -481,6 +508,7 @@ Module bytecode.
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "bitvec::vec::BitVec")
+                        []
                         [ Ty.path "u8"; Ty.path "bitvec::order::Lsb0" ],
                       "len",
                       []
@@ -491,9 +519,11 @@ Module bytecode.
                           "core::ops::deref::Deref",
                           Ty.apply
                             (Ty.path "alloc::sync::Arc")
+                            []
                             [
                               Ty.apply
                                 (Ty.path "bitvec::vec::BitVec")
+                                []
                                 [ Ty.path "u8"; Ty.path "bitvec::order::Lsb0" ];
                               Ty.path "alloc::alloc::Global"
                             ],
@@ -518,6 +548,7 @@ Module bytecode.
                         "core::ops::index::Index",
                         Ty.apply
                           (Ty.path "bitvec::vec::BitVec")
+                          []
                           [ Ty.path "u8"; Ty.path "bitvec::order::Lsb0" ],
                         [ Ty.path "usize" ],
                         "index",
@@ -529,9 +560,11 @@ Module bytecode.
                             "core::ops::deref::Deref",
                             Ty.apply
                               (Ty.path "alloc::sync::Arc")
+                              []
                               [
                                 Ty.apply
                                   (Ty.path "bitvec::vec::BitVec")
+                                  []
                                   [ Ty.path "u8"; Ty.path "bitvec::order::Lsb0" ];
                                 Ty.path "alloc::alloc::Global"
                               ],
@@ -552,7 +585,7 @@ Module bytecode.
                     |)
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_is_valid : M.IsAssociatedFunction Self "is_valid" is_valid.

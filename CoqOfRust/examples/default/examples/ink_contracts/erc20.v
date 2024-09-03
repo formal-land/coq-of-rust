@@ -4,22 +4,23 @@ Require Import CoqOfRust.CoqOfRust.
 (* StructRecord
   {
     name := "Mapping";
+    const_params := [];
     ty_params := [ "K"; "V" ];
     fields :=
       [
-        ("_key", Ty.apply (Ty.path "core::marker::PhantomData") [ K ]);
-        ("_value", Ty.apply (Ty.path "core::marker::PhantomData") [ V ])
+        ("_key", Ty.apply (Ty.path "core::marker::PhantomData") [] [ K ]);
+        ("_value", Ty.apply (Ty.path "core::marker::PhantomData") [] [ V ])
       ];
   } *)
 
 Module Impl_core_default_Default_where_core_default_Default_K_where_core_default_Default_V_for_erc20_Mapping_K_V.
-  Definition Self (K V : Ty.t) : Ty.t := Ty.apply (Ty.path "erc20::Mapping") [ K; V ].
+  Definition Self (K V : Ty.t) : Ty.t := Ty.apply (Ty.path "erc20::Mapping") [] [ K; V ].
   
   (* Default *)
-  Definition default (K V : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition default (K V : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     let Self : Ty.t := Self K V in
-    match τ, α with
-    | [], [] =>
+    match ε, τ, α with
+    | [], [], [] =>
       ltac:(M.monadic
         (Value.StructRecord
           "erc20::Mapping"
@@ -28,7 +29,7 @@ Module Impl_core_default_Default_where_core_default_Default_K_where_core_default
               M.call_closure (|
                 M.get_trait_method (|
                   "core::default::Default",
-                  Ty.apply (Ty.path "core::marker::PhantomData") [ K ],
+                  Ty.apply (Ty.path "core::marker::PhantomData") [] [ K ],
                   [],
                   "default",
                   []
@@ -39,7 +40,7 @@ Module Impl_core_default_Default_where_core_default_Default_K_where_core_default
               M.call_closure (|
                 M.get_trait_method (|
                   "core::default::Default",
-                  Ty.apply (Ty.path "core::marker::PhantomData") [ V ],
+                  Ty.apply (Ty.path "core::marker::PhantomData") [] [ V ],
                   [],
                   "default",
                   []
@@ -47,7 +48,7 @@ Module Impl_core_default_Default_where_core_default_Default_K_where_core_default
                 []
               |))
           ]))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -60,14 +61,14 @@ Module Impl_core_default_Default_where_core_default_Default_K_where_core_default
 End Impl_core_default_Default_where_core_default_Default_K_where_core_default_Default_V_for_erc20_Mapping_K_V.
 
 Module Impl_erc20_Mapping_K_V.
-  Definition Self (K V : Ty.t) : Ty.t := Ty.apply (Ty.path "erc20::Mapping") [ K; V ].
+  Definition Self (K V : Ty.t) : Ty.t := Ty.apply (Ty.path "erc20::Mapping") [] [ K; V ].
   
   (*
       fn get(&self, _key: &K) -> Option<V> {
           unimplemented!()
       }
   *)
-  Parameter get : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
+  Parameter get : forall (K V : Ty.t), (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_get :
     forall (K V : Ty.t),
@@ -78,7 +79,7 @@ Module Impl_erc20_Mapping_K_V.
           unimplemented!()
       }
   *)
-  Parameter insert : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
+  Parameter insert : forall (K V : Ty.t), (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_insert :
     forall (K V : Ty.t),
@@ -88,6 +89,7 @@ End Impl_erc20_Mapping_K_V.
 (* StructTuple
   {
     name := "AccountId";
+    const_params := [];
     ty_params := [];
     fields := [ Ty.path "u128" ];
   } *)
@@ -96,9 +98,9 @@ Module Impl_core_default_Default_for_erc20_AccountId.
   Definition Self : Ty.t := Ty.path "erc20::AccountId".
   
   (* Default *)
-  Definition default (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [] =>
+  Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [] =>
       ltac:(M.monadic
         (Value.StructTuple
           "erc20::AccountId"
@@ -108,7 +110,7 @@ Module Impl_core_default_Default_for_erc20_AccountId.
               []
             |)
           ]))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -123,9 +125,9 @@ Module Impl_core_clone_Clone_for_erc20_AccountId.
   Definition Self : Ty.t := Ty.path "erc20::AccountId".
   
   (* Clone *)
-  Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self ] =>
+  Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
@@ -134,7 +136,7 @@ Module Impl_core_clone_Clone_for_erc20_AccountId.
             [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -157,6 +159,7 @@ Axiom Balance : (Ty.path "erc20::Balance") = (Ty.path "u128").
 (* StructRecord
   {
     name := "Env";
+    const_params := [];
     ty_params := [];
     fields := [ ("caller", Ty.path "erc20::AccountId") ];
   } *)
@@ -164,15 +167,17 @@ Axiom Balance : (Ty.path "erc20::Balance") = (Ty.path "u128").
 (* StructRecord
   {
     name := "Erc20";
+    const_params := [];
     ty_params := [];
     fields :=
       [
         ("total_supply", Ty.path "u128");
         ("balances",
-          Ty.apply (Ty.path "erc20::Mapping") [ Ty.path "erc20::AccountId"; Ty.path "u128" ]);
+          Ty.apply (Ty.path "erc20::Mapping") [] [ Ty.path "erc20::AccountId"; Ty.path "u128" ]);
         ("allowances",
           Ty.apply
             (Ty.path "erc20::Mapping")
+            []
             [ Ty.tuple [ Ty.path "erc20::AccountId"; Ty.path "erc20::AccountId" ]; Ty.path "u128" ])
       ];
   } *)
@@ -181,9 +186,9 @@ Module Impl_core_default_Default_for_erc20_Erc20.
   Definition Self : Ty.t := Ty.path "erc20::Erc20".
   
   (* Default *)
-  Definition default (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [] =>
+  Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [] =>
       ltac:(M.monadic
         (Value.StructRecord
           "erc20::Erc20"
@@ -205,6 +210,7 @@ Module Impl_core_default_Default_for_erc20_Erc20.
                   "core::default::Default",
                   Ty.apply
                     (Ty.path "erc20::Mapping")
+                    []
                     [ Ty.path "erc20::AccountId"; Ty.path "u128" ],
                   [],
                   "default",
@@ -218,6 +224,7 @@ Module Impl_core_default_Default_for_erc20_Erc20.
                   "core::default::Default",
                   Ty.apply
                     (Ty.path "erc20::Mapping")
+                    []
                     [
                       Ty.tuple [ Ty.path "erc20::AccountId"; Ty.path "erc20::AccountId" ];
                       Ty.path "u128"
@@ -229,7 +236,7 @@ Module Impl_core_default_Default_for_erc20_Erc20.
                 []
               |))
           ]))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -243,11 +250,12 @@ End Impl_core_default_Default_for_erc20_Erc20.
 (* StructRecord
   {
     name := "Transfer";
+    const_params := [];
     ty_params := [];
     fields :=
       [
-        ("from", Ty.apply (Ty.path "core::option::Option") [ Ty.path "erc20::AccountId" ]);
-        ("to", Ty.apply (Ty.path "core::option::Option") [ Ty.path "erc20::AccountId" ]);
+        ("from", Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "erc20::AccountId" ]);
+        ("to", Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "erc20::AccountId" ]);
         ("value", Ty.path "u128")
       ];
   } *)
@@ -255,6 +263,7 @@ End Impl_core_default_Default_for_erc20_Erc20.
 (* StructRecord
   {
     name := "Approval";
+    const_params := [];
     ty_params := [];
     fields :=
       [
@@ -267,6 +276,7 @@ End Impl_core_default_Default_for_erc20_Erc20.
 (*
 Enum Event
 {
+  const_params := [];
   ty_params := [];
   variants :=
     [
@@ -287,6 +297,7 @@ Enum Event
 (*
 Enum Error
 {
+  const_params := [];
   ty_params := [];
   variants :=
     [
@@ -306,8 +317,8 @@ Enum Error
 
 Axiom Result :
   forall (T : Ty.t),
-  (Ty.apply (Ty.path "erc20::Result") [ T ]) =
-    (Ty.apply (Ty.path "core::result::Result") [ T; Ty.path "erc20::Error" ]).
+  (Ty.apply (Ty.path "erc20::Result") [] [ T ]) =
+    (Ty.apply (Ty.path "core::result::Result") [] [ T; Ty.path "erc20::Error" ]).
 
 Module Impl_erc20_Env.
   Definition Self : Ty.t := Ty.path "erc20::Env".
@@ -317,15 +328,15 @@ Module Impl_erc20_Env.
           self.caller
       }
   *)
-  Definition caller (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self ] =>
+  Definition caller (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
           M.SubPointer.get_struct_record_field (| M.read (| self |), "erc20::Env", "caller" |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_caller : M.IsAssociatedFunction Self "caller" caller.
@@ -335,7 +346,7 @@ Module Impl_erc20_Env.
           unimplemented!()
       }
   *)
-  Parameter emit_event : (list Ty.t) -> (list Value.t) -> M.
+  Parameter emit_event : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_emit_event : M.IsAssociatedFunction Self "emit_event" emit_event.
 End Impl_erc20_Env.
@@ -348,7 +359,7 @@ Module Impl_erc20_Erc20.
           unimplemented!()
       }
   *)
-  Parameter init_env : (list Ty.t) -> (list Value.t) -> M.
+  Parameter init_env : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_init_env : M.IsAssociatedFunction Self "init_env" init_env.
   
@@ -357,16 +368,16 @@ Module Impl_erc20_Erc20.
           Self::init_env()
       }
   *)
-  Definition env (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self ] =>
+  Definition env (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.call_closure (|
           M.get_associated_function (| Ty.path "erc20::Erc20", "init_env", [] |),
           []
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_env : M.IsAssociatedFunction Self "env" env.
@@ -387,9 +398,9 @@ Module Impl_erc20_Erc20.
           }
       }
   *)
-  Definition new (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ total_supply ] =>
+  Definition new (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ total_supply ] =>
       ltac:(M.monadic
         (let total_supply := M.alloc (| total_supply |) in
         M.read (|
@@ -400,6 +411,7 @@ Module Impl_erc20_Erc20.
                   "core::default::Default",
                   Ty.apply
                     (Ty.path "erc20::Mapping")
+                    []
                     [ Ty.path "erc20::AccountId"; Ty.path "u128" ],
                   [],
                   "default",
@@ -428,6 +440,7 @@ Module Impl_erc20_Erc20.
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "erc20::Mapping")
+                    []
                     [ Ty.path "erc20::AccountId"; Ty.path "u128" ],
                   "insert",
                   []
@@ -473,6 +486,7 @@ Module Impl_erc20_Erc20.
                       "core::default::Default",
                       Ty.apply
                         (Ty.path "erc20::Mapping")
+                        []
                         [
                           Ty.tuple [ Ty.path "erc20::AccountId"; Ty.path "erc20::AccountId" ];
                           Ty.path "u128"
@@ -486,7 +500,7 @@ Module Impl_erc20_Erc20.
               ]
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -496,9 +510,9 @@ Module Impl_erc20_Erc20.
           self.total_supply
       }
   *)
-  Definition total_supply (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self ] =>
+  Definition total_supply (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
@@ -508,7 +522,7 @@ Module Impl_erc20_Erc20.
             "total_supply"
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_total_supply : M.IsAssociatedFunction Self "total_supply" total_supply.
@@ -518,22 +532,25 @@ Module Impl_erc20_Erc20.
           self.balances.get(owner).unwrap_or_default()
       }
   *)
-  Definition balance_of_impl (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; owner ] =>
+  Definition balance_of_impl (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; owner ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let owner := M.alloc (| owner |) in
         M.call_closure (|
           M.get_associated_function (|
-            Ty.apply (Ty.path "core::option::Option") [ Ty.path "u128" ],
+            Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u128" ],
             "unwrap_or_default",
             []
           |),
           [
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "erc20::Mapping") [ Ty.path "erc20::AccountId"; Ty.path "u128" ],
+                Ty.apply
+                  (Ty.path "erc20::Mapping")
+                  []
+                  [ Ty.path "erc20::AccountId"; Ty.path "u128" ],
                 "get",
                 []
               |),
@@ -548,7 +565,7 @@ Module Impl_erc20_Erc20.
             |)
           ]
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_balance_of_impl :
@@ -559,9 +576,9 @@ Module Impl_erc20_Erc20.
           self.balance_of_impl(&owner)
       }
   *)
-  Definition balance_of (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; owner ] =>
+  Definition balance_of (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; owner ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let owner := M.alloc (| owner |) in
@@ -569,7 +586,7 @@ Module Impl_erc20_Erc20.
           M.get_associated_function (| Ty.path "erc20::Erc20", "balance_of_impl", [] |),
           [ M.read (| self |); owner ]
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_balance_of : M.IsAssociatedFunction Self "balance_of" balance_of.
@@ -579,16 +596,16 @@ Module Impl_erc20_Erc20.
           self.allowances.get(&( *owner, *spender)).unwrap_or_default()
       }
   *)
-  Definition allowance_impl (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; owner; spender ] =>
+  Definition allowance_impl (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; owner; spender ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let owner := M.alloc (| owner |) in
         let spender := M.alloc (| spender |) in
         M.call_closure (|
           M.get_associated_function (|
-            Ty.apply (Ty.path "core::option::Option") [ Ty.path "u128" ],
+            Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u128" ],
             "unwrap_or_default",
             []
           |),
@@ -597,6 +614,7 @@ Module Impl_erc20_Erc20.
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "erc20::Mapping")
+                  []
                   [
                     Ty.tuple [ Ty.path "erc20::AccountId"; Ty.path "erc20::AccountId" ];
                     Ty.path "u128"
@@ -617,7 +635,7 @@ Module Impl_erc20_Erc20.
             |)
           ]
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_allowance_impl :
@@ -628,9 +646,9 @@ Module Impl_erc20_Erc20.
           self.allowance_impl(&owner, &spender)
       }
   *)
-  Definition allowance (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; owner; spender ] =>
+  Definition allowance (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; owner; spender ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let owner := M.alloc (| owner |) in
@@ -639,7 +657,7 @@ Module Impl_erc20_Erc20.
           M.get_associated_function (| Ty.path "erc20::Erc20", "allowance_impl", [] |),
           [ M.read (| self |); owner; spender ]
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_allowance : M.IsAssociatedFunction Self "allowance" allowance.
@@ -662,9 +680,9 @@ Module Impl_erc20_Erc20.
           Ok(())
       }
   *)
-  Definition transfer_from_to (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; from; to; value ] =>
+  Definition transfer_from_to (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; from; to; value ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let from := M.alloc (| from |) in
@@ -713,6 +731,7 @@ Module Impl_erc20_Erc20.
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "erc20::Mapping")
+                        []
                         [ Ty.path "erc20::AccountId"; Ty.path "u128" ],
                       "insert",
                       []
@@ -741,6 +760,7 @@ Module Impl_erc20_Erc20.
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "erc20::Mapping")
+                        []
                         [ Ty.path "erc20::AccountId"; Ty.path "u128" ],
                       "insert",
                       []
@@ -790,7 +810,7 @@ Module Impl_erc20_Erc20.
               M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
             |)))
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_transfer_from_to :
@@ -802,9 +822,9 @@ Module Impl_erc20_Erc20.
           self.transfer_from_to(&from, &to, value)
       }
   *)
-  Definition transfer (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; to; value ] =>
+  Definition transfer (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; to; value ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let to := M.alloc (| to |) in
@@ -831,7 +851,7 @@ Module Impl_erc20_Erc20.
             |)
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_transfer : M.IsAssociatedFunction Self "transfer" transfer.
@@ -848,9 +868,9 @@ Module Impl_erc20_Erc20.
           Ok(())
       }
   *)
-  Definition approve (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; spender; value ] =>
+  Definition approve (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; spender; value ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let spender := M.alloc (| spender |) in
@@ -876,6 +896,7 @@ Module Impl_erc20_Erc20.
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "erc20::Mapping")
+                    []
                     [
                       Ty.tuple [ Ty.path "erc20::AccountId"; Ty.path "erc20::AccountId" ];
                       Ty.path "u128"
@@ -921,7 +942,7 @@ Module Impl_erc20_Erc20.
             |) in
           M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_approve : M.IsAssociatedFunction Self "approve" approve.
@@ -938,9 +959,9 @@ Module Impl_erc20_Erc20.
           Ok(())
       }
   *)
-  Definition transfer_from (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; from; to; value ] =>
+  Definition transfer_from (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; from; to; value ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let from := M.alloc (| from |) in
@@ -1005,6 +1026,7 @@ Module Impl_erc20_Erc20.
                         "core::ops::try_trait::Try",
                         Ty.apply
                           (Ty.path "core::result::Result")
+                          []
                           [ Ty.tuple []; Ty.path "erc20::Error" ],
                         [],
                         "branch",
@@ -1041,10 +1063,12 @@ Module Impl_erc20_Erc20.
                                     "core::ops::try_trait::FromResidual",
                                     Ty.apply
                                       (Ty.path "core::result::Result")
+                                      []
                                       [ Ty.tuple []; Ty.path "erc20::Error" ],
                                     [
                                       Ty.apply
                                         (Ty.path "core::result::Result")
+                                        []
                                         [
                                           Ty.path "core::convert::Infallible";
                                           Ty.path "erc20::Error"
@@ -1077,6 +1101,7 @@ Module Impl_erc20_Erc20.
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "erc20::Mapping")
+                        []
                         [
                           Ty.tuple [ Ty.path "erc20::AccountId"; Ty.path "erc20::AccountId" ];
                           Ty.path "u128"
@@ -1098,7 +1123,7 @@ Module Impl_erc20_Erc20.
               M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
             |)))
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_transfer_from :

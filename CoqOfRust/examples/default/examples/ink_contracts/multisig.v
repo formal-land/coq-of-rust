@@ -4,22 +4,23 @@ Require Import CoqOfRust.CoqOfRust.
 (* StructRecord
   {
     name := "Mapping";
+    const_params := [];
     ty_params := [ "K"; "V" ];
     fields :=
       [
-        ("_key", Ty.apply (Ty.path "core::marker::PhantomData") [ K ]);
-        ("_value", Ty.apply (Ty.path "core::marker::PhantomData") [ V ])
+        ("_key", Ty.apply (Ty.path "core::marker::PhantomData") [] [ K ]);
+        ("_value", Ty.apply (Ty.path "core::marker::PhantomData") [] [ V ])
       ];
   } *)
 
 Module Impl_core_default_Default_where_core_default_Default_K_where_core_default_Default_V_for_multisig_Mapping_K_V.
-  Definition Self (K V : Ty.t) : Ty.t := Ty.apply (Ty.path "multisig::Mapping") [ K; V ].
+  Definition Self (K V : Ty.t) : Ty.t := Ty.apply (Ty.path "multisig::Mapping") [] [ K; V ].
   
   (* Default *)
-  Definition default (K V : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition default (K V : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     let Self : Ty.t := Self K V in
-    match τ, α with
-    | [], [] =>
+    match ε, τ, α with
+    | [], [], [] =>
       ltac:(M.monadic
         (Value.StructRecord
           "multisig::Mapping"
@@ -28,7 +29,7 @@ Module Impl_core_default_Default_where_core_default_Default_K_where_core_default
               M.call_closure (|
                 M.get_trait_method (|
                   "core::default::Default",
-                  Ty.apply (Ty.path "core::marker::PhantomData") [ K ],
+                  Ty.apply (Ty.path "core::marker::PhantomData") [] [ K ],
                   [],
                   "default",
                   []
@@ -39,7 +40,7 @@ Module Impl_core_default_Default_where_core_default_Default_K_where_core_default
               M.call_closure (|
                 M.get_trait_method (|
                   "core::default::Default",
-                  Ty.apply (Ty.path "core::marker::PhantomData") [ V ],
+                  Ty.apply (Ty.path "core::marker::PhantomData") [] [ V ],
                   [],
                   "default",
                   []
@@ -47,7 +48,7 @@ Module Impl_core_default_Default_where_core_default_Default_K_where_core_default
                 []
               |))
           ]))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -60,14 +61,14 @@ Module Impl_core_default_Default_where_core_default_Default_K_where_core_default
 End Impl_core_default_Default_where_core_default_Default_K_where_core_default_Default_V_for_multisig_Mapping_K_V.
 
 Module Impl_multisig_Mapping_K_V.
-  Definition Self (K V : Ty.t) : Ty.t := Ty.apply (Ty.path "multisig::Mapping") [ K; V ].
+  Definition Self (K V : Ty.t) : Ty.t := Ty.apply (Ty.path "multisig::Mapping") [] [ K; V ].
   
   (*
       fn contains(&self, _key: &K) -> bool {
           unimplemented!()
       }
   *)
-  Parameter contains : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
+  Parameter contains : forall (K V : Ty.t), (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_contains :
     forall (K V : Ty.t),
@@ -78,7 +79,7 @@ Module Impl_multisig_Mapping_K_V.
           unimplemented!()
       }
   *)
-  Parameter get : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
+  Parameter get : forall (K V : Ty.t), (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_get :
     forall (K V : Ty.t),
@@ -89,7 +90,7 @@ Module Impl_multisig_Mapping_K_V.
           unimplemented!()
       }
   *)
-  Parameter insert : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
+  Parameter insert : forall (K V : Ty.t), (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_insert :
     forall (K V : Ty.t),
@@ -100,7 +101,7 @@ Module Impl_multisig_Mapping_K_V.
           unimplemented!()
       }
   *)
-  Parameter remove : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
+  Parameter remove : forall (K V : Ty.t), (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_remove :
     forall (K V : Ty.t),
@@ -111,7 +112,7 @@ Module Impl_multisig_Mapping_K_V.
           unimplemented!()
       }
   *)
-  Parameter size : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
+  Parameter size : forall (K V : Ty.t), (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_size :
     forall (K V : Ty.t),
@@ -122,7 +123,7 @@ Module Impl_multisig_Mapping_K_V.
           unimplemented!()
       }
   *)
-  Parameter take : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
+  Parameter take : forall (K V : Ty.t), (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_take :
     forall (K V : Ty.t),
@@ -132,6 +133,7 @@ End Impl_multisig_Mapping_K_V.
 (* StructTuple
   {
     name := "AccountId";
+    const_params := [];
     ty_params := [];
     fields := [ Ty.path "u128" ];
   } *)
@@ -140,9 +142,9 @@ Module Impl_core_default_Default_for_multisig_AccountId.
   Definition Self : Ty.t := Ty.path "multisig::AccountId".
   
   (* Default *)
-  Definition default (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [] =>
+  Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [] =>
       ltac:(M.monadic
         (Value.StructTuple
           "multisig::AccountId"
@@ -152,7 +154,7 @@ Module Impl_core_default_Default_for_multisig_AccountId.
               []
             |)
           ]))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -167,9 +169,9 @@ Module Impl_core_fmt_Debug_for_multisig_AccountId.
   Definition Self : Ty.t := Ty.path "multisig::AccountId".
   
   (* Debug *)
-  Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; f ] =>
+  Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; f ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let f := M.alloc (| f |) in
@@ -193,7 +195,7 @@ Module Impl_core_fmt_Debug_for_multisig_AccountId.
               |))
           ]
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -208,9 +210,9 @@ Module Impl_core_clone_Clone_for_multisig_AccountId.
   Definition Self : Ty.t := Ty.path "multisig::AccountId".
   
   (* Clone *)
-  Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self ] =>
+  Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
@@ -219,7 +221,7 @@ Module Impl_core_clone_Clone_for_multisig_AccountId.
             [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -252,9 +254,9 @@ Module Impl_core_cmp_PartialEq_for_multisig_AccountId.
   Definition Self : Ty.t := Ty.path "multisig::AccountId".
   
   (* PartialEq *)
-  Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; other ] =>
+  Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; other ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
@@ -265,7 +267,7 @@ Module Impl_core_cmp_PartialEq_for_multisig_AccountId.
           (M.read (|
             M.SubPointer.get_struct_tuple_field (| M.read (| other |), "multisig::AccountId", 0 |)
           |))))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -291,9 +293,13 @@ Module Impl_core_cmp_Eq_for_multisig_AccountId.
   Definition Self : Ty.t := Ty.path "multisig::AccountId".
   
   (* Eq *)
-  Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self ] =>
+  Definition assert_receiver_is_total_eq
+      (ε : list Value.t)
+      (τ : list Ty.t)
+      (α : list Value.t)
+      : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
@@ -302,7 +308,7 @@ Module Impl_core_cmp_Eq_for_multisig_AccountId.
             [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -318,9 +324,9 @@ Module Impl_core_cmp_PartialOrd_for_multisig_AccountId.
   Definition Self : Ty.t := Ty.path "multisig::AccountId".
   
   (* PartialOrd *)
-  Definition partial_cmp (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; other ] =>
+  Definition partial_cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; other ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
@@ -337,7 +343,7 @@ Module Impl_core_cmp_PartialOrd_for_multisig_AccountId.
             M.SubPointer.get_struct_tuple_field (| M.read (| other |), "multisig::AccountId", 0 |)
           ]
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -352,9 +358,9 @@ Module Impl_core_cmp_Ord_for_multisig_AccountId.
   Definition Self : Ty.t := Ty.path "multisig::AccountId".
   
   (* Ord *)
-  Definition cmp (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; other ] =>
+  Definition cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; other ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
@@ -365,7 +371,7 @@ Module Impl_core_cmp_Ord_for_multisig_AccountId.
             M.SubPointer.get_struct_tuple_field (| M.read (| other |), "multisig::AccountId", 0 |)
           ]
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -381,6 +387,7 @@ Axiom Balance : (Ty.path "multisig::Balance") = (Ty.path "u128").
 (* StructRecord
   {
     name := "Env";
+    const_params := [];
     ty_params := [];
     fields := [ ("caller", Ty.path "multisig::AccountId") ];
   } *)
@@ -395,13 +402,15 @@ Definition value_WRONG_TRANSACTION_ID : Value.t :=
 (* StructTuple
   {
     name := "CallInput";
+    const_params := [];
     ty_params := [];
-    fields := [ Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "slice") [ Ty.path "u8" ] ] ];
+    fields := [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ] ];
   } *)
 
 (*
 Enum ConfirmationStatus
 {
+  const_params := [];
   ty_params := [];
   variants :=
     [
@@ -423,9 +432,9 @@ Module Impl_core_clone_Clone_for_multisig_ConfirmationStatus.
   Definition Self : Ty.t := Ty.path "multisig::ConfirmationStatus".
   
   (* Clone *)
-  Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self ] =>
+  Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
@@ -434,7 +443,7 @@ Module Impl_core_clone_Clone_for_multisig_ConfirmationStatus.
             [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -455,13 +464,14 @@ End Impl_core_marker_Copy_for_multisig_ConfirmationStatus.
 (* StructRecord
   {
     name := "Transaction";
+    const_params := [];
     ty_params := [];
     fields :=
       [
         ("callee", Ty.path "multisig::AccountId");
-        ("selector", Ty.apply (Ty.path "array") [ Ty.path "u8" ]);
+        ("selector", Ty.apply (Ty.path "array") [ Value.Integer 4 ] [ Ty.path "u8" ]);
         ("input",
-          Ty.apply (Ty.path "alloc::vec::Vec") [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]);
+          Ty.apply (Ty.path "alloc::vec::Vec") [] [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]);
         ("transferred_value", Ty.path "u128");
         ("gas_limit", Ty.path "u64");
         ("allow_reentry", Ty.path "bool")
@@ -472,9 +482,9 @@ Module Impl_core_default_Default_for_multisig_Transaction.
   Definition Self : Ty.t := Ty.path "multisig::Transaction".
   
   (* Default *)
-  Definition default (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [] =>
+  Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [] =>
       ltac:(M.monadic
         (Value.StructRecord
           "multisig::Transaction"
@@ -494,7 +504,7 @@ Module Impl_core_default_Default_for_multisig_Transaction.
               M.call_closure (|
                 M.get_trait_method (|
                   "core::default::Default",
-                  Ty.apply (Ty.path "array") [ Ty.path "u8" ],
+                  Ty.apply (Ty.path "array") [ Value.Integer 4 ] [ Ty.path "u8" ],
                   [],
                   "default",
                   []
@@ -507,6 +517,7 @@ Module Impl_core_default_Default_for_multisig_Transaction.
                   "core::default::Default",
                   Ty.apply
                     (Ty.path "alloc::vec::Vec")
+                    []
                     [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                   [],
                   "default",
@@ -542,7 +553,7 @@ Module Impl_core_default_Default_for_multisig_Transaction.
                 []
               |))
           ]))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -556,6 +567,7 @@ End Impl_core_default_Default_for_multisig_Transaction.
 (*
 Enum Error
 {
+  const_params := [];
   ty_params := [];
   variants :=
     [
@@ -572,13 +584,13 @@ Module Impl_core_clone_Clone_for_multisig_Error.
   Definition Self : Ty.t := Ty.path "multisig::Error".
   
   (* Clone *)
-  Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self ] =>
+  Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (| M.read (| self |) |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -611,14 +623,14 @@ Module Impl_core_cmp_PartialEq_for_multisig_Error.
   Definition Self : Ty.t := Ty.path "multisig::Error".
   
   (* PartialEq *)
-  Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; other ] =>
+  Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; other ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
         Value.Bool true))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -644,13 +656,17 @@ Module Impl_core_cmp_Eq_for_multisig_Error.
   Definition Self : Ty.t := Ty.path "multisig::Error".
   
   (* Eq *)
-  Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self ] =>
+  Definition assert_receiver_is_total_eq
+      (ε : list Value.t)
+      (τ : list Ty.t)
+      (α : list Value.t)
+      : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         Value.Tuple []))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -665,11 +681,15 @@ End Impl_core_cmp_Eq_for_multisig_Error.
 (* StructRecord
   {
     name := "Transactions";
+    const_params := [];
     ty_params := [];
     fields :=
       [
         ("transactions",
-          Ty.apply (Ty.path "alloc::vec::Vec") [ Ty.path "u32"; Ty.path "alloc::alloc::Global" ]);
+          Ty.apply
+            (Ty.path "alloc::vec::Vec")
+            []
+            [ Ty.path "u32"; Ty.path "alloc::alloc::Global" ]);
         ("next_id", Ty.path "u32")
       ];
   } *)
@@ -678,9 +698,9 @@ Module Impl_core_default_Default_for_multisig_Transactions.
   Definition Self : Ty.t := Ty.path "multisig::Transactions".
   
   (* Default *)
-  Definition default (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [] =>
+  Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [] =>
       ltac:(M.monadic
         (Value.StructRecord
           "multisig::Transactions"
@@ -691,6 +711,7 @@ Module Impl_core_default_Default_for_multisig_Transactions.
                   "core::default::Default",
                   Ty.apply
                     (Ty.path "alloc::vec::Vec")
+                    []
                     [ Ty.path "u32"; Ty.path "alloc::alloc::Global" ],
                   [],
                   "default",
@@ -704,7 +725,7 @@ Module Impl_core_default_Default_for_multisig_Transactions.
                 []
               |))
           ]))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -718,6 +739,7 @@ End Impl_core_default_Default_for_multisig_Transactions.
 (* StructRecord
   {
     name := "Confirmation";
+    const_params := [];
     ty_params := [];
     fields :=
       [
@@ -730,6 +752,7 @@ End Impl_core_default_Default_for_multisig_Transactions.
 (* StructRecord
   {
     name := "Revocation";
+    const_params := [];
     ty_params := [];
     fields := [ ("transaction", Ty.path "u32"); ("from", Ty.path "multisig::AccountId") ];
   } *)
@@ -737,6 +760,7 @@ End Impl_core_default_Default_for_multisig_Transactions.
 (* StructRecord
   {
     name := "Submission";
+    const_params := [];
     ty_params := [];
     fields := [ ("transaction", Ty.path "u32") ];
   } *)
@@ -744,6 +768,7 @@ End Impl_core_default_Default_for_multisig_Transactions.
 (* StructRecord
   {
     name := "Cancellation";
+    const_params := [];
     ty_params := [];
     fields := [ ("transaction", Ty.path "u32") ];
   } *)
@@ -751,6 +776,7 @@ End Impl_core_default_Default_for_multisig_Transactions.
 (* StructRecord
   {
     name := "Execution";
+    const_params := [];
     ty_params := [];
     fields :=
       [
@@ -758,12 +784,15 @@ End Impl_core_default_Default_for_multisig_Transactions.
         ("result",
           Ty.apply
             (Ty.path "core::result::Result")
+            []
             [
               Ty.apply
                 (Ty.path "core::option::Option")
+                []
                 [
                   Ty.apply
                     (Ty.path "alloc::vec::Vec")
+                    []
                     [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
                 ];
               Ty.path "multisig::Error"
@@ -774,6 +803,7 @@ End Impl_core_default_Default_for_multisig_Transactions.
 (* StructRecord
   {
     name := "OwnerAddition";
+    const_params := [];
     ty_params := [];
     fields := [ ("owner", Ty.path "multisig::AccountId") ];
   } *)
@@ -781,6 +811,7 @@ End Impl_core_default_Default_for_multisig_Transactions.
 (* StructRecord
   {
     name := "OwnerRemoval";
+    const_params := [];
     ty_params := [];
     fields := [ ("owner", Ty.path "multisig::AccountId") ];
   } *)
@@ -788,6 +819,7 @@ End Impl_core_default_Default_for_multisig_Transactions.
 (* StructRecord
   {
     name := "RequirementChange";
+    const_params := [];
     ty_params := [];
     fields := [ ("new_requirement", Ty.path "u32") ];
   } *)
@@ -795,6 +827,7 @@ End Impl_core_default_Default_for_multisig_Transactions.
 (*
 Enum Event
 {
+  const_params := [];
   ty_params := [];
   variants :=
     [
@@ -850,15 +883,15 @@ Module Impl_multisig_Env.
           self.caller
       }
   *)
-  Definition caller (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self ] =>
+  Definition caller (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
           M.SubPointer.get_struct_record_field (| M.read (| self |), "multisig::Env", "caller" |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_caller : M.IsAssociatedFunction Self "caller" caller.
@@ -868,7 +901,7 @@ Module Impl_multisig_Env.
           unimplemented!()
       }
   *)
-  Parameter emit_event : (list Ty.t) -> (list Value.t) -> M.
+  Parameter emit_event : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_emit_event : M.IsAssociatedFunction Self "emit_event" emit_event.
   
@@ -877,7 +910,7 @@ Module Impl_multisig_Env.
           unimplemented!()
       }
   *)
-  Parameter transferred_value : (list Ty.t) -> (list Value.t) -> M.
+  Parameter transferred_value : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_transferred_value :
     M.IsAssociatedFunction Self "transferred_value" transferred_value.
@@ -887,7 +920,7 @@ Module Impl_multisig_Env.
           unimplemented!()
       }
   *)
-  Parameter account_id : (list Ty.t) -> (list Value.t) -> M.
+  Parameter account_id : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_account_id : M.IsAssociatedFunction Self "account_id" account_id.
 End Impl_multisig_Env.
@@ -895,26 +928,30 @@ End Impl_multisig_Env.
 (* StructRecord
   {
     name := "Multisig";
+    const_params := [];
     ty_params := [];
     fields :=
       [
         ("confirmations",
           Ty.apply
             (Ty.path "multisig::Mapping")
+            []
             [ Ty.tuple [ Ty.path "u32"; Ty.path "multisig::AccountId" ]; Ty.tuple [] ]);
         ("confirmation_count",
-          Ty.apply (Ty.path "multisig::Mapping") [ Ty.path "u32"; Ty.path "u32" ]);
+          Ty.apply (Ty.path "multisig::Mapping") [] [ Ty.path "u32"; Ty.path "u32" ]);
         ("transactions",
           Ty.apply
             (Ty.path "multisig::Mapping")
+            []
             [ Ty.path "u32"; Ty.path "multisig::Transaction" ]);
         ("transaction_list", Ty.path "multisig::Transactions");
         ("owners",
           Ty.apply
             (Ty.path "alloc::vec::Vec")
+            []
             [ Ty.path "multisig::AccountId"; Ty.path "alloc::alloc::Global" ]);
         ("is_owner",
-          Ty.apply (Ty.path "multisig::Mapping") [ Ty.path "multisig::AccountId"; Ty.tuple [] ]);
+          Ty.apply (Ty.path "multisig::Mapping") [] [ Ty.path "multisig::AccountId"; Ty.tuple [] ]);
         ("requirement", Ty.path "u32")
       ];
   } *)
@@ -923,9 +960,9 @@ Module Impl_core_default_Default_for_multisig_Multisig.
   Definition Self : Ty.t := Ty.path "multisig::Multisig".
   
   (* Default *)
-  Definition default (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [] =>
+  Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [] =>
       ltac:(M.monadic
         (Value.StructRecord
           "multisig::Multisig"
@@ -936,6 +973,7 @@ Module Impl_core_default_Default_for_multisig_Multisig.
                   "core::default::Default",
                   Ty.apply
                     (Ty.path "multisig::Mapping")
+                    []
                     [ Ty.tuple [ Ty.path "u32"; Ty.path "multisig::AccountId" ]; Ty.tuple [] ],
                   [],
                   "default",
@@ -947,7 +985,7 @@ Module Impl_core_default_Default_for_multisig_Multisig.
               M.call_closure (|
                 M.get_trait_method (|
                   "core::default::Default",
-                  Ty.apply (Ty.path "multisig::Mapping") [ Ty.path "u32"; Ty.path "u32" ],
+                  Ty.apply (Ty.path "multisig::Mapping") [] [ Ty.path "u32"; Ty.path "u32" ],
                   [],
                   "default",
                   []
@@ -960,6 +998,7 @@ Module Impl_core_default_Default_for_multisig_Multisig.
                   "core::default::Default",
                   Ty.apply
                     (Ty.path "multisig::Mapping")
+                    []
                     [ Ty.path "u32"; Ty.path "multisig::Transaction" ],
                   [],
                   "default",
@@ -984,6 +1023,7 @@ Module Impl_core_default_Default_for_multisig_Multisig.
                   "core::default::Default",
                   Ty.apply
                     (Ty.path "alloc::vec::Vec")
+                    []
                     [ Ty.path "multisig::AccountId"; Ty.path "alloc::alloc::Global" ],
                   [],
                   "default",
@@ -997,6 +1037,7 @@ Module Impl_core_default_Default_for_multisig_Multisig.
                   "core::default::Default",
                   Ty.apply
                     (Ty.path "multisig::Mapping")
+                    []
                     [ Ty.path "multisig::AccountId"; Ty.tuple [] ],
                   [],
                   "default",
@@ -1010,7 +1051,7 @@ Module Impl_core_default_Default_for_multisig_Multisig.
                 []
               |))
           ]))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -1026,9 +1067,9 @@ fn ensure_requirement_is_valid(owners: u32, requirement: u32) {
     assert!(0 < requirement && requirement <= owners && owners <= MAX_OWNERS);
 }
 *)
-Definition ensure_requirement_is_valid (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [ owners; requirement ] =>
+Definition ensure_requirement_is_valid (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [ owners; requirement ] =>
     ltac:(M.monadic
       (let owners := M.alloc (| owners |) in
       let requirement := M.alloc (| requirement |) in
@@ -1074,7 +1115,7 @@ Definition ensure_requirement_is_valid (τ : list Ty.t) (α : list Value.t) : M 
           |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_ensure_requirement_is_valid :
@@ -1088,7 +1129,7 @@ Module Impl_multisig_Multisig.
           unimplemented!()
       }
   *)
-  Parameter init_env : (list Ty.t) -> (list Value.t) -> M.
+  Parameter init_env : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_init_env : M.IsAssociatedFunction Self "init_env" init_env.
   
@@ -1097,16 +1138,16 @@ Module Impl_multisig_Multisig.
           Self::init_env()
       }
   *)
-  Definition env (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self ] =>
+  Definition env (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.call_closure (|
           M.get_associated_function (| Ty.path "multisig::Multisig", "init_env", [] |),
           []
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_env : M.IsAssociatedFunction Self "env" env.
@@ -1128,9 +1169,9 @@ Module Impl_multisig_Multisig.
           contract
       }
   *)
-  Definition new (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ requirement; owners ] =>
+  Definition new (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ requirement; owners ] =>
       ltac:(M.monadic
         (let requirement := M.alloc (| requirement |) in
         let owners := M.alloc (| owners |) in
@@ -1152,7 +1193,7 @@ Module Impl_multisig_Multisig.
             M.alloc (|
               M.call_closure (|
                 M.get_associated_function (|
-                  Ty.apply (Ty.path "slice") [ Ty.path "multisig::AccountId" ],
+                  Ty.apply (Ty.path "slice") [] [ Ty.path "multisig::AccountId" ],
                   "sort_unstable",
                   []
                 |),
@@ -1162,6 +1203,7 @@ Module Impl_multisig_Multisig.
                       "core::ops::deref::DerefMut",
                       Ty.apply
                         (Ty.path "alloc::vec::Vec")
+                        []
                         [ Ty.path "multisig::AccountId"; Ty.path "alloc::alloc::Global" ],
                       [],
                       "deref_mut",
@@ -1178,6 +1220,7 @@ Module Impl_multisig_Multisig.
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "alloc::vec::Vec")
+                    []
                     [ Ty.path "multisig::AccountId"; Ty.path "alloc::alloc::Global" ],
                   "dedup",
                   []
@@ -1195,6 +1238,7 @@ Module Impl_multisig_Multisig.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "alloc::vec::Vec")
+                          []
                           [ Ty.path "multisig::AccountId"; Ty.path "alloc::alloc::Global" ],
                         "len",
                         []
@@ -1214,9 +1258,11 @@ Module Impl_multisig_Multisig.
                       "core::iter::traits::collect::IntoIterator",
                       Ty.apply
                         (Ty.path "&")
+                        []
                         [
                           Ty.apply
                             (Ty.path "alloc::vec::Vec")
+                            []
                             [ Ty.path "multisig::AccountId"; Ty.path "alloc::alloc::Global" ]
                         ],
                       [],
@@ -1240,6 +1286,7 @@ Module Impl_multisig_Multisig.
                                     "core::iter::traits::iterator::Iterator",
                                     Ty.apply
                                       (Ty.path "core::slice::iter::Iter")
+                                      []
                                       [ Ty.path "multisig::AccountId" ],
                                     [],
                                     "next",
@@ -1269,6 +1316,7 @@ Module Impl_multisig_Multisig.
                                           M.get_associated_function (|
                                             Ty.apply
                                               (Ty.path "multisig::Mapping")
+                                              []
                                               [ Ty.path "multisig::AccountId"; Ty.tuple [] ],
                                             "insert",
                                             []
@@ -1325,7 +1373,7 @@ Module Impl_multisig_Multisig.
             |) in
           contract
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -1340,9 +1388,9 @@ Module Impl_multisig_Multisig.
           );
       }
   *)
-  Definition ensure_confirmed (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; trans_id ] =>
+  Definition ensure_confirmed (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; trans_id ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let trans_id := M.alloc (| trans_id |) in
@@ -1360,7 +1408,7 @@ Module Impl_multisig_Multisig.
                             (BinOp.Pure.ge
                               (M.call_closure (|
                                 M.get_associated_function (|
-                                  Ty.apply (Ty.path "core::option::Option") [ Ty.path "u32" ],
+                                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u32" ],
                                   "expect",
                                   []
                                 |),
@@ -1369,6 +1417,7 @@ Module Impl_multisig_Multisig.
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "multisig::Mapping")
+                                        []
                                         [ Ty.path "u32"; Ty.path "u32" ],
                                       "get",
                                       []
@@ -1413,7 +1462,7 @@ Module Impl_multisig_Multisig.
             |) in
           M.alloc (| Value.Tuple [] |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_ensure_confirmed :
@@ -1426,9 +1475,9 @@ Module Impl_multisig_Multisig.
               .expect(WRONG_TRANSACTION_ID);
       }
   *)
-  Definition ensure_transaction_exists (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; trans_id ] =>
+  Definition ensure_transaction_exists (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; trans_id ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let trans_id := M.alloc (| trans_id |) in
@@ -1437,7 +1486,7 @@ Module Impl_multisig_Multisig.
             M.alloc (|
               M.call_closure (|
                 M.get_associated_function (|
-                  Ty.apply (Ty.path "core::option::Option") [ Ty.path "multisig::Transaction" ],
+                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "multisig::Transaction" ],
                   "expect",
                   []
                 |),
@@ -1446,6 +1495,7 @@ Module Impl_multisig_Multisig.
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "multisig::Mapping")
+                        []
                         [ Ty.path "u32"; Ty.path "multisig::Transaction" ],
                       "get",
                       []
@@ -1465,7 +1515,7 @@ Module Impl_multisig_Multisig.
             |) in
           M.alloc (| Value.Tuple [] |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_ensure_transaction_exists :
@@ -1476,9 +1526,9 @@ Module Impl_multisig_Multisig.
           assert!(self.is_owner.contains(owner));
       }
   *)
-  Definition ensure_owner (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; owner ] =>
+  Definition ensure_owner (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; owner ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let owner := M.alloc (| owner |) in
@@ -1497,6 +1547,7 @@ Module Impl_multisig_Multisig.
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "multisig::Mapping")
+                                  []
                                   [ Ty.path "multisig::AccountId"; Ty.tuple [] ],
                                 "contains",
                                 []
@@ -1529,7 +1580,7 @@ Module Impl_multisig_Multisig.
             |) in
           M.alloc (| Value.Tuple [] |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_ensure_owner : M.IsAssociatedFunction Self "ensure_owner" ensure_owner.
@@ -1539,9 +1590,9 @@ Module Impl_multisig_Multisig.
           self.ensure_owner(&self.env().caller());
       }
   *)
-  Definition ensure_caller_is_owner (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self ] =>
+  Definition ensure_caller_is_owner (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
@@ -1569,7 +1620,7 @@ Module Impl_multisig_Multisig.
             |) in
           M.alloc (| Value.Tuple [] |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_ensure_caller_is_owner :
@@ -1580,9 +1631,9 @@ Module Impl_multisig_Multisig.
           assert_eq!(self.env().caller(), self.env().account_id());
       }
   *)
-  Definition ensure_from_wallet (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self ] =>
+  Definition ensure_from_wallet (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
@@ -1690,7 +1741,7 @@ Module Impl_multisig_Multisig.
             |) in
           M.alloc (| Value.Tuple [] |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_ensure_from_wallet :
@@ -1701,9 +1752,9 @@ Module Impl_multisig_Multisig.
           assert!(!self.is_owner.contains(owner));
       }
   *)
-  Definition ensure_no_owner (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; owner ] =>
+  Definition ensure_no_owner (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; owner ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let owner := M.alloc (| owner |) in
@@ -1723,6 +1774,7 @@ Module Impl_multisig_Multisig.
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "multisig::Mapping")
+                                    []
                                     [ Ty.path "multisig::AccountId"; Ty.tuple [] ],
                                   "contains",
                                   []
@@ -1755,7 +1807,7 @@ Module Impl_multisig_Multisig.
             |) in
           M.alloc (| Value.Tuple [] |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_ensure_no_owner :
@@ -1772,9 +1824,9 @@ Module Impl_multisig_Multisig.
               .emit_event(Event::OwnerAddition(OwnerAddition { owner: new_owner }));
       }
   *)
-  Definition add_owner (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; new_owner ] =>
+  Definition add_owner (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; new_owner ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let new_owner := M.alloc (| new_owner |) in
@@ -1809,6 +1861,7 @@ Module Impl_multisig_Multisig.
                         M.get_associated_function (|
                           Ty.apply
                             (Ty.path "alloc::vec::Vec")
+                            []
                             [ Ty.path "multisig::AccountId"; Ty.path "alloc::alloc::Global" ],
                           "len",
                           []
@@ -1838,6 +1891,7 @@ Module Impl_multisig_Multisig.
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "multisig::Mapping")
+                    []
                     [ Ty.path "multisig::AccountId"; Ty.tuple [] ],
                   "insert",
                   []
@@ -1859,6 +1913,7 @@ Module Impl_multisig_Multisig.
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "alloc::vec::Vec")
+                    []
                     [ Ty.path "multisig::AccountId"; Ty.path "alloc::alloc::Global" ],
                   "push",
                   []
@@ -1896,7 +1951,7 @@ Module Impl_multisig_Multisig.
             |) in
           M.alloc (| Value.Tuple [] |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_add_owner : M.IsAssociatedFunction Self "add_owner" add_owner.
@@ -1909,16 +1964,16 @@ Module Impl_multisig_Multisig.
           ) as u32
       }
   *)
-  Definition owner_index (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; owner ] =>
+  Definition owner_index (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; owner ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let owner := M.alloc (| owner |) in
         M.rust_cast
           (M.call_closure (|
             M.get_associated_function (|
-              Ty.apply (Ty.path "core::option::Option") [ Ty.path "usize" ],
+              Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
               "expect",
               []
             |),
@@ -1926,12 +1981,12 @@ Module Impl_multisig_Multisig.
               M.call_closure (|
                 M.get_trait_method (|
                   "core::iter::traits::iterator::Iterator",
-                  Ty.apply (Ty.path "core::slice::iter::Iter") [ Ty.path "multisig::AccountId" ],
+                  Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "multisig::AccountId" ],
                   [],
                   "position",
                   [
                     Ty.function
-                      [ Ty.tuple [ Ty.apply (Ty.path "&") [ Ty.path "multisig::AccountId" ] ] ]
+                      [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "multisig::AccountId" ] ] ]
                       (Ty.path "bool")
                   ]
                 |),
@@ -1939,7 +1994,7 @@ Module Impl_multisig_Multisig.
                   M.alloc (|
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "slice") [ Ty.path "multisig::AccountId" ],
+                        Ty.apply (Ty.path "slice") [] [ Ty.path "multisig::AccountId" ],
                         "iter",
                         []
                       |),
@@ -1949,6 +2004,7 @@ Module Impl_multisig_Multisig.
                             "core::ops::deref::Deref",
                             Ty.apply
                               (Ty.path "alloc::vec::Vec")
+                              []
                               [ Ty.path "multisig::AccountId"; Ty.path "alloc::alloc::Global" ],
                             [],
                             "deref",
@@ -1999,7 +2055,7 @@ Module Impl_multisig_Multisig.
               |)
             ]
           |))))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_owner_index : M.IsAssociatedFunction Self "owner_index" owner_index.
@@ -2017,9 +2073,9 @@ Module Impl_multisig_Multisig.
           }
       }
   *)
-  Definition clean_owner_confirmations (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; owner ] =>
+  Definition clean_owner_confirmations (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; owner ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let owner := M.alloc (| owner |) in
@@ -2032,9 +2088,11 @@ Module Impl_multisig_Multisig.
                     "core::iter::traits::collect::IntoIterator",
                     Ty.apply
                       (Ty.path "&")
+                      []
                       [
                         Ty.apply
                           (Ty.path "alloc::vec::Vec")
+                          []
                           [ Ty.path "u32"; Ty.path "alloc::alloc::Global" ]
                       ],
                     [],
@@ -2066,7 +2124,7 @@ Module Impl_multisig_Multisig.
                               M.call_closure (|
                                 M.get_trait_method (|
                                   "core::iter::traits::iterator::Iterator",
-                                  Ty.apply (Ty.path "core::slice::iter::Iter") [ Ty.path "u32" ],
+                                  Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u32" ],
                                   [],
                                   "next",
                                   []
@@ -2109,6 +2167,7 @@ Module Impl_multisig_Multisig.
                                                   M.get_associated_function (|
                                                     Ty.apply
                                                       (Ty.path "multisig::Mapping")
+                                                      []
                                                       [
                                                         Ty.tuple
                                                           [
@@ -2141,6 +2200,7 @@ Module Impl_multisig_Multisig.
                                                 M.get_associated_function (|
                                                   Ty.apply
                                                     (Ty.path "multisig::Mapping")
+                                                    []
                                                     [
                                                       Ty.tuple
                                                         [
@@ -2168,6 +2228,7 @@ Module Impl_multisig_Multisig.
                                                 M.get_associated_function (|
                                                   Ty.apply
                                                     (Ty.path "core::option::Option")
+                                                    []
                                                     [ Ty.path "u32" ],
                                                   "unwrap_or",
                                                   []
@@ -2177,6 +2238,7 @@ Module Impl_multisig_Multisig.
                                                     M.get_associated_function (|
                                                       Ty.apply
                                                         (Ty.path "multisig::Mapping")
+                                                        []
                                                         [ Ty.path "u32"; Ty.path "u32" ],
                                                       "get",
                                                       []
@@ -2209,6 +2271,7 @@ Module Impl_multisig_Multisig.
                                                 M.get_associated_function (|
                                                   Ty.apply
                                                     (Ty.path "multisig::Mapping")
+                                                    []
                                                     [ Ty.path "u32"; Ty.path "u32" ],
                                                   "insert",
                                                   []
@@ -2235,7 +2298,7 @@ Module Impl_multisig_Multisig.
               ]
             |))
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_clean_owner_confirmations :
@@ -2257,9 +2320,9 @@ Module Impl_multisig_Multisig.
               .emit_event(Event::OwnerRemoval(OwnerRemoval { owner }));
       }
   *)
-  Definition remove_owner (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; owner ] =>
+  Definition remove_owner (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; owner ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let owner := M.alloc (| owner |) in
@@ -2291,6 +2354,7 @@ Module Impl_multisig_Multisig.
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "alloc::vec::Vec")
+                        []
                         [ Ty.path "multisig::AccountId"; Ty.path "alloc::alloc::Global" ],
                       "len",
                       []
@@ -2342,6 +2406,7 @@ Module Impl_multisig_Multisig.
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "alloc::vec::Vec")
+                    []
                     [ Ty.path "multisig::AccountId"; Ty.path "alloc::alloc::Global" ],
                   "swap_remove",
                   []
@@ -2362,6 +2427,7 @@ Module Impl_multisig_Multisig.
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "multisig::Mapping")
+                    []
                     [ Ty.path "multisig::AccountId"; Ty.tuple [] ],
                   "remove",
                   []
@@ -2416,7 +2482,7 @@ Module Impl_multisig_Multisig.
             |) in
           M.alloc (| Value.Tuple [] |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_remove_owner : M.IsAssociatedFunction Self "remove_owner" remove_owner.
@@ -2437,9 +2503,9 @@ Module Impl_multisig_Multisig.
               .emit_event(Event::OwnerAddition(OwnerAddition { owner: new_owner }));
       }
   *)
-  Definition replace_owner (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; old_owner; new_owner ] =>
+  Definition replace_owner (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; old_owner; new_owner ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let old_owner := M.alloc (| old_owner |) in
@@ -2484,6 +2550,7 @@ Module Impl_multisig_Multisig.
                   "core::ops::index::IndexMut",
                   Ty.apply
                     (Ty.path "alloc::vec::Vec")
+                    []
                     [ Ty.path "multisig::AccountId"; Ty.path "alloc::alloc::Global" ],
                   [ Ty.path "usize" ],
                   "index_mut",
@@ -2506,6 +2573,7 @@ Module Impl_multisig_Multisig.
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "multisig::Mapping")
+                    []
                     [ Ty.path "multisig::AccountId"; Ty.tuple [] ],
                   "remove",
                   []
@@ -2526,6 +2594,7 @@ Module Impl_multisig_Multisig.
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "multisig::Mapping")
+                    []
                     [ Ty.path "multisig::AccountId"; Ty.tuple [] ],
                   "insert",
                   []
@@ -2596,7 +2665,7 @@ Module Impl_multisig_Multisig.
             |) in
           M.alloc (| Value.Tuple [] |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_replace_owner :
@@ -2613,9 +2682,9 @@ Module Impl_multisig_Multisig.
               }));
       }
   *)
-  Definition change_requirement (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; new_requirement ] =>
+  Definition change_requirement (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; new_requirement ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let new_requirement := M.alloc (| new_requirement |) in
@@ -2641,6 +2710,7 @@ Module Impl_multisig_Multisig.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "alloc::vec::Vec")
+                          []
                           [ Ty.path "multisig::AccountId"; Ty.path "alloc::alloc::Global" ],
                         "len",
                         []
@@ -2689,7 +2759,7 @@ Module Impl_multisig_Multisig.
             |) in
           M.alloc (| Value.Tuple [] |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_change_requirement :
@@ -2729,9 +2799,9 @@ Module Impl_multisig_Multisig.
           status
       }
   *)
-  Definition confirm_by_caller (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; confirmer; transaction ] =>
+  Definition confirm_by_caller (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; confirmer; transaction ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let confirmer := M.alloc (| confirmer |) in
@@ -2741,14 +2811,14 @@ Module Impl_multisig_Multisig.
             M.alloc (|
               M.call_closure (|
                 M.get_associated_function (|
-                  Ty.apply (Ty.path "core::option::Option") [ Ty.path "u32" ],
+                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u32" ],
                   "unwrap_or",
                   []
                 |),
                 [
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "multisig::Mapping") [ Ty.path "u32"; Ty.path "u32" ],
+                      Ty.apply (Ty.path "multisig::Mapping") [] [ Ty.path "u32"; Ty.path "u32" ],
                       "get",
                       []
                     |),
@@ -2774,6 +2844,7 @@ Module Impl_multisig_Multisig.
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "multisig::Mapping")
+                      []
                       [ Ty.tuple [ Ty.path "u32"; Ty.path "multisig::AccountId" ]; Ty.tuple [] ],
                     "contains",
                     []
@@ -2808,6 +2879,7 @@ Module Impl_multisig_Multisig.
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "multisig::Mapping")
+                              []
                               [
                                 Ty.tuple [ Ty.path "u32"; Ty.path "multisig::AccountId" ];
                                 Ty.tuple []
@@ -2830,7 +2902,10 @@ Module Impl_multisig_Multisig.
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
-                            Ty.apply (Ty.path "multisig::Mapping") [ Ty.path "u32"; Ty.path "u32" ],
+                            Ty.apply
+                              (Ty.path "multisig::Mapping")
+                              []
+                              [ Ty.path "u32"; Ty.path "u32" ],
                             "insert",
                             []
                           |),
@@ -2937,7 +3012,7 @@ Module Impl_multisig_Multisig.
             |) in
           status
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_confirm_by_caller :
@@ -2964,9 +3039,9 @@ Module Impl_multisig_Multisig.
           )
       }
   *)
-  Definition submit_transaction (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; transaction ] =>
+  Definition submit_transaction (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; transaction ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let transaction := M.alloc (| transaction |) in
@@ -3007,7 +3082,7 @@ Module Impl_multisig_Multisig.
               |),
               M.call_closure (|
                 M.get_associated_function (|
-                  Ty.apply (Ty.path "core::option::Option") [ Ty.path "u32" ],
+                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u32" ],
                   "expect",
                   []
                 |),
@@ -3026,6 +3101,7 @@ Module Impl_multisig_Multisig.
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "multisig::Mapping")
+                    []
                     [ Ty.path "u32"; Ty.path "multisig::Transaction" ],
                   "insert",
                   []
@@ -3047,6 +3123,7 @@ Module Impl_multisig_Multisig.
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "alloc::vec::Vec")
+                    []
                     [ Ty.path "u32"; Ty.path "alloc::alloc::Global" ],
                   "push",
                   []
@@ -3115,7 +3192,7 @@ Module Impl_multisig_Multisig.
               ]
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_submit_transaction :
@@ -3141,9 +3218,9 @@ Module Impl_multisig_Multisig.
           transaction
       }
   *)
-  Definition take_transaction (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; trans_id ] =>
+  Definition take_transaction (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; trans_id ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let trans_id := M.alloc (| trans_id |) in
@@ -3154,6 +3231,7 @@ Module Impl_multisig_Multisig.
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "multisig::Mapping")
+                    []
                     [ Ty.path "u32"; Ty.path "multisig::Transaction" ],
                   "get",
                   []
@@ -3181,6 +3259,7 @@ Module Impl_multisig_Multisig.
                             M.get_associated_function (|
                               Ty.apply
                                 (Ty.path "core::option::Option")
+                                []
                                 [ Ty.path "multisig::Transaction" ],
                               "is_some",
                               []
@@ -3195,6 +3274,7 @@ Module Impl_multisig_Multisig.
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "multisig::Mapping")
+                              []
                               [ Ty.path "u32"; Ty.path "multisig::Transaction" ],
                             "remove",
                             []
@@ -3213,7 +3293,7 @@ Module Impl_multisig_Multisig.
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
-                            Ty.apply (Ty.path "core::option::Option") [ Ty.path "usize" ],
+                            Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
                             "expect",
                             []
                           |),
@@ -3221,12 +3301,12 @@ Module Impl_multisig_Multisig.
                             M.call_closure (|
                               M.get_trait_method (|
                                 "core::iter::traits::iterator::Iterator",
-                                Ty.apply (Ty.path "core::slice::iter::Iter") [ Ty.path "u32" ],
+                                Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u32" ],
                                 [],
                                 "position",
                                 [
                                   Ty.function
-                                    [ Ty.tuple [ Ty.apply (Ty.path "&") [ Ty.path "u32" ] ] ]
+                                    [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "u32" ] ] ]
                                     (Ty.path "bool")
                                 ]
                               |),
@@ -3234,7 +3314,7 @@ Module Impl_multisig_Multisig.
                                 M.alloc (|
                                   M.call_closure (|
                                     M.get_associated_function (|
-                                      Ty.apply (Ty.path "slice") [ Ty.path "u32" ],
+                                      Ty.apply (Ty.path "slice") [] [ Ty.path "u32" ],
                                       "iter",
                                       []
                                     |),
@@ -3244,6 +3324,7 @@ Module Impl_multisig_Multisig.
                                           "core::ops::deref::Deref",
                                           Ty.apply
                                             (Ty.path "alloc::vec::Vec")
+                                            []
                                             [ Ty.path "u32"; Ty.path "alloc::alloc::Global" ],
                                           [],
                                           "deref",
@@ -3278,8 +3359,8 @@ Module Impl_multisig_Multisig.
                                                 M.call_closure (|
                                                   M.get_trait_method (|
                                                     "core::cmp::PartialEq",
-                                                    Ty.apply (Ty.path "&") [ Ty.path "u32" ],
-                                                    [ Ty.apply (Ty.path "&") [ Ty.path "u32" ] ],
+                                                    Ty.apply (Ty.path "&") [] [ Ty.path "u32" ],
+                                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "u32" ] ],
                                                     "eq",
                                                     []
                                                   |),
@@ -3304,6 +3385,7 @@ Module Impl_multisig_Multisig.
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "alloc::vec::Vec")
+                              []
                               [ Ty.path "u32"; Ty.path "alloc::alloc::Global" ],
                             "swap_remove",
                             []
@@ -3331,6 +3413,7 @@ Module Impl_multisig_Multisig.
                                 "core::iter::traits::collect::IntoIterator",
                                 Ty.apply
                                   (Ty.path "core::slice::iter::Iter")
+                                  []
                                   [ Ty.path "multisig::AccountId" ],
                                 [],
                                 "into_iter",
@@ -3339,7 +3422,7 @@ Module Impl_multisig_Multisig.
                               [
                                 M.call_closure (|
                                   M.get_associated_function (|
-                                    Ty.apply (Ty.path "slice") [ Ty.path "multisig::AccountId" ],
+                                    Ty.apply (Ty.path "slice") [] [ Ty.path "multisig::AccountId" ],
                                     "iter",
                                     []
                                   |),
@@ -3349,6 +3432,7 @@ Module Impl_multisig_Multisig.
                                         "core::ops::deref::Deref",
                                         Ty.apply
                                           (Ty.path "alloc::vec::Vec")
+                                          []
                                           [
                                             Ty.path "multisig::AccountId";
                                             Ty.path "alloc::alloc::Global"
@@ -3384,6 +3468,7 @@ Module Impl_multisig_Multisig.
                                               "core::iter::traits::iterator::Iterator",
                                               Ty.apply
                                                 (Ty.path "core::slice::iter::Iter")
+                                                []
                                                 [ Ty.path "multisig::AccountId" ],
                                               [],
                                               "next",
@@ -3418,6 +3503,7 @@ Module Impl_multisig_Multisig.
                                                     M.get_associated_function (|
                                                       Ty.apply
                                                         (Ty.path "multisig::Mapping")
+                                                        []
                                                         [
                                                           Ty.tuple
                                                             [
@@ -3454,7 +3540,10 @@ Module Impl_multisig_Multisig.
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
-                            Ty.apply (Ty.path "multisig::Mapping") [ Ty.path "u32"; Ty.path "u32" ],
+                            Ty.apply
+                              (Ty.path "multisig::Mapping")
+                              []
+                              [ Ty.path "u32"; Ty.path "u32" ],
                             "remove",
                             []
                           |),
@@ -3474,7 +3563,7 @@ Module Impl_multisig_Multisig.
             |) in
           transaction
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_take_transaction :
@@ -3490,9 +3579,9 @@ Module Impl_multisig_Multisig.
           }
       }
   *)
-  Definition cancel_transaction (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; trans_id ] =>
+  Definition cancel_transaction (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; trans_id ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let trans_id := M.alloc (| trans_id |) in
@@ -3520,6 +3609,7 @@ Module Impl_multisig_Multisig.
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "core::option::Option")
+                              []
                               [ Ty.path "multisig::Transaction" ],
                             "is_some",
                             []
@@ -3569,7 +3659,7 @@ Module Impl_multisig_Multisig.
             ]
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_cancel_transaction :
@@ -3582,9 +3672,9 @@ Module Impl_multisig_Multisig.
           self.confirm_by_caller(self.env().caller(), trans_id)
       }
   *)
-  Definition confirm_transaction (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; trans_id ] =>
+  Definition confirm_transaction (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; trans_id ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let trans_id := M.alloc (| trans_id |) in
@@ -3632,7 +3722,7 @@ Module Impl_multisig_Multisig.
             |)
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_confirm_transaction :
@@ -3658,9 +3748,9 @@ Module Impl_multisig_Multisig.
           }
       }
   *)
-  Definition revoke_confirmation (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; trans_id ] =>
+  Definition revoke_confirmation (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; trans_id ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let trans_id := M.alloc (| trans_id |) in
@@ -3702,6 +3792,7 @@ Module Impl_multisig_Multisig.
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "multisig::Mapping")
+                              []
                               [
                                 Ty.tuple [ Ty.path "u32"; Ty.path "multisig::AccountId" ];
                                 Ty.tuple []
@@ -3726,6 +3817,7 @@ Module Impl_multisig_Multisig.
                         M.get_associated_function (|
                           Ty.apply
                             (Ty.path "multisig::Mapping")
+                            []
                             [ Ty.tuple [ Ty.path "u32"; Ty.path "multisig::AccountId" ]; Ty.tuple []
                             ],
                           "remove",
@@ -3745,7 +3837,7 @@ Module Impl_multisig_Multisig.
                     M.alloc (|
                       M.call_closure (|
                         M.get_associated_function (|
-                          Ty.apply (Ty.path "core::option::Option") [ Ty.path "u32" ],
+                          Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u32" ],
                           "expect",
                           []
                         |),
@@ -3754,6 +3846,7 @@ Module Impl_multisig_Multisig.
                             M.get_associated_function (|
                               Ty.apply
                                 (Ty.path "multisig::Mapping")
+                                []
                                 [ Ty.path "u32"; Ty.path "u32" ],
                               "get",
                               []
@@ -3784,7 +3877,10 @@ Module Impl_multisig_Multisig.
                     M.alloc (|
                       M.call_closure (|
                         M.get_associated_function (|
-                          Ty.apply (Ty.path "multisig::Mapping") [ Ty.path "u32"; Ty.path "u32" ],
+                          Ty.apply
+                            (Ty.path "multisig::Mapping")
+                            []
+                            [ Ty.path "u32"; Ty.path "u32" ],
                           "insert",
                           []
                         |),
@@ -3832,7 +3928,7 @@ Module Impl_multisig_Multisig.
             ]
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_revoke_confirmation :
@@ -3865,9 +3961,9 @@ Module Impl_multisig_Multisig.
           result
       }
   *)
-  Definition invoke_transaction (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; trans_id ] =>
+  Definition invoke_transaction (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; trans_id ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let trans_id := M.alloc (| trans_id |) in
@@ -3887,7 +3983,7 @@ Module Impl_multisig_Multisig.
             M.alloc (|
               M.call_closure (|
                 M.get_associated_function (|
-                  Ty.apply (Ty.path "core::option::Option") [ Ty.path "multisig::Transaction" ],
+                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "multisig::Transaction" ],
                   "expect",
                   []
                 |),
@@ -4023,23 +4119,28 @@ Module Impl_multisig_Multisig.
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "core::result::Result")
+                                  []
                                   [ Ty.tuple []; Ty.path "multisig::Error" ],
                                 "map",
                                 [
                                   Ty.apply
                                     (Ty.path "core::option::Option")
+                                    []
                                     [
                                       Ty.apply
                                         (Ty.path "alloc::vec::Vec")
+                                        []
                                         [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
                                     ];
                                   Ty.function
                                     [ Ty.tuple [ Ty.tuple [] ] ]
                                     (Ty.apply
                                       (Ty.path "core::option::Option")
+                                      []
                                       [
                                         Ty.apply
                                           (Ty.path "alloc::vec::Vec")
+                                          []
                                           [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
                                       ])
                                 ]
@@ -4070,7 +4171,7 @@ Module Impl_multisig_Multisig.
             |) in
           result
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_invoke_transaction :
@@ -4102,7 +4203,7 @@ Module Impl_multisig_Multisig.
           result
       }
   *)
-  Parameter eval_transaction : (list Ty.t) -> (list Value.t) -> M.
+  Parameter eval_transaction : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_eval_transaction :
     M.IsAssociatedFunction Self "eval_transaction" eval_transaction.

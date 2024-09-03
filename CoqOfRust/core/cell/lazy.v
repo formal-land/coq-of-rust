@@ -6,6 +6,7 @@ Module cell.
     (*
     Enum State
     {
+      const_params := [];
       ty_params := [ "T"; "F" ];
       variants :=
         [
@@ -31,29 +32,31 @@ Module cell.
     (* StructRecord
       {
         name := "LazyCell";
+        const_params := [];
         ty_params := [ "T"; "F" ];
         fields :=
           [
             ("state",
               Ty.apply
                 (Ty.path "core::cell::UnsafeCell")
-                [ Ty.apply (Ty.path "core::cell::lazy::State") [ T; F ] ])
+                []
+                [ Ty.apply (Ty.path "core::cell::lazy::State") [] [ T; F ] ])
           ];
       } *)
     
     Module Impl_core_cell_lazy_LazyCell_T_F.
       Definition Self (T F : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::cell::lazy::LazyCell") [ T; F ].
+        Ty.apply (Ty.path "core::cell::lazy::LazyCell") [] [ T; F ].
       
       (*
           pub const fn new(f: F) -> LazyCell<T, F> {
               LazyCell { state: UnsafeCell::new(State::Uninit(f)) }
           }
       *)
-      Definition new (T F : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition new (T F : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T F in
-        match τ, α with
-        | [], [ f ] =>
+        match ε, τ, α with
+        | [ host ], [], [ f ] =>
           ltac:(M.monadic
             (let f := M.alloc (| f |) in
             Value.StructRecord
@@ -64,14 +67,15 @@ Module cell.
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "core::cell::UnsafeCell")
-                        [ Ty.apply (Ty.path "core::cell::lazy::State") [ T; F ] ],
+                        []
+                        [ Ty.apply (Ty.path "core::cell::lazy::State") [] [ T; F ] ],
                       "new",
                       []
                     |),
                     [ Value.StructTuple "core::cell::lazy::State::Uninit" [ M.read (| f |) ] ]
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_new :
@@ -87,10 +91,15 @@ Module cell.
               }
           }
       *)
-      Definition into_inner (T F : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition into_inner
+          (T F : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T F in
-        match τ, α with
-        | [], [ this ] =>
+        match ε, τ, α with
+        | [], [], [ this ] =>
           ltac:(M.monadic
             (let this := M.alloc (| this |) in
             M.read (|
@@ -100,7 +109,8 @@ Module cell.
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "core::cell::UnsafeCell")
-                        [ Ty.apply (Ty.path "core::cell::lazy::State") [ T; F ] ],
+                        []
+                        [ Ty.apply (Ty.path "core::cell::lazy::State") [] [ T; F ] ],
                       "into_inner",
                       []
                     |),
@@ -175,7 +185,7 @@ Module cell.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_into_inner :
@@ -198,10 +208,10 @@ Module cell.
               }
           }
       *)
-      Definition force (T F : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition force (T F : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T F in
-        match τ, α with
-        | [], [ this ] =>
+        match ε, τ, α with
+        | [], [], [ this ] =>
           ltac:(M.monadic
             (let this := M.alloc (| this |) in
             M.read (|
@@ -211,7 +221,8 @@ Module cell.
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "core::cell::UnsafeCell")
-                        [ Ty.apply (Ty.path "core::cell::lazy::State") [ T; F ] ],
+                        []
+                        [ Ty.apply (Ty.path "core::cell::lazy::State") [] [ T; F ] ],
                       "get",
                       []
                     |),
@@ -250,7 +261,7 @@ Module cell.
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
-                            Ty.apply (Ty.path "core::cell::lazy::LazyCell") [ T; F ],
+                            Ty.apply (Ty.path "core::cell::lazy::LazyCell") [] [ T; F ],
                             "really_init",
                             []
                           |),
@@ -292,7 +303,7 @@ Module cell.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_force :
@@ -329,10 +340,15 @@ Module cell.
               data
           }
       *)
-      Definition really_init (T F : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition really_init
+          (T F : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T F in
-        match τ, α with
-        | [], [ this ] =>
+        match ε, τ, α with
+        | [], [], [ this ] =>
           ltac:(M.monadic
             (let this := M.alloc (| this |) in
             M.read (|
@@ -342,7 +358,8 @@ Module cell.
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "core::cell::UnsafeCell")
-                        [ Ty.apply (Ty.path "core::cell::lazy::State") [ T; F ] ],
+                        []
+                        [ Ty.apply (Ty.path "core::cell::lazy::State") [] [ T; F ] ],
                       "get",
                       []
                     |),
@@ -360,7 +377,7 @@ Module cell.
                   M.call_closure (|
                     M.get_function (|
                       "core::mem::replace",
-                      [ Ty.apply (Ty.path "core::cell::lazy::State") [ T; F ] ]
+                      [ Ty.apply (Ty.path "core::cell::lazy::State") [] [ T; F ] ]
                     |),
                     [ M.read (| state |); Value.StructTuple "core::cell::lazy::State::Poisoned" [] ]
                   |)
@@ -394,7 +411,8 @@ Module cell.
                             M.get_associated_function (|
                               Ty.apply
                                 (Ty.path "*mut")
-                                [ Ty.apply (Ty.path "core::cell::lazy::State") [ T; F ] ],
+                                []
+                                [ Ty.apply (Ty.path "core::cell::lazy::State") [] [ T; F ] ],
                               "write",
                               []
                             |),
@@ -403,7 +421,8 @@ Module cell.
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "core::cell::UnsafeCell")
-                                    [ Ty.apply (Ty.path "core::cell::lazy::State") [ T; F ] ],
+                                    []
+                                    [ Ty.apply (Ty.path "core::cell::lazy::State") [] [ T; F ] ],
                                   "get",
                                   []
                                 |),
@@ -427,7 +446,8 @@ Module cell.
                             M.get_associated_function (|
                               Ty.apply
                                 (Ty.path "core::cell::UnsafeCell")
-                                [ Ty.apply (Ty.path "core::cell::lazy::State") [ T; F ] ],
+                                []
+                                [ Ty.apply (Ty.path "core::cell::lazy::State") [] [ T; F ] ],
                               "get",
                               []
                             |),
@@ -459,7 +479,7 @@ Module cell.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_really_init :
@@ -478,10 +498,10 @@ Module cell.
               }
           }
       *)
-      Definition get (T F : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition get (T F : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T F in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -491,7 +511,8 @@ Module cell.
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "core::cell::UnsafeCell")
-                        [ Ty.apply (Ty.path "core::cell::lazy::State") [ T; F ] ],
+                        []
+                        [ Ty.apply (Ty.path "core::cell::lazy::State") [] [ T; F ] ],
                       "get",
                       []
                     |),
@@ -526,7 +547,7 @@ Module cell.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_get :
@@ -537,7 +558,7 @@ Module cell.
     
     Module Impl_core_ops_deref_Deref_where_core_ops_function_FnOnce_F_Tuple__for_core_cell_lazy_LazyCell_T_F.
       Definition Self (T F : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::cell::lazy::LazyCell") [ T; F ].
+        Ty.apply (Ty.path "core::cell::lazy::LazyCell") [] [ T; F ].
       
       (*     type Target = T; *)
       Definition _Target (T F : Ty.t) : Ty.t := T.
@@ -547,21 +568,21 @@ Module cell.
               LazyCell::force(self)
           }
       *)
-      Definition deref (T F : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition deref (T F : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T F in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "core::cell::lazy::LazyCell") [ T; F ],
+                Ty.apply (Ty.path "core::cell::lazy::LazyCell") [] [ T; F ],
                 "force",
                 []
               |),
               [ M.read (| self |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -577,21 +598,21 @@ Module cell.
     
     Module Impl_core_default_Default_where_core_default_Default_T_for_core_cell_lazy_LazyCell_T_ToT.
       Definition Self (T : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::cell::lazy::LazyCell") [ T; Ty.function [] T ].
+        Ty.apply (Ty.path "core::cell::lazy::LazyCell") [] [ T; Ty.function [] T ].
       
       (*
           fn default() -> LazyCell<T> {
               LazyCell::new(T::default)
           }
       *)
-      Definition default (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition default (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [] =>
+        match ε, τ, α with
+        | [], [], [] =>
           ltac:(M.monadic
             (M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "core::cell::lazy::LazyCell") [ T; Ty.function [] T ],
+                Ty.apply (Ty.path "core::cell::lazy::LazyCell") [] [ T; Ty.function [] T ],
                 "new",
                 []
               |),
@@ -601,7 +622,7 @@ Module cell.
                   (M.get_trait_method (| "core::default::Default", T, [], "default", [] |))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -615,7 +636,7 @@ Module cell.
     
     Module Impl_core_fmt_Debug_where_core_fmt_Debug_T_for_core_cell_lazy_LazyCell_T_F.
       Definition Self (T F : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::cell::lazy::LazyCell") [ T; F ].
+        Ty.apply (Ty.path "core::cell::lazy::LazyCell") [] [ T; F ].
       
       (*
           fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
@@ -627,10 +648,10 @@ Module cell.
               d.finish()
           }
       *)
-      Definition fmt (T F : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (T F : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T F in
-        match τ, α with
-        | [], [ self; f ] =>
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -651,7 +672,7 @@ Module cell.
                   M.alloc (|
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "core::cell::lazy::LazyCell") [ T; F ],
+                        Ty.apply (Ty.path "core::cell::lazy::LazyCell") [] [ T; F ],
                         "get",
                         []
                       |),
@@ -724,7 +745,7 @@ Module cell.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :

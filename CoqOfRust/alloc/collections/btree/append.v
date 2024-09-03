@@ -8,6 +8,7 @@ Module collections.
         Definition Self (K V : Ty.t) : Ty.t :=
           Ty.apply
             (Ty.path "alloc::collections::btree::node::NodeRef")
+            []
             [
               Ty.path "alloc::collections::btree::node::marker::Owned";
               K;
@@ -33,10 +34,15 @@ Module collections.
                 self.bulk_push(iter, length, alloc)
             }
         *)
-        Definition append_from_sorted_iters (K V : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition append_from_sorted_iters
+            (K V : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self K V in
-          match τ, α with
-          | [ _ as I; A ], [ self; _ as left; _ as right; length; alloc ] =>
+          match ε, τ, α with
+          | [], [ _ as I; A ], [ self; _ as left; _ as right; length; alloc ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let left := M.alloc (| left |) in
@@ -53,6 +59,7 @@ Module collections.
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "alloc::collections::btree::merge_iter::MergeIterInner")
+                              []
                               [ I ],
                             "new",
                             []
@@ -66,6 +73,7 @@ Module collections.
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "alloc::collections::btree::node::NodeRef")
+                        []
                         [
                           Ty.path "alloc::collections::btree::node::marker::Owned";
                           K;
@@ -76,6 +84,7 @@ Module collections.
                       [
                         Ty.apply
                           (Ty.path "alloc::collections::btree::append::MergeIter")
+                          []
                           [ K; V; I ];
                         A
                       ]
@@ -85,7 +94,7 @@ Module collections.
                   |)
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_append_from_sorted_iters :
@@ -150,10 +159,15 @@ Module collections.
                 self.fix_right_border_of_plentiful();
             }
         *)
-        Definition bulk_push (K V : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition bulk_push
+            (K V : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self K V in
-          match τ, α with
-          | [ _ as I; A ], [ self; iter; length; alloc ] =>
+          match ε, τ, α with
+          | [], [ _ as I; A ], [ self; iter; length; alloc ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let iter := M.alloc (| iter |) in
@@ -166,9 +180,11 @@ Module collections.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "alloc::collections::btree::node::Handle")
+                          []
                           [
                             Ty.apply
                               (Ty.path "alloc::collections::btree::node::NodeRef")
+                              []
                               [
                                 Ty.path "alloc::collections::btree::node::marker::Mut";
                                 K;
@@ -185,6 +201,7 @@ Module collections.
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "alloc::collections::btree::node::NodeRef")
+                              []
                               [
                                 Ty.path "alloc::collections::btree::node::marker::Mut";
                                 K;
@@ -199,6 +216,7 @@ Module collections.
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "alloc::collections::btree::node::NodeRef")
+                                  []
                                   [
                                     Ty.path "alloc::collections::btree::node::marker::Owned";
                                     K;
@@ -289,6 +307,7 @@ Module collections.
                                                                 Ty.apply
                                                                   (Ty.path
                                                                     "alloc::collections::btree::node::NodeRef")
+                                                                  []
                                                                   [
                                                                     Ty.path
                                                                       "alloc::collections::btree::node::marker::Mut";
@@ -320,6 +339,7 @@ Module collections.
                                                             Ty.apply
                                                               (Ty.path
                                                                 "alloc::collections::btree::node::NodeRef")
+                                                              []
                                                               [
                                                                 Ty.path
                                                                   "alloc::collections::btree::node::marker::Mut";
@@ -350,6 +370,7 @@ Module collections.
                                                             Ty.apply
                                                               (Ty.path
                                                                 "alloc::collections::btree::node::NodeRef")
+                                                              []
                                                               [
                                                                 Ty.path
                                                                   "alloc::collections::btree::node::marker::Mut";
@@ -374,6 +395,7 @@ Module collections.
                                                                   Ty.apply
                                                                     (Ty.path
                                                                       "alloc::collections::btree::node::NodeRef")
+                                                                    []
                                                                     [
                                                                       Ty.path
                                                                         "alloc::collections::btree::node::marker::Mut";
@@ -405,10 +427,12 @@ Module collections.
                                                                           Ty.apply
                                                                             (Ty.path
                                                                               "alloc::collections::btree::node::Handle")
+                                                                            []
                                                                             [
                                                                               Ty.apply
                                                                                 (Ty.path
                                                                                   "alloc::collections::btree::node::NodeRef")
+                                                                                []
                                                                                 [
                                                                                   Ty.path
                                                                                     "alloc::collections::btree::node::marker::Mut";
@@ -440,6 +464,7 @@ Module collections.
                                                                                       Ty.apply
                                                                                         (Ty.path
                                                                                           "alloc::collections::btree::node::NodeRef")
+                                                                                        []
                                                                                         [
                                                                                           Ty.path
                                                                                             "alloc::collections::btree::node::marker::Mut";
@@ -488,6 +513,7 @@ Module collections.
                                                                                   Ty.apply
                                                                                     (Ty.path
                                                                                       "alloc::collections::btree::node::NodeRef")
+                                                                                    []
                                                                                     [
                                                                                       Ty.path
                                                                                         "alloc::collections::btree::node::marker::Mut";
@@ -530,6 +556,7 @@ Module collections.
                                                                                 Ty.apply
                                                                                   (Ty.path
                                                                                     "alloc::collections::btree::node::NodeRef")
+                                                                                  []
                                                                                   [
                                                                                     Ty.path
                                                                                       "alloc::collections::btree::node::marker::Owned";
@@ -572,6 +599,7 @@ Module collections.
                                                               Ty.apply
                                                                 (Ty.path
                                                                   "alloc::collections::btree::node::NodeRef")
+                                                                []
                                                                 [
                                                                   Ty.path
                                                                     "alloc::collections::btree::node::marker::Mut";
@@ -594,6 +622,7 @@ Module collections.
                                                             Ty.apply
                                                               (Ty.path
                                                                 "alloc::collections::btree::node::NodeRef")
+                                                              []
                                                               [
                                                                 Ty.path
                                                                   "alloc::collections::btree::node::marker::Owned";
@@ -629,6 +658,7 @@ Module collections.
                                                                 Ty.apply
                                                                   (Ty.path
                                                                     "core::ops::range::Range")
+                                                                  []
                                                                   [ Ty.path "usize" ],
                                                                 [],
                                                                 "into_iter",
@@ -660,6 +690,7 @@ Module collections.
                                                                               Ty.apply
                                                                                 (Ty.path
                                                                                   "core::ops::range::Range")
+                                                                                []
                                                                                 [ Ty.path "usize" ],
                                                                               [],
                                                                               "next",
@@ -698,6 +729,7 @@ Module collections.
                                                                                       Ty.apply
                                                                                         (Ty.path
                                                                                           "alloc::collections::btree::node::NodeRef")
+                                                                                        []
                                                                                         [
                                                                                           Ty.path
                                                                                             "alloc::collections::btree::node::marker::Owned";
@@ -740,6 +772,7 @@ Module collections.
                                                             Ty.apply
                                                               (Ty.path
                                                                 "alloc::collections::btree::node::NodeRef")
+                                                              []
                                                               [
                                                                 Ty.path
                                                                   "alloc::collections::btree::node::marker::Mut";
@@ -767,10 +800,12 @@ Module collections.
                                                             Ty.apply
                                                               (Ty.path
                                                                 "alloc::collections::btree::node::Handle")
+                                                              []
                                                               [
                                                                 Ty.apply
                                                                   (Ty.path
                                                                     "alloc::collections::btree::node::NodeRef")
+                                                                  []
                                                                   [
                                                                     Ty.path
                                                                       "alloc::collections::btree::node::marker::Mut";
@@ -791,6 +826,7 @@ Module collections.
                                                                 Ty.apply
                                                                   (Ty.path
                                                                     "alloc::collections::btree::node::NodeRef")
+                                                                  []
                                                                   [
                                                                     Ty.path
                                                                       "alloc::collections::btree::node::marker::Mut";
@@ -808,6 +844,7 @@ Module collections.
                                                                     Ty.apply
                                                                       (Ty.path
                                                                         "alloc::collections::btree::node::NodeRef")
+                                                                      []
                                                                       [
                                                                         Ty.path
                                                                           "alloc::collections::btree::node::marker::Mut";
@@ -851,6 +888,7 @@ Module collections.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "alloc::collections::btree::node::NodeRef")
+                          []
                           [
                             Ty.path "alloc::collections::btree::node::marker::Owned";
                             K;
@@ -865,7 +903,7 @@ Module collections.
                   |) in
                 M.alloc (| Value.Tuple [] |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_bulk_push :
@@ -876,14 +914,15 @@ Module collections.
       (* StructTuple
         {
           name := "MergeIter";
+          const_params := [];
           ty_params := [ "K"; "V"; "I" ];
           fields :=
-            [ Ty.apply (Ty.path "alloc::collections::btree::merge_iter::MergeIterInner") [ I ] ];
+            [ Ty.apply (Ty.path "alloc::collections::btree::merge_iter::MergeIterInner") [] [ I ] ];
         } *)
       
       Module Impl_core_iter_traits_iterator_Iterator_where_core_cmp_Ord_K_where_core_iter_traits_iterator_Iterator_I_where_core_iter_traits_marker_FusedIterator_I_for_alloc_collections_btree_append_MergeIter_K_V_I.
         Definition Self (K V I : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "alloc::collections::btree::append::MergeIter") [ K; V; I ].
+          Ty.apply (Ty.path "alloc::collections::btree::append::MergeIter") [] [ K; V; I ].
         
         (*     type Item = (K, V); *)
         Definition _Item (K V I : Ty.t) : Ty.t := Ty.tuple [ K; V ].
@@ -894,10 +933,10 @@ Module collections.
                 b_next.or(a_next)
             }
         *)
-        Definition next (K V I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition next (K V I : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self K V I in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
@@ -907,6 +946,7 @@ Module collections.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "alloc::collections::btree::merge_iter::MergeIterInner")
+                          []
                           [ I ],
                         "nexts",
                         [
@@ -914,8 +954,8 @@ Module collections.
                             [
                               Ty.tuple
                                 [
-                                  Ty.apply (Ty.path "&") [ Ty.tuple [ K; V ] ];
-                                  Ty.apply (Ty.path "&") [ Ty.tuple [ K; V ] ]
+                                  Ty.apply (Ty.path "&") [] [ Ty.tuple [ K; V ] ];
+                                  Ty.apply (Ty.path "&") [] [ Ty.tuple [ K; V ] ]
                                 ]
                             ]
                             (Ty.path "core::cmp::Ordering")
@@ -982,7 +1022,7 @@ Module collections.
                         M.alloc (|
                           M.call_closure (|
                             M.get_associated_function (|
-                              Ty.apply (Ty.path "core::option::Option") [ Ty.tuple [ K; V ] ],
+                              Ty.apply (Ty.path "core::option::Option") [] [ Ty.tuple [ K; V ] ],
                               "or",
                               []
                             |),
@@ -992,7 +1032,7 @@ Module collections.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :

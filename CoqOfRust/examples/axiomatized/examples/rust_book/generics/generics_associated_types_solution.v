@@ -4,6 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 (* StructTuple
   {
     name := "Container";
+    const_params := [];
     ty_params := [];
     fields := [ Ty.path "i32"; Ty.path "i32" ];
   } *)
@@ -18,13 +19,13 @@ Module Impl_generics_associated_types_solution_Contains_for_generics_associated_
   
   Definition _B : Ty.t := Ty.path "i32".
   
-  Parameter contains : (list Ty.t) -> (list Value.t) -> M.
+  Parameter contains : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Parameter first : (list Ty.t) -> (list Value.t) -> M.
+  Parameter first : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Parameter last : (list Ty.t) -> (list Value.t) -> M.
+  Parameter last : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Parameter a : (list Ty.t) -> (list Value.t) -> M.
+  Parameter a : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -42,15 +43,15 @@ Module Impl_generics_associated_types_solution_Contains_for_generics_associated_
       ].
 End Impl_generics_associated_types_solution_Contains_for_generics_associated_types_solution_Container.
 
-Parameter difference : (list Ty.t) -> (list Value.t) -> M.
+Parameter difference : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_difference :
   M.IsFunction "generics_associated_types_solution::difference" difference.
 
-Parameter get_a : (list Ty.t) -> (list Value.t) -> M.
+Parameter get_a : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_get_a : M.IsFunction "generics_associated_types_solution::get_a" get_a.
 
-Parameter main : (list Ty.t) -> (list Value.t) -> M.
+Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_main : M.IsFunction "generics_associated_types_solution::main" main.

@@ -4,6 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 (* StructTuple
   {
     name := "AccountId";
+    const_params := [];
     ty_params := [];
     fields := [ Ty.path "u128" ];
   } *)
@@ -12,9 +13,9 @@ Module Impl_core_default_Default_for_contract_transfer_AccountId.
   Definition Self : Ty.t := Ty.path "contract_transfer::AccountId".
   
   (* Default *)
-  Definition default (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [] =>
+  Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [] =>
       ltac:(M.monadic
         (Value.StructTuple
           "contract_transfer::AccountId"
@@ -24,7 +25,7 @@ Module Impl_core_default_Default_for_contract_transfer_AccountId.
               []
             |)
           ]))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -39,9 +40,9 @@ Module Impl_core_clone_Clone_for_contract_transfer_AccountId.
   Definition Self : Ty.t := Ty.path "contract_transfer::AccountId".
   
   (* Clone *)
-  Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self ] =>
+  Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
@@ -50,7 +51,7 @@ Module Impl_core_clone_Clone_for_contract_transfer_AccountId.
             [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -73,6 +74,7 @@ Axiom Balance : (Ty.path "contract_transfer::Balance") = (Ty.path "u128").
 (* StructRecord
   {
     name := "Env";
+    const_params := [];
     ty_params := [];
     fields := [ ("caller", Ty.path "contract_transfer::AccountId") ];
   } *)
@@ -85,9 +87,9 @@ Module Impl_contract_transfer_Env.
           self.caller
       }
   *)
-  Definition caller (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self ] =>
+  Definition caller (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
@@ -97,7 +99,7 @@ Module Impl_contract_transfer_Env.
             "caller"
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_caller : M.IsAssociatedFunction Self "caller" caller.
@@ -107,7 +109,7 @@ Module Impl_contract_transfer_Env.
           unimplemented!()
       }
   *)
-  Parameter balance : (list Ty.t) -> (list Value.t) -> M.
+  Parameter balance : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_balance : M.IsAssociatedFunction Self "balance" balance.
   
@@ -116,7 +118,7 @@ Module Impl_contract_transfer_Env.
           unimplemented!()
       }
   *)
-  Parameter transfer : (list Ty.t) -> (list Value.t) -> M.
+  Parameter transfer : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_transfer : M.IsAssociatedFunction Self "transfer" transfer.
   
@@ -125,7 +127,7 @@ Module Impl_contract_transfer_Env.
           unimplemented!()
       }
   *)
-  Parameter transferred_value : (list Ty.t) -> (list Value.t) -> M.
+  Parameter transferred_value : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_transferred_value :
     M.IsAssociatedFunction Self "transferred_value" transferred_value.
@@ -134,6 +136,7 @@ End Impl_contract_transfer_Env.
 (* StructTuple
   {
     name := "GiveMe";
+    const_params := [];
     ty_params := [];
     fields := [];
   } *)
@@ -146,7 +149,7 @@ Module Impl_contract_transfer_GiveMe.
           unimplemented!()
       }
   *)
-  Parameter init_env : (list Ty.t) -> (list Value.t) -> M.
+  Parameter init_env : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_init_env : M.IsAssociatedFunction Self "init_env" init_env.
   
@@ -155,16 +158,16 @@ Module Impl_contract_transfer_GiveMe.
           Self::init_env()
       }
   *)
-  Definition env (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self ] =>
+  Definition env (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.call_closure (|
           M.get_associated_function (| Ty.path "contract_transfer::GiveMe", "init_env", [] |),
           []
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_env : M.IsAssociatedFunction Self "env" env.
@@ -174,10 +177,10 @@ Module Impl_contract_transfer_GiveMe.
           Self {}
       }
   *)
-  Definition new (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [] => ltac:(M.monadic (Value.StructTuple "contract_transfer::GiveMe" []))
-    | _, _ => M.impossible
+  Definition new (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [] => ltac:(M.monadic (Value.StructTuple "contract_transfer::GiveMe" []))
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -198,9 +201,9 @@ Module Impl_contract_transfer_GiveMe.
           }
       }
   *)
-  Definition give_me (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; value ] =>
+  Definition give_me (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; value ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let value := M.alloc (| value |) in
@@ -345,7 +348,7 @@ Module Impl_contract_transfer_GiveMe.
                         M.call_closure (|
                           M.get_function (|
                             "std::panicking::begin_panic",
-                            [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                            [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                           |),
                           [ M.read (| Value.String "insufficient funds!" |) ]
                         |)
@@ -364,7 +367,10 @@ Module Impl_contract_transfer_GiveMe.
                       (M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
-                            Ty.apply (Ty.path "core::result::Result") [ Ty.tuple []; Ty.tuple [] ],
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [ Ty.tuple []; Ty.tuple [] ],
                             "is_err",
                             []
                           |),
@@ -419,7 +425,7 @@ Module Impl_contract_transfer_GiveMe.
                       M.call_closure (|
                         M.get_function (|
                           "std::panicking::begin_panic",
-                          [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                          [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                         |),
                         [
                           M.read (|
@@ -434,7 +440,7 @@ Module Impl_contract_transfer_GiveMe.
             ]
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_give_me : M.IsAssociatedFunction Self "give_me" give_me.
@@ -445,9 +451,9 @@ Module Impl_contract_transfer_GiveMe.
           assert!(self.env().transferred_value() == 10, "payment was not ten");
       }
   *)
-  Definition was_it_ten (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self ] =>
+  Definition was_it_ten (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
@@ -551,7 +557,7 @@ Module Impl_contract_transfer_GiveMe.
                         M.call_closure (|
                           M.get_function (|
                             "std::panicking::begin_panic",
-                            [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                            [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                           |),
                           [ M.read (| Value.String "payment was not ten" |) ]
                         |)
@@ -562,7 +568,7 @@ Module Impl_contract_transfer_GiveMe.
             |) in
           M.alloc (| Value.Tuple [] |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_was_it_ten : M.IsAssociatedFunction Self "was_it_ten" was_it_ten.

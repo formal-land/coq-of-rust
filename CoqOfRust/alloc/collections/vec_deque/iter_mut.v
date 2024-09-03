@@ -7,34 +7,35 @@ Module collections.
       (* StructRecord
         {
           name := "IterMut";
+          const_params := [];
           ty_params := [ "T" ];
           fields :=
             [
-              ("i1", Ty.apply (Ty.path "core::slice::iter::IterMut") [ T ]);
-              ("i2", Ty.apply (Ty.path "core::slice::iter::IterMut") [ T ])
+              ("i1", Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ]);
+              ("i2", Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ])
             ];
         } *)
       
       Module Impl_alloc_collections_vec_deque_iter_mut_IterMut_T.
         Definition Self (T : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "alloc::collections::vec_deque::iter_mut::IterMut") [ T ].
+          Ty.apply (Ty.path "alloc::collections::vec_deque::iter_mut::IterMut") [] [ T ].
         
         (*
             pub(super) fn new(i1: slice::IterMut<'a, T>, i2: slice::IterMut<'a, T>) -> Self {
                 Self { i1, i2 }
             }
         *)
-        Definition new (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition new (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self T in
-          match τ, α with
-          | [], [ i1; i2 ] =>
+          match ε, τ, α with
+          | [], [], [ i1; i2 ] =>
             ltac:(M.monadic
               (let i1 := M.alloc (| i1 |) in
               let i2 := M.alloc (| i2 |) in
               Value.StructRecord
                 "alloc::collections::vec_deque::iter_mut::IterMut"
                 [ ("i1", M.read (| i1 |)); ("i2", M.read (| i2 |)) ]))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_new :
@@ -44,17 +45,17 @@ Module collections.
       
       Module Impl_core_fmt_Debug_where_core_fmt_Debug_T_for_alloc_collections_vec_deque_iter_mut_IterMut_T.
         Definition Self (T : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "alloc::collections::vec_deque::iter_mut::IterMut") [ T ].
+          Ty.apply (Ty.path "alloc::collections::vec_deque::iter_mut::IterMut") [] [ T ].
         
         (*
             fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
                 f.debug_tuple("IterMut").field(&self.i1.as_slice()).field(&self.i2.as_slice()).finish()
             }
         *)
-        Definition fmt (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition fmt (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self T in
-          match τ, α with
-          | [], [ self; f ] =>
+          match ε, τ, α with
+          | [], [], [ self; f ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let f := M.alloc (| f |) in
@@ -94,7 +95,7 @@ Module collections.
                             (M.alloc (|
                               M.call_closure (|
                                 M.get_associated_function (|
-                                  Ty.apply (Ty.path "core::slice::iter::IterMut") [ T ],
+                                  Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
                                   "as_slice",
                                   []
                                 |),
@@ -114,7 +115,7 @@ Module collections.
                         (M.alloc (|
                           M.call_closure (|
                             M.get_associated_function (|
-                              Ty.apply (Ty.path "core::slice::iter::IterMut") [ T ],
+                              Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
                               "as_slice",
                               []
                             |),
@@ -131,7 +132,7 @@ Module collections.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -145,10 +146,10 @@ Module collections.
       
       Module Impl_core_iter_traits_iterator_Iterator_for_alloc_collections_vec_deque_iter_mut_IterMut_T.
         Definition Self (T : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "alloc::collections::vec_deque::iter_mut::IterMut") [ T ].
+          Ty.apply (Ty.path "alloc::collections::vec_deque::iter_mut::IterMut") [] [ T ].
         
         (*     type Item = &'a mut T; *)
-        Definition _Item (T : Ty.t) : Ty.t := Ty.apply (Ty.path "&mut") [ T ].
+        Definition _Item (T : Ty.t) : Ty.t := Ty.apply (Ty.path "&mut") [] [ T ].
         
         (*
             fn next(&mut self) -> Option<&'a mut T> {
@@ -166,10 +167,10 @@ Module collections.
                 }
             }
         *)
-        Definition next (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition next (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self T in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
@@ -178,7 +179,7 @@ Module collections.
                     M.call_closure (|
                       M.get_trait_method (|
                         "core::iter::traits::iterator::Iterator",
-                        Ty.apply (Ty.path "core::slice::iter::IterMut") [ T ],
+                        Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
                         [],
                         "next",
                         []
@@ -213,7 +214,7 @@ Module collections.
                             M.call_closure (|
                               M.get_function (|
                                 "core::mem::swap",
-                                [ Ty.apply (Ty.path "core::slice::iter::IterMut") [ T ] ]
+                                [ Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ] ]
                               |),
                               [
                                 M.SubPointer.get_struct_record_field (|
@@ -233,7 +234,7 @@ Module collections.
                           M.call_closure (|
                             M.get_trait_method (|
                               "core::iter::traits::iterator::Iterator",
-                              Ty.apply (Ty.path "core::slice::iter::IterMut") [ T ],
+                              Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
                               [],
                               "next",
                               []
@@ -250,7 +251,7 @@ Module collections.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         (*
@@ -264,10 +265,15 @@ Module collections.
                 }
             }
         *)
-        Definition advance_by (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition advance_by
+            (T : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self T in
-          match τ, α with
-          | [], [ self; n ] =>
+          match ε, τ, α with
+          | [], [], [ self; n ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let n := M.alloc (| n |) in
@@ -279,7 +285,7 @@ Module collections.
                         M.call_closure (|
                           M.get_trait_method (|
                             "core::iter::traits::iterator::Iterator",
-                            Ty.apply (Ty.path "core::slice::iter::IterMut") [ T ],
+                            Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
                             [],
                             "advance_by",
                             []
@@ -326,7 +332,7 @@ Module collections.
                                 M.call_closure (|
                                   M.get_function (|
                                     "core::mem::swap",
-                                    [ Ty.apply (Ty.path "core::slice::iter::IterMut") [ T ] ]
+                                    [ Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ] ]
                                   |),
                                   [
                                     M.SubPointer.get_struct_record_field (|
@@ -346,7 +352,7 @@ Module collections.
                               M.call_closure (|
                                 M.get_trait_method (|
                                   "core::iter::traits::iterator::Iterator",
-                                  Ty.apply (Ty.path "core::slice::iter::IterMut") [ T ],
+                                  Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
                                   [],
                                   "advance_by",
                                   []
@@ -372,7 +378,7 @@ Module collections.
                     |)
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         (*
@@ -381,10 +387,10 @@ Module collections.
                 (len, Some(len))
             }
         *)
-        Definition size_hint (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition size_hint (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self T in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
@@ -393,7 +399,10 @@ Module collections.
                     M.call_closure (|
                       M.get_trait_method (|
                         "core::iter::traits::exact_size::ExactSizeIterator",
-                        Ty.apply (Ty.path "alloc::collections::vec_deque::iter_mut::IterMut") [ T ],
+                        Ty.apply
+                          (Ty.path "alloc::collections::vec_deque::iter_mut::IterMut")
+                          []
+                          [ T ],
                         [],
                         "len",
                         []
@@ -409,7 +418,7 @@ Module collections.
                     ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         (*
@@ -421,10 +430,10 @@ Module collections.
                 self.i2.fold(accum, &mut f)
             }
         *)
-        Definition fold (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition fold (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self T in
-          match τ, α with
-          | [ Acc; F ], [ self; accum; f ] =>
+          match ε, τ, α with
+          | [], [ Acc; F ], [ self; accum; f ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let accum := M.alloc (| accum |) in
@@ -435,10 +444,10 @@ Module collections.
                     M.call_closure (|
                       M.get_trait_method (|
                         "core::iter::traits::iterator::Iterator",
-                        Ty.apply (Ty.path "core::slice::iter::IterMut") [ T ],
+                        Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
                         [],
                         "fold",
-                        [ Acc; Ty.apply (Ty.path "&mut") [ F ] ]
+                        [ Acc; Ty.apply (Ty.path "&mut") [] [ F ] ]
                       |),
                       [
                         M.read (|
@@ -457,10 +466,10 @@ Module collections.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::iter::traits::iterator::Iterator",
-                      Ty.apply (Ty.path "core::slice::iter::IterMut") [ T ],
+                      Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
                       [],
                       "fold",
-                      [ Acc; Ty.apply (Ty.path "&mut") [ F ] ]
+                      [ Acc; Ty.apply (Ty.path "&mut") [] [ F ] ]
                     |),
                     [
                       M.read (|
@@ -476,7 +485,7 @@ Module collections.
                   |)
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         (*
@@ -489,10 +498,10 @@ Module collections.
                 self.i2.try_fold(acc, &mut f)
             }
         *)
-        Definition try_fold (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition try_fold (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self T in
-          match τ, α with
-          | [ B; F; R ], [ self; init; f ] =>
+          match ε, τ, α with
+          | [], [ B; F; R ], [ self; init; f ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let init := M.alloc (| init |) in
@@ -516,10 +525,10 @@ Module collections.
                                 M.call_closure (|
                                   M.get_trait_method (|
                                     "core::iter::traits::iterator::Iterator",
-                                    Ty.apply (Ty.path "core::slice::iter::IterMut") [ T ],
+                                    Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
                                     [],
                                     "try_fold",
-                                    [ B; Ty.apply (Ty.path "&mut") [ F ]; R ]
+                                    [ B; Ty.apply (Ty.path "&mut") [] [ F ]; R ]
                                   |),
                                   [
                                     M.SubPointer.get_struct_record_field (|
@@ -579,10 +588,10 @@ Module collections.
                       M.call_closure (|
                         M.get_trait_method (|
                           "core::iter::traits::iterator::Iterator",
-                          Ty.apply (Ty.path "core::slice::iter::IterMut") [ T ],
+                          Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
                           [],
                           "try_fold",
-                          [ B; Ty.apply (Ty.path "&mut") [ F ]; R ]
+                          [ B; Ty.apply (Ty.path "&mut") [] [ F ]; R ]
                         |),
                         [
                           M.SubPointer.get_struct_record_field (|
@@ -597,7 +606,7 @@ Module collections.
                     |)
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         (*
@@ -605,23 +614,23 @@ Module collections.
                 self.next_back()
             }
         *)
-        Definition last (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition last (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self T in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.call_closure (|
                 M.get_trait_method (|
                   "core::iter::traits::double_ended::DoubleEndedIterator",
-                  Ty.apply (Ty.path "alloc::collections::vec_deque::iter_mut::IterMut") [ T ],
+                  Ty.apply (Ty.path "alloc::collections::vec_deque::iter_mut::IterMut") [] [ T ],
                   [],
                   "next_back",
                   []
                 |),
                 [ self ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         (*
@@ -638,10 +647,15 @@ Module collections.
                 }
             }
         *)
-        Definition __iterator_get_unchecked (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition __iterator_get_unchecked
+            (T : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self T in
-          match τ, α with
-          | [], [ self; idx ] =>
+          match ε, τ, α with
+          | [], [], [ self; idx ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let idx := M.alloc (| idx |) in
@@ -651,7 +665,7 @@ Module collections.
                     M.call_closure (|
                       M.get_trait_method (|
                         "core::iter::traits::exact_size::ExactSizeIterator",
-                        Ty.apply (Ty.path "core::slice::iter::IterMut") [ T ],
+                        Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
                         [],
                         "len",
                         []
@@ -683,7 +697,7 @@ Module collections.
                               M.call_closure (|
                                 M.get_trait_method (|
                                   "core::iter::traits::iterator::Iterator",
-                                  Ty.apply (Ty.path "core::slice::iter::IterMut") [ T ],
+                                  Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
                                   [],
                                   "__iterator_get_unchecked",
                                   []
@@ -704,7 +718,7 @@ Module collections.
                               M.call_closure (|
                                 M.get_trait_method (|
                                   "core::iter::traits::iterator::Iterator",
-                                  Ty.apply (Ty.path "core::slice::iter::IterMut") [ T ],
+                                  Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
                                   [],
                                   "__iterator_get_unchecked",
                                   []
@@ -727,7 +741,7 @@ Module collections.
                   |)
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -751,7 +765,7 @@ Module collections.
       
       Module Impl_core_iter_traits_double_ended_DoubleEndedIterator_for_alloc_collections_vec_deque_iter_mut_IterMut_T.
         Definition Self (T : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "alloc::collections::vec_deque::iter_mut::IterMut") [ T ].
+          Ty.apply (Ty.path "alloc::collections::vec_deque::iter_mut::IterMut") [] [ T ].
         
         (*
             fn next_back(&mut self) -> Option<&'a mut T> {
@@ -769,10 +783,10 @@ Module collections.
                 }
             }
         *)
-        Definition next_back (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition next_back (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self T in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
@@ -781,7 +795,7 @@ Module collections.
                     M.call_closure (|
                       M.get_trait_method (|
                         "core::iter::traits::double_ended::DoubleEndedIterator",
-                        Ty.apply (Ty.path "core::slice::iter::IterMut") [ T ],
+                        Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
                         [],
                         "next_back",
                         []
@@ -816,7 +830,7 @@ Module collections.
                             M.call_closure (|
                               M.get_function (|
                                 "core::mem::swap",
-                                [ Ty.apply (Ty.path "core::slice::iter::IterMut") [ T ] ]
+                                [ Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ] ]
                               |),
                               [
                                 M.SubPointer.get_struct_record_field (|
@@ -836,7 +850,7 @@ Module collections.
                           M.call_closure (|
                             M.get_trait_method (|
                               "core::iter::traits::double_ended::DoubleEndedIterator",
-                              Ty.apply (Ty.path "core::slice::iter::IterMut") [ T ],
+                              Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
                               [],
                               "next_back",
                               []
@@ -853,7 +867,7 @@ Module collections.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         (*
@@ -867,10 +881,15 @@ Module collections.
                 }
             }
         *)
-        Definition advance_back_by (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition advance_back_by
+            (T : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self T in
-          match τ, α with
-          | [], [ self; n ] =>
+          match ε, τ, α with
+          | [], [], [ self; n ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let n := M.alloc (| n |) in
@@ -882,7 +901,7 @@ Module collections.
                         M.call_closure (|
                           M.get_trait_method (|
                             "core::iter::traits::double_ended::DoubleEndedIterator",
-                            Ty.apply (Ty.path "core::slice::iter::IterMut") [ T ],
+                            Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
                             [],
                             "advance_back_by",
                             []
@@ -929,7 +948,7 @@ Module collections.
                                 M.call_closure (|
                                   M.get_function (|
                                     "core::mem::swap",
-                                    [ Ty.apply (Ty.path "core::slice::iter::IterMut") [ T ] ]
+                                    [ Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ] ]
                                   |),
                                   [
                                     M.SubPointer.get_struct_record_field (|
@@ -949,7 +968,7 @@ Module collections.
                               M.call_closure (|
                                 M.get_trait_method (|
                                   "core::iter::traits::double_ended::DoubleEndedIterator",
-                                  Ty.apply (Ty.path "core::slice::iter::IterMut") [ T ],
+                                  Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
                                   [],
                                   "advance_back_by",
                                   []
@@ -975,7 +994,7 @@ Module collections.
                     |)
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         (*
@@ -987,10 +1006,10 @@ Module collections.
                 self.i1.rfold(accum, &mut f)
             }
         *)
-        Definition rfold (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition rfold (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self T in
-          match τ, α with
-          | [ Acc; F ], [ self; accum; f ] =>
+          match ε, τ, α with
+          | [], [ Acc; F ], [ self; accum; f ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let accum := M.alloc (| accum |) in
@@ -1001,10 +1020,10 @@ Module collections.
                     M.call_closure (|
                       M.get_trait_method (|
                         "core::iter::traits::double_ended::DoubleEndedIterator",
-                        Ty.apply (Ty.path "core::slice::iter::IterMut") [ T ],
+                        Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
                         [],
                         "rfold",
-                        [ Acc; Ty.apply (Ty.path "&mut") [ F ] ]
+                        [ Acc; Ty.apply (Ty.path "&mut") [] [ F ] ]
                       |),
                       [
                         M.read (|
@@ -1023,10 +1042,10 @@ Module collections.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::iter::traits::double_ended::DoubleEndedIterator",
-                      Ty.apply (Ty.path "core::slice::iter::IterMut") [ T ],
+                      Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
                       [],
                       "rfold",
-                      [ Acc; Ty.apply (Ty.path "&mut") [ F ] ]
+                      [ Acc; Ty.apply (Ty.path "&mut") [] [ F ] ]
                     |),
                     [
                       M.read (|
@@ -1042,7 +1061,7 @@ Module collections.
                   |)
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         (*
@@ -1055,10 +1074,10 @@ Module collections.
                 self.i1.try_rfold(acc, &mut f)
             }
         *)
-        Definition try_rfold (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition try_rfold (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self T in
-          match τ, α with
-          | [ B; F; R ], [ self; init; f ] =>
+          match ε, τ, α with
+          | [], [ B; F; R ], [ self; init; f ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let init := M.alloc (| init |) in
@@ -1082,10 +1101,10 @@ Module collections.
                                 M.call_closure (|
                                   M.get_trait_method (|
                                     "core::iter::traits::double_ended::DoubleEndedIterator",
-                                    Ty.apply (Ty.path "core::slice::iter::IterMut") [ T ],
+                                    Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
                                     [],
                                     "try_rfold",
-                                    [ B; Ty.apply (Ty.path "&mut") [ F ]; R ]
+                                    [ B; Ty.apply (Ty.path "&mut") [] [ F ]; R ]
                                   |),
                                   [
                                     M.SubPointer.get_struct_record_field (|
@@ -1145,10 +1164,10 @@ Module collections.
                       M.call_closure (|
                         M.get_trait_method (|
                           "core::iter::traits::double_ended::DoubleEndedIterator",
-                          Ty.apply (Ty.path "core::slice::iter::IterMut") [ T ],
+                          Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
                           [],
                           "try_rfold",
-                          [ B; Ty.apply (Ty.path "&mut") [ F ]; R ]
+                          [ B; Ty.apply (Ty.path "&mut") [] [ F ]; R ]
                         |),
                         [
                           M.SubPointer.get_struct_record_field (|
@@ -1163,7 +1182,7 @@ Module collections.
                     |)
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -1183,17 +1202,17 @@ Module collections.
       
       Module Impl_core_iter_traits_exact_size_ExactSizeIterator_for_alloc_collections_vec_deque_iter_mut_IterMut_T.
         Definition Self (T : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "alloc::collections::vec_deque::iter_mut::IterMut") [ T ].
+          Ty.apply (Ty.path "alloc::collections::vec_deque::iter_mut::IterMut") [] [ T ].
         
         (*
             fn len(&self) -> usize {
                 self.i1.len() + self.i2.len()
             }
         *)
-        Definition len (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition len (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self T in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               BinOp.Wrap.add
@@ -1201,7 +1220,7 @@ Module collections.
                 (M.call_closure (|
                   M.get_trait_method (|
                     "core::iter::traits::exact_size::ExactSizeIterator",
-                    Ty.apply (Ty.path "core::slice::iter::IterMut") [ T ],
+                    Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
                     [],
                     "len",
                     []
@@ -1217,7 +1236,7 @@ Module collections.
                 (M.call_closure (|
                   M.get_trait_method (|
                     "core::iter::traits::exact_size::ExactSizeIterator",
-                    Ty.apply (Ty.path "core::slice::iter::IterMut") [ T ],
+                    Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
                     [],
                     "len",
                     []
@@ -1230,7 +1249,7 @@ Module collections.
                     |)
                   ]
                 |))))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         (*
@@ -1238,17 +1257,17 @@ Module collections.
                 self.i1.is_empty() && self.i2.is_empty()
             }
         *)
-        Definition is_empty (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition is_empty (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self T in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               LogicalOp.and (|
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::iter::traits::exact_size::ExactSizeIterator",
-                    Ty.apply (Ty.path "core::slice::iter::IterMut") [ T ],
+                    Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
                     [],
                     "is_empty",
                     []
@@ -1265,7 +1284,7 @@ Module collections.
                   (M.call_closure (|
                     M.get_trait_method (|
                       "core::iter::traits::exact_size::ExactSizeIterator",
-                      Ty.apply (Ty.path "core::slice::iter::IterMut") [ T ],
+                      Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
                       [],
                       "is_empty",
                       []
@@ -1279,7 +1298,7 @@ Module collections.
                     ]
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -1295,7 +1314,7 @@ Module collections.
       
       Module Impl_core_iter_traits_marker_FusedIterator_for_alloc_collections_vec_deque_iter_mut_IterMut_T.
         Definition Self (T : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "alloc::collections::vec_deque::iter_mut::IterMut") [ T ].
+          Ty.apply (Ty.path "alloc::collections::vec_deque::iter_mut::IterMut") [] [ T ].
         
         Axiom Implements :
           forall (T : Ty.t),
@@ -1308,7 +1327,7 @@ Module collections.
       
       Module Impl_core_iter_traits_marker_TrustedLen_for_alloc_collections_vec_deque_iter_mut_IterMut_T.
         Definition Self (T : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "alloc::collections::vec_deque::iter_mut::IterMut") [ T ].
+          Ty.apply (Ty.path "alloc::collections::vec_deque::iter_mut::IterMut") [] [ T ].
         
         Axiom Implements :
           forall (T : Ty.t),
@@ -1321,7 +1340,7 @@ Module collections.
       
       Module Impl_core_iter_adapters_zip_TrustedRandomAccess_for_alloc_collections_vec_deque_iter_mut_IterMut_T.
         Definition Self (T : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "alloc::collections::vec_deque::iter_mut::IterMut") [ T ].
+          Ty.apply (Ty.path "alloc::collections::vec_deque::iter_mut::IterMut") [] [ T ].
         
         Axiom Implements :
           forall (T : Ty.t),
@@ -1334,7 +1353,7 @@ Module collections.
       
       Module Impl_core_iter_adapters_zip_TrustedRandomAccessNoCoerce_for_alloc_collections_vec_deque_iter_mut_IterMut_T.
         Definition Self (T : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "alloc::collections::vec_deque::iter_mut::IterMut") [ T ].
+          Ty.apply (Ty.path "alloc::collections::vec_deque::iter_mut::IterMut") [] [ T ].
         
         (*     const MAY_HAVE_SIDE_EFFECT: bool = false; *)
         (* Ty.path "bool" *)

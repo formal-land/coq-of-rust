@@ -7,9 +7,9 @@ Module my_mod.
           println!("called `my_mod::private_function()`");
       }
   *)
-  Definition private_function (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [] =>
+  Definition private_function (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [] =>
       ltac:(M.monadic
         (M.read (|
           let~ _ :=
@@ -40,7 +40,7 @@ Module my_mod.
             M.alloc (| Value.Tuple [] |) in
           M.alloc (| Value.Tuple [] |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Function_private_function :
@@ -51,9 +51,9 @@ Module my_mod.
           println!("called `my_mod::function()`");
       }
   *)
-  Definition function (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [] =>
+  Definition function (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [] =>
       ltac:(M.monadic
         (M.read (|
           let~ _ :=
@@ -83,7 +83,7 @@ Module my_mod.
             M.alloc (| Value.Tuple [] |) in
           M.alloc (| Value.Tuple [] |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Function_function : M.IsFunction "visibility::my_mod::function" function.
@@ -94,9 +94,9 @@ Module my_mod.
           private_function();
       }
   *)
-  Definition indirect_access (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [] =>
+  Definition indirect_access (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [] =>
       ltac:(M.monadic
         (M.read (|
           let~ _ :=
@@ -138,7 +138,7 @@ Module my_mod.
             |) in
           M.alloc (| Value.Tuple [] |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Function_indirect_access :
@@ -150,9 +150,9 @@ Module my_mod.
                 println!("called `my_mod::nested::function()`");
             }
     *)
-    Definition function (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [] =>
+    Definition function (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [] =>
         ltac:(M.monadic
           (M.read (|
             let~ _ :=
@@ -183,7 +183,7 @@ Module my_mod.
               M.alloc (| Value.Tuple [] |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_function : M.IsFunction "visibility::my_mod::nested::function" function.
@@ -193,9 +193,9 @@ Module my_mod.
                 println!("called `my_mod::nested::private_function()`");
             }
     *)
-    Definition private_function (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [] =>
+    Definition private_function (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [] =>
         ltac:(M.monadic
           (M.read (|
             let~ _ :=
@@ -230,7 +230,7 @@ Module my_mod.
               M.alloc (| Value.Tuple [] |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_private_function :
@@ -242,9 +242,13 @@ Module my_mod.
                 public_function_in_nested();
             }
     *)
-    Definition public_function_in_my_mod (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [] =>
+    Definition public_function_in_my_mod
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      match ε, τ, α with
+      | [], [], [] =>
         ltac:(M.monadic
           (M.read (|
             let~ _ :=
@@ -287,7 +291,7 @@ Module my_mod.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_public_function_in_my_mod :
@@ -300,9 +304,13 @@ Module my_mod.
                 println!("called `my_mod::nested::public_function_in_nested()`");
             }
     *)
-    Definition public_function_in_nested (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [] =>
+    Definition public_function_in_nested
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      match ε, τ, α with
+      | [], [], [] =>
         ltac:(M.monadic
           (M.read (|
             let~ _ :=
@@ -338,7 +346,7 @@ Module my_mod.
               M.alloc (| Value.Tuple [] |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_public_function_in_nested :
@@ -351,9 +359,13 @@ Module my_mod.
                 println!("called `my_mod::nested::public_function_in_super_mod()`");
             }
     *)
-    Definition public_function_in_super_mod (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [] =>
+    Definition public_function_in_super_mod
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      match ε, τ, α with
+      | [], [], [] =>
         ltac:(M.monadic
           (M.read (|
             let~ _ :=
@@ -389,7 +401,7 @@ Module my_mod.
               M.alloc (| Value.Tuple [] |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_public_function_in_super_mod :
@@ -406,9 +418,13 @@ Module my_mod.
           nested::public_function_in_super_mod();
       }
   *)
-  Definition call_public_function_in_my_mod (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [] =>
+  Definition call_public_function_in_my_mod
+      (ε : list Value.t)
+      (τ : list Ty.t)
+      (α : list Value.t)
+      : M :=
+    match ε, τ, α with
+    | [], [], [] =>
       ltac:(M.monadic
         (M.read (|
           let~ _ :=
@@ -480,7 +496,7 @@ Module my_mod.
             |) in
           M.alloc (| Value.Tuple [] |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Function_call_public_function_in_my_mod :
@@ -493,9 +509,9 @@ Module my_mod.
           println!("called `my_mod::public_function_in_crate()`");
       }
   *)
-  Definition public_function_in_crate (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [] =>
+  Definition public_function_in_crate (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [] =>
       ltac:(M.monadic
         (M.read (|
           let~ _ :=
@@ -530,7 +546,7 @@ Module my_mod.
             M.alloc (| Value.Tuple [] |) in
           M.alloc (| Value.Tuple [] |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Function_public_function_in_crate :
@@ -542,9 +558,9 @@ Module my_mod.
                 println!("called `my_mod::private_nested::function()`");
             }
     *)
-    Definition function (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [] =>
+    Definition function (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [] =>
         ltac:(M.monadic
           (M.read (|
             let~ _ :=
@@ -579,7 +595,7 @@ Module my_mod.
               M.alloc (| Value.Tuple [] |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_function : M.IsFunction "visibility::my_mod::private_nested::function" function.
@@ -589,9 +605,9 @@ Module my_mod.
                 println!("called `my_mod::private_nested::restricted_function()`");
             }
     *)
-    Definition restricted_function (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [] =>
+    Definition restricted_function (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [] =>
         ltac:(M.monadic
           (M.read (|
             let~ _ :=
@@ -627,7 +643,7 @@ Module my_mod.
               M.alloc (| Value.Tuple [] |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_restricted_function :
@@ -640,9 +656,9 @@ fn function() {
     println!("called `function()`");
 }
 *)
-Definition function (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [] =>
+Definition function (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
         let~ _ :=
@@ -668,7 +684,7 @@ Definition function (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (| Value.Tuple [] |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_function : M.IsFunction "visibility::function" function.
@@ -713,9 +729,9 @@ fn main() {
     // TODO ^ Try uncommenting this line
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [] =>
+Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
         let~ _ :=
@@ -748,7 +764,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_main : M.IsFunction "visibility::main" main.

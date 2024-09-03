@@ -3,8 +3,8 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module array.
   Module ascii.
-    Module Impl_array_u8.
-      Definition Self : Ty.t := Ty.apply (Ty.path "array") [ Ty.path "u8" ].
+    Module Impl_array_N_u8.
+      Definition Self (N : Value.t) : Ty.t := Ty.apply (Ty.path "array") [ N ] [ Ty.path "u8" ].
       
       (*
           pub const fn as_ascii(&self) -> Option<&[ascii::Char; N]> {
@@ -16,9 +16,10 @@ Module array.
               }
           }
       *)
-      Definition as_ascii (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition as_ascii (N : Value.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        let Self : Ty.t := Self N in
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -32,7 +33,7 @@ Module array.
                           (M.alloc (|
                             M.call_closure (|
                               M.get_associated_function (|
-                                Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                 "is_ascii",
                                 []
                               |),
@@ -46,7 +47,7 @@ Module array.
                           [
                             M.call_closure (|
                               M.get_associated_function (|
-                                Ty.apply (Ty.path "array") [ Ty.path "u8" ],
+                                Ty.apply (Ty.path "array") [ N ] [ Ty.path "u8" ],
                                 "as_ascii_unchecked",
                                 []
                               |),
@@ -60,10 +61,12 @@ Module array.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
-      Axiom AssociatedFunction_as_ascii : M.IsAssociatedFunction Self "as_ascii" as_ascii.
+      Axiom AssociatedFunction_as_ascii :
+        forall (N : Value.t),
+        M.IsAssociatedFunction (Self N) "as_ascii" (as_ascii N).
       
       (*
           pub const unsafe fn as_ascii_unchecked(&self) -> &[ascii::Char; N] {
@@ -73,9 +76,15 @@ Module array.
               unsafe { &*ascii_ptr }
           }
       *)
-      Definition as_ascii_unchecked (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition as_ascii_unchecked
+          (N : Value.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        let Self : Ty.t := Self N in
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -83,11 +92,12 @@ Module array.
               let~ ascii_ptr := M.alloc (| M.rust_cast (M.read (| byte_ptr |)) |) in
               M.alloc (| M.read (| ascii_ptr |) |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_as_ascii_unchecked :
-        M.IsAssociatedFunction Self "as_ascii_unchecked" as_ascii_unchecked.
-    End Impl_array_u8.
+        forall (N : Value.t),
+        M.IsAssociatedFunction (Self N) "as_ascii_unchecked" (as_ascii_unchecked N).
+    End Impl_array_N_u8.
   End ascii.
 End array.

@@ -6,6 +6,7 @@ Module env.
     (* StructRecord
       {
         name := "HandlerCfg";
+        const_params := [];
         ty_params := [];
         fields := [ ("spec_id", Ty.path "revm_primitives::specification::SpecId") ];
       } *)
@@ -14,9 +15,9 @@ Module env.
       Definition Self : Ty.t := Ty.path "revm_primitives::env::handler_cfg::HandlerCfg".
       
       (* Clone *)
-      Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -25,7 +26,7 @@ Module env.
                 [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -51,9 +52,9 @@ Module env.
       Definition Self : Ty.t := Ty.path "revm_primitives::env::handler_cfg::HandlerCfg".
       
       (* Debug *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -78,7 +79,7 @@ Module env.
                   |))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -104,9 +105,13 @@ Module env.
       Definition Self : Ty.t := Ty.path "revm_primitives::env::handler_cfg::HandlerCfg".
       
       (* Eq *)
-      Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition assert_receiver_is_total_eq
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -115,7 +120,7 @@ Module env.
                 [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -142,9 +147,9 @@ Module env.
       Definition Self : Ty.t := Ty.path "revm_primitives::env::handler_cfg::HandlerCfg".
       
       (* PartialEq *)
-      Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -169,7 +174,7 @@ Module env.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -184,9 +189,9 @@ Module env.
       Definition Self : Ty.t := Ty.path "revm_primitives::env::handler_cfg::HandlerCfg".
       
       (* Hash *)
-      Definition hash (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ __H ], [ self; state ] =>
+      Definition hash (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ __H ], [ self; state ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
@@ -207,7 +212,7 @@ Module env.
                 M.read (| state |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -226,9 +231,9 @@ Module env.
               Self::new(SpecId::default())
           }
       *)
-      Definition default (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [] =>
+      Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [] =>
           ltac:(M.monadic
             (M.call_closure (|
               M.get_associated_function (|
@@ -249,7 +254,7 @@ Module env.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -280,15 +285,15 @@ Module env.
               }
           }
       *)
-      Definition new (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ spec_id ] =>
+      Definition new (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ spec_id ] =>
           ltac:(M.monadic
             (let spec_id := M.alloc (| spec_id |) in
             Value.StructRecord
               "revm_primitives::env::handler_cfg::HandlerCfg"
               [ ("spec_id", M.read (| spec_id |)) ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -304,13 +309,13 @@ Module env.
               }
           }
       *)
-      Definition is_optimism (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition is_optimism (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.Bool false))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_is_optimism : M.IsAssociatedFunction Self "is_optimism" is_optimism.
@@ -319,6 +324,7 @@ Module env.
     (* StructRecord
       {
         name := "CfgEnvWithHandlerCfg";
+        const_params := [];
         ty_params := [];
         fields :=
           [
@@ -331,9 +337,9 @@ Module env.
       Definition Self : Ty.t := Ty.path "revm_primitives::env::handler_cfg::CfgEnvWithHandlerCfg".
       
       (* Clone *)
-      Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructRecord
@@ -374,7 +380,7 @@ Module env.
                     ]
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -389,9 +395,9 @@ Module env.
       Definition Self : Ty.t := Ty.path "revm_primitives::env::handler_cfg::CfgEnvWithHandlerCfg".
       
       (* Debug *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -424,7 +430,7 @@ Module env.
                   |))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -450,9 +456,13 @@ Module env.
       Definition Self : Ty.t := Ty.path "revm_primitives::env::handler_cfg::CfgEnvWithHandlerCfg".
       
       (* Eq *)
-      Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition assert_receiver_is_total_eq
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -468,7 +478,7 @@ Module env.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -495,9 +505,9 @@ Module env.
       Definition Self : Ty.t := Ty.path "revm_primitives::env::handler_cfg::CfgEnvWithHandlerCfg".
       
       (* PartialEq *)
-      Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -546,7 +556,7 @@ Module env.
                   ]
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -568,16 +578,16 @@ Module env.
               }
           }
       *)
-      Definition new (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ cfg_env; handler_cfg ] =>
+      Definition new (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ cfg_env; handler_cfg ] =>
           ltac:(M.monadic
             (let cfg_env := M.alloc (| cfg_env |) in
             let handler_cfg := M.alloc (| handler_cfg |) in
             Value.StructRecord
               "revm_primitives::env::handler_cfg::CfgEnvWithHandlerCfg"
               [ ("cfg_env", M.read (| cfg_env |)); ("handler_cfg", M.read (| handler_cfg |)) ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -587,9 +597,9 @@ Module env.
               Self::new(cfg_env, HandlerCfg::new(spec_id))
           }
       *)
-      Definition new_with_spec_id (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ cfg_env; spec_id ] =>
+      Definition new_with_spec_id (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ cfg_env; spec_id ] =>
           ltac:(M.monadic
             (let cfg_env := M.alloc (| cfg_env |) in
             let spec_id := M.alloc (| spec_id |) in
@@ -611,7 +621,7 @@ Module env.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_new_with_spec_id :
@@ -626,9 +636,9 @@ Module env.
               &mut self.cfg_env
           }
       *)
-      Definition deref_mut (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition deref_mut (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.SubPointer.get_struct_record_field (|
@@ -636,7 +646,7 @@ Module env.
               "revm_primitives::env::handler_cfg::CfgEnvWithHandlerCfg",
               "cfg_env"
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -658,9 +668,9 @@ Module env.
               &self.cfg_env
           }
       *)
-      Definition deref (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition deref (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.SubPointer.get_struct_record_field (|
@@ -668,7 +678,7 @@ Module env.
               "revm_primitives::env::handler_cfg::CfgEnvWithHandlerCfg",
               "cfg_env"
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -683,12 +693,14 @@ Module env.
     (* StructRecord
       {
         name := "EnvWithHandlerCfg";
+        const_params := [];
         ty_params := [];
         fields :=
           [
             ("env",
               Ty.apply
                 (Ty.path "alloc::boxed::Box")
+                []
                 [ Ty.path "revm_primitives::env::Env"; Ty.path "alloc::alloc::Global" ]);
             ("handler_cfg", Ty.path "revm_primitives::env::handler_cfg::HandlerCfg")
           ];
@@ -698,9 +710,9 @@ Module env.
       Definition Self : Ty.t := Ty.path "revm_primitives::env::handler_cfg::EnvWithHandlerCfg".
       
       (* Clone *)
-      Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructRecord
@@ -712,6 +724,7 @@ Module env.
                       "core::clone::Clone",
                       Ty.apply
                         (Ty.path "alloc::boxed::Box")
+                        []
                         [ Ty.path "revm_primitives::env::Env"; Ty.path "alloc::alloc::Global" ],
                       [],
                       "clone",
@@ -743,7 +756,7 @@ Module env.
                     ]
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -758,9 +771,9 @@ Module env.
       Definition Self : Ty.t := Ty.path "revm_primitives::env::handler_cfg::EnvWithHandlerCfg".
       
       (* Debug *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -793,7 +806,7 @@ Module env.
                   |))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -808,9 +821,9 @@ Module env.
       Definition Self : Ty.t := Ty.path "revm_primitives::env::handler_cfg::EnvWithHandlerCfg".
       
       (* Default *)
-      Definition default (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [] =>
+      Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [] =>
           ltac:(M.monadic
             (Value.StructRecord
               "revm_primitives::env::handler_cfg::EnvWithHandlerCfg"
@@ -821,6 +834,7 @@ Module env.
                       "core::default::Default",
                       Ty.apply
                         (Ty.path "alloc::boxed::Box")
+                        []
                         [ Ty.path "revm_primitives::env::Env"; Ty.path "alloc::alloc::Global" ],
                       [],
                       "default",
@@ -840,7 +854,7 @@ Module env.
                     []
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -866,9 +880,13 @@ Module env.
       Definition Self : Ty.t := Ty.path "revm_primitives::env::handler_cfg::EnvWithHandlerCfg".
       
       (* Eq *)
-      Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition assert_receiver_is_total_eq
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -884,7 +902,7 @@ Module env.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -911,9 +929,9 @@ Module env.
       Definition Self : Ty.t := Ty.path "revm_primitives::env::handler_cfg::EnvWithHandlerCfg".
       
       (* PartialEq *)
-      Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -923,10 +941,12 @@ Module env.
                   "core::cmp::PartialEq",
                   Ty.apply
                     (Ty.path "alloc::boxed::Box")
+                    []
                     [ Ty.path "revm_primitives::env::Env"; Ty.path "alloc::alloc::Global" ],
                   [
                     Ty.apply
                       (Ty.path "alloc::boxed::Box")
+                      []
                       [ Ty.path "revm_primitives::env::Env"; Ty.path "alloc::alloc::Global" ]
                   ],
                   "eq",
@@ -968,7 +988,7 @@ Module env.
                   ]
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -987,16 +1007,16 @@ Module env.
               Self { env, handler_cfg }
           }
       *)
-      Definition new (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ env; handler_cfg ] =>
+      Definition new (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ env; handler_cfg ] =>
           ltac:(M.monadic
             (let env := M.alloc (| env |) in
             let handler_cfg := M.alloc (| handler_cfg |) in
             Value.StructRecord
               "revm_primitives::env::handler_cfg::EnvWithHandlerCfg"
               [ ("env", M.read (| env |)); ("handler_cfg", M.read (| handler_cfg |)) ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -1006,9 +1026,9 @@ Module env.
               Self::new(env, HandlerCfg::new(spec_id))
           }
       *)
-      Definition new_with_spec_id (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ env; spec_id ] =>
+      Definition new_with_spec_id (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ env; spec_id ] =>
           ltac:(M.monadic
             (let env := M.alloc (| env |) in
             let spec_id := M.alloc (| spec_id |) in
@@ -1030,7 +1050,7 @@ Module env.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_new_with_spec_id :
@@ -1041,9 +1061,9 @@ Module env.
               Self::new(Env::boxed(cfg.cfg_env, block, tx), cfg.handler_cfg)
           }
       *)
-      Definition new_with_cfg_env (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ cfg; block; tx ] =>
+      Definition new_with_cfg_env (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ cfg; block; tx ] =>
           ltac:(M.monadic
             (let cfg := M.alloc (| cfg |) in
             let block := M.alloc (| block |) in
@@ -1078,7 +1098,7 @@ Module env.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_new_with_cfg_env :
@@ -1089,9 +1109,9 @@ Module env.
               self.handler_cfg.spec_id
           }
       *)
-      Definition spec_id (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition spec_id (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -1105,7 +1125,7 @@ Module env.
                 "spec_id"
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_spec_id : M.IsAssociatedFunction Self "spec_id" spec_id.
@@ -1119,9 +1139,9 @@ Module env.
               &mut self.env
           }
       *)
-      Definition deref_mut (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition deref_mut (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -1131,7 +1151,7 @@ Module env.
                 "env"
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1153,9 +1173,9 @@ Module env.
               &self.env
           }
       *)
-      Definition deref (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition deref (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -1165,7 +1185,7 @@ Module env.
                 "env"
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :

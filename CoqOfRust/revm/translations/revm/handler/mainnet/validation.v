@@ -12,9 +12,9 @@ Module handler.
           Ok(())
       }
       *)
-      Definition validate_env (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ SPEC; DB ], [ env ] =>
+      Definition validate_env (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ SPEC; DB ], [ env ] =>
           ltac:(M.monadic
             (let env := M.alloc (| env |) in
             M.catch_return (|
@@ -28,6 +28,7 @@ Module handler.
                             "core::ops::try_trait::Try",
                             Ty.apply
                               (Ty.path "core::result::Result")
+                              []
                               [ Ty.tuple []; Ty.path "revm_primitives::result::InvalidHeader" ],
                             [],
                             "branch",
@@ -64,15 +65,18 @@ Module handler.
                                         "core::ops::try_trait::FromResidual",
                                         Ty.apply
                                           (Ty.path "core::result::Result")
+                                          []
                                           [
                                             Ty.tuple [];
                                             Ty.apply
                                               (Ty.path "revm_primitives::result::EVMError")
+                                              []
                                               [ Ty.associated ]
                                           ],
                                         [
                                           Ty.apply
                                             (Ty.path "core::result::Result")
+                                            []
                                             [
                                               Ty.path "core::convert::Infallible";
                                               Ty.path "revm_primitives::result::InvalidHeader"
@@ -107,6 +111,7 @@ Module handler.
                             "core::ops::try_trait::Try",
                             Ty.apply
                               (Ty.path "core::result::Result")
+                              []
                               [ Ty.tuple []; Ty.path "revm_primitives::result::InvalidTransaction"
                               ],
                             [],
@@ -144,15 +149,18 @@ Module handler.
                                         "core::ops::try_trait::FromResidual",
                                         Ty.apply
                                           (Ty.path "core::result::Result")
+                                          []
                                           [
                                             Ty.tuple [];
                                             Ty.apply
                                               (Ty.path "revm_primitives::result::EVMError")
+                                              []
                                               [ Ty.associated ]
                                           ],
                                         [
                                           Ty.apply
                                             (Ty.path "core::result::Result")
+                                            []
                                             [
                                               Ty.path "core::convert::Infallible";
                                               Ty.path "revm_primitives::result::InvalidTransaction"
@@ -182,7 +190,7 @@ Module handler.
                   M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Function_validate_env :
@@ -210,9 +218,13 @@ Module handler.
           Ok(())
       }
       *)
-      Definition validate_tx_against_state (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ SPEC; EXT; DB ], [ context ] =>
+      Definition validate_tx_against_state
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        match ε, τ, α with
+        | [], [ SPEC; EXT; DB ], [ context ] =>
           ltac:(M.monadic
             (let context := M.alloc (| context |) in
             M.catch_return (|
@@ -229,6 +241,7 @@ Module handler.
                                   "core::ops::deref::Deref",
                                   Ty.apply
                                     (Ty.path "revm::context::evm_context::EvmContext")
+                                    []
                                     [ DB ],
                                   [],
                                   "deref",
@@ -261,16 +274,19 @@ Module handler.
                             "core::ops::try_trait::Try",
                             Ty.apply
                               (Ty.path "core::result::Result")
+                              []
                               [
                                 Ty.tuple
                                   [
                                     Ty.apply
                                       (Ty.path "&mut")
+                                      []
                                       [ Ty.path "revm_primitives::state::Account" ];
                                     Ty.path "bool"
                                   ];
                                 Ty.apply
                                   (Ty.path "revm_primitives::result::EVMError")
+                                  []
                                   [ Ty.associated ]
                               ],
                             [],
@@ -336,19 +352,23 @@ Module handler.
                                         "core::ops::try_trait::FromResidual",
                                         Ty.apply
                                           (Ty.path "core::result::Result")
+                                          []
                                           [
                                             Ty.tuple [];
                                             Ty.apply
                                               (Ty.path "revm_primitives::result::EVMError")
+                                              []
                                               [ Ty.associated ]
                                           ],
                                         [
                                           Ty.apply
                                             (Ty.path "core::result::Result")
+                                            []
                                             [
                                               Ty.path "core::convert::Infallible";
                                               Ty.apply
                                                 (Ty.path "revm_primitives::result::EVMError")
+                                                []
                                                 [ Ty.associated ]
                                             ]
                                         ],
@@ -387,10 +407,12 @@ Module handler.
                                     "core::ops::try_trait::Try",
                                     Ty.apply
                                       (Ty.path "core::result::Result")
+                                      []
                                       [
                                         Ty.tuple [];
                                         Ty.apply
                                           (Ty.path "revm_primitives::result::EVMError")
+                                          []
                                           [ Ty.associated ]
                                       ],
                                     [],
@@ -402,6 +424,7 @@ Module handler.
                                       M.get_associated_function (|
                                         Ty.apply
                                           (Ty.path "core::result::Result")
+                                          []
                                           [
                                             Ty.tuple [];
                                             Ty.path "revm_primitives::result::InvalidTransaction"
@@ -410,12 +433,14 @@ Module handler.
                                         [
                                           Ty.apply
                                             (Ty.path "revm_primitives::result::EVMError")
+                                            []
                                             [ Ty.associated ];
                                           Ty.function
                                             [ Ty.path "revm_primitives::result::InvalidTransaction"
                                             ]
                                             (Ty.apply
                                               (Ty.path "revm_primitives::result::EVMError")
+                                              []
                                               [ Ty.associated ])
                                         ]
                                       |),
@@ -471,20 +496,24 @@ Module handler.
                                                 "core::ops::try_trait::FromResidual",
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
+                                                  []
                                                   [
                                                     Ty.tuple [];
                                                     Ty.apply
                                                       (Ty.path "revm_primitives::result::EVMError")
+                                                      []
                                                       [ Ty.associated ]
                                                   ],
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::result::Result")
+                                                    []
                                                     [
                                                       Ty.path "core::convert::Infallible";
                                                       Ty.apply
                                                         (Ty.path
                                                           "revm_primitives::result::EVMError")
+                                                        []
                                                         [ Ty.associated ]
                                                     ]
                                                 ],
@@ -516,7 +545,7 @@ Module handler.
                   |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Function_validate_tx_against_state :
@@ -543,9 +572,13 @@ Module handler.
           Ok(initial_gas_spend)
       }
       *)
-      Definition validate_initial_tx_gas (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ SPEC; DB ], [ env ] =>
+      Definition validate_initial_tx_gas
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        match ε, τ, α with
+        | [], [ SPEC; DB ], [ env ] =>
           ltac:(M.monadic
             (let env := M.alloc (| env |) in
             M.catch_return (|
@@ -646,13 +679,21 @@ Module handler.
                               "core::ops::deref::Deref",
                               Ty.apply
                                 (Ty.path "alloc::vec::Vec")
+                                []
                                 [
                                   Ty.tuple
                                     [
                                       Ty.path "alloy_primitives::bits::address::Address";
                                       Ty.apply
                                         (Ty.path "alloc::vec::Vec")
-                                        [ Ty.path "ruint::Uint"; Ty.path "alloc::alloc::Global" ]
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "ruint::Uint")
+                                            [ Value.Integer 256; Value.Integer 4 ]
+                                            [];
+                                          Ty.path "alloc::alloc::Global"
+                                        ]
                                     ];
                                   Ty.path "alloc::alloc::Global"
                                 ],
@@ -667,6 +708,7 @@ Module handler.
                               "core::ops::deref::Deref",
                               Ty.apply
                                 (Ty.path "alloc::vec::Vec")
+                                []
                                 [
                                   Ty.path "alloy_primitives::bytes_::Bytes";
                                   Ty.path "alloc::alloc::Global"
@@ -719,6 +761,7 @@ Module handler.
                                             [
                                               Ty.apply
                                                 (Ty.path "revm_primitives::result::EVMError")
+                                                []
                                                 [ Ty.associated ]
                                             ],
                                             "into",
@@ -743,7 +786,7 @@ Module handler.
                   |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Function_validate_initial_tx_gas :

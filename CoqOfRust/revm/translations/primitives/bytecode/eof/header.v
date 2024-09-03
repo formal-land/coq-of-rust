@@ -7,6 +7,7 @@ Module bytecode.
       (* StructRecord
         {
           name := "EofHeader";
+          const_params := [];
           ty_params := [];
           fields :=
             [
@@ -14,10 +15,12 @@ Module bytecode.
               ("code_sizes",
                 Ty.apply
                   (Ty.path "alloc::vec::Vec")
+                  []
                   [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ]);
               ("container_sizes",
                 Ty.apply
                   (Ty.path "alloc::vec::Vec")
+                  []
                   [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ]);
               ("data_size", Ty.path "u16");
               ("sum_code_sizes", Ty.path "usize");
@@ -29,9 +32,9 @@ Module bytecode.
         Definition Self : Ty.t := Ty.path "revm_primitives::bytecode::eof::header::EofHeader".
         
         (* Clone *)
-        Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self ] =>
+        Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               Value.StructRecord
@@ -54,6 +57,7 @@ Module bytecode.
                         "core::clone::Clone",
                         Ty.apply
                           (Ty.path "alloc::vec::Vec")
+                          []
                           [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ],
                         [],
                         "clone",
@@ -73,6 +77,7 @@ Module bytecode.
                         "core::clone::Clone",
                         Ty.apply
                           (Ty.path "alloc::vec::Vec")
+                          []
                           [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ],
                         [],
                         "clone",
@@ -132,7 +137,7 @@ Module bytecode.
                       ]
                     |))
                 ]))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -147,9 +152,9 @@ Module bytecode.
         Definition Self : Ty.t := Ty.path "revm_primitives::bytecode::eof::header::EofHeader".
         
         (* Debug *)
-        Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self; f ] =>
+        Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self; f ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let f := M.alloc (| f |) in
@@ -238,7 +243,7 @@ Module bytecode.
                   |)
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -253,9 +258,9 @@ Module bytecode.
         Definition Self : Ty.t := Ty.path "revm_primitives::bytecode::eof::header::EofHeader".
         
         (* Default *)
-        Definition default (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [] =>
+        Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [] =>
             ltac:(M.monadic
               (Value.StructRecord
                 "revm_primitives::bytecode::eof::header::EofHeader"
@@ -277,6 +282,7 @@ Module bytecode.
                         "core::default::Default",
                         Ty.apply
                           (Ty.path "alloc::vec::Vec")
+                          []
                           [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ],
                         [],
                         "default",
@@ -290,6 +296,7 @@ Module bytecode.
                         "core::default::Default",
                         Ty.apply
                           (Ty.path "alloc::vec::Vec")
+                          []
                           [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ],
                         [],
                         "default",
@@ -331,7 +338,7 @@ Module bytecode.
                       []
                     |))
                 ]))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -357,9 +364,9 @@ Module bytecode.
         Definition Self : Ty.t := Ty.path "revm_primitives::bytecode::eof::header::EofHeader".
         
         (* PartialEq *)
-        Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self; other ] =>
+        Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self; other ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let other := M.alloc (| other |) in
@@ -389,10 +396,12 @@ Module bytecode.
                               "core::cmp::PartialEq",
                               Ty.apply
                                 (Ty.path "alloc::vec::Vec")
+                                []
                                 [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ],
                               [
                                 Ty.apply
                                   (Ty.path "alloc::vec::Vec")
+                                  []
                                   [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ]
                               ],
                               "eq",
@@ -418,10 +427,12 @@ Module bytecode.
                             "core::cmp::PartialEq",
                             Ty.apply
                               (Ty.path "alloc::vec::Vec")
+                              []
                               [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ],
                             [
                               Ty.apply
                                 (Ty.path "alloc::vec::Vec")
+                                []
                                 [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ]
                             ],
                             "eq",
@@ -492,7 +503,7 @@ Module bytecode.
                       |)
                     |))))
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -518,9 +529,13 @@ Module bytecode.
         Definition Self : Ty.t := Ty.path "revm_primitives::bytecode::eof::header::EofHeader".
         
         (* Eq *)
-        Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self ] =>
+        Definition assert_receiver_is_total_eq
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
@@ -551,7 +566,7 @@ Module bytecode.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -567,9 +582,9 @@ Module bytecode.
         Definition Self : Ty.t := Ty.path "revm_primitives::bytecode::eof::header::EofHeader".
         
         (* Hash *)
-        Definition hash (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ __H ], [ self; state ] =>
+        Definition hash (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [ __H ], [ self; state ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let state := M.alloc (| state |) in
@@ -601,6 +616,7 @@ Module bytecode.
                         "core::hash::Hash",
                         Ty.apply
                           (Ty.path "alloc::vec::Vec")
+                          []
                           [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ],
                         [],
                         "hash",
@@ -623,6 +639,7 @@ Module bytecode.
                         "core::hash::Hash",
                         Ty.apply
                           (Ty.path "alloc::vec::Vec")
+                          []
                           [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ],
                         [],
                         "hash",
@@ -698,7 +715,7 @@ Module bytecode.
                   |)
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -752,9 +769,13 @@ Module bytecode.
           Ok((&input[byte_size..], sizes, sum))
       }
       *)
-      Definition consume_header_section_size (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ input ] =>
+      Definition consume_header_section_size
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        match ε, τ, α with
+        | [], [], [ input ] =>
           ltac:(M.monadic
             (let input := M.alloc (| input |) in
             M.catch_return (|
@@ -768,12 +789,14 @@ Module bytecode.
                             "core::ops::try_trait::Try",
                             Ty.apply
                               (Ty.path "core::result::Result")
+                              []
                               [
                                 Ty.tuple
                                   [
                                     Ty.apply
                                       (Ty.path "&")
-                                      [ Ty.apply (Ty.path "slice") [ Ty.path "u8" ] ];
+                                      []
+                                      [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ];
                                     Ty.path "u16"
                                   ];
                                 Ty.path "revm_primitives::bytecode::eof::EofDecodeError"
@@ -812,14 +835,18 @@ Module bytecode.
                                         "core::ops::try_trait::FromResidual",
                                         Ty.apply
                                           (Ty.path "core::result::Result")
+                                          []
                                           [
                                             Ty.tuple
                                               [
                                                 Ty.apply
                                                   (Ty.path "&")
-                                                  [ Ty.apply (Ty.path "slice") [ Ty.path "u8" ] ];
+                                                  []
+                                                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]
+                                                  ];
                                                 Ty.apply
                                                   (Ty.path "alloc::vec::Vec")
+                                                  []
                                                   [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ];
                                                 Ty.path "usize"
                                               ];
@@ -828,6 +855,7 @@ Module bytecode.
                                         [
                                           Ty.apply
                                             (Ty.path "core::result::Result")
+                                            []
                                             [
                                               Ty.path "core::convert::Infallible";
                                               Ty.path
@@ -918,7 +946,7 @@ Module bytecode.
                                           BinOp.Pure.lt
                                             (M.call_closure (|
                                               M.get_associated_function (|
-                                                Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                                Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                                 "len",
                                                 []
                                               |),
@@ -955,6 +983,7 @@ Module bytecode.
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "alloc::vec::Vec")
+                                    []
                                     [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ],
                                   "with_capacity",
                                   []
@@ -972,6 +1001,7 @@ Module bytecode.
                                       "core::iter::traits::collect::IntoIterator",
                                       Ty.apply
                                         (Ty.path "core::ops::range::Range")
+                                        []
                                         [ Ty.path "usize" ],
                                       [],
                                       "into_iter",
@@ -1001,6 +1031,7 @@ Module bytecode.
                                                     "core::iter::traits::iterator::Iterator",
                                                     Ty.apply
                                                       (Ty.path "core::ops::range::Range")
+                                                      []
                                                       [ Ty.path "usize" ],
                                                     [],
                                                     "next",
@@ -1122,6 +1153,7 @@ Module bytecode.
                                                           M.get_associated_function (|
                                                             Ty.apply
                                                               (Ty.path "alloc::vec::Vec")
+                                                              []
                                                               [
                                                                 Ty.path "u16";
                                                                 Ty.path "alloc::alloc::Global"
@@ -1148,10 +1180,11 @@ Module bytecode.
                                     M.call_closure (|
                                       M.get_trait_method (|
                                         "core::ops::index::Index",
-                                        Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                        Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                         [
                                           Ty.apply
                                             (Ty.path "core::ops::range::RangeFrom")
+                                            []
                                             [ Ty.path "usize" ]
                                         ],
                                         "index",
@@ -1173,7 +1206,7 @@ Module bytecode.
                   |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Function_consume_header_section_size :
@@ -1194,9 +1227,9 @@ Module bytecode.
                 13 + self.code_sizes.len() * 2 + optional_container_sizes
             }
         *)
-        Definition size (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self ] =>
+        Definition size (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
@@ -1214,6 +1247,7 @@ Module bytecode.
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "alloc::vec::Vec")
+                                        []
                                         [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ],
                                       "is_empty",
                                       []
@@ -1242,6 +1276,7 @@ Module bytecode.
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "alloc::vec::Vec")
+                                        []
                                         [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ],
                                       "len",
                                       []
@@ -1271,6 +1306,7 @@ Module bytecode.
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "alloc::vec::Vec")
+                              []
                               [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ],
                             "len",
                             []
@@ -1287,7 +1323,7 @@ Module bytecode.
                     (M.read (| optional_container_sizes |))
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_size : M.IsAssociatedFunction Self "size" size.
@@ -1297,9 +1333,9 @@ Module bytecode.
                 self.types_size as usize / 4
             }
         *)
-        Definition types_count (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self ] =>
+        Definition types_count (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               BinOp.Wrap.div
@@ -1313,7 +1349,7 @@ Module bytecode.
                     |)
                   |)))
                 (Value.Integer 4)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_types_count :
@@ -1324,9 +1360,9 @@ Module bytecode.
                 self.sum_code_sizes + self.sum_container_sizes + self.data_size as usize
             }
         *)
-        Definition body_size (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self ] =>
+        Definition body_size (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               BinOp.Wrap.add
@@ -1355,7 +1391,7 @@ Module bytecode.
                       "data_size"
                     |)
                   |)))))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_body_size : M.IsAssociatedFunction Self "body_size" body_size.
@@ -1365,9 +1401,9 @@ Module bytecode.
                 self.size() + self.body_size()
             }
         *)
-        Definition eof_size (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self ] =>
+        Definition eof_size (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               BinOp.Wrap.add
@@ -1388,7 +1424,7 @@ Module bytecode.
                   |),
                   [ M.read (| self |) ]
                 |))))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_eof_size : M.IsAssociatedFunction Self "eof_size" eof_size.
@@ -1429,9 +1465,9 @@ Module bytecode.
                 buffer.push(KIND_TERMINAL);
             }
         *)
-        Definition encode (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self; buffer ] =>
+        Definition encode (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self; buffer ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let buffer := M.alloc (| buffer |) in
@@ -1442,6 +1478,7 @@ Module bytecode.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "alloc::vec::Vec")
+                          []
                           [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                         "extend_from_slice",
                         []
@@ -1465,6 +1502,7 @@ Module bytecode.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "alloc::vec::Vec")
+                          []
                           [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                         "push",
                         []
@@ -1478,6 +1516,7 @@ Module bytecode.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "alloc::vec::Vec")
+                          []
                           [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                         "push",
                         []
@@ -1496,6 +1535,7 @@ Module bytecode.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "alloc::vec::Vec")
+                          []
                           [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                         "extend_from_slice",
                         []
@@ -1527,6 +1567,7 @@ Module bytecode.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "alloc::vec::Vec")
+                          []
                           [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                         "push",
                         []
@@ -1545,6 +1586,7 @@ Module bytecode.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "alloc::vec::Vec")
+                          []
                           [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                         "extend_from_slice",
                         []
@@ -1562,6 +1604,7 @@ Module bytecode.
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "alloc::vec::Vec")
+                                        []
                                         [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ],
                                       "len",
                                       []
@@ -1589,9 +1632,11 @@ Module bytecode.
                             "core::iter::traits::collect::IntoIterator",
                             Ty.apply
                               (Ty.path "&")
+                              []
                               [
                                 Ty.apply
                                   (Ty.path "alloc::vec::Vec")
+                                  []
                                   [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ]
                               ],
                             [],
@@ -1621,6 +1666,7 @@ Module bytecode.
                                           "core::iter::traits::iterator::Iterator",
                                           Ty.apply
                                             (Ty.path "core::slice::iter::Iter")
+                                            []
                                             [ Ty.path "u16" ],
                                           [],
                                           "next",
@@ -1655,6 +1701,7 @@ Module bytecode.
                                                 M.get_associated_function (|
                                                   Ty.apply
                                                     (Ty.path "alloc::vec::Vec")
+                                                    []
                                                     [ Ty.path "u8"; Ty.path "alloc::alloc::Global"
                                                     ],
                                                   "extend_from_slice",
@@ -1697,6 +1744,7 @@ Module bytecode.
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "alloc::vec::Vec")
+                                      []
                                       [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ],
                                     "is_empty",
                                     []
@@ -1718,6 +1766,7 @@ Module bytecode.
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "alloc::vec::Vec")
+                                    []
                                     [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                                   "push",
                                   []
@@ -1741,6 +1790,7 @@ Module bytecode.
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "alloc::vec::Vec")
+                                    []
                                     [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                                   "push",
                                   []
@@ -1761,6 +1811,7 @@ Module bytecode.
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "alloc::vec::Vec")
+                                    []
                                     [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                                   "extend_from_slice",
                                   []
@@ -1782,6 +1833,7 @@ Module bytecode.
                                               M.get_associated_function (|
                                                 Ty.apply
                                                   (Ty.path "alloc::vec::Vec")
+                                                  []
                                                   [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ],
                                                 "len",
                                                 []
@@ -1809,9 +1861,11 @@ Module bytecode.
                                       "core::iter::traits::collect::IntoIterator",
                                       Ty.apply
                                         (Ty.path "&")
+                                        []
                                         [
                                           Ty.apply
                                             (Ty.path "alloc::vec::Vec")
+                                            []
                                             [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ]
                                         ],
                                       [],
@@ -1841,6 +1895,7 @@ Module bytecode.
                                                     "core::iter::traits::iterator::Iterator",
                                                     Ty.apply
                                                       (Ty.path "core::slice::iter::Iter")
+                                                      []
                                                       [ Ty.path "u16" ],
                                                     [],
                                                     "next",
@@ -1875,6 +1930,7 @@ Module bytecode.
                                                           M.get_associated_function (|
                                                             Ty.apply
                                                               (Ty.path "alloc::vec::Vec")
+                                                              []
                                                               [
                                                                 Ty.path "u8";
                                                                 Ty.path "alloc::alloc::Global"
@@ -1912,6 +1968,7 @@ Module bytecode.
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "alloc::vec::Vec")
+                                    []
                                     [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                                   "push",
                                   []
@@ -1935,6 +1992,7 @@ Module bytecode.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "alloc::vec::Vec")
+                          []
                           [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                         "extend_from_slice",
                         []
@@ -1966,6 +2024,7 @@ Module bytecode.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "alloc::vec::Vec")
+                          []
                           [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                         "push",
                         []
@@ -1982,7 +2041,7 @@ Module bytecode.
                   |) in
                 M.alloc (| Value.Tuple [] |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_encode : M.IsAssociatedFunction Self "encode" encode.
@@ -2080,9 +2139,9 @@ Module bytecode.
                 Ok((header, input))
             }
         *)
-        Definition decode (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ input ] =>
+        Definition decode (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ input ] =>
             ltac:(M.monadic
               (let input := M.alloc (| input |) in
               M.catch_return (|
@@ -2109,12 +2168,14 @@ Module bytecode.
                               "core::ops::try_trait::Try",
                               Ty.apply
                                 (Ty.path "core::result::Result")
+                                []
                                 [
                                   Ty.tuple
                                     [
                                       Ty.apply
                                         (Ty.path "&")
-                                        [ Ty.apply (Ty.path "slice") [ Ty.path "u8" ] ];
+                                        []
+                                        [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ];
                                       Ty.path "u16"
                                     ];
                                   Ty.path "revm_primitives::bytecode::eof::EofDecodeError"
@@ -2153,6 +2214,7 @@ Module bytecode.
                                           "core::ops::try_trait::FromResidual",
                                           Ty.apply
                                             (Ty.path "core::result::Result")
+                                            []
                                             [
                                               Ty.tuple
                                                 [
@@ -2160,7 +2222,9 @@ Module bytecode.
                                                     "revm_primitives::bytecode::eof::header::EofHeader";
                                                   Ty.apply
                                                     (Ty.path "&")
-                                                    [ Ty.apply (Ty.path "slice") [ Ty.path "u8" ] ]
+                                                    []
+                                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]
+                                                    ]
                                                 ];
                                               Ty.path
                                                 "revm_primitives::bytecode::eof::EofDecodeError"
@@ -2168,6 +2232,7 @@ Module bytecode.
                                           [
                                             Ty.apply
                                               (Ty.path "core::result::Result")
+                                              []
                                               [
                                                 Ty.path "core::convert::Infallible";
                                                 Ty.path
@@ -2244,12 +2309,14 @@ Module bytecode.
                                       "core::ops::try_trait::Try",
                                       Ty.apply
                                         (Ty.path "core::result::Result")
+                                        []
                                         [
                                           Ty.tuple
                                             [
                                               Ty.apply
                                                 (Ty.path "&")
-                                                [ Ty.apply (Ty.path "slice") [ Ty.path "u8" ] ];
+                                                []
+                                                [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ];
                                               Ty.path "u8"
                                             ];
                                           Ty.path "revm_primitives::bytecode::eof::EofDecodeError"
@@ -2288,6 +2355,7 @@ Module bytecode.
                                                   "core::ops::try_trait::FromResidual",
                                                   Ty.apply
                                                     (Ty.path "core::result::Result")
+                                                    []
                                                     [
                                                       Ty.tuple
                                                         [
@@ -2295,9 +2363,11 @@ Module bytecode.
                                                             "revm_primitives::bytecode::eof::header::EofHeader";
                                                           Ty.apply
                                                             (Ty.path "&")
+                                                            []
                                                             [
                                                               Ty.apply
                                                                 (Ty.path "slice")
+                                                                []
                                                                 [ Ty.path "u8" ]
                                                             ]
                                                         ];
@@ -2307,6 +2377,7 @@ Module bytecode.
                                                   [
                                                     Ty.apply
                                                       (Ty.path "core::result::Result")
+                                                      []
                                                       [
                                                         Ty.path "core::convert::Infallible";
                                                         Ty.path
@@ -2385,14 +2456,17 @@ Module bytecode.
                                               "core::ops::try_trait::Try",
                                               Ty.apply
                                                 (Ty.path "core::result::Result")
+                                                []
                                                 [
                                                   Ty.tuple
                                                     [
                                                       Ty.apply
                                                         (Ty.path "&")
+                                                        []
                                                         [
                                                           Ty.apply
                                                             (Ty.path "slice")
+                                                            []
                                                             [ Ty.path "u8" ]
                                                         ];
                                                       Ty.path "u8"
@@ -2434,6 +2508,7 @@ Module bytecode.
                                                           "core::ops::try_trait::FromResidual",
                                                           Ty.apply
                                                             (Ty.path "core::result::Result")
+                                                            []
                                                             [
                                                               Ty.tuple
                                                                 [
@@ -2441,9 +2516,11 @@ Module bytecode.
                                                                     "revm_primitives::bytecode::eof::header::EofHeader";
                                                                   Ty.apply
                                                                     (Ty.path "&")
+                                                                    []
                                                                     [
                                                                       Ty.apply
                                                                         (Ty.path "slice")
+                                                                        []
                                                                         [ Ty.path "u8" ]
                                                                     ]
                                                                 ];
@@ -2453,6 +2530,7 @@ Module bytecode.
                                                           [
                                                             Ty.apply
                                                               (Ty.path "core::result::Result")
+                                                              []
                                                               [
                                                                 Ty.path "core::convert::Infallible";
                                                                 Ty.path
@@ -2536,14 +2614,17 @@ Module bytecode.
                                                       "core::ops::try_trait::Try",
                                                       Ty.apply
                                                         (Ty.path "core::result::Result")
+                                                        []
                                                         [
                                                           Ty.tuple
                                                             [
                                                               Ty.apply
                                                                 (Ty.path "&")
+                                                                []
                                                                 [
                                                                   Ty.apply
                                                                     (Ty.path "slice")
+                                                                    []
                                                                     [ Ty.path "u8" ]
                                                                 ];
                                                               Ty.path "u16"
@@ -2585,6 +2666,7 @@ Module bytecode.
                                                                   "core::ops::try_trait::FromResidual",
                                                                   Ty.apply
                                                                     (Ty.path "core::result::Result")
+                                                                    []
                                                                     [
                                                                       Ty.tuple
                                                                         [
@@ -2592,9 +2674,11 @@ Module bytecode.
                                                                             "revm_primitives::bytecode::eof::header::EofHeader";
                                                                           Ty.apply
                                                                             (Ty.path "&")
+                                                                            []
                                                                             [
                                                                               Ty.apply
                                                                                 (Ty.path "slice")
+                                                                                []
                                                                                 [ Ty.path "u8" ]
                                                                             ]
                                                                         ];
@@ -2605,6 +2689,7 @@ Module bytecode.
                                                                     Ty.apply
                                                                       (Ty.path
                                                                         "core::result::Result")
+                                                                      []
                                                                       [
                                                                         Ty.path
                                                                           "core::convert::Infallible";
@@ -2706,14 +2791,17 @@ Module bytecode.
                                                               "core::ops::try_trait::Try",
                                                               Ty.apply
                                                                 (Ty.path "core::result::Result")
+                                                                []
                                                                 [
                                                                   Ty.tuple
                                                                     [
                                                                       Ty.apply
                                                                         (Ty.path "&")
+                                                                        []
                                                                         [
                                                                           Ty.apply
                                                                             (Ty.path "slice")
+                                                                            []
                                                                             [ Ty.path "u8" ]
                                                                         ];
                                                                       Ty.path "u8"
@@ -2756,6 +2844,7 @@ Module bytecode.
                                                                           Ty.apply
                                                                             (Ty.path
                                                                               "core::result::Result")
+                                                                            []
                                                                             [
                                                                               Ty.tuple
                                                                                 [
@@ -2763,10 +2852,12 @@ Module bytecode.
                                                                                     "revm_primitives::bytecode::eof::header::EofHeader";
                                                                                   Ty.apply
                                                                                     (Ty.path "&")
+                                                                                    []
                                                                                     [
                                                                                       Ty.apply
                                                                                         (Ty.path
                                                                                           "slice")
+                                                                                        []
                                                                                         [
                                                                                           Ty.path
                                                                                             "u8"
@@ -2780,6 +2871,7 @@ Module bytecode.
                                                                             Ty.apply
                                                                               (Ty.path
                                                                                 "core::result::Result")
+                                                                              []
                                                                               [
                                                                                 Ty.path
                                                                                   "core::convert::Infallible";
@@ -2878,20 +2970,24 @@ Module bytecode.
                                                                       Ty.apply
                                                                         (Ty.path
                                                                           "core::result::Result")
+                                                                        []
                                                                         [
                                                                           Ty.tuple
                                                                             [
                                                                               Ty.apply
                                                                                 (Ty.path "&")
+                                                                                []
                                                                                 [
                                                                                   Ty.apply
                                                                                     (Ty.path
                                                                                       "slice")
+                                                                                    []
                                                                                     [ Ty.path "u8" ]
                                                                                 ];
                                                                               Ty.apply
                                                                                 (Ty.path
                                                                                   "alloc::vec::Vec")
+                                                                                []
                                                                                 [
                                                                                   Ty.path "u16";
                                                                                   Ty.path
@@ -2938,6 +3034,7 @@ Module bytecode.
                                                                                   Ty.apply
                                                                                     (Ty.path
                                                                                       "core::result::Result")
+                                                                                    []
                                                                                     [
                                                                                       Ty.tuple
                                                                                         [
@@ -2946,10 +3043,12 @@ Module bytecode.
                                                                                           Ty.apply
                                                                                             (Ty.path
                                                                                               "&")
+                                                                                            []
                                                                                             [
                                                                                               Ty.apply
                                                                                                 (Ty.path
                                                                                                   "slice")
+                                                                                                []
                                                                                                 [
                                                                                                   Ty.path
                                                                                                     "u8"
@@ -2963,6 +3062,7 @@ Module bytecode.
                                                                                     Ty.apply
                                                                                       (Ty.path
                                                                                         "core::result::Result")
+                                                                                      []
                                                                                       [
                                                                                         Ty.path
                                                                                           "core::convert::Infallible";
@@ -3036,6 +3136,7 @@ Module bytecode.
                                                                                           Ty.apply
                                                                                             (Ty.path
                                                                                               "alloc::vec::Vec")
+                                                                                            []
                                                                                             [
                                                                                               Ty.path
                                                                                                 "u16";
@@ -3093,6 +3194,7 @@ Module bytecode.
                                                                                         Ty.apply
                                                                                           (Ty.path
                                                                                             "alloc::vec::Vec")
+                                                                                          []
                                                                                           [
                                                                                             Ty.path
                                                                                               "u16";
@@ -3149,6 +3251,7 @@ Module bytecode.
                                                                                           Ty.apply
                                                                                             (Ty.path
                                                                                               "alloc::vec::Vec")
+                                                                                            []
                                                                                             [
                                                                                               Ty.path
                                                                                                 "u16";
@@ -3223,16 +3326,19 @@ Module bytecode.
                                                                               Ty.apply
                                                                                 (Ty.path
                                                                                   "core::result::Result")
+                                                                                []
                                                                                 [
                                                                                   Ty.tuple
                                                                                     [
                                                                                       Ty.apply
                                                                                         (Ty.path
                                                                                           "&")
+                                                                                        []
                                                                                         [
                                                                                           Ty.apply
                                                                                             (Ty.path
                                                                                               "slice")
+                                                                                            []
                                                                                             [
                                                                                               Ty.path
                                                                                                 "u8"
@@ -3280,6 +3386,7 @@ Module bytecode.
                                                                                           Ty.apply
                                                                                             (Ty.path
                                                                                               "core::result::Result")
+                                                                                            []
                                                                                             [
                                                                                               Ty.tuple
                                                                                                 [
@@ -3288,10 +3395,12 @@ Module bytecode.
                                                                                                   Ty.apply
                                                                                                     (Ty.path
                                                                                                       "&")
+                                                                                                    []
                                                                                                     [
                                                                                                       Ty.apply
                                                                                                         (Ty.path
                                                                                                           "slice")
+                                                                                                        []
                                                                                                         [
                                                                                                           Ty.path
                                                                                                             "u8"
@@ -3305,6 +3414,7 @@ Module bytecode.
                                                                                             Ty.apply
                                                                                               (Ty.path
                                                                                                 "core::result::Result")
+                                                                                              []
                                                                                               [
                                                                                                 Ty.path
                                                                                                   "core::convert::Infallible";
@@ -3380,16 +3490,19 @@ Module bytecode.
                                                                                                   Ty.apply
                                                                                                     (Ty.path
                                                                                                       "core::result::Result")
+                                                                                                    []
                                                                                                     [
                                                                                                       Ty.tuple
                                                                                                         [
                                                                                                           Ty.apply
                                                                                                             (Ty.path
                                                                                                               "&")
+                                                                                                            []
                                                                                                             [
                                                                                                               Ty.apply
                                                                                                                 (Ty.path
                                                                                                                   "slice")
+                                                                                                                []
                                                                                                                 [
                                                                                                                   Ty.path
                                                                                                                     "u8"
@@ -3398,6 +3511,7 @@ Module bytecode.
                                                                                                           Ty.apply
                                                                                                             (Ty.path
                                                                                                               "alloc::vec::Vec")
+                                                                                                            []
                                                                                                             [
                                                                                                               Ty.path
                                                                                                                 "u16";
@@ -3455,6 +3569,7 @@ Module bytecode.
                                                                                                               Ty.apply
                                                                                                                 (Ty.path
                                                                                                                   "core::result::Result")
+                                                                                                                []
                                                                                                                 [
                                                                                                                   Ty.tuple
                                                                                                                     [
@@ -3463,10 +3578,12 @@ Module bytecode.
                                                                                                                       Ty.apply
                                                                                                                         (Ty.path
                                                                                                                           "&")
+                                                                                                                        []
                                                                                                                         [
                                                                                                                           Ty.apply
                                                                                                                             (Ty.path
                                                                                                                               "slice")
+                                                                                                                            []
                                                                                                                             [
                                                                                                                               Ty.path
                                                                                                                                 "u8"
@@ -3480,6 +3597,7 @@ Module bytecode.
                                                                                                                 Ty.apply
                                                                                                                   (Ty.path
                                                                                                                     "core::result::Result")
+                                                                                                                  []
                                                                                                                   [
                                                                                                                     Ty.path
                                                                                                                       "core::convert::Infallible";
@@ -3575,6 +3693,7 @@ Module bytecode.
                                                                                                                       Ty.apply
                                                                                                                         (Ty.path
                                                                                                                           "alloc::vec::Vec")
+                                                                                                                        []
                                                                                                                         [
                                                                                                                           Ty.path
                                                                                                                             "u16";
@@ -3657,16 +3776,19 @@ Module bytecode.
                                                                                                           Ty.apply
                                                                                                             (Ty.path
                                                                                                               "core::result::Result")
+                                                                                                            []
                                                                                                             [
                                                                                                               Ty.tuple
                                                                                                                 [
                                                                                                                   Ty.apply
                                                                                                                     (Ty.path
                                                                                                                       "&")
+                                                                                                                    []
                                                                                                                     [
                                                                                                                       Ty.apply
                                                                                                                         (Ty.path
                                                                                                                           "slice")
+                                                                                                                        []
                                                                                                                         [
                                                                                                                           Ty.path
                                                                                                                             "u8"
@@ -3723,6 +3845,7 @@ Module bytecode.
                                                                                                                       Ty.apply
                                                                                                                         (Ty.path
                                                                                                                           "core::result::Result")
+                                                                                                                        []
                                                                                                                         [
                                                                                                                           Ty.tuple
                                                                                                                             [
@@ -3731,10 +3854,12 @@ Module bytecode.
                                                                                                                               Ty.apply
                                                                                                                                 (Ty.path
                                                                                                                                   "&")
+                                                                                                                                []
                                                                                                                                 [
                                                                                                                                   Ty.apply
                                                                                                                                     (Ty.path
                                                                                                                                       "slice")
+                                                                                                                                    []
                                                                                                                                     [
                                                                                                                                       Ty.path
                                                                                                                                         "u8"
@@ -3748,6 +3873,7 @@ Module bytecode.
                                                                                                                         Ty.apply
                                                                                                                           (Ty.path
                                                                                                                             "core::result::Result")
+                                                                                                                          []
                                                                                                                           [
                                                                                                                             Ty.path
                                                                                                                               "core::convert::Infallible";
@@ -3919,16 +4045,19 @@ Module bytecode.
                                                                                       Ty.apply
                                                                                         (Ty.path
                                                                                           "core::result::Result")
+                                                                                        []
                                                                                         [
                                                                                           Ty.tuple
                                                                                             [
                                                                                               Ty.apply
                                                                                                 (Ty.path
                                                                                                   "&")
+                                                                                                []
                                                                                                 [
                                                                                                   Ty.apply
                                                                                                     (Ty.path
                                                                                                       "slice")
+                                                                                                    []
                                                                                                     [
                                                                                                       Ty.path
                                                                                                         "u8"
@@ -3983,6 +4112,7 @@ Module bytecode.
                                                                                                   Ty.apply
                                                                                                     (Ty.path
                                                                                                       "core::result::Result")
+                                                                                                    []
                                                                                                     [
                                                                                                       Ty.tuple
                                                                                                         [
@@ -3991,10 +4121,12 @@ Module bytecode.
                                                                                                           Ty.apply
                                                                                                             (Ty.path
                                                                                                               "&")
+                                                                                                            []
                                                                                                             [
                                                                                                               Ty.apply
                                                                                                                 (Ty.path
                                                                                                                   "slice")
+                                                                                                                []
                                                                                                                 [
                                                                                                                   Ty.path
                                                                                                                     "u8"
@@ -4008,6 +4140,7 @@ Module bytecode.
                                                                                                     Ty.apply
                                                                                                       (Ty.path
                                                                                                         "core::result::Result")
+                                                                                                      []
                                                                                                       [
                                                                                                         Ty.path
                                                                                                           "core::convert::Infallible";
@@ -4084,16 +4217,19 @@ Module bytecode.
                                                                                               Ty.apply
                                                                                                 (Ty.path
                                                                                                   "core::result::Result")
+                                                                                                []
                                                                                                 [
                                                                                                   Ty.tuple
                                                                                                     [
                                                                                                       Ty.apply
                                                                                                         (Ty.path
                                                                                                           "&")
+                                                                                                        []
                                                                                                         [
                                                                                                           Ty.apply
                                                                                                             (Ty.path
                                                                                                               "slice")
+                                                                                                            []
                                                                                                             [
                                                                                                               Ty.path
                                                                                                                 "u8"
@@ -4149,6 +4285,7 @@ Module bytecode.
                                                                                                           Ty.apply
                                                                                                             (Ty.path
                                                                                                               "core::result::Result")
+                                                                                                            []
                                                                                                             [
                                                                                                               Ty.tuple
                                                                                                                 [
@@ -4157,10 +4294,12 @@ Module bytecode.
                                                                                                                   Ty.apply
                                                                                                                     (Ty.path
                                                                                                                       "&")
+                                                                                                                    []
                                                                                                                     [
                                                                                                                       Ty.apply
                                                                                                                         (Ty.path
                                                                                                                           "slice")
+                                                                                                                        []
                                                                                                                         [
                                                                                                                           Ty.path
                                                                                                                             "u8"
@@ -4174,6 +4313,7 @@ Module bytecode.
                                                                                                             Ty.apply
                                                                                                               (Ty.path
                                                                                                                 "core::result::Result")
+                                                                                                              []
                                                                                                               [
                                                                                                                 Ty.path
                                                                                                                   "core::convert::Infallible";
@@ -4329,7 +4469,7 @@ Module bytecode.
                     |)
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_decode : M.IsAssociatedFunction Self "decode" decode.

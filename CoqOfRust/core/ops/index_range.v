@@ -6,6 +6,7 @@ Module ops.
     (* StructRecord
       {
         name := "IndexRange";
+        const_params := [];
         ty_params := [];
         fields := [ ("start", Ty.path "usize"); ("end_", Ty.path "usize") ];
       } *)
@@ -14,9 +15,9 @@ Module ops.
       Definition Self : Ty.t := Ty.path "core::ops::index_range::IndexRange".
       
       (* Clone *)
-      Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructRecord
@@ -45,7 +46,7 @@ Module ops.
                     ]
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -60,9 +61,9 @@ Module ops.
       Definition Self : Ty.t := Ty.path "core::ops::index_range::IndexRange".
       
       (* Debug *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -95,7 +96,7 @@ Module ops.
                   |))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -121,9 +122,9 @@ Module ops.
       Definition Self : Ty.t := Ty.path "core::ops::index_range::IndexRange".
       
       (* PartialEq *)
-      Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -160,7 +161,7 @@ Module ops.
                     |)
                   |))))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -186,9 +187,13 @@ Module ops.
       Definition Self : Ty.t := Ty.path "core::ops::index_range::IndexRange".
       
       (* Eq *)
-      Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition assert_receiver_is_total_eq
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -197,7 +202,7 @@ Module ops.
                 [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -221,9 +226,9 @@ Module ops.
               IndexRange { start, end }
           }
       *)
-      Definition new_unchecked (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ start; end_ ] =>
+      Definition new_unchecked (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ start; end_ ] =>
           ltac:(M.monadic
             (let start := M.alloc (| start |) in
             let end_ := M.alloc (| end_ |) in
@@ -298,7 +303,7 @@ Module ops.
                   [ ("start", M.read (| start |)); ("end_", M.read (| end_ |)) ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_new_unchecked :
@@ -309,15 +314,15 @@ Module ops.
               IndexRange { start: 0, end }
           }
       *)
-      Definition zero_to (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ end_ ] =>
+      Definition zero_to (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ end_ ] =>
           ltac:(M.monadic
             (let end_ := M.alloc (| end_ |) in
             Value.StructRecord
               "core::ops::index_range::IndexRange"
               [ ("start", Value.Integer 0); ("end_", M.read (| end_ |)) ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_zero_to : M.IsAssociatedFunction Self "zero_to" zero_to.
@@ -327,9 +332,9 @@ Module ops.
               self.start
           }
       *)
-      Definition start (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition start (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -339,7 +344,7 @@ Module ops.
                 "start"
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_start : M.IsAssociatedFunction Self "start" start.
@@ -349,9 +354,9 @@ Module ops.
               self.end
           }
       *)
-      Definition end_ (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition end_ (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -361,7 +366,7 @@ Module ops.
                 "end"
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_end_ : M.IsAssociatedFunction Self "end_" end_.
@@ -372,9 +377,9 @@ Module ops.
               unsafe { unchecked_sub(self.end, self.start) }
           }
       *)
-      Definition len (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition len (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -396,7 +401,7 @@ Module ops.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_len : M.IsAssociatedFunction Self "len" len.
@@ -411,9 +416,9 @@ Module ops.
               value
           }
       *)
-      Definition next_unchecked (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition next_unchecked (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -498,7 +503,7 @@ Module ops.
                 |) in
               value
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_next_unchecked :
@@ -514,9 +519,9 @@ Module ops.
               value
           }
       *)
-      Definition next_back_unchecked (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition next_back_unchecked (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -606,7 +611,7 @@ Module ops.
                 |) in
               value
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_next_back_unchecked :
@@ -626,9 +631,9 @@ Module ops.
               prefix
           }
       *)
-      Definition take_prefix (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; n ] =>
+      Definition take_prefix (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; n ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
@@ -650,6 +655,7 @@ Module ops.
                                       "core::iter::traits::exact_size::ExactSizeIterator",
                                       Ty.apply
                                         (Ty.path "&mut")
+                                        []
                                         [ Ty.path "core::ops::index_range::IndexRange" ],
                                       [],
                                       "len",
@@ -715,7 +721,7 @@ Module ops.
                 |) in
               prefix
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_take_prefix : M.IsAssociatedFunction Self "take_prefix" take_prefix.
@@ -734,9 +740,9 @@ Module ops.
               suffix
           }
       *)
-      Definition take_suffix (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; n ] =>
+      Definition take_suffix (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; n ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
@@ -758,6 +764,7 @@ Module ops.
                                       "core::iter::traits::exact_size::ExactSizeIterator",
                                       Ty.apply
                                         (Ty.path "&mut")
+                                        []
                                         [ Ty.path "core::ops::index_range::IndexRange" ],
                                       [],
                                       "len",
@@ -823,7 +830,7 @@ Module ops.
                 |) in
               suffix
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_take_suffix : M.IsAssociatedFunction Self "take_suffix" take_suffix.
@@ -845,9 +852,9 @@ Module ops.
               }
           }
       *)
-      Definition next (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition next (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -865,6 +872,7 @@ Module ops.
                                   "core::iter::traits::exact_size::ExactSizeIterator",
                                   Ty.apply
                                     (Ty.path "&mut")
+                                    []
                                     [ Ty.path "core::ops::index_range::IndexRange" ],
                                   [],
                                   "len",
@@ -895,7 +903,7 @@ Module ops.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -904,9 +912,9 @@ Module ops.
               (len, Some(len))
           }
       *)
-      Definition size_hint (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition size_hint (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -929,7 +937,7 @@ Module ops.
                   ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -938,9 +946,9 @@ Module ops.
               NonZeroUsize::new(n - taken.len()).map_or(Ok(()), Err)
           }
       *)
-      Definition advance_by (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; n ] =>
+      Definition advance_by (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; n ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
@@ -961,16 +969,19 @@ Module ops.
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "core::option::Option")
+                      []
                       [ Ty.path "core::num::nonzero::NonZeroUsize" ],
                     "map_or",
                     [
                       Ty.apply
                         (Ty.path "core::result::Result")
+                        []
                         [ Ty.tuple []; Ty.path "core::num::nonzero::NonZeroUsize" ];
                       Ty.function
                         [ Ty.path "core::num::nonzero::NonZeroUsize" ]
                         (Ty.apply
                           (Ty.path "core::result::Result")
+                          []
                           [ Ty.tuple []; Ty.path "core::num::nonzero::NonZeroUsize" ])
                     ]
                   |),
@@ -1001,7 +1012,7 @@ Module ops.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1031,9 +1042,9 @@ Module ops.
               }
           }
       *)
-      Definition next_back (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition next_back (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -1051,6 +1062,7 @@ Module ops.
                                   "core::iter::traits::exact_size::ExactSizeIterator",
                                   Ty.apply
                                     (Ty.path "&mut")
+                                    []
                                     [ Ty.path "core::ops::index_range::IndexRange" ],
                                   [],
                                   "len",
@@ -1081,7 +1093,7 @@ Module ops.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -1090,9 +1102,9 @@ Module ops.
               NonZeroUsize::new(n - taken.len()).map_or(Ok(()), Err)
           }
       *)
-      Definition advance_back_by (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; n ] =>
+      Definition advance_back_by (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; n ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
@@ -1113,16 +1125,19 @@ Module ops.
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "core::option::Option")
+                      []
                       [ Ty.path "core::num::nonzero::NonZeroUsize" ],
                     "map_or",
                     [
                       Ty.apply
                         (Ty.path "core::result::Result")
+                        []
                         [ Ty.tuple []; Ty.path "core::num::nonzero::NonZeroUsize" ];
                       Ty.function
                         [ Ty.path "core::num::nonzero::NonZeroUsize" ]
                         (Ty.apply
                           (Ty.path "core::result::Result")
+                          []
                           [ Ty.tuple []; Ty.path "core::num::nonzero::NonZeroUsize" ])
                     ]
                   |),
@@ -1153,7 +1168,7 @@ Module ops.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1176,9 +1191,9 @@ Module ops.
               self.len()
           }
       *)
-      Definition len (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition len (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -1189,7 +1204,7 @@ Module ops.
               |),
               [ M.read (| self |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :

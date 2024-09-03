@@ -5,6 +5,7 @@ Module interpreter_action.
   (*
   Enum InterpreterAction
   {
+    const_params := [];
     ty_params := [];
     variants :=
       [
@@ -16,6 +17,7 @@ Module interpreter_action.
                 ("inputs",
                   Ty.apply
                     (Ty.path "alloc::boxed::Box")
+                    []
                     [
                       Ty.path "revm_interpreter::interpreter_action::call_inputs::CallInputs";
                       Ty.path "alloc::alloc::Global"
@@ -31,6 +33,7 @@ Module interpreter_action.
                 ("inputs",
                   Ty.apply
                     (Ty.path "alloc::boxed::Box")
+                    []
                     [
                       Ty.path "revm_interpreter::interpreter_action::create_inputs::CreateInputs";
                       Ty.path "alloc::alloc::Global"
@@ -46,6 +49,7 @@ Module interpreter_action.
                 ("inputs",
                   Ty.apply
                     (Ty.path "alloc::boxed::Box")
+                    []
                     [
                       Ty.path
                         "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInput";
@@ -73,9 +77,9 @@ Module interpreter_action.
     Definition Self : Ty.t := Ty.path "revm_interpreter::interpreter_action::InterpreterAction".
     
     (* Clone *)
-    Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -102,6 +106,7 @@ Module interpreter_action.
                                 "core::clone::Clone",
                                 Ty.apply
                                   (Ty.path "alloc::boxed::Box")
+                                  []
                                   [
                                     Ty.path
                                       "revm_interpreter::interpreter_action::call_inputs::CallInputs";
@@ -135,6 +140,7 @@ Module interpreter_action.
                                 "core::clone::Clone",
                                 Ty.apply
                                   (Ty.path "alloc::boxed::Box")
+                                  []
                                   [
                                     Ty.path
                                       "revm_interpreter::interpreter_action::create_inputs::CreateInputs";
@@ -168,6 +174,7 @@ Module interpreter_action.
                                 "core::clone::Clone",
                                 Ty.apply
                                   (Ty.path "alloc::boxed::Box")
+                                  []
                                   [
                                     Ty.path
                                       "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInput";
@@ -224,7 +231,7 @@ Module interpreter_action.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -239,9 +246,9 @@ Module interpreter_action.
     Definition Self : Ty.t := Ty.path "revm_interpreter::interpreter_action::InterpreterAction".
     
     (* Debug *)
-    Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; f ] =>
+    Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; f ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
@@ -370,7 +377,7 @@ Module interpreter_action.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -385,12 +392,12 @@ Module interpreter_action.
     Definition Self : Ty.t := Ty.path "revm_interpreter::interpreter_action::InterpreterAction".
     
     (* Default *)
-    Definition default (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [] =>
+    Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [] =>
         ltac:(M.monadic
           (Value.StructTuple "revm_interpreter::interpreter_action::InterpreterAction::None" []))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -416,9 +423,9 @@ Module interpreter_action.
     Definition Self : Ty.t := Ty.path "revm_interpreter::interpreter_action::InterpreterAction".
     
     (* PartialEq *)
-    Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; other ] =>
+    Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
@@ -477,6 +484,7 @@ Module interpreter_action.
                                   "core::cmp::PartialEq",
                                   Ty.apply
                                     (Ty.path "alloc::boxed::Box")
+                                    []
                                     [
                                       Ty.path
                                         "revm_interpreter::interpreter_action::call_inputs::CallInputs";
@@ -485,6 +493,7 @@ Module interpreter_action.
                                   [
                                     Ty.apply
                                       (Ty.path "alloc::boxed::Box")
+                                      []
                                       [
                                         Ty.path
                                           "revm_interpreter::interpreter_action::call_inputs::CallInputs";
@@ -523,6 +532,7 @@ Module interpreter_action.
                                   "core::cmp::PartialEq",
                                   Ty.apply
                                     (Ty.path "alloc::boxed::Box")
+                                    []
                                     [
                                       Ty.path
                                         "revm_interpreter::interpreter_action::create_inputs::CreateInputs";
@@ -531,6 +541,7 @@ Module interpreter_action.
                                   [
                                     Ty.apply
                                       (Ty.path "alloc::boxed::Box")
+                                      []
                                       [
                                         Ty.path
                                           "revm_interpreter::interpreter_action::create_inputs::CreateInputs";
@@ -569,6 +580,7 @@ Module interpreter_action.
                                   "core::cmp::PartialEq",
                                   Ty.apply
                                     (Ty.path "alloc::boxed::Box")
+                                    []
                                     [
                                       Ty.path
                                         "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInput";
@@ -577,6 +589,7 @@ Module interpreter_action.
                                   [
                                     Ty.apply
                                       (Ty.path "alloc::boxed::Box")
+                                      []
                                       [
                                         Ty.path
                                           "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInput";
@@ -628,7 +641,7 @@ Module interpreter_action.
               |)
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -654,9 +667,13 @@ Module interpreter_action.
     Definition Self : Ty.t := Ty.path "revm_interpreter::interpreter_action::InterpreterAction".
     
     (* Eq *)
-    Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition assert_receiver_is_total_eq
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -686,7 +703,7 @@ Module interpreter_action.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -706,9 +723,9 @@ Module interpreter_action.
             matches!(self, InterpreterAction::Call { .. })
         }
     *)
-    Definition is_call (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition is_call (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -728,7 +745,7 @@ Module interpreter_action.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_is_call : M.IsAssociatedFunction Self "is_call" is_call.
@@ -738,9 +755,9 @@ Module interpreter_action.
             matches!(self, InterpreterAction::Create { .. })
         }
     *)
-    Definition is_create (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition is_create (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -760,7 +777,7 @@ Module interpreter_action.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_is_create : M.IsAssociatedFunction Self "is_create" is_create.
@@ -770,9 +787,9 @@ Module interpreter_action.
             matches!(self, InterpreterAction::Return { .. })
         }
     *)
-    Definition is_return (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition is_return (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -792,7 +809,7 @@ Module interpreter_action.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_is_return : M.IsAssociatedFunction Self "is_return" is_return.
@@ -802,9 +819,9 @@ Module interpreter_action.
             matches!(self, InterpreterAction::None)
         }
     *)
-    Definition is_none (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition is_none (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -824,7 +841,7 @@ Module interpreter_action.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_is_none : M.IsAssociatedFunction Self "is_none" is_none.
@@ -834,9 +851,9 @@ Module interpreter_action.
             !self.is_none()
         }
     *)
-    Definition is_some (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition is_some (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           UnOp.Pure.not
@@ -848,7 +865,7 @@ Module interpreter_action.
               |),
               [ M.read (| self |) ]
             |))))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_is_some : M.IsAssociatedFunction Self "is_some" is_some.
@@ -861,9 +878,9 @@ Module interpreter_action.
             }
         }
     *)
-    Definition into_result_return (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition into_result_return (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -887,7 +904,7 @@ Module interpreter_action.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_into_result_return :

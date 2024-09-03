@@ -5,6 +5,7 @@ Module alloc.
   (* StructTuple
     {
       name := "AllocError";
+      const_params := [];
       ty_params := [];
       fields := [];
     } *)
@@ -24,13 +25,13 @@ Module alloc.
     Definition Self : Ty.t := Ty.path "core::alloc::AllocError".
     
     (* Clone *)
-    Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (| M.read (| self |) |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -56,14 +57,14 @@ Module alloc.
     Definition Self : Ty.t := Ty.path "core::alloc::AllocError".
     
     (* PartialEq *)
-    Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; other ] =>
+    Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           Value.Bool true))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -89,13 +90,17 @@ Module alloc.
     Definition Self : Ty.t := Ty.path "core::alloc::AllocError".
     
     (* Eq *)
-    Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition assert_receiver_is_total_eq
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           Value.Tuple []))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -111,9 +116,9 @@ Module alloc.
     Definition Self : Ty.t := Ty.path "core::alloc::AllocError".
     
     (* Debug *)
-    Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; f ] =>
+    Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; f ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
@@ -121,7 +126,7 @@ Module alloc.
             M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
             [ M.read (| f |); M.read (| Value.String "AllocError" |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -151,9 +156,9 @@ Module alloc.
             f.write_str("memory allocation failed")
         }
     *)
-    Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; f ] =>
+    Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; f ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
@@ -161,7 +166,7 @@ Module alloc.
             M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
             [ M.read (| f |); M.read (| Value.String "memory allocation failed" |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -174,9 +179,14 @@ Module alloc.
   
   (* Trait *)
   Module Allocator.
-    Definition allocate_zeroed (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; layout ] =>
+    Definition allocate_zeroed
+        (Self : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      match ε, τ, α with
+      | [], [], [ self; layout ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let layout := M.alloc (| layout |) in
@@ -192,10 +202,12 @@ Module alloc.
                             "core::ops::try_trait::Try",
                             Ty.apply
                               (Ty.path "core::result::Result")
+                              []
                               [
                                 Ty.apply
                                   (Ty.path "core::ptr::non_null::NonNull")
-                                  [ Ty.apply (Ty.path "slice") [ Ty.path "u8" ] ];
+                                  []
+                                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ];
                                 Ty.path "core::alloc::AllocError"
                               ],
                             [],
@@ -235,15 +247,18 @@ Module alloc.
                                         "core::ops::try_trait::FromResidual",
                                         Ty.apply
                                           (Ty.path "core::result::Result")
+                                          []
                                           [
                                             Ty.apply
                                               (Ty.path "core::ptr::non_null::NonNull")
-                                              [ Ty.apply (Ty.path "slice") [ Ty.path "u8" ] ];
+                                              []
+                                              [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ];
                                             Ty.path "core::alloc::AllocError"
                                           ],
                                         [
                                           Ty.apply
                                             (Ty.path "core::result::Result")
+                                            []
                                             [
                                               Ty.path "core::convert::Infallible";
                                               Ty.path "core::alloc::AllocError"
@@ -275,14 +290,14 @@ Module alloc.
                   M.alloc (|
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "*mut") [ Ty.path "u8" ],
+                        Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
                         "write_bytes",
                         []
                       |),
                       [
                         M.call_closure (|
                           M.get_associated_function (|
-                            Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ Ty.path "u8" ],
+                            Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ Ty.path "u8" ],
                             "as_ptr",
                             []
                           |),
@@ -291,7 +306,8 @@ Module alloc.
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "core::ptr::non_null::NonNull")
-                                  [ Ty.apply (Ty.path "slice") [ Ty.path "u8" ] ],
+                                  []
+                                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                                 "as_non_null_ptr",
                                 []
                               |),
@@ -304,7 +320,8 @@ Module alloc.
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "core::ptr::non_null::NonNull")
-                              [ Ty.apply (Ty.path "slice") [ Ty.path "u8" ] ],
+                              []
+                              [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                             "len",
                             []
                           |),
@@ -316,14 +333,14 @@ Module alloc.
                 M.alloc (| Value.StructTuple "core::result::Result::Ok" [ M.read (| ptr |) ] |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom ProvidedMethod_allocate_zeroed :
       M.IsProvidedMethod "core::alloc::Allocator" "allocate_zeroed" allocate_zeroed.
-    Definition grow (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; ptr; old_layout; new_layout ] =>
+    Definition grow (Self : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; ptr; old_layout; new_layout ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let ptr := M.alloc (| ptr |) in
@@ -419,10 +436,12 @@ Module alloc.
                             "core::ops::try_trait::Try",
                             Ty.apply
                               (Ty.path "core::result::Result")
+                              []
                               [
                                 Ty.apply
                                   (Ty.path "core::ptr::non_null::NonNull")
-                                  [ Ty.apply (Ty.path "slice") [ Ty.path "u8" ] ];
+                                  []
+                                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ];
                                 Ty.path "core::alloc::AllocError"
                               ],
                             [],
@@ -462,15 +481,18 @@ Module alloc.
                                         "core::ops::try_trait::FromResidual",
                                         Ty.apply
                                           (Ty.path "core::result::Result")
+                                          []
                                           [
                                             Ty.apply
                                               (Ty.path "core::ptr::non_null::NonNull")
-                                              [ Ty.apply (Ty.path "slice") [ Ty.path "u8" ] ];
+                                              []
+                                              [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ];
                                             Ty.path "core::alloc::AllocError"
                                           ],
                                         [
                                           Ty.apply
                                             (Ty.path "core::result::Result")
+                                            []
                                             [
                                               Ty.path "core::convert::Infallible";
                                               Ty.path "core::alloc::AllocError"
@@ -511,7 +533,10 @@ Module alloc.
                           M.pointer_coercion
                             (M.call_closure (|
                               M.get_associated_function (|
-                                Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ Ty.path "u8" ],
+                                Ty.apply
+                                  (Ty.path "core::ptr::non_null::NonNull")
+                                  []
+                                  [ Ty.path "u8" ],
                                 "as_ptr",
                                 []
                               |),
@@ -521,7 +546,8 @@ Module alloc.
                             M.get_associated_function (|
                               Ty.apply
                                 (Ty.path "core::ptr::non_null::NonNull")
-                                [ Ty.apply (Ty.path "slice") [ Ty.path "u8" ] ],
+                                []
+                                [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                               "as_mut_ptr",
                               []
                             |),
@@ -555,13 +581,18 @@ Module alloc.
                 M.alloc (| Value.StructTuple "core::result::Result::Ok" [ M.read (| new_ptr |) ] |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom ProvidedMethod_grow : M.IsProvidedMethod "core::alloc::Allocator" "grow" grow.
-    Definition grow_zeroed (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; ptr; old_layout; new_layout ] =>
+    Definition grow_zeroed
+        (Self : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      match ε, τ, α with
+      | [], [], [ self; ptr; old_layout; new_layout ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let ptr := M.alloc (| ptr |) in
@@ -657,10 +688,12 @@ Module alloc.
                             "core::ops::try_trait::Try",
                             Ty.apply
                               (Ty.path "core::result::Result")
+                              []
                               [
                                 Ty.apply
                                   (Ty.path "core::ptr::non_null::NonNull")
-                                  [ Ty.apply (Ty.path "slice") [ Ty.path "u8" ] ];
+                                  []
+                                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ];
                                 Ty.path "core::alloc::AllocError"
                               ],
                             [],
@@ -700,15 +733,18 @@ Module alloc.
                                         "core::ops::try_trait::FromResidual",
                                         Ty.apply
                                           (Ty.path "core::result::Result")
+                                          []
                                           [
                                             Ty.apply
                                               (Ty.path "core::ptr::non_null::NonNull")
-                                              [ Ty.apply (Ty.path "slice") [ Ty.path "u8" ] ];
+                                              []
+                                              [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ];
                                             Ty.path "core::alloc::AllocError"
                                           ],
                                         [
                                           Ty.apply
                                             (Ty.path "core::result::Result")
+                                            []
                                             [
                                               Ty.path "core::convert::Infallible";
                                               Ty.path "core::alloc::AllocError"
@@ -749,7 +785,10 @@ Module alloc.
                           M.pointer_coercion
                             (M.call_closure (|
                               M.get_associated_function (|
-                                Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ Ty.path "u8" ],
+                                Ty.apply
+                                  (Ty.path "core::ptr::non_null::NonNull")
+                                  []
+                                  [ Ty.path "u8" ],
                                 "as_ptr",
                                 []
                               |),
@@ -759,7 +798,8 @@ Module alloc.
                             M.get_associated_function (|
                               Ty.apply
                                 (Ty.path "core::ptr::non_null::NonNull")
-                                [ Ty.apply (Ty.path "slice") [ Ty.path "u8" ] ],
+                                []
+                                [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                               "as_mut_ptr",
                               []
                             |),
@@ -793,14 +833,14 @@ Module alloc.
                 M.alloc (| Value.StructTuple "core::result::Result::Ok" [ M.read (| new_ptr |) ] |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom ProvidedMethod_grow_zeroed :
       M.IsProvidedMethod "core::alloc::Allocator" "grow_zeroed" grow_zeroed.
-    Definition shrink (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; ptr; old_layout; new_layout ] =>
+    Definition shrink (Self : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; ptr; old_layout; new_layout ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let ptr := M.alloc (| ptr |) in
@@ -896,10 +936,12 @@ Module alloc.
                             "core::ops::try_trait::Try",
                             Ty.apply
                               (Ty.path "core::result::Result")
+                              []
                               [
                                 Ty.apply
                                   (Ty.path "core::ptr::non_null::NonNull")
-                                  [ Ty.apply (Ty.path "slice") [ Ty.path "u8" ] ];
+                                  []
+                                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ];
                                 Ty.path "core::alloc::AllocError"
                               ],
                             [],
@@ -939,15 +981,18 @@ Module alloc.
                                         "core::ops::try_trait::FromResidual",
                                         Ty.apply
                                           (Ty.path "core::result::Result")
+                                          []
                                           [
                                             Ty.apply
                                               (Ty.path "core::ptr::non_null::NonNull")
-                                              [ Ty.apply (Ty.path "slice") [ Ty.path "u8" ] ];
+                                              []
+                                              [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ];
                                             Ty.path "core::alloc::AllocError"
                                           ],
                                         [
                                           Ty.apply
                                             (Ty.path "core::result::Result")
+                                            []
                                             [
                                               Ty.path "core::convert::Infallible";
                                               Ty.path "core::alloc::AllocError"
@@ -988,7 +1033,10 @@ Module alloc.
                           M.pointer_coercion
                             (M.call_closure (|
                               M.get_associated_function (|
-                                Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ Ty.path "u8" ],
+                                Ty.apply
+                                  (Ty.path "core::ptr::non_null::NonNull")
+                                  []
+                                  [ Ty.path "u8" ],
                                 "as_ptr",
                                 []
                               |),
@@ -998,7 +1046,8 @@ Module alloc.
                             M.get_associated_function (|
                               Ty.apply
                                 (Ty.path "core::ptr::non_null::NonNull")
-                                [ Ty.apply (Ty.path "slice") [ Ty.path "u8" ] ],
+                                []
+                                [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                               "as_mut_ptr",
                               []
                             |),
@@ -1032,34 +1081,34 @@ Module alloc.
                 M.alloc (| Value.StructTuple "core::result::Result::Ok" [ M.read (| new_ptr |) ] |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom ProvidedMethod_shrink : M.IsProvidedMethod "core::alloc::Allocator" "shrink" shrink.
-    Definition by_ref (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition by_ref (Self : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (| self |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom ProvidedMethod_by_ref : M.IsProvidedMethod "core::alloc::Allocator" "by_ref" by_ref.
   End Allocator.
   
   Module Impl_core_alloc_Allocator_where_core_alloc_Allocator_A_where_core_marker_Sized_A_for_ref__A.
-    Definition Self (A : Ty.t) : Ty.t := Ty.apply (Ty.path "&") [ A ].
+    Definition Self (A : Ty.t) : Ty.t := Ty.apply (Ty.path "&") [] [ A ].
     
     (*
         fn allocate(&self, layout: Layout) -> Result<NonNull<[u8]>, AllocError> {
             ( **self).allocate(layout)
         }
     *)
-    Definition allocate (A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition allocate (A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self A in
-      match τ, α with
-      | [], [ self; layout ] =>
+      match ε, τ, α with
+      | [], [], [ self; layout ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let layout := M.alloc (| layout |) in
@@ -1067,7 +1116,7 @@ Module alloc.
             M.get_trait_method (| "core::alloc::Allocator", A, [], "allocate", [] |),
             [ M.read (| M.read (| self |) |); M.read (| layout |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     (*
@@ -1075,10 +1124,15 @@ Module alloc.
             ( **self).allocate_zeroed(layout)
         }
     *)
-    Definition allocate_zeroed (A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition allocate_zeroed
+        (A : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
       let Self : Ty.t := Self A in
-      match τ, α with
-      | [], [ self; layout ] =>
+      match ε, τ, α with
+      | [], [], [ self; layout ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let layout := M.alloc (| layout |) in
@@ -1086,7 +1140,7 @@ Module alloc.
             M.get_trait_method (| "core::alloc::Allocator", A, [], "allocate_zeroed", [] |),
             [ M.read (| M.read (| self |) |); M.read (| layout |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     (*
@@ -1095,10 +1149,10 @@ Module alloc.
             unsafe { ( **self).deallocate(ptr, layout) }
         }
     *)
-    Definition deallocate (A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition deallocate (A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self A in
-      match τ, α with
-      | [], [ self; ptr; layout ] =>
+      match ε, τ, α with
+      | [], [], [ self; ptr; layout ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let ptr := M.alloc (| ptr |) in
@@ -1107,7 +1161,7 @@ Module alloc.
             M.get_trait_method (| "core::alloc::Allocator", A, [], "deallocate", [] |),
             [ M.read (| M.read (| self |) |); M.read (| ptr |); M.read (| layout |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     (*
@@ -1121,10 +1175,10 @@ Module alloc.
             unsafe { ( **self).grow(ptr, old_layout, new_layout) }
         }
     *)
-    Definition grow (A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition grow (A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self A in
-      match τ, α with
-      | [], [ self; ptr; old_layout; new_layout ] =>
+      match ε, τ, α with
+      | [], [], [ self; ptr; old_layout; new_layout ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let ptr := M.alloc (| ptr |) in
@@ -1139,7 +1193,7 @@ Module alloc.
               M.read (| new_layout |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     (*
@@ -1153,10 +1207,10 @@ Module alloc.
             unsafe { ( **self).grow_zeroed(ptr, old_layout, new_layout) }
         }
     *)
-    Definition grow_zeroed (A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition grow_zeroed (A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self A in
-      match τ, α with
-      | [], [ self; ptr; old_layout; new_layout ] =>
+      match ε, τ, α with
+      | [], [], [ self; ptr; old_layout; new_layout ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let ptr := M.alloc (| ptr |) in
@@ -1171,7 +1225,7 @@ Module alloc.
               M.read (| new_layout |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     (*
@@ -1185,10 +1239,10 @@ Module alloc.
             unsafe { ( **self).shrink(ptr, old_layout, new_layout) }
         }
     *)
-    Definition shrink (A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition shrink (A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self A in
-      match τ, α with
-      | [], [ self; ptr; old_layout; new_layout ] =>
+      match ε, τ, α with
+      | [], [], [ self; ptr; old_layout; new_layout ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let ptr := M.alloc (| ptr |) in
@@ -1203,7 +1257,7 @@ Module alloc.
               M.read (| new_layout |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :

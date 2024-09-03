@@ -9,15 +9,15 @@ Module iter.
           RepeatWith { repeater }
       }
       *)
-      Definition repeat_with (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ A; F ], [ repeater ] =>
+      Definition repeat_with (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ A; F ], [ repeater ] =>
           ltac:(M.monadic
             (let repeater := M.alloc (| repeater |) in
             Value.StructRecord
               "core::iter::sources::repeat_with::RepeatWith"
               [ ("repeater", M.read (| repeater |)) ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Function_repeat_with :
@@ -26,13 +26,14 @@ Module iter.
       (* StructRecord
         {
           name := "RepeatWith";
+          const_params := [];
           ty_params := [ "F" ];
           fields := [ ("repeater", F) ];
         } *)
       
       Module Impl_core_marker_Copy_where_core_marker_Copy_F_for_core_iter_sources_repeat_with_RepeatWith_F.
         Definition Self (F : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "core::iter::sources::repeat_with::RepeatWith") [ F ].
+          Ty.apply (Ty.path "core::iter::sources::repeat_with::RepeatWith") [] [ F ].
         
         Axiom Implements :
           forall (F : Ty.t),
@@ -45,13 +46,13 @@ Module iter.
       
       Module Impl_core_clone_Clone_where_core_clone_Clone_F_for_core_iter_sources_repeat_with_RepeatWith_F.
         Definition Self (F : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "core::iter::sources::repeat_with::RepeatWith") [ F ].
+          Ty.apply (Ty.path "core::iter::sources::repeat_with::RepeatWith") [] [ F ].
         
         (* Clone *)
-        Definition clone (F : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition clone (F : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self F in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               Value.StructRecord
@@ -69,7 +70,7 @@ Module iter.
                       ]
                     |))
                 ]))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -83,17 +84,17 @@ Module iter.
       
       Module Impl_core_fmt_Debug_for_core_iter_sources_repeat_with_RepeatWith_F.
         Definition Self (F : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "core::iter::sources::repeat_with::RepeatWith") [ F ].
+          Ty.apply (Ty.path "core::iter::sources::repeat_with::RepeatWith") [] [ F ].
         
         (*
             fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
                 f.debug_struct("RepeatWith").finish_non_exhaustive()
             }
         *)
-        Definition fmt (F : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition fmt (F : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self F in
-          match τ, α with
-          | [], [ self; f ] =>
+          match ε, τ, α with
+          | [], [], [ self; f ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let f := M.alloc (| f |) in
@@ -116,7 +117,7 @@ Module iter.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -130,7 +131,7 @@ Module iter.
       
       Module Impl_core_iter_traits_iterator_Iterator_where_core_ops_function_FnMut_F_Tuple__for_core_iter_sources_repeat_with_RepeatWith_F.
         Definition Self (A F : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "core::iter::sources::repeat_with::RepeatWith") [ F ].
+          Ty.apply (Ty.path "core::iter::sources::repeat_with::RepeatWith") [] [ F ].
         
         (*     type Item = A; *)
         Definition _Item (A F : Ty.t) : Ty.t := A.
@@ -140,10 +141,10 @@ Module iter.
                 Some((self.repeater)())
             }
         *)
-        Definition next (A F : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition next (A F : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self A F in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               Value.StructTuple
@@ -167,7 +168,7 @@ Module iter.
                     ]
                   |)
                 ]))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         (*
@@ -175,10 +176,15 @@ Module iter.
                 (usize::MAX, None)
             }
         *)
-        Definition size_hint (A F : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition size_hint
+            (A F : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self A F in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               Value.Tuple
@@ -186,7 +192,7 @@ Module iter.
                   M.read (| M.get_constant (| "core::num::MAX" |) |);
                   Value.StructTuple "core::option::Option::None" []
                 ]))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         (*
@@ -205,10 +211,15 @@ Module iter.
                 }
             }
         *)
-        Definition try_fold (A F : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition try_fold
+            (A F : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self A F in
-          match τ, α with
-          | [ Acc; Fold; R ], [ self; init; fold ] =>
+          match ε, τ, α with
+          | [], [ Acc; Fold; R ], [ self; init; fold ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let init := M.alloc (| init |) in
@@ -317,7 +328,7 @@ Module iter.
                     |)
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -337,7 +348,7 @@ Module iter.
       
       Module Impl_core_iter_traits_marker_FusedIterator_where_core_ops_function_FnMut_F_Tuple__for_core_iter_sources_repeat_with_RepeatWith_F.
         Definition Self (A F : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "core::iter::sources::repeat_with::RepeatWith") [ F ].
+          Ty.apply (Ty.path "core::iter::sources::repeat_with::RepeatWith") [] [ F ].
         
         Axiom Implements :
           forall (A F : Ty.t),
@@ -350,7 +361,7 @@ Module iter.
       
       Module Impl_core_iter_traits_marker_TrustedLen_where_core_ops_function_FnMut_F_Tuple__for_core_iter_sources_repeat_with_RepeatWith_F.
         Definition Self (A F : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "core::iter::sources::repeat_with::RepeatWith") [ F ].
+          Ty.apply (Ty.path "core::iter::sources::repeat_with::RepeatWith") [] [ F ].
         
         Axiom Implements :
           forall (A F : Ty.t),

@@ -4,6 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 (*
 Enum Color
 {
+  const_params := [];
   ty_params := [];
   variants :=
     [
@@ -51,6 +52,6 @@ Enum Color
 }
 *)
 
-Parameter main : (list Ty.t) -> (list Value.t) -> M.
+Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_main : M.IsFunction "match_destructuring_enums::main" main.

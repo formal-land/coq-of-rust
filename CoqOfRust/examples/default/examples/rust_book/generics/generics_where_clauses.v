@@ -12,10 +12,10 @@ Module Impl_generics_where_clauses_PrintInOption_where_core_fmt_Debug_core_optio
           println!("{:?}", Some(self));
       }
   *)
-  Definition print_in_option (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition print_in_option (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     let Self : Ty.t := Self T in
-    match τ, α with
-    | [], [ self ] =>
+    match ε, τ, α with
+    | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
@@ -44,7 +44,7 @@ Module Impl_generics_where_clauses_PrintInOption_where_core_fmt_Debug_core_optio
                                   M.get_associated_function (|
                                     Ty.path "core::fmt::rt::Argument",
                                     "new_debug",
-                                    [ Ty.apply (Ty.path "core::option::Option") [ T ] ]
+                                    [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ]
                                   |),
                                   [
                                     M.alloc (|
@@ -64,7 +64,7 @@ Module Impl_generics_where_clauses_PrintInOption_where_core_fmt_Debug_core_optio
             M.alloc (| Value.Tuple [] |) in
           M.alloc (| Value.Tuple [] |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -83,16 +83,16 @@ fn main() {
     vec.print_in_option();
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [] =>
+Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
         let~ vec :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "slice") [ Ty.path "i32" ],
+                Ty.apply (Ty.path "slice") [] [ Ty.path "i32" ],
                 "into_vec",
                 [ Ty.path "alloc::alloc::Global" ]
               |),
@@ -104,8 +104,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "alloc::boxed::Box")
+                          []
                           [
-                            Ty.apply (Ty.path "array") [ Ty.path "i32" ];
+                            Ty.apply (Ty.path "array") [ Value.Integer 3 ] [ Ty.path "i32" ];
                             Ty.path "alloc::alloc::Global"
                           ],
                         "new",
@@ -128,6 +129,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 "generics_where_clauses::PrintInOption",
                 Ty.apply
                   (Ty.path "alloc::vec::Vec")
+                  []
                   [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
                 [],
                 "print_in_option",
@@ -138,7 +140,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_main : M.IsFunction "generics_where_clauses::main" main.

@@ -2,11 +2,14 @@
 
 > Formal verification tool for Rust: check 100% of execution cases of your programs 🦀 to make applications with no bugs! ✈️ 🚀 ⚕️ 🏦
 
-Formal verification enables the making of software without bugs by showing that it follows a precise specification in all execution cases, in contrast to testing, which only covers a finite amount of cases.
+Even if Rust's type system prevents many mistakes, including memory errors, the code is still not immune to vulnerabilities, such as unexpected panics or wrongly implemented business rules.
 
-See our blog post [Verifying an ERC-20 smart contract in Rust](https://formal.land/blog/2023/12/13/rust-verify-erc-20-smart-contract) to have an example of formally verified Rust code using&nbsp;`coq-of-rust`.
+The way to go further is to **mathematically** prove that it is bug-free: this is named "formal verification" and what `coq-of-rust` proposes! This is the only way to ensure your code contains no bugs or vulnerabilities, even against state-level actors 🧚.
 
-The development of `coq-of-rust` was mainly funded by the crypto-currency&nbsp;[Aleph Zero](https://alephzero.org/), to develop safer smart contracts. We thank them for their support!
+| We propose formal verification as a service, including designing the specification and the proofs.<br /><br />Price: $10 / Rust loc 💰<br /><br />**➡️ [Get started 🦸](https://n25o5qrzcx2.typeform.com/to/UPZq4O6U) ⬅️** |
+| --- |
+
+_The development of `coq-of-rust` was mainly funded by the&nbsp;[Aleph Zero Foundation](https://alephzero.org/). We thank them for their support!_
 
 ## Table of Contents
 
@@ -40,6 +43,35 @@ Definition add_one (τ : list Ty.t) (α : list Value.t) : M :=
   end.
 ```
 Functions such as&nbsp;`BinOp.Panic.add` are part of the standard library for Rust in Coq that we provide. We can then express and verify specifications on the code in Coq.
+
+## Workflow
+
+Here is the typical workflow of usage for `coq-of-rust`:
+
+```mermaid
+graph TB
+    R[Rust code 🦀] -- coq-of-rust --> T[Translated code 🐓]
+    T -- name resolutions --> L[Linked code 🐓]
+    L -- refinement --> S[Simulations 🐓]
+    S --> P
+    SP[Specifications 🐓] --> P[Proofs 🐓]
+    P -.-> X[100% reliable code! 🦄]
+```
+
+We start by generating an automatic translation of the Rust we verify to Coq code with `coq-of-rust`. The translation is originally verbose. We go through two semi-automated refinement steps, links and simulations, that gradually make the code more amenable to formal verification.
+
+Finally, we write the **specifications** and **prove** that our Rust program fulfills them **with any possible user input 🔥**.
+
+Examples of typical specifications are:
+
+- The code cannot panic.
+- This clever data structure is equivalent to its naive version, except for the execution time.
+- This new release, which introduces new endpoints and does a lot of refactoring, is fully backward-compatible with the previous version.
+- Data invariants are properly preserved.
+- The storage system is sound, as what goes in goes out (this generally amounts to state that the serialization/deserialization functions are inverse).
+- The implementation behaves as a special case of what the whitepaper describes once formally expressed.
+
+**With that in hand, you can virtually reduce your bugs and vulnerabilities to zero 🦸!**
 
 ## Rationale
 Formal verification allows the prevention of all bugs in critical software.

@@ -40,9 +40,9 @@ fn main() {
     }
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [] =>
+Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
         let~ array :=
@@ -260,7 +260,12 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                       M.get_associated_function (|
                                         Ty.path "core::fmt::rt::Argument",
                                         "new_debug",
-                                        [ Ty.apply (Ty.path "array") [ Ty.path "i32" ] ]
+                                        [
+                                          Ty.apply
+                                            (Ty.path "array")
+                                            [ Value.Integer 1 ]
+                                            [ Ty.path "i32" ]
+                                        ]
                                       |),
                                       [ tail ]
                                     |)
@@ -321,7 +326,12 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                       M.get_associated_function (|
                                         Ty.path "core::fmt::rt::Argument",
                                         "new_debug",
-                                        [ Ty.apply (Ty.path "array") [ Ty.path "i32" ] ]
+                                        [
+                                          Ty.apply
+                                            (Ty.path "array")
+                                            [ Value.Integer 1 ]
+                                            [ Ty.path "i32" ]
+                                        ]
                                       |),
                                       [ middle ]
                                     |);
@@ -344,7 +354,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           ]
         |)
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_main : M.IsFunction "match_destructuring_arrays_slices::main" main.

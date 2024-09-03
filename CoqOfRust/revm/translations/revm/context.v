@@ -5,17 +5,18 @@ Module context.
   (* StructRecord
     {
       name := "Context";
+      const_params := [];
       ty_params := [ "EXT"; "DB" ];
       fields :=
         [
-          ("evm", Ty.apply (Ty.path "revm::context::evm_context::EvmContext") [ DB ]);
+          ("evm", Ty.apply (Ty.path "revm::context::evm_context::EvmContext") [] [ DB ]);
           ("external", EXT)
         ];
     } *)
   
   Module Impl_core_clone_Clone_where_core_clone_Clone_EXT_where_revm_primitives_db_Database_DB_where_core_clone_Clone_DB_where_core_clone_Clone_associated_type_for_revm_context_Context_EXT_DB.
     Definition Self (EXT DB : Ty.t) : Ty.t :=
-      Ty.apply (Ty.path "revm::context::Context") [ EXT; DB ].
+      Ty.apply (Ty.path "revm::context::Context") [] [ EXT; DB ].
     
     (*
         fn clone(&self) -> Self {
@@ -25,10 +26,10 @@ Module context.
             }
         }
     *)
-    Definition clone (EXT DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition clone (EXT DB : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self EXT DB in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           Value.StructRecord
@@ -38,7 +39,7 @@ Module context.
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::clone::Clone",
-                    Ty.apply (Ty.path "revm::context::evm_context::EvmContext") [ DB ],
+                    Ty.apply (Ty.path "revm::context::evm_context::EvmContext") [] [ DB ],
                     [],
                     "clone",
                     []
@@ -63,7 +64,7 @@ Module context.
                   ]
                 |))
             ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -79,10 +80,12 @@ Module context.
     Definition Self : Ty.t :=
       Ty.apply
         (Ty.path "revm::context::Context")
+        []
         [
           Ty.tuple [];
           Ty.apply
             (Ty.path "revm::db::emptydb::EmptyDBTyped")
+            []
             [ Ty.path "core::convert::Infallible" ]
         ].
     
@@ -91,18 +94,20 @@ Module context.
             Self::new_empty()
         }
     *)
-    Definition default (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [] =>
+    Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [] =>
         ltac:(M.monadic
           (M.call_closure (|
             M.get_associated_function (|
               Ty.apply
                 (Ty.path "revm::context::Context")
+                []
                 [
                   Ty.tuple [];
                   Ty.apply
                     (Ty.path "revm::db::emptydb::EmptyDBTyped")
+                    []
                     [ Ty.path "core::convert::Infallible" ]
                 ],
               "new_empty",
@@ -110,7 +115,7 @@ Module context.
             |),
             []
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -125,10 +130,12 @@ Module context.
     Definition Self : Ty.t :=
       Ty.apply
         (Ty.path "revm::context::Context")
+        []
         [
           Ty.tuple [];
           Ty.apply
             (Ty.path "revm::db::emptydb::EmptyDBTyped")
+            []
             [ Ty.path "core::convert::Infallible" ]
         ].
     
@@ -140,9 +147,9 @@ Module context.
             }
         }
     *)
-    Definition new_empty (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [] =>
+    Definition new_empty (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [] =>
         ltac:(M.monadic
           (Value.StructRecord
             "revm::context::Context"
@@ -152,9 +159,11 @@ Module context.
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "revm::context::evm_context::EvmContext")
+                      []
                       [
                         Ty.apply
                           (Ty.path "revm::db::emptydb::EmptyDBTyped")
+                          []
                           [ Ty.path "core::convert::Infallible" ]
                       ],
                     "new",
@@ -165,6 +174,7 @@ Module context.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "revm::db::emptydb::EmptyDBTyped")
+                          []
                           [ Ty.path "core::convert::Infallible" ],
                         "new",
                         []
@@ -175,7 +185,7 @@ Module context.
                 |));
               ("external", Value.Tuple [])
             ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_new_empty : M.IsAssociatedFunction Self "new_empty" new_empty.
@@ -183,7 +193,7 @@ Module context.
   
   Module Impl_revm_context_Context_Tuple__DB.
     Definition Self (DB : Ty.t) : Ty.t :=
-      Ty.apply (Ty.path "revm::context::Context") [ Ty.tuple []; DB ].
+      Ty.apply (Ty.path "revm::context::Context") [] [ Ty.tuple []; DB ].
     
     (*
         pub fn new_with_db(db: DB) -> Context<(), DB> {
@@ -193,10 +203,10 @@ Module context.
             }
         }
     *)
-    Definition new_with_db (DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition new_with_db (DB : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self DB in
-      match τ, α with
-      | [], [ db ] =>
+      match ε, τ, α with
+      | [], [], [ db ] =>
         ltac:(M.monadic
           (let db := M.alloc (| db |) in
           Value.StructRecord
@@ -205,7 +215,7 @@ Module context.
               ("evm",
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "revm::context::evm_context::EvmContext") [ DB ],
+                    Ty.apply (Ty.path "revm::context::evm_context::EvmContext") [] [ DB ],
                     "new_with_env",
                     []
                   |),
@@ -216,6 +226,7 @@ Module context.
                         "core::default::Default",
                         Ty.apply
                           (Ty.path "alloc::boxed::Box")
+                          []
                           [ Ty.path "revm_primitives::env::Env"; Ty.path "alloc::alloc::Global" ],
                         [],
                         "default",
@@ -227,7 +238,7 @@ Module context.
                 |));
               ("external", Value.Tuple [])
             ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_new_with_db :
@@ -237,24 +248,24 @@ Module context.
   
   Module Impl_revm_context_Context_EXT_DB.
     Definition Self (EXT DB : Ty.t) : Ty.t :=
-      Ty.apply (Ty.path "revm::context::Context") [ EXT; DB ].
+      Ty.apply (Ty.path "revm::context::Context") [] [ EXT; DB ].
     
     (*
         pub fn new(evm: EvmContext<DB>, external: EXT) -> Context<EXT, DB> {
             Context { evm, external }
         }
     *)
-    Definition new (EXT DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition new (EXT DB : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self EXT DB in
-      match τ, α with
-      | [], [ evm; external ] =>
+      match ε, τ, α with
+      | [], [], [ evm; external ] =>
         ltac:(M.monadic
           (let evm := M.alloc (| evm |) in
           let external := M.alloc (| external |) in
           Value.StructRecord
             "revm::context::Context"
             [ ("evm", M.read (| evm |)); ("external", M.read (| external |)) ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_new :
@@ -265,34 +276,35 @@ Module context.
   (* StructRecord
     {
       name := "ContextWithHandlerCfg";
+      const_params := [];
       ty_params := [ "EXT"; "DB" ];
       fields :=
         [
-          ("context", Ty.apply (Ty.path "revm::context::Context") [ EXT; DB ]);
+          ("context", Ty.apply (Ty.path "revm::context::Context") [] [ EXT; DB ]);
           ("cfg", Ty.path "revm_primitives::env::handler_cfg::HandlerCfg")
         ];
     } *)
   
   Module Impl_revm_context_ContextWithHandlerCfg_EXT_DB.
     Definition Self (EXT DB : Ty.t) : Ty.t :=
-      Ty.apply (Ty.path "revm::context::ContextWithHandlerCfg") [ EXT; DB ].
+      Ty.apply (Ty.path "revm::context::ContextWithHandlerCfg") [] [ EXT; DB ].
     
     (*
         pub fn new(context: Context<EXT, DB>, cfg: HandlerCfg) -> Self {
             Self { cfg, context }
         }
     *)
-    Definition new (EXT DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition new (EXT DB : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self EXT DB in
-      match τ, α with
-      | [], [ context; cfg ] =>
+      match ε, τ, α with
+      | [], [], [ context; cfg ] =>
         ltac:(M.monadic
           (let context := M.alloc (| context |) in
           let cfg := M.alloc (| cfg |) in
           Value.StructRecord
             "revm::context::ContextWithHandlerCfg"
             [ ("cfg", M.read (| cfg |)); ("context", M.read (| context |)) ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_new :
@@ -302,7 +314,7 @@ Module context.
   
   Module Impl_core_clone_Clone_where_core_clone_Clone_EXT_where_revm_primitives_db_Database_DB_where_core_clone_Clone_DB_where_core_clone_Clone_associated_type_for_revm_context_ContextWithHandlerCfg_EXT_DB.
     Definition Self (EXT DB : Ty.t) : Ty.t :=
-      Ty.apply (Ty.path "revm::context::ContextWithHandlerCfg") [ EXT; DB ].
+      Ty.apply (Ty.path "revm::context::ContextWithHandlerCfg") [] [ EXT; DB ].
     
     (*
         fn clone(&self) -> Self {
@@ -312,10 +324,10 @@ Module context.
             }
         }
     *)
-    Definition clone (EXT DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition clone (EXT DB : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self EXT DB in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           Value.StructRecord
@@ -325,7 +337,7 @@ Module context.
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::clone::Clone",
-                    Ty.apply (Ty.path "revm::context::Context") [ EXT; DB ],
+                    Ty.apply (Ty.path "revm::context::Context") [] [ EXT; DB ],
                     [],
                     "clone",
                     []
@@ -347,7 +359,7 @@ Module context.
                   |)
                 |))
             ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :

@@ -9,9 +9,9 @@ fn create_box() {
     // `_box1` is destroyed here, and memory gets freed
 }
 *)
-Definition create_box (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [] =>
+Definition create_box (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
         let~ _box1 :=
@@ -20,6 +20,7 @@ Definition create_box (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "alloc::boxed::Box")
+                  []
                   [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
                 "new",
                 []
@@ -29,7 +30,7 @@ Definition create_box (τ : list Ty.t) (α : list Value.t) : M :=
           |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_create_box : M.IsFunction "scoping_rules_raii::create_box" create_box.
@@ -56,9 +57,9 @@ fn main() {
     // `_box2` is destroyed here, and memory gets freed
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [] =>
+Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
         let~ _box2 :=
@@ -67,6 +68,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "alloc::boxed::Box")
+                  []
                   [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
                 "new",
                 []
@@ -81,6 +83,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "alloc::boxed::Box")
+                    []
                     [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
                   "new",
                   []
@@ -95,7 +98,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               M.call_closure (|
                 M.get_trait_method (|
                   "core::iter::traits::collect::IntoIterator",
-                  Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "u32" ],
+                  Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "u32" ],
                   [],
                   "into_iter",
                   []
@@ -119,7 +122,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                             M.call_closure (|
                               M.get_trait_method (|
                                 "core::iter::traits::iterator::Iterator",
-                                Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "u32" ],
+                                Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "u32" ],
                                 [],
                                 "next",
                                 []
@@ -155,7 +158,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             ]
           |))
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_main : M.IsFunction "scoping_rules_raii::main" main.

@@ -9,13 +9,18 @@ Module interpreter.
     (* StructRecord
       {
         name := "Stack";
+        const_params := [];
         ty_params := [];
         fields :=
           [
             ("data",
               Ty.apply
                 (Ty.path "alloc::vec::Vec")
-                [ Ty.path "ruint::Uint"; Ty.path "alloc::alloc::Global" ])
+                []
+                [
+                  Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [];
+                  Ty.path "alloc::alloc::Global"
+                ])
           ];
       } *)
     
@@ -23,9 +28,9 @@ Module interpreter.
       Definition Self : Ty.t := Ty.path "revm_interpreter::interpreter::stack::Stack".
       
       (* Debug *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -50,7 +55,7 @@ Module interpreter.
                   |))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -76,9 +81,9 @@ Module interpreter.
       Definition Self : Ty.t := Ty.path "revm_interpreter::interpreter::stack::Stack".
       
       (* PartialEq *)
-      Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -87,11 +92,19 @@ Module interpreter.
                 "core::cmp::PartialEq",
                 Ty.apply
                   (Ty.path "alloc::vec::Vec")
-                  [ Ty.path "ruint::Uint"; Ty.path "alloc::alloc::Global" ],
+                  []
+                  [
+                    Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [];
+                    Ty.path "alloc::alloc::Global"
+                  ],
                 [
                   Ty.apply
                     (Ty.path "alloc::vec::Vec")
-                    [ Ty.path "ruint::Uint"; Ty.path "alloc::alloc::Global" ]
+                    []
+                    [
+                      Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [];
+                      Ty.path "alloc::alloc::Global"
+                    ]
                 ],
                 "eq",
                 []
@@ -109,7 +122,7 @@ Module interpreter.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -135,9 +148,13 @@ Module interpreter.
       Definition Self : Ty.t := Ty.path "revm_interpreter::interpreter::stack::Stack".
       
       (* Eq *)
-      Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition assert_receiver_is_total_eq
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -146,7 +163,7 @@ Module interpreter.
                 [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -162,9 +179,9 @@ Module interpreter.
       Definition Self : Ty.t := Ty.path "revm_interpreter::interpreter::stack::Stack".
       
       (* Hash *)
-      Definition hash (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ __H ], [ self; state ] =>
+      Definition hash (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ __H ], [ self; state ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
@@ -173,7 +190,11 @@ Module interpreter.
                 "core::hash::Hash",
                 Ty.apply
                   (Ty.path "alloc::vec::Vec")
-                  [ Ty.path "ruint::Uint"; Ty.path "alloc::alloc::Global" ],
+                  []
+                  [
+                    Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [];
+                    Ty.path "alloc::alloc::Global"
+                  ],
                 [],
                 "hash",
                 [ __H ]
@@ -187,7 +208,7 @@ Module interpreter.
                 M.read (| state |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -213,9 +234,9 @@ Module interpreter.
               f.write_str("]")
           }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -230,6 +251,7 @@ Module interpreter.
                             "core::ops::try_trait::Try",
                             Ty.apply
                               (Ty.path "core::result::Result")
+                              []
                               [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                             [],
                             "branch",
@@ -266,10 +288,12 @@ Module interpreter.
                                         "core::ops::try_trait::FromResidual",
                                         Ty.apply
                                           (Ty.path "core::result::Result")
+                                          []
                                           [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                         [
                                           Ty.apply
                                             (Ty.path "core::result::Result")
+                                            []
                                             [
                                               Ty.path "core::convert::Infallible";
                                               Ty.path "core::fmt::Error"
@@ -305,10 +329,17 @@ Module interpreter.
                               "core::iter::traits::collect::IntoIterator",
                               Ty.apply
                                 (Ty.path "core::iter::adapters::enumerate::Enumerate")
+                                []
                                 [
                                   Ty.apply
                                     (Ty.path "core::slice::iter::Iter")
-                                    [ Ty.path "ruint::Uint" ]
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "ruint::Uint")
+                                        [ Value.Integer 256; Value.Integer 4 ]
+                                        []
+                                    ]
                                 ],
                               [],
                               "into_iter",
@@ -320,7 +351,13 @@ Module interpreter.
                                   "core::iter::traits::iterator::Iterator",
                                   Ty.apply
                                     (Ty.path "core::slice::iter::Iter")
-                                    [ Ty.path "ruint::Uint" ],
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "ruint::Uint")
+                                        [ Value.Integer 256; Value.Integer 4 ]
+                                        []
+                                    ],
                                   [],
                                   "enumerate",
                                   []
@@ -328,7 +365,15 @@ Module interpreter.
                                 [
                                   M.call_closure (|
                                     M.get_associated_function (|
-                                      Ty.apply (Ty.path "slice") [ Ty.path "ruint::Uint" ],
+                                      Ty.apply
+                                        (Ty.path "slice")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "ruint::Uint")
+                                            [ Value.Integer 256; Value.Integer 4 ]
+                                            []
+                                        ],
                                       "iter",
                                       []
                                     |),
@@ -338,7 +383,13 @@ Module interpreter.
                                           "core::ops::deref::Deref",
                                           Ty.apply
                                             (Ty.path "alloc::vec::Vec")
-                                            [ Ty.path "ruint::Uint"; Ty.path "alloc::alloc::Global"
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "ruint::Uint")
+                                                [ Value.Integer 256; Value.Integer 4 ]
+                                                [];
+                                              Ty.path "alloc::alloc::Global"
                                             ],
                                           [],
                                           "deref",
@@ -373,10 +424,17 @@ Module interpreter.
                                             "core::iter::traits::iterator::Iterator",
                                             Ty.apply
                                               (Ty.path "core::iter::adapters::enumerate::Enumerate")
+                                              []
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::slice::iter::Iter")
-                                                  [ Ty.path "ruint::Uint" ]
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "ruint::Uint")
+                                                      [ Value.Integer 256; Value.Integer 4 ]
+                                                      []
+                                                  ]
                                               ],
                                             [],
                                             "next",
@@ -436,6 +494,7 @@ Module interpreter.
                                                                 "core::ops::try_trait::Try",
                                                                 Ty.apply
                                                                   (Ty.path "core::result::Result")
+                                                                  []
                                                                   [
                                                                     Ty.tuple [];
                                                                     Ty.path "core::fmt::Error"
@@ -479,6 +538,7 @@ Module interpreter.
                                                                             Ty.apply
                                                                               (Ty.path
                                                                                 "core::result::Result")
+                                                                              []
                                                                               [
                                                                                 Ty.tuple [];
                                                                                 Ty.path
@@ -488,6 +548,7 @@ Module interpreter.
                                                                               Ty.apply
                                                                                 (Ty.path
                                                                                   "core::result::Result")
+                                                                                []
                                                                                 [
                                                                                   Ty.path
                                                                                     "core::convert::Infallible";
@@ -529,6 +590,7 @@ Module interpreter.
                                                       "core::ops::try_trait::Try",
                                                       Ty.apply
                                                         (Ty.path "core::result::Result")
+                                                        []
                                                         [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                                       [],
                                                       "branch",
@@ -569,9 +631,17 @@ Module interpreter.
                                                                           [
                                                                             Ty.apply
                                                                               (Ty.path "&")
+                                                                              []
                                                                               [
-                                                                                Ty.path
-                                                                                  "ruint::Uint"
+                                                                                Ty.apply
+                                                                                  (Ty.path
+                                                                                    "ruint::Uint")
+                                                                                  [
+                                                                                    Value.Integer
+                                                                                      256;
+                                                                                    Value.Integer 4
+                                                                                  ]
+                                                                                  []
                                                                               ]
                                                                           ]
                                                                         |),
@@ -605,6 +675,7 @@ Module interpreter.
                                                                   "core::ops::try_trait::FromResidual",
                                                                   Ty.apply
                                                                     (Ty.path "core::result::Result")
+                                                                    []
                                                                     [
                                                                       Ty.tuple [];
                                                                       Ty.path "core::fmt::Error"
@@ -613,6 +684,7 @@ Module interpreter.
                                                                     Ty.apply
                                                                       (Ty.path
                                                                         "core::result::Result")
+                                                                      []
                                                                       [
                                                                         Ty.path
                                                                           "core::convert::Infallible";
@@ -659,7 +731,7 @@ Module interpreter.
                   |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -678,9 +750,9 @@ Module interpreter.
               Self::new()
           }
       *)
-      Definition default (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [] =>
+      Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [] =>
           ltac:(M.monadic
             (M.call_closure (|
               M.get_associated_function (|
@@ -690,7 +762,7 @@ Module interpreter.
               |),
               []
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -712,9 +784,9 @@ Module interpreter.
               }
           }
       *)
-      Definition new (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [] =>
+      Definition new (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [] =>
           ltac:(M.monadic
             (Value.StructRecord
               "revm_interpreter::interpreter::stack::Stack"
@@ -724,7 +796,14 @@ Module interpreter.
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "alloc::vec::Vec")
-                        [ Ty.path "ruint::Uint"; Ty.path "alloc::alloc::Global" ],
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "ruint::Uint")
+                            [ Value.Integer 256; Value.Integer 4 ]
+                            [];
+                          Ty.path "alloc::alloc::Global"
+                        ],
                       "with_capacity",
                       []
                     |),
@@ -735,7 +814,7 @@ Module interpreter.
                     ]
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -745,16 +824,20 @@ Module interpreter.
               self.data.len()
           }
       *)
-      Definition len (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition len (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "alloc::vec::Vec")
-                  [ Ty.path "ruint::Uint"; Ty.path "alloc::alloc::Global" ],
+                  []
+                  [
+                    Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [];
+                    Ty.path "alloc::alloc::Global"
+                  ],
                 "len",
                 []
               |),
@@ -766,7 +849,7 @@ Module interpreter.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_len : M.IsAssociatedFunction Self "len" len.
@@ -776,16 +859,20 @@ Module interpreter.
               self.data.is_empty()
           }
       *)
-      Definition is_empty (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition is_empty (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "alloc::vec::Vec")
-                  [ Ty.path "ruint::Uint"; Ty.path "alloc::alloc::Global" ],
+                  []
+                  [
+                    Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [];
+                    Ty.path "alloc::alloc::Global"
+                  ],
                 "is_empty",
                 []
               |),
@@ -797,7 +884,7 @@ Module interpreter.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_is_empty : M.IsAssociatedFunction Self "is_empty" is_empty.
@@ -807,9 +894,9 @@ Module interpreter.
               &self.data
           }
       *)
-      Definition data (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition data (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.SubPointer.get_struct_record_field (|
@@ -817,7 +904,7 @@ Module interpreter.
               "revm_interpreter::interpreter::stack::Stack",
               "data"
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_data : M.IsAssociatedFunction Self "data" data.
@@ -827,9 +914,9 @@ Module interpreter.
               &mut self.data
           }
       *)
-      Definition data_mut (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition data_mut (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.SubPointer.get_struct_record_field (|
@@ -837,7 +924,7 @@ Module interpreter.
               "revm_interpreter::interpreter::stack::Stack",
               "data"
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_data_mut : M.IsAssociatedFunction Self "data_mut" data_mut.
@@ -847,9 +934,9 @@ Module interpreter.
               self.data
           }
       *)
-      Definition into_data (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition into_data (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -859,7 +946,7 @@ Module interpreter.
                 "data"
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_into_data : M.IsAssociatedFunction Self "into_data" into_data.
@@ -869,14 +956,17 @@ Module interpreter.
               self.data.pop().ok_or(InstructionResult::StackUnderflow)
           }
       *)
-      Definition pop (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition pop (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "core::option::Option") [ Ty.path "ruint::Uint" ],
+                Ty.apply
+                  (Ty.path "core::option::Option")
+                  []
+                  [ Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [] ],
                 "ok_or",
                 [ Ty.path "revm_interpreter::instruction_result::InstructionResult" ]
               |),
@@ -885,7 +975,11 @@ Module interpreter.
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "alloc::vec::Vec")
-                      [ Ty.path "ruint::Uint"; Ty.path "alloc::alloc::Global" ],
+                      []
+                      [
+                        Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [];
+                        Ty.path "alloc::alloc::Global"
+                      ],
                     "pop",
                     []
                   |),
@@ -902,7 +996,7 @@ Module interpreter.
                   []
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_pop : M.IsAssociatedFunction Self "pop" pop.
@@ -912,14 +1006,17 @@ Module interpreter.
               self.data.pop().unwrap_unchecked()
           }
       *)
-      Definition pop_unsafe (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition pop_unsafe (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "core::option::Option") [ Ty.path "ruint::Uint" ],
+                Ty.apply
+                  (Ty.path "core::option::Option")
+                  []
+                  [ Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [] ],
                 "unwrap_unchecked",
                 []
               |),
@@ -928,7 +1025,11 @@ Module interpreter.
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "alloc::vec::Vec")
-                      [ Ty.path "ruint::Uint"; Ty.path "alloc::alloc::Global" ],
+                      []
+                      [
+                        Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [];
+                        Ty.path "alloc::alloc::Global"
+                      ],
                     "pop",
                     []
                   |),
@@ -942,7 +1043,7 @@ Module interpreter.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_pop_unsafe : M.IsAssociatedFunction Self "pop_unsafe" pop_unsafe.
@@ -953,9 +1054,9 @@ Module interpreter.
               self.data.get_unchecked_mut(len - 1)
           }
       *)
-      Definition top_unsafe (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition top_unsafe (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -965,7 +1066,14 @@ Module interpreter.
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "alloc::vec::Vec")
-                        [ Ty.path "ruint::Uint"; Ty.path "alloc::alloc::Global" ],
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "ruint::Uint")
+                            [ Value.Integer 256; Value.Integer 4 ]
+                            [];
+                          Ty.path "alloc::alloc::Global"
+                        ],
                       "len",
                       []
                     |),
@@ -981,7 +1089,11 @@ Module interpreter.
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "slice") [ Ty.path "ruint::Uint" ],
+                    Ty.apply
+                      (Ty.path "slice")
+                      []
+                      [ Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] []
+                      ],
                     "get_unchecked_mut",
                     [ Ty.path "usize" ]
                   |),
@@ -991,7 +1103,14 @@ Module interpreter.
                         "core::ops::deref::DerefMut",
                         Ty.apply
                           (Ty.path "alloc::vec::Vec")
-                          [ Ty.path "ruint::Uint"; Ty.path "alloc::alloc::Global" ],
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "ruint::Uint")
+                              [ Value.Integer 256; Value.Integer 4 ]
+                              [];
+                            Ty.path "alloc::alloc::Global"
+                          ],
                         [],
                         "deref_mut",
                         []
@@ -1009,7 +1128,7 @@ Module interpreter.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_top_unsafe : M.IsAssociatedFunction Self "top_unsafe" top_unsafe.
@@ -1021,9 +1140,9 @@ Module interpreter.
               (pop, top)
           }
       *)
-      Definition pop_top_unsafe (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition pop_top_unsafe (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -1051,7 +1170,7 @@ Module interpreter.
                 |) in
               M.alloc (| Value.Tuple [ M.read (| pop |); M.read (| top |) ] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_pop_top_unsafe :
@@ -1064,9 +1183,9 @@ Module interpreter.
               (pop1, pop2)
           }
       *)
-      Definition pop2_unsafe (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition pop2_unsafe (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -1094,7 +1213,7 @@ Module interpreter.
                 |) in
               M.alloc (| Value.Tuple [ M.read (| pop1 |); M.read (| pop2 |) ] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_pop2_unsafe : M.IsAssociatedFunction Self "pop2_unsafe" pop2_unsafe.
@@ -1108,9 +1227,9 @@ Module interpreter.
               (pop1, pop2, top)
           }
       *)
-      Definition pop2_top_unsafe (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition pop2_top_unsafe (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -1149,7 +1268,7 @@ Module interpreter.
                 |) in
               M.alloc (| Value.Tuple [ M.read (| pop1 |); M.read (| pop2 |); M.read (| top |) ] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_pop2_top_unsafe :
@@ -1164,9 +1283,9 @@ Module interpreter.
               (pop1, pop2, pop3)
           }
       *)
-      Definition pop3_unsafe (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition pop3_unsafe (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -1205,7 +1324,7 @@ Module interpreter.
                 |) in
               M.alloc (| Value.Tuple [ M.read (| pop1 |); M.read (| pop2 |); M.read (| pop3 |) ] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_pop3_unsafe : M.IsAssociatedFunction Self "pop3_unsafe" pop3_unsafe.
@@ -1220,9 +1339,9 @@ Module interpreter.
               (pop1, pop2, pop3, pop4)
           }
       *)
-      Definition pop4_unsafe (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition pop4_unsafe (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -1275,7 +1394,7 @@ Module interpreter.
                   [ M.read (| pop1 |); M.read (| pop2 |); M.read (| pop3 |); M.read (| pop4 |) ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_pop4_unsafe : M.IsAssociatedFunction Self "pop4_unsafe" pop4_unsafe.
@@ -1291,9 +1410,9 @@ Module interpreter.
               (pop1, pop2, pop3, pop4, pop5)
           }
       *)
-      Definition pop5_unsafe (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition pop5_unsafe (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -1363,7 +1482,7 @@ Module interpreter.
                   ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_pop5_unsafe : M.IsAssociatedFunction Self "pop5_unsafe" pop5_unsafe.
@@ -1373,9 +1492,9 @@ Module interpreter.
               self.push(value.into())
           }
       *)
-      Definition push_b256 (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; value ] =>
+      Definition push_b256 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; value ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let value := M.alloc (| value |) in
@@ -1390,8 +1509,11 @@ Module interpreter.
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::convert::Into",
-                    Ty.path "alloy_primitives::bits::fixed::FixedBytes",
-                    [ Ty.path "ruint::Uint" ],
+                    Ty.apply
+                      (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                      [ Value.Integer 32 ]
+                      [],
+                    [ Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [] ],
                     "into",
                     []
                   |),
@@ -1399,7 +1521,7 @@ Module interpreter.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_push_b256 : M.IsAssociatedFunction Self "push_b256" push_b256.
@@ -1415,9 +1537,9 @@ Module interpreter.
               Ok(())
           }
       *)
-      Definition push (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; value ] =>
+      Definition push (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; value ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let value := M.alloc (| value |) in
@@ -1439,7 +1561,13 @@ Module interpreter.
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "alloc::vec::Vec")
-                                            [ Ty.path "ruint::Uint"; Ty.path "alloc::alloc::Global"
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "ruint::Uint")
+                                                [ Value.Integer 256; Value.Integer 4 ]
+                                                [];
+                                              Ty.path "alloc::alloc::Global"
                                             ],
                                           "capacity",
                                           []
@@ -1563,7 +1691,14 @@ Module interpreter.
                                       M.get_associated_function (|
                                         Ty.apply
                                           (Ty.path "alloc::vec::Vec")
-                                          [ Ty.path "ruint::Uint"; Ty.path "alloc::alloc::Global" ],
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "ruint::Uint")
+                                              [ Value.Integer 256; Value.Integer 4 ]
+                                              [];
+                                            Ty.path "alloc::alloc::Global"
+                                          ],
                                         "len",
                                         []
                                       |),
@@ -1607,7 +1742,14 @@ Module interpreter.
                         M.get_associated_function (|
                           Ty.apply
                             (Ty.path "alloc::vec::Vec")
-                            [ Ty.path "ruint::Uint"; Ty.path "alloc::alloc::Global" ],
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "ruint::Uint")
+                                [ Value.Integer 256; Value.Integer 4 ]
+                                [];
+                              Ty.path "alloc::alloc::Global"
+                            ],
                           "push",
                           []
                         |),
@@ -1624,7 +1766,7 @@ Module interpreter.
                   M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_push : M.IsAssociatedFunction Self "push" push.
@@ -1638,9 +1780,9 @@ Module interpreter.
               }
           }
       *)
-      Definition peek (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; no_from_top ] =>
+      Definition peek (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; no_from_top ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let no_from_top := M.alloc (| no_from_top |) in
@@ -1658,7 +1800,14 @@ Module interpreter.
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "alloc::vec::Vec")
-                                    [ Ty.path "ruint::Uint"; Ty.path "alloc::alloc::Global" ],
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "ruint::Uint")
+                                        [ Value.Integer 256; Value.Integer 4 ]
+                                        [];
+                                      Ty.path "alloc::alloc::Global"
+                                    ],
                                   "len",
                                   []
                                 |),
@@ -1683,7 +1832,14 @@ Module interpreter.
                                   "core::ops::index::Index",
                                   Ty.apply
                                     (Ty.path "alloc::vec::Vec")
-                                    [ Ty.path "ruint::Uint"; Ty.path "alloc::alloc::Global" ],
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "ruint::Uint")
+                                        [ Value.Integer 256; Value.Integer 4 ]
+                                        [];
+                                      Ty.path "alloc::alloc::Global"
+                                    ],
                                   [ Ty.path "usize" ],
                                   "index",
                                   []
@@ -1702,7 +1858,13 @@ Module interpreter.
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "alloc::vec::Vec")
-                                            [ Ty.path "ruint::Uint"; Ty.path "alloc::alloc::Global"
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "ruint::Uint")
+                                                [ Value.Integer 256; Value.Integer 4 ]
+                                                [];
+                                              Ty.path "alloc::alloc::Global"
                                             ],
                                           "len",
                                           []
@@ -1736,7 +1898,7 @@ Module interpreter.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_peek : M.IsAssociatedFunction Self "peek" peek.
@@ -1760,9 +1922,9 @@ Module interpreter.
               }
           }
       *)
-      Definition dup (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; n ] =>
+      Definition dup (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; n ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
@@ -1872,7 +2034,14 @@ Module interpreter.
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "alloc::vec::Vec")
-                        [ Ty.path "ruint::Uint"; Ty.path "alloc::alloc::Global" ],
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "ruint::Uint")
+                            [ Value.Integer 256; Value.Integer 4 ]
+                            [];
+                          Ty.path "alloc::alloc::Global"
+                        ],
                       "len",
                       []
                     |),
@@ -1944,7 +2113,15 @@ Module interpreter.
                                   M.alloc (|
                                     M.call_closure (|
                                       M.get_associated_function (|
-                                        Ty.apply (Ty.path "*mut") [ Ty.path "ruint::Uint" ],
+                                        Ty.apply
+                                          (Ty.path "*mut")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "ruint::Uint")
+                                              [ Value.Integer 256; Value.Integer 4 ]
+                                              []
+                                          ],
                                         "add",
                                         []
                                       |),
@@ -1953,8 +2130,12 @@ Module interpreter.
                                           M.get_associated_function (|
                                             Ty.apply
                                               (Ty.path "alloc::vec::Vec")
+                                              []
                                               [
-                                                Ty.path "ruint::Uint";
+                                                Ty.apply
+                                                  (Ty.path "ruint::Uint")
+                                                  [ Value.Integer 256; Value.Integer 4 ]
+                                                  [];
                                                 Ty.path "alloc::alloc::Global"
                                               ],
                                             "as_mut_ptr",
@@ -1977,14 +2158,27 @@ Module interpreter.
                                     M.call_closure (|
                                       M.get_function (|
                                         "core::intrinsics::copy_nonoverlapping",
-                                        [ Ty.path "ruint::Uint" ]
+                                        [
+                                          Ty.apply
+                                            (Ty.path "ruint::Uint")
+                                            [ Value.Integer 256; Value.Integer 4 ]
+                                            []
+                                        ]
                                       |),
                                       [
                                         (* MutToConstPointer *)
                                         M.pointer_coercion
                                           (M.call_closure (|
                                             M.get_associated_function (|
-                                              Ty.apply (Ty.path "*mut") [ Ty.path "ruint::Uint" ],
+                                              Ty.apply
+                                                (Ty.path "*mut")
+                                                []
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "ruint::Uint")
+                                                    [ Value.Integer 256; Value.Integer 4 ]
+                                                    []
+                                                ],
                                               "sub",
                                               []
                                             |),
@@ -2001,7 +2195,14 @@ Module interpreter.
                                       M.get_associated_function (|
                                         Ty.apply
                                           (Ty.path "alloc::vec::Vec")
-                                          [ Ty.path "ruint::Uint"; Ty.path "alloc::alloc::Global" ],
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "ruint::Uint")
+                                              [ Value.Integer 256; Value.Integer 4 ]
+                                              [];
+                                            Ty.path "alloc::alloc::Global"
+                                          ],
                                         "set_len",
                                         []
                                       |),
@@ -2027,7 +2228,7 @@ Module interpreter.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_dup : M.IsAssociatedFunction Self "dup" dup.
@@ -2037,9 +2238,9 @@ Module interpreter.
               self.exchange(0, n)
           }
       *)
-      Definition swap (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; n ] =>
+      Definition swap (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; n ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
@@ -2051,7 +2252,7 @@ Module interpreter.
               |),
               [ M.read (| self |); Value.Integer 0; M.read (| n |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_swap : M.IsAssociatedFunction Self "swap" swap.
@@ -2076,9 +2277,9 @@ Module interpreter.
               Ok(())
           }
       *)
-      Definition exchange (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; n; m ] =>
+      Definition exchange (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; n; m ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
@@ -2194,7 +2395,14 @@ Module interpreter.
                         M.get_associated_function (|
                           Ty.apply
                             (Ty.path "alloc::vec::Vec")
-                            [ Ty.path "ruint::Uint"; Ty.path "alloc::alloc::Global" ],
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "ruint::Uint")
+                                [ Value.Integer 256; Value.Integer 4 ]
+                                [];
+                              Ty.path "alloc::alloc::Global"
+                            ],
                           "len",
                           []
                         |),
@@ -2245,7 +2453,15 @@ Module interpreter.
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
-                            Ty.apply (Ty.path "*mut") [ Ty.path "ruint::Uint" ],
+                            Ty.apply
+                              (Ty.path "*mut")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "ruint::Uint")
+                                  [ Value.Integer 256; Value.Integer 4 ]
+                                  []
+                              ],
                             "add",
                             []
                           |),
@@ -2254,7 +2470,14 @@ Module interpreter.
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "alloc::vec::Vec")
-                                  [ Ty.path "ruint::Uint"; Ty.path "alloc::alloc::Global" ],
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "ruint::Uint")
+                                      [ Value.Integer 256; Value.Integer 4 ]
+                                      [];
+                                    Ty.path "alloc::alloc::Global"
+                                  ],
                                 "as_mut_ptr",
                                 []
                               |),
@@ -2275,12 +2498,25 @@ Module interpreter.
                         M.call_closure (|
                           M.get_function (|
                             "core::ptr::swap_nonoverlapping",
-                            [ Ty.path "ruint::Uint" ]
+                            [
+                              Ty.apply
+                                (Ty.path "ruint::Uint")
+                                [ Value.Integer 256; Value.Integer 4 ]
+                                []
+                            ]
                           |),
                           [
                             M.call_closure (|
                               M.get_associated_function (|
-                                Ty.apply (Ty.path "*mut") [ Ty.path "ruint::Uint" ],
+                                Ty.apply
+                                  (Ty.path "*mut")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "ruint::Uint")
+                                      [ Value.Integer 256; Value.Integer 4 ]
+                                      []
+                                  ],
                                 "sub",
                                 []
                               |),
@@ -2288,7 +2524,15 @@ Module interpreter.
                             |);
                             M.call_closure (|
                               M.get_associated_function (|
-                                Ty.apply (Ty.path "*mut") [ Ty.path "ruint::Uint" ],
+                                Ty.apply
+                                  (Ty.path "*mut")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "ruint::Uint")
+                                      [ Value.Integer 256; Value.Integer 4 ]
+                                      []
+                                  ],
                                 "sub",
                                 []
                               |),
@@ -2302,7 +2546,7 @@ Module interpreter.
                   M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_exchange : M.IsAssociatedFunction Self "exchange" exchange.
@@ -2370,9 +2614,9 @@ Module interpreter.
               Ok(())
           }
       *)
-      Definition push_slice (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; slice ] =>
+      Definition push_slice (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; slice ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let slice := M.alloc (| slice |) in
@@ -2390,7 +2634,7 @@ Module interpreter.
                                 (M.alloc (|
                                   M.call_closure (|
                                     M.get_associated_function (|
-                                      Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                      Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                       "is_empty",
                                       []
                                     |),
@@ -2419,7 +2663,7 @@ Module interpreter.
                           Integer.Usize
                           (M.call_closure (|
                             M.get_associated_function (|
-                              Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                              Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                               "len",
                               []
                             |),
@@ -2436,7 +2680,14 @@ Module interpreter.
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "alloc::vec::Vec")
-                              [ Ty.path "ruint::Uint"; Ty.path "alloc::alloc::Global" ],
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "ruint::Uint")
+                                  [ Value.Integer 256; Value.Integer 4 ]
+                                  [];
+                                Ty.path "alloc::alloc::Global"
+                              ],
                             "len",
                             []
                           |),
@@ -2492,14 +2743,30 @@ Module interpreter.
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
-                            Ty.apply (Ty.path "*mut") [ Ty.path "ruint::Uint" ],
+                            Ty.apply
+                              (Ty.path "*mut")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "ruint::Uint")
+                                  [ Value.Integer 256; Value.Integer 4 ]
+                                  []
+                              ],
                             "cast",
                             [ Ty.path "u64" ]
                           |),
                           [
                             M.call_closure (|
                               M.get_associated_function (|
-                                Ty.apply (Ty.path "*mut") [ Ty.path "ruint::Uint" ],
+                                Ty.apply
+                                  (Ty.path "*mut")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "ruint::Uint")
+                                      [ Value.Integer 256; Value.Integer 4 ]
+                                      []
+                                  ],
                                 "add",
                                 []
                               |),
@@ -2508,7 +2775,14 @@ Module interpreter.
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "alloc::vec::Vec")
-                                      [ Ty.path "ruint::Uint"; Ty.path "alloc::alloc::Global" ],
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "ruint::Uint")
+                                          [ Value.Integer 256; Value.Integer 4 ]
+                                          [];
+                                        Ty.path "alloc::alloc::Global"
+                                      ],
                                     "as_mut_ptr",
                                     []
                                   |),
@@ -2524,7 +2798,14 @@ Module interpreter.
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "alloc::vec::Vec")
-                                      [ Ty.path "ruint::Uint"; Ty.path "alloc::alloc::Global" ],
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "ruint::Uint")
+                                          [ Value.Integer 256; Value.Integer 4 ]
+                                          [];
+                                        Ty.path "alloc::alloc::Global"
+                                      ],
                                     "len",
                                     []
                                   |),
@@ -2547,7 +2828,14 @@ Module interpreter.
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "alloc::vec::Vec")
-                              [ Ty.path "ruint::Uint"; Ty.path "alloc::alloc::Global" ],
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "ruint::Uint")
+                                  [ Value.Integer 256; Value.Integer 4 ]
+                                  [];
+                                Ty.path "alloc::alloc::Global"
+                              ],
                             "set_len",
                             []
                           |),
@@ -2566,7 +2854,7 @@ Module interpreter.
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
-                            Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                            Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                             "chunks_exact",
                             []
                           |),
@@ -2577,7 +2865,7 @@ Module interpreter.
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
-                            Ty.apply (Ty.path "core::slice::iter::ChunksExact") [ Ty.path "u8" ],
+                            Ty.apply (Ty.path "core::slice::iter::ChunksExact") [] [ Ty.path "u8" ],
                             "remainder",
                             []
                           |),
@@ -2593,6 +2881,7 @@ Module interpreter.
                                 "core::iter::traits::collect::IntoIterator",
                                 Ty.apply
                                   (Ty.path "core::slice::iter::ChunksExact")
+                                  []
                                   [ Ty.path "u8" ],
                                 [],
                                 "into_iter",
@@ -2615,6 +2904,7 @@ Module interpreter.
                                               "core::iter::traits::iterator::Iterator",
                                               Ty.apply
                                                 (Ty.path "core::slice::iter::ChunksExact")
+                                                []
                                                 [ Ty.path "u8" ],
                                               [],
                                               "next",
@@ -2652,6 +2942,7 @@ Module interpreter.
                                                         Ty.apply
                                                           (Ty.path
                                                             "core::slice::iter::RChunksExact")
+                                                          []
                                                           [ Ty.path "u8" ],
                                                         [],
                                                         "into_iter",
@@ -2662,6 +2953,7 @@ Module interpreter.
                                                           M.get_associated_function (|
                                                             Ty.apply
                                                               (Ty.path "slice")
+                                                              []
                                                               [ Ty.path "u8" ],
                                                             "rchunks_exact",
                                                             []
@@ -2686,6 +2978,7 @@ Module interpreter.
                                                                       Ty.apply
                                                                         (Ty.path
                                                                           "core::slice::iter::RChunksExact")
+                                                                        []
                                                                         [ Ty.path "u8" ],
                                                                       [],
                                                                       "next",
@@ -2722,6 +3015,7 @@ Module interpreter.
                                                                             M.get_associated_function (|
                                                                               Ty.apply
                                                                                 (Ty.path "*mut")
+                                                                                []
                                                                                 [ Ty.path "u64" ],
                                                                               "write",
                                                                               []
@@ -2731,6 +3025,7 @@ Module interpreter.
                                                                                 M.get_associated_function (|
                                                                                   Ty.apply
                                                                                     (Ty.path "*mut")
+                                                                                    []
                                                                                     [ Ty.path "u64"
                                                                                     ],
                                                                                   "add",
@@ -2753,10 +3048,15 @@ Module interpreter.
                                                                                       Ty.apply
                                                                                         (Ty.path
                                                                                           "core::result::Result")
+                                                                                        []
                                                                                         [
                                                                                           Ty.apply
                                                                                             (Ty.path
                                                                                               "array")
+                                                                                            [
+                                                                                              Value.Integer
+                                                                                                8
+                                                                                            ]
                                                                                             [
                                                                                               Ty.path
                                                                                                 "u8"
@@ -2774,10 +3074,12 @@ Module interpreter.
                                                                                           Ty.apply
                                                                                             (Ty.path
                                                                                               "&")
+                                                                                            []
                                                                                             [
                                                                                               Ty.apply
                                                                                                 (Ty.path
                                                                                                   "slice")
+                                                                                                []
                                                                                                 [
                                                                                                   Ty.path
                                                                                                     "u8"
@@ -2787,6 +3089,10 @@ Module interpreter.
                                                                                             Ty.apply
                                                                                               (Ty.path
                                                                                                 "array")
+                                                                                              [
+                                                                                                Value.Integer
+                                                                                                  8
+                                                                                              ]
                                                                                               [
                                                                                                 Ty.path
                                                                                                   "u8"
@@ -2841,7 +3147,7 @@ Module interpreter.
                                   (M.alloc (|
                                     M.call_closure (|
                                       M.get_associated_function (|
-                                        Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                        Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                         "is_empty",
                                         []
                                       |),
@@ -2871,7 +3177,7 @@ Module interpreter.
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
-                            Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                            Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                             "rchunks_exact",
                             []
                           |),
@@ -2882,7 +3188,10 @@ Module interpreter.
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
-                            Ty.apply (Ty.path "core::slice::iter::RChunksExact") [ Ty.path "u8" ],
+                            Ty.apply
+                              (Ty.path "core::slice::iter::RChunksExact")
+                              []
+                              [ Ty.path "u8" ],
                             "remainder",
                             []
                           |),
@@ -2898,6 +3207,7 @@ Module interpreter.
                                 "core::iter::traits::collect::IntoIterator",
                                 Ty.apply
                                   (Ty.path "core::slice::iter::RChunksExact")
+                                  []
                                   [ Ty.path "u8" ],
                                 [],
                                 "into_iter",
@@ -2920,6 +3230,7 @@ Module interpreter.
                                               "core::iter::traits::iterator::Iterator",
                                               Ty.apply
                                                 (Ty.path "core::slice::iter::RChunksExact")
+                                                []
                                                 [ Ty.path "u8" ],
                                               [],
                                               "next",
@@ -2952,7 +3263,10 @@ Module interpreter.
                                                 M.alloc (|
                                                   M.call_closure (|
                                                     M.get_associated_function (|
-                                                      Ty.apply (Ty.path "*mut") [ Ty.path "u64" ],
+                                                      Ty.apply
+                                                        (Ty.path "*mut")
+                                                        []
+                                                        [ Ty.path "u64" ],
                                                       "write",
                                                       []
                                                     |),
@@ -2961,6 +3275,7 @@ Module interpreter.
                                                         M.get_associated_function (|
                                                           Ty.apply
                                                             (Ty.path "*mut")
+                                                            []
                                                             [ Ty.path "u64" ],
                                                           "add",
                                                           []
@@ -2978,9 +3293,11 @@ Module interpreter.
                                                             M.get_associated_function (|
                                                               Ty.apply
                                                                 (Ty.path "core::result::Result")
+                                                                []
                                                                 [
                                                                   Ty.apply
                                                                     (Ty.path "array")
+                                                                    [ Value.Integer 8 ]
                                                                     [ Ty.path "u8" ];
                                                                   Ty.path
                                                                     "core::array::TryFromSliceError"
@@ -2994,14 +3311,17 @@ Module interpreter.
                                                                   "core::convert::TryInto",
                                                                   Ty.apply
                                                                     (Ty.path "&")
+                                                                    []
                                                                     [
                                                                       Ty.apply
                                                                         (Ty.path "slice")
+                                                                        []
                                                                         [ Ty.path "u8" ]
                                                                     ],
                                                                   [
                                                                     Ty.apply
                                                                       (Ty.path "array")
+                                                                      [ Value.Integer 8 ]
                                                                       [ Ty.path "u8" ]
                                                                   ],
                                                                   "try_into",
@@ -3044,7 +3364,7 @@ Module interpreter.
                                     UnOp.Pure.not
                                       (M.call_closure (|
                                         M.get_associated_function (|
-                                          Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                          Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                           "is_empty",
                                           []
                                         |),
@@ -3056,12 +3376,13 @@ Module interpreter.
                                   M.read (| γ |),
                                   Value.Bool true
                                 |) in
-                              let~ tmp := M.alloc (| repeat (Value.Integer 0) 8 |) in
+                              let~ tmp :=
+                                M.alloc (| repeat (| Value.Integer 0, Value.Integer 8 |) |) in
                               let~ _ :=
                                 M.alloc (|
                                   M.call_closure (|
                                     M.get_associated_function (|
-                                      Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                      Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                       "copy_from_slice",
                                       []
                                     |),
@@ -3069,10 +3390,14 @@ Module interpreter.
                                       M.call_closure (|
                                         M.get_trait_method (|
                                           "core::ops::index::IndexMut",
-                                          Ty.apply (Ty.path "array") [ Ty.path "u8" ],
+                                          Ty.apply
+                                            (Ty.path "array")
+                                            [ Value.Integer 8 ]
+                                            [ Ty.path "u8" ],
                                           [
                                             Ty.apply
                                               (Ty.path "core::ops::range::RangeFrom")
+                                              []
                                               [ Ty.path "usize" ]
                                           ],
                                           "index_mut",
@@ -3089,7 +3414,10 @@ Module interpreter.
                                                   (Value.Integer 8)
                                                   (M.call_closure (|
                                                     M.get_associated_function (|
-                                                      Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                                      Ty.apply
+                                                        (Ty.path "slice")
+                                                        []
+                                                        [ Ty.path "u8" ],
                                                       "len",
                                                       []
                                                     |),
@@ -3106,14 +3434,14 @@ Module interpreter.
                                 M.alloc (|
                                   M.call_closure (|
                                     M.get_associated_function (|
-                                      Ty.apply (Ty.path "*mut") [ Ty.path "u64" ],
+                                      Ty.apply (Ty.path "*mut") [] [ Ty.path "u64" ],
                                       "write",
                                       []
                                     |),
                                     [
                                       M.call_closure (|
                                         M.get_associated_function (|
-                                          Ty.apply (Ty.path "*mut") [ Ty.path "u64" ],
+                                          Ty.apply (Ty.path "*mut") [] [ Ty.path "u64" ],
                                           "add",
                                           []
                                         |),
@@ -3270,14 +3598,14 @@ Module interpreter.
                               M.alloc (|
                                 M.call_closure (|
                                   M.get_associated_function (|
-                                    Ty.apply (Ty.path "*mut") [ Ty.path "u64" ],
+                                    Ty.apply (Ty.path "*mut") [] [ Ty.path "u64" ],
                                     "write_bytes",
                                     []
                                   |),
                                   [
                                     M.call_closure (|
                                       M.get_associated_function (|
-                                        Ty.apply (Ty.path "*mut") [ Ty.path "u64" ],
+                                        Ty.apply (Ty.path "*mut") [] [ Ty.path "u64" ],
                                         "add",
                                         []
                                       |),
@@ -3295,7 +3623,7 @@ Module interpreter.
                   M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_push_slice : M.IsAssociatedFunction Self "push_slice" push_slice.
@@ -3311,9 +3639,9 @@ Module interpreter.
               }
           }
       *)
-      Definition set (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; no_from_top; val ] =>
+      Definition set (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; no_from_top; val ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let no_from_top := M.alloc (| no_from_top |) in
@@ -3332,7 +3660,14 @@ Module interpreter.
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "alloc::vec::Vec")
-                                    [ Ty.path "ruint::Uint"; Ty.path "alloc::alloc::Global" ],
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "ruint::Uint")
+                                        [ Value.Integer 256; Value.Integer 4 ]
+                                        [];
+                                      Ty.path "alloc::alloc::Global"
+                                    ],
                                   "len",
                                   []
                                 |),
@@ -3353,7 +3688,14 @@ Module interpreter.
                             M.get_associated_function (|
                               Ty.apply
                                 (Ty.path "alloc::vec::Vec")
-                                [ Ty.path "ruint::Uint"; Ty.path "alloc::alloc::Global" ],
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "ruint::Uint")
+                                    [ Value.Integer 256; Value.Integer 4 ]
+                                    [];
+                                  Ty.path "alloc::alloc::Global"
+                                ],
                               "len",
                               []
                             |),
@@ -3373,7 +3715,14 @@ Module interpreter.
                               "core::ops::index::IndexMut",
                               Ty.apply
                                 (Ty.path "alloc::vec::Vec")
-                                [ Ty.path "ruint::Uint"; Ty.path "alloc::alloc::Global" ],
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "ruint::Uint")
+                                    [ Value.Integer 256; Value.Integer 4 ]
+                                    [];
+                                  Ty.path "alloc::alloc::Global"
+                                ],
                               [ Ty.path "usize" ],
                               "index_mut",
                               []
@@ -3412,7 +3761,7 @@ Module interpreter.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_set : M.IsAssociatedFunction Self "set" set.

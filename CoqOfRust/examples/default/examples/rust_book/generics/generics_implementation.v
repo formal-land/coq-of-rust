@@ -4,6 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 (* StructRecord
   {
     name := "Val";
+    const_params := [];
     ty_params := [];
     fields := [ ("val", Ty.path "f64") ];
   } *)
@@ -11,6 +12,7 @@ Require Import CoqOfRust.CoqOfRust.
 (* StructRecord
   {
     name := "GenVal";
+    const_params := [];
     ty_params := [ "T" ];
     fields := [ ("gen_val", T) ];
   } *)
@@ -23,9 +25,9 @@ Module Impl_generics_implementation_Val.
           &self.val
       }
   *)
-  Definition value (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self ] =>
+  Definition value (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.SubPointer.get_struct_record_field (|
@@ -33,24 +35,25 @@ Module Impl_generics_implementation_Val.
           "generics_implementation::Val",
           "val"
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_value : M.IsAssociatedFunction Self "value" value.
 End Impl_generics_implementation_Val.
 
 Module Impl_generics_implementation_GenVal_T.
-  Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "generics_implementation::GenVal") [ T ].
+  Definition Self (T : Ty.t) : Ty.t :=
+    Ty.apply (Ty.path "generics_implementation::GenVal") [] [ T ].
   
   (*
       fn value(&self) -> &T {
           &self.gen_val
       }
   *)
-  Definition value (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition value (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     let Self : Ty.t := Self T in
-    match τ, α with
-    | [], [ self ] =>
+    match ε, τ, α with
+    | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.SubPointer.get_struct_record_field (|
@@ -58,7 +61,7 @@ Module Impl_generics_implementation_GenVal_T.
           "generics_implementation::GenVal",
           "gen_val"
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_value :
@@ -74,9 +77,9 @@ fn main() {
     println!("{}, {}", x.value(), y.value());
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [] =>
+Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
         let~ x :=
@@ -118,7 +121,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::rt::Argument",
                                   "new_display",
-                                  [ Ty.apply (Ty.path "&") [ Ty.path "f64" ] ]
+                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "f64" ] ]
                                 |),
                                 [
                                   M.alloc (|
@@ -137,7 +140,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::rt::Argument",
                                   "new_display",
-                                  [ Ty.apply (Ty.path "&") [ Ty.path "i32" ] ]
+                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "i32" ] ]
                                 |),
                                 [
                                   M.alloc (|
@@ -145,6 +148,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                       M.get_associated_function (|
                                         Ty.apply
                                           (Ty.path "generics_implementation::GenVal")
+                                          []
                                           [ Ty.path "i32" ],
                                         "value",
                                         []
@@ -164,7 +168,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (| Value.Tuple [] |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_main : M.IsFunction "generics_implementation::main" main.

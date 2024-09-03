@@ -6,6 +6,7 @@ Module bytecode.
     (* StructRecord
       {
         name := "LegacyAnalyzedBytecode";
+        const_params := [];
         ty_params := [];
         fields :=
           [
@@ -19,9 +20,9 @@ Module bytecode.
       Definition Self : Ty.t := Ty.path "revm_primitives::bytecode::legacy::LegacyAnalyzedBytecode".
       
       (* Clone *)
-      Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructRecord
@@ -73,7 +74,7 @@ Module bytecode.
                     ]
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -88,9 +89,9 @@ Module bytecode.
       Definition Self : Ty.t := Ty.path "revm_primitives::bytecode::legacy::LegacyAnalyzedBytecode".
       
       (* Debug *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -131,7 +132,7 @@ Module bytecode.
                   |))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -157,9 +158,9 @@ Module bytecode.
       Definition Self : Ty.t := Ty.path "revm_primitives::bytecode::legacy::LegacyAnalyzedBytecode".
       
       (* PartialEq *)
-      Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -226,7 +227,7 @@ Module bytecode.
                   ]
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -252,9 +253,13 @@ Module bytecode.
       Definition Self : Ty.t := Ty.path "revm_primitives::bytecode::legacy::LegacyAnalyzedBytecode".
       
       (* Eq *)
-      Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition assert_receiver_is_total_eq
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -277,7 +282,7 @@ Module bytecode.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -293,9 +298,9 @@ Module bytecode.
       Definition Self : Ty.t := Ty.path "revm_primitives::bytecode::legacy::LegacyAnalyzedBytecode".
       
       (* Hash *)
-      Definition hash (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ __H ], [ self; state ] =>
+      Definition hash (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ __H ], [ self; state ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
@@ -360,7 +365,7 @@ Module bytecode.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -383,9 +388,9 @@ Module bytecode.
               }
           }
       *)
-      Definition default (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [] =>
+      Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [] =>
           ltac:(M.monadic
             (Value.StructRecord
               "revm_primitives::bytecode::legacy::LegacyAnalyzedBytecode"
@@ -411,9 +416,11 @@ Module bytecode.
                         M.get_associated_function (|
                           Ty.apply
                             (Ty.path "alloc::sync::Arc")
+                            []
                             [
                               Ty.apply
                                 (Ty.path "bitvec::vec::BitVec")
+                                []
                                 [ Ty.path "u8"; Ty.path "bitvec::order::Lsb0" ];
                               Ty.path "alloc::alloc::Global"
                             ],
@@ -425,6 +432,7 @@ Module bytecode.
                             M.get_associated_function (|
                               Ty.apply
                                 (Ty.path "bitvec::vec::BitVec")
+                                []
                                 [ Ty.path "u8"; Ty.path "bitvec::order::Lsb0" ],
                               "from_bitslice",
                               []
@@ -435,13 +443,18 @@ Module bytecode.
                                   "core::ops::index::Index",
                                   Ty.apply
                                     (Ty.path "bitvec::array::BitArray")
+                                    []
                                     [
-                                      Ty.apply (Ty.path "array") [ Ty.path "u8" ];
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ Value.Integer 1 ]
+                                        [ Ty.path "u8" ];
                                       Ty.path "bitvec::order::Lsb0"
                                     ],
                                   [
                                     Ty.apply
                                       (Ty.path "core::ops::range::RangeTo")
+                                      []
                                       [ Ty.path "usize" ]
                                   ],
                                   "index",
@@ -453,8 +466,12 @@ Module bytecode.
                                       M.get_associated_function (|
                                         Ty.apply
                                           (Ty.path "bitvec::array::BitArray")
+                                          []
                                           [
-                                            Ty.apply (Ty.path "array") [ Ty.path "u8" ];
+                                            Ty.apply
+                                              (Ty.path "array")
+                                              [ Value.Integer 1 ]
+                                              [ Ty.path "u8" ];
                                             Ty.path "bitvec::order::Lsb0"
                                           ],
                                         "new",
@@ -470,6 +487,7 @@ Module bytecode.
                                                     M.get_associated_function (|
                                                       Ty.apply
                                                         (Ty.path "bitvec::mem::BitElement")
+                                                        []
                                                         [ Ty.path "u8" ],
                                                       "new",
                                                       []
@@ -509,7 +527,7 @@ Module bytecode.
                       |)
                     ])
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -532,9 +550,9 @@ Module bytecode.
               }
           }
       *)
-      Definition new (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ bytecode; original_len; jump_table ] =>
+      Definition new (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ bytecode; original_len; jump_table ] =>
           ltac:(M.monadic
             (let bytecode := M.alloc (| bytecode |) in
             let original_len := M.alloc (| original_len |) in
@@ -546,7 +564,7 @@ Module bytecode.
                 ("original_len", M.read (| original_len |));
                 ("jump_table", M.read (| jump_table |))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -556,9 +574,9 @@ Module bytecode.
               &self.bytecode
           }
       *)
-      Definition bytecode (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition bytecode (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.SubPointer.get_struct_record_field (|
@@ -566,7 +584,7 @@ Module bytecode.
               "revm_primitives::bytecode::legacy::LegacyAnalyzedBytecode",
               "bytecode"
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_bytecode : M.IsAssociatedFunction Self "bytecode" bytecode.
@@ -576,9 +594,9 @@ Module bytecode.
               self.original_len
           }
       *)
-      Definition original_len (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition original_len (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -588,7 +606,7 @@ Module bytecode.
                 "original_len"
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_original_len :
@@ -599,16 +617,16 @@ Module bytecode.
               self.bytecode.slice(..self.original_len)
           }
       *)
-      Definition original_bytes (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition original_bytes (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
                 Ty.path "alloy_primitives::bytes_::Bytes",
                 "slice",
-                [ Ty.apply (Ty.path "core::ops::range::RangeTo") [ Ty.path "usize" ] ]
+                [ Ty.apply (Ty.path "core::ops::range::RangeTo") [] [ Ty.path "usize" ] ]
               |),
               [
                 M.SubPointer.get_struct_record_field (|
@@ -630,7 +648,7 @@ Module bytecode.
                   ]
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_original_bytes :
@@ -641,16 +659,16 @@ Module bytecode.
               &self.bytecode[..self.original_len]
           }
       *)
-      Definition original_byte_slice (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition original_byte_slice (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_trait_method (|
                 "core::ops::index::Index",
-                Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
-                [ Ty.apply (Ty.path "core::ops::range::RangeTo") [ Ty.path "usize" ] ],
+                Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+                [ Ty.apply (Ty.path "core::ops::range::RangeTo") [] [ Ty.path "usize" ] ],
                 "index",
                 []
               |),
@@ -696,7 +714,7 @@ Module bytecode.
                   ]
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_original_byte_slice :
@@ -707,9 +725,9 @@ Module bytecode.
               &self.jump_table
           }
       *)
-      Definition jump_table (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition jump_table (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.SubPointer.get_struct_record_field (|
@@ -717,7 +735,7 @@ Module bytecode.
               "revm_primitives::bytecode::legacy::LegacyAnalyzedBytecode",
               "jump_table"
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_jump_table : M.IsAssociatedFunction Self "jump_table" jump_table.

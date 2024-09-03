@@ -6,9 +6,9 @@ Module iter.
     Module exact_size.
       (* Trait *)
       Module ExactSizeIterator.
-        Definition len (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self ] =>
+        Definition len (Self : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
@@ -66,10 +66,12 @@ Module iter.
                                                       "core::cmp::PartialEq",
                                                       Ty.apply
                                                         (Ty.path "core::option::Option")
+                                                        []
                                                         [ Ty.path "usize" ],
                                                       [
                                                         Ty.apply
                                                           (Ty.path "core::option::Option")
+                                                          []
                                                           [ Ty.path "usize" ]
                                                       ],
                                                       "eq",
@@ -100,9 +102,11 @@ Module iter.
                                                       [
                                                         Ty.apply
                                                           (Ty.path "core::option::Option")
+                                                          []
                                                           [ Ty.path "usize" ];
                                                         Ty.apply
                                                           (Ty.path "core::option::Option")
+                                                          []
                                                           [ Ty.path "usize" ]
                                                       ]
                                                     |),
@@ -128,14 +132,19 @@ Module iter.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom ProvidedMethod_len :
           M.IsProvidedMethod "core::iter::traits::exact_size::ExactSizeIterator" "len" len.
-        Definition is_empty (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self ] =>
+        Definition is_empty
+            (Self : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               BinOp.Pure.eq
@@ -150,7 +159,7 @@ Module iter.
                   [ M.read (| self |) ]
                 |))
                 (Value.Integer 0)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom ProvidedMethod_is_empty :
@@ -161,17 +170,17 @@ Module iter.
       End ExactSizeIterator.
       
       Module Impl_core_iter_traits_exact_size_ExactSizeIterator_where_core_iter_traits_exact_size_ExactSizeIterator_I_where_core_marker_Sized_I_for_ref_mut_I.
-        Definition Self (I : Ty.t) : Ty.t := Ty.apply (Ty.path "&mut") [ I ].
+        Definition Self (I : Ty.t) : Ty.t := Ty.apply (Ty.path "&mut") [] [ I ].
         
         (*
             fn len(&self) -> usize {
                 ( **self).len()
             }
         *)
-        Definition len (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition len (I : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self I in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.call_closure (|
@@ -184,7 +193,7 @@ Module iter.
                 |),
                 [ M.read (| M.read (| self |) |) ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         (*
@@ -192,10 +201,10 @@ Module iter.
                 ( **self).is_empty()
             }
         *)
-        Definition is_empty (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition is_empty (I : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self I in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.call_closure (|
@@ -208,7 +217,7 @@ Module iter.
                 |),
                 [ M.read (| M.read (| self |) |) ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :

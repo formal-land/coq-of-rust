@@ -6,6 +6,7 @@ Module task.
     (*
     Enum Poll
     {
+      const_params := [];
       ty_params := [ "T" ];
       variants :=
         [
@@ -24,7 +25,7 @@ Module task.
     *)
     
     Module Impl_core_marker_Copy_where_core_marker_Copy_T_for_core_task_poll_Poll_T.
-      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::task::poll::Poll") [ T ].
+      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::task::poll::Poll") [] [ T ].
       
       Axiom Implements :
         forall (T : Ty.t),
@@ -36,13 +37,13 @@ Module task.
     End Impl_core_marker_Copy_where_core_marker_Copy_T_for_core_task_poll_Poll_T.
     
     Module Impl_core_clone_Clone_where_core_clone_Clone_T_for_core_task_poll_Poll_T.
-      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::task::poll::Poll") [ T ].
+      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::task::poll::Poll") [] [ T ].
       
       (* Clone *)
-      Definition clone (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition clone (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -77,7 +78,7 @@ Module task.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -90,13 +91,13 @@ Module task.
     End Impl_core_clone_Clone_where_core_clone_Clone_T_for_core_task_poll_Poll_T.
     
     Module Impl_core_fmt_Debug_where_core_fmt_Debug_T_for_core_task_poll_Poll_T.
-      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::task::poll::Poll") [ T ].
+      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::task::poll::Poll") [] [ T ].
       
       (* Debug *)
-      Definition fmt (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self; f ] =>
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -145,7 +146,7 @@ Module task.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -158,7 +159,7 @@ Module task.
     End Impl_core_fmt_Debug_where_core_fmt_Debug_T_for_core_task_poll_Poll_T.
     
     Module Impl_core_marker_StructuralEq_for_core_task_poll_Poll_T.
-      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::task::poll::Poll") [ T ].
+      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::task::poll::Poll") [] [ T ].
       
       Axiom Implements :
         forall (T : Ty.t),
@@ -170,13 +171,18 @@ Module task.
     End Impl_core_marker_StructuralEq_for_core_task_poll_Poll_T.
     
     Module Impl_core_cmp_Eq_where_core_cmp_Eq_T_for_core_task_poll_Poll_T.
-      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::task::poll::Poll") [ T ].
+      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::task::poll::Poll") [] [ T ].
       
       (* Eq *)
-      Definition assert_receiver_is_total_eq (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition assert_receiver_is_total_eq
+          (T : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -185,7 +191,7 @@ Module task.
                 [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -199,7 +205,7 @@ Module task.
     End Impl_core_cmp_Eq_where_core_cmp_Eq_T_for_core_task_poll_Poll_T.
     
     Module Impl_core_marker_StructuralPartialEq_for_core_task_poll_Poll_T.
-      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::task::poll::Poll") [ T ].
+      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::task::poll::Poll") [] [ T ].
       
       Axiom Implements :
         forall (T : Ty.t),
@@ -211,13 +217,13 @@ Module task.
     End Impl_core_marker_StructuralPartialEq_for_core_task_poll_Poll_T.
     
     Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_T_for_core_task_poll_Poll_T.
-      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::task::poll::Poll") [ T ].
+      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::task::poll::Poll") [] [ T ].
       
       (* PartialEq *)
-      Definition eq (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition eq (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self; other ] =>
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -227,7 +233,7 @@ Module task.
                   M.call_closure (|
                     M.get_function (|
                       "core::intrinsics::discriminant_value",
-                      [ Ty.apply (Ty.path "core::task::poll::Poll") [ T ] ]
+                      [ Ty.apply (Ty.path "core::task::poll::Poll") [] [ T ] ]
                     |),
                     [ M.read (| self |) ]
                   |)
@@ -237,7 +243,7 @@ Module task.
                   M.call_closure (|
                     M.get_function (|
                       "core::intrinsics::discriminant_value",
-                      [ Ty.apply (Ty.path "core::task::poll::Poll") [ T ] ]
+                      [ Ty.apply (Ty.path "core::task::poll::Poll") [] [ T ] ]
                     |),
                     [ M.read (| other |) ]
                   |)
@@ -289,7 +295,7 @@ Module task.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -302,13 +308,13 @@ Module task.
     End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_T_for_core_task_poll_Poll_T.
     
     Module Impl_core_cmp_Ord_where_core_cmp_Ord_T_for_core_task_poll_Poll_T.
-      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::task::poll::Poll") [ T ].
+      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::task::poll::Poll") [] [ T ].
       
       (* Ord *)
-      Definition cmp (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition cmp (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self; other ] =>
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -318,7 +324,7 @@ Module task.
                   M.call_closure (|
                     M.get_function (|
                       "core::intrinsics::discriminant_value",
-                      [ Ty.apply (Ty.path "core::task::poll::Poll") [ T ] ]
+                      [ Ty.apply (Ty.path "core::task::poll::Poll") [] [ T ] ]
                     |),
                     [ M.read (| self |) ]
                   |)
@@ -328,7 +334,7 @@ Module task.
                   M.call_closure (|
                     M.get_function (|
                       "core::intrinsics::discriminant_value",
-                      [ Ty.apply (Ty.path "core::task::poll::Poll") [ T ] ]
+                      [ Ty.apply (Ty.path "core::task::poll::Poll") [] [ T ] ]
                     |),
                     [ M.read (| other |) ]
                   |)
@@ -385,7 +391,7 @@ Module task.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -398,13 +404,13 @@ Module task.
     End Impl_core_cmp_Ord_where_core_cmp_Ord_T_for_core_task_poll_Poll_T.
     
     Module Impl_core_cmp_PartialOrd_where_core_cmp_PartialOrd_T_for_core_task_poll_Poll_T.
-      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::task::poll::Poll") [ T ].
+      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::task::poll::Poll") [] [ T ].
       
       (* PartialOrd *)
-      Definition partial_cmp (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition partial_cmp (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self; other ] =>
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -414,7 +420,7 @@ Module task.
                   M.call_closure (|
                     M.get_function (|
                       "core::intrinsics::discriminant_value",
-                      [ Ty.apply (Ty.path "core::task::poll::Poll") [ T ] ]
+                      [ Ty.apply (Ty.path "core::task::poll::Poll") [] [ T ] ]
                     |),
                     [ M.read (| self |) ]
                   |)
@@ -424,7 +430,7 @@ Module task.
                   M.call_closure (|
                     M.get_function (|
                       "core::intrinsics::discriminant_value",
-                      [ Ty.apply (Ty.path "core::task::poll::Poll") [ T ] ]
+                      [ Ty.apply (Ty.path "core::task::poll::Poll") [] [ T ] ]
                     |),
                     [ M.read (| other |) ]
                   |)
@@ -481,7 +487,7 @@ Module task.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -494,13 +500,13 @@ Module task.
     End Impl_core_cmp_PartialOrd_where_core_cmp_PartialOrd_T_for_core_task_poll_Poll_T.
     
     Module Impl_core_hash_Hash_where_core_hash_Hash_T_for_core_task_poll_Poll_T.
-      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::task::poll::Poll") [ T ].
+      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::task::poll::Poll") [] [ T ].
       
       (* Hash *)
-      Definition hash (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition hash (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [ __H ], [ self; state ] =>
+        match ε, τ, α with
+        | [], [ __H ], [ self; state ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
@@ -510,7 +516,7 @@ Module task.
                   M.call_closure (|
                     M.get_function (|
                       "core::intrinsics::discriminant_value",
-                      [ Ty.apply (Ty.path "core::task::poll::Poll") [ T ] ]
+                      [ Ty.apply (Ty.path "core::task::poll::Poll") [] [ T ] ]
                     |),
                     [ M.read (| self |) ]
                   |)
@@ -551,7 +557,7 @@ Module task.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -564,7 +570,7 @@ Module task.
     End Impl_core_hash_Hash_where_core_hash_Hash_T_for_core_task_poll_Poll_T.
     
     Module Impl_core_task_poll_Poll_T.
-      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::task::poll::Poll") [ T ].
+      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::task::poll::Poll") [] [ T ].
       
       (*
           pub fn map<U, F>(self, f: F) -> Poll<U>
@@ -577,10 +583,10 @@ Module task.
               }
           }
       *)
-      Definition map (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition map (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [ U; F ], [ self; f ] =>
+        match ε, τ, α with
+        | [], [ U; F ], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -620,7 +626,7 @@ Module task.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_map :
@@ -632,10 +638,10 @@ Module task.
               matches!( *self, Poll::Ready(_))
           }
       *)
-      Definition is_ready (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_ready (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -655,7 +661,7 @@ Module task.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_is_ready :
@@ -667,22 +673,22 @@ Module task.
               !self.is_ready()
           }
       *)
-      Definition is_pending (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_pending (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             UnOp.Pure.not
               (M.call_closure (|
                 M.get_associated_function (|
-                  Ty.apply (Ty.path "core::task::poll::Poll") [ T ],
+                  Ty.apply (Ty.path "core::task::poll::Poll") [] [ T ],
                   "is_ready",
                   []
                 |),
                 [ M.read (| self |) ]
               |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_is_pending :
@@ -694,7 +700,8 @@ Module task.
       Definition Self (T E : Ty.t) : Ty.t :=
         Ty.apply
           (Ty.path "core::task::poll::Poll")
-          [ Ty.apply (Ty.path "core::result::Result") [ T; E ] ].
+          []
+          [ Ty.apply (Ty.path "core::result::Result") [] [ T; E ] ].
       
       (*
           pub fn map_ok<U, F>(self, f: F) -> Poll<Result<U, E>>
@@ -708,10 +715,10 @@ Module task.
               }
           }
       *)
-      Definition map_ok (T E : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition map_ok (T E : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T E in
-        match τ, α with
-        | [ U; F ], [ self; f ] =>
+        match ε, τ, α with
+        | [], [ U; F ], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -781,7 +788,7 @@ Module task.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_map_ok :
@@ -800,10 +807,10 @@ Module task.
               }
           }
       *)
-      Definition map_err (T E : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition map_err (T E : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T E in
-        match τ, α with
-        | [ U; F ], [ self; f ] =>
+        match ε, τ, α with
+        | [], [ U; F ], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -873,7 +880,7 @@ Module task.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_map_err :
@@ -885,10 +892,12 @@ Module task.
       Definition Self (T E : Ty.t) : Ty.t :=
         Ty.apply
           (Ty.path "core::task::poll::Poll")
+          []
           [
             Ty.apply
               (Ty.path "core::option::Option")
-              [ Ty.apply (Ty.path "core::result::Result") [ T; E ] ]
+              []
+              [ Ty.apply (Ty.path "core::result::Result") [] [ T; E ] ]
           ].
       
       (*
@@ -904,10 +913,10 @@ Module task.
               }
           }
       *)
-      Definition map_ok (T E : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition map_ok (T E : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T E in
-        match τ, α with
-        | [ U; F ], [ self; f ] =>
+        match ε, τ, α with
+        | [], [ U; F ], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -1011,7 +1020,7 @@ Module task.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_map_ok :
@@ -1031,10 +1040,10 @@ Module task.
               }
           }
       *)
-      Definition map_err (T E : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition map_err (T E : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T E in
-        match τ, α with
-        | [ U; F ], [ self; f ] =>
+        match ε, τ, α with
+        | [], [ U; F ], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -1138,7 +1147,7 @@ Module task.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_map_err :
@@ -1147,21 +1156,21 @@ Module task.
     End Impl_core_task_poll_Poll_core_option_Option_core_result_Result_T_E.
     
     Module Impl_core_convert_From_T_for_core_task_poll_Poll_T.
-      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::task::poll::Poll") [ T ].
+      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::task::poll::Poll") [] [ T ].
       
       (*
           fn from(t: T) -> Poll<T> {
               Poll::Ready(t)
           }
       *)
-      Definition from (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ t ] =>
+        match ε, τ, α with
+        | [], [], [ t ] =>
           ltac:(M.monadic
             (let t := M.alloc (| t |) in
             Value.StructTuple "core::task::poll::Poll::Ready" [ M.read (| t |) ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1177,38 +1186,45 @@ Module task.
       Definition Self (T E : Ty.t) : Ty.t :=
         Ty.apply
           (Ty.path "core::task::poll::Poll")
-          [ Ty.apply (Ty.path "core::result::Result") [ T; E ] ].
+          []
+          [ Ty.apply (Ty.path "core::result::Result") [] [ T; E ] ].
       
       (*     type Output = Poll<T>; *)
-      Definition _Output (T E : Ty.t) : Ty.t := Ty.apply (Ty.path "core::task::poll::Poll") [ T ].
+      Definition _Output (T E : Ty.t) : Ty.t :=
+        Ty.apply (Ty.path "core::task::poll::Poll") [] [ T ].
       
       (*     type Residual = Result<convert::Infallible, E>; *)
       Definition _Residual (T E : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::result::Result") [ Ty.path "core::convert::Infallible"; E ].
+        Ty.apply (Ty.path "core::result::Result") [] [ Ty.path "core::convert::Infallible"; E ].
       
       (*
           fn from_output(c: Self::Output) -> Self {
               c.map(Ok)
           }
       *)
-      Definition from_output (T E : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from_output
+          (T E : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T E in
-        match τ, α with
-        | [], [ c ] =>
+        match ε, τ, α with
+        | [], [], [ c ] =>
           ltac:(M.monadic
             (let c := M.alloc (| c |) in
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "core::task::poll::Poll") [ T ],
+                Ty.apply (Ty.path "core::task::poll::Poll") [] [ T ],
                 "map",
                 [
-                  Ty.apply (Ty.path "core::result::Result") [ T; E ];
-                  Ty.function [ T ] (Ty.apply (Ty.path "core::result::Result") [ T; E ])
+                  Ty.apply (Ty.path "core::result::Result") [] [ T; E ];
+                  Ty.function [ T ] (Ty.apply (Ty.path "core::result::Result") [] [ T; E ])
                 ]
               |),
               [ M.read (| c |); M.constructor_as_closure "core::result::Result::Ok" ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -1220,10 +1236,10 @@ Module task.
               }
           }
       *)
-      Definition branch (T E : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition branch (T E : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T E in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -1281,7 +1297,7 @@ Module task.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1303,7 +1319,8 @@ Module task.
       Definition Self (T E F : Ty.t) : Ty.t :=
         Ty.apply
           (Ty.path "core::task::poll::Poll")
-          [ Ty.apply (Ty.path "core::result::Result") [ T; F ] ].
+          []
+          [ Ty.apply (Ty.path "core::result::Result") [] [ T; F ] ].
       
       (*
           fn from_residual(x: Result<convert::Infallible, E>) -> Self {
@@ -1312,10 +1329,15 @@ Module task.
               }
           }
       *)
-      Definition from_residual (T E F : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from_residual
+          (T E F : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T E F in
-        match τ, α with
-        | [], [ x ] =>
+        match ε, τ, α with
+        | [], [], [ x ] =>
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
             M.read (|
@@ -1354,7 +1376,7 @@ Module task.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1365,7 +1387,7 @@ Module task.
           (* Trait polymorphic types *)
           [
             (* R *)
-            Ty.apply (Ty.path "core::result::Result") [ Ty.path "core::convert::Infallible"; E ]
+            Ty.apply (Ty.path "core::result::Result") [] [ Ty.path "core::convert::Infallible"; E ]
           ]
           (* Instance *) [ ("from_residual", InstanceField.Method (from_residual T E F)) ].
     End Impl_core_ops_try_trait_FromResidual_where_core_convert_From_F_E_core_result_Result_core_convert_Infallible_E_for_core_task_poll_Poll_core_result_Result_T_F.
@@ -1374,48 +1396,59 @@ Module task.
       Definition Self (T E : Ty.t) : Ty.t :=
         Ty.apply
           (Ty.path "core::task::poll::Poll")
+          []
           [
             Ty.apply
               (Ty.path "core::option::Option")
-              [ Ty.apply (Ty.path "core::result::Result") [ T; E ] ]
+              []
+              [ Ty.apply (Ty.path "core::result::Result") [] [ T; E ] ]
           ].
       
       (*     type Output = Poll<Option<T>>; *)
       Definition _Output (T E : Ty.t) : Ty.t :=
         Ty.apply
           (Ty.path "core::task::poll::Poll")
-          [ Ty.apply (Ty.path "core::option::Option") [ T ] ].
+          []
+          [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ].
       
       (*     type Residual = Result<convert::Infallible, E>; *)
       Definition _Residual (T E : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::result::Result") [ Ty.path "core::convert::Infallible"; E ].
+        Ty.apply (Ty.path "core::result::Result") [] [ Ty.path "core::convert::Infallible"; E ].
       
       (*
           fn from_output(c: Self::Output) -> Self {
               c.map(|x| x.map(Ok))
           }
       *)
-      Definition from_output (T E : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from_output
+          (T E : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T E in
-        match τ, α with
-        | [], [ c ] =>
+        match ε, τ, α with
+        | [], [], [ c ] =>
           ltac:(M.monadic
             (let c := M.alloc (| c |) in
             M.call_closure (|
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "core::task::poll::Poll")
-                  [ Ty.apply (Ty.path "core::option::Option") [ T ] ],
+                  []
+                  [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ],
                 "map",
                 [
                   Ty.apply
                     (Ty.path "core::option::Option")
-                    [ Ty.apply (Ty.path "core::result::Result") [ T; E ] ];
+                    []
+                    [ Ty.apply (Ty.path "core::result::Result") [] [ T; E ] ];
                   Ty.function
-                    [ Ty.tuple [ Ty.apply (Ty.path "core::option::Option") [ T ] ] ]
+                    [ Ty.tuple [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ] ]
                     (Ty.apply
                       (Ty.path "core::option::Option")
-                      [ Ty.apply (Ty.path "core::result::Result") [ T; E ] ])
+                      []
+                      [ Ty.apply (Ty.path "core::result::Result") [] [ T; E ] ])
                 ]
               |),
               [
@@ -1433,13 +1466,13 @@ Module task.
                                 (let x := M.copy (| γ |) in
                                 M.call_closure (|
                                   M.get_associated_function (|
-                                    Ty.apply (Ty.path "core::option::Option") [ T ],
+                                    Ty.apply (Ty.path "core::option::Option") [] [ T ],
                                     "map",
                                     [
-                                      Ty.apply (Ty.path "core::result::Result") [ T; E ];
+                                      Ty.apply (Ty.path "core::result::Result") [] [ T; E ];
                                       Ty.function
                                         [ T ]
-                                        (Ty.apply (Ty.path "core::result::Result") [ T; E ])
+                                        (Ty.apply (Ty.path "core::result::Result") [] [ T; E ])
                                     ]
                                   |),
                                   [
@@ -1453,7 +1486,7 @@ Module task.
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -1466,10 +1499,10 @@ Module task.
               }
           }
       *)
-      Definition branch (T E : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition branch (T E : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T E in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -1561,7 +1594,7 @@ Module task.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1583,10 +1616,12 @@ Module task.
       Definition Self (T E F : Ty.t) : Ty.t :=
         Ty.apply
           (Ty.path "core::task::poll::Poll")
+          []
           [
             Ty.apply
               (Ty.path "core::option::Option")
-              [ Ty.apply (Ty.path "core::result::Result") [ T; F ] ]
+              []
+              [ Ty.apply (Ty.path "core::result::Result") [] [ T; F ] ]
           ].
       
       (*
@@ -1596,10 +1631,15 @@ Module task.
               }
           }
       *)
-      Definition from_residual (T E F : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from_residual
+          (T E F : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T E F in
-        match τ, α with
-        | [], [ x ] =>
+        match ε, τ, α with
+        | [], [], [ x ] =>
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
             M.read (|
@@ -1642,7 +1682,7 @@ Module task.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1653,7 +1693,7 @@ Module task.
           (* Trait polymorphic types *)
           [
             (* R *)
-            Ty.apply (Ty.path "core::result::Result") [ Ty.path "core::convert::Infallible"; E ]
+            Ty.apply (Ty.path "core::result::Result") [] [ Ty.path "core::convert::Infallible"; E ]
           ]
           (* Instance *) [ ("from_residual", InstanceField.Method (from_residual T E F)) ].
     End Impl_core_ops_try_trait_FromResidual_where_core_convert_From_F_E_core_result_Result_core_convert_Infallible_E_for_core_task_poll_Poll_core_option_Option_core_result_Result_T_F.

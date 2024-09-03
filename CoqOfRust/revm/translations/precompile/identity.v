@@ -38,9 +38,9 @@ Module identity.
       Ok((gas_used, input.clone()))
   }
   *)
-  Definition identity_run (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ input; gas_limit ] =>
+  Definition identity_run (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ input; gas_limit ] =>
       ltac:(M.monadic
         (let input := M.alloc (| input |) in
         let gas_limit := M.alloc (| gas_limit |) in
@@ -127,7 +127,7 @@ Module identity.
               |)
             |)))
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Function_identity_run : M.IsFunction "revm_precompile::identity::identity_run" identity_run.

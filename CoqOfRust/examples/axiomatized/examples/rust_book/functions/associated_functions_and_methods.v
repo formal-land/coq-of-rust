@@ -4,6 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 (* StructRecord
   {
     name := "Point";
+    const_params := [];
     ty_params := [];
     fields := [ ("x", Ty.path "f64"); ("y", Ty.path "f64") ];
   } *)
@@ -11,11 +12,11 @@ Require Import CoqOfRust.CoqOfRust.
 Module Impl_associated_functions_and_methods_Point.
   Definition Self : Ty.t := Ty.path "associated_functions_and_methods::Point".
   
-  Parameter origin : (list Ty.t) -> (list Value.t) -> M.
+  Parameter origin : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_origin : M.IsAssociatedFunction Self "origin" origin.
   
-  Parameter new : (list Ty.t) -> (list Value.t) -> M.
+  Parameter new : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
 End Impl_associated_functions_and_methods_Point.
@@ -23,6 +24,7 @@ End Impl_associated_functions_and_methods_Point.
 (* StructRecord
   {
     name := "Rectangle";
+    const_params := [];
     ty_params := [];
     fields :=
       [
@@ -34,19 +36,19 @@ End Impl_associated_functions_and_methods_Point.
 Module Impl_associated_functions_and_methods_Rectangle.
   Definition Self : Ty.t := Ty.path "associated_functions_and_methods::Rectangle".
   
-  Parameter get_p1 : (list Ty.t) -> (list Value.t) -> M.
+  Parameter get_p1 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_get_p1 : M.IsAssociatedFunction Self "get_p1" get_p1.
   
-  Parameter area : (list Ty.t) -> (list Value.t) -> M.
+  Parameter area : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_area : M.IsAssociatedFunction Self "area" area.
   
-  Parameter perimeter : (list Ty.t) -> (list Value.t) -> M.
+  Parameter perimeter : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_perimeter : M.IsAssociatedFunction Self "perimeter" perimeter.
   
-  Parameter translate : (list Ty.t) -> (list Value.t) -> M.
+  Parameter translate : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_translate : M.IsAssociatedFunction Self "translate" translate.
 End Impl_associated_functions_and_methods_Rectangle.
@@ -54,22 +56,23 @@ End Impl_associated_functions_and_methods_Rectangle.
 (* StructTuple
   {
     name := "Pair";
+    const_params := [];
     ty_params := [];
     fields :=
       [
-        Ty.apply (Ty.path "alloc::boxed::Box") [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ];
-        Ty.apply (Ty.path "alloc::boxed::Box") [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ]
+        Ty.apply (Ty.path "alloc::boxed::Box") [] [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ];
+        Ty.apply (Ty.path "alloc::boxed::Box") [] [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ]
       ];
   } *)
 
 Module Impl_associated_functions_and_methods_Pair.
   Definition Self : Ty.t := Ty.path "associated_functions_and_methods::Pair".
   
-  Parameter destroy : (list Ty.t) -> (list Value.t) -> M.
+  Parameter destroy : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_destroy : M.IsAssociatedFunction Self "destroy" destroy.
 End Impl_associated_functions_and_methods_Pair.
 
-Parameter main : (list Ty.t) -> (list Value.t) -> M.
+Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_main : M.IsFunction "associated_functions_and_methods::main" main.

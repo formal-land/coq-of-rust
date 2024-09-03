@@ -8,18 +8,22 @@ Module handler.
         forall (DB : Ty.t),
         (Ty.apply
             (Ty.path "revm::handler::handle_types::pre_execution::LoadPrecompilesHandle")
+            []
             [ DB ]) =
           (Ty.apply
             (Ty.path "alloc::sync::Arc")
+            []
             [ Ty.dyn [ ("core::ops::function::Fn::Trait", []) ]; Ty.path "alloc::alloc::Global" ]).
       
       Axiom LoadAccountsHandle :
         forall (EXT DB : Ty.t),
         (Ty.apply
             (Ty.path "revm::handler::handle_types::pre_execution::LoadAccountsHandle")
+            []
             [ EXT; DB ]) =
           (Ty.apply
             (Ty.path "alloc::sync::Arc")
+            []
             [
               Ty.dyn
                 [
@@ -33,9 +37,11 @@ Module handler.
         forall (EXT DB : Ty.t),
         (Ty.apply
             (Ty.path "revm::handler::handle_types::pre_execution::DeductCallerHandle")
+            []
             [ EXT; DB ]) =
           (Ty.apply
             (Ty.path "alloc::sync::Arc")
+            []
             [
               Ty.dyn
                 [
@@ -48,12 +54,14 @@ Module handler.
       (* StructRecord
         {
           name := "PreExecutionHandler";
+          const_params := [];
           ty_params := [ "EXT"; "DB" ];
           fields :=
             [
               ("load_precompiles",
                 Ty.apply
                   (Ty.path "alloc::sync::Arc")
+                  []
                   [
                     Ty.dyn [ ("core::ops::function::Fn::Trait", []) ];
                     Ty.path "alloc::alloc::Global"
@@ -61,6 +69,7 @@ Module handler.
               ("load_accounts",
                 Ty.apply
                   (Ty.path "alloc::sync::Arc")
+                  []
                   [
                     Ty.dyn
                       [
@@ -72,6 +81,7 @@ Module handler.
               ("deduct_caller",
                 Ty.apply
                   (Ty.path "alloc::sync::Arc")
+                  []
                   [
                     Ty.dyn
                       [
@@ -87,6 +97,7 @@ Module handler.
         Definition Self (EXT DB : Ty.t) : Ty.t :=
           Ty.apply
             (Ty.path "revm::handler::handle_types::pre_execution::PreExecutionHandler")
+            []
             [ EXT; DB ].
         
         (*
@@ -98,10 +109,10 @@ Module handler.
                 }
             }
         *)
-        Definition new (EXT DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition new (EXT DB : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self EXT DB in
-          match τ, α with
-          | [ SPEC ], [] =>
+          match ε, τ, α with
+          | [], [ SPEC ], [] =>
             ltac:(M.monadic
               (Value.StructRecord
                 "revm::handler::handle_types::pre_execution::PreExecutionHandler"
@@ -113,11 +124,13 @@ Module handler.
                         M.get_associated_function (|
                           Ty.apply
                             (Ty.path "alloc::sync::Arc")
+                            []
                             [
                               Ty.function
                                 []
                                 (Ty.apply
                                   (Ty.path "revm::context::context_precompiles::ContextPrecompiles")
+                                  []
                                   [ DB ]);
                               Ty.path "alloc::alloc::Global"
                             ],
@@ -138,19 +151,23 @@ Module handler.
                         M.get_associated_function (|
                           Ty.apply
                             (Ty.path "alloc::sync::Arc")
+                            []
                             [
                               Ty.function
                                 [
                                   Ty.apply
                                     (Ty.path "&mut")
-                                    [ Ty.apply (Ty.path "revm::context::Context") [ EXT; DB ] ]
+                                    []
+                                    [ Ty.apply (Ty.path "revm::context::Context") [] [ EXT; DB ] ]
                                 ]
                                 (Ty.apply
                                   (Ty.path "core::result::Result")
+                                  []
                                   [
                                     Ty.tuple [];
                                     Ty.apply
                                       (Ty.path "revm_primitives::result::EVMError")
+                                      []
                                       [ Ty.associated ]
                                   ]);
                               Ty.path "alloc::alloc::Global"
@@ -172,19 +189,23 @@ Module handler.
                         M.get_associated_function (|
                           Ty.apply
                             (Ty.path "alloc::sync::Arc")
+                            []
                             [
                               Ty.function
                                 [
                                   Ty.apply
                                     (Ty.path "&mut")
-                                    [ Ty.apply (Ty.path "revm::context::Context") [ EXT; DB ] ]
+                                    []
+                                    [ Ty.apply (Ty.path "revm::context::Context") [] [ EXT; DB ] ]
                                 ]
                                 (Ty.apply
                                   (Ty.path "core::result::Result")
+                                  []
                                   [
                                     Ty.tuple [];
                                     Ty.apply
                                       (Ty.path "revm_primitives::result::EVMError")
+                                      []
                                       [ Ty.associated ]
                                   ]);
                               Ty.path "alloc::alloc::Global"
@@ -200,7 +221,7 @@ Module handler.
                         ]
                       |)))
                 ]))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_new :
@@ -211,10 +232,15 @@ Module handler.
                 (self.deduct_caller)(context)
             }
         *)
-        Definition deduct_caller (EXT DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition deduct_caller
+            (EXT DB : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self EXT DB in
-          match τ, α with
-          | [], [ self; context ] =>
+          match ε, τ, α with
+          | [], [], [ self; context ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let context := M.alloc (| context |) in
@@ -231,7 +257,8 @@ Module handler.
                       [
                         Ty.apply
                           (Ty.path "&mut")
-                          [ Ty.apply (Ty.path "revm::context::Context") [ EXT; DB ] ]
+                          []
+                          [ Ty.apply (Ty.path "revm::context::Context") [] [ EXT; DB ] ]
                       ]
                   ],
                   "call",
@@ -243,6 +270,7 @@ Module handler.
                       "core::ops::deref::Deref",
                       Ty.apply
                         (Ty.path "alloc::sync::Arc")
+                        []
                         [
                           Ty.dyn
                             [
@@ -266,7 +294,7 @@ Module handler.
                   Value.Tuple [ M.read (| context |) ]
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_deduct_caller :
@@ -278,10 +306,15 @@ Module handler.
                 (self.load_accounts)(context)
             }
         *)
-        Definition load_accounts (EXT DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition load_accounts
+            (EXT DB : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self EXT DB in
-          match τ, α with
-          | [], [ self; context ] =>
+          match ε, τ, α with
+          | [], [], [ self; context ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let context := M.alloc (| context |) in
@@ -298,7 +331,8 @@ Module handler.
                       [
                         Ty.apply
                           (Ty.path "&mut")
-                          [ Ty.apply (Ty.path "revm::context::Context") [ EXT; DB ] ]
+                          []
+                          [ Ty.apply (Ty.path "revm::context::Context") [] [ EXT; DB ] ]
                       ]
                   ],
                   "call",
@@ -310,6 +344,7 @@ Module handler.
                       "core::ops::deref::Deref",
                       Ty.apply
                         (Ty.path "alloc::sync::Arc")
+                        []
                         [
                           Ty.dyn
                             [
@@ -333,7 +368,7 @@ Module handler.
                   Value.Tuple [ M.read (| context |) ]
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_load_accounts :
@@ -345,10 +380,15 @@ Module handler.
                 (self.load_precompiles)()
             }
         *)
-        Definition load_precompiles (EXT DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition load_precompiles
+            (EXT DB : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self EXT DB in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.call_closure (|
@@ -365,6 +405,7 @@ Module handler.
                       "core::ops::deref::Deref",
                       Ty.apply
                         (Ty.path "alloc::sync::Arc")
+                        []
                         [
                           Ty.dyn [ ("core::ops::function::Fn::Trait", []) ];
                           Ty.path "alloc::alloc::Global"
@@ -384,7 +425,7 @@ Module handler.
                   Value.Tuple []
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_load_precompiles :

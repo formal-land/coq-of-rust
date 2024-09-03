@@ -6,9 +6,9 @@ fn call_me<F: Fn()>(f: F) {
     f();
 }
 *)
-Definition call_me (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [ F ], [ f ] =>
+Definition call_me (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [ F ], [ f ] =>
     ltac:(M.monadic
       (let f := M.alloc (| f |) in
       M.read (|
@@ -21,7 +21,7 @@ Definition call_me (τ : list Ty.t) (α : list Value.t) : M :=
           |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_call_me : M.IsFunction "functions_closures_input_functions::call_me" call_me.
@@ -31,9 +31,9 @@ fn function() {
     println!("I'm a function!");
 }
 *)
-Definition function (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [] =>
+Definition function (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
         let~ _ :=
@@ -57,7 +57,7 @@ Definition function (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (| Value.Tuple [] |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_function : M.IsFunction "functions_closures_input_functions::function" function.
@@ -71,9 +71,9 @@ fn main() {
     call_me(function);
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [] =>
+Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
         let~ closure :=
@@ -142,7 +142,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_main : M.IsFunction "functions_closures_input_functions::main" main.

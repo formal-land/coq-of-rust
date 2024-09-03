@@ -5,13 +5,13 @@ Module iter.
   Module traits.
     Module iterator.
       (* fn _assert_is_object_safe(_: &dyn Iterator<Item = ()>) {} *)
-      Definition _assert_is_object_safe (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ β0 ] =>
+      Definition _assert_is_object_safe (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ β0 ] =>
           ltac:(M.monadic
             (let β0 := M.alloc (| β0 |) in
             M.match_operator (| β0, [ fun γ => ltac:(M.monadic (Value.Tuple [])) ] |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Function__assert_is_object_safe :
@@ -19,34 +19,44 @@ Module iter.
       
       (* Trait *)
       Module Iterator.
-        Definition next_chunk (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self ] =>
+        Definition next_chunk
+            (Self : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          match ε, τ, α with
+          | [ N ], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.call_closure (|
                 M.get_function (| "core::array::iter_next_chunk", [ Ty.associated; Self ] |),
                 [ M.read (| self |) ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom ProvidedMethod_next_chunk :
           M.IsProvidedMethod "core::iter::traits::iterator::Iterator" "next_chunk" next_chunk.
-        Definition size_hint (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self ] =>
+        Definition size_hint
+            (Self : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               Value.Tuple [ Value.Integer 0; Value.StructTuple "core::option::Option::None" [] ]))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom ProvidedMethod_size_hint :
           M.IsProvidedMethod "core::iter::traits::iterator::Iterator" "size_hint" size_hint.
-        Definition count (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self ] =>
+        Definition count (Self : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.call_closure (|
@@ -91,14 +101,14 @@ Module iter.
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom ProvidedMethod_count :
           M.IsProvidedMethod "core::iter::traits::iterator::Iterator" "count" count.
-        Definition last (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self ] =>
+        Definition last (Self : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.call_closure (|
@@ -108,10 +118,13 @@ Module iter.
                   [],
                   "fold",
                   [
-                    Ty.apply (Ty.path "core::option::Option") [ Ty.associated ];
+                    Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ];
                     Ty.function
-                      [ Ty.apply (Ty.path "core::option::Option") [ Ty.associated ]; Ty.associated ]
-                      (Ty.apply (Ty.path "core::option::Option") [ Ty.associated ])
+                      [
+                        Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ];
+                        Ty.associated
+                      ]
+                      (Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ])
                   ]
                 |),
                 [
@@ -120,14 +133,19 @@ Module iter.
                   M.get_associated_function (| Self, "some.last", [] |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom ProvidedMethod_last :
           M.IsProvidedMethod "core::iter::traits::iterator::Iterator" "last" last.
-        Definition advance_by (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self; n ] =>
+        Definition advance_by
+            (Self : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          match ε, τ, α with
+          | [], [], [ self; n ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let n := M.alloc (| n |) in
@@ -141,7 +159,7 @@ Module iter.
                             M.call_closure (|
                               M.get_trait_method (|
                                 "core::iter::traits::collect::IntoIterator",
-                                Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "usize" ],
+                                Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
                                 [],
                                 "into_iter",
                                 []
@@ -167,6 +185,7 @@ Module iter.
                                               "core::iter::traits::iterator::Iterator",
                                               Ty.apply
                                                 (Ty.path "core::ops::range::Range")
+                                                []
                                                 [ Ty.path "usize" ],
                                               [],
                                               "next",
@@ -207,6 +226,7 @@ Module iter.
                                                               M.get_associated_function (|
                                                                 Ty.apply
                                                                   (Ty.path "core::option::Option")
+                                                                  []
                                                                   [ Ty.associated ],
                                                                 "is_none",
                                                                 []
@@ -271,14 +291,14 @@ Module iter.
                     M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom ProvidedMethod_advance_by :
           M.IsProvidedMethod "core::iter::traits::iterator::Iterator" "advance_by" advance_by.
-        Definition nth (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self; n ] =>
+        Definition nth (Self : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self; n ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let n := M.alloc (| n |) in
@@ -291,7 +311,7 @@ Module iter.
                           M.call_closure (|
                             M.get_trait_method (|
                               "core::ops::try_trait::Try",
-                              Ty.apply (Ty.path "core::option::Option") [ Ty.tuple [] ],
+                              Ty.apply (Ty.path "core::option::Option") [] [ Ty.tuple [] ],
                               [],
                               "branch",
                               []
@@ -301,6 +321,7 @@ Module iter.
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "core::result::Result")
+                                    []
                                     [ Ty.tuple []; Ty.path "core::num::nonzero::NonZeroUsize" ],
                                   "ok",
                                   []
@@ -340,10 +361,12 @@ Module iter.
                                           "core::ops::try_trait::FromResidual",
                                           Ty.apply
                                             (Ty.path "core::option::Option")
+                                            []
                                             [ Ty.associated ],
                                           [
                                             Ty.apply
                                               (Ty.path "core::option::Option")
+                                              []
                                               [ Ty.path "core::convert::Infallible" ]
                                           ],
                                           "from_residual",
@@ -381,39 +404,47 @@ Module iter.
                     |)
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom ProvidedMethod_nth :
           M.IsProvidedMethod "core::iter::traits::iterator::Iterator" "nth" nth.
-        Definition step_by (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self; step ] =>
+        Definition step_by
+            (Self : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          match ε, τ, α with
+          | [], [], [ self; step ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let step := M.alloc (| step |) in
               M.call_closure (|
                 M.get_associated_function (|
-                  Ty.apply (Ty.path "core::iter::adapters::step_by::StepBy") [ Self ],
+                  Ty.apply (Ty.path "core::iter::adapters::step_by::StepBy") [] [ Self ],
                   "new",
                   []
                 |),
                 [ M.read (| self |); M.read (| step |) ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom ProvidedMethod_step_by :
           M.IsProvidedMethod "core::iter::traits::iterator::Iterator" "step_by" step_by.
-        Definition chain (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ U ], [ self; other ] =>
+        Definition chain (Self : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [ U ], [ self; other ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let other := M.alloc (| other |) in
               M.call_closure (|
                 M.get_associated_function (|
-                  Ty.apply (Ty.path "core::iter::adapters::chain::Chain") [ Self; Ty.associated ],
+                  Ty.apply
+                    (Ty.path "core::iter::adapters::chain::Chain")
+                    []
+                    [ Self; Ty.associated ],
                   "new",
                   []
                 |),
@@ -431,20 +462,20 @@ Module iter.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom ProvidedMethod_chain :
           M.IsProvidedMethod "core::iter::traits::iterator::Iterator" "chain" chain.
-        Definition zip (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ U ], [ self; other ] =>
+        Definition zip (Self : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [ U ], [ self; other ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let other := M.alloc (| other |) in
               M.call_closure (|
                 M.get_associated_function (|
-                  Ty.apply (Ty.path "core::iter::adapters::zip::Zip") [ Self; Ty.associated ],
+                  Ty.apply (Ty.path "core::iter::adapters::zip::Zip") [] [ Self; Ty.associated ],
                   "new",
                   []
                 |),
@@ -462,33 +493,43 @@ Module iter.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom ProvidedMethod_zip :
           M.IsProvidedMethod "core::iter::traits::iterator::Iterator" "zip" zip.
-        Definition intersperse (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self; separator ] =>
+        Definition intersperse
+            (Self : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          match ε, τ, α with
+          | [], [], [ self; separator ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let separator := M.alloc (| separator |) in
               M.call_closure (|
                 M.get_associated_function (|
-                  Ty.apply (Ty.path "core::iter::adapters::intersperse::Intersperse") [ Self ],
+                  Ty.apply (Ty.path "core::iter::adapters::intersperse::Intersperse") [] [ Self ],
                   "new",
                   []
                 |),
                 [ M.read (| self |); M.read (| separator |) ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom ProvidedMethod_intersperse :
           M.IsProvidedMethod "core::iter::traits::iterator::Iterator" "intersperse" intersperse.
-        Definition intersperse_with (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ G ], [ self; separator ] =>
+        Definition intersperse_with
+            (Self : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          match ε, τ, α with
+          | [], [ G ], [ self; separator ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let separator := M.alloc (| separator |) in
@@ -496,13 +537,14 @@ Module iter.
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "core::iter::adapters::intersperse::IntersperseWith")
+                    []
                     [ Self; G ],
                   "new",
                   []
                 |),
                 [ M.read (| self |); M.read (| separator |) ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom ProvidedMethod_intersperse_with :
@@ -510,28 +552,33 @@ Module iter.
             "core::iter::traits::iterator::Iterator"
             "intersperse_with"
             intersperse_with.
-        Definition map (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ B; F ], [ self; f ] =>
+        Definition map (Self : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [ B; F ], [ self; f ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let f := M.alloc (| f |) in
               M.call_closure (|
                 M.get_associated_function (|
-                  Ty.apply (Ty.path "core::iter::adapters::map::Map") [ Self; F ],
+                  Ty.apply (Ty.path "core::iter::adapters::map::Map") [] [ Self; F ],
                   "new",
                   []
                 |),
                 [ M.read (| self |); M.read (| f |) ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom ProvidedMethod_map :
           M.IsProvidedMethod "core::iter::traits::iterator::Iterator" "map" map.
-        Definition for_each (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ F ], [ self; f ] =>
+        Definition for_each
+            (Self : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          match ε, τ, α with
+          | [], [ F ], [ self; f ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let f := M.alloc (| f |) in
@@ -558,307 +605,365 @@ Module iter.
                   |) in
                 M.alloc (| Value.Tuple [] |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom ProvidedMethod_for_each :
           M.IsProvidedMethod "core::iter::traits::iterator::Iterator" "for_each" for_each.
-        Definition filter (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ P ], [ self; predicate ] =>
+        Definition filter (Self : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [ P ], [ self; predicate ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let predicate := M.alloc (| predicate |) in
               M.call_closure (|
                 M.get_associated_function (|
-                  Ty.apply (Ty.path "core::iter::adapters::filter::Filter") [ Self; P ],
+                  Ty.apply (Ty.path "core::iter::adapters::filter::Filter") [] [ Self; P ],
                   "new",
                   []
                 |),
                 [ M.read (| self |); M.read (| predicate |) ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom ProvidedMethod_filter :
           M.IsProvidedMethod "core::iter::traits::iterator::Iterator" "filter" filter.
-        Definition filter_map (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ B; F ], [ self; f ] =>
+        Definition filter_map
+            (Self : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          match ε, τ, α with
+          | [], [ B; F ], [ self; f ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let f := M.alloc (| f |) in
               M.call_closure (|
                 M.get_associated_function (|
-                  Ty.apply (Ty.path "core::iter::adapters::filter_map::FilterMap") [ Self; F ],
+                  Ty.apply (Ty.path "core::iter::adapters::filter_map::FilterMap") [] [ Self; F ],
                   "new",
                   []
                 |),
                 [ M.read (| self |); M.read (| f |) ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom ProvidedMethod_filter_map :
           M.IsProvidedMethod "core::iter::traits::iterator::Iterator" "filter_map" filter_map.
-        Definition enumerate (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self ] =>
+        Definition enumerate
+            (Self : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.call_closure (|
                 M.get_associated_function (|
-                  Ty.apply (Ty.path "core::iter::adapters::enumerate::Enumerate") [ Self ],
+                  Ty.apply (Ty.path "core::iter::adapters::enumerate::Enumerate") [] [ Self ],
                   "new",
                   []
                 |),
                 [ M.read (| self |) ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom ProvidedMethod_enumerate :
           M.IsProvidedMethod "core::iter::traits::iterator::Iterator" "enumerate" enumerate.
-        Definition peekable (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self ] =>
+        Definition peekable
+            (Self : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.call_closure (|
                 M.get_associated_function (|
-                  Ty.apply (Ty.path "core::iter::adapters::peekable::Peekable") [ Self ],
+                  Ty.apply (Ty.path "core::iter::adapters::peekable::Peekable") [] [ Self ],
                   "new",
                   []
                 |),
                 [ M.read (| self |) ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom ProvidedMethod_peekable :
           M.IsProvidedMethod "core::iter::traits::iterator::Iterator" "peekable" peekable.
-        Definition skip_while (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ P ], [ self; predicate ] =>
+        Definition skip_while
+            (Self : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          match ε, τ, α with
+          | [], [ P ], [ self; predicate ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let predicate := M.alloc (| predicate |) in
               M.call_closure (|
                 M.get_associated_function (|
-                  Ty.apply (Ty.path "core::iter::adapters::skip_while::SkipWhile") [ Self; P ],
+                  Ty.apply (Ty.path "core::iter::adapters::skip_while::SkipWhile") [] [ Self; P ],
                   "new",
                   []
                 |),
                 [ M.read (| self |); M.read (| predicate |) ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom ProvidedMethod_skip_while :
           M.IsProvidedMethod "core::iter::traits::iterator::Iterator" "skip_while" skip_while.
-        Definition take_while (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ P ], [ self; predicate ] =>
+        Definition take_while
+            (Self : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          match ε, τ, α with
+          | [], [ P ], [ self; predicate ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let predicate := M.alloc (| predicate |) in
               M.call_closure (|
                 M.get_associated_function (|
-                  Ty.apply (Ty.path "core::iter::adapters::take_while::TakeWhile") [ Self; P ],
+                  Ty.apply (Ty.path "core::iter::adapters::take_while::TakeWhile") [] [ Self; P ],
                   "new",
                   []
                 |),
                 [ M.read (| self |); M.read (| predicate |) ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom ProvidedMethod_take_while :
           M.IsProvidedMethod "core::iter::traits::iterator::Iterator" "take_while" take_while.
-        Definition map_while (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ B; P ], [ self; predicate ] =>
+        Definition map_while
+            (Self : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          match ε, τ, α with
+          | [], [ B; P ], [ self; predicate ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let predicate := M.alloc (| predicate |) in
               M.call_closure (|
                 M.get_associated_function (|
-                  Ty.apply (Ty.path "core::iter::adapters::map_while::MapWhile") [ Self; P ],
+                  Ty.apply (Ty.path "core::iter::adapters::map_while::MapWhile") [] [ Self; P ],
                   "new",
                   []
                 |),
                 [ M.read (| self |); M.read (| predicate |) ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom ProvidedMethod_map_while :
           M.IsProvidedMethod "core::iter::traits::iterator::Iterator" "map_while" map_while.
-        Definition skip (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self; n ] =>
+        Definition skip (Self : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self; n ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let n := M.alloc (| n |) in
               M.call_closure (|
                 M.get_associated_function (|
-                  Ty.apply (Ty.path "core::iter::adapters::skip::Skip") [ Self ],
+                  Ty.apply (Ty.path "core::iter::adapters::skip::Skip") [] [ Self ],
                   "new",
                   []
                 |),
                 [ M.read (| self |); M.read (| n |) ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom ProvidedMethod_skip :
           M.IsProvidedMethod "core::iter::traits::iterator::Iterator" "skip" skip.
-        Definition take (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self; n ] =>
+        Definition take (Self : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self; n ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let n := M.alloc (| n |) in
               M.call_closure (|
                 M.get_associated_function (|
-                  Ty.apply (Ty.path "core::iter::adapters::take::Take") [ Self ],
+                  Ty.apply (Ty.path "core::iter::adapters::take::Take") [] [ Self ],
                   "new",
                   []
                 |),
                 [ M.read (| self |); M.read (| n |) ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom ProvidedMethod_take :
           M.IsProvidedMethod "core::iter::traits::iterator::Iterator" "take" take.
-        Definition scan (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ St; B; F ], [ self; initial_state; f ] =>
+        Definition scan (Self : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [ St; B; F ], [ self; initial_state; f ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let initial_state := M.alloc (| initial_state |) in
               let f := M.alloc (| f |) in
               M.call_closure (|
                 M.get_associated_function (|
-                  Ty.apply (Ty.path "core::iter::adapters::scan::Scan") [ Self; St; F ],
+                  Ty.apply (Ty.path "core::iter::adapters::scan::Scan") [] [ Self; St; F ],
                   "new",
                   []
                 |),
                 [ M.read (| self |); M.read (| initial_state |); M.read (| f |) ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom ProvidedMethod_scan :
           M.IsProvidedMethod "core::iter::traits::iterator::Iterator" "scan" scan.
-        Definition flat_map (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ U; F ], [ self; f ] =>
+        Definition flat_map
+            (Self : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          match ε, τ, α with
+          | [], [ U; F ], [ self; f ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let f := M.alloc (| f |) in
               M.call_closure (|
                 M.get_associated_function (|
-                  Ty.apply (Ty.path "core::iter::adapters::flatten::FlatMap") [ Self; U; F ],
+                  Ty.apply (Ty.path "core::iter::adapters::flatten::FlatMap") [] [ Self; U; F ],
                   "new",
                   []
                 |),
                 [ M.read (| self |); M.read (| f |) ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom ProvidedMethod_flat_map :
           M.IsProvidedMethod "core::iter::traits::iterator::Iterator" "flat_map" flat_map.
-        Definition flatten (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self ] =>
+        Definition flatten
+            (Self : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.call_closure (|
                 M.get_associated_function (|
-                  Ty.apply (Ty.path "core::iter::adapters::flatten::Flatten") [ Self ],
+                  Ty.apply (Ty.path "core::iter::adapters::flatten::Flatten") [] [ Self ],
                   "new",
                   []
                 |),
                 [ M.read (| self |) ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom ProvidedMethod_flatten :
           M.IsProvidedMethod "core::iter::traits::iterator::Iterator" "flatten" flatten.
-        Definition map_windows (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ F; R ], [ self; f ] =>
+        Definition map_windows
+            (Self : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          match ε, τ, α with
+          | [ N ], [ F; R ], [ self; f ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let f := M.alloc (| f |) in
               M.call_closure (|
                 M.get_associated_function (|
-                  Ty.apply (Ty.path "core::iter::adapters::map_windows::MapWindows") [ Self; F ],
+                  Ty.apply
+                    (Ty.path "core::iter::adapters::map_windows::MapWindows")
+                    [ N ]
+                    [ Self; F ],
                   "new",
                   []
                 |),
                 [ M.read (| self |); M.read (| f |) ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom ProvidedMethod_map_windows :
           M.IsProvidedMethod "core::iter::traits::iterator::Iterator" "map_windows" map_windows.
-        Definition fuse (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self ] =>
+        Definition fuse (Self : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.call_closure (|
                 M.get_associated_function (|
-                  Ty.apply (Ty.path "core::iter::adapters::fuse::Fuse") [ Self ],
+                  Ty.apply (Ty.path "core::iter::adapters::fuse::Fuse") [] [ Self ],
                   "new",
                   []
                 |),
                 [ M.read (| self |) ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom ProvidedMethod_fuse :
           M.IsProvidedMethod "core::iter::traits::iterator::Iterator" "fuse" fuse.
-        Definition inspect (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ F ], [ self; f ] =>
+        Definition inspect
+            (Self : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          match ε, τ, α with
+          | [], [ F ], [ self; f ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let f := M.alloc (| f |) in
               M.call_closure (|
                 M.get_associated_function (|
-                  Ty.apply (Ty.path "core::iter::adapters::inspect::Inspect") [ Self; F ],
+                  Ty.apply (Ty.path "core::iter::adapters::inspect::Inspect") [] [ Self; F ],
                   "new",
                   []
                 |),
                 [ M.read (| self |); M.read (| f |) ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom ProvidedMethod_inspect :
           M.IsProvidedMethod "core::iter::traits::iterator::Iterator" "inspect" inspect.
-        Definition by_ref (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self ] =>
+        Definition by_ref (Self : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (| self |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom ProvidedMethod_by_ref :
           M.IsProvidedMethod "core::iter::traits::iterator::Iterator" "by_ref" by_ref.
-        Definition collect (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ B ], [ self ] =>
+        Definition collect
+            (Self : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          match ε, τ, α with
+          | [], [ B ], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.call_closure (|
@@ -871,21 +976,26 @@ Module iter.
                 |),
                 [ M.read (| self |) ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom ProvidedMethod_collect :
           M.IsProvidedMethod "core::iter::traits::iterator::Iterator" "collect" collect.
-        Definition try_collect (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ B ], [ self ] =>
+        Definition try_collect
+            (Self : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          match ε, τ, α with
+          | [], [ B ], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.call_closure (|
                 M.get_function (|
                   "core::iter::adapters::try_process",
                   [
-                    Ty.apply (Ty.path "core::iter::adapters::by_ref_sized::ByRefSized") [ Self ];
+                    Ty.apply (Ty.path "core::iter::adapters::by_ref_sized::ByRefSized") [] [ Self ];
                     Ty.associated;
                     Ty.associated;
                     Ty.function
@@ -894,9 +1004,11 @@ Module iter.
                           [
                             Ty.apply
                               (Ty.path "core::iter::adapters::GenericShunt")
+                              []
                               [
                                 Ty.apply
                                   (Ty.path "core::iter::adapters::by_ref_sized::ByRefSized")
+                                  []
                                   [ Self ];
                                 Ty.associated
                               ]
@@ -926,10 +1038,12 @@ Module iter.
                                       "core::iter::traits::iterator::Iterator",
                                       Ty.apply
                                         (Ty.path "core::iter::adapters::GenericShunt")
+                                        []
                                         [
                                           Ty.apply
                                             (Ty.path
                                               "core::iter::adapters::by_ref_sized::ByRefSized")
+                                            []
                                             [ Self ];
                                           Ty.associated
                                         ],
@@ -945,14 +1059,19 @@ Module iter.
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom ProvidedMethod_try_collect :
           M.IsProvidedMethod "core::iter::traits::iterator::Iterator" "try_collect" try_collect.
-        Definition collect_into (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ E ], [ self; collection ] =>
+        Definition collect_into
+            (Self : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          match ε, τ, α with
+          | [], [ E ], [ self; collection ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let collection := M.alloc (| collection |) in
@@ -972,14 +1091,19 @@ Module iter.
                   |) in
                 M.alloc (| M.read (| collection |) |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom ProvidedMethod_collect_into :
           M.IsProvidedMethod "core::iter::traits::iterator::Iterator" "collect_into" collect_into.
-        Definition partition (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ B; F ], [ self; f ] =>
+        Definition partition
+            (Self : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          match ε, τ, α with
+          | [], [ B; F ], [ self; f ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let f := M.alloc (| f |) in
@@ -1020,14 +1144,19 @@ Module iter.
                   |) in
                 M.alloc (| Value.Tuple [ M.read (| left |); M.read (| right |) ] |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom ProvidedMethod_partition :
           M.IsProvidedMethod "core::iter::traits::iterator::Iterator" "partition" partition.
-        Definition partition_in_place (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ T; P ], [ self; β1 ] =>
+        Definition partition_in_place
+            (Self : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          match ε, τ, α with
+          | [], [ T; P ], [ self; β1 ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let β1 := M.alloc (| β1 |) in
@@ -1156,7 +1285,7 @@ Module iter.
                       |)))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom ProvidedMethod_partition_in_place :
@@ -1164,9 +1293,14 @@ Module iter.
             "core::iter::traits::iterator::Iterator"
             "partition_in_place"
             partition_in_place.
-        Definition is_partitioned (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ P ], [ self; predicate ] =>
+        Definition is_partitioned
+            (Self : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          match ε, τ, α with
+          | [], [ P ], [ self; predicate ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let predicate := M.alloc (| predicate |) in
@@ -1177,7 +1311,7 @@ Module iter.
                     Self,
                     [],
                     "all",
-                    [ Ty.apply (Ty.path "&mut") [ P ] ]
+                    [ Ty.apply (Ty.path "&mut") [] [ P ] ]
                   |),
                   [ self; predicate ]
                 |),
@@ -1194,7 +1328,7 @@ Module iter.
                       [ self; M.read (| predicate |) ]
                     |))))
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom ProvidedMethod_is_partitioned :
@@ -1202,9 +1336,14 @@ Module iter.
             "core::iter::traits::iterator::Iterator"
             "is_partitioned"
             is_partitioned.
-        Definition try_fold (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ B; F; R ], [ self; init; f ] =>
+        Definition try_fold
+            (Self : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          match ε, τ, α with
+          | [], [ B; F; R ], [ self; init; f ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let init := M.alloc (| init |) in
@@ -1346,14 +1485,19 @@ Module iter.
                     |)
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom ProvidedMethod_try_fold :
           M.IsProvidedMethod "core::iter::traits::iterator::Iterator" "try_fold" try_fold.
-        Definition try_for_each (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ F; R ], [ self; f ] =>
+        Definition try_for_each
+            (Self : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          match ε, τ, α with
+          | [], [ F; R ], [ self; f ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let f := M.alloc (| f |) in
@@ -1374,14 +1518,14 @@ Module iter.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom ProvidedMethod_try_for_each :
           M.IsProvidedMethod "core::iter::traits::iterator::Iterator" "try_for_each" try_for_each.
-        Definition fold (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ B; F ], [ self; init; f ] =>
+        Definition fold (Self : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [ B; F ], [ self; init; f ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let init := M.alloc (| init |) in
@@ -1449,14 +1593,14 @@ Module iter.
                   |) in
                 accum
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom ProvidedMethod_fold :
           M.IsProvidedMethod "core::iter::traits::iterator::Iterator" "fold" fold.
-        Definition reduce (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ F ], [ self; f ] =>
+        Definition reduce (Self : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [ F ], [ self; f ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let f := M.alloc (| f |) in
@@ -1470,7 +1614,7 @@ Module iter.
                             M.call_closure (|
                               M.get_trait_method (|
                                 "core::ops::try_trait::Try",
-                                Ty.apply (Ty.path "core::option::Option") [ Ty.associated ],
+                                Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ],
                                 [],
                                 "branch",
                                 []
@@ -1508,10 +1652,12 @@ Module iter.
                                             "core::ops::try_trait::FromResidual",
                                             Ty.apply
                                               (Ty.path "core::option::Option")
+                                              []
                                               [ Ty.associated ],
                                             [
                                               Ty.apply
                                                 (Ty.path "core::option::Option")
+                                                []
                                                 [ Ty.path "core::convert::Infallible" ]
                                             ],
                                             "from_residual",
@@ -1554,14 +1700,19 @@ Module iter.
                     |)
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom ProvidedMethod_reduce :
           M.IsProvidedMethod "core::iter::traits::iterator::Iterator" "reduce" reduce.
-        Definition try_reduce (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ F; R ], [ self; f ] =>
+        Definition try_reduce
+            (Self : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          match ε, τ, α with
+          | [], [ F; R ], [ self; f ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let f := M.alloc (| f |) in
@@ -1684,14 +1835,14 @@ Module iter.
                     |)
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom ProvidedMethod_try_reduce :
           M.IsProvidedMethod "core::iter::traits::iterator::Iterator" "try_reduce" try_reduce.
-        Definition all (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ F ], [ self; f ] =>
+        Definition all (Self : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [ F ], [ self; f ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let f := M.alloc (| f |) in
@@ -1700,10 +1851,12 @@ Module iter.
                   "core::cmp::PartialEq",
                   Ty.apply
                     (Ty.path "core::ops::control_flow::ControlFlow")
+                    []
                     [ Ty.tuple []; Ty.tuple [] ],
                   [
                     Ty.apply
                       (Ty.path "core::ops::control_flow::ControlFlow")
+                      []
                       [ Ty.tuple []; Ty.tuple [] ]
                   ],
                   "eq",
@@ -1722,6 +1875,7 @@ Module iter.
                           Ty.associated;
                           Ty.apply
                             (Ty.path "core::ops::control_flow::ControlFlow")
+                            []
                             [ Ty.tuple []; Ty.tuple [] ]
                         ]
                       |),
@@ -1742,14 +1896,14 @@ Module iter.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom ProvidedMethod_all :
           M.IsProvidedMethod "core::iter::traits::iterator::Iterator" "all" all.
-        Definition any (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ F ], [ self; f ] =>
+        Definition any (Self : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [ F ], [ self; f ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let f := M.alloc (| f |) in
@@ -1758,10 +1912,12 @@ Module iter.
                   "core::cmp::PartialEq",
                   Ty.apply
                     (Ty.path "core::ops::control_flow::ControlFlow")
+                    []
                     [ Ty.tuple []; Ty.tuple [] ],
                   [
                     Ty.apply
                       (Ty.path "core::ops::control_flow::ControlFlow")
+                      []
                       [ Ty.tuple []; Ty.tuple [] ]
                   ],
                   "eq",
@@ -1780,6 +1936,7 @@ Module iter.
                           Ty.associated;
                           Ty.apply
                             (Ty.path "core::ops::control_flow::ControlFlow")
+                            []
                             [ Ty.tuple []; Ty.tuple [] ]
                         ]
                       |),
@@ -1800,14 +1957,14 @@ Module iter.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom ProvidedMethod_any :
           M.IsProvidedMethod "core::iter::traits::iterator::Iterator" "any" any.
-        Definition find (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ P ], [ self; predicate ] =>
+        Definition find (Self : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [ P ], [ self; predicate ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let predicate := M.alloc (| predicate |) in
@@ -1815,6 +1972,7 @@ Module iter.
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "core::ops::control_flow::ControlFlow")
+                    []
                     [ Ty.associated; Ty.tuple [] ],
                   "break_value",
                   []
@@ -1831,6 +1989,7 @@ Module iter.
                         Ty.associated;
                         Ty.apply
                           (Ty.path "core::ops::control_flow::ControlFlow")
+                          []
                           [ Ty.associated; Ty.tuple [] ]
                       ]
                     |),
@@ -1845,20 +2004,25 @@ Module iter.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom ProvidedMethod_find :
           M.IsProvidedMethod "core::iter::traits::iterator::Iterator" "find" find.
-        Definition find_map (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ B; F ], [ self; f ] =>
+        Definition find_map
+            (Self : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          match ε, τ, α with
+          | [], [ B; F ], [ self; f ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let f := M.alloc (| f |) in
               M.call_closure (|
                 M.get_associated_function (|
-                  Ty.apply (Ty.path "core::ops::control_flow::ControlFlow") [ B; Ty.tuple [] ],
+                  Ty.apply (Ty.path "core::ops::control_flow::ControlFlow") [] [ B; Ty.tuple [] ],
                   "break_value",
                   []
                 |),
@@ -1872,7 +2036,10 @@ Module iter.
                       [
                         Ty.tuple [];
                         Ty.associated;
-                        Ty.apply (Ty.path "core::ops::control_flow::ControlFlow") [ B; Ty.tuple [] ]
+                        Ty.apply
+                          (Ty.path "core::ops::control_flow::ControlFlow")
+                          []
+                          [ B; Ty.tuple [] ]
                       ]
                     |),
                     [
@@ -1886,14 +2053,19 @@ Module iter.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom ProvidedMethod_find_map :
           M.IsProvidedMethod "core::iter::traits::iterator::Iterator" "find_map" find_map.
-        Definition try_find (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ F; R ], [ self; f ] =>
+        Definition try_find
+            (Self : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          match ε, τ, α with
+          | [], [ F; R ], [ self; f ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let f := M.alloc (| f |) in
@@ -1911,6 +2083,7 @@ Module iter.
                           Ty.associated;
                           Ty.apply
                             (Ty.path "core::ops::control_flow::ControlFlow")
+                            []
                             [ Ty.associated; Ty.tuple [] ]
                         ]
                       |),
@@ -1958,14 +2131,19 @@ Module iter.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom ProvidedMethod_try_find :
           M.IsProvidedMethod "core::iter::traits::iterator::Iterator" "try_find" try_find.
-        Definition position (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ P ], [ self; predicate ] =>
+        Definition position
+            (Self : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          match ε, τ, α with
+          | [], [ P ], [ self; predicate ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let predicate := M.alloc (| predicate |) in
@@ -1973,6 +2151,7 @@ Module iter.
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "core::ops::control_flow::ControlFlow")
+                    []
                     [ Ty.path "usize"; Ty.path "usize" ],
                   "break_value",
                   []
@@ -1989,6 +2168,7 @@ Module iter.
                         Ty.associated;
                         Ty.apply
                           (Ty.path "core::ops::control_flow::ControlFlow")
+                          []
                           [ Ty.path "usize"; Ty.path "usize" ]
                       ]
                     |),
@@ -2003,14 +2183,19 @@ Module iter.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom ProvidedMethod_position :
           M.IsProvidedMethod "core::iter::traits::iterator::Iterator" "position" position.
-        Definition rposition (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ P ], [ self; predicate ] =>
+        Definition rposition
+            (Self : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          match ε, τ, α with
+          | [], [ P ], [ self; predicate ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let predicate := M.alloc (| predicate |) in
@@ -2020,7 +2205,7 @@ Module iter.
                     M.call_closure (|
                       M.get_trait_method (|
                         "core::iter::traits::exact_size::ExactSizeIterator",
-                        Ty.apply (Ty.path "&mut") [ Self ],
+                        Ty.apply (Ty.path "&mut") [] [ Self ],
                         [],
                         "len",
                         []
@@ -2033,6 +2218,7 @@ Module iter.
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "core::ops::control_flow::ControlFlow")
+                        []
                         [ Ty.path "usize"; Ty.path "usize" ],
                       "break_value",
                       []
@@ -2049,6 +2235,7 @@ Module iter.
                             Ty.associated;
                             Ty.apply
                               (Ty.path "core::ops::control_flow::ControlFlow")
+                              []
                               [ Ty.path "usize"; Ty.path "usize" ]
                           ]
                         |),
@@ -2065,14 +2252,14 @@ Module iter.
                   |)
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom ProvidedMethod_rposition :
           M.IsProvidedMethod "core::iter::traits::iterator::Iterator" "rposition" rposition.
-        Definition max (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self ] =>
+        Definition max (Self : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.call_closure (|
@@ -2084,8 +2271,8 @@ Module iter.
                   [
                     Ty.function
                       [
-                        Ty.apply (Ty.path "&") [ Ty.associated ];
-                        Ty.apply (Ty.path "&") [ Ty.associated ]
+                        Ty.apply (Ty.path "&") [] [ Ty.associated ];
+                        Ty.apply (Ty.path "&") [] [ Ty.associated ]
                       ]
                       (Ty.path "core::cmp::Ordering")
                   ]
@@ -2095,14 +2282,14 @@ Module iter.
                   M.get_trait_method (| "core::cmp::Ord", Ty.associated, [], "cmp", [] |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom ProvidedMethod_max :
           M.IsProvidedMethod "core::iter::traits::iterator::Iterator" "max" max.
-        Definition min (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self ] =>
+        Definition min (Self : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.call_closure (|
@@ -2114,8 +2301,8 @@ Module iter.
                   [
                     Ty.function
                       [
-                        Ty.apply (Ty.path "&") [ Ty.associated ];
-                        Ty.apply (Ty.path "&") [ Ty.associated ]
+                        Ty.apply (Ty.path "&") [] [ Ty.associated ];
+                        Ty.apply (Ty.path "&") [] [ Ty.associated ]
                       ]
                       (Ty.path "core::cmp::Ordering")
                   ]
@@ -2125,14 +2312,19 @@ Module iter.
                   M.get_trait_method (| "core::cmp::Ord", Ty.associated, [], "cmp", [] |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom ProvidedMethod_min :
           M.IsProvidedMethod "core::iter::traits::iterator::Iterator" "min" min.
-        Definition max_by_key (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ B; F ], [ self; f ] =>
+        Definition max_by_key
+            (Self : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          match ε, τ, α with
+          | [], [ B; F ], [ self; f ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let f := M.alloc (| f |) in
@@ -2147,6 +2339,7 @@ Module iter.
                               "core::ops::try_trait::Try",
                               Ty.apply
                                 (Ty.path "core::option::Option")
+                                []
                                 [ Ty.tuple [ B; Ty.associated ] ],
                               [],
                               "branch",
@@ -2158,14 +2351,15 @@ Module iter.
                                   "core::iter::traits::iterator::Iterator",
                                   Ty.apply
                                     (Ty.path "core::iter::adapters::map::Map")
+                                    []
                                     [ Self; Ty.associated ],
                                   [],
                                   "max_by",
                                   [
                                     Ty.function
                                       [
-                                        Ty.apply (Ty.path "&") [ Ty.tuple [ B; Ty.associated ] ];
-                                        Ty.apply (Ty.path "&") [ Ty.tuple [ B; Ty.associated ] ]
+                                        Ty.apply (Ty.path "&") [] [ Ty.tuple [ B; Ty.associated ] ];
+                                        Ty.apply (Ty.path "&") [] [ Ty.tuple [ B; Ty.associated ] ]
                                       ]
                                       (Ty.path "core::cmp::Ordering")
                                   ]
@@ -2212,10 +2406,12 @@ Module iter.
                                           "core::ops::try_trait::FromResidual",
                                           Ty.apply
                                             (Ty.path "core::option::Option")
+                                            []
                                             [ Ty.associated ],
                                           [
                                             Ty.apply
                                               (Ty.path "core::option::Option")
+                                              []
                                               [ Ty.path "core::convert::Infallible" ]
                                           ],
                                           "from_residual",
@@ -2252,14 +2448,14 @@ Module iter.
                     |)
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom ProvidedMethod_max_by_key :
           M.IsProvidedMethod "core::iter::traits::iterator::Iterator" "max_by_key" max_by_key.
-        Definition max_by (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ F ], [ self; compare ] =>
+        Definition max_by (Self : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [ F ], [ self; compare ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let compare := M.alloc (| compare |) in
@@ -2279,14 +2475,19 @@ Module iter.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom ProvidedMethod_max_by :
           M.IsProvidedMethod "core::iter::traits::iterator::Iterator" "max_by" max_by.
-        Definition min_by_key (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ B; F ], [ self; f ] =>
+        Definition min_by_key
+            (Self : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          match ε, τ, α with
+          | [], [ B; F ], [ self; f ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let f := M.alloc (| f |) in
@@ -2301,6 +2502,7 @@ Module iter.
                               "core::ops::try_trait::Try",
                               Ty.apply
                                 (Ty.path "core::option::Option")
+                                []
                                 [ Ty.tuple [ B; Ty.associated ] ],
                               [],
                               "branch",
@@ -2312,14 +2514,15 @@ Module iter.
                                   "core::iter::traits::iterator::Iterator",
                                   Ty.apply
                                     (Ty.path "core::iter::adapters::map::Map")
+                                    []
                                     [ Self; Ty.associated ],
                                   [],
                                   "min_by",
                                   [
                                     Ty.function
                                       [
-                                        Ty.apply (Ty.path "&") [ Ty.tuple [ B; Ty.associated ] ];
-                                        Ty.apply (Ty.path "&") [ Ty.tuple [ B; Ty.associated ] ]
+                                        Ty.apply (Ty.path "&") [] [ Ty.tuple [ B; Ty.associated ] ];
+                                        Ty.apply (Ty.path "&") [] [ Ty.tuple [ B; Ty.associated ] ]
                                       ]
                                       (Ty.path "core::cmp::Ordering")
                                   ]
@@ -2366,10 +2569,12 @@ Module iter.
                                           "core::ops::try_trait::FromResidual",
                                           Ty.apply
                                             (Ty.path "core::option::Option")
+                                            []
                                             [ Ty.associated ],
                                           [
                                             Ty.apply
                                               (Ty.path "core::option::Option")
+                                              []
                                               [ Ty.path "core::convert::Infallible" ]
                                           ],
                                           "from_residual",
@@ -2406,14 +2611,14 @@ Module iter.
                     |)
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom ProvidedMethod_min_by_key :
           M.IsProvidedMethod "core::iter::traits::iterator::Iterator" "min_by_key" min_by_key.
-        Definition min_by (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ F ], [ self; compare ] =>
+        Definition min_by (Self : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [ F ], [ self; compare ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let compare := M.alloc (| compare |) in
@@ -2433,32 +2638,32 @@ Module iter.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom ProvidedMethod_min_by :
           M.IsProvidedMethod "core::iter::traits::iterator::Iterator" "min_by" min_by.
-        Definition rev (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self ] =>
+        Definition rev (Self : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.call_closure (|
                 M.get_associated_function (|
-                  Ty.apply (Ty.path "core::iter::adapters::rev::Rev") [ Self ],
+                  Ty.apply (Ty.path "core::iter::adapters::rev::Rev") [] [ Self ],
                   "new",
                   []
                 |),
                 [ M.read (| self |) ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom ProvidedMethod_rev :
           M.IsProvidedMethod "core::iter::traits::iterator::Iterator" "rev" rev.
-        Definition unzip (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ A; B; FromA; FromB ], [ self ] =>
+        Definition unzip (Self : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [ A; B; FromA; FromB ], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
@@ -2490,86 +2695,94 @@ Module iter.
                   |) in
                 unzipped
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom ProvidedMethod_unzip :
           M.IsProvidedMethod "core::iter::traits::iterator::Iterator" "unzip" unzip.
-        Definition copied (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ T ], [ self ] =>
+        Definition copied (Self : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [ T ], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.call_closure (|
                 M.get_associated_function (|
-                  Ty.apply (Ty.path "core::iter::adapters::copied::Copied") [ Self ],
+                  Ty.apply (Ty.path "core::iter::adapters::copied::Copied") [] [ Self ],
                   "new",
                   []
                 |),
                 [ M.read (| self |) ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom ProvidedMethod_copied :
           M.IsProvidedMethod "core::iter::traits::iterator::Iterator" "copied" copied.
-        Definition cloned (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ T ], [ self ] =>
+        Definition cloned (Self : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [ T ], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.call_closure (|
                 M.get_associated_function (|
-                  Ty.apply (Ty.path "core::iter::adapters::cloned::Cloned") [ Self ],
+                  Ty.apply (Ty.path "core::iter::adapters::cloned::Cloned") [] [ Self ],
                   "new",
                   []
                 |),
                 [ M.read (| self |) ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom ProvidedMethod_cloned :
           M.IsProvidedMethod "core::iter::traits::iterator::Iterator" "cloned" cloned.
-        Definition cycle (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self ] =>
+        Definition cycle (Self : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.call_closure (|
                 M.get_associated_function (|
-                  Ty.apply (Ty.path "core::iter::adapters::cycle::Cycle") [ Self ],
+                  Ty.apply (Ty.path "core::iter::adapters::cycle::Cycle") [] [ Self ],
                   "new",
                   []
                 |),
                 [ M.read (| self |) ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom ProvidedMethod_cycle :
           M.IsProvidedMethod "core::iter::traits::iterator::Iterator" "cycle" cycle.
-        Definition array_chunks (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self ] =>
+        Definition array_chunks
+            (Self : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          match ε, τ, α with
+          | [ N ], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.call_closure (|
                 M.get_associated_function (|
-                  Ty.apply (Ty.path "core::iter::adapters::array_chunks::ArrayChunks") [ Self ],
+                  Ty.apply
+                    (Ty.path "core::iter::adapters::array_chunks::ArrayChunks")
+                    [ N ]
+                    [ Self ],
                   "new",
                   []
                 |),
                 [ M.read (| self |) ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom ProvidedMethod_array_chunks :
           M.IsProvidedMethod "core::iter::traits::iterator::Iterator" "array_chunks" array_chunks.
-        Definition sum (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ _ as S ], [ self ] =>
+        Definition sum (Self : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [ _ as S ], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.call_closure (|
@@ -2582,14 +2795,19 @@ Module iter.
                 |),
                 [ M.read (| self |) ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom ProvidedMethod_sum :
           M.IsProvidedMethod "core::iter::traits::iterator::Iterator" "sum" sum.
-        Definition product (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ P ], [ self ] =>
+        Definition product
+            (Self : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          match ε, τ, α with
+          | [], [ P ], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.call_closure (|
@@ -2602,14 +2820,14 @@ Module iter.
                 |),
                 [ M.read (| self |) ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom ProvidedMethod_product :
           M.IsProvidedMethod "core::iter::traits::iterator::Iterator" "product" product.
-        Definition cmp (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ _ as I ], [ self; other ] =>
+        Definition cmp (Self : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [ _ as I ], [ self; other ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let other := M.alloc (| other |) in
@@ -2664,14 +2882,14 @@ Module iter.
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom ProvidedMethod_cmp :
           M.IsProvidedMethod "core::iter::traits::iterator::Iterator" "cmp" cmp.
-        Definition cmp_by (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ _ as I; F ], [ self; other; cmp ] =>
+        Definition cmp_by (Self : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [ _ as I; F ], [ self; other; cmp ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let other := M.alloc (| other |) in
@@ -2727,14 +2945,19 @@ Module iter.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom ProvidedMethod_cmp_by :
           M.IsProvidedMethod "core::iter::traits::iterator::Iterator" "cmp_by" cmp_by.
-        Definition partial_cmp (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ _ as I ], [ self; other ] =>
+        Definition partial_cmp
+            (Self : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          match ε, τ, α with
+          | [], [ _ as I ], [ self; other ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let other := M.alloc (| other |) in
@@ -2748,7 +2971,10 @@ Module iter.
                     I;
                     Ty.function
                       [ Ty.tuple [ Ty.associated; Ty.associated ] ]
-                      (Ty.apply (Ty.path "core::option::Option") [ Ty.path "core::cmp::Ordering" ])
+                      (Ty.apply
+                        (Ty.path "core::option::Option")
+                        []
+                        [ Ty.path "core::cmp::Ordering" ])
                   ]
                 |),
                 [
@@ -2789,14 +3015,19 @@ Module iter.
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom ProvidedMethod_partial_cmp :
           M.IsProvidedMethod "core::iter::traits::iterator::Iterator" "partial_cmp" partial_cmp.
-        Definition partial_cmp_by (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ _ as I; F ], [ self; other; partial_cmp ] =>
+        Definition partial_cmp_by
+            (Self : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          match ε, τ, α with
+          | [], [ _ as I; F ], [ self; other; partial_cmp ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let other := M.alloc (| other |) in
@@ -2813,6 +3044,7 @@ Module iter.
                           Ty.associated;
                           Ty.apply
                             (Ty.path "core::option::Option")
+                            []
                             [ Ty.path "core::cmp::Ordering" ]
                         ]
                       |),
@@ -2861,7 +3093,7 @@ Module iter.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom ProvidedMethod_partial_cmp_by :
@@ -2869,9 +3101,9 @@ Module iter.
             "core::iter::traits::iterator::Iterator"
             "partial_cmp_by"
             partial_cmp_by.
-        Definition eq (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ _ as I ], [ self; other ] =>
+        Definition eq (Self : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [ _ as I ], [ self; other ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let other := M.alloc (| other |) in
@@ -2921,14 +3153,14 @@ Module iter.
                         end))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom ProvidedMethod_eq :
           M.IsProvidedMethod "core::iter::traits::iterator::Iterator" "eq" eq.
-        Definition eq_by (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ _ as I; F ], [ self; other; eq ] =>
+        Definition eq_by (Self : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [ _ as I; F ], [ self; other; eq ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let other := M.alloc (| other |) in
@@ -2994,14 +3226,14 @@ Module iter.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom ProvidedMethod_eq_by :
           M.IsProvidedMethod "core::iter::traits::iterator::Iterator" "eq_by" eq_by.
-        Definition ne (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ _ as I ], [ self; other ] =>
+        Definition ne (Self : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [ _ as I ], [ self; other ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let other := M.alloc (| other |) in
@@ -3016,22 +3248,23 @@ Module iter.
                   |),
                   [ M.read (| self |); M.read (| other |) ]
                 |))))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom ProvidedMethod_ne :
           M.IsProvidedMethod "core::iter::traits::iterator::Iterator" "ne" ne.
-        Definition lt (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ _ as I ], [ self; other ] =>
+        Definition lt (Self : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [ _ as I ], [ self; other ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let other := M.alloc (| other |) in
               M.call_closure (|
                 M.get_trait_method (|
                   "core::cmp::PartialEq",
-                  Ty.apply (Ty.path "core::option::Option") [ Ty.path "core::cmp::Ordering" ],
-                  [ Ty.apply (Ty.path "core::option::Option") [ Ty.path "core::cmp::Ordering" ] ],
+                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
+                  [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ]
+                  ],
                   "eq",
                   []
                 |),
@@ -3055,14 +3288,14 @@ Module iter.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom ProvidedMethod_lt :
           M.IsProvidedMethod "core::iter::traits::iterator::Iterator" "lt" lt.
-        Definition le (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ _ as I ], [ self; other ] =>
+        Definition le (Self : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [ _ as I ], [ self; other ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let other := M.alloc (| other |) in
@@ -3113,22 +3346,23 @@ Module iter.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom ProvidedMethod_le :
           M.IsProvidedMethod "core::iter::traits::iterator::Iterator" "le" le.
-        Definition gt (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ _ as I ], [ self; other ] =>
+        Definition gt (Self : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [ _ as I ], [ self; other ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let other := M.alloc (| other |) in
               M.call_closure (|
                 M.get_trait_method (|
                   "core::cmp::PartialEq",
-                  Ty.apply (Ty.path "core::option::Option") [ Ty.path "core::cmp::Ordering" ],
-                  [ Ty.apply (Ty.path "core::option::Option") [ Ty.path "core::cmp::Ordering" ] ],
+                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
+                  [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ]
+                  ],
                   "eq",
                   []
                 |),
@@ -3152,14 +3386,14 @@ Module iter.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom ProvidedMethod_gt :
           M.IsProvidedMethod "core::iter::traits::iterator::Iterator" "gt" gt.
-        Definition ge (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ _ as I ], [ self; other ] =>
+        Definition ge (Self : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [ _ as I ], [ self; other ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let other := M.alloc (| other |) in
@@ -3211,14 +3445,19 @@ Module iter.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom ProvidedMethod_ge :
           M.IsProvidedMethod "core::iter::traits::iterator::Iterator" "ge" ge.
-        Definition is_sorted (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self ] =>
+        Definition is_sorted
+            (Self : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.call_closure (|
@@ -3230,10 +3469,13 @@ Module iter.
                   [
                     Ty.function
                       [
-                        Ty.apply (Ty.path "&") [ Ty.associated ];
-                        Ty.apply (Ty.path "&") [ Ty.associated ]
+                        Ty.apply (Ty.path "&") [] [ Ty.associated ];
+                        Ty.apply (Ty.path "&") [] [ Ty.associated ]
                       ]
-                      (Ty.apply (Ty.path "core::option::Option") [ Ty.path "core::cmp::Ordering" ])
+                      (Ty.apply
+                        (Ty.path "core::option::Option")
+                        []
+                        [ Ty.path "core::cmp::Ordering" ])
                   ]
                 |),
                 [
@@ -3247,14 +3489,19 @@ Module iter.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom ProvidedMethod_is_sorted :
           M.IsProvidedMethod "core::iter::traits::iterator::Iterator" "is_sorted" is_sorted.
-        Definition is_sorted_by (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ F ], [ self; compare ] =>
+        Definition is_sorted_by
+            (Self : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          match ε, τ, α with
+          | [], [ F ], [ self; compare ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let compare := M.alloc (| compare |) in
@@ -3316,21 +3563,26 @@ Module iter.
                     |)
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom ProvidedMethod_is_sorted_by :
           M.IsProvidedMethod "core::iter::traits::iterator::Iterator" "is_sorted_by" is_sorted_by.
-        Definition is_sorted_by_key (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ F; K ], [ self; f ] =>
+        Definition is_sorted_by_key
+            (Self : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          match ε, τ, α with
+          | [], [ F; K ], [ self; f ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let f := M.alloc (| f |) in
               M.call_closure (|
                 M.get_trait_method (|
                   "core::iter::traits::iterator::Iterator",
-                  Ty.apply (Ty.path "core::iter::adapters::map::Map") [ Self; F ],
+                  Ty.apply (Ty.path "core::iter::adapters::map::Map") [] [ Self; F ],
                   [],
                   "is_sorted",
                   []
@@ -3348,7 +3600,7 @@ Module iter.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom ProvidedMethod_is_sorted_by_key :
@@ -3356,9 +3608,14 @@ Module iter.
             "core::iter::traits::iterator::Iterator"
             "is_sorted_by_key"
             is_sorted_by_key.
-        Definition __iterator_get_unchecked (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self; _idx ] =>
+        Definition __iterator_get_unchecked
+            (Self : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          match ε, τ, α with
+          | [], [], [ self; _idx ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let _idx := M.alloc (| _idx |) in
@@ -3397,7 +3654,7 @@ Module iter.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom ProvidedMethod___iterator_get_unchecked :
@@ -3437,9 +3694,9 @@ Module iter.
           }
       }
       *)
-      Definition iter_compare (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ A; B; F; T ], [ a; b; f ] =>
+      Definition iter_compare (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ A; B; F; T ], [ a; b; f ] =>
           ltac:(M.monadic
             (let a := M.alloc (| a |) in
             let b := M.alloc (| b |) in
@@ -3457,9 +3714,11 @@ Module iter.
                         Ty.associated;
                         Ty.apply
                           (Ty.path "core::ops::control_flow::ControlFlow")
+                          []
                           [
                             Ty.apply
                               (Ty.path "core::ops::control_flow::ControlFlow")
+                              []
                               [ T; Ty.path "core::cmp::Ordering" ];
                             Ty.tuple []
                           ]
@@ -3541,7 +3800,7 @@ Module iter.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Function_iter_compare :
@@ -3562,9 +3821,9 @@ Module iter.
                 }
             }
         *)
-        Definition compare (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ B; X; T; impl_FnMut_X__B_Item__arrow_ControlFlow_T___plus__'a ], [ b; f ] =>
+        Definition compare (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [ B; X; T; impl_FnMut_X__B_Item__arrow_ControlFlow_T___plus__'a ], [ b; f ] =>
             ltac:(M.monadic
               (let b := M.alloc (| b |) in
               let f := M.alloc (| f |) in
@@ -3625,16 +3884,19 @@ Module iter.
                                             M.get_associated_function (|
                                               Ty.apply
                                                 (Ty.path "core::ops::control_flow::ControlFlow")
+                                                []
                                                 [ T; Ty.tuple [] ],
                                               "map_break",
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::ops::control_flow::ControlFlow")
+                                                  []
                                                   [ T; Ty.path "core::cmp::Ordering" ];
                                                 Ty.function
                                                   [ T ]
                                                   (Ty.apply
                                                     (Ty.path "core::ops::control_flow::ControlFlow")
+                                                    []
                                                     [ T; Ty.path "core::cmp::Ordering" ])
                                               ]
                                             |),
@@ -3662,7 +3924,7 @@ Module iter.
                       |)
                     | _ => M.impossible (||)
                     end))))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Function_compare :
@@ -3674,7 +3936,7 @@ Module iter.
       End iter_compare.
       
       Module Impl_core_iter_traits_iterator_Iterator_where_core_iter_traits_iterator_Iterator_I_where_core_marker_Sized_I_for_ref_mut_I.
-        Definition Self (I : Ty.t) : Ty.t := Ty.apply (Ty.path "&mut") [ I ].
+        Definition Self (I : Ty.t) : Ty.t := Ty.apply (Ty.path "&mut") [] [ I ].
         
         (*     type Item = I::Item; *)
         Definition _Item (I : Ty.t) : Ty.t := Ty.associated.
@@ -3684,10 +3946,10 @@ Module iter.
                 ( **self).next()
             }
         *)
-        Definition next (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition next (I : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self I in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.call_closure (|
@@ -3700,7 +3962,7 @@ Module iter.
                 |),
                 [ M.read (| M.read (| self |) |) ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         (*
@@ -3708,10 +3970,10 @@ Module iter.
                 ( **self).size_hint()
             }
         *)
-        Definition size_hint (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition size_hint (I : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self I in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.call_closure (|
@@ -3724,7 +3986,7 @@ Module iter.
                 |),
                 [ M.read (| M.read (| self |) |) ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         (*
@@ -3732,10 +3994,15 @@ Module iter.
                 ( **self).advance_by(n)
             }
         *)
-        Definition advance_by (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition advance_by
+            (I : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self I in
-          match τ, α with
-          | [], [ self; n ] =>
+          match ε, τ, α with
+          | [], [], [ self; n ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let n := M.alloc (| n |) in
@@ -3749,7 +4016,7 @@ Module iter.
                 |),
                 [ M.read (| M.read (| self |) |); M.read (| n |) ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         (*
@@ -3757,10 +4024,10 @@ Module iter.
                 ( **self).nth(n)
             }
         *)
-        Definition nth (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition nth (I : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self I in
-          match τ, α with
-          | [], [ self; n ] =>
+          match ε, τ, α with
+          | [], [], [ self; n ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let n := M.alloc (| n |) in
@@ -3768,7 +4035,7 @@ Module iter.
                 M.get_trait_method (| "core::iter::traits::iterator::Iterator", I, [], "nth", [] |),
                 [ M.read (| M.read (| self |) |); M.read (| n |) ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         (*
@@ -3779,10 +4046,10 @@ Module iter.
                 self.spec_fold(init, f)
             }
         *)
-        Definition fold (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition fold (I : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self I in
-          match τ, α with
-          | [ B; F ], [ self; init; f ] =>
+          match ε, τ, α with
+          | [], [ B; F ], [ self; init; f ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let init := M.alloc (| init |) in
@@ -3790,14 +4057,14 @@ Module iter.
               M.call_closure (|
                 M.get_trait_method (|
                   "core::iter::traits::iterator::IteratorRefSpec",
-                  Ty.apply (Ty.path "&mut") [ I ],
+                  Ty.apply (Ty.path "&mut") [] [ I ],
                   [],
                   "spec_fold",
                   [ B; F ]
                 |),
                 [ M.read (| self |); M.read (| init |); M.read (| f |) ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         (*
@@ -3809,10 +4076,10 @@ Module iter.
                 self.spec_try_fold(init, f)
             }
         *)
-        Definition try_fold (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition try_fold (I : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self I in
-          match τ, α with
-          | [ B; F; R ], [ self; init; f ] =>
+          match ε, τ, α with
+          | [], [ B; F; R ], [ self; init; f ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let init := M.alloc (| init |) in
@@ -3820,14 +4087,14 @@ Module iter.
               M.call_closure (|
                 M.get_trait_method (|
                   "core::iter::traits::iterator::IteratorRefSpec",
-                  Ty.apply (Ty.path "&mut") [ I ],
+                  Ty.apply (Ty.path "&mut") [] [ I ],
                   [],
                   "spec_try_fold",
                   [ B; F; R ]
                 |),
                 [ M.read (| self |); M.read (| init |); M.read (| f |) ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -3852,7 +4119,7 @@ Module iter.
       (* Empty module 'IteratorRefSpec' *)
       
       Module Impl_core_iter_traits_iterator_IteratorRefSpec_where_core_iter_traits_iterator_Iterator_I_where_core_marker_Sized_I_for_ref_mut_I.
-        Definition Self (I : Ty.t) : Ty.t := Ty.apply (Ty.path "&mut") [ I ].
+        Definition Self (I : Ty.t) : Ty.t := Ty.apply (Ty.path "&mut") [] [ I ].
         
         (*
             default fn spec_fold<B, F>(self, init: B, mut f: F) -> B
@@ -3866,10 +4133,10 @@ Module iter.
                 accum
             }
         *)
-        Definition spec_fold (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition spec_fold (I : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self I in
-          match τ, α with
-          | [ B; F ], [ self; init; f ] =>
+          match ε, τ, α with
+          | [], [ B; F ], [ self; init; f ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let init := M.alloc (| init |) in
@@ -3937,7 +4204,7 @@ Module iter.
                   |) in
                 accum
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         (*
@@ -3953,10 +4220,15 @@ Module iter.
                 try { accum }
             }
         *)
-        Definition spec_try_fold (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition spec_try_fold
+            (I : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self I in
-          match τ, α with
-          | [ B; F; R ], [ self; init; f ] =>
+          match ε, τ, α with
+          | [], [ B; F; R ], [ self; init; f ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let init := M.alloc (| init |) in
@@ -3978,7 +4250,7 @@ Module iter.
                                       M.call_closure (|
                                         M.get_trait_method (|
                                           "core::iter::traits::iterator::Iterator",
-                                          Ty.apply (Ty.path "&mut") [ I ],
+                                          Ty.apply (Ty.path "&mut") [] [ I ],
                                           [],
                                           "next",
                                           []
@@ -4098,7 +4370,7 @@ Module iter.
                     |)
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -4115,7 +4387,7 @@ Module iter.
       End Impl_core_iter_traits_iterator_IteratorRefSpec_where_core_iter_traits_iterator_Iterator_I_where_core_marker_Sized_I_for_ref_mut_I.
       
       Module Impl_core_iter_traits_iterator_IteratorRefSpec_where_core_iter_traits_iterator_Iterator_I_for_ref_mut_I.
-        Definition Self (I : Ty.t) : Ty.t := Ty.apply (Ty.path "&mut") [ I ].
+        Definition Self (I : Ty.t) : Ty.t := Ty.apply (Ty.path "&mut") [] [ I ].
         
         (*
                 fn $fold<AAA, FFF>(mut self, init: AAA, fold: FFF) -> AAA
@@ -4127,10 +4399,10 @@ Module iter.
                     self.$try_fold(init, NeverShortCircuit::wrap_mut_2(fold)).0
                 }
         *)
-        Definition spec_fold (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition spec_fold (I : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self I in
-          match τ, α with
-          | [ AAA; FFF ], [ self; init; fold ] =>
+          match ε, τ, α with
+          | [], [ AAA; FFF ], [ self; init; fold ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let init := M.alloc (| init |) in
@@ -4141,13 +4413,13 @@ Module iter.
                     M.call_closure (|
                       M.get_trait_method (|
                         "core::iter::traits::iterator::IteratorRefSpec",
-                        Ty.apply (Ty.path "&mut") [ I ],
+                        Ty.apply (Ty.path "&mut") [] [ I ],
                         [],
                         "spec_try_fold",
                         [
                           AAA;
                           Ty.associated;
-                          Ty.apply (Ty.path "core::ops::try_trait::NeverShortCircuit") [ AAA ]
+                          Ty.apply (Ty.path "core::ops::try_trait::NeverShortCircuit") [] [ AAA ]
                         ]
                       |),
                       [
@@ -4155,7 +4427,7 @@ Module iter.
                         M.read (| init |);
                         M.call_closure (|
                           M.get_associated_function (|
-                            Ty.apply (Ty.path "core::ops::try_trait::NeverShortCircuit") [ AAA ],
+                            Ty.apply (Ty.path "core::ops::try_trait::NeverShortCircuit") [] [ AAA ],
                             "wrap_mut_2",
                             [ AAA; Ty.associated; FFF ]
                           |),
@@ -4168,7 +4440,7 @@ Module iter.
                   0
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         (*
@@ -4180,10 +4452,15 @@ Module iter.
                 ( **self).try_fold(init, f)
             }
         *)
-        Definition spec_try_fold (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition spec_try_fold
+            (I : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self I in
-          match τ, α with
-          | [ B; F; R ], [ self; init; f ] =>
+          match ε, τ, α with
+          | [], [ B; F; R ], [ self; init; f ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let init := M.alloc (| init |) in
@@ -4198,7 +4475,7 @@ Module iter.
                 |),
                 [ M.read (| M.read (| self |) |); M.read (| init |); M.read (| f |) ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :

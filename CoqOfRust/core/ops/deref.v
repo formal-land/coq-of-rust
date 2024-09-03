@@ -7,7 +7,7 @@ Module ops.
     (* Empty module 'Deref' *)
     
     Module Impl_core_ops_deref_Deref_where_core_marker_Sized_T_for_ref__T.
-      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "&") [ T ].
+      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "&") [] [ T ].
       
       (*     type Target = T; *)
       Definition _Target (T : Ty.t) : Ty.t := T.
@@ -17,14 +17,14 @@ Module ops.
               *self
           }
       *)
-      Definition deref (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition deref (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (| M.read (| self |) |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -38,7 +38,7 @@ Module ops.
     End Impl_core_ops_deref_Deref_where_core_marker_Sized_T_for_ref__T.
     
     Module Impl_core_ops_deref_DerefMut_where_core_marker_Sized_T_for_ref__T.
-      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "&") [ T ].
+      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "&") [] [ T ].
       
       Axiom Implements :
         forall (T : Ty.t),
@@ -50,7 +50,7 @@ Module ops.
     End Impl_core_ops_deref_DerefMut_where_core_marker_Sized_T_for_ref__T.
     
     Module Impl_core_ops_deref_Deref_where_core_marker_Sized_T_for_ref_mut_T.
-      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "&mut") [ T ].
+      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "&mut") [] [ T ].
       
       (*     type Target = T; *)
       Definition _Target (T : Ty.t) : Ty.t := T.
@@ -60,14 +60,14 @@ Module ops.
               *self
           }
       *)
-      Definition deref (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition deref (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (| M.read (| self |) |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -84,21 +84,21 @@ Module ops.
     (* Empty module 'DerefMut' *)
     
     Module Impl_core_ops_deref_DerefMut_where_core_marker_Sized_T_for_ref_mut_T.
-      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "&mut") [ T ].
+      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "&mut") [] [ T ].
       
       (*
           fn deref_mut(&mut self) -> &mut T {
               *self
           }
       *)
-      Definition deref_mut (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition deref_mut (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (| M.read (| self |) |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -114,7 +114,7 @@ Module ops.
     (* Empty module 'Receiver' *)
     
     Module Impl_core_ops_deref_Receiver_where_core_marker_Sized_T_for_ref__T.
-      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "&") [ T ].
+      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "&") [] [ T ].
       
       Axiom Implements :
         forall (T : Ty.t),
@@ -126,7 +126,7 @@ Module ops.
     End Impl_core_ops_deref_Receiver_where_core_marker_Sized_T_for_ref__T.
     
     Module Impl_core_ops_deref_Receiver_where_core_marker_Sized_T_for_ref_mut_T.
-      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "&mut") [ T ].
+      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "&mut") [] [ T ].
       
       Axiom Implements :
         forall (T : Ty.t),

@@ -6,6 +6,7 @@ Module instructions.
     (*
     Enum Sign
     {
+      const_params := [];
       ty_params := [];
       variants :=
         [
@@ -32,13 +33,13 @@ Module instructions.
       Definition Self : Ty.t := Ty.path "revm_interpreter::instructions::i256::Sign".
       
       (* Clone *)
-      Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (| M.read (| self |) |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -64,9 +65,9 @@ Module instructions.
       Definition Self : Ty.t := Ty.path "revm_interpreter::instructions::i256::Sign".
       
       (* Debug *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -110,7 +111,7 @@ Module instructions.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -136,9 +137,9 @@ Module instructions.
       Definition Self : Ty.t := Ty.path "revm_interpreter::instructions::i256::Sign".
       
       (* PartialEq *)
-      Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -165,7 +166,7 @@ Module instructions.
                 |) in
               M.alloc (| BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)) |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -191,13 +192,17 @@ Module instructions.
       Definition Self : Ty.t := Ty.path "revm_interpreter::instructions::i256::Sign".
       
       (* Eq *)
-      Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition assert_receiver_is_total_eq
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.Tuple []))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -213,9 +218,9 @@ Module instructions.
       Definition Self : Ty.t := Ty.path "revm_interpreter::instructions::i256::Sign".
       
       (* PartialOrd *)
-      Definition partial_cmp (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition partial_cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -253,7 +258,7 @@ Module instructions.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -268,9 +273,9 @@ Module instructions.
       Definition Self : Ty.t := Ty.path "revm_interpreter::instructions::i256::Sign".
       
       (* Ord *)
-      Definition cmp (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -302,7 +307,7 @@ Module instructions.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -317,9 +322,9 @@ Module instructions.
       Definition Self : Ty.t := Ty.path "revm_interpreter::instructions::i256::Sign".
       
       (* Hash *)
-      Definition hash (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ __H ], [ self; state ] =>
+      Definition hash (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ __H ], [ self; state ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
@@ -341,7 +346,7 @@ Module instructions.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -357,7 +362,11 @@ Module instructions.
         ltac:(M.monadic
           (M.alloc (|
             M.call_closure (|
-              M.get_associated_function (| Ty.path "ruint::Uint", "from_limbs", [] |),
+              M.get_associated_function (|
+                Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [],
+                "from_limbs",
+                []
+              |),
               [
                 Value.Array
                   [
@@ -375,7 +384,11 @@ Module instructions.
         ltac:(M.monadic
           (M.alloc (|
             M.call_closure (|
-              M.get_associated_function (| Ty.path "ruint::Uint", "from_limbs", [] |),
+              M.get_associated_function (|
+                Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [],
+                "from_limbs",
+                []
+              |),
               [
                 Value.Array
                   [
@@ -401,9 +414,9 @@ Module instructions.
         }
     }
     *)
-    Definition i256_sign (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ val ] =>
+    Definition i256_sign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ val ] =>
         ltac:(M.monadic
           (let val := M.alloc (| val |) in
           M.read (|
@@ -416,7 +429,14 @@ Module instructions.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
-                            M.get_associated_function (| Ty.path "ruint::Uint", "bit", [] |),
+                            M.get_associated_function (|
+                              Ty.apply
+                                (Ty.path "ruint::Uint")
+                                [ Value.Integer 256; Value.Integer 4 ]
+                                [],
+                              "bit",
+                              []
+                            |),
                             [
                               M.read (| val |);
                               BinOp.Wrap.sub
@@ -442,8 +462,16 @@ Module instructions.
                           M.call_closure (|
                             M.get_trait_method (|
                               "core::cmp::PartialEq",
-                              Ty.path "ruint::Uint",
-                              [ Ty.path "ruint::Uint" ],
+                              Ty.apply
+                                (Ty.path "ruint::Uint")
+                                [ Value.Integer 256; Value.Integer 4 ]
+                                [],
+                              [
+                                Ty.apply
+                                  (Ty.path "ruint::Uint")
+                                  [ Value.Integer 256; Value.Integer 4 ]
+                                  []
+                              ],
                               "ne",
                               []
                             |),
@@ -455,7 +483,7 @@ Module instructions.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_i256_sign :
@@ -470,9 +498,9 @@ Module instructions.
         sign
     }
     *)
-    Definition i256_sign_compl (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ val ] =>
+    Definition i256_sign_compl (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ val ] =>
         ltac:(M.monadic
           (let val := M.alloc (| val |) in
           M.read (|
@@ -527,7 +555,7 @@ Module instructions.
               |) in
             sign
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_i256_sign_compl :
@@ -541,9 +569,9 @@ Module instructions.
         }
     }
     *)
-    Definition u256_remove_sign (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ val ] =>
+    Definition u256_remove_sign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ val ] =>
         ltac:(M.monadic
           (let val := M.alloc (| val |) in
           M.read (|
@@ -551,7 +579,11 @@ Module instructions.
               let β :=
                 M.SubPointer.get_array_field (|
                   M.call_closure (|
-                    M.get_associated_function (| Ty.path "ruint::Uint", "as_limbs_mut", [] |),
+                    M.get_associated_function (|
+                      Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [],
+                      "as_limbs_mut",
+                      []
+                    |),
                     [ M.read (| val |) ]
                   |),
                   M.alloc (| Value.Integer 3 |)
@@ -566,7 +598,7 @@ Module instructions.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_u256_remove_sign :
@@ -577,9 +609,9 @@ Module instructions.
         *op = two_compl( *op);
     }
     *)
-    Definition two_compl_mut (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ op ] =>
+    Definition two_compl_mut (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ op ] =>
         ltac:(M.monadic
           (let op := M.alloc (| op |) in
           M.read (|
@@ -593,7 +625,7 @@ Module instructions.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_two_compl_mut :
@@ -604,16 +636,20 @@ Module instructions.
         op.wrapping_neg()
     }
     *)
-    Definition two_compl (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ op ] =>
+    Definition two_compl (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ op ] =>
         ltac:(M.monadic
           (let op := M.alloc (| op |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "ruint::Uint", "wrapping_neg", [] |),
+            M.get_associated_function (|
+              Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [],
+              "wrapping_neg",
+              []
+            |),
             [ M.read (| op |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_two_compl :
@@ -631,9 +667,9 @@ Module instructions.
         }
     }
     *)
-    Definition i256_cmp (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ first; second ] =>
+    Definition i256_cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ first; second ] =>
         ltac:(M.monadic
           (let first := M.alloc (| first |) in
           let second := M.alloc (| second |) in
@@ -673,7 +709,10 @@ Module instructions.
                       M.call_closure (|
                         M.get_trait_method (|
                           "core::cmp::Ord",
-                          Ty.path "ruint::Uint",
+                          Ty.apply
+                            (Ty.path "ruint::Uint")
+                            [ Value.Integer 256; Value.Integer 4 ]
+                            [],
                           [],
                           "cmp",
                           []
@@ -688,7 +727,7 @@ Module instructions.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_i256_cmp :
@@ -723,9 +762,9 @@ Module instructions.
         }
     }
     *)
-    Definition i256_div (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ first; second ] =>
+    Definition i256_div (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ first; second ] =>
         ltac:(M.monadic
           (let first := M.alloc (| first |) in
           let second := M.alloc (| second |) in
@@ -804,8 +843,16 @@ Module instructions.
                                   M.call_closure (|
                                     M.get_trait_method (|
                                       "core::cmp::PartialEq",
-                                      Ty.path "ruint::Uint",
-                                      [ Ty.path "ruint::Uint" ],
+                                      Ty.apply
+                                        (Ty.path "ruint::Uint")
+                                        [ Value.Integer 256; Value.Integer 4 ]
+                                        [],
+                                      [
+                                        Ty.apply
+                                          (Ty.path "ruint::Uint")
+                                          [ Value.Integer 256; Value.Integer 4 ]
+                                          []
+                                      ],
                                       "eq",
                                       []
                                     |),
@@ -820,8 +867,16 @@ Module instructions.
                                     (M.call_closure (|
                                       M.get_trait_method (|
                                         "core::cmp::PartialEq",
-                                        Ty.path "ruint::Uint",
-                                        [ Ty.path "ruint::Uint" ],
+                                        Ty.apply
+                                          (Ty.path "ruint::Uint")
+                                          [ Value.Integer 256; Value.Integer 4 ]
+                                          [],
+                                        [
+                                          Ty.apply
+                                            (Ty.path "ruint::Uint")
+                                            [ Value.Integer 256; Value.Integer 4 ]
+                                            []
+                                        ],
                                         "eq",
                                         []
                                       |),
@@ -830,7 +885,10 @@ Module instructions.
                                         M.alloc (|
                                           M.call_closure (|
                                             M.get_associated_function (|
-                                              Ty.path "ruint::Uint",
+                                              Ty.apply
+                                                (Ty.path "ruint::Uint")
+                                                [ Value.Integer 256; Value.Integer 4 ]
+                                                [],
                                               "from",
                                               [ Ty.path "i32" ]
                                             |),
@@ -872,8 +930,9 @@ Module instructions.
                     M.call_closure (|
                       M.get_trait_method (|
                         "core::ops::arith::Div",
-                        Ty.path "ruint::Uint",
-                        [ Ty.path "ruint::Uint" ],
+                        Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [],
+                        [ Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] []
+                        ],
                         "div",
                         []
                       |),
@@ -992,7 +1051,7 @@ Module instructions.
                 |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_i256_div :
@@ -1022,9 +1081,9 @@ Module instructions.
         }
     }
     *)
-    Definition i256_mod (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ first; second ] =>
+    Definition i256_mod (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ first; second ] =>
         ltac:(M.monadic
           (let first := M.alloc (| first |) in
           let second := M.alloc (| second |) in
@@ -1134,8 +1193,9 @@ Module instructions.
                     M.call_closure (|
                       M.get_trait_method (|
                         "core::ops::arith::Rem",
-                        Ty.path "ruint::Uint",
-                        [ Ty.path "ruint::Uint" ],
+                        Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [],
+                        [ Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] []
+                        ],
                         "rem",
                         []
                       |),
@@ -1194,7 +1254,7 @@ Module instructions.
                 |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_i256_mod :

@@ -53,9 +53,9 @@ fn main() {
     }
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [] =>
+Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
         let~ reference := M.alloc (| M.alloc (| Value.Integer 4 |) |) in
@@ -213,7 +213,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                                 M.get_associated_function (|
                                                   Ty.path "core::fmt::rt::Argument",
                                                   "new_debug",
-                                                  [ Ty.apply (Ty.path "&") [ Ty.path "i32" ] ]
+                                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "i32" ] ]
                                                 |),
                                                 [ r ]
                                               |)
@@ -273,7 +273,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                                 M.get_associated_function (|
                                                   Ty.path "core::fmt::rt::Argument",
                                                   "new_debug",
-                                                  [ Ty.apply (Ty.path "&mut") [ Ty.path "i32" ] ]
+                                                  [ Ty.apply (Ty.path "&mut") [] [ Ty.path "i32" ] ]
                                                 |),
                                                 [ m ]
                                               |)
@@ -291,7 +291,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           ]
         |)
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_main : M.IsFunction "match_destructuring_pointers_ref::main" main.

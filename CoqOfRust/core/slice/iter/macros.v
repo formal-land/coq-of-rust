@@ -4,7 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 Module slice.
   Module iter.
     Module Impl_core_slice_iter_Iter_T.
-      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::slice::iter::Iter") [ T ].
+      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ].
       
       (*
                   fn make_slice(&self) -> &'a [T] {
@@ -14,10 +14,10 @@ Module slice.
                       unsafe { from_raw_parts(self.ptr.as_ptr(), len!(self)) }
                   }
       *)
-      Definition make_slice (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition make_slice (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -27,7 +27,7 @@ Module slice.
                 M.pointer_coercion
                   (M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ],
+                      Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                       "as_ptr",
                       []
                     |),
@@ -55,7 +55,7 @@ Module slice.
                             M.alloc (|
                               M.call_closure (|
                                 M.get_associated_function (|
-                                  Ty.apply (Ty.path "*const") [ T ],
+                                  Ty.apply (Ty.path "*const") [] [ T ],
                                   "addr",
                                   []
                                 |),
@@ -77,9 +77,12 @@ Module slice.
                             M.copy (|
                               M.call_closure (|
                                 M.get_associated_function (|
-                                  Ty.apply (Ty.path "*const") [ Ty.apply (Ty.path "*const") [ T ] ],
+                                  Ty.apply
+                                    (Ty.path "*const")
+                                    []
+                                    [ Ty.apply (Ty.path "*const") [] [ T ] ],
                                   "cast",
-                                  [ Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ] ]
+                                  [ Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ] ]
                                 |),
                                 [
                                   M.SubPointer.get_struct_record_field (|
@@ -93,7 +96,7 @@ Module slice.
                           M.alloc (|
                             M.call_closure (|
                               M.get_associated_function (|
-                                Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ],
+                                Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                                 "sub_ptr",
                                 []
                               |),
@@ -114,7 +117,7 @@ Module slice.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_make_slice :
@@ -136,10 +139,15 @@ Module slice.
                       old
                   }
       *)
-      Definition post_inc_start (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition post_inc_start
+          (T : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self; offset ] =>
+        match ε, τ, α with
+        | [], [], [ self; offset ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let offset := M.alloc (| offset |) in
@@ -167,7 +175,10 @@ Module slice.
                             M.alloc (|
                               M.call_closure (|
                                 M.get_associated_function (|
-                                  Ty.apply (Ty.path "*mut") [ Ty.apply (Ty.path "*const") [ T ] ],
+                                  Ty.apply
+                                    (Ty.path "*mut")
+                                    []
+                                    [ Ty.apply (Ty.path "*const") [] [ T ] ],
                                   "cast",
                                   [ Ty.path "usize" ]
                                 |),
@@ -193,9 +204,12 @@ Module slice.
                             M.alloc (|
                               M.call_closure (|
                                 M.get_associated_function (|
-                                  Ty.apply (Ty.path "*mut") [ Ty.apply (Ty.path "*const") [ T ] ],
+                                  Ty.apply
+                                    (Ty.path "*mut")
+                                    []
+                                    [ Ty.apply (Ty.path "*const") [] [ T ] ],
                                   "cast",
-                                  [ Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ] ]
+                                  [ Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ] ]
                                 |),
                                 [
                                   M.SubPointer.get_struct_record_field (|
@@ -214,7 +228,7 @@ Module slice.
                             |),
                             M.call_closure (|
                               M.get_associated_function (|
-                                Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ],
+                                Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                                 "add",
                                 []
                               |),
@@ -235,7 +249,7 @@ Module slice.
                 M.alloc (| Value.Tuple [] |) in
               old
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_post_inc_start :
@@ -261,10 +275,10 @@ Module slice.
                       )
                   }
       *)
-      Definition pre_dec_end (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition pre_dec_end (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self; offset ] =>
+        match ε, τ, α with
+        | [], [], [ self; offset ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let offset := M.alloc (| offset |) in
@@ -281,7 +295,7 @@ Module slice.
                         M.alloc (|
                           M.call_closure (|
                             M.get_associated_function (|
-                              Ty.apply (Ty.path "*mut") [ Ty.apply (Ty.path "*const") [ T ] ],
+                              Ty.apply (Ty.path "*mut") [] [ Ty.apply (Ty.path "*const") [] [ T ] ],
                               "cast",
                               [ Ty.path "usize" ]
                             |),
@@ -313,9 +327,9 @@ Module slice.
                         M.alloc (|
                           M.call_closure (|
                             M.get_associated_function (|
-                              Ty.apply (Ty.path "*mut") [ Ty.apply (Ty.path "*const") [ T ] ],
+                              Ty.apply (Ty.path "*mut") [] [ Ty.apply (Ty.path "*const") [] [ T ] ],
                               "cast",
-                              [ Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ] ]
+                              [ Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ] ]
                             |),
                             [
                               M.SubPointer.get_struct_record_field (|
@@ -331,7 +345,7 @@ Module slice.
                           M.read (| end_ |),
                           M.call_closure (|
                             M.get_associated_function (|
-                              Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ],
+                              Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                               "sub",
                               []
                             |),
@@ -342,7 +356,7 @@ Module slice.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_pre_dec_end :
@@ -351,17 +365,17 @@ Module slice.
     End Impl_core_slice_iter_Iter_T.
     
     Module Impl_core_iter_traits_exact_size_ExactSizeIterator_for_core_slice_iter_Iter_T.
-      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::slice::iter::Iter") [ T ].
+      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ].
       
       (*
                   fn len(&self) -> usize {
                       len!(self)
                   }
       *)
-      Definition len (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition len (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -377,7 +391,7 @@ Module slice.
                         M.alloc (|
                           M.call_closure (|
                             M.get_associated_function (|
-                              Ty.apply (Ty.path "*const") [ T ],
+                              Ty.apply (Ty.path "*const") [] [ T ],
                               "addr",
                               []
                             |),
@@ -399,9 +413,12 @@ Module slice.
                         M.copy (|
                           M.call_closure (|
                             M.get_associated_function (|
-                              Ty.apply (Ty.path "*const") [ Ty.apply (Ty.path "*const") [ T ] ],
+                              Ty.apply
+                                (Ty.path "*const")
+                                []
+                                [ Ty.apply (Ty.path "*const") [] [ T ] ],
                               "cast",
-                              [ Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ] ]
+                              [ Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ] ]
                             |),
                             [
                               M.SubPointer.get_struct_record_field (|
@@ -415,7 +432,7 @@ Module slice.
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
-                            Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ],
+                            Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                             "sub_ptr",
                             []
                           |),
@@ -434,7 +451,7 @@ Module slice.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -442,10 +459,10 @@ Module slice.
                       is_empty!(self)
                   }
       *)
-      Definition is_empty (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_empty (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -461,7 +478,7 @@ Module slice.
                         M.alloc (|
                           M.call_closure (|
                             M.get_associated_function (|
-                              Ty.apply (Ty.path "*const") [ T ],
+                              Ty.apply (Ty.path "*const") [] [ T ],
                               "addr",
                               []
                             |),
@@ -483,9 +500,12 @@ Module slice.
                         M.copy (|
                           M.call_closure (|
                             M.get_associated_function (|
-                              Ty.apply (Ty.path "*const") [ Ty.apply (Ty.path "*const") [ T ] ],
+                              Ty.apply
+                                (Ty.path "*const")
+                                []
+                                [ Ty.apply (Ty.path "*const") [] [ T ] ],
                               "cast",
-                              [ Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ] ]
+                              [ Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ] ]
                             |),
                             [
                               M.SubPointer.get_struct_record_field (|
@@ -500,8 +520,8 @@ Module slice.
                         M.call_closure (|
                           M.get_trait_method (|
                             "core::cmp::PartialEq",
-                            Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ],
-                            [ Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ] ],
+                            Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
+                            [ Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ] ],
                             "eq",
                             []
                           |),
@@ -518,7 +538,7 @@ Module slice.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -533,10 +553,10 @@ Module slice.
     End Impl_core_iter_traits_exact_size_ExactSizeIterator_for_core_slice_iter_Iter_T.
     
     Module Impl_core_iter_traits_iterator_Iterator_for_core_slice_iter_Iter_T.
-      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::slice::iter::Iter") [ T ].
+      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ].
       
       (*             type Item = $elem; *)
-      Definition _Item (T : Ty.t) : Ty.t := Ty.apply (Ty.path "&") [ T ].
+      Definition _Item (T : Ty.t) : Ty.t := Ty.apply (Ty.path "&") [] [ T ].
       
       (*
                   fn next(&mut self) -> Option<$elem> {
@@ -553,10 +573,10 @@ Module slice.
                       }
                   }
       *)
-      Definition next (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition next (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -586,7 +606,7 @@ Module slice.
                                     M.alloc (|
                                       M.call_closure (|
                                         M.get_associated_function (|
-                                          Ty.apply (Ty.path "*const") [ T ],
+                                          Ty.apply (Ty.path "*const") [] [ T ],
                                           "addr",
                                           []
                                         |),
@@ -612,9 +632,14 @@ Module slice.
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "*const")
-                                            [ Ty.apply (Ty.path "*const") [ T ] ],
+                                            []
+                                            [ Ty.apply (Ty.path "*const") [] [ T ] ],
                                           "cast",
-                                          [ Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ]
+                                          [
+                                            Ty.apply
+                                              (Ty.path "core::ptr::non_null::NonNull")
+                                              []
+                                              [ T ]
                                           ]
                                         |),
                                         [
@@ -630,8 +655,9 @@ Module slice.
                                     M.call_closure (|
                                       M.get_trait_method (|
                                         "core::cmp::PartialEq",
-                                        Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ],
-                                        [ Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ] ],
+                                        Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
+                                        [ Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ]
+                                        ],
                                         "eq",
                                         []
                                       |),
@@ -657,7 +683,7 @@ Module slice.
                           [
                             M.call_closure (|
                               M.get_associated_function (|
-                                Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ],
+                                Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                                 "as_ref",
                                 []
                               |),
@@ -665,7 +691,7 @@ Module slice.
                                 M.alloc (|
                                   M.call_closure (|
                                     M.get_associated_function (|
-                                      Ty.apply (Ty.path "core::slice::iter::Iter") [ T ],
+                                      Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ],
                                       "post_inc_start",
                                       []
                                     |),
@@ -679,7 +705,7 @@ Module slice.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -688,10 +714,10 @@ Module slice.
                       (exact, Some(exact))
                   }
       *)
-      Definition size_hint (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition size_hint (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -710,7 +736,7 @@ Module slice.
                             M.alloc (|
                               M.call_closure (|
                                 M.get_associated_function (|
-                                  Ty.apply (Ty.path "*const") [ T ],
+                                  Ty.apply (Ty.path "*const") [] [ T ],
                                   "addr",
                                   []
                                 |),
@@ -732,9 +758,12 @@ Module slice.
                             M.copy (|
                               M.call_closure (|
                                 M.get_associated_function (|
-                                  Ty.apply (Ty.path "*const") [ Ty.apply (Ty.path "*const") [ T ] ],
+                                  Ty.apply
+                                    (Ty.path "*const")
+                                    []
+                                    [ Ty.apply (Ty.path "*const") [] [ T ] ],
                                   "cast",
-                                  [ Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ] ]
+                                  [ Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ] ]
                                 |),
                                 [
                                   M.SubPointer.get_struct_record_field (|
@@ -748,7 +777,7 @@ Module slice.
                           M.alloc (|
                             M.call_closure (|
                               M.get_associated_function (|
-                                Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ],
+                                Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                                 "sub_ptr",
                                 []
                               |),
@@ -775,7 +804,7 @@ Module slice.
                   ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -783,10 +812,10 @@ Module slice.
                       len!(self)
                   }
       *)
-      Definition count (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition count (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -802,7 +831,7 @@ Module slice.
                         M.alloc (|
                           M.call_closure (|
                             M.get_associated_function (|
-                              Ty.apply (Ty.path "*const") [ T ],
+                              Ty.apply (Ty.path "*const") [] [ T ],
                               "addr",
                               []
                             |),
@@ -824,9 +853,12 @@ Module slice.
                         M.copy (|
                           M.call_closure (|
                             M.get_associated_function (|
-                              Ty.apply (Ty.path "*const") [ Ty.apply (Ty.path "*const") [ T ] ],
+                              Ty.apply
+                                (Ty.path "*const")
+                                []
+                                [ Ty.apply (Ty.path "*const") [] [ T ] ],
                               "cast",
-                              [ Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ] ]
+                              [ Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ] ]
                             |),
                             [
                               M.SubPointer.get_struct_record_field (|
@@ -840,7 +872,7 @@ Module slice.
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
-                            Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ],
+                            Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                             "sub_ptr",
                             []
                           |),
@@ -859,7 +891,7 @@ Module slice.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -879,10 +911,10 @@ Module slice.
                       }
                   }
       *)
-      Definition nth (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition nth (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self; n ] =>
+        match ε, τ, α with
+        | [], [], [ self; n ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
@@ -920,7 +952,7 @@ Module slice.
                                                 M.alloc (|
                                                   M.call_closure (|
                                                     M.get_associated_function (|
-                                                      Ty.apply (Ty.path "*const") [ T ],
+                                                      Ty.apply (Ty.path "*const") [] [ T ],
                                                       "addr",
                                                       []
                                                     |),
@@ -944,11 +976,13 @@ Module slice.
                                                     M.get_associated_function (|
                                                       Ty.apply
                                                         (Ty.path "*const")
-                                                        [ Ty.apply (Ty.path "*const") [ T ] ],
+                                                        []
+                                                        [ Ty.apply (Ty.path "*const") [] [ T ] ],
                                                       "cast",
                                                       [
                                                         Ty.apply
                                                           (Ty.path "core::ptr::non_null::NonNull")
+                                                          []
                                                           [ T ]
                                                       ]
                                                     |),
@@ -966,6 +1000,7 @@ Module slice.
                                                   M.get_associated_function (|
                                                     Ty.apply
                                                       (Ty.path "core::ptr::non_null::NonNull")
+                                                      []
                                                       [ T ],
                                                     "sub_ptr",
                                                     []
@@ -1013,7 +1048,8 @@ Module slice.
                                                   M.get_associated_function (|
                                                     Ty.apply
                                                       (Ty.path "*mut")
-                                                      [ Ty.apply (Ty.path "*const") [ T ] ],
+                                                      []
+                                                      [ Ty.apply (Ty.path "*const") [] [ T ] ],
                                                     "cast",
                                                     [ Ty.path "usize" ]
                                                   |),
@@ -1035,11 +1071,13 @@ Module slice.
                                                   M.get_associated_function (|
                                                     Ty.apply
                                                       (Ty.path "*mut")
-                                                      [ Ty.apply (Ty.path "*const") [ T ] ],
+                                                      []
+                                                      [ Ty.apply (Ty.path "*const") [] [ T ] ],
                                                     "cast",
                                                     [
                                                       Ty.apply
                                                         (Ty.path "core::ptr::non_null::NonNull")
+                                                        []
                                                         [ T ]
                                                     ]
                                                   |),
@@ -1073,7 +1111,7 @@ Module slice.
                     M.alloc (|
                       M.call_closure (|
                         M.get_associated_function (|
-                          Ty.apply (Ty.path "core::slice::iter::Iter") [ T ],
+                          Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ],
                           "post_inc_start",
                           []
                         |),
@@ -1086,7 +1124,7 @@ Module slice.
                       [
                         M.call_closure (|
                           M.get_associated_function (|
-                            Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ],
+                            Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                             "as_ref",
                             []
                           |),
@@ -1094,7 +1132,7 @@ Module slice.
                             M.alloc (|
                               M.call_closure (|
                                 M.get_associated_function (|
-                                  Ty.apply (Ty.path "core::slice::iter::Iter") [ T ],
+                                  Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ],
                                   "post_inc_start",
                                   []
                                 |),
@@ -1107,7 +1145,7 @@ Module slice.
                   |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -1118,10 +1156,10 @@ Module slice.
                       NonZeroUsize::new(n - advance).map_or(Ok(()), Err)
                   }
       *)
-      Definition advance_by (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition advance_by (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self; n ] =>
+        match ε, τ, α with
+        | [], [], [ self; n ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
@@ -1151,7 +1189,7 @@ Module slice.
                                   M.alloc (|
                                     M.call_closure (|
                                       M.get_associated_function (|
-                                        Ty.apply (Ty.path "*const") [ T ],
+                                        Ty.apply (Ty.path "*const") [] [ T ],
                                         "addr",
                                         []
                                       |),
@@ -1175,9 +1213,11 @@ Module slice.
                                       M.get_associated_function (|
                                         Ty.apply
                                           (Ty.path "*const")
-                                          [ Ty.apply (Ty.path "*const") [ T ] ],
+                                          []
+                                          [ Ty.apply (Ty.path "*const") [] [ T ] ],
                                         "cast",
-                                        [ Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ] ]
+                                        [ Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ]
+                                        ]
                                       |),
                                       [
                                         M.SubPointer.get_struct_record_field (|
@@ -1191,7 +1231,7 @@ Module slice.
                                 M.alloc (|
                                   M.call_closure (|
                                     M.get_associated_function (|
-                                      Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ],
+                                      Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                                       "sub_ptr",
                                       []
                                     |),
@@ -1218,7 +1258,7 @@ Module slice.
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "core::slice::iter::Iter") [ T ],
+                      Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ],
                       "post_inc_start",
                       []
                     |),
@@ -1230,16 +1270,19 @@ Module slice.
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "core::option::Option")
+                      []
                       [ Ty.path "core::num::nonzero::NonZeroUsize" ],
                     "map_or",
                     [
                       Ty.apply
                         (Ty.path "core::result::Result")
+                        []
                         [ Ty.tuple []; Ty.path "core::num::nonzero::NonZeroUsize" ];
                       Ty.function
                         [ Ty.path "core::num::nonzero::NonZeroUsize" ]
                         (Ty.apply
                           (Ty.path "core::result::Result")
+                          []
                           [ Ty.tuple []; Ty.path "core::num::nonzero::NonZeroUsize" ])
                     ]
                   |),
@@ -1258,7 +1301,7 @@ Module slice.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -1266,23 +1309,23 @@ Module slice.
                       self.next_back()
                   }
       *)
-      Definition last (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition last (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_trait_method (|
                 "core::iter::traits::double_ended::DoubleEndedIterator",
-                Ty.apply (Ty.path "core::slice::iter::Iter") [ T ],
+                Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ],
                 [],
                 "next_back",
                 []
               |),
               [ self ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -1318,10 +1361,10 @@ Module slice.
                       acc
                   }
       *)
-      Definition fold (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fold (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [ B; F ], [ self; init; f ] =>
+        match ε, τ, α with
+        | [], [ B; F ], [ self; init; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let init := M.alloc (| init |) in
@@ -1356,7 +1399,7 @@ Module slice.
                                           M.alloc (|
                                             M.call_closure (|
                                               M.get_associated_function (|
-                                                Ty.apply (Ty.path "*const") [ T ],
+                                                Ty.apply (Ty.path "*const") [] [ T ],
                                                 "addr",
                                                 []
                                               |),
@@ -1382,11 +1425,13 @@ Module slice.
                                               M.get_associated_function (|
                                                 Ty.apply
                                                   (Ty.path "*const")
-                                                  [ Ty.apply (Ty.path "*const") [ T ] ],
+                                                  []
+                                                  [ Ty.apply (Ty.path "*const") [] [ T ] ],
                                                 "cast",
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::ptr::non_null::NonNull")
+                                                    []
                                                     [ T ]
                                                 ]
                                               |),
@@ -1405,10 +1450,12 @@ Module slice.
                                               "core::cmp::PartialEq",
                                               Ty.apply
                                                 (Ty.path "core::ptr::non_null::NonNull")
+                                                []
                                                 [ T ],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::ptr::non_null::NonNull")
+                                                  []
                                                   [ T ]
                                               ],
                                               "eq",
@@ -1455,7 +1502,7 @@ Module slice.
                                 M.alloc (|
                                   M.call_closure (|
                                     M.get_associated_function (|
-                                      Ty.apply (Ty.path "*const") [ T ],
+                                      Ty.apply (Ty.path "*const") [] [ T ],
                                       "addr",
                                       []
                                     |),
@@ -1479,9 +1526,10 @@ Module slice.
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "*const")
-                                        [ Ty.apply (Ty.path "*const") [ T ] ],
+                                        []
+                                        [ Ty.apply (Ty.path "*const") [] [ T ] ],
                                       "cast",
-                                      [ Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ] ]
+                                      [ Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ] ]
                                     |),
                                     [
                                       M.SubPointer.get_struct_record_field (|
@@ -1495,7 +1543,7 @@ Module slice.
                               M.alloc (|
                                 M.call_closure (|
                                   M.get_associated_function (|
-                                    Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ],
+                                    Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                                     "sub_ptr",
                                     []
                                   |),
@@ -1524,7 +1572,7 @@ Module slice.
                               M.get_trait_method (|
                                 "core::ops::function::FnMut",
                                 F,
-                                [ Ty.tuple [ B; Ty.apply (Ty.path "&") [ T ] ] ],
+                                [ Ty.tuple [ B; Ty.apply (Ty.path "&") [] [ T ] ] ],
                                 "call_mut",
                                 []
                               |),
@@ -1535,14 +1583,17 @@ Module slice.
                                     M.read (| acc |);
                                     M.call_closure (|
                                       M.get_associated_function (|
-                                        Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ],
+                                        Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                                         "as_ptr",
                                         []
                                       |),
                                       [
                                         M.call_closure (|
                                           M.get_associated_function (|
-                                            Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ],
+                                            Ty.apply
+                                              (Ty.path "core::ptr::non_null::NonNull")
+                                              []
+                                              [ T ],
                                             "add",
                                             []
                                           |),
@@ -1594,7 +1645,7 @@ Module slice.
                   acc
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -1608,10 +1659,10 @@ Module slice.
                       }
                   }
       *)
-      Definition for_each (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition for_each (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [ F ], [ self; f ] =>
+        match ε, τ, α with
+        | [], [ F ], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -1628,7 +1679,7 @@ Module slice.
                               M.call_closure (|
                                 M.get_trait_method (|
                                   "core::iter::traits::iterator::Iterator",
-                                  Ty.apply (Ty.path "core::slice::iter::Iter") [ T ],
+                                  Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ],
                                   [],
                                   "next",
                                   []
@@ -1649,7 +1700,7 @@ Module slice.
                                 M.get_trait_method (|
                                   "core::ops::function::FnMut",
                                   F,
-                                  [ Ty.tuple [ Ty.apply (Ty.path "&") [ T ] ] ],
+                                  [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ] ],
                                   "call_mut",
                                   []
                                 |),
@@ -1672,7 +1723,7 @@ Module slice.
                   |)))
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -1689,10 +1740,10 @@ Module slice.
                       true
                   }
       *)
-      Definition all (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition all (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [ F ], [ self; f ] =>
+        match ε, τ, α with
+        | [], [ F ], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -1712,7 +1763,7 @@ Module slice.
                                     M.call_closure (|
                                       M.get_trait_method (|
                                         "core::iter::traits::iterator::Iterator",
-                                        Ty.apply (Ty.path "core::slice::iter::Iter") [ T ],
+                                        Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ],
                                         [],
                                         "next",
                                         []
@@ -1740,7 +1791,8 @@ Module slice.
                                                   M.get_trait_method (|
                                                     "core::ops::function::FnMut",
                                                     F,
-                                                    [ Ty.tuple [ Ty.apply (Ty.path "&") [ T ] ] ],
+                                                    [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ]
+                                                    ],
                                                     "call_mut",
                                                     []
                                                   |),
@@ -1779,7 +1831,7 @@ Module slice.
                   M.alloc (| Value.Bool true |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -1796,10 +1848,10 @@ Module slice.
                       false
                   }
       *)
-      Definition any (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition any (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [ F ], [ self; f ] =>
+        match ε, τ, α with
+        | [], [ F ], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -1819,7 +1871,7 @@ Module slice.
                                     M.call_closure (|
                                       M.get_trait_method (|
                                         "core::iter::traits::iterator::Iterator",
-                                        Ty.apply (Ty.path "core::slice::iter::Iter") [ T ],
+                                        Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ],
                                         [],
                                         "next",
                                         []
@@ -1846,7 +1898,7 @@ Module slice.
                                                 M.get_trait_method (|
                                                   "core::ops::function::FnMut",
                                                   F,
-                                                  [ Ty.tuple [ Ty.apply (Ty.path "&") [ T ] ] ],
+                                                  [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ] ],
                                                   "call_mut",
                                                   []
                                                 |),
@@ -1885,7 +1937,7 @@ Module slice.
                   M.alloc (| Value.Bool false |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -1902,10 +1954,10 @@ Module slice.
                       None
                   }
       *)
-      Definition find (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition find (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [ P ], [ self; predicate ] =>
+        match ε, τ, α with
+        | [], [ P ], [ self; predicate ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let predicate := M.alloc (| predicate |) in
@@ -1925,7 +1977,7 @@ Module slice.
                                     M.call_closure (|
                                       M.get_trait_method (|
                                         "core::iter::traits::iterator::Iterator",
-                                        Ty.apply (Ty.path "core::slice::iter::Iter") [ T ],
+                                        Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ],
                                         [],
                                         "next",
                                         []
@@ -1957,7 +2009,8 @@ Module slice.
                                                       [
                                                         Ty.apply
                                                           (Ty.path "&")
-                                                          [ Ty.apply (Ty.path "&") [ T ] ]
+                                                          []
+                                                          [ Ty.apply (Ty.path "&") [] [ T ] ]
                                                       ]
                                                   ],
                                                   "call_mut",
@@ -2004,7 +2057,7 @@ Module slice.
                   M.alloc (| Value.StructTuple "core::option::Option::None" [] |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -2021,10 +2074,10 @@ Module slice.
                       None
                   }
       *)
-      Definition find_map (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition find_map (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [ B; F ], [ self; f ] =>
+        match ε, τ, α with
+        | [], [ B; F ], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -2044,7 +2097,7 @@ Module slice.
                                     M.call_closure (|
                                       M.get_trait_method (|
                                         "core::iter::traits::iterator::Iterator",
-                                        Ty.apply (Ty.path "core::slice::iter::Iter") [ T ],
+                                        Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ],
                                         [],
                                         "next",
                                         []
@@ -2070,7 +2123,7 @@ Module slice.
                                               M.get_trait_method (|
                                                 "core::ops::function::FnMut",
                                                 F,
-                                                [ Ty.tuple [ Ty.apply (Ty.path "&") [ T ] ] ],
+                                                [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ] ],
                                                 "call_mut",
                                                 []
                                               |),
@@ -2117,7 +2170,7 @@ Module slice.
                   M.alloc (| Value.StructTuple "core::option::Option::None" [] |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -2139,10 +2192,10 @@ Module slice.
                       None
                   }
       *)
-      Definition position (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition position (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [ P ], [ self; predicate ] =>
+        match ε, τ, α with
+        | [], [ P ], [ self; predicate ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let predicate := M.alloc (| predicate |) in
@@ -2168,7 +2221,7 @@ Module slice.
                                 M.alloc (|
                                   M.call_closure (|
                                     M.get_associated_function (|
-                                      Ty.apply (Ty.path "*const") [ T ],
+                                      Ty.apply (Ty.path "*const") [] [ T ],
                                       "addr",
                                       []
                                     |),
@@ -2192,9 +2245,10 @@ Module slice.
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "*const")
-                                        [ Ty.apply (Ty.path "*const") [ T ] ],
+                                        []
+                                        [ Ty.apply (Ty.path "*const") [] [ T ] ],
                                       "cast",
-                                      [ Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ] ]
+                                      [ Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ] ]
                                     |),
                                     [
                                       M.SubPointer.get_struct_record_field (|
@@ -2208,7 +2262,7 @@ Module slice.
                               M.alloc (|
                                 M.call_closure (|
                                   M.get_associated_function (|
-                                    Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ],
+                                    Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                                     "sub_ptr",
                                     []
                                   |),
@@ -2241,7 +2295,7 @@ Module slice.
                                     M.call_closure (|
                                       M.get_trait_method (|
                                         "core::iter::traits::iterator::Iterator",
-                                        Ty.apply (Ty.path "core::slice::iter::Iter") [ T ],
+                                        Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ],
                                         [],
                                         "next",
                                         []
@@ -2269,7 +2323,8 @@ Module slice.
                                                   M.get_trait_method (|
                                                     "core::ops::function::FnMut",
                                                     P,
-                                                    [ Ty.tuple [ Ty.apply (Ty.path "&") [ T ] ] ],
+                                                    [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ]
+                                                    ],
                                                     "call_mut",
                                                     []
                                                   |),
@@ -2335,7 +2390,7 @@ Module slice.
                   M.alloc (| Value.StructTuple "core::option::Option::None" [] |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -2357,10 +2412,10 @@ Module slice.
                       None
                   }
       *)
-      Definition rposition (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition rposition (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [ P ], [ self; predicate ] =>
+        match ε, τ, α with
+        | [], [ P ], [ self; predicate ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let predicate := M.alloc (| predicate |) in
@@ -2386,7 +2441,7 @@ Module slice.
                                 M.alloc (|
                                   M.call_closure (|
                                     M.get_associated_function (|
-                                      Ty.apply (Ty.path "*const") [ T ],
+                                      Ty.apply (Ty.path "*const") [] [ T ],
                                       "addr",
                                       []
                                     |),
@@ -2410,9 +2465,10 @@ Module slice.
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "*const")
-                                        [ Ty.apply (Ty.path "*const") [ T ] ],
+                                        []
+                                        [ Ty.apply (Ty.path "*const") [] [ T ] ],
                                       "cast",
-                                      [ Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ] ]
+                                      [ Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ] ]
                                     |),
                                     [
                                       M.SubPointer.get_struct_record_field (|
@@ -2426,7 +2482,7 @@ Module slice.
                               M.alloc (|
                                 M.call_closure (|
                                   M.get_associated_function (|
-                                    Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ],
+                                    Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                                     "sub_ptr",
                                     []
                                   |),
@@ -2459,7 +2515,7 @@ Module slice.
                                     M.call_closure (|
                                       M.get_trait_method (|
                                         "core::iter::traits::double_ended::DoubleEndedIterator",
-                                        Ty.apply (Ty.path "core::slice::iter::Iter") [ T ],
+                                        Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ],
                                         [],
                                         "next_back",
                                         []
@@ -2551,7 +2607,7 @@ Module slice.
                   M.alloc (| Value.StructTuple "core::option::Option::None" [] |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -2569,19 +2625,24 @@ Module slice.
                       unsafe { & $( $mut_ )? * self.ptr.as_ptr().add(idx) }
                   }
       *)
-      Definition __iterator_get_unchecked (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition __iterator_get_unchecked
+          (T : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self; idx ] =>
+        match ε, τ, α with
+        | [], [], [ self; idx ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let idx := M.alloc (| idx |) in
             M.call_closure (|
-              M.get_associated_function (| Ty.apply (Ty.path "*mut") [ T ], "add", [] |),
+              M.get_associated_function (| Ty.apply (Ty.path "*mut") [] [ T ], "add", [] |),
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ],
+                    Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                     "as_ptr",
                     []
                   |),
@@ -2598,7 +2659,7 @@ Module slice.
                 M.read (| idx |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -2610,27 +2671,33 @@ Module slice.
               self.as_slice().is_sorted_by(|a, b| compare(&a, &b))
           }
       *)
-      Definition is_sorted_by (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_sorted_by
+          (T : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [ F ], [ self; compare ] =>
+        match ε, τ, α with
+        | [], [ F ], [ self; compare ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let compare := M.alloc (| compare |) in
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "slice") [ T ],
+                Ty.apply (Ty.path "slice") [] [ T ],
                 "is_sorted_by",
                 [
                   Ty.function
-                    [ Ty.tuple [ Ty.apply (Ty.path "&") [ T ]; Ty.apply (Ty.path "&") [ T ] ] ]
-                    (Ty.apply (Ty.path "core::option::Option") [ Ty.path "core::cmp::Ordering" ])
+                    [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ]; Ty.apply (Ty.path "&") [] [ T ] ]
+                    ]
+                    (Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ])
                 ]
               |),
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::slice::iter::Iter") [ T ],
+                    Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ],
                     "as_slice",
                     []
                   |),
@@ -2662,10 +2729,12 @@ Module slice.
                                                 [
                                                   Ty.apply
                                                     (Ty.path "&")
-                                                    [ Ty.apply (Ty.path "&") [ T ] ];
+                                                    []
+                                                    [ Ty.apply (Ty.path "&") [] [ T ] ];
                                                   Ty.apply
                                                     (Ty.path "&")
-                                                    [ Ty.apply (Ty.path "&") [ T ] ]
+                                                    []
+                                                    [ Ty.apply (Ty.path "&") [] [ T ] ]
                                                 ]
                                             ],
                                             "call_mut",
@@ -2681,7 +2750,7 @@ Module slice.
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -2713,7 +2782,7 @@ Module slice.
     End Impl_core_iter_traits_iterator_Iterator_for_core_slice_iter_Iter_T.
     
     Module Impl_core_iter_traits_double_ended_DoubleEndedIterator_for_core_slice_iter_Iter_T.
-      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::slice::iter::Iter") [ T ].
+      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ].
       
       (*
                   fn next_back(&mut self) -> Option<$elem> {
@@ -2730,10 +2799,10 @@ Module slice.
                       }
                   }
       *)
-      Definition next_back (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition next_back (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -2763,7 +2832,7 @@ Module slice.
                                     M.alloc (|
                                       M.call_closure (|
                                         M.get_associated_function (|
-                                          Ty.apply (Ty.path "*const") [ T ],
+                                          Ty.apply (Ty.path "*const") [] [ T ],
                                           "addr",
                                           []
                                         |),
@@ -2789,9 +2858,14 @@ Module slice.
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "*const")
-                                            [ Ty.apply (Ty.path "*const") [ T ] ],
+                                            []
+                                            [ Ty.apply (Ty.path "*const") [] [ T ] ],
                                           "cast",
-                                          [ Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ]
+                                          [
+                                            Ty.apply
+                                              (Ty.path "core::ptr::non_null::NonNull")
+                                              []
+                                              [ T ]
                                           ]
                                         |),
                                         [
@@ -2807,8 +2881,9 @@ Module slice.
                                     M.call_closure (|
                                       M.get_trait_method (|
                                         "core::cmp::PartialEq",
-                                        Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ],
-                                        [ Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ] ],
+                                        Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
+                                        [ Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ]
+                                        ],
                                         "eq",
                                         []
                                       |),
@@ -2834,7 +2909,7 @@ Module slice.
                           [
                             M.call_closure (|
                               M.get_associated_function (|
-                                Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ],
+                                Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                                 "as_ref",
                                 []
                               |),
@@ -2842,7 +2917,7 @@ Module slice.
                                 M.alloc (|
                                   M.call_closure (|
                                     M.get_associated_function (|
-                                      Ty.apply (Ty.path "core::slice::iter::Iter") [ T ],
+                                      Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ],
                                       "pre_dec_end",
                                       []
                                     |),
@@ -2856,7 +2931,7 @@ Module slice.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -2876,10 +2951,10 @@ Module slice.
                       }
                   }
       *)
-      Definition nth_back (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition nth_back (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self; n ] =>
+        match ε, τ, α with
+        | [], [], [ self; n ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
@@ -2917,7 +2992,7 @@ Module slice.
                                                 M.alloc (|
                                                   M.call_closure (|
                                                     M.get_associated_function (|
-                                                      Ty.apply (Ty.path "*const") [ T ],
+                                                      Ty.apply (Ty.path "*const") [] [ T ],
                                                       "addr",
                                                       []
                                                     |),
@@ -2941,11 +3016,13 @@ Module slice.
                                                     M.get_associated_function (|
                                                       Ty.apply
                                                         (Ty.path "*const")
-                                                        [ Ty.apply (Ty.path "*const") [ T ] ],
+                                                        []
+                                                        [ Ty.apply (Ty.path "*const") [] [ T ] ],
                                                       "cast",
                                                       [
                                                         Ty.apply
                                                           (Ty.path "core::ptr::non_null::NonNull")
+                                                          []
                                                           [ T ]
                                                       ]
                                                     |),
@@ -2963,6 +3040,7 @@ Module slice.
                                                   M.get_associated_function (|
                                                     Ty.apply
                                                       (Ty.path "core::ptr::non_null::NonNull")
+                                                      []
                                                       [ T ],
                                                     "sub_ptr",
                                                     []
@@ -3010,7 +3088,8 @@ Module slice.
                                                   M.get_associated_function (|
                                                     Ty.apply
                                                       (Ty.path "*mut")
-                                                      [ Ty.apply (Ty.path "*const") [ T ] ],
+                                                      []
+                                                      [ Ty.apply (Ty.path "*const") [] [ T ] ],
                                                     "cast",
                                                     [ Ty.path "usize" ]
                                                   |),
@@ -3032,11 +3111,13 @@ Module slice.
                                                   M.get_associated_function (|
                                                     Ty.apply
                                                       (Ty.path "*mut")
-                                                      [ Ty.apply (Ty.path "*const") [ T ] ],
+                                                      []
+                                                      [ Ty.apply (Ty.path "*const") [] [ T ] ],
                                                     "cast",
                                                     [
                                                       Ty.apply
                                                         (Ty.path "core::ptr::non_null::NonNull")
+                                                        []
                                                         [ T ]
                                                     ]
                                                   |),
@@ -3072,7 +3153,7 @@ Module slice.
                     M.alloc (|
                       M.call_closure (|
                         M.get_associated_function (|
-                          Ty.apply (Ty.path "core::slice::iter::Iter") [ T ],
+                          Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ],
                           "pre_dec_end",
                           []
                         |),
@@ -3085,7 +3166,7 @@ Module slice.
                       [
                         M.call_closure (|
                           M.get_associated_function (|
-                            Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ],
+                            Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                             "as_ref",
                             []
                           |),
@@ -3093,7 +3174,7 @@ Module slice.
                             M.alloc (|
                               M.call_closure (|
                                 M.get_associated_function (|
-                                  Ty.apply (Ty.path "core::slice::iter::Iter") [ T ],
+                                  Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ],
                                   "pre_dec_end",
                                   []
                                 |),
@@ -3106,7 +3187,7 @@ Module slice.
                   |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -3117,10 +3198,15 @@ Module slice.
                       NonZeroUsize::new(n - advance).map_or(Ok(()), Err)
                   }
       *)
-      Definition advance_back_by (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition advance_back_by
+          (T : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self; n ] =>
+        match ε, τ, α with
+        | [], [], [ self; n ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
@@ -3150,7 +3236,7 @@ Module slice.
                                   M.alloc (|
                                     M.call_closure (|
                                       M.get_associated_function (|
-                                        Ty.apply (Ty.path "*const") [ T ],
+                                        Ty.apply (Ty.path "*const") [] [ T ],
                                         "addr",
                                         []
                                       |),
@@ -3174,9 +3260,11 @@ Module slice.
                                       M.get_associated_function (|
                                         Ty.apply
                                           (Ty.path "*const")
-                                          [ Ty.apply (Ty.path "*const") [ T ] ],
+                                          []
+                                          [ Ty.apply (Ty.path "*const") [] [ T ] ],
                                         "cast",
-                                        [ Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ] ]
+                                        [ Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ]
+                                        ]
                                       |),
                                       [
                                         M.SubPointer.get_struct_record_field (|
@@ -3190,7 +3278,7 @@ Module slice.
                                 M.alloc (|
                                   M.call_closure (|
                                     M.get_associated_function (|
-                                      Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ],
+                                      Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                                       "sub_ptr",
                                       []
                                     |),
@@ -3217,7 +3305,7 @@ Module slice.
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "core::slice::iter::Iter") [ T ],
+                      Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ],
                       "pre_dec_end",
                       []
                     |),
@@ -3229,16 +3317,19 @@ Module slice.
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "core::option::Option")
+                      []
                       [ Ty.path "core::num::nonzero::NonZeroUsize" ],
                     "map_or",
                     [
                       Ty.apply
                         (Ty.path "core::result::Result")
+                        []
                         [ Ty.tuple []; Ty.path "core::num::nonzero::NonZeroUsize" ];
                       Ty.function
                         [ Ty.path "core::num::nonzero::NonZeroUsize" ]
                         (Ty.apply
                           (Ty.path "core::result::Result")
+                          []
                           [ Ty.tuple []; Ty.path "core::num::nonzero::NonZeroUsize" ])
                     ]
                   |),
@@ -3257,7 +3348,7 @@ Module slice.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -3275,7 +3366,7 @@ Module slice.
     End Impl_core_iter_traits_double_ended_DoubleEndedIterator_for_core_slice_iter_Iter_T.
     
     Module Impl_core_iter_traits_marker_FusedIterator_for_core_slice_iter_Iter_T.
-      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::slice::iter::Iter") [ T ].
+      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ].
       
       Axiom Implements :
         forall (T : Ty.t),
@@ -3287,7 +3378,7 @@ Module slice.
     End Impl_core_iter_traits_marker_FusedIterator_for_core_slice_iter_Iter_T.
     
     Module Impl_core_iter_traits_marker_TrustedLen_for_core_slice_iter_Iter_T.
-      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::slice::iter::Iter") [ T ].
+      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ].
       
       Axiom Implements :
         forall (T : Ty.t),
@@ -3299,7 +3390,7 @@ Module slice.
     End Impl_core_iter_traits_marker_TrustedLen_for_core_slice_iter_Iter_T.
     
     Module Impl_core_iter_traits_unchecked_iterator_UncheckedIterator_for_core_slice_iter_Iter_T.
-      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::slice::iter::Iter") [ T ].
+      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ].
       
       (*
                   unsafe fn next_unchecked(&mut self) -> $elem {
@@ -3309,15 +3400,20 @@ Module slice.
                       }
                   }
       *)
-      Definition next_unchecked (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition next_unchecked
+          (T : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ],
+                Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                 "as_ref",
                 []
               |),
@@ -3325,7 +3421,7 @@ Module slice.
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "core::slice::iter::Iter") [ T ],
+                      Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ],
                       "post_inc_start",
                       []
                     |),
@@ -3334,7 +3430,7 @@ Module slice.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -3347,29 +3443,29 @@ Module slice.
     End Impl_core_iter_traits_unchecked_iterator_UncheckedIterator_for_core_slice_iter_Iter_T.
     
     Module Impl_core_default_Default_for_core_slice_iter_Iter_T.
-      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::slice::iter::Iter") [ T ].
+      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ].
       
       (*
                   fn default() -> Self {
                       (& $( $mut_ )? []).into_iter()
                   }
       *)
-      Definition default (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition default (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [] =>
+        match ε, τ, α with
+        | [], [], [] =>
           ltac:(M.monadic
             (M.call_closure (|
               M.get_trait_method (|
                 "core::iter::traits::collect::IntoIterator",
-                Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "array") [ T ] ],
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "array") [ Value.Integer 0 ] [ T ] ],
                 [],
                 "into_iter",
                 []
               |),
               [ M.alloc (| Value.Array [] |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -3382,7 +3478,7 @@ Module slice.
     End Impl_core_default_Default_for_core_slice_iter_Iter_T.
     
     Module Impl_core_slice_iter_IterMut_T.
-      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::slice::iter::IterMut") [ T ].
+      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ].
       
       (*
                   fn make_slice(&self) -> &'a [T] {
@@ -3392,10 +3488,10 @@ Module slice.
                       unsafe { from_raw_parts(self.ptr.as_ptr(), len!(self)) }
                   }
       *)
-      Definition make_slice (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition make_slice (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -3405,7 +3501,7 @@ Module slice.
                 M.pointer_coercion
                   (M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ],
+                      Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                       "as_ptr",
                       []
                     |),
@@ -3433,7 +3529,7 @@ Module slice.
                             M.alloc (|
                               M.call_closure (|
                                 M.get_associated_function (|
-                                  Ty.apply (Ty.path "*mut") [ T ],
+                                  Ty.apply (Ty.path "*mut") [] [ T ],
                                   "addr",
                                   []
                                 |),
@@ -3455,9 +3551,12 @@ Module slice.
                             M.copy (|
                               M.call_closure (|
                                 M.get_associated_function (|
-                                  Ty.apply (Ty.path "*const") [ Ty.apply (Ty.path "*mut") [ T ] ],
+                                  Ty.apply
+                                    (Ty.path "*const")
+                                    []
+                                    [ Ty.apply (Ty.path "*mut") [] [ T ] ],
                                   "cast",
-                                  [ Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ] ]
+                                  [ Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ] ]
                                 |),
                                 [
                                   M.SubPointer.get_struct_record_field (|
@@ -3471,7 +3570,7 @@ Module slice.
                           M.alloc (|
                             M.call_closure (|
                               M.get_associated_function (|
-                                Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ],
+                                Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                                 "sub_ptr",
                                 []
                               |),
@@ -3492,7 +3591,7 @@ Module slice.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_make_slice :
@@ -3514,10 +3613,15 @@ Module slice.
                       old
                   }
       *)
-      Definition post_inc_start (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition post_inc_start
+          (T : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self; offset ] =>
+        match ε, τ, α with
+        | [], [], [ self; offset ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let offset := M.alloc (| offset |) in
@@ -3545,7 +3649,10 @@ Module slice.
                             M.alloc (|
                               M.call_closure (|
                                 M.get_associated_function (|
-                                  Ty.apply (Ty.path "*mut") [ Ty.apply (Ty.path "*mut") [ T ] ],
+                                  Ty.apply
+                                    (Ty.path "*mut")
+                                    []
+                                    [ Ty.apply (Ty.path "*mut") [] [ T ] ],
                                   "cast",
                                   [ Ty.path "usize" ]
                                 |),
@@ -3571,9 +3678,12 @@ Module slice.
                             M.alloc (|
                               M.call_closure (|
                                 M.get_associated_function (|
-                                  Ty.apply (Ty.path "*mut") [ Ty.apply (Ty.path "*mut") [ T ] ],
+                                  Ty.apply
+                                    (Ty.path "*mut")
+                                    []
+                                    [ Ty.apply (Ty.path "*mut") [] [ T ] ],
                                   "cast",
-                                  [ Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ] ]
+                                  [ Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ] ]
                                 |),
                                 [
                                   M.SubPointer.get_struct_record_field (|
@@ -3592,7 +3702,7 @@ Module slice.
                             |),
                             M.call_closure (|
                               M.get_associated_function (|
-                                Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ],
+                                Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                                 "add",
                                 []
                               |),
@@ -3613,7 +3723,7 @@ Module slice.
                 M.alloc (| Value.Tuple [] |) in
               old
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_post_inc_start :
@@ -3639,10 +3749,10 @@ Module slice.
                       )
                   }
       *)
-      Definition pre_dec_end (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition pre_dec_end (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self; offset ] =>
+        match ε, τ, α with
+        | [], [], [ self; offset ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let offset := M.alloc (| offset |) in
@@ -3659,7 +3769,7 @@ Module slice.
                         M.alloc (|
                           M.call_closure (|
                             M.get_associated_function (|
-                              Ty.apply (Ty.path "*mut") [ Ty.apply (Ty.path "*mut") [ T ] ],
+                              Ty.apply (Ty.path "*mut") [] [ Ty.apply (Ty.path "*mut") [] [ T ] ],
                               "cast",
                               [ Ty.path "usize" ]
                             |),
@@ -3691,9 +3801,9 @@ Module slice.
                         M.alloc (|
                           M.call_closure (|
                             M.get_associated_function (|
-                              Ty.apply (Ty.path "*mut") [ Ty.apply (Ty.path "*mut") [ T ] ],
+                              Ty.apply (Ty.path "*mut") [] [ Ty.apply (Ty.path "*mut") [] [ T ] ],
                               "cast",
-                              [ Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ] ]
+                              [ Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ] ]
                             |),
                             [
                               M.SubPointer.get_struct_record_field (|
@@ -3709,7 +3819,7 @@ Module slice.
                           M.read (| end_ |),
                           M.call_closure (|
                             M.get_associated_function (|
-                              Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ],
+                              Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                               "sub",
                               []
                             |),
@@ -3720,7 +3830,7 @@ Module slice.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_pre_dec_end :
@@ -3729,17 +3839,17 @@ Module slice.
     End Impl_core_slice_iter_IterMut_T.
     
     Module Impl_core_iter_traits_exact_size_ExactSizeIterator_for_core_slice_iter_IterMut_T.
-      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::slice::iter::IterMut") [ T ].
+      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ].
       
       (*
                   fn len(&self) -> usize {
                       len!(self)
                   }
       *)
-      Definition len (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition len (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -3755,7 +3865,7 @@ Module slice.
                         M.alloc (|
                           M.call_closure (|
                             M.get_associated_function (|
-                              Ty.apply (Ty.path "*mut") [ T ],
+                              Ty.apply (Ty.path "*mut") [] [ T ],
                               "addr",
                               []
                             |),
@@ -3777,9 +3887,9 @@ Module slice.
                         M.copy (|
                           M.call_closure (|
                             M.get_associated_function (|
-                              Ty.apply (Ty.path "*const") [ Ty.apply (Ty.path "*mut") [ T ] ],
+                              Ty.apply (Ty.path "*const") [] [ Ty.apply (Ty.path "*mut") [] [ T ] ],
                               "cast",
-                              [ Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ] ]
+                              [ Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ] ]
                             |),
                             [
                               M.SubPointer.get_struct_record_field (|
@@ -3793,7 +3903,7 @@ Module slice.
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
-                            Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ],
+                            Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                             "sub_ptr",
                             []
                           |),
@@ -3812,7 +3922,7 @@ Module slice.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -3820,10 +3930,10 @@ Module slice.
                       is_empty!(self)
                   }
       *)
-      Definition is_empty (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_empty (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -3839,7 +3949,7 @@ Module slice.
                         M.alloc (|
                           M.call_closure (|
                             M.get_associated_function (|
-                              Ty.apply (Ty.path "*mut") [ T ],
+                              Ty.apply (Ty.path "*mut") [] [ T ],
                               "addr",
                               []
                             |),
@@ -3861,9 +3971,9 @@ Module slice.
                         M.copy (|
                           M.call_closure (|
                             M.get_associated_function (|
-                              Ty.apply (Ty.path "*const") [ Ty.apply (Ty.path "*mut") [ T ] ],
+                              Ty.apply (Ty.path "*const") [] [ Ty.apply (Ty.path "*mut") [] [ T ] ],
                               "cast",
-                              [ Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ] ]
+                              [ Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ] ]
                             |),
                             [
                               M.SubPointer.get_struct_record_field (|
@@ -3878,8 +3988,8 @@ Module slice.
                         M.call_closure (|
                           M.get_trait_method (|
                             "core::cmp::PartialEq",
-                            Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ],
-                            [ Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ] ],
+                            Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
+                            [ Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ] ],
                             "eq",
                             []
                           |),
@@ -3896,7 +4006,7 @@ Module slice.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -3911,10 +4021,10 @@ Module slice.
     End Impl_core_iter_traits_exact_size_ExactSizeIterator_for_core_slice_iter_IterMut_T.
     
     Module Impl_core_iter_traits_iterator_Iterator_for_core_slice_iter_IterMut_T.
-      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::slice::iter::IterMut") [ T ].
+      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ].
       
       (*             type Item = $elem; *)
-      Definition _Item (T : Ty.t) : Ty.t := Ty.apply (Ty.path "&mut") [ T ].
+      Definition _Item (T : Ty.t) : Ty.t := Ty.apply (Ty.path "&mut") [] [ T ].
       
       (*
                   fn next(&mut self) -> Option<$elem> {
@@ -3931,10 +4041,10 @@ Module slice.
                       }
                   }
       *)
-      Definition next (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition next (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -3964,7 +4074,7 @@ Module slice.
                                     M.alloc (|
                                       M.call_closure (|
                                         M.get_associated_function (|
-                                          Ty.apply (Ty.path "*mut") [ T ],
+                                          Ty.apply (Ty.path "*mut") [] [ T ],
                                           "addr",
                                           []
                                         |),
@@ -3990,9 +4100,14 @@ Module slice.
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "*const")
-                                            [ Ty.apply (Ty.path "*mut") [ T ] ],
+                                            []
+                                            [ Ty.apply (Ty.path "*mut") [] [ T ] ],
                                           "cast",
-                                          [ Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ]
+                                          [
+                                            Ty.apply
+                                              (Ty.path "core::ptr::non_null::NonNull")
+                                              []
+                                              [ T ]
                                           ]
                                         |),
                                         [
@@ -4008,8 +4123,9 @@ Module slice.
                                     M.call_closure (|
                                       M.get_trait_method (|
                                         "core::cmp::PartialEq",
-                                        Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ],
-                                        [ Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ] ],
+                                        Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
+                                        [ Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ]
+                                        ],
                                         "eq",
                                         []
                                       |),
@@ -4035,7 +4151,7 @@ Module slice.
                           [
                             M.call_closure (|
                               M.get_associated_function (|
-                                Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ],
+                                Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                                 "as_mut",
                                 []
                               |),
@@ -4043,7 +4159,7 @@ Module slice.
                                 M.alloc (|
                                   M.call_closure (|
                                     M.get_associated_function (|
-                                      Ty.apply (Ty.path "core::slice::iter::IterMut") [ T ],
+                                      Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
                                       "post_inc_start",
                                       []
                                     |),
@@ -4057,7 +4173,7 @@ Module slice.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -4066,10 +4182,10 @@ Module slice.
                       (exact, Some(exact))
                   }
       *)
-      Definition size_hint (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition size_hint (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -4088,7 +4204,7 @@ Module slice.
                             M.alloc (|
                               M.call_closure (|
                                 M.get_associated_function (|
-                                  Ty.apply (Ty.path "*mut") [ T ],
+                                  Ty.apply (Ty.path "*mut") [] [ T ],
                                   "addr",
                                   []
                                 |),
@@ -4110,9 +4226,12 @@ Module slice.
                             M.copy (|
                               M.call_closure (|
                                 M.get_associated_function (|
-                                  Ty.apply (Ty.path "*const") [ Ty.apply (Ty.path "*mut") [ T ] ],
+                                  Ty.apply
+                                    (Ty.path "*const")
+                                    []
+                                    [ Ty.apply (Ty.path "*mut") [] [ T ] ],
                                   "cast",
-                                  [ Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ] ]
+                                  [ Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ] ]
                                 |),
                                 [
                                   M.SubPointer.get_struct_record_field (|
@@ -4126,7 +4245,7 @@ Module slice.
                           M.alloc (|
                             M.call_closure (|
                               M.get_associated_function (|
-                                Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ],
+                                Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                                 "sub_ptr",
                                 []
                               |),
@@ -4153,7 +4272,7 @@ Module slice.
                   ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -4161,10 +4280,10 @@ Module slice.
                       len!(self)
                   }
       *)
-      Definition count (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition count (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -4180,7 +4299,7 @@ Module slice.
                         M.alloc (|
                           M.call_closure (|
                             M.get_associated_function (|
-                              Ty.apply (Ty.path "*mut") [ T ],
+                              Ty.apply (Ty.path "*mut") [] [ T ],
                               "addr",
                               []
                             |),
@@ -4202,9 +4321,9 @@ Module slice.
                         M.copy (|
                           M.call_closure (|
                             M.get_associated_function (|
-                              Ty.apply (Ty.path "*const") [ Ty.apply (Ty.path "*mut") [ T ] ],
+                              Ty.apply (Ty.path "*const") [] [ Ty.apply (Ty.path "*mut") [] [ T ] ],
                               "cast",
-                              [ Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ] ]
+                              [ Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ] ]
                             |),
                             [
                               M.SubPointer.get_struct_record_field (|
@@ -4218,7 +4337,7 @@ Module slice.
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
-                            Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ],
+                            Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                             "sub_ptr",
                             []
                           |),
@@ -4237,7 +4356,7 @@ Module slice.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -4257,10 +4376,10 @@ Module slice.
                       }
                   }
       *)
-      Definition nth (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition nth (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self; n ] =>
+        match ε, τ, α with
+        | [], [], [ self; n ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
@@ -4298,7 +4417,7 @@ Module slice.
                                                 M.alloc (|
                                                   M.call_closure (|
                                                     M.get_associated_function (|
-                                                      Ty.apply (Ty.path "*mut") [ T ],
+                                                      Ty.apply (Ty.path "*mut") [] [ T ],
                                                       "addr",
                                                       []
                                                     |),
@@ -4322,11 +4441,13 @@ Module slice.
                                                     M.get_associated_function (|
                                                       Ty.apply
                                                         (Ty.path "*const")
-                                                        [ Ty.apply (Ty.path "*mut") [ T ] ],
+                                                        []
+                                                        [ Ty.apply (Ty.path "*mut") [] [ T ] ],
                                                       "cast",
                                                       [
                                                         Ty.apply
                                                           (Ty.path "core::ptr::non_null::NonNull")
+                                                          []
                                                           [ T ]
                                                       ]
                                                     |),
@@ -4344,6 +4465,7 @@ Module slice.
                                                   M.get_associated_function (|
                                                     Ty.apply
                                                       (Ty.path "core::ptr::non_null::NonNull")
+                                                      []
                                                       [ T ],
                                                     "sub_ptr",
                                                     []
@@ -4391,7 +4513,8 @@ Module slice.
                                                   M.get_associated_function (|
                                                     Ty.apply
                                                       (Ty.path "*mut")
-                                                      [ Ty.apply (Ty.path "*mut") [ T ] ],
+                                                      []
+                                                      [ Ty.apply (Ty.path "*mut") [] [ T ] ],
                                                     "cast",
                                                     [ Ty.path "usize" ]
                                                   |),
@@ -4413,11 +4536,13 @@ Module slice.
                                                   M.get_associated_function (|
                                                     Ty.apply
                                                       (Ty.path "*mut")
-                                                      [ Ty.apply (Ty.path "*mut") [ T ] ],
+                                                      []
+                                                      [ Ty.apply (Ty.path "*mut") [] [ T ] ],
                                                     "cast",
                                                     [
                                                       Ty.apply
                                                         (Ty.path "core::ptr::non_null::NonNull")
+                                                        []
                                                         [ T ]
                                                     ]
                                                   |),
@@ -4451,7 +4576,7 @@ Module slice.
                     M.alloc (|
                       M.call_closure (|
                         M.get_associated_function (|
-                          Ty.apply (Ty.path "core::slice::iter::IterMut") [ T ],
+                          Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
                           "post_inc_start",
                           []
                         |),
@@ -4464,7 +4589,7 @@ Module slice.
                       [
                         M.call_closure (|
                           M.get_associated_function (|
-                            Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ],
+                            Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                             "as_mut",
                             []
                           |),
@@ -4472,7 +4597,7 @@ Module slice.
                             M.alloc (|
                               M.call_closure (|
                                 M.get_associated_function (|
-                                  Ty.apply (Ty.path "core::slice::iter::IterMut") [ T ],
+                                  Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
                                   "post_inc_start",
                                   []
                                 |),
@@ -4485,7 +4610,7 @@ Module slice.
                   |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -4496,10 +4621,10 @@ Module slice.
                       NonZeroUsize::new(n - advance).map_or(Ok(()), Err)
                   }
       *)
-      Definition advance_by (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition advance_by (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self; n ] =>
+        match ε, τ, α with
+        | [], [], [ self; n ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
@@ -4529,7 +4654,7 @@ Module slice.
                                   M.alloc (|
                                     M.call_closure (|
                                       M.get_associated_function (|
-                                        Ty.apply (Ty.path "*mut") [ T ],
+                                        Ty.apply (Ty.path "*mut") [] [ T ],
                                         "addr",
                                         []
                                       |),
@@ -4553,9 +4678,11 @@ Module slice.
                                       M.get_associated_function (|
                                         Ty.apply
                                           (Ty.path "*const")
-                                          [ Ty.apply (Ty.path "*mut") [ T ] ],
+                                          []
+                                          [ Ty.apply (Ty.path "*mut") [] [ T ] ],
                                         "cast",
-                                        [ Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ] ]
+                                        [ Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ]
+                                        ]
                                       |),
                                       [
                                         M.SubPointer.get_struct_record_field (|
@@ -4569,7 +4696,7 @@ Module slice.
                                 M.alloc (|
                                   M.call_closure (|
                                     M.get_associated_function (|
-                                      Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ],
+                                      Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                                       "sub_ptr",
                                       []
                                     |),
@@ -4596,7 +4723,7 @@ Module slice.
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "core::slice::iter::IterMut") [ T ],
+                      Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
                       "post_inc_start",
                       []
                     |),
@@ -4608,16 +4735,19 @@ Module slice.
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "core::option::Option")
+                      []
                       [ Ty.path "core::num::nonzero::NonZeroUsize" ],
                     "map_or",
                     [
                       Ty.apply
                         (Ty.path "core::result::Result")
+                        []
                         [ Ty.tuple []; Ty.path "core::num::nonzero::NonZeroUsize" ];
                       Ty.function
                         [ Ty.path "core::num::nonzero::NonZeroUsize" ]
                         (Ty.apply
                           (Ty.path "core::result::Result")
+                          []
                           [ Ty.tuple []; Ty.path "core::num::nonzero::NonZeroUsize" ])
                     ]
                   |),
@@ -4636,7 +4766,7 @@ Module slice.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -4644,23 +4774,23 @@ Module slice.
                       self.next_back()
                   }
       *)
-      Definition last (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition last (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_trait_method (|
                 "core::iter::traits::double_ended::DoubleEndedIterator",
-                Ty.apply (Ty.path "core::slice::iter::IterMut") [ T ],
+                Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
                 [],
                 "next_back",
                 []
               |),
               [ self ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -4696,10 +4826,10 @@ Module slice.
                       acc
                   }
       *)
-      Definition fold (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fold (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [ B; F ], [ self; init; f ] =>
+        match ε, τ, α with
+        | [], [ B; F ], [ self; init; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let init := M.alloc (| init |) in
@@ -4734,7 +4864,7 @@ Module slice.
                                           M.alloc (|
                                             M.call_closure (|
                                               M.get_associated_function (|
-                                                Ty.apply (Ty.path "*mut") [ T ],
+                                                Ty.apply (Ty.path "*mut") [] [ T ],
                                                 "addr",
                                                 []
                                               |),
@@ -4760,11 +4890,13 @@ Module slice.
                                               M.get_associated_function (|
                                                 Ty.apply
                                                   (Ty.path "*const")
-                                                  [ Ty.apply (Ty.path "*mut") [ T ] ],
+                                                  []
+                                                  [ Ty.apply (Ty.path "*mut") [] [ T ] ],
                                                 "cast",
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::ptr::non_null::NonNull")
+                                                    []
                                                     [ T ]
                                                 ]
                                               |),
@@ -4783,10 +4915,12 @@ Module slice.
                                               "core::cmp::PartialEq",
                                               Ty.apply
                                                 (Ty.path "core::ptr::non_null::NonNull")
+                                                []
                                                 [ T ],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::ptr::non_null::NonNull")
+                                                  []
                                                   [ T ]
                                               ],
                                               "eq",
@@ -4833,7 +4967,7 @@ Module slice.
                                 M.alloc (|
                                   M.call_closure (|
                                     M.get_associated_function (|
-                                      Ty.apply (Ty.path "*mut") [ T ],
+                                      Ty.apply (Ty.path "*mut") [] [ T ],
                                       "addr",
                                       []
                                     |),
@@ -4857,9 +4991,10 @@ Module slice.
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "*const")
-                                        [ Ty.apply (Ty.path "*mut") [ T ] ],
+                                        []
+                                        [ Ty.apply (Ty.path "*mut") [] [ T ] ],
                                       "cast",
-                                      [ Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ] ]
+                                      [ Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ] ]
                                     |),
                                     [
                                       M.SubPointer.get_struct_record_field (|
@@ -4873,7 +5008,7 @@ Module slice.
                               M.alloc (|
                                 M.call_closure (|
                                   M.get_associated_function (|
-                                    Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ],
+                                    Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                                     "sub_ptr",
                                     []
                                   |),
@@ -4902,7 +5037,7 @@ Module slice.
                               M.get_trait_method (|
                                 "core::ops::function::FnMut",
                                 F,
-                                [ Ty.tuple [ B; Ty.apply (Ty.path "&mut") [ T ] ] ],
+                                [ Ty.tuple [ B; Ty.apply (Ty.path "&mut") [] [ T ] ] ],
                                 "call_mut",
                                 []
                               |),
@@ -4913,14 +5048,17 @@ Module slice.
                                     M.read (| acc |);
                                     M.call_closure (|
                                       M.get_associated_function (|
-                                        Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ],
+                                        Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                                         "as_ptr",
                                         []
                                       |),
                                       [
                                         M.call_closure (|
                                           M.get_associated_function (|
-                                            Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ],
+                                            Ty.apply
+                                              (Ty.path "core::ptr::non_null::NonNull")
+                                              []
+                                              [ T ],
                                             "add",
                                             []
                                           |),
@@ -4972,7 +5110,7 @@ Module slice.
                   acc
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -4986,10 +5124,10 @@ Module slice.
                       }
                   }
       *)
-      Definition for_each (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition for_each (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [ F ], [ self; f ] =>
+        match ε, τ, α with
+        | [], [ F ], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -5006,7 +5144,7 @@ Module slice.
                               M.call_closure (|
                                 M.get_trait_method (|
                                   "core::iter::traits::iterator::Iterator",
-                                  Ty.apply (Ty.path "core::slice::iter::IterMut") [ T ],
+                                  Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
                                   [],
                                   "next",
                                   []
@@ -5027,7 +5165,7 @@ Module slice.
                                 M.get_trait_method (|
                                   "core::ops::function::FnMut",
                                   F,
-                                  [ Ty.tuple [ Ty.apply (Ty.path "&mut") [ T ] ] ],
+                                  [ Ty.tuple [ Ty.apply (Ty.path "&mut") [] [ T ] ] ],
                                   "call_mut",
                                   []
                                 |),
@@ -5050,7 +5188,7 @@ Module slice.
                   |)))
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -5067,10 +5205,10 @@ Module slice.
                       true
                   }
       *)
-      Definition all (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition all (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [ F ], [ self; f ] =>
+        match ε, τ, α with
+        | [], [ F ], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -5090,7 +5228,7 @@ Module slice.
                                     M.call_closure (|
                                       M.get_trait_method (|
                                         "core::iter::traits::iterator::Iterator",
-                                        Ty.apply (Ty.path "core::slice::iter::IterMut") [ T ],
+                                        Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
                                         [],
                                         "next",
                                         []
@@ -5118,7 +5256,9 @@ Module slice.
                                                   M.get_trait_method (|
                                                     "core::ops::function::FnMut",
                                                     F,
-                                                    [ Ty.tuple [ Ty.apply (Ty.path "&mut") [ T ] ]
+                                                    [
+                                                      Ty.tuple
+                                                        [ Ty.apply (Ty.path "&mut") [] [ T ] ]
                                                     ],
                                                     "call_mut",
                                                     []
@@ -5158,7 +5298,7 @@ Module slice.
                   M.alloc (| Value.Bool true |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -5175,10 +5315,10 @@ Module slice.
                       false
                   }
       *)
-      Definition any (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition any (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [ F ], [ self; f ] =>
+        match ε, τ, α with
+        | [], [ F ], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -5198,7 +5338,7 @@ Module slice.
                                     M.call_closure (|
                                       M.get_trait_method (|
                                         "core::iter::traits::iterator::Iterator",
-                                        Ty.apply (Ty.path "core::slice::iter::IterMut") [ T ],
+                                        Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
                                         [],
                                         "next",
                                         []
@@ -5225,7 +5365,8 @@ Module slice.
                                                 M.get_trait_method (|
                                                   "core::ops::function::FnMut",
                                                   F,
-                                                  [ Ty.tuple [ Ty.apply (Ty.path "&mut") [ T ] ] ],
+                                                  [ Ty.tuple [ Ty.apply (Ty.path "&mut") [] [ T ] ]
+                                                  ],
                                                   "call_mut",
                                                   []
                                                 |),
@@ -5264,7 +5405,7 @@ Module slice.
                   M.alloc (| Value.Bool false |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -5281,10 +5422,10 @@ Module slice.
                       None
                   }
       *)
-      Definition find (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition find (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [ P ], [ self; predicate ] =>
+        match ε, τ, α with
+        | [], [ P ], [ self; predicate ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let predicate := M.alloc (| predicate |) in
@@ -5304,7 +5445,7 @@ Module slice.
                                     M.call_closure (|
                                       M.get_trait_method (|
                                         "core::iter::traits::iterator::Iterator",
-                                        Ty.apply (Ty.path "core::slice::iter::IterMut") [ T ],
+                                        Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
                                         [],
                                         "next",
                                         []
@@ -5336,7 +5477,8 @@ Module slice.
                                                       [
                                                         Ty.apply
                                                           (Ty.path "&")
-                                                          [ Ty.apply (Ty.path "&mut") [ T ] ]
+                                                          []
+                                                          [ Ty.apply (Ty.path "&mut") [] [ T ] ]
                                                       ]
                                                   ],
                                                   "call_mut",
@@ -5383,7 +5525,7 @@ Module slice.
                   M.alloc (| Value.StructTuple "core::option::Option::None" [] |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -5400,10 +5542,10 @@ Module slice.
                       None
                   }
       *)
-      Definition find_map (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition find_map (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [ B; F ], [ self; f ] =>
+        match ε, τ, α with
+        | [], [ B; F ], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -5423,7 +5565,7 @@ Module slice.
                                     M.call_closure (|
                                       M.get_trait_method (|
                                         "core::iter::traits::iterator::Iterator",
-                                        Ty.apply (Ty.path "core::slice::iter::IterMut") [ T ],
+                                        Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
                                         [],
                                         "next",
                                         []
@@ -5449,7 +5591,7 @@ Module slice.
                                               M.get_trait_method (|
                                                 "core::ops::function::FnMut",
                                                 F,
-                                                [ Ty.tuple [ Ty.apply (Ty.path "&mut") [ T ] ] ],
+                                                [ Ty.tuple [ Ty.apply (Ty.path "&mut") [] [ T ] ] ],
                                                 "call_mut",
                                                 []
                                               |),
@@ -5496,7 +5638,7 @@ Module slice.
                   M.alloc (| Value.StructTuple "core::option::Option::None" [] |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -5518,10 +5660,10 @@ Module slice.
                       None
                   }
       *)
-      Definition position (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition position (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [ P ], [ self; predicate ] =>
+        match ε, τ, α with
+        | [], [ P ], [ self; predicate ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let predicate := M.alloc (| predicate |) in
@@ -5547,7 +5689,7 @@ Module slice.
                                 M.alloc (|
                                   M.call_closure (|
                                     M.get_associated_function (|
-                                      Ty.apply (Ty.path "*mut") [ T ],
+                                      Ty.apply (Ty.path "*mut") [] [ T ],
                                       "addr",
                                       []
                                     |),
@@ -5571,9 +5713,10 @@ Module slice.
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "*const")
-                                        [ Ty.apply (Ty.path "*mut") [ T ] ],
+                                        []
+                                        [ Ty.apply (Ty.path "*mut") [] [ T ] ],
                                       "cast",
-                                      [ Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ] ]
+                                      [ Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ] ]
                                     |),
                                     [
                                       M.SubPointer.get_struct_record_field (|
@@ -5587,7 +5730,7 @@ Module slice.
                               M.alloc (|
                                 M.call_closure (|
                                   M.get_associated_function (|
-                                    Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ],
+                                    Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                                     "sub_ptr",
                                     []
                                   |),
@@ -5620,7 +5763,7 @@ Module slice.
                                     M.call_closure (|
                                       M.get_trait_method (|
                                         "core::iter::traits::iterator::Iterator",
-                                        Ty.apply (Ty.path "core::slice::iter::IterMut") [ T ],
+                                        Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
                                         [],
                                         "next",
                                         []
@@ -5648,7 +5791,9 @@ Module slice.
                                                   M.get_trait_method (|
                                                     "core::ops::function::FnMut",
                                                     P,
-                                                    [ Ty.tuple [ Ty.apply (Ty.path "&mut") [ T ] ]
+                                                    [
+                                                      Ty.tuple
+                                                        [ Ty.apply (Ty.path "&mut") [] [ T ] ]
                                                     ],
                                                     "call_mut",
                                                     []
@@ -5715,7 +5860,7 @@ Module slice.
                   M.alloc (| Value.StructTuple "core::option::Option::None" [] |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -5737,10 +5882,10 @@ Module slice.
                       None
                   }
       *)
-      Definition rposition (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition rposition (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [ P ], [ self; predicate ] =>
+        match ε, τ, α with
+        | [], [ P ], [ self; predicate ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let predicate := M.alloc (| predicate |) in
@@ -5766,7 +5911,7 @@ Module slice.
                                 M.alloc (|
                                   M.call_closure (|
                                     M.get_associated_function (|
-                                      Ty.apply (Ty.path "*mut") [ T ],
+                                      Ty.apply (Ty.path "*mut") [] [ T ],
                                       "addr",
                                       []
                                     |),
@@ -5790,9 +5935,10 @@ Module slice.
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "*const")
-                                        [ Ty.apply (Ty.path "*mut") [ T ] ],
+                                        []
+                                        [ Ty.apply (Ty.path "*mut") [] [ T ] ],
                                       "cast",
-                                      [ Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ] ]
+                                      [ Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ] ]
                                     |),
                                     [
                                       M.SubPointer.get_struct_record_field (|
@@ -5806,7 +5952,7 @@ Module slice.
                               M.alloc (|
                                 M.call_closure (|
                                   M.get_associated_function (|
-                                    Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ],
+                                    Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                                     "sub_ptr",
                                     []
                                   |),
@@ -5839,7 +5985,7 @@ Module slice.
                                     M.call_closure (|
                                       M.get_trait_method (|
                                         "core::iter::traits::double_ended::DoubleEndedIterator",
-                                        Ty.apply (Ty.path "core::slice::iter::IterMut") [ T ],
+                                        Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
                                         [],
                                         "next_back",
                                         []
@@ -5931,7 +6077,7 @@ Module slice.
                   M.alloc (| Value.StructTuple "core::option::Option::None" [] |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -5949,19 +6095,24 @@ Module slice.
                       unsafe { & $( $mut_ )? * self.ptr.as_ptr().add(idx) }
                   }
       *)
-      Definition __iterator_get_unchecked (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition __iterator_get_unchecked
+          (T : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self; idx ] =>
+        match ε, τ, α with
+        | [], [], [ self; idx ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let idx := M.alloc (| idx |) in
             M.call_closure (|
-              M.get_associated_function (| Ty.apply (Ty.path "*mut") [ T ], "add", [] |),
+              M.get_associated_function (| Ty.apply (Ty.path "*mut") [] [ T ], "add", [] |),
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ],
+                    Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                     "as_ptr",
                     []
                   |),
@@ -5978,7 +6129,7 @@ Module slice.
                 M.read (| idx |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -6009,7 +6160,7 @@ Module slice.
     End Impl_core_iter_traits_iterator_Iterator_for_core_slice_iter_IterMut_T.
     
     Module Impl_core_iter_traits_double_ended_DoubleEndedIterator_for_core_slice_iter_IterMut_T.
-      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::slice::iter::IterMut") [ T ].
+      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ].
       
       (*
                   fn next_back(&mut self) -> Option<$elem> {
@@ -6026,10 +6177,10 @@ Module slice.
                       }
                   }
       *)
-      Definition next_back (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition next_back (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -6059,7 +6210,7 @@ Module slice.
                                     M.alloc (|
                                       M.call_closure (|
                                         M.get_associated_function (|
-                                          Ty.apply (Ty.path "*mut") [ T ],
+                                          Ty.apply (Ty.path "*mut") [] [ T ],
                                           "addr",
                                           []
                                         |),
@@ -6085,9 +6236,14 @@ Module slice.
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "*const")
-                                            [ Ty.apply (Ty.path "*mut") [ T ] ],
+                                            []
+                                            [ Ty.apply (Ty.path "*mut") [] [ T ] ],
                                           "cast",
-                                          [ Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ]
+                                          [
+                                            Ty.apply
+                                              (Ty.path "core::ptr::non_null::NonNull")
+                                              []
+                                              [ T ]
                                           ]
                                         |),
                                         [
@@ -6103,8 +6259,9 @@ Module slice.
                                     M.call_closure (|
                                       M.get_trait_method (|
                                         "core::cmp::PartialEq",
-                                        Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ],
-                                        [ Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ] ],
+                                        Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
+                                        [ Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ]
+                                        ],
                                         "eq",
                                         []
                                       |),
@@ -6130,7 +6287,7 @@ Module slice.
                           [
                             M.call_closure (|
                               M.get_associated_function (|
-                                Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ],
+                                Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                                 "as_mut",
                                 []
                               |),
@@ -6138,7 +6295,7 @@ Module slice.
                                 M.alloc (|
                                   M.call_closure (|
                                     M.get_associated_function (|
-                                      Ty.apply (Ty.path "core::slice::iter::IterMut") [ T ],
+                                      Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
                                       "pre_dec_end",
                                       []
                                     |),
@@ -6152,7 +6309,7 @@ Module slice.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -6172,10 +6329,10 @@ Module slice.
                       }
                   }
       *)
-      Definition nth_back (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition nth_back (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self; n ] =>
+        match ε, τ, α with
+        | [], [], [ self; n ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
@@ -6213,7 +6370,7 @@ Module slice.
                                                 M.alloc (|
                                                   M.call_closure (|
                                                     M.get_associated_function (|
-                                                      Ty.apply (Ty.path "*mut") [ T ],
+                                                      Ty.apply (Ty.path "*mut") [] [ T ],
                                                       "addr",
                                                       []
                                                     |),
@@ -6237,11 +6394,13 @@ Module slice.
                                                     M.get_associated_function (|
                                                       Ty.apply
                                                         (Ty.path "*const")
-                                                        [ Ty.apply (Ty.path "*mut") [ T ] ],
+                                                        []
+                                                        [ Ty.apply (Ty.path "*mut") [] [ T ] ],
                                                       "cast",
                                                       [
                                                         Ty.apply
                                                           (Ty.path "core::ptr::non_null::NonNull")
+                                                          []
                                                           [ T ]
                                                       ]
                                                     |),
@@ -6259,6 +6418,7 @@ Module slice.
                                                   M.get_associated_function (|
                                                     Ty.apply
                                                       (Ty.path "core::ptr::non_null::NonNull")
+                                                      []
                                                       [ T ],
                                                     "sub_ptr",
                                                     []
@@ -6306,7 +6466,8 @@ Module slice.
                                                   M.get_associated_function (|
                                                     Ty.apply
                                                       (Ty.path "*mut")
-                                                      [ Ty.apply (Ty.path "*mut") [ T ] ],
+                                                      []
+                                                      [ Ty.apply (Ty.path "*mut") [] [ T ] ],
                                                     "cast",
                                                     [ Ty.path "usize" ]
                                                   |),
@@ -6328,11 +6489,13 @@ Module slice.
                                                   M.get_associated_function (|
                                                     Ty.apply
                                                       (Ty.path "*mut")
-                                                      [ Ty.apply (Ty.path "*mut") [ T ] ],
+                                                      []
+                                                      [ Ty.apply (Ty.path "*mut") [] [ T ] ],
                                                     "cast",
                                                     [
                                                       Ty.apply
                                                         (Ty.path "core::ptr::non_null::NonNull")
+                                                        []
                                                         [ T ]
                                                     ]
                                                   |),
@@ -6368,7 +6531,7 @@ Module slice.
                     M.alloc (|
                       M.call_closure (|
                         M.get_associated_function (|
-                          Ty.apply (Ty.path "core::slice::iter::IterMut") [ T ],
+                          Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
                           "pre_dec_end",
                           []
                         |),
@@ -6381,7 +6544,7 @@ Module slice.
                       [
                         M.call_closure (|
                           M.get_associated_function (|
-                            Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ],
+                            Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                             "as_mut",
                             []
                           |),
@@ -6389,7 +6552,7 @@ Module slice.
                             M.alloc (|
                               M.call_closure (|
                                 M.get_associated_function (|
-                                  Ty.apply (Ty.path "core::slice::iter::IterMut") [ T ],
+                                  Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
                                   "pre_dec_end",
                                   []
                                 |),
@@ -6402,7 +6565,7 @@ Module slice.
                   |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -6413,10 +6576,15 @@ Module slice.
                       NonZeroUsize::new(n - advance).map_or(Ok(()), Err)
                   }
       *)
-      Definition advance_back_by (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition advance_back_by
+          (T : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self; n ] =>
+        match ε, τ, α with
+        | [], [], [ self; n ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
@@ -6446,7 +6614,7 @@ Module slice.
                                   M.alloc (|
                                     M.call_closure (|
                                       M.get_associated_function (|
-                                        Ty.apply (Ty.path "*mut") [ T ],
+                                        Ty.apply (Ty.path "*mut") [] [ T ],
                                         "addr",
                                         []
                                       |),
@@ -6470,9 +6638,11 @@ Module slice.
                                       M.get_associated_function (|
                                         Ty.apply
                                           (Ty.path "*const")
-                                          [ Ty.apply (Ty.path "*mut") [ T ] ],
+                                          []
+                                          [ Ty.apply (Ty.path "*mut") [] [ T ] ],
                                         "cast",
-                                        [ Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ] ]
+                                        [ Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ]
+                                        ]
                                       |),
                                       [
                                         M.SubPointer.get_struct_record_field (|
@@ -6486,7 +6656,7 @@ Module slice.
                                 M.alloc (|
                                   M.call_closure (|
                                     M.get_associated_function (|
-                                      Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ],
+                                      Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                                       "sub_ptr",
                                       []
                                     |),
@@ -6513,7 +6683,7 @@ Module slice.
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "core::slice::iter::IterMut") [ T ],
+                      Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
                       "pre_dec_end",
                       []
                     |),
@@ -6525,16 +6695,19 @@ Module slice.
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "core::option::Option")
+                      []
                       [ Ty.path "core::num::nonzero::NonZeroUsize" ],
                     "map_or",
                     [
                       Ty.apply
                         (Ty.path "core::result::Result")
+                        []
                         [ Ty.tuple []; Ty.path "core::num::nonzero::NonZeroUsize" ];
                       Ty.function
                         [ Ty.path "core::num::nonzero::NonZeroUsize" ]
                         (Ty.apply
                           (Ty.path "core::result::Result")
+                          []
                           [ Ty.tuple []; Ty.path "core::num::nonzero::NonZeroUsize" ])
                     ]
                   |),
@@ -6553,7 +6726,7 @@ Module slice.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -6571,7 +6744,7 @@ Module slice.
     End Impl_core_iter_traits_double_ended_DoubleEndedIterator_for_core_slice_iter_IterMut_T.
     
     Module Impl_core_iter_traits_marker_FusedIterator_for_core_slice_iter_IterMut_T.
-      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::slice::iter::IterMut") [ T ].
+      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ].
       
       Axiom Implements :
         forall (T : Ty.t),
@@ -6583,7 +6756,7 @@ Module slice.
     End Impl_core_iter_traits_marker_FusedIterator_for_core_slice_iter_IterMut_T.
     
     Module Impl_core_iter_traits_marker_TrustedLen_for_core_slice_iter_IterMut_T.
-      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::slice::iter::IterMut") [ T ].
+      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ].
       
       Axiom Implements :
         forall (T : Ty.t),
@@ -6595,7 +6768,7 @@ Module slice.
     End Impl_core_iter_traits_marker_TrustedLen_for_core_slice_iter_IterMut_T.
     
     Module Impl_core_iter_traits_unchecked_iterator_UncheckedIterator_for_core_slice_iter_IterMut_T.
-      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::slice::iter::IterMut") [ T ].
+      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ].
       
       (*
                   unsafe fn next_unchecked(&mut self) -> $elem {
@@ -6605,15 +6778,20 @@ Module slice.
                       }
                   }
       *)
-      Definition next_unchecked (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition next_unchecked
+          (T : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ],
+                Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                 "as_mut",
                 []
               |),
@@ -6621,7 +6799,7 @@ Module slice.
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "core::slice::iter::IterMut") [ T ],
+                      Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
                       "post_inc_start",
                       []
                     |),
@@ -6630,7 +6808,7 @@ Module slice.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -6643,29 +6821,32 @@ Module slice.
     End Impl_core_iter_traits_unchecked_iterator_UncheckedIterator_for_core_slice_iter_IterMut_T.
     
     Module Impl_core_default_Default_for_core_slice_iter_IterMut_T.
-      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::slice::iter::IterMut") [ T ].
+      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ].
       
       (*
                   fn default() -> Self {
                       (& $( $mut_ )? []).into_iter()
                   }
       *)
-      Definition default (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition default (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [] =>
+        match ε, τ, α with
+        | [], [], [] =>
           ltac:(M.monadic
             (M.call_closure (|
               M.get_trait_method (|
                 "core::iter::traits::collect::IntoIterator",
-                Ty.apply (Ty.path "&mut") [ Ty.apply (Ty.path "array") [ T ] ],
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "array") [ Value.Integer 0 ] [ T ] ],
                 [],
                 "into_iter",
                 []
               |),
               [ M.alloc (| Value.Array [] |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -6679,21 +6860,21 @@ Module slice.
     
     Module Impl_core_iter_traits_iterator_Iterator_where_core_ops_function_FnMut_P_Tuple_ref__T__for_core_slice_iter_SplitN_T_P.
       Definition Self (T P : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::slice::iter::SplitN") [ T; P ].
+        Ty.apply (Ty.path "core::slice::iter::SplitN") [] [ T; P ].
       
       (*             type Item = $iter_of; *)
       Definition _Item (T P : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "slice") [ T ] ].
+        Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ].
       
       (*
                   fn next(&mut self) -> Option<$iter_of> {
                       self.inner.next()
                   }
       *)
-      Definition next (T P : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition next (T P : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T P in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -6701,7 +6882,8 @@ Module slice.
                 "core::iter::traits::iterator::Iterator",
                 Ty.apply
                   (Ty.path "core::slice::iter::GenericSplitN")
-                  [ Ty.apply (Ty.path "core::slice::iter::Split") [ T; P ] ],
+                  []
+                  [ Ty.apply (Ty.path "core::slice::iter::Split") [] [ T; P ] ],
                 [],
                 "next",
                 []
@@ -6714,7 +6896,7 @@ Module slice.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -6722,10 +6904,10 @@ Module slice.
                       self.inner.size_hint()
                   }
       *)
-      Definition size_hint (T P : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition size_hint (T P : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T P in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -6733,7 +6915,8 @@ Module slice.
                 "core::iter::traits::iterator::Iterator",
                 Ty.apply
                   (Ty.path "core::slice::iter::GenericSplitN")
-                  [ Ty.apply (Ty.path "core::slice::iter::Split") [ T; P ] ],
+                  []
+                  [ Ty.apply (Ty.path "core::slice::iter::Split") [] [ T; P ] ],
                 [],
                 "size_hint",
                 []
@@ -6746,7 +6929,7 @@ Module slice.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -6765,7 +6948,7 @@ Module slice.
     
     Module Impl_core_iter_traits_marker_FusedIterator_where_core_ops_function_FnMut_P_Tuple_ref__T__for_core_slice_iter_SplitN_T_P.
       Definition Self (T P : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::slice::iter::SplitN") [ T; P ].
+        Ty.apply (Ty.path "core::slice::iter::SplitN") [] [ T; P ].
       
       Axiom Implements :
         forall (T P : Ty.t),
@@ -6778,21 +6961,21 @@ Module slice.
     
     Module Impl_core_iter_traits_iterator_Iterator_where_core_ops_function_FnMut_P_Tuple_ref__T__for_core_slice_iter_RSplitN_T_P.
       Definition Self (T P : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::slice::iter::RSplitN") [ T; P ].
+        Ty.apply (Ty.path "core::slice::iter::RSplitN") [] [ T; P ].
       
       (*             type Item = $iter_of; *)
       Definition _Item (T P : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "slice") [ T ] ].
+        Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ].
       
       (*
                   fn next(&mut self) -> Option<$iter_of> {
                       self.inner.next()
                   }
       *)
-      Definition next (T P : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition next (T P : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T P in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -6800,7 +6983,8 @@ Module slice.
                 "core::iter::traits::iterator::Iterator",
                 Ty.apply
                   (Ty.path "core::slice::iter::GenericSplitN")
-                  [ Ty.apply (Ty.path "core::slice::iter::RSplit") [ T; P ] ],
+                  []
+                  [ Ty.apply (Ty.path "core::slice::iter::RSplit") [] [ T; P ] ],
                 [],
                 "next",
                 []
@@ -6813,7 +6997,7 @@ Module slice.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -6821,10 +7005,10 @@ Module slice.
                       self.inner.size_hint()
                   }
       *)
-      Definition size_hint (T P : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition size_hint (T P : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T P in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -6832,7 +7016,8 @@ Module slice.
                 "core::iter::traits::iterator::Iterator",
                 Ty.apply
                   (Ty.path "core::slice::iter::GenericSplitN")
-                  [ Ty.apply (Ty.path "core::slice::iter::RSplit") [ T; P ] ],
+                  []
+                  [ Ty.apply (Ty.path "core::slice::iter::RSplit") [] [ T; P ] ],
                 [],
                 "size_hint",
                 []
@@ -6845,7 +7030,7 @@ Module slice.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -6864,7 +7049,7 @@ Module slice.
     
     Module Impl_core_iter_traits_marker_FusedIterator_where_core_ops_function_FnMut_P_Tuple_ref__T__for_core_slice_iter_RSplitN_T_P.
       Definition Self (T P : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::slice::iter::RSplitN") [ T; P ].
+        Ty.apply (Ty.path "core::slice::iter::RSplitN") [] [ T; P ].
       
       Axiom Implements :
         forall (T P : Ty.t),
@@ -6877,21 +7062,21 @@ Module slice.
     
     Module Impl_core_iter_traits_iterator_Iterator_where_core_ops_function_FnMut_P_Tuple_ref__T__for_core_slice_iter_SplitNMut_T_P.
       Definition Self (T P : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::slice::iter::SplitNMut") [ T; P ].
+        Ty.apply (Ty.path "core::slice::iter::SplitNMut") [] [ T; P ].
       
       (*             type Item = $iter_of; *)
       Definition _Item (T P : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "&mut") [ Ty.apply (Ty.path "slice") [ T ] ].
+        Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ].
       
       (*
                   fn next(&mut self) -> Option<$iter_of> {
                       self.inner.next()
                   }
       *)
-      Definition next (T P : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition next (T P : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T P in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -6899,7 +7084,8 @@ Module slice.
                 "core::iter::traits::iterator::Iterator",
                 Ty.apply
                   (Ty.path "core::slice::iter::GenericSplitN")
-                  [ Ty.apply (Ty.path "core::slice::iter::SplitMut") [ T; P ] ],
+                  []
+                  [ Ty.apply (Ty.path "core::slice::iter::SplitMut") [] [ T; P ] ],
                 [],
                 "next",
                 []
@@ -6912,7 +7098,7 @@ Module slice.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -6920,10 +7106,10 @@ Module slice.
                       self.inner.size_hint()
                   }
       *)
-      Definition size_hint (T P : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition size_hint (T P : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T P in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -6931,7 +7117,8 @@ Module slice.
                 "core::iter::traits::iterator::Iterator",
                 Ty.apply
                   (Ty.path "core::slice::iter::GenericSplitN")
-                  [ Ty.apply (Ty.path "core::slice::iter::SplitMut") [ T; P ] ],
+                  []
+                  [ Ty.apply (Ty.path "core::slice::iter::SplitMut") [] [ T; P ] ],
                 [],
                 "size_hint",
                 []
@@ -6944,7 +7131,7 @@ Module slice.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -6963,7 +7150,7 @@ Module slice.
     
     Module Impl_core_iter_traits_marker_FusedIterator_where_core_ops_function_FnMut_P_Tuple_ref__T__for_core_slice_iter_SplitNMut_T_P.
       Definition Self (T P : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::slice::iter::SplitNMut") [ T; P ].
+        Ty.apply (Ty.path "core::slice::iter::SplitNMut") [] [ T; P ].
       
       Axiom Implements :
         forall (T P : Ty.t),
@@ -6976,21 +7163,21 @@ Module slice.
     
     Module Impl_core_iter_traits_iterator_Iterator_where_core_ops_function_FnMut_P_Tuple_ref__T__for_core_slice_iter_RSplitNMut_T_P.
       Definition Self (T P : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::slice::iter::RSplitNMut") [ T; P ].
+        Ty.apply (Ty.path "core::slice::iter::RSplitNMut") [] [ T; P ].
       
       (*             type Item = $iter_of; *)
       Definition _Item (T P : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "&mut") [ Ty.apply (Ty.path "slice") [ T ] ].
+        Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ].
       
       (*
                   fn next(&mut self) -> Option<$iter_of> {
                       self.inner.next()
                   }
       *)
-      Definition next (T P : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition next (T P : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T P in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -6998,7 +7185,8 @@ Module slice.
                 "core::iter::traits::iterator::Iterator",
                 Ty.apply
                   (Ty.path "core::slice::iter::GenericSplitN")
-                  [ Ty.apply (Ty.path "core::slice::iter::RSplitMut") [ T; P ] ],
+                  []
+                  [ Ty.apply (Ty.path "core::slice::iter::RSplitMut") [] [ T; P ] ],
                 [],
                 "next",
                 []
@@ -7011,7 +7199,7 @@ Module slice.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -7019,10 +7207,10 @@ Module slice.
                       self.inner.size_hint()
                   }
       *)
-      Definition size_hint (T P : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition size_hint (T P : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T P in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -7030,7 +7218,8 @@ Module slice.
                 "core::iter::traits::iterator::Iterator",
                 Ty.apply
                   (Ty.path "core::slice::iter::GenericSplitN")
-                  [ Ty.apply (Ty.path "core::slice::iter::RSplitMut") [ T; P ] ],
+                  []
+                  [ Ty.apply (Ty.path "core::slice::iter::RSplitMut") [] [ T; P ] ],
                 [],
                 "size_hint",
                 []
@@ -7043,7 +7232,7 @@ Module slice.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -7062,7 +7251,7 @@ Module slice.
     
     Module Impl_core_iter_traits_marker_FusedIterator_where_core_ops_function_FnMut_P_Tuple_ref__T__for_core_slice_iter_RSplitNMut_T_P.
       Definition Self (T P : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::slice::iter::RSplitNMut") [ T; P ].
+        Ty.apply (Ty.path "core::slice::iter::RSplitNMut") [] [ T; P ].
       
       Axiom Implements :
         forall (T P : Ty.t),

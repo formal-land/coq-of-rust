@@ -6,6 +6,7 @@ Module net.
     (*
     Enum SocketAddr
     {
+      const_params := [];
       ty_params := [];
       variants :=
         [
@@ -38,9 +39,9 @@ Module net.
       Definition Self : Ty.t := Ty.path "core::net::socket_addr::SocketAddr".
       
       (* Clone *)
-      Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -56,7 +57,7 @@ Module net.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -82,9 +83,9 @@ Module net.
       Definition Self : Ty.t := Ty.path "core::net::socket_addr::SocketAddr".
       
       (* PartialEq *)
-      Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -197,7 +198,7 @@ Module net.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -223,9 +224,13 @@ Module net.
       Definition Self : Ty.t := Ty.path "core::net::socket_addr::SocketAddr".
       
       (* Eq *)
-      Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition assert_receiver_is_total_eq
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -241,7 +246,7 @@ Module net.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -257,9 +262,9 @@ Module net.
       Definition Self : Ty.t := Ty.path "core::net::socket_addr::SocketAddr".
       
       (* Hash *)
-      Definition hash (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ __H ], [ self; state ] =>
+      Definition hash (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ __H ], [ self; state ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
@@ -337,7 +342,7 @@ Module net.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -352,9 +357,9 @@ Module net.
       Definition Self : Ty.t := Ty.path "core::net::socket_addr::SocketAddr".
       
       (* PartialOrd *)
-      Definition partial_cmp (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition partial_cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -463,7 +468,7 @@ Module net.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -478,9 +483,9 @@ Module net.
       Definition Self : Ty.t := Ty.path "core::net::socket_addr::SocketAddr".
       
       (* Ord *)
-      Definition cmp (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -602,7 +607,7 @@ Module net.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -616,6 +621,7 @@ Module net.
     (* StructRecord
       {
         name := "SocketAddrV4";
+        const_params := [];
         ty_params := [];
         fields := [ ("ip", Ty.path "core::net::ip_addr::Ipv4Addr"); ("port", Ty.path "u16") ];
       } *)
@@ -635,9 +641,9 @@ Module net.
       Definition Self : Ty.t := Ty.path "core::net::socket_addr::SocketAddrV4".
       
       (* Clone *)
-      Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -653,7 +659,7 @@ Module net.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -679,9 +685,13 @@ Module net.
       Definition Self : Ty.t := Ty.path "core::net::socket_addr::SocketAddrV4".
       
       (* Eq *)
-      Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition assert_receiver_is_total_eq
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -697,7 +707,7 @@ Module net.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -724,9 +734,9 @@ Module net.
       Definition Self : Ty.t := Ty.path "core::net::socket_addr::SocketAddrV4".
       
       (* PartialEq *)
-      Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -769,7 +779,7 @@ Module net.
                     |)
                   |))))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -784,9 +794,9 @@ Module net.
       Definition Self : Ty.t := Ty.path "core::net::socket_addr::SocketAddrV4".
       
       (* Ord *)
-      Definition cmp (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -843,7 +853,7 @@ Module net.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -858,9 +868,9 @@ Module net.
       Definition Self : Ty.t := Ty.path "core::net::socket_addr::SocketAddrV4".
       
       (* PartialOrd *)
-      Definition partial_cmp (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition partial_cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -929,7 +939,7 @@ Module net.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -944,9 +954,9 @@ Module net.
       Definition Self : Ty.t := Ty.path "core::net::socket_addr::SocketAddrV4".
       
       (* Hash *)
-      Definition hash (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ __H ], [ self; state ] =>
+      Definition hash (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ __H ], [ self; state ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
@@ -985,7 +995,7 @@ Module net.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -999,6 +1009,7 @@ Module net.
     (* StructRecord
       {
         name := "SocketAddrV6";
+        const_params := [];
         ty_params := [];
         fields :=
           [
@@ -1024,9 +1035,9 @@ Module net.
       Definition Self : Ty.t := Ty.path "core::net::socket_addr::SocketAddrV6".
       
       (* Clone *)
-      Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -1049,7 +1060,7 @@ Module net.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1075,9 +1086,13 @@ Module net.
       Definition Self : Ty.t := Ty.path "core::net::socket_addr::SocketAddrV6".
       
       (* Eq *)
-      Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition assert_receiver_is_total_eq
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -1100,7 +1115,7 @@ Module net.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1127,9 +1142,9 @@ Module net.
       Definition Self : Ty.t := Ty.path "core::net::socket_addr::SocketAddrV6".
       
       (* PartialEq *)
-      Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -1208,7 +1223,7 @@ Module net.
                     |)
                   |))))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1223,9 +1238,9 @@ Module net.
       Definition Self : Ty.t := Ty.path "core::net::socket_addr::SocketAddrV6".
       
       (* Ord *)
-      Definition cmp (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -1351,7 +1366,7 @@ Module net.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1366,9 +1381,9 @@ Module net.
       Definition Self : Ty.t := Ty.path "core::net::socket_addr::SocketAddrV6".
       
       (* PartialOrd *)
-      Definition partial_cmp (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition partial_cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -1521,7 +1536,7 @@ Module net.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1536,9 +1551,9 @@ Module net.
       Definition Self : Ty.t := Ty.path "core::net::socket_addr::SocketAddrV6".
       
       (* Hash *)
-      Definition hash (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ __H ], [ self; state ] =>
+      Definition hash (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ __H ], [ self; state ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
@@ -1605,7 +1620,7 @@ Module net.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1627,9 +1642,9 @@ Module net.
               }
           }
       *)
-      Definition new (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ ip; port ] =>
+      Definition new (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ ip; port ] =>
           ltac:(M.monadic
             (let ip := M.alloc (| ip |) in
             let port := M.alloc (| port |) in
@@ -1687,7 +1702,7 @@ Module net.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -1700,9 +1715,9 @@ Module net.
               }
           }
       *)
-      Definition ip (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition ip (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -1762,7 +1777,7 @@ Module net.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_ip : M.IsAssociatedFunction Self "ip" ip.
@@ -1777,9 +1792,9 @@ Module net.
               }
           }
       *)
-      Definition set_ip (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; new_ip ] =>
+      Definition set_ip (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; new_ip ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let new_ip := M.alloc (| new_ip |) in
@@ -1875,7 +1890,7 @@ Module net.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_set_ip : M.IsAssociatedFunction Self "set_ip" set_ip.
@@ -1888,9 +1903,9 @@ Module net.
               }
           }
       *)
-      Definition port (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition port (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -1938,7 +1953,7 @@ Module net.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_port : M.IsAssociatedFunction Self "port" port.
@@ -1951,9 +1966,9 @@ Module net.
               }
           }
       *)
-      Definition set_port (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; new_port ] =>
+      Definition set_port (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; new_port ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let new_port := M.alloc (| new_port |) in
@@ -2002,7 +2017,7 @@ Module net.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_set_port : M.IsAssociatedFunction Self "set_port" set_port.
@@ -2012,9 +2027,9 @@ Module net.
               matches!( *self, SocketAddr::V4(_))
           }
       *)
-      Definition is_ipv4 (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition is_ipv4 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -2034,7 +2049,7 @@ Module net.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_is_ipv4 : M.IsAssociatedFunction Self "is_ipv4" is_ipv4.
@@ -2044,9 +2059,9 @@ Module net.
               matches!( *self, SocketAddr::V6(_))
           }
       *)
-      Definition is_ipv6 (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition is_ipv6 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -2066,7 +2081,7 @@ Module net.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_is_ipv6 : M.IsAssociatedFunction Self "is_ipv6" is_ipv6.
@@ -2080,16 +2095,16 @@ Module net.
               SocketAddrV4 { ip, port }
           }
       *)
-      Definition new (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ ip; port ] =>
+      Definition new (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ ip; port ] =>
           ltac:(M.monadic
             (let ip := M.alloc (| ip |) in
             let port := M.alloc (| port |) in
             Value.StructRecord
               "core::net::socket_addr::SocketAddrV4"
               [ ("ip", M.read (| ip |)); ("port", M.read (| port |)) ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -2099,9 +2114,9 @@ Module net.
               &self.ip
           }
       *)
-      Definition ip (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition ip (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.SubPointer.get_struct_record_field (|
@@ -2109,7 +2124,7 @@ Module net.
               "core::net::socket_addr::SocketAddrV4",
               "ip"
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_ip : M.IsAssociatedFunction Self "ip" ip.
@@ -2119,9 +2134,9 @@ Module net.
               self.ip = new_ip;
           }
       *)
-      Definition set_ip (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; new_ip ] =>
+      Definition set_ip (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; new_ip ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let new_ip := M.alloc (| new_ip |) in
@@ -2137,7 +2152,7 @@ Module net.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_set_ip : M.IsAssociatedFunction Self "set_ip" set_ip.
@@ -2147,9 +2162,9 @@ Module net.
               self.port
           }
       *)
-      Definition port (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition port (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -2159,7 +2174,7 @@ Module net.
                 "port"
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_port : M.IsAssociatedFunction Self "port" port.
@@ -2169,9 +2184,9 @@ Module net.
               self.port = new_port;
           }
       *)
-      Definition set_port (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; new_port ] =>
+      Definition set_port (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; new_port ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let new_port := M.alloc (| new_port |) in
@@ -2187,7 +2202,7 @@ Module net.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_set_port : M.IsAssociatedFunction Self "set_port" set_port.
@@ -2201,9 +2216,9 @@ Module net.
               SocketAddrV6 { ip, port, flowinfo, scope_id }
           }
       *)
-      Definition new (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ ip; port; flowinfo; scope_id ] =>
+      Definition new (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ ip; port; flowinfo; scope_id ] =>
           ltac:(M.monadic
             (let ip := M.alloc (| ip |) in
             let port := M.alloc (| port |) in
@@ -2217,7 +2232,7 @@ Module net.
                 ("flowinfo", M.read (| flowinfo |));
                 ("scope_id", M.read (| scope_id |))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -2227,9 +2242,9 @@ Module net.
               &self.ip
           }
       *)
-      Definition ip (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition ip (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.SubPointer.get_struct_record_field (|
@@ -2237,7 +2252,7 @@ Module net.
               "core::net::socket_addr::SocketAddrV6",
               "ip"
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_ip : M.IsAssociatedFunction Self "ip" ip.
@@ -2247,9 +2262,9 @@ Module net.
               self.ip = new_ip;
           }
       *)
-      Definition set_ip (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; new_ip ] =>
+      Definition set_ip (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; new_ip ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let new_ip := M.alloc (| new_ip |) in
@@ -2265,7 +2280,7 @@ Module net.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_set_ip : M.IsAssociatedFunction Self "set_ip" set_ip.
@@ -2275,9 +2290,9 @@ Module net.
               self.port
           }
       *)
-      Definition port (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition port (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -2287,7 +2302,7 @@ Module net.
                 "port"
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_port : M.IsAssociatedFunction Self "port" port.
@@ -2297,9 +2312,9 @@ Module net.
               self.port = new_port;
           }
       *)
-      Definition set_port (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; new_port ] =>
+      Definition set_port (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; new_port ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let new_port := M.alloc (| new_port |) in
@@ -2315,7 +2330,7 @@ Module net.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_set_port : M.IsAssociatedFunction Self "set_port" set_port.
@@ -2325,9 +2340,9 @@ Module net.
               self.flowinfo
           }
       *)
-      Definition flowinfo (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition flowinfo (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -2337,7 +2352,7 @@ Module net.
                 "flowinfo"
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_flowinfo : M.IsAssociatedFunction Self "flowinfo" flowinfo.
@@ -2347,9 +2362,9 @@ Module net.
               self.flowinfo = new_flowinfo;
           }
       *)
-      Definition set_flowinfo (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; new_flowinfo ] =>
+      Definition set_flowinfo (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; new_flowinfo ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let new_flowinfo := M.alloc (| new_flowinfo |) in
@@ -2365,7 +2380,7 @@ Module net.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_set_flowinfo :
@@ -2376,9 +2391,9 @@ Module net.
               self.scope_id
           }
       *)
-      Definition scope_id (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition scope_id (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -2388,7 +2403,7 @@ Module net.
                 "scope_id"
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_scope_id : M.IsAssociatedFunction Self "scope_id" scope_id.
@@ -2398,9 +2413,9 @@ Module net.
               self.scope_id = new_scope_id;
           }
       *)
-      Definition set_scope_id (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; new_scope_id ] =>
+      Definition set_scope_id (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; new_scope_id ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let new_scope_id := M.alloc (| new_scope_id |) in
@@ -2416,7 +2431,7 @@ Module net.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_set_scope_id :
@@ -2431,13 +2446,13 @@ Module net.
               SocketAddr::V4(sock4)
           }
       *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ sock4 ] =>
+      Definition from (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ sock4 ] =>
           ltac:(M.monadic
             (let sock4 := M.alloc (| sock4 |) in
             Value.StructTuple "core::net::socket_addr::SocketAddr::V4" [ M.read (| sock4 |) ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -2456,13 +2471,13 @@ Module net.
               SocketAddr::V6(sock6)
           }
       *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ sock6 ] =>
+      Definition from (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ sock6 ] =>
           ltac:(M.monadic
             (let sock6 := M.alloc (| sock6 |) in
             Value.StructTuple "core::net::socket_addr::SocketAddr::V6" [ M.read (| sock6 |) ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -2481,10 +2496,10 @@ Module net.
               SocketAddr::new(pieces.0.into(), pieces.1)
           }
       *)
-      Definition from (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from (I : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self I in
-        match τ, α with
-        | [], [ pieces ] =>
+        match ε, τ, α with
+        | [], [], [ pieces ] =>
           ltac:(M.monadic
             (let pieces := M.alloc (| pieces |) in
             M.call_closure (|
@@ -2507,7 +2522,7 @@ Module net.
                 M.read (| M.SubPointer.get_tuple_field (| pieces, 1 |) |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -2530,9 +2545,9 @@ Module net.
               }
           }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -2585,7 +2600,7 @@ Module net.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -2604,9 +2619,9 @@ Module net.
               fmt::Display::fmt(self, fmt)
           }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; fmt ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; fmt ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let fmt := M.alloc (| fmt |) in
@@ -2620,7 +2635,7 @@ Module net.
               |),
               [ M.read (| self |); M.read (| fmt |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -2651,9 +2666,9 @@ Module net.
               }
           }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -2669,7 +2684,7 @@ Module net.
                             LogicalOp.and (|
                               M.call_closure (|
                                 M.get_associated_function (|
-                                  Ty.apply (Ty.path "core::option::Option") [ Ty.path "usize" ],
+                                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
                                   "is_none",
                                   []
                                 |),
@@ -2689,7 +2704,10 @@ Module net.
                               ltac:(M.monadic
                                 (M.call_closure (|
                                   M.get_associated_function (|
-                                    Ty.apply (Ty.path "core::option::Option") [ Ty.path "usize" ],
+                                    Ty.apply
+                                      (Ty.path "core::option::Option")
+                                      []
+                                      [ Ty.path "usize" ],
                                     "is_none",
                                     []
                                   |),
@@ -2744,6 +2762,7 @@ Module net.
                                             [
                                               Ty.apply
                                                 (Ty.path "&")
+                                                []
                                                 [ Ty.path "core::net::ip_addr::Ipv4Addr" ]
                                             ]
                                           |),
@@ -2792,7 +2811,10 @@ Module net.
                         M.alloc (|
                           M.call_closure (|
                             M.get_associated_function (|
-                              Ty.path "core::net::display_buffer::DisplayBuffer",
+                              Ty.apply
+                                (Ty.path "core::net::display_buffer::DisplayBuffer")
+                                [ Value.Integer 21 ]
+                                [],
                               "new",
                               []
                             |),
@@ -2805,6 +2827,7 @@ Module net.
                             M.get_associated_function (|
                               Ty.apply
                                 (Ty.path "core::result::Result")
+                                []
                                 [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                               "unwrap",
                               []
@@ -2813,7 +2836,10 @@ Module net.
                               M.call_closure (|
                                 M.get_trait_method (|
                                   "core::fmt::Write",
-                                  Ty.path "core::net::display_buffer::DisplayBuffer",
+                                  Ty.apply
+                                    (Ty.path "core::net::display_buffer::DisplayBuffer")
+                                    [ Value.Integer 21 ]
+                                    [],
                                   [],
                                   "write_fmt",
                                   []
@@ -2848,6 +2874,7 @@ Module net.
                                                   [
                                                     Ty.apply
                                                       (Ty.path "&")
+                                                      []
                                                       [ Ty.path "core::net::ip_addr::Ipv4Addr" ]
                                                   ]
                                                 |),
@@ -2901,7 +2928,10 @@ Module net.
                             M.read (| f |);
                             M.call_closure (|
                               M.get_associated_function (|
-                                Ty.path "core::net::display_buffer::DisplayBuffer",
+                                Ty.apply
+                                  (Ty.path "core::net::display_buffer::DisplayBuffer")
+                                  [ Value.Integer 21 ]
+                                  [],
                                 "as_str",
                                 []
                               |),
@@ -2913,7 +2943,7 @@ Module net.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -2932,9 +2962,9 @@ Module net.
               fmt::Display::fmt(self, fmt)
           }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; fmt ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; fmt ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let fmt := M.alloc (| fmt |) in
@@ -2948,7 +2978,7 @@ Module net.
               |),
               [ M.read (| self |); M.read (| fmt |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -2987,9 +3017,9 @@ Module net.
               }
           }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -3005,7 +3035,7 @@ Module net.
                             LogicalOp.and (|
                               M.call_closure (|
                                 M.get_associated_function (|
-                                  Ty.apply (Ty.path "core::option::Option") [ Ty.path "usize" ],
+                                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
                                   "is_none",
                                   []
                                 |),
@@ -3025,7 +3055,10 @@ Module net.
                               ltac:(M.monadic
                                 (M.call_closure (|
                                   M.get_associated_function (|
-                                    Ty.apply (Ty.path "core::option::Option") [ Ty.path "usize" ],
+                                    Ty.apply
+                                      (Ty.path "core::option::Option")
+                                      []
+                                      [ Ty.path "usize" ],
                                     "is_none",
                                     []
                                   |),
@@ -3101,6 +3134,7 @@ Module net.
                                                     [
                                                       Ty.apply
                                                         (Ty.path "&")
+                                                        []
                                                         [ Ty.path "core::net::ip_addr::Ipv6Addr" ]
                                                     ]
                                                   |),
@@ -3186,6 +3220,7 @@ Module net.
                                                     [
                                                       Ty.apply
                                                         (Ty.path "&")
+                                                        []
                                                         [ Ty.path "core::net::ip_addr::Ipv6Addr" ]
                                                     ]
                                                   |),
@@ -3246,7 +3281,10 @@ Module net.
                         M.alloc (|
                           M.call_closure (|
                             M.get_associated_function (|
-                              Ty.path "core::net::display_buffer::DisplayBuffer",
+                              Ty.apply
+                                (Ty.path "core::net::display_buffer::DisplayBuffer")
+                                [ Value.Integer 58 ]
+                                [],
                               "new",
                               []
                             |),
@@ -3259,6 +3297,7 @@ Module net.
                             M.get_associated_function (|
                               Ty.apply
                                 (Ty.path "core::result::Result")
+                                []
                                 [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                               "unwrap",
                               []
@@ -3288,7 +3327,10 @@ Module net.
                                           M.call_closure (|
                                             M.get_trait_method (|
                                               "core::fmt::Write",
-                                              Ty.path "core::net::display_buffer::DisplayBuffer",
+                                              Ty.apply
+                                                (Ty.path "core::net::display_buffer::DisplayBuffer")
+                                                [ Value.Integer 58 ]
+                                                [],
                                               [],
                                               "write_fmt",
                                               []
@@ -3323,6 +3365,7 @@ Module net.
                                                               [
                                                                 Ty.apply
                                                                   (Ty.path "&")
+                                                                  []
                                                                   [
                                                                     Ty.path
                                                                       "core::net::ip_addr::Ipv6Addr"
@@ -3377,7 +3420,10 @@ Module net.
                                           M.call_closure (|
                                             M.get_trait_method (|
                                               "core::fmt::Write",
-                                              Ty.path "core::net::display_buffer::DisplayBuffer",
+                                              Ty.apply
+                                                (Ty.path "core::net::display_buffer::DisplayBuffer")
+                                                [ Value.Integer 58 ]
+                                                [],
                                               [],
                                               "write_fmt",
                                               []
@@ -3413,6 +3459,7 @@ Module net.
                                                               [
                                                                 Ty.apply
                                                                   (Ty.path "&")
+                                                                  []
                                                                   [
                                                                     Ty.path
                                                                       "core::net::ip_addr::Ipv6Addr"
@@ -3481,7 +3528,10 @@ Module net.
                             M.read (| f |);
                             M.call_closure (|
                               M.get_associated_function (|
-                                Ty.path "core::net::display_buffer::DisplayBuffer",
+                                Ty.apply
+                                  (Ty.path "core::net::display_buffer::DisplayBuffer")
+                                  [ Value.Integer 58 ]
+                                  [],
                                 "as_str",
                                 []
                               |),
@@ -3493,7 +3543,7 @@ Module net.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -3512,9 +3562,9 @@ Module net.
               fmt::Display::fmt(self, fmt)
           }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; fmt ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; fmt ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let fmt := M.alloc (| fmt |) in
@@ -3528,7 +3578,7 @@ Module net.
               |),
               [ M.read (| self |); M.read (| fmt |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :

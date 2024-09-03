@@ -8,9 +8,9 @@ Module foo.
                 println!("foo::gre::bar");
             }
     *)
-    Definition f_foo_gre (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [] =>
+    Definition f_foo_gre (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [] =>
         ltac:(M.monadic
           (M.read (|
             let~ _ :=
@@ -40,7 +40,7 @@ Module foo.
               M.alloc (| Value.Tuple [] |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_f_foo_gre : M.IsFunction "module_duplicate::foo::gre::f_foo_gre" f_foo_gre.
@@ -52,9 +52,9 @@ Module foo.
           gre::f_foo_gre();
       }
   *)
-  Definition f_foo (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [] =>
+  Definition f_foo (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [] =>
       ltac:(M.monadic
         (M.read (|
           let~ _ :=
@@ -89,7 +89,7 @@ Module foo.
             |) in
           M.alloc (| Value.Tuple [] |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Function_f_foo : M.IsFunction "module_duplicate::foo::f_foo" f_foo.
@@ -100,9 +100,9 @@ fn f() {
     foo::f_foo();
 }
 *)
-Definition f (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [] =>
+Definition f (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
         let~ _ :=
@@ -111,7 +111,7 @@ Definition f (τ : list Ty.t) (α : list Value.t) : M :=
           |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_f : M.IsFunction "module_duplicate::f" f.

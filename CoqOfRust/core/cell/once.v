@@ -6,28 +6,30 @@ Module cell.
     (* StructRecord
       {
         name := "OnceCell";
+        const_params := [];
         ty_params := [ "T" ];
         fields :=
           [
             ("inner",
               Ty.apply
                 (Ty.path "core::cell::UnsafeCell")
-                [ Ty.apply (Ty.path "core::option::Option") [ T ] ])
+                []
+                [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ])
           ];
       } *)
     
     Module Impl_core_cell_once_OnceCell_T.
-      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::cell::once::OnceCell") [ T ].
+      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::cell::once::OnceCell") [] [ T ].
       
       (*
           pub const fn new() -> OnceCell<T> {
               OnceCell { inner: UnsafeCell::new(None) }
           }
       *)
-      Definition new (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition new (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [] =>
+        match ε, τ, α with
+        | [ host ], [], [] =>
           ltac:(M.monadic
             (Value.StructRecord
               "core::cell::once::OnceCell"
@@ -37,14 +39,15 @@ Module cell.
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "core::cell::UnsafeCell")
-                        [ Ty.apply (Ty.path "core::option::Option") [ T ] ],
+                        []
+                        [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ],
                       "new",
                       []
                     |),
                     [ Value.StructTuple "core::option::Option::None" [] ]
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_new :
@@ -57,15 +60,15 @@ Module cell.
               unsafe { &*self.inner.get() }.as_ref()
           }
       *)
-      Definition get (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition get (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "core::option::Option") [ T ],
+                Ty.apply (Ty.path "core::option::Option") [] [ T ],
                 "as_ref",
                 []
               |),
@@ -74,7 +77,8 @@ Module cell.
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "core::cell::UnsafeCell")
-                      [ Ty.apply (Ty.path "core::option::Option") [ T ] ],
+                      []
+                      [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ],
                     "get",
                     []
                   |),
@@ -88,7 +92,7 @@ Module cell.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_get :
@@ -100,15 +104,15 @@ Module cell.
               self.inner.get_mut().as_mut()
           }
       *)
-      Definition get_mut (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition get_mut (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "core::option::Option") [ T ],
+                Ty.apply (Ty.path "core::option::Option") [] [ T ],
                 "as_mut",
                 []
               |),
@@ -117,7 +121,8 @@ Module cell.
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "core::cell::UnsafeCell")
-                      [ Ty.apply (Ty.path "core::option::Option") [ T ] ],
+                      []
+                      [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ],
                     "get_mut",
                     []
                   |),
@@ -131,7 +136,7 @@ Module cell.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_get_mut :
@@ -146,10 +151,10 @@ Module cell.
               }
           }
       *)
-      Definition set (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition set (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self; value ] =>
+        match ε, τ, α with
+        | [], [], [ self; value ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let value := M.alloc (| value |) in
@@ -158,7 +163,7 @@ Module cell.
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "core::cell::once::OnceCell") [ T ],
+                      Ty.apply (Ty.path "core::cell::once::OnceCell") [] [ T ],
                       "try_insert",
                       []
                     |),
@@ -194,7 +199,7 @@ Module cell.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_set :
@@ -215,10 +220,10 @@ Module cell.
               Ok(slot.insert(value))
           }
       *)
-      Definition try_insert (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition try_insert (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self; value ] =>
+        match ε, τ, α with
+        | [], [], [ self; value ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let value := M.alloc (| value |) in
@@ -235,7 +240,7 @@ Module cell.
                               M.alloc (|
                                 M.call_closure (|
                                   M.get_associated_function (|
-                                    Ty.apply (Ty.path "core::cell::once::OnceCell") [ T ],
+                                    Ty.apply (Ty.path "core::cell::once::OnceCell") [] [ T ],
                                     "get",
                                     []
                                   |),
@@ -269,7 +274,8 @@ Module cell.
                         M.get_associated_function (|
                           Ty.apply
                             (Ty.path "core::cell::UnsafeCell")
-                            [ Ty.apply (Ty.path "core::option::Option") [ T ] ],
+                            []
+                            [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ],
                           "get",
                           []
                         |),
@@ -288,7 +294,7 @@ Module cell.
                       [
                         M.call_closure (|
                           M.get_associated_function (|
-                            Ty.apply (Ty.path "core::option::Option") [ T ],
+                            Ty.apply (Ty.path "core::option::Option") [] [ T ],
                             "insert",
                             []
                           |),
@@ -298,7 +304,7 @@ Module cell.
                   |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_try_insert :
@@ -315,10 +321,10 @@ Module cell.
               }
           }
       *)
-      Definition get_or_init (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition get_or_init (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [ F ], [ self; f ] =>
+        match ε, τ, α with
+        | [], [ F ], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -327,12 +333,12 @@ Module cell.
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "core::cell::once::OnceCell") [ T ],
+                      Ty.apply (Ty.path "core::cell::once::OnceCell") [] [ T ],
                       "get_or_try_init",
                       [
                         Ty.function
                           [ Ty.tuple [] ]
-                          (Ty.apply (Ty.path "core::result::Result") [ T; Ty.path "never" ]);
+                          (Ty.apply (Ty.path "core::result::Result") [] [ T; Ty.path "never" ]);
                         Ty.path "never"
                       ]
                     |),
@@ -383,7 +389,7 @@ Module cell.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_get_or_init :
@@ -415,10 +421,15 @@ Module cell.
               if let Ok(val) = self.try_insert(val) { Ok(val) } else { panic!("reentrant init") }
           }
       *)
-      Definition get_or_try_init (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition get_or_try_init
+          (T : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [ F; E ], [ self; f ] =>
+        match ε, τ, α with
+        | [], [ F; E ], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -435,7 +446,7 @@ Module cell.
                               M.alloc (|
                                 M.call_closure (|
                                   M.get_associated_function (|
-                                    Ty.apply (Ty.path "core::cell::once::OnceCell") [ T ],
+                                    Ty.apply (Ty.path "core::cell::once::OnceCell") [] [ T ],
                                     "get",
                                     []
                                   |),
@@ -470,7 +481,7 @@ Module cell.
                           M.call_closure (|
                             M.get_trait_method (|
                               "core::ops::try_trait::Try",
-                              Ty.apply (Ty.path "core::result::Result") [ T; E ],
+                              Ty.apply (Ty.path "core::result::Result") [] [ T; E ],
                               [],
                               "branch",
                               []
@@ -506,10 +517,12 @@ Module cell.
                                           "core::ops::try_trait::FromResidual",
                                           Ty.apply
                                             (Ty.path "core::result::Result")
-                                            [ Ty.apply (Ty.path "&") [ T ]; E ],
+                                            []
+                                            [ Ty.apply (Ty.path "&") [] [ T ]; E ],
                                           [
                                             Ty.apply
                                               (Ty.path "core::result::Result")
+                                              []
                                               [ Ty.path "core::convert::Infallible"; E ]
                                           ],
                                           "from_residual",
@@ -543,7 +556,7 @@ Module cell.
                             M.alloc (|
                               M.call_closure (|
                                 M.get_associated_function (|
-                                  Ty.apply (Ty.path "core::cell::once::OnceCell") [ T ],
+                                  Ty.apply (Ty.path "core::cell::once::OnceCell") [] [ T ],
                                   "try_insert",
                                   []
                                 |),
@@ -589,7 +602,7 @@ Module cell.
                   |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_get_or_try_init :
@@ -603,17 +616,18 @@ Module cell.
               self.inner.into_inner()
           }
       *)
-      Definition into_inner (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition into_inner (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "core::cell::UnsafeCell")
-                  [ Ty.apply (Ty.path "core::option::Option") [ T ] ],
+                  []
+                  [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ],
                 "into_inner",
                 []
               |),
@@ -627,7 +641,7 @@ Module cell.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_into_inner :
@@ -639,15 +653,15 @@ Module cell.
               mem::take(self).into_inner()
           }
       *)
-      Definition take (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition take (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "core::cell::once::OnceCell") [ T ],
+                Ty.apply (Ty.path "core::cell::once::OnceCell") [] [ T ],
                 "into_inner",
                 []
               |),
@@ -655,13 +669,13 @@ Module cell.
                 M.call_closure (|
                   M.get_function (|
                     "core::mem::take",
-                    [ Ty.apply (Ty.path "core::cell::once::OnceCell") [ T ] ]
+                    [ Ty.apply (Ty.path "core::cell::once::OnceCell") [] [ T ] ]
                   |),
                   [ M.read (| self |) ]
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_take :
@@ -670,27 +684,27 @@ Module cell.
     End Impl_core_cell_once_OnceCell_T.
     
     Module Impl_core_default_Default_for_core_cell_once_OnceCell_T.
-      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::cell::once::OnceCell") [ T ].
+      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::cell::once::OnceCell") [] [ T ].
       
       (*
           fn default() -> Self {
               Self::new()
           }
       *)
-      Definition default (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition default (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [] =>
+        match ε, τ, α with
+        | [], [], [] =>
           ltac:(M.monadic
             (M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "core::cell::once::OnceCell") [ T ],
+                Ty.apply (Ty.path "core::cell::once::OnceCell") [] [ T ],
                 "new",
                 []
               |),
               []
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -703,7 +717,7 @@ Module cell.
     End Impl_core_default_Default_for_core_cell_once_OnceCell_T.
     
     Module Impl_core_fmt_Debug_where_core_fmt_Debug_T_for_core_cell_once_OnceCell_T.
-      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::cell::once::OnceCell") [ T ].
+      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::cell::once::OnceCell") [] [ T ].
       
       (*
           fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
@@ -715,10 +729,10 @@ Module cell.
               d.finish()
           }
       *)
-      Definition fmt (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self; f ] =>
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -739,7 +753,7 @@ Module cell.
                   M.alloc (|
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "core::cell::once::OnceCell") [ T ],
+                        Ty.apply (Ty.path "core::cell::once::OnceCell") [] [ T ],
                         "get",
                         []
                       |),
@@ -812,7 +826,7 @@ Module cell.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -825,7 +839,7 @@ Module cell.
     End Impl_core_fmt_Debug_where_core_fmt_Debug_T_for_core_cell_once_OnceCell_T.
     
     Module Impl_core_clone_Clone_where_core_clone_Clone_T_for_core_cell_once_OnceCell_T.
-      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::cell::once::OnceCell") [ T ].
+      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::cell::once::OnceCell") [] [ T ].
       
       (*
           fn clone(&self) -> OnceCell<T> {
@@ -839,10 +853,10 @@ Module cell.
               res
           }
       *)
-      Definition clone (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition clone (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -850,7 +864,7 @@ Module cell.
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "core::cell::once::OnceCell") [ T ],
+                      Ty.apply (Ty.path "core::cell::once::OnceCell") [] [ T ],
                       "new",
                       []
                     |),
@@ -867,7 +881,7 @@ Module cell.
                           M.alloc (|
                             M.call_closure (|
                               M.get_associated_function (|
-                                Ty.apply (Ty.path "core::cell::once::OnceCell") [ T ],
+                                Ty.apply (Ty.path "core::cell::once::OnceCell") [] [ T ],
                                 "get",
                                 []
                               |),
@@ -885,7 +899,7 @@ Module cell.
                           M.alloc (|
                             M.call_closure (|
                               M.get_associated_function (|
-                                Ty.apply (Ty.path "core::cell::once::OnceCell") [ T ],
+                                Ty.apply (Ty.path "core::cell::once::OnceCell") [] [ T ],
                                 "set",
                                 []
                               |),
@@ -935,7 +949,7 @@ Module cell.
                 |) in
               res
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -948,25 +962,26 @@ Module cell.
     End Impl_core_clone_Clone_where_core_clone_Clone_T_for_core_cell_once_OnceCell_T.
     
     Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_T_for_core_cell_once_OnceCell_T.
-      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::cell::once::OnceCell") [ T ].
+      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::cell::once::OnceCell") [] [ T ].
       
       (*
           fn eq(&self, other: &Self) -> bool {
               self.get() == other.get()
           }
       *)
-      Definition eq (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition eq (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self; other ] =>
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
               M.get_trait_method (|
                 "core::cmp::PartialEq",
-                Ty.apply (Ty.path "core::option::Option") [ Ty.apply (Ty.path "&") [ T ] ],
-                [ Ty.apply (Ty.path "core::option::Option") [ Ty.apply (Ty.path "&") [ T ] ] ],
+                Ty.apply (Ty.path "core::option::Option") [] [ Ty.apply (Ty.path "&") [] [ T ] ],
+                [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.apply (Ty.path "&") [] [ T ] ]
+                ],
                 "eq",
                 []
               |),
@@ -974,7 +989,7 @@ Module cell.
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "core::cell::once::OnceCell") [ T ],
+                      Ty.apply (Ty.path "core::cell::once::OnceCell") [] [ T ],
                       "get",
                       []
                     |),
@@ -984,7 +999,7 @@ Module cell.
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "core::cell::once::OnceCell") [ T ],
+                      Ty.apply (Ty.path "core::cell::once::OnceCell") [] [ T ],
                       "get",
                       []
                     |),
@@ -993,7 +1008,7 @@ Module cell.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1006,7 +1021,7 @@ Module cell.
     End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_T_for_core_cell_once_OnceCell_T.
     
     Module Impl_core_cmp_Eq_where_core_cmp_Eq_T_for_core_cell_once_OnceCell_T.
-      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::cell::once::OnceCell") [ T ].
+      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::cell::once::OnceCell") [] [ T ].
       
       Axiom Implements :
         forall (T : Ty.t),
@@ -1018,17 +1033,17 @@ Module cell.
     End Impl_core_cmp_Eq_where_core_cmp_Eq_T_for_core_cell_once_OnceCell_T.
     
     Module Impl_core_convert_From_T_for_core_cell_once_OnceCell_T.
-      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::cell::once::OnceCell") [ T ].
+      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::cell::once::OnceCell") [] [ T ].
       
       (*
           fn from(value: T) -> Self {
               OnceCell { inner: UnsafeCell::new(Some(value)) }
           }
       *)
-      Definition from (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ value ] =>
+        match ε, τ, α with
+        | [], [], [ value ] =>
           ltac:(M.monadic
             (let value := M.alloc (| value |) in
             Value.StructRecord
@@ -1039,14 +1054,15 @@ Module cell.
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "core::cell::UnsafeCell")
-                        [ Ty.apply (Ty.path "core::option::Option") [ T ] ],
+                        []
+                        [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ],
                       "new",
                       []
                     |),
                     [ Value.StructTuple "core::option::Option::Some" [ M.read (| value |) ] ]
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1059,7 +1075,7 @@ Module cell.
     End Impl_core_convert_From_T_for_core_cell_once_OnceCell_T.
     
     Module Impl_core_marker_Sync_for_core_cell_once_OnceCell_T.
-      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::cell::once::OnceCell") [ T ].
+      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::cell::once::OnceCell") [] [ T ].
       
       Axiom Implements :
         forall (T : Ty.t),

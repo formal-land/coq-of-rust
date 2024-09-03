@@ -15,16 +15,16 @@ fn main() {
     println!("names: {:?}", names);
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [] =>
+Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
         let~ names :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "slice") [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ],
+                Ty.apply (Ty.path "slice") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                 "into_vec",
                 [ Ty.path "alloc::alloc::Global" ]
               |),
@@ -36,8 +36,12 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "alloc::boxed::Box")
+                          []
                           [
-                            Ty.apply (Ty.path "array") [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ];
+                            Ty.apply
+                              (Ty.path "array")
+                              [ Value.Integer 3 ]
+                              [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ];
                             Ty.path "alloc::alloc::Global"
                           ],
                         "new",
@@ -67,7 +71,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     "core::iter::traits::collect::IntoIterator",
                     Ty.apply
                       (Ty.path "core::slice::iter::IterMut")
-                      [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ],
+                      []
+                      [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                     [],
                     "into_iter",
                     []
@@ -75,7 +80,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                   [
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "slice") [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ],
+                        Ty.apply
+                          (Ty.path "slice")
+                          []
+                          [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                         "iter_mut",
                         []
                       |),
@@ -85,8 +93,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                             "core::ops::deref::DerefMut",
                             Ty.apply
                               (Ty.path "alloc::vec::Vec")
+                              []
                               [
-                                Ty.apply (Ty.path "&") [ Ty.path "str" ];
+                                Ty.apply (Ty.path "&") [] [ Ty.path "str" ];
                                 Ty.path "alloc::alloc::Global"
                               ],
                             [],
@@ -114,7 +123,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                   "core::iter::traits::iterator::Iterator",
                                   Ty.apply
                                     (Ty.path "core::slice::iter::IterMut")
-                                    [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ],
+                                    []
+                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                                   [],
                                   "next",
                                   []
@@ -197,8 +207,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                   [
                                     Ty.apply
                                       (Ty.path "alloc::vec::Vec")
+                                      []
                                       [
-                                        Ty.apply (Ty.path "&") [ Ty.path "str" ];
+                                        Ty.apply (Ty.path "&") [] [ Ty.path "str" ];
                                         Ty.path "alloc::alloc::Global"
                                       ]
                                   ]
@@ -215,7 +226,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (| Value.Tuple [] |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_main : M.IsFunction "for_and_iterators_iter_mut::main" main.

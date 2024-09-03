@@ -3,18 +3,24 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module array.
   Module equality.
-    Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_A_B_array_B_for_array_A.
-      Definition Self (A B : Ty.t) : Ty.t := Ty.apply (Ty.path "array") [ A ].
+    Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_A_B_array_N_B_for_array_N_A.
+      Definition Self (N : Value.t) (A B : Ty.t) : Ty.t := Ty.apply (Ty.path "array") [ N ] [ A ].
       
       (*
           fn eq(&self, other: &[B; N]) -> bool {
               SpecArrayEq::spec_eq(self, other)
           }
       *)
-      Definition eq (A B : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        let Self : Ty.t := Self A B in
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition eq
+          (N : Value.t)
+          (A B : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        let Self : Ty.t := Self N A B in
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -28,7 +34,7 @@ Module array.
               |),
               [ M.read (| self |); M.read (| other |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -36,10 +42,16 @@ Module array.
               SpecArrayEq::spec_ne(self, other)
           }
       *)
-      Definition ne (A B : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        let Self : Ty.t := Self A B in
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition ne
+          (N : Value.t)
+          (A B : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        let Self : Ty.t := Self N A B in
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -53,21 +65,21 @@ Module array.
               |),
               [ M.read (| self |); M.read (| other |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
-        forall (A B : Ty.t),
+        forall (N : Value.t) (A B : Ty.t),
         M.IsTraitInstance
           "core::cmp::PartialEq"
-          (Self A B)
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.apply (Ty.path "array") [ B ] ]
+          (Self N A B)
+          (* Trait polymorphic types *) [ (* Rhs *) Ty.apply (Ty.path "array") [ N ] [ B ] ]
           (* Instance *)
-          [ ("eq", InstanceField.Method (eq A B)); ("ne", InstanceField.Method (ne A B)) ].
-    End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_A_B_array_B_for_array_A.
+          [ ("eq", InstanceField.Method (eq N A B)); ("ne", InstanceField.Method (ne N A B)) ].
+    End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_A_B_array_N_B_for_array_N_A.
     
-    Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_A_B_slice_B_for_array_A.
-      Definition Self (A B : Ty.t) : Ty.t := Ty.apply (Ty.path "array") [ A ].
+    Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_A_B_slice_B_for_array_N_A.
+      Definition Self (N : Value.t) (A B : Ty.t) : Ty.t := Ty.apply (Ty.path "array") [ N ] [ A ].
       
       (*
           fn eq(&self, other: &[B]) -> bool {
@@ -78,10 +90,16 @@ Module array.
               }
           }
       *)
-      Definition eq (A B : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        let Self : Ty.t := Self A B in
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition eq
+          (N : Value.t)
+          (A B : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        let Self : Ty.t := Self N A B in
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -91,8 +109,8 @@ Module array.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::convert::TryInto",
-                      Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "slice") [ B ] ],
-                      [ Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "array") [ B ] ] ],
+                      Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ B ] ],
+                      [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "array") [ N ] [ B ] ] ],
                       "try_into",
                       []
                     |),
@@ -115,8 +133,8 @@ Module array.
                         M.call_closure (|
                           M.get_trait_method (|
                             "core::cmp::PartialEq",
-                            Ty.apply (Ty.path "array") [ A ],
-                            [ Ty.apply (Ty.path "array") [ B ] ],
+                            Ty.apply (Ty.path "array") [ N ] [ A ],
+                            [ Ty.apply (Ty.path "array") [ N ] [ B ] ],
                             "eq",
                             []
                           |),
@@ -135,7 +153,7 @@ Module array.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -147,10 +165,16 @@ Module array.
               }
           }
       *)
-      Definition ne (A B : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        let Self : Ty.t := Self A B in
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition ne
+          (N : Value.t)
+          (A B : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        let Self : Ty.t := Self N A B in
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -160,8 +184,8 @@ Module array.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::convert::TryInto",
-                      Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "slice") [ B ] ],
-                      [ Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "array") [ B ] ] ],
+                      Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ B ] ],
+                      [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "array") [ N ] [ B ] ] ],
                       "try_into",
                       []
                     |),
@@ -184,8 +208,8 @@ Module array.
                         M.call_closure (|
                           M.get_trait_method (|
                             "core::cmp::PartialEq",
-                            Ty.apply (Ty.path "array") [ A ],
-                            [ Ty.apply (Ty.path "array") [ B ] ],
+                            Ty.apply (Ty.path "array") [ N ] [ A ],
+                            [ Ty.apply (Ty.path "array") [ N ] [ B ] ],
                             "ne",
                             []
                           |),
@@ -204,21 +228,21 @@ Module array.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
-        forall (A B : Ty.t),
+        forall (N : Value.t) (A B : Ty.t),
         M.IsTraitInstance
           "core::cmp::PartialEq"
-          (Self A B)
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.apply (Ty.path "slice") [ B ] ]
+          (Self N A B)
+          (* Trait polymorphic types *) [ (* Rhs *) Ty.apply (Ty.path "slice") [] [ B ] ]
           (* Instance *)
-          [ ("eq", InstanceField.Method (eq A B)); ("ne", InstanceField.Method (ne A B)) ].
-    End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_A_B_slice_B_for_array_A.
+          [ ("eq", InstanceField.Method (eq N A B)); ("ne", InstanceField.Method (ne N A B)) ].
+    End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_A_B_slice_B_for_array_N_A.
     
-    Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_B_A_array_A_for_slice_B.
-      Definition Self (A B : Ty.t) : Ty.t := Ty.apply (Ty.path "slice") [ B ].
+    Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_B_A_array_N_A_for_slice_B.
+      Definition Self (N : Value.t) (A B : Ty.t) : Ty.t := Ty.apply (Ty.path "slice") [] [ B ].
       
       (*
           fn eq(&self, other: &[A; N]) -> bool {
@@ -229,10 +253,16 @@ Module array.
               }
           }
       *)
-      Definition eq (A B : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        let Self : Ty.t := Self A B in
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition eq
+          (N : Value.t)
+          (A B : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        let Self : Ty.t := Self N A B in
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -242,8 +272,8 @@ Module array.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::convert::TryInto",
-                      Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "slice") [ B ] ],
-                      [ Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "array") [ B ] ] ],
+                      Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ B ] ],
+                      [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "array") [ N ] [ B ] ] ],
                       "try_into",
                       []
                     |),
@@ -266,8 +296,8 @@ Module array.
                         M.call_closure (|
                           M.get_trait_method (|
                             "core::cmp::PartialEq",
-                            Ty.apply (Ty.path "array") [ B ],
-                            [ Ty.apply (Ty.path "array") [ A ] ],
+                            Ty.apply (Ty.path "array") [ N ] [ B ],
+                            [ Ty.apply (Ty.path "array") [ N ] [ A ] ],
                             "eq",
                             []
                           |),
@@ -286,7 +316,7 @@ Module array.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -298,10 +328,16 @@ Module array.
               }
           }
       *)
-      Definition ne (A B : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        let Self : Ty.t := Self A B in
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition ne
+          (N : Value.t)
+          (A B : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        let Self : Ty.t := Self N A B in
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -311,8 +347,8 @@ Module array.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::convert::TryInto",
-                      Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "slice") [ B ] ],
-                      [ Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "array") [ B ] ] ],
+                      Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ B ] ],
+                      [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "array") [ N ] [ B ] ] ],
                       "try_into",
                       []
                     |),
@@ -335,8 +371,8 @@ Module array.
                         M.call_closure (|
                           M.get_trait_method (|
                             "core::cmp::PartialEq",
-                            Ty.apply (Ty.path "array") [ B ],
-                            [ Ty.apply (Ty.path "array") [ A ] ],
+                            Ty.apply (Ty.path "array") [ N ] [ B ],
+                            [ Ty.apply (Ty.path "array") [ N ] [ A ] ],
                             "ne",
                             []
                           |),
@@ -355,45 +391,51 @@ Module array.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
-        forall (A B : Ty.t),
+        forall (N : Value.t) (A B : Ty.t),
         M.IsTraitInstance
           "core::cmp::PartialEq"
-          (Self A B)
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.apply (Ty.path "array") [ A ] ]
+          (Self N A B)
+          (* Trait polymorphic types *) [ (* Rhs *) Ty.apply (Ty.path "array") [ N ] [ A ] ]
           (* Instance *)
-          [ ("eq", InstanceField.Method (eq A B)); ("ne", InstanceField.Method (ne A B)) ].
-    End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_B_A_array_A_for_slice_B.
+          [ ("eq", InstanceField.Method (eq N A B)); ("ne", InstanceField.Method (ne N A B)) ].
+    End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_B_A_array_N_A_for_slice_B.
     
-    Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_A_B_ref__slice_B_for_array_A.
-      Definition Self (A B : Ty.t) : Ty.t := Ty.apply (Ty.path "array") [ A ].
+    Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_A_B_ref__slice_B_for_array_N_A.
+      Definition Self (N : Value.t) (A B : Ty.t) : Ty.t := Ty.apply (Ty.path "array") [ N ] [ A ].
       
       (*
           fn eq(&self, other: &&[B]) -> bool {
               *self == **other
           }
       *)
-      Definition eq (A B : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        let Self : Ty.t := Self A B in
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition eq
+          (N : Value.t)
+          (A B : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        let Self : Ty.t := Self N A B in
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
               M.get_trait_method (|
                 "core::cmp::PartialEq",
-                Ty.apply (Ty.path "array") [ A ],
-                [ Ty.apply (Ty.path "slice") [ B ] ],
+                Ty.apply (Ty.path "array") [ N ] [ A ],
+                [ Ty.apply (Ty.path "slice") [] [ B ] ],
                 "eq",
                 []
               |),
               [ M.read (| self |); M.read (| M.read (| other |) |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -401,64 +443,76 @@ Module array.
               *self != **other
           }
       *)
-      Definition ne (A B : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        let Self : Ty.t := Self A B in
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition ne
+          (N : Value.t)
+          (A B : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        let Self : Ty.t := Self N A B in
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
               M.get_trait_method (|
                 "core::cmp::PartialEq",
-                Ty.apply (Ty.path "array") [ A ],
-                [ Ty.apply (Ty.path "slice") [ B ] ],
+                Ty.apply (Ty.path "array") [ N ] [ A ],
+                [ Ty.apply (Ty.path "slice") [] [ B ] ],
                 "ne",
                 []
               |),
               [ M.read (| self |); M.read (| M.read (| other |) |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
-        forall (A B : Ty.t),
+        forall (N : Value.t) (A B : Ty.t),
         M.IsTraitInstance
           "core::cmp::PartialEq"
-          (Self A B)
+          (Self N A B)
           (* Trait polymorphic types *)
-          [ (* Rhs *) Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "slice") [ B ] ] ]
+          [ (* Rhs *) Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ B ] ] ]
           (* Instance *)
-          [ ("eq", InstanceField.Method (eq A B)); ("ne", InstanceField.Method (ne A B)) ].
-    End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_A_B_ref__slice_B_for_array_A.
+          [ ("eq", InstanceField.Method (eq N A B)); ("ne", InstanceField.Method (ne N A B)) ].
+    End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_A_B_ref__slice_B_for_array_N_A.
     
-    Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_B_A_array_A_for_ref__slice_B.
-      Definition Self (A B : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "slice") [ B ] ].
+    Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_B_A_array_N_A_for_ref__slice_B.
+      Definition Self (N : Value.t) (A B : Ty.t) : Ty.t :=
+        Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ B ] ].
       
       (*
           fn eq(&self, other: &[A; N]) -> bool {
               **self == *other
           }
       *)
-      Definition eq (A B : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        let Self : Ty.t := Self A B in
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition eq
+          (N : Value.t)
+          (A B : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        let Self : Ty.t := Self N A B in
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
               M.get_trait_method (|
                 "core::cmp::PartialEq",
-                Ty.apply (Ty.path "slice") [ B ],
-                [ Ty.apply (Ty.path "array") [ A ] ],
+                Ty.apply (Ty.path "slice") [] [ B ],
+                [ Ty.apply (Ty.path "array") [ N ] [ A ] ],
                 "eq",
                 []
               |),
               [ M.read (| M.read (| self |) |); M.read (| other |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -466,62 +520,74 @@ Module array.
               **self != *other
           }
       *)
-      Definition ne (A B : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        let Self : Ty.t := Self A B in
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition ne
+          (N : Value.t)
+          (A B : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        let Self : Ty.t := Self N A B in
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
               M.get_trait_method (|
                 "core::cmp::PartialEq",
-                Ty.apply (Ty.path "slice") [ B ],
-                [ Ty.apply (Ty.path "array") [ A ] ],
+                Ty.apply (Ty.path "slice") [] [ B ],
+                [ Ty.apply (Ty.path "array") [ N ] [ A ] ],
                 "ne",
                 []
               |),
               [ M.read (| M.read (| self |) |); M.read (| other |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
-        forall (A B : Ty.t),
+        forall (N : Value.t) (A B : Ty.t),
         M.IsTraitInstance
           "core::cmp::PartialEq"
-          (Self A B)
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.apply (Ty.path "array") [ A ] ]
+          (Self N A B)
+          (* Trait polymorphic types *) [ (* Rhs *) Ty.apply (Ty.path "array") [ N ] [ A ] ]
           (* Instance *)
-          [ ("eq", InstanceField.Method (eq A B)); ("ne", InstanceField.Method (ne A B)) ].
-    End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_B_A_array_A_for_ref__slice_B.
+          [ ("eq", InstanceField.Method (eq N A B)); ("ne", InstanceField.Method (ne N A B)) ].
+    End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_B_A_array_N_A_for_ref__slice_B.
     
-    Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_A_B_ref_mut_slice_B_for_array_A.
-      Definition Self (A B : Ty.t) : Ty.t := Ty.apply (Ty.path "array") [ A ].
+    Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_A_B_ref_mut_slice_B_for_array_N_A.
+      Definition Self (N : Value.t) (A B : Ty.t) : Ty.t := Ty.apply (Ty.path "array") [ N ] [ A ].
       
       (*
           fn eq(&self, other: &&mut [B]) -> bool {
               *self == **other
           }
       *)
-      Definition eq (A B : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        let Self : Ty.t := Self A B in
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition eq
+          (N : Value.t)
+          (A B : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        let Self : Ty.t := Self N A B in
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
               M.get_trait_method (|
                 "core::cmp::PartialEq",
-                Ty.apply (Ty.path "array") [ A ],
-                [ Ty.apply (Ty.path "slice") [ B ] ],
+                Ty.apply (Ty.path "array") [ N ] [ A ],
+                [ Ty.apply (Ty.path "slice") [] [ B ] ],
                 "eq",
                 []
               |),
               [ M.read (| self |); M.read (| M.read (| other |) |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -529,64 +595,76 @@ Module array.
               *self != **other
           }
       *)
-      Definition ne (A B : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        let Self : Ty.t := Self A B in
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition ne
+          (N : Value.t)
+          (A B : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        let Self : Ty.t := Self N A B in
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
               M.get_trait_method (|
                 "core::cmp::PartialEq",
-                Ty.apply (Ty.path "array") [ A ],
-                [ Ty.apply (Ty.path "slice") [ B ] ],
+                Ty.apply (Ty.path "array") [ N ] [ A ],
+                [ Ty.apply (Ty.path "slice") [] [ B ] ],
                 "ne",
                 []
               |),
               [ M.read (| self |); M.read (| M.read (| other |) |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
-        forall (A B : Ty.t),
+        forall (N : Value.t) (A B : Ty.t),
         M.IsTraitInstance
           "core::cmp::PartialEq"
-          (Self A B)
+          (Self N A B)
           (* Trait polymorphic types *)
-          [ (* Rhs *) Ty.apply (Ty.path "&mut") [ Ty.apply (Ty.path "slice") [ B ] ] ]
+          [ (* Rhs *) Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ B ] ] ]
           (* Instance *)
-          [ ("eq", InstanceField.Method (eq A B)); ("ne", InstanceField.Method (ne A B)) ].
-    End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_A_B_ref_mut_slice_B_for_array_A.
+          [ ("eq", InstanceField.Method (eq N A B)); ("ne", InstanceField.Method (ne N A B)) ].
+    End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_A_B_ref_mut_slice_B_for_array_N_A.
     
-    Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_B_A_array_A_for_ref_mut_slice_B.
-      Definition Self (A B : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "&mut") [ Ty.apply (Ty.path "slice") [ B ] ].
+    Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_B_A_array_N_A_for_ref_mut_slice_B.
+      Definition Self (N : Value.t) (A B : Ty.t) : Ty.t :=
+        Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ B ] ].
       
       (*
           fn eq(&self, other: &[A; N]) -> bool {
               **self == *other
           }
       *)
-      Definition eq (A B : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        let Self : Ty.t := Self A B in
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition eq
+          (N : Value.t)
+          (A B : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        let Self : Ty.t := Self N A B in
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
               M.get_trait_method (|
                 "core::cmp::PartialEq",
-                Ty.apply (Ty.path "slice") [ B ],
-                [ Ty.apply (Ty.path "array") [ A ] ],
+                Ty.apply (Ty.path "slice") [] [ B ],
+                [ Ty.apply (Ty.path "array") [ N ] [ A ] ],
                 "eq",
                 []
               |),
               [ M.read (| M.read (| self |) |); M.read (| other |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -594,71 +672,83 @@ Module array.
               **self != *other
           }
       *)
-      Definition ne (A B : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        let Self : Ty.t := Self A B in
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition ne
+          (N : Value.t)
+          (A B : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        let Self : Ty.t := Self N A B in
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
               M.get_trait_method (|
                 "core::cmp::PartialEq",
-                Ty.apply (Ty.path "slice") [ B ],
-                [ Ty.apply (Ty.path "array") [ A ] ],
+                Ty.apply (Ty.path "slice") [] [ B ],
+                [ Ty.apply (Ty.path "array") [ N ] [ A ] ],
                 "ne",
                 []
               |),
               [ M.read (| M.read (| self |) |); M.read (| other |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
-        forall (A B : Ty.t),
+        forall (N : Value.t) (A B : Ty.t),
         M.IsTraitInstance
           "core::cmp::PartialEq"
-          (Self A B)
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.apply (Ty.path "array") [ A ] ]
+          (Self N A B)
+          (* Trait polymorphic types *) [ (* Rhs *) Ty.apply (Ty.path "array") [ N ] [ A ] ]
           (* Instance *)
-          [ ("eq", InstanceField.Method (eq A B)); ("ne", InstanceField.Method (ne A B)) ].
-    End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_B_A_array_A_for_ref_mut_slice_B.
+          [ ("eq", InstanceField.Method (eq N A B)); ("ne", InstanceField.Method (ne N A B)) ].
+    End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_B_A_array_N_A_for_ref_mut_slice_B.
     
-    Module Impl_core_cmp_Eq_where_core_cmp_Eq_T_for_array_T.
-      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "array") [ T ].
+    Module Impl_core_cmp_Eq_where_core_cmp_Eq_T_for_array_N_T.
+      Definition Self (N : Value.t) (T : Ty.t) : Ty.t := Ty.apply (Ty.path "array") [ N ] [ T ].
       
       Axiom Implements :
-        forall (T : Ty.t),
+        forall (N : Value.t) (T : Ty.t),
         M.IsTraitInstance
           "core::cmp::Eq"
-          (Self T)
+          (Self N T)
           (* Trait polymorphic types *) []
           (* Instance *) [].
-    End Impl_core_cmp_Eq_where_core_cmp_Eq_T_for_array_T.
+    End Impl_core_cmp_Eq_where_core_cmp_Eq_T_for_array_N_T.
     
     (* Trait *)
     (* Empty module 'SpecArrayEq' *)
     
     Module Impl_core_array_equality_SpecArrayEq_where_core_cmp_PartialEq_T_Other_Other_for_T.
-      Definition Self (T Other : Ty.t) : Ty.t := T.
+      Definition Self (N : Value.t) (T Other : Ty.t) : Ty.t := T.
       
       (*
           default fn spec_eq(a: &[Self; N], b: &[Other; N]) -> bool {
               a[..] == b[..]
           }
       *)
-      Definition spec_eq (T Other : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        let Self : Ty.t := Self T Other in
-        match τ, α with
-        | [], [ a; b ] =>
+      Definition spec_eq
+          (N : Value.t)
+          (T Other : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        let Self : Ty.t := Self N T Other in
+        match ε, τ, α with
+        | [], [], [ a; b ] =>
           ltac:(M.monadic
             (let a := M.alloc (| a |) in
             let b := M.alloc (| b |) in
             M.call_closure (|
               M.get_trait_method (|
                 "core::cmp::PartialEq",
-                Ty.apply (Ty.path "slice") [ T ],
-                [ Ty.apply (Ty.path "slice") [ Other ] ],
+                Ty.apply (Ty.path "slice") [] [ T ],
+                [ Ty.apply (Ty.path "slice") [] [ Other ] ],
                 "eq",
                 []
               |),
@@ -666,7 +756,7 @@ Module array.
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::ops::index::Index",
-                    Ty.apply (Ty.path "array") [ T ],
+                    Ty.apply (Ty.path "array") [ N ] [ T ],
                     [ Ty.path "core::ops::range::RangeFull" ],
                     "index",
                     []
@@ -676,7 +766,7 @@ Module array.
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::ops::index::Index",
-                    Ty.apply (Ty.path "array") [ Other ],
+                    Ty.apply (Ty.path "array") [ N ] [ Other ],
                     [ Ty.path "core::ops::range::RangeFull" ],
                     "index",
                     []
@@ -685,7 +775,7 @@ Module array.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -693,18 +783,24 @@ Module array.
               a[..] != b[..]
           }
       *)
-      Definition spec_ne (T Other : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        let Self : Ty.t := Self T Other in
-        match τ, α with
-        | [], [ a; b ] =>
+      Definition spec_ne
+          (N : Value.t)
+          (T Other : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        let Self : Ty.t := Self N T Other in
+        match ε, τ, α with
+        | [], [], [ a; b ] =>
           ltac:(M.monadic
             (let a := M.alloc (| a |) in
             let b := M.alloc (| b |) in
             M.call_closure (|
               M.get_trait_method (|
                 "core::cmp::PartialEq",
-                Ty.apply (Ty.path "slice") [ T ],
-                [ Ty.apply (Ty.path "slice") [ Other ] ],
+                Ty.apply (Ty.path "slice") [] [ T ],
+                [ Ty.apply (Ty.path "slice") [] [ Other ] ],
                 "ne",
                 []
               |),
@@ -712,7 +808,7 @@ Module array.
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::ops::index::Index",
-                    Ty.apply (Ty.path "array") [ T ],
+                    Ty.apply (Ty.path "array") [ N ] [ T ],
                     [ Ty.path "core::ops::range::RangeFull" ],
                     "index",
                     []
@@ -722,7 +818,7 @@ Module array.
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::ops::index::Index",
-                    Ty.apply (Ty.path "array") [ Other ],
+                    Ty.apply (Ty.path "array") [ N ] [ Other ],
                     [ Ty.path "core::ops::range::RangeFull" ],
                     "index",
                     []
@@ -731,24 +827,24 @@ Module array.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
-        forall (T Other : Ty.t),
+        forall (N : Value.t) (T Other : Ty.t),
         M.IsTraitInstance
           "core::array::equality::SpecArrayEq"
-          (Self T Other)
+          (Self N T Other)
           (* Trait polymorphic types *) [ (* Other *) Other ]
           (* Instance *)
           [
-            ("spec_eq", InstanceField.Method (spec_eq T Other));
-            ("spec_ne", InstanceField.Method (spec_ne T Other))
+            ("spec_eq", InstanceField.Method (spec_eq N T Other));
+            ("spec_ne", InstanceField.Method (spec_ne N T Other))
           ].
     End Impl_core_array_equality_SpecArrayEq_where_core_cmp_PartialEq_T_Other_Other_for_T.
     
     Module Impl_core_array_equality_SpecArrayEq_where_core_cmp_bytewise_BytewiseEq_T_U_U_for_T.
-      Definition Self (T U : Ty.t) : Ty.t := T.
+      Definition Self (N : Value.t) (T U : Ty.t) : Ty.t := T.
       
       (*
           fn spec_eq(a: &[T; N], b: &[U; N]) -> bool {
@@ -758,30 +854,39 @@ Module array.
               unsafe { crate::intrinsics::raw_eq(a, crate::mem::transmute(b)) }
           }
       *)
-      Definition spec_eq (T U : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        let Self : Ty.t := Self T U in
-        match τ, α with
-        | [], [ a; b ] =>
+      Definition spec_eq
+          (N : Value.t)
+          (T U : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        let Self : Ty.t := Self N T U in
+        match ε, τ, α with
+        | [], [], [ a; b ] =>
           ltac:(M.monadic
             (let a := M.alloc (| a |) in
             let b := M.alloc (| b |) in
             M.call_closure (|
-              M.get_function (| "core::intrinsics::raw_eq", [ Ty.apply (Ty.path "array") [ T ] ] |),
+              M.get_function (|
+                "core::intrinsics::raw_eq",
+                [ Ty.apply (Ty.path "array") [ N ] [ T ] ]
+              |),
               [
                 M.read (| a |);
                 M.call_closure (|
                   M.get_function (|
                     "core::intrinsics::transmute",
                     [
-                      Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "array") [ U ] ];
-                      Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "array") [ T ] ]
+                      Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "array") [ N ] [ U ] ];
+                      Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "array") [ N ] [ T ] ]
                     ]
                   |),
                   [ M.read (| b |) ]
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -789,10 +894,16 @@ Module array.
               !Self::spec_eq(a, b)
           }
       *)
-      Definition spec_ne (T U : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        let Self : Ty.t := Self T U in
-        match τ, α with
-        | [], [ a; b ] =>
+      Definition spec_ne
+          (N : Value.t)
+          (T U : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        let Self : Ty.t := Self N T U in
+        match ε, τ, α with
+        | [], [], [ a; b ] =>
           ltac:(M.monadic
             (let a := M.alloc (| a |) in
             let b := M.alloc (| b |) in
@@ -807,19 +918,19 @@ Module array.
                 |),
                 [ M.read (| a |); M.read (| b |) ]
               |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
-        forall (T U : Ty.t),
+        forall (N : Value.t) (T U : Ty.t),
         M.IsTraitInstance
           "core::array::equality::SpecArrayEq"
-          (Self T U)
+          (Self N T U)
           (* Trait polymorphic types *) [ (* Other *) U ]
           (* Instance *)
           [
-            ("spec_eq", InstanceField.Method (spec_eq T U));
-            ("spec_ne", InstanceField.Method (spec_ne T U))
+            ("spec_eq", InstanceField.Method (spec_eq N T U));
+            ("spec_ne", InstanceField.Method (spec_ne N T U))
           ].
     End Impl_core_array_equality_SpecArrayEq_where_core_cmp_bytewise_BytewiseEq_T_U_U_for_T.
   End equality.

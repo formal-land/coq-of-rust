@@ -9,7 +9,7 @@ Module collections.
       
       Module Impl_alloc_collections_vec_deque_spec_extend_SpecExtend_where_core_alloc_Allocator_A_where_core_iter_traits_iterator_Iterator_I_T_I_for_alloc_collections_vec_deque_VecDeque_T_A.
         Definition Self (T I A : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [ T; A ].
+          Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [] [ T; A ].
         
         (*
             default fn spec_extend(&mut self, mut iter: I) {
@@ -46,10 +46,15 @@ Module collections.
                 }
             }
         *)
-        Definition spec_extend (T I A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition spec_extend
+            (T I A : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self T I A in
-          match τ, α with
-          | [], [ self; iter ] =>
+          match ε, τ, α with
+          | [], [], [ self; iter ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let iter := M.alloc (| iter |) in
@@ -106,6 +111,7 @@ Module collections.
                                           M.get_associated_function (|
                                             Ty.apply
                                               (Ty.path "alloc::collections::vec_deque::VecDeque")
+                                              []
                                               [ T; A ],
                                             "reserve",
                                             []
@@ -157,6 +163,7 @@ Module collections.
                                                             Ty.apply
                                                               (Ty.path
                                                                 "alloc::collections::vec_deque::VecDeque")
+                                                              []
                                                               [ T; A ],
                                                             "capacity",
                                                             []
@@ -244,7 +251,7 @@ Module collections.
                     |)))
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -258,7 +265,7 @@ Module collections.
       
       Module Impl_alloc_collections_vec_deque_spec_extend_SpecExtend_where_core_alloc_Allocator_A_where_core_iter_traits_marker_TrustedLen_I_T_I_for_alloc_collections_vec_deque_VecDeque_T_A.
         Definition Self (T I A : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [ T; A ].
+          Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [] [ T; A ].
         
         (*
             default fn spec_extend(&mut self, iter: I) {
@@ -291,10 +298,15 @@ Module collections.
                 }
             }
         *)
-        Definition spec_extend (T I A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition spec_extend
+            (T I A : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self T I A in
-          match τ, α with
-          | [], [ self; iter ] =>
+          match ε, τ, α with
+          | [], [], [ self; iter ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let iter := M.alloc (| iter |) in
@@ -440,6 +452,7 @@ Module collections.
                                                                                                   Ty.apply
                                                                                                     (Ty.path
                                                                                                       "core::option::Option")
+                                                                                                    []
                                                                                                     [
                                                                                                       Ty.path
                                                                                                         "usize"
@@ -489,6 +502,7 @@ Module collections.
                                       M.get_associated_function (|
                                         Ty.apply
                                           (Ty.path "alloc::collections::vec_deque::VecDeque")
+                                          []
                                           [ T; A ],
                                         "reserve",
                                         []
@@ -502,6 +516,7 @@ Module collections.
                                       M.get_associated_function (|
                                         Ty.apply
                                           (Ty.path "alloc::collections::vec_deque::VecDeque")
+                                          []
                                           [ T; A ],
                                         "write_iter_wrapping",
                                         [ I ]
@@ -512,6 +527,7 @@ Module collections.
                                           M.get_associated_function (|
                                             Ty.apply
                                               (Ty.path "alloc::collections::vec_deque::VecDeque")
+                                              []
                                               [ T; A ],
                                             "to_physical_idx",
                                             []
@@ -674,7 +690,7 @@ Module collections.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -688,7 +704,7 @@ Module collections.
       
       Module Impl_alloc_collections_vec_deque_spec_extend_SpecExtend_where_core_alloc_Allocator_A_T_alloc_vec_into_iter_IntoIter_T_alloc_alloc_Global_for_alloc_collections_vec_deque_VecDeque_T_A.
         Definition Self (T A : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [ T; A ].
+          Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [] [ T; A ].
         
         (*
             fn spec_extend(&mut self, mut iterator: vec::IntoIter<T>) {
@@ -702,10 +718,15 @@ Module collections.
                 iterator.forget_remaining_elements();
             }
         *)
-        Definition spec_extend (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition spec_extend
+            (T A : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self T A in
-          match τ, α with
-          | [], [ self; iterator ] =>
+          match ε, τ, α with
+          | [], [], [ self; iterator ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let iterator := M.alloc (| iterator |) in
@@ -716,6 +737,7 @@ Module collections.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "alloc::vec::into_iter::IntoIter")
+                          []
                           [ T; Ty.path "alloc::alloc::Global" ],
                         "as_slice",
                         []
@@ -727,7 +749,7 @@ Module collections.
                   M.alloc (|
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [ T; A ],
+                        Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [] [ T; A ],
                         "reserve",
                         []
                       |),
@@ -735,7 +757,7 @@ Module collections.
                         M.read (| self |);
                         M.call_closure (|
                           M.get_associated_function (|
-                            Ty.apply (Ty.path "slice") [ T ],
+                            Ty.apply (Ty.path "slice") [] [ T ],
                             "len",
                             []
                           |),
@@ -749,7 +771,7 @@ Module collections.
                     M.alloc (|
                       M.call_closure (|
                         M.get_associated_function (|
-                          Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [ T; A ],
+                          Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [] [ T; A ],
                           "copy_slice",
                           []
                         |),
@@ -757,7 +779,10 @@ Module collections.
                           M.read (| self |);
                           M.call_closure (|
                             M.get_associated_function (|
-                              Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [ T; A ],
+                              Ty.apply
+                                (Ty.path "alloc::collections::vec_deque::VecDeque")
+                                []
+                                [ T; A ],
                               "to_physical_idx",
                               []
                             |),
@@ -790,7 +815,7 @@ Module collections.
                         (M.read (| β |))
                         (M.call_closure (|
                           M.get_associated_function (|
-                            Ty.apply (Ty.path "slice") [ T ],
+                            Ty.apply (Ty.path "slice") [] [ T ],
                             "len",
                             []
                           |),
@@ -804,6 +829,7 @@ Module collections.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "alloc::vec::into_iter::IntoIter")
+                          []
                           [ T; Ty.path "alloc::alloc::Global" ],
                         "forget_remaining_elements",
                         []
@@ -813,7 +839,7 @@ Module collections.
                   |) in
                 M.alloc (| Value.Tuple [] |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -827,6 +853,7 @@ Module collections.
               (* I *)
               Ty.apply
                 (Ty.path "alloc::vec::into_iter::IntoIter")
+                []
                 [ T; Ty.path "alloc::alloc::Global" ]
             ]
             (* Instance *) [ ("spec_extend", InstanceField.Method (spec_extend T A)) ].
@@ -834,25 +861,30 @@ Module collections.
       
       Module Impl_alloc_collections_vec_deque_spec_extend_SpecExtend_where_core_alloc_Allocator_A_where_core_iter_traits_iterator_Iterator_I_where_core_marker_Copy_T_ref__T_I_for_alloc_collections_vec_deque_VecDeque_T_A.
         Definition Self (T I A : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [ T; A ].
+          Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [] [ T; A ].
         
         (*
             default fn spec_extend(&mut self, iterator: I) {
                 self.spec_extend(iterator.copied())
             }
         *)
-        Definition spec_extend (T I A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition spec_extend
+            (T I A : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self T I A in
-          match τ, α with
-          | [], [ self; iterator ] =>
+          match ε, τ, α with
+          | [], [], [ self; iterator ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let iterator := M.alloc (| iterator |) in
               M.call_closure (|
                 M.get_trait_method (|
                   "alloc::collections::vec_deque::spec_extend::SpecExtend",
-                  Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [ T; A ],
-                  [ T; Ty.apply (Ty.path "core::iter::adapters::copied::Copied") [ I ] ],
+                  Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [] [ T; A ],
+                  [ T; Ty.apply (Ty.path "core::iter::adapters::copied::Copied") [] [ I ] ],
                   "spec_extend",
                   []
                 |),
@@ -870,7 +902,7 @@ Module collections.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -878,13 +910,13 @@ Module collections.
           M.IsTraitInstance
             "alloc::collections::vec_deque::spec_extend::SpecExtend"
             (Self T I A)
-            (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "&") [ T ]; (* I *) I ]
+            (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "&") [] [ T ]; (* I *) I ]
             (* Instance *) [ ("spec_extend", InstanceField.Method (spec_extend T I A)) ].
       End Impl_alloc_collections_vec_deque_spec_extend_SpecExtend_where_core_alloc_Allocator_A_where_core_iter_traits_iterator_Iterator_I_where_core_marker_Copy_T_ref__T_I_for_alloc_collections_vec_deque_VecDeque_T_A.
       
       Module Impl_alloc_collections_vec_deque_spec_extend_SpecExtend_where_core_alloc_Allocator_A_where_core_marker_Copy_T_ref__T_core_slice_iter_Iter_T_for_alloc_collections_vec_deque_VecDeque_T_A.
         Definition Self (T A : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [ T; A ].
+          Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [] [ T; A ].
         
         (*
             fn spec_extend(&mut self, iterator: slice::Iter<'a, T>) {
@@ -897,10 +929,15 @@ Module collections.
                 }
             }
         *)
-        Definition spec_extend (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition spec_extend
+            (T A : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self T A in
-          match τ, α with
-          | [], [ self; iterator ] =>
+          match ε, τ, α with
+          | [], [], [ self; iterator ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let iterator := M.alloc (| iterator |) in
@@ -909,7 +946,7 @@ Module collections.
                   M.alloc (|
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "core::slice::iter::Iter") [ T ],
+                        Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ],
                         "as_slice",
                         []
                       |),
@@ -920,7 +957,7 @@ Module collections.
                   M.alloc (|
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [ T; A ],
+                        Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [] [ T; A ],
                         "reserve",
                         []
                       |),
@@ -928,7 +965,7 @@ Module collections.
                         M.read (| self |);
                         M.call_closure (|
                           M.get_associated_function (|
-                            Ty.apply (Ty.path "slice") [ T ],
+                            Ty.apply (Ty.path "slice") [] [ T ],
                             "len",
                             []
                           |),
@@ -941,7 +978,7 @@ Module collections.
                   M.alloc (|
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [ T; A ],
+                        Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [] [ T; A ],
                         "copy_slice",
                         []
                       |),
@@ -949,7 +986,10 @@ Module collections.
                         M.read (| self |);
                         M.call_closure (|
                           M.get_associated_function (|
-                            Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [ T; A ],
+                            Ty.apply
+                              (Ty.path "alloc::collections::vec_deque::VecDeque")
+                              []
+                              [ T; A ],
                             "to_physical_idx",
                             []
                           |),
@@ -981,13 +1021,17 @@ Module collections.
                       Integer.Usize
                       (M.read (| β |))
                       (M.call_closure (|
-                        M.get_associated_function (| Ty.apply (Ty.path "slice") [ T ], "len", [] |),
+                        M.get_associated_function (|
+                          Ty.apply (Ty.path "slice") [] [ T ],
+                          "len",
+                          []
+                        |),
                         [ M.read (| slice |) ]
                       |))
                   |) in
                 M.alloc (| Value.Tuple [] |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -997,8 +1041,8 @@ Module collections.
             (Self T A)
             (* Trait polymorphic types *)
             [
-              (* T *) Ty.apply (Ty.path "&") [ T ];
-              (* I *) Ty.apply (Ty.path "core::slice::iter::Iter") [ T ]
+              (* T *) Ty.apply (Ty.path "&") [] [ T ];
+              (* I *) Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ]
             ]
             (* Instance *) [ ("spec_extend", InstanceField.Method (spec_extend T A)) ].
       End Impl_alloc_collections_vec_deque_spec_extend_SpecExtend_where_core_alloc_Allocator_A_where_core_marker_Copy_T_ref__T_core_slice_iter_Iter_T_for_alloc_collections_vec_deque_VecDeque_T_A.

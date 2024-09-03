@@ -5,6 +5,7 @@ Module checked.
   (*
   Enum MathError
   {
+    const_params := [];
     ty_params := [];
     variants :=
       [
@@ -30,7 +31,7 @@ Module checked.
   Module Impl_core_fmt_Debug_for_result_checked_MathError.
     Definition Self : Ty.t := Ty.path "result::checked::MathError".
     
-    Parameter fmt : (list Ty.t) -> (list Value.t) -> M.
+    Parameter fmt : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Axiom Implements :
       M.IsTraitInstance
@@ -44,25 +45,26 @@ Module checked.
     (Ty.path "result::checked::MathResult") =
       (Ty.apply
         (Ty.path "core::result::Result")
+        []
         [ Ty.path "f64"; Ty.path "result::checked::MathError" ]).
   
-  Parameter div : (list Ty.t) -> (list Value.t) -> M.
+  Parameter div : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_div : M.IsFunction "result::checked::div" div.
   
-  Parameter sqrt : (list Ty.t) -> (list Value.t) -> M.
+  Parameter sqrt : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_sqrt : M.IsFunction "result::checked::sqrt" sqrt.
   
-  Parameter ln : (list Ty.t) -> (list Value.t) -> M.
+  Parameter ln : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Function_ln : M.IsFunction "result::checked::ln" ln.
 End checked.
 
-Parameter op : (list Ty.t) -> (list Value.t) -> M.
+Parameter op : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_op : M.IsFunction "result::op" op.
 
-Parameter main : (list Ty.t) -> (list Value.t) -> M.
+Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_main : M.IsFunction "result::main" main.

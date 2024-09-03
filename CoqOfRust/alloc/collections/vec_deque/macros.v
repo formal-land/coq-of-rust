@@ -5,7 +5,7 @@ Module collections.
   Module vec_deque.
     Module Impl_core_cmp_PartialEq_where_core_alloc_Allocator_A_where_core_cmp_PartialEq_T_U_alloc_vec_Vec_U_A_for_alloc_collections_vec_deque_VecDeque_T_A.
       Definition Self (T U A : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [ T; A ].
+        Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [] [ T; A ].
       
       (*
                   fn eq(&self, other: &$rhs) -> bool {
@@ -17,10 +17,10 @@ Module collections.
                       sa == oa && sb == ob
                   }
       *)
-      Definition eq (T U A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition eq (T U A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T U A in
-        match τ, α with
-        | [], [ self; other ] =>
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -41,6 +41,7 @@ Module collections.
                                       M.get_associated_function (|
                                         Ty.apply
                                           (Ty.path "alloc::collections::vec_deque::VecDeque")
+                                          []
                                           [ T; A ],
                                         "len",
                                         []
@@ -49,7 +50,7 @@ Module collections.
                                     |))
                                     (M.call_closure (|
                                       M.get_associated_function (|
-                                        Ty.apply (Ty.path "alloc::vec::Vec") [ U; A ],
+                                        Ty.apply (Ty.path "alloc::vec::Vec") [] [ U; A ],
                                         "len",
                                         []
                                       |),
@@ -68,7 +69,7 @@ Module collections.
                     M.alloc (|
                       M.call_closure (|
                         M.get_associated_function (|
-                          Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [ T; A ],
+                          Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [] [ T; A ],
                           "as_slices",
                           []
                         |),
@@ -86,7 +87,7 @@ Module collections.
                             M.alloc (|
                               M.call_closure (|
                                 M.get_associated_function (|
-                                  Ty.apply (Ty.path "slice") [ U ],
+                                  Ty.apply (Ty.path "slice") [] [ U ],
                                   "split_at",
                                   []
                                 |),
@@ -94,7 +95,7 @@ Module collections.
                                   M.call_closure (|
                                     M.get_trait_method (|
                                       "core::ops::index::Index",
-                                      Ty.apply (Ty.path "alloc::vec::Vec") [ U; A ],
+                                      Ty.apply (Ty.path "alloc::vec::Vec") [] [ U; A ],
                                       [ Ty.path "core::ops::range::RangeFull" ],
                                       "index",
                                       []
@@ -106,7 +107,7 @@ Module collections.
                                   |);
                                   M.call_closure (|
                                     M.get_associated_function (|
-                                      Ty.apply (Ty.path "slice") [ T ],
+                                      Ty.apply (Ty.path "slice") [] [ T ],
                                       "len",
                                       []
                                     |),
@@ -129,11 +130,13 @@ Module collections.
                                           "core::cmp::PartialEq",
                                           Ty.apply
                                             (Ty.path "&")
-                                            [ Ty.apply (Ty.path "slice") [ T ] ],
+                                            []
+                                            [ Ty.apply (Ty.path "slice") [] [ T ] ],
                                           [
                                             Ty.apply
                                               (Ty.path "&")
-                                              [ Ty.apply (Ty.path "slice") [ U ] ]
+                                              []
+                                              [ Ty.apply (Ty.path "slice") [] [ U ] ]
                                           ],
                                           "eq",
                                           []
@@ -146,11 +149,13 @@ Module collections.
                                             "core::cmp::PartialEq",
                                             Ty.apply
                                               (Ty.path "&")
-                                              [ Ty.apply (Ty.path "slice") [ T ] ],
+                                              []
+                                              [ Ty.apply (Ty.path "slice") [] [ T ] ],
                                             [
                                               Ty.apply
                                                 (Ty.path "&")
-                                                [ Ty.apply (Ty.path "slice") [ U ] ]
+                                                []
+                                                [ Ty.apply (Ty.path "slice") [] [ U ] ]
                                             ],
                                             "eq",
                                             []
@@ -165,7 +170,7 @@ Module collections.
                   |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -173,13 +178,14 @@ Module collections.
         M.IsTraitInstance
           "core::cmp::PartialEq"
           (Self T U A)
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.apply (Ty.path "alloc::vec::Vec") [ U; A ] ]
+          (* Trait polymorphic types *)
+          [ (* Rhs *) Ty.apply (Ty.path "alloc::vec::Vec") [] [ U; A ] ]
           (* Instance *) [ ("eq", InstanceField.Method (eq T U A)) ].
     End Impl_core_cmp_PartialEq_where_core_alloc_Allocator_A_where_core_cmp_PartialEq_T_U_alloc_vec_Vec_U_A_for_alloc_collections_vec_deque_VecDeque_T_A.
     
     Module Impl_core_cmp_PartialEq_where_core_alloc_Allocator_A_where_core_cmp_PartialEq_T_U_ref__slice_U_for_alloc_collections_vec_deque_VecDeque_T_A.
       Definition Self (T U A : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [ T; A ].
+        Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [] [ T; A ].
       
       (*
                   fn eq(&self, other: &$rhs) -> bool {
@@ -191,10 +197,10 @@ Module collections.
                       sa == oa && sb == ob
                   }
       *)
-      Definition eq (T U A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition eq (T U A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T U A in
-        match τ, α with
-        | [], [ self; other ] =>
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -215,6 +221,7 @@ Module collections.
                                       M.get_associated_function (|
                                         Ty.apply
                                           (Ty.path "alloc::collections::vec_deque::VecDeque")
+                                          []
                                           [ T; A ],
                                         "len",
                                         []
@@ -223,7 +230,7 @@ Module collections.
                                     |))
                                     (M.call_closure (|
                                       M.get_associated_function (|
-                                        Ty.apply (Ty.path "slice") [ U ],
+                                        Ty.apply (Ty.path "slice") [] [ U ],
                                         "len",
                                         []
                                       |),
@@ -242,7 +249,7 @@ Module collections.
                     M.alloc (|
                       M.call_closure (|
                         M.get_associated_function (|
-                          Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [ T; A ],
+                          Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [] [ T; A ],
                           "as_slices",
                           []
                         |),
@@ -260,7 +267,7 @@ Module collections.
                             M.alloc (|
                               M.call_closure (|
                                 M.get_associated_function (|
-                                  Ty.apply (Ty.path "slice") [ U ],
+                                  Ty.apply (Ty.path "slice") [] [ U ],
                                   "split_at",
                                   []
                                 |),
@@ -268,7 +275,7 @@ Module collections.
                                   M.call_closure (|
                                     M.get_trait_method (|
                                       "core::ops::index::Index",
-                                      Ty.apply (Ty.path "slice") [ U ],
+                                      Ty.apply (Ty.path "slice") [] [ U ],
                                       [ Ty.path "core::ops::range::RangeFull" ],
                                       "index",
                                       []
@@ -280,7 +287,7 @@ Module collections.
                                   |);
                                   M.call_closure (|
                                     M.get_associated_function (|
-                                      Ty.apply (Ty.path "slice") [ T ],
+                                      Ty.apply (Ty.path "slice") [] [ T ],
                                       "len",
                                       []
                                     |),
@@ -303,11 +310,13 @@ Module collections.
                                           "core::cmp::PartialEq",
                                           Ty.apply
                                             (Ty.path "&")
-                                            [ Ty.apply (Ty.path "slice") [ T ] ],
+                                            []
+                                            [ Ty.apply (Ty.path "slice") [] [ T ] ],
                                           [
                                             Ty.apply
                                               (Ty.path "&")
-                                              [ Ty.apply (Ty.path "slice") [ U ] ]
+                                              []
+                                              [ Ty.apply (Ty.path "slice") [] [ U ] ]
                                           ],
                                           "eq",
                                           []
@@ -320,11 +329,13 @@ Module collections.
                                             "core::cmp::PartialEq",
                                             Ty.apply
                                               (Ty.path "&")
-                                              [ Ty.apply (Ty.path "slice") [ T ] ],
+                                              []
+                                              [ Ty.apply (Ty.path "slice") [] [ T ] ],
                                             [
                                               Ty.apply
                                                 (Ty.path "&")
-                                                [ Ty.apply (Ty.path "slice") [ U ] ]
+                                                []
+                                                [ Ty.apply (Ty.path "slice") [] [ U ] ]
                                             ],
                                             "eq",
                                             []
@@ -339,7 +350,7 @@ Module collections.
                   |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -348,13 +359,13 @@ Module collections.
           "core::cmp::PartialEq"
           (Self T U A)
           (* Trait polymorphic types *)
-          [ (* Rhs *) Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "slice") [ U ] ] ]
+          [ (* Rhs *) Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ U ] ] ]
           (* Instance *) [ ("eq", InstanceField.Method (eq T U A)) ].
     End Impl_core_cmp_PartialEq_where_core_alloc_Allocator_A_where_core_cmp_PartialEq_T_U_ref__slice_U_for_alloc_collections_vec_deque_VecDeque_T_A.
     
     Module Impl_core_cmp_PartialEq_where_core_alloc_Allocator_A_where_core_cmp_PartialEq_T_U_ref_mut_slice_U_for_alloc_collections_vec_deque_VecDeque_T_A.
       Definition Self (T U A : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [ T; A ].
+        Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [] [ T; A ].
       
       (*
                   fn eq(&self, other: &$rhs) -> bool {
@@ -366,10 +377,10 @@ Module collections.
                       sa == oa && sb == ob
                   }
       *)
-      Definition eq (T U A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition eq (T U A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T U A in
-        match τ, α with
-        | [], [ self; other ] =>
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -390,6 +401,7 @@ Module collections.
                                       M.get_associated_function (|
                                         Ty.apply
                                           (Ty.path "alloc::collections::vec_deque::VecDeque")
+                                          []
                                           [ T; A ],
                                         "len",
                                         []
@@ -398,7 +410,7 @@ Module collections.
                                     |))
                                     (M.call_closure (|
                                       M.get_associated_function (|
-                                        Ty.apply (Ty.path "slice") [ U ],
+                                        Ty.apply (Ty.path "slice") [] [ U ],
                                         "len",
                                         []
                                       |),
@@ -417,7 +429,7 @@ Module collections.
                     M.alloc (|
                       M.call_closure (|
                         M.get_associated_function (|
-                          Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [ T; A ],
+                          Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [] [ T; A ],
                           "as_slices",
                           []
                         |),
@@ -435,7 +447,7 @@ Module collections.
                             M.alloc (|
                               M.call_closure (|
                                 M.get_associated_function (|
-                                  Ty.apply (Ty.path "slice") [ U ],
+                                  Ty.apply (Ty.path "slice") [] [ U ],
                                   "split_at",
                                   []
                                 |),
@@ -443,7 +455,7 @@ Module collections.
                                   M.call_closure (|
                                     M.get_trait_method (|
                                       "core::ops::index::Index",
-                                      Ty.apply (Ty.path "slice") [ U ],
+                                      Ty.apply (Ty.path "slice") [] [ U ],
                                       [ Ty.path "core::ops::range::RangeFull" ],
                                       "index",
                                       []
@@ -455,7 +467,7 @@ Module collections.
                                   |);
                                   M.call_closure (|
                                     M.get_associated_function (|
-                                      Ty.apply (Ty.path "slice") [ T ],
+                                      Ty.apply (Ty.path "slice") [] [ T ],
                                       "len",
                                       []
                                     |),
@@ -478,11 +490,13 @@ Module collections.
                                           "core::cmp::PartialEq",
                                           Ty.apply
                                             (Ty.path "&")
-                                            [ Ty.apply (Ty.path "slice") [ T ] ],
+                                            []
+                                            [ Ty.apply (Ty.path "slice") [] [ T ] ],
                                           [
                                             Ty.apply
                                               (Ty.path "&")
-                                              [ Ty.apply (Ty.path "slice") [ U ] ]
+                                              []
+                                              [ Ty.apply (Ty.path "slice") [] [ U ] ]
                                           ],
                                           "eq",
                                           []
@@ -495,11 +509,13 @@ Module collections.
                                             "core::cmp::PartialEq",
                                             Ty.apply
                                               (Ty.path "&")
-                                              [ Ty.apply (Ty.path "slice") [ T ] ],
+                                              []
+                                              [ Ty.apply (Ty.path "slice") [] [ T ] ],
                                             [
                                               Ty.apply
                                                 (Ty.path "&")
-                                                [ Ty.apply (Ty.path "slice") [ U ] ]
+                                                []
+                                                [ Ty.apply (Ty.path "slice") [] [ U ] ]
                                             ],
                                             "eq",
                                             []
@@ -514,7 +530,7 @@ Module collections.
                   |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -523,13 +539,13 @@ Module collections.
           "core::cmp::PartialEq"
           (Self T U A)
           (* Trait polymorphic types *)
-          [ (* Rhs *) Ty.apply (Ty.path "&mut") [ Ty.apply (Ty.path "slice") [ U ] ] ]
+          [ (* Rhs *) Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ U ] ] ]
           (* Instance *) [ ("eq", InstanceField.Method (eq T U A)) ].
     End Impl_core_cmp_PartialEq_where_core_alloc_Allocator_A_where_core_cmp_PartialEq_T_U_ref_mut_slice_U_for_alloc_collections_vec_deque_VecDeque_T_A.
     
-    Module Impl_core_cmp_PartialEq_where_core_alloc_Allocator_A_where_core_cmp_PartialEq_T_U_array_U_for_alloc_collections_vec_deque_VecDeque_T_A.
-      Definition Self (T U A : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [ T; A ].
+    Module Impl_core_cmp_PartialEq_where_core_alloc_Allocator_A_where_core_cmp_PartialEq_T_U_array_N_U_for_alloc_collections_vec_deque_VecDeque_T_A.
+      Definition Self (N : Value.t) (T U A : Ty.t) : Ty.t :=
+        Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [] [ T; A ].
       
       (*
                   fn eq(&self, other: &$rhs) -> bool {
@@ -541,10 +557,16 @@ Module collections.
                       sa == oa && sb == ob
                   }
       *)
-      Definition eq (T U A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        let Self : Ty.t := Self T U A in
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition eq
+          (N : Value.t)
+          (T U A : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        let Self : Ty.t := Self N T U A in
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -565,6 +587,7 @@ Module collections.
                                       M.get_associated_function (|
                                         Ty.apply
                                           (Ty.path "alloc::collections::vec_deque::VecDeque")
+                                          []
                                           [ T; A ],
                                         "len",
                                         []
@@ -573,7 +596,7 @@ Module collections.
                                     |))
                                     (M.call_closure (|
                                       M.get_associated_function (|
-                                        Ty.apply (Ty.path "slice") [ U ],
+                                        Ty.apply (Ty.path "slice") [] [ U ],
                                         "len",
                                         []
                                       |),
@@ -592,7 +615,7 @@ Module collections.
                     M.alloc (|
                       M.call_closure (|
                         M.get_associated_function (|
-                          Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [ T; A ],
+                          Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [] [ T; A ],
                           "as_slices",
                           []
                         |),
@@ -610,7 +633,7 @@ Module collections.
                             M.alloc (|
                               M.call_closure (|
                                 M.get_associated_function (|
-                                  Ty.apply (Ty.path "slice") [ U ],
+                                  Ty.apply (Ty.path "slice") [] [ U ],
                                   "split_at",
                                   []
                                 |),
@@ -618,7 +641,7 @@ Module collections.
                                   M.call_closure (|
                                     M.get_trait_method (|
                                       "core::ops::index::Index",
-                                      Ty.apply (Ty.path "array") [ U ],
+                                      Ty.apply (Ty.path "array") [ N ] [ U ],
                                       [ Ty.path "core::ops::range::RangeFull" ],
                                       "index",
                                       []
@@ -630,7 +653,7 @@ Module collections.
                                   |);
                                   M.call_closure (|
                                     M.get_associated_function (|
-                                      Ty.apply (Ty.path "slice") [ T ],
+                                      Ty.apply (Ty.path "slice") [] [ T ],
                                       "len",
                                       []
                                     |),
@@ -653,11 +676,13 @@ Module collections.
                                           "core::cmp::PartialEq",
                                           Ty.apply
                                             (Ty.path "&")
-                                            [ Ty.apply (Ty.path "slice") [ T ] ],
+                                            []
+                                            [ Ty.apply (Ty.path "slice") [] [ T ] ],
                                           [
                                             Ty.apply
                                               (Ty.path "&")
-                                              [ Ty.apply (Ty.path "slice") [ U ] ]
+                                              []
+                                              [ Ty.apply (Ty.path "slice") [] [ U ] ]
                                           ],
                                           "eq",
                                           []
@@ -670,11 +695,13 @@ Module collections.
                                             "core::cmp::PartialEq",
                                             Ty.apply
                                               (Ty.path "&")
-                                              [ Ty.apply (Ty.path "slice") [ T ] ],
+                                              []
+                                              [ Ty.apply (Ty.path "slice") [] [ T ] ],
                                             [
                                               Ty.apply
                                                 (Ty.path "&")
-                                                [ Ty.apply (Ty.path "slice") [ U ] ]
+                                                []
+                                                [ Ty.apply (Ty.path "slice") [] [ U ] ]
                                             ],
                                             "eq",
                                             []
@@ -689,21 +716,21 @@ Module collections.
                   |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
-        forall (T U A : Ty.t),
+        forall (N : Value.t) (T U A : Ty.t),
         M.IsTraitInstance
           "core::cmp::PartialEq"
-          (Self T U A)
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.apply (Ty.path "array") [ U ] ]
-          (* Instance *) [ ("eq", InstanceField.Method (eq T U A)) ].
-    End Impl_core_cmp_PartialEq_where_core_alloc_Allocator_A_where_core_cmp_PartialEq_T_U_array_U_for_alloc_collections_vec_deque_VecDeque_T_A.
+          (Self N T U A)
+          (* Trait polymorphic types *) [ (* Rhs *) Ty.apply (Ty.path "array") [ N ] [ U ] ]
+          (* Instance *) [ ("eq", InstanceField.Method (eq N T U A)) ].
+    End Impl_core_cmp_PartialEq_where_core_alloc_Allocator_A_where_core_cmp_PartialEq_T_U_array_N_U_for_alloc_collections_vec_deque_VecDeque_T_A.
     
-    Module Impl_core_cmp_PartialEq_where_core_alloc_Allocator_A_where_core_cmp_PartialEq_T_U_ref__array_U_for_alloc_collections_vec_deque_VecDeque_T_A.
-      Definition Self (T U A : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [ T; A ].
+    Module Impl_core_cmp_PartialEq_where_core_alloc_Allocator_A_where_core_cmp_PartialEq_T_U_ref__array_N_U_for_alloc_collections_vec_deque_VecDeque_T_A.
+      Definition Self (N : Value.t) (T U A : Ty.t) : Ty.t :=
+        Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [] [ T; A ].
       
       (*
                   fn eq(&self, other: &$rhs) -> bool {
@@ -715,10 +742,16 @@ Module collections.
                       sa == oa && sb == ob
                   }
       *)
-      Definition eq (T U A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        let Self : Ty.t := Self T U A in
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition eq
+          (N : Value.t)
+          (T U A : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        let Self : Ty.t := Self N T U A in
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -739,6 +772,7 @@ Module collections.
                                       M.get_associated_function (|
                                         Ty.apply
                                           (Ty.path "alloc::collections::vec_deque::VecDeque")
+                                          []
                                           [ T; A ],
                                         "len",
                                         []
@@ -747,7 +781,7 @@ Module collections.
                                     |))
                                     (M.call_closure (|
                                       M.get_associated_function (|
-                                        Ty.apply (Ty.path "slice") [ U ],
+                                        Ty.apply (Ty.path "slice") [] [ U ],
                                         "len",
                                         []
                                       |),
@@ -769,7 +803,7 @@ Module collections.
                     M.alloc (|
                       M.call_closure (|
                         M.get_associated_function (|
-                          Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [ T; A ],
+                          Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [] [ T; A ],
                           "as_slices",
                           []
                         |),
@@ -787,7 +821,7 @@ Module collections.
                             M.alloc (|
                               M.call_closure (|
                                 M.get_associated_function (|
-                                  Ty.apply (Ty.path "slice") [ U ],
+                                  Ty.apply (Ty.path "slice") [] [ U ],
                                   "split_at",
                                   []
                                 |),
@@ -795,7 +829,7 @@ Module collections.
                                   M.call_closure (|
                                     M.get_trait_method (|
                                       "core::ops::index::Index",
-                                      Ty.apply (Ty.path "array") [ U ],
+                                      Ty.apply (Ty.path "array") [ N ] [ U ],
                                       [ Ty.path "core::ops::range::RangeFull" ],
                                       "index",
                                       []
@@ -807,7 +841,7 @@ Module collections.
                                   |);
                                   M.call_closure (|
                                     M.get_associated_function (|
-                                      Ty.apply (Ty.path "slice") [ T ],
+                                      Ty.apply (Ty.path "slice") [] [ T ],
                                       "len",
                                       []
                                     |),
@@ -830,11 +864,13 @@ Module collections.
                                           "core::cmp::PartialEq",
                                           Ty.apply
                                             (Ty.path "&")
-                                            [ Ty.apply (Ty.path "slice") [ T ] ],
+                                            []
+                                            [ Ty.apply (Ty.path "slice") [] [ T ] ],
                                           [
                                             Ty.apply
                                               (Ty.path "&")
-                                              [ Ty.apply (Ty.path "slice") [ U ] ]
+                                              []
+                                              [ Ty.apply (Ty.path "slice") [] [ U ] ]
                                           ],
                                           "eq",
                                           []
@@ -847,11 +883,13 @@ Module collections.
                                             "core::cmp::PartialEq",
                                             Ty.apply
                                               (Ty.path "&")
-                                              [ Ty.apply (Ty.path "slice") [ T ] ],
+                                              []
+                                              [ Ty.apply (Ty.path "slice") [] [ T ] ],
                                             [
                                               Ty.apply
                                                 (Ty.path "&")
-                                                [ Ty.apply (Ty.path "slice") [ U ] ]
+                                                []
+                                                [ Ty.apply (Ty.path "slice") [] [ U ] ]
                                             ],
                                             "eq",
                                             []
@@ -866,22 +904,22 @@ Module collections.
                   |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
-        forall (T U A : Ty.t),
+        forall (N : Value.t) (T U A : Ty.t),
         M.IsTraitInstance
           "core::cmp::PartialEq"
-          (Self T U A)
+          (Self N T U A)
           (* Trait polymorphic types *)
-          [ (* Rhs *) Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "array") [ U ] ] ]
-          (* Instance *) [ ("eq", InstanceField.Method (eq T U A)) ].
-    End Impl_core_cmp_PartialEq_where_core_alloc_Allocator_A_where_core_cmp_PartialEq_T_U_ref__array_U_for_alloc_collections_vec_deque_VecDeque_T_A.
+          [ (* Rhs *) Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "array") [ N ] [ U ] ] ]
+          (* Instance *) [ ("eq", InstanceField.Method (eq N T U A)) ].
+    End Impl_core_cmp_PartialEq_where_core_alloc_Allocator_A_where_core_cmp_PartialEq_T_U_ref__array_N_U_for_alloc_collections_vec_deque_VecDeque_T_A.
     
-    Module Impl_core_cmp_PartialEq_where_core_alloc_Allocator_A_where_core_cmp_PartialEq_T_U_ref_mut_array_U_for_alloc_collections_vec_deque_VecDeque_T_A.
-      Definition Self (T U A : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [ T; A ].
+    Module Impl_core_cmp_PartialEq_where_core_alloc_Allocator_A_where_core_cmp_PartialEq_T_U_ref_mut_array_N_U_for_alloc_collections_vec_deque_VecDeque_T_A.
+      Definition Self (N : Value.t) (T U A : Ty.t) : Ty.t :=
+        Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [] [ T; A ].
       
       (*
                   fn eq(&self, other: &$rhs) -> bool {
@@ -893,10 +931,16 @@ Module collections.
                       sa == oa && sb == ob
                   }
       *)
-      Definition eq (T U A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        let Self : Ty.t := Self T U A in
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition eq
+          (N : Value.t)
+          (T U A : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        let Self : Ty.t := Self N T U A in
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -917,6 +961,7 @@ Module collections.
                                       M.get_associated_function (|
                                         Ty.apply
                                           (Ty.path "alloc::collections::vec_deque::VecDeque")
+                                          []
                                           [ T; A ],
                                         "len",
                                         []
@@ -925,7 +970,7 @@ Module collections.
                                     |))
                                     (M.call_closure (|
                                       M.get_associated_function (|
-                                        Ty.apply (Ty.path "slice") [ U ],
+                                        Ty.apply (Ty.path "slice") [] [ U ],
                                         "len",
                                         []
                                       |),
@@ -947,7 +992,7 @@ Module collections.
                     M.alloc (|
                       M.call_closure (|
                         M.get_associated_function (|
-                          Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [ T; A ],
+                          Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [] [ T; A ],
                           "as_slices",
                           []
                         |),
@@ -965,7 +1010,7 @@ Module collections.
                             M.alloc (|
                               M.call_closure (|
                                 M.get_associated_function (|
-                                  Ty.apply (Ty.path "slice") [ U ],
+                                  Ty.apply (Ty.path "slice") [] [ U ],
                                   "split_at",
                                   []
                                 |),
@@ -973,7 +1018,7 @@ Module collections.
                                   M.call_closure (|
                                     M.get_trait_method (|
                                       "core::ops::index::Index",
-                                      Ty.apply (Ty.path "array") [ U ],
+                                      Ty.apply (Ty.path "array") [ N ] [ U ],
                                       [ Ty.path "core::ops::range::RangeFull" ],
                                       "index",
                                       []
@@ -985,7 +1030,7 @@ Module collections.
                                   |);
                                   M.call_closure (|
                                     M.get_associated_function (|
-                                      Ty.apply (Ty.path "slice") [ T ],
+                                      Ty.apply (Ty.path "slice") [] [ T ],
                                       "len",
                                       []
                                     |),
@@ -1008,11 +1053,13 @@ Module collections.
                                           "core::cmp::PartialEq",
                                           Ty.apply
                                             (Ty.path "&")
-                                            [ Ty.apply (Ty.path "slice") [ T ] ],
+                                            []
+                                            [ Ty.apply (Ty.path "slice") [] [ T ] ],
                                           [
                                             Ty.apply
                                               (Ty.path "&")
-                                              [ Ty.apply (Ty.path "slice") [ U ] ]
+                                              []
+                                              [ Ty.apply (Ty.path "slice") [] [ U ] ]
                                           ],
                                           "eq",
                                           []
@@ -1025,11 +1072,13 @@ Module collections.
                                             "core::cmp::PartialEq",
                                             Ty.apply
                                               (Ty.path "&")
-                                              [ Ty.apply (Ty.path "slice") [ T ] ],
+                                              []
+                                              [ Ty.apply (Ty.path "slice") [] [ T ] ],
                                             [
                                               Ty.apply
                                                 (Ty.path "&")
-                                                [ Ty.apply (Ty.path "slice") [ U ] ]
+                                                []
+                                                [ Ty.apply (Ty.path "slice") [] [ U ] ]
                                             ],
                                             "eq",
                                             []
@@ -1044,17 +1093,17 @@ Module collections.
                   |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
-        forall (T U A : Ty.t),
+        forall (N : Value.t) (T U A : Ty.t),
         M.IsTraitInstance
           "core::cmp::PartialEq"
-          (Self T U A)
+          (Self N T U A)
           (* Trait polymorphic types *)
-          [ (* Rhs *) Ty.apply (Ty.path "&mut") [ Ty.apply (Ty.path "array") [ U ] ] ]
-          (* Instance *) [ ("eq", InstanceField.Method (eq T U A)) ].
-    End Impl_core_cmp_PartialEq_where_core_alloc_Allocator_A_where_core_cmp_PartialEq_T_U_ref_mut_array_U_for_alloc_collections_vec_deque_VecDeque_T_A.
+          [ (* Rhs *) Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "array") [ N ] [ U ] ] ]
+          (* Instance *) [ ("eq", InstanceField.Method (eq N T U A)) ].
+    End Impl_core_cmp_PartialEq_where_core_alloc_Allocator_A_where_core_cmp_PartialEq_T_U_ref_mut_array_N_U_for_alloc_collections_vec_deque_VecDeque_T_A.
   End vec_deque.
 End collections.

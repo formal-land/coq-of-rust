@@ -7,110 +7,110 @@ Module ops.
     (* Empty module 'CoerceUnsized' *)
     
     Module Impl_core_ops_unsize_CoerceUnsized_where_core_marker_Sized_T_where_core_marker_Unsize_T_U_where_core_marker_Sized_U_ref_mut_U_for_ref_mut_T.
-      Definition Self (T U : Ty.t) : Ty.t := Ty.apply (Ty.path "&mut") [ T ].
+      Definition Self (T U : Ty.t) : Ty.t := Ty.apply (Ty.path "&mut") [] [ T ].
       
       Axiom Implements :
         forall (T U : Ty.t),
         M.IsTraitInstance
           "core::ops::unsize::CoerceUnsized"
           (Self T U)
-          (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "&mut") [ U ] ]
+          (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "&mut") [] [ U ] ]
           (* Instance *) [].
     End Impl_core_ops_unsize_CoerceUnsized_where_core_marker_Sized_T_where_core_marker_Unsize_T_U_where_core_marker_Sized_U_ref_mut_U_for_ref_mut_T.
     
     Module Impl_core_ops_unsize_CoerceUnsized_where_core_marker_Sized_T_where_core_marker_Unsize_T_U_where_core_marker_Sized_U_ref__U_for_ref_mut_T.
-      Definition Self (T U : Ty.t) : Ty.t := Ty.apply (Ty.path "&mut") [ T ].
+      Definition Self (T U : Ty.t) : Ty.t := Ty.apply (Ty.path "&mut") [] [ T ].
       
       Axiom Implements :
         forall (T U : Ty.t),
         M.IsTraitInstance
           "core::ops::unsize::CoerceUnsized"
           (Self T U)
-          (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "&") [ U ] ]
+          (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "&") [] [ U ] ]
           (* Instance *) [].
     End Impl_core_ops_unsize_CoerceUnsized_where_core_marker_Sized_T_where_core_marker_Unsize_T_U_where_core_marker_Sized_U_ref__U_for_ref_mut_T.
     
     Module Impl_core_ops_unsize_CoerceUnsized_where_core_marker_Sized_T_where_core_marker_Unsize_T_U_where_core_marker_Sized_U_pointer_mut_U_for_ref_mut_T.
-      Definition Self (T U : Ty.t) : Ty.t := Ty.apply (Ty.path "&mut") [ T ].
+      Definition Self (T U : Ty.t) : Ty.t := Ty.apply (Ty.path "&mut") [] [ T ].
       
       Axiom Implements :
         forall (T U : Ty.t),
         M.IsTraitInstance
           "core::ops::unsize::CoerceUnsized"
           (Self T U)
-          (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "*mut") [ U ] ]
+          (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "*mut") [] [ U ] ]
           (* Instance *) [].
     End Impl_core_ops_unsize_CoerceUnsized_where_core_marker_Sized_T_where_core_marker_Unsize_T_U_where_core_marker_Sized_U_pointer_mut_U_for_ref_mut_T.
     
     Module Impl_core_ops_unsize_CoerceUnsized_where_core_marker_Sized_T_where_core_marker_Unsize_T_U_where_core_marker_Sized_U_pointer_const_U_for_ref_mut_T.
-      Definition Self (T U : Ty.t) : Ty.t := Ty.apply (Ty.path "&mut") [ T ].
+      Definition Self (T U : Ty.t) : Ty.t := Ty.apply (Ty.path "&mut") [] [ T ].
       
       Axiom Implements :
         forall (T U : Ty.t),
         M.IsTraitInstance
           "core::ops::unsize::CoerceUnsized"
           (Self T U)
-          (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "*const") [ U ] ]
+          (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "*const") [] [ U ] ]
           (* Instance *) [].
     End Impl_core_ops_unsize_CoerceUnsized_where_core_marker_Sized_T_where_core_marker_Unsize_T_U_where_core_marker_Sized_U_pointer_const_U_for_ref_mut_T.
     
     Module Impl_core_ops_unsize_CoerceUnsized_where_core_marker_Sized_T_where_core_marker_Unsize_T_U_where_core_marker_Sized_U_ref__U_for_ref__T.
-      Definition Self (T U : Ty.t) : Ty.t := Ty.apply (Ty.path "&") [ T ].
+      Definition Self (T U : Ty.t) : Ty.t := Ty.apply (Ty.path "&") [] [ T ].
       
       Axiom Implements :
         forall (T U : Ty.t),
         M.IsTraitInstance
           "core::ops::unsize::CoerceUnsized"
           (Self T U)
-          (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "&") [ U ] ]
+          (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "&") [] [ U ] ]
           (* Instance *) [].
     End Impl_core_ops_unsize_CoerceUnsized_where_core_marker_Sized_T_where_core_marker_Unsize_T_U_where_core_marker_Sized_U_ref__U_for_ref__T.
     
     Module Impl_core_ops_unsize_CoerceUnsized_where_core_marker_Sized_T_where_core_marker_Unsize_T_U_where_core_marker_Sized_U_pointer_const_U_for_ref__T.
-      Definition Self (T U : Ty.t) : Ty.t := Ty.apply (Ty.path "&") [ T ].
+      Definition Self (T U : Ty.t) : Ty.t := Ty.apply (Ty.path "&") [] [ T ].
       
       Axiom Implements :
         forall (T U : Ty.t),
         M.IsTraitInstance
           "core::ops::unsize::CoerceUnsized"
           (Self T U)
-          (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "*const") [ U ] ]
+          (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "*const") [] [ U ] ]
           (* Instance *) [].
     End Impl_core_ops_unsize_CoerceUnsized_where_core_marker_Sized_T_where_core_marker_Unsize_T_U_where_core_marker_Sized_U_pointer_const_U_for_ref__T.
     
     Module Impl_core_ops_unsize_CoerceUnsized_where_core_marker_Sized_T_where_core_marker_Unsize_T_U_where_core_marker_Sized_U_pointer_mut_U_for_pointer_mut_T.
-      Definition Self (T U : Ty.t) : Ty.t := Ty.apply (Ty.path "*mut") [ T ].
+      Definition Self (T U : Ty.t) : Ty.t := Ty.apply (Ty.path "*mut") [] [ T ].
       
       Axiom Implements :
         forall (T U : Ty.t),
         M.IsTraitInstance
           "core::ops::unsize::CoerceUnsized"
           (Self T U)
-          (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "*mut") [ U ] ]
+          (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "*mut") [] [ U ] ]
           (* Instance *) [].
     End Impl_core_ops_unsize_CoerceUnsized_where_core_marker_Sized_T_where_core_marker_Unsize_T_U_where_core_marker_Sized_U_pointer_mut_U_for_pointer_mut_T.
     
     Module Impl_core_ops_unsize_CoerceUnsized_where_core_marker_Sized_T_where_core_marker_Unsize_T_U_where_core_marker_Sized_U_pointer_const_U_for_pointer_mut_T.
-      Definition Self (T U : Ty.t) : Ty.t := Ty.apply (Ty.path "*mut") [ T ].
+      Definition Self (T U : Ty.t) : Ty.t := Ty.apply (Ty.path "*mut") [] [ T ].
       
       Axiom Implements :
         forall (T U : Ty.t),
         M.IsTraitInstance
           "core::ops::unsize::CoerceUnsized"
           (Self T U)
-          (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "*const") [ U ] ]
+          (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "*const") [] [ U ] ]
           (* Instance *) [].
     End Impl_core_ops_unsize_CoerceUnsized_where_core_marker_Sized_T_where_core_marker_Unsize_T_U_where_core_marker_Sized_U_pointer_const_U_for_pointer_mut_T.
     
     Module Impl_core_ops_unsize_CoerceUnsized_where_core_marker_Sized_T_where_core_marker_Unsize_T_U_where_core_marker_Sized_U_pointer_const_U_for_pointer_const_T.
-      Definition Self (T U : Ty.t) : Ty.t := Ty.apply (Ty.path "*const") [ T ].
+      Definition Self (T U : Ty.t) : Ty.t := Ty.apply (Ty.path "*const") [] [ T ].
       
       Axiom Implements :
         forall (T U : Ty.t),
         M.IsTraitInstance
           "core::ops::unsize::CoerceUnsized"
           (Self T U)
-          (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "*const") [ U ] ]
+          (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "*const") [] [ U ] ]
           (* Instance *) [].
     End Impl_core_ops_unsize_CoerceUnsized_where_core_marker_Sized_T_where_core_marker_Unsize_T_U_where_core_marker_Sized_U_pointer_const_U_for_pointer_const_T.
     
@@ -118,50 +118,50 @@ Module ops.
     (* Empty module 'DispatchFromDyn' *)
     
     Module Impl_core_ops_unsize_DispatchFromDyn_where_core_marker_Sized_T_where_core_marker_Unsize_T_U_where_core_marker_Sized_U_ref__U_for_ref__T.
-      Definition Self (T U : Ty.t) : Ty.t := Ty.apply (Ty.path "&") [ T ].
+      Definition Self (T U : Ty.t) : Ty.t := Ty.apply (Ty.path "&") [] [ T ].
       
       Axiom Implements :
         forall (T U : Ty.t),
         M.IsTraitInstance
           "core::ops::unsize::DispatchFromDyn"
           (Self T U)
-          (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "&") [ U ] ]
+          (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "&") [] [ U ] ]
           (* Instance *) [].
     End Impl_core_ops_unsize_DispatchFromDyn_where_core_marker_Sized_T_where_core_marker_Unsize_T_U_where_core_marker_Sized_U_ref__U_for_ref__T.
     
     Module Impl_core_ops_unsize_DispatchFromDyn_where_core_marker_Sized_T_where_core_marker_Unsize_T_U_where_core_marker_Sized_U_ref_mut_U_for_ref_mut_T.
-      Definition Self (T U : Ty.t) : Ty.t := Ty.apply (Ty.path "&mut") [ T ].
+      Definition Self (T U : Ty.t) : Ty.t := Ty.apply (Ty.path "&mut") [] [ T ].
       
       Axiom Implements :
         forall (T U : Ty.t),
         M.IsTraitInstance
           "core::ops::unsize::DispatchFromDyn"
           (Self T U)
-          (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "&mut") [ U ] ]
+          (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "&mut") [] [ U ] ]
           (* Instance *) [].
     End Impl_core_ops_unsize_DispatchFromDyn_where_core_marker_Sized_T_where_core_marker_Unsize_T_U_where_core_marker_Sized_U_ref_mut_U_for_ref_mut_T.
     
     Module Impl_core_ops_unsize_DispatchFromDyn_where_core_marker_Sized_T_where_core_marker_Unsize_T_U_where_core_marker_Sized_U_pointer_const_U_for_pointer_const_T.
-      Definition Self (T U : Ty.t) : Ty.t := Ty.apply (Ty.path "*const") [ T ].
+      Definition Self (T U : Ty.t) : Ty.t := Ty.apply (Ty.path "*const") [] [ T ].
       
       Axiom Implements :
         forall (T U : Ty.t),
         M.IsTraitInstance
           "core::ops::unsize::DispatchFromDyn"
           (Self T U)
-          (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "*const") [ U ] ]
+          (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "*const") [] [ U ] ]
           (* Instance *) [].
     End Impl_core_ops_unsize_DispatchFromDyn_where_core_marker_Sized_T_where_core_marker_Unsize_T_U_where_core_marker_Sized_U_pointer_const_U_for_pointer_const_T.
     
     Module Impl_core_ops_unsize_DispatchFromDyn_where_core_marker_Sized_T_where_core_marker_Unsize_T_U_where_core_marker_Sized_U_pointer_mut_U_for_pointer_mut_T.
-      Definition Self (T U : Ty.t) : Ty.t := Ty.apply (Ty.path "*mut") [ T ].
+      Definition Self (T U : Ty.t) : Ty.t := Ty.apply (Ty.path "*mut") [] [ T ].
       
       Axiom Implements :
         forall (T U : Ty.t),
         M.IsTraitInstance
           "core::ops::unsize::DispatchFromDyn"
           (Self T U)
-          (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "*mut") [ U ] ]
+          (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "*mut") [] [ U ] ]
           (* Instance *) [].
     End Impl_core_ops_unsize_DispatchFromDyn_where_core_marker_Sized_T_where_core_marker_Unsize_T_U_where_core_marker_Sized_U_pointer_mut_U_for_pointer_mut_T.
   End unsize.

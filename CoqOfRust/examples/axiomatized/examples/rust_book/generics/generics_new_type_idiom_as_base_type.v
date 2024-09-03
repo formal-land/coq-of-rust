@@ -4,10 +4,11 @@ Require Import CoqOfRust.CoqOfRust.
 (* StructTuple
   {
     name := "Years";
+    const_params := [];
     ty_params := [];
     fields := [ Ty.path "i64" ];
   } *)
 
-Parameter main : (list Ty.t) -> (list Value.t) -> M.
+Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_main : M.IsFunction "generics_new_type_idiom_as_base_type::main" main.

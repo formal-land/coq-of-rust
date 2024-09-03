@@ -55,35 +55,54 @@ Module collections.
       (* StructRecord
         {
           name := "LeafNode";
+          const_params := [];
           ty_params := [ "K"; "V" ];
           fields :=
             [
               ("parent",
                 Ty.apply
                   (Ty.path "core::option::Option")
+                  []
                   [
                     Ty.apply
                       (Ty.path "core::ptr::non_null::NonNull")
-                      [ Ty.apply (Ty.path "alloc::collections::btree::node::InternalNode") [ K; V ]
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "alloc::collections::btree::node::InternalNode")
+                          []
+                          [ K; V ]
                       ]
                   ]);
               ("parent_idx",
-                Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ Ty.path "u16" ]);
+                Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ Ty.path "u16" ]);
               ("len", Ty.path "u16");
               ("keys",
                 Ty.apply
                   (Ty.path "array")
-                  [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ K ] ]);
+                  [
+                    M.unevaluated_const
+                      (M.get_constant (|
+                        "alloc::collections::btree::node::LeafNode::keys_discriminant"
+                      |))
+                  ]
+                  [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ K ] ]);
               ("vals",
                 Ty.apply
                   (Ty.path "array")
-                  [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ V ] ])
+                  [
+                    M.unevaluated_const
+                      (M.get_constant (|
+                        "alloc::collections::btree::node::LeafNode::vals_discriminant"
+                      |))
+                  ]
+                  [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ V ] ])
             ];
         } *)
       
       Module Impl_alloc_collections_btree_node_LeafNode_K_V.
         Definition Self (K V : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "alloc::collections::btree::node::LeafNode") [ K; V ].
+          Ty.apply (Ty.path "alloc::collections::btree::node::LeafNode") [] [ K; V ].
         
         (*
             unsafe fn init(this: *mut Self) {
@@ -96,10 +115,10 @@ Module collections.
                 }
             }
         *)
-        Definition init (K V : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition init (K V : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self K V in
-          match τ, α with
-          | [], [ this ] =>
+          match ε, τ, α with
+          | [], [], [ this ] =>
             ltac:(M.monadic
               (let this := M.alloc (| this |) in
               M.read (|
@@ -109,15 +128,19 @@ Module collections.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "*mut")
+                          []
                           [
                             Ty.apply
                               (Ty.path "core::option::Option")
+                              []
                               [
                                 Ty.apply
                                   (Ty.path "core::ptr::non_null::NonNull")
+                                  []
                                   [
                                     Ty.apply
                                       (Ty.path "alloc::collections::btree::node::InternalNode")
+                                      []
                                       [ K; V ]
                                   ]
                               ]
@@ -139,7 +162,7 @@ Module collections.
                   M.alloc (|
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "*mut") [ Ty.path "u16" ],
+                        Ty.apply (Ty.path "*mut") [] [ Ty.path "u16" ],
                         "write",
                         []
                       |),
@@ -155,7 +178,7 @@ Module collections.
                   |) in
                 M.alloc (| Value.Tuple [] |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_init :
@@ -171,10 +194,10 @@ Module collections.
                 }
             }
         *)
-        Definition new (K V : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition new (K V : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self K V in
-          match τ, α with
-          | [ A ], [ alloc ] =>
+          match ε, τ, α with
+          | [], [ A ], [ alloc ] =>
             ltac:(M.monadic
               (let alloc := M.alloc (| alloc |) in
               M.read (|
@@ -184,8 +207,12 @@ Module collections.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "alloc::boxed::Box")
+                          []
                           [
-                            Ty.apply (Ty.path "alloc::collections::btree::node::LeafNode") [ K; V ];
+                            Ty.apply
+                              (Ty.path "alloc::collections::btree::node::LeafNode")
+                              []
+                              [ K; V ];
                             A
                           ],
                         "new_uninit_in",
@@ -198,7 +225,7 @@ Module collections.
                   M.alloc (|
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "alloc::collections::btree::node::LeafNode") [ K; V ],
+                        Ty.apply (Ty.path "alloc::collections::btree::node::LeafNode") [] [ K; V ],
                         "init",
                         []
                       |),
@@ -207,9 +234,11 @@ Module collections.
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                              []
                               [
                                 Ty.apply
                                   (Ty.path "alloc::collections::btree::node::LeafNode")
+                                  []
                                   [ K; V ]
                               ],
                             "as_mut_ptr",
@@ -225,12 +254,15 @@ Module collections.
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "alloc::boxed::Box")
+                        []
                         [
                           Ty.apply
                             (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                            []
                             [
                               Ty.apply
                                 (Ty.path "alloc::collections::btree::node::LeafNode")
+                                []
                                 [ K; V ]
                             ];
                           A
@@ -242,7 +274,7 @@ Module collections.
                   |)
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_new :
@@ -253,20 +285,33 @@ Module collections.
       (* StructRecord
         {
           name := "InternalNode";
+          const_params := [];
           ty_params := [ "K"; "V" ];
           fields :=
             [
-              ("data", Ty.apply (Ty.path "alloc::collections::btree::node::LeafNode") [ K; V ]);
+              ("data", Ty.apply (Ty.path "alloc::collections::btree::node::LeafNode") [] [ K; V ]);
               ("edges",
                 Ty.apply
                   (Ty.path "array")
                   [
+                    M.unevaluated_const
+                      (M.get_constant (|
+                        "alloc::collections::btree::node::InternalNode::edges_discriminant"
+                      |))
+                  ]
+                  [
                     Ty.apply
                       (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                      []
                       [
                         Ty.apply
                           (Ty.path "core::ptr::non_null::NonNull")
-                          [ Ty.apply (Ty.path "alloc::collections::btree::node::LeafNode") [ K; V ]
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "alloc::collections::btree::node::LeafNode")
+                              []
+                              [ K; V ]
                           ]
                       ]
                   ])
@@ -275,7 +320,7 @@ Module collections.
       
       Module Impl_alloc_collections_btree_node_InternalNode_K_V.
         Definition Self (K V : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "alloc::collections::btree::node::InternalNode") [ K; V ].
+          Ty.apply (Ty.path "alloc::collections::btree::node::InternalNode") [] [ K; V ].
         
         (*
             unsafe fn new<A: Allocator + Clone>(alloc: A) -> Box<Self, A> {
@@ -287,10 +332,10 @@ Module collections.
                 }
             }
         *)
-        Definition new (K V : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition new (K V : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self K V in
-          match τ, α with
-          | [ A ], [ alloc ] =>
+          match ε, τ, α with
+          | [], [ A ], [ alloc ] =>
             ltac:(M.monadic
               (let alloc := M.alloc (| alloc |) in
               M.read (|
@@ -300,9 +345,11 @@ Module collections.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "alloc::boxed::Box")
+                          []
                           [
                             Ty.apply
                               (Ty.path "alloc::collections::btree::node::InternalNode")
+                              []
                               [ K; V ];
                             A
                           ],
@@ -316,7 +363,7 @@ Module collections.
                   M.alloc (|
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "alloc::collections::btree::node::LeafNode") [ K; V ],
+                        Ty.apply (Ty.path "alloc::collections::btree::node::LeafNode") [] [ K; V ],
                         "init",
                         []
                       |),
@@ -326,9 +373,11 @@ Module collections.
                             M.get_associated_function (|
                               Ty.apply
                                 (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                []
                                 [
                                   Ty.apply
                                     (Ty.path "alloc::collections::btree::node::InternalNode")
+                                    []
                                     [ K; V ]
                                 ],
                               "as_mut_ptr",
@@ -347,12 +396,15 @@ Module collections.
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "alloc::boxed::Box")
+                        []
                         [
                           Ty.apply
                             (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                            []
                             [
                               Ty.apply
                                 (Ty.path "alloc::collections::btree::node::InternalNode")
+                                []
                                 [ K; V ]
                             ];
                           A
@@ -364,7 +416,7 @@ Module collections.
                   |)
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_new :
@@ -374,14 +426,16 @@ Module collections.
       
       Axiom BoxedNode :
         forall (K V : Ty.t),
-        (Ty.apply (Ty.path "alloc::collections::btree::node::BoxedNode") [ K; V ]) =
+        (Ty.apply (Ty.path "alloc::collections::btree::node::BoxedNode") [] [ K; V ]) =
           (Ty.apply
             (Ty.path "core::ptr::non_null::NonNull")
-            [ Ty.apply (Ty.path "alloc::collections::btree::node::LeafNode") [ K; V ] ]).
+            []
+            [ Ty.apply (Ty.path "alloc::collections::btree::node::LeafNode") [] [ K; V ] ]).
       
       (* StructRecord
         {
           name := "NodeRef";
+          const_params := [];
           ty_params := [ "BorrowType"; "K"; "V"; "Type_" ];
           fields :=
             [
@@ -389,17 +443,22 @@ Module collections.
               ("node",
                 Ty.apply
                   (Ty.path "core::ptr::non_null::NonNull")
-                  [ Ty.apply (Ty.path "alloc::collections::btree::node::LeafNode") [ K; V ] ]);
+                  []
+                  [ Ty.apply (Ty.path "alloc::collections::btree::node::LeafNode") [] [ K; V ] ]);
               ("_marker",
-                Ty.apply (Ty.path "core::marker::PhantomData") [ Ty.tuple [ BorrowType; Type_ ] ])
+                Ty.apply
+                  (Ty.path "core::marker::PhantomData")
+                  []
+                  [ Ty.tuple [ BorrowType; Type_ ] ])
             ];
         } *)
       
       Axiom Root :
         forall (K V : Ty.t),
-        (Ty.apply (Ty.path "alloc::collections::btree::node::Root") [ K; V ]) =
+        (Ty.apply (Ty.path "alloc::collections::btree::node::Root") [] [ K; V ]) =
           (Ty.apply
             (Ty.path "alloc::collections::btree::node::NodeRef")
+            []
             [
               Ty.path "alloc::collections::btree::node::marker::Owned";
               K;
@@ -411,6 +470,7 @@ Module collections.
         Definition Self (K V Type_ : Ty.t) : Ty.t :=
           Ty.apply
             (Ty.path "alloc::collections::btree::node::NodeRef")
+            []
             [ Ty.path "alloc::collections::btree::node::marker::Immut"; K; V; Type_ ].
         
         Axiom Implements :
@@ -426,6 +486,7 @@ Module collections.
         Definition Self (K V Type_ : Ty.t) : Ty.t :=
           Ty.apply
             (Ty.path "alloc::collections::btree::node::NodeRef")
+            []
             [ Ty.path "alloc::collections::btree::node::marker::Immut"; K; V; Type_ ].
         
         (*
@@ -433,14 +494,19 @@ Module collections.
                 *self
             }
         *)
-        Definition clone (K V Type_ : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition clone
+            (K V Type_ : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self K V Type_ in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (| M.read (| self |) |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -454,7 +520,10 @@ Module collections.
       
       Module Impl_core_marker_Sync_where_core_marker_Sync_K_where_core_marker_Sync_V_for_alloc_collections_btree_node_NodeRef_BorrowType_K_V_Type_.
         Definition Self (BorrowType K V Type_ : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "alloc::collections::btree::node::NodeRef") [ BorrowType; K; V; Type_ ].
+          Ty.apply
+            (Ty.path "alloc::collections::btree::node::NodeRef")
+            []
+            [ BorrowType; K; V; Type_ ].
         
         Axiom Implements :
           forall (BorrowType K V Type_ : Ty.t),
@@ -469,6 +538,7 @@ Module collections.
         Definition Self (K V Type_ : Ty.t) : Ty.t :=
           Ty.apply
             (Ty.path "alloc::collections::btree::node::NodeRef")
+            []
             [ Ty.path "alloc::collections::btree::node::marker::Immut"; K; V; Type_ ].
         
         Axiom Implements :
@@ -484,6 +554,7 @@ Module collections.
         Definition Self (K V Type_ : Ty.t) : Ty.t :=
           Ty.apply
             (Ty.path "alloc::collections::btree::node::NodeRef")
+            []
             [ Ty.path "alloc::collections::btree::node::marker::Mut"; K; V; Type_ ].
         
         Axiom Implements :
@@ -499,6 +570,7 @@ Module collections.
         Definition Self (K V Type_ : Ty.t) : Ty.t :=
           Ty.apply
             (Ty.path "alloc::collections::btree::node::NodeRef")
+            []
             [ Ty.path "alloc::collections::btree::node::marker::ValMut"; K; V; Type_ ].
         
         Axiom Implements :
@@ -514,6 +586,7 @@ Module collections.
         Definition Self (K V Type_ : Ty.t) : Ty.t :=
           Ty.apply
             (Ty.path "alloc::collections::btree::node::NodeRef")
+            []
             [ Ty.path "alloc::collections::btree::node::marker::Owned"; K; V; Type_ ].
         
         Axiom Implements :
@@ -529,6 +602,7 @@ Module collections.
         Definition Self (K V Type_ : Ty.t) : Ty.t :=
           Ty.apply
             (Ty.path "alloc::collections::btree::node::NodeRef")
+            []
             [ Ty.path "alloc::collections::btree::node::marker::Dying"; K; V; Type_ ].
         
         Axiom Implements :
@@ -544,6 +618,7 @@ Module collections.
         Definition Self (K V : Ty.t) : Ty.t :=
           Ty.apply
             (Ty.path "alloc::collections::btree::node::NodeRef")
+            []
             [
               Ty.path "alloc::collections::btree::node::marker::Owned";
               K;
@@ -556,16 +631,22 @@ Module collections.
                 Self::from_new_leaf(LeafNode::new(alloc))
             }
         *)
-        Definition new_leaf (K V : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition new_leaf
+            (K V : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self K V in
-          match τ, α with
-          | [ A ], [ alloc ] =>
+          match ε, τ, α with
+          | [], [ A ], [ alloc ] =>
             ltac:(M.monadic
               (let alloc := M.alloc (| alloc |) in
               M.call_closure (|
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "alloc::collections::btree::node::NodeRef")
+                    []
                     [
                       Ty.path "alloc::collections::btree::node::marker::Owned";
                       K;
@@ -578,7 +659,7 @@ Module collections.
                 [
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "alloc::collections::btree::node::LeafNode") [ K; V ],
+                      Ty.apply (Ty.path "alloc::collections::btree::node::LeafNode") [] [ K; V ],
                       "new",
                       [ A ]
                     |),
@@ -586,7 +667,7 @@ Module collections.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_new_leaf :
@@ -598,10 +679,15 @@ Module collections.
                 NodeRef { height: 0, node: NonNull::from(Box::leak(leaf)), _marker: PhantomData }
             }
         *)
-        Definition from_new_leaf (K V : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition from_new_leaf
+            (K V : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self K V in
-          match τ, α with
-          | [ A ], [ leaf ] =>
+          match ε, τ, α with
+          | [], [ A ], [ leaf ] =>
             ltac:(M.monadic
               (let leaf := M.alloc (| leaf |) in
               Value.StructRecord
@@ -614,14 +700,21 @@ Module collections.
                         "core::convert::From",
                         Ty.apply
                           (Ty.path "core::ptr::non_null::NonNull")
-                          [ Ty.apply (Ty.path "alloc::collections::btree::node::LeafNode") [ K; V ]
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "alloc::collections::btree::node::LeafNode")
+                              []
+                              [ K; V ]
                           ],
                         [
                           Ty.apply
                             (Ty.path "&mut")
+                            []
                             [
                               Ty.apply
                                 (Ty.path "alloc::collections::btree::node::LeafNode")
+                                []
                                 [ K; V ]
                             ]
                         ],
@@ -633,9 +726,11 @@ Module collections.
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "alloc::boxed::Box")
+                              []
                               [
                                 Ty.apply
                                   (Ty.path "alloc::collections::btree::node::LeafNode")
+                                  []
                                   [ K; V ];
                                 A
                               ],
@@ -648,7 +743,7 @@ Module collections.
                     |));
                   ("_marker", Value.StructTuple "core::marker::PhantomData" [])
                 ]))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_from_new_leaf :
@@ -660,6 +755,7 @@ Module collections.
         Definition Self (K V : Ty.t) : Ty.t :=
           Ty.apply
             (Ty.path "alloc::collections::btree::node::NodeRef")
+            []
             [
               Ty.path "alloc::collections::btree::node::marker::Owned";
               K;
@@ -674,10 +770,15 @@ Module collections.
                 unsafe { NodeRef::from_new_internal(new_node, child.height + 1) }
             }
         *)
-        Definition new_internal (K V : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition new_internal
+            (K V : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self K V in
-          match τ, α with
-          | [ A ], [ child; alloc ] =>
+          match ε, τ, α with
+          | [], [ A ], [ child; alloc ] =>
             ltac:(M.monadic
               (let child := M.alloc (| child |) in
               let alloc := M.alloc (| alloc |) in
@@ -686,7 +787,10 @@ Module collections.
                   M.alloc (|
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "alloc::collections::btree::node::InternalNode") [ K; V ],
+                        Ty.apply
+                          (Ty.path "alloc::collections::btree::node::InternalNode")
+                          []
+                          [ K; V ],
                         "new",
                         [ A ]
                       |),
@@ -699,12 +803,15 @@ Module collections.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                          []
                           [
                             Ty.apply
                               (Ty.path "core::ptr::non_null::NonNull")
+                              []
                               [
                                 Ty.apply
                                   (Ty.path "alloc::collections::btree::node::LeafNode")
+                                  []
                                   [ K; V ]
                               ]
                           ],
@@ -735,6 +842,7 @@ Module collections.
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "alloc::collections::btree::node::NodeRef")
+                        []
                         [
                           Ty.path "alloc::collections::btree::node::marker::Owned";
                           K;
@@ -760,7 +868,7 @@ Module collections.
                   |)
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_new_internal :
@@ -779,10 +887,15 @@ Module collections.
                 this
             }
         *)
-        Definition from_new_internal (K V : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition from_new_internal
+            (K V : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self K V in
-          match τ, α with
-          | [ A ], [ internal; height ] =>
+          match ε, τ, α with
+          | [], [ A ], [ internal; height ] =>
             ltac:(M.monadic
               (let internal := M.alloc (| internal |) in
               let height := M.alloc (| height |) in
@@ -835,13 +948,16 @@ Module collections.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "core::ptr::non_null::NonNull")
+                          []
                           [
                             Ty.apply
                               (Ty.path "alloc::collections::btree::node::InternalNode")
+                              []
                               [ K; V ]
                           ],
                         "cast",
-                        [ Ty.apply (Ty.path "alloc::collections::btree::node::LeafNode") [ K; V ] ]
+                        [ Ty.apply (Ty.path "alloc::collections::btree::node::LeafNode") [] [ K; V ]
+                        ]
                       |),
                       [
                         M.call_closure (|
@@ -849,17 +965,21 @@ Module collections.
                             "core::convert::From",
                             Ty.apply
                               (Ty.path "core::ptr::non_null::NonNull")
+                              []
                               [
                                 Ty.apply
                                   (Ty.path "alloc::collections::btree::node::InternalNode")
+                                  []
                                   [ K; V ]
                               ],
                             [
                               Ty.apply
                                 (Ty.path "&mut")
+                                []
                                 [
                                   Ty.apply
                                     (Ty.path "alloc::collections::btree::node::InternalNode")
+                                    []
                                     [ K; V ]
                                 ]
                             ],
@@ -871,9 +991,11 @@ Module collections.
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "alloc::boxed::Box")
+                                  []
                                   [
                                     Ty.apply
                                       (Ty.path "alloc::collections::btree::node::InternalNode")
+                                      []
                                       [ K; V ];
                                     A
                                   ],
@@ -903,6 +1025,7 @@ Module collections.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "alloc::collections::btree::node::NodeRef")
+                          []
                           [
                             Ty.path "alloc::collections::btree::node::marker::Mut";
                             K;
@@ -918,6 +1041,7 @@ Module collections.
                             M.get_associated_function (|
                               Ty.apply
                                 (Ty.path "alloc::collections::btree::node::NodeRef")
+                                []
                                 [
                                   Ty.path "alloc::collections::btree::node::marker::Owned";
                                   K;
@@ -935,7 +1059,7 @@ Module collections.
                   |) in
                 this
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_from_new_internal :
@@ -947,6 +1071,7 @@ Module collections.
         Definition Self (BorrowType K V : Ty.t) : Ty.t :=
           Ty.apply
             (Ty.path "alloc::collections::btree::node::NodeRef")
+            []
             [ BorrowType; K; V; Ty.path "alloc::collections::btree::node::marker::Internal" ].
         
         (*
@@ -955,10 +1080,15 @@ Module collections.
                 NodeRef { height, node: node.cast(), _marker: PhantomData }
             }
         *)
-        Definition from_internal (BorrowType K V : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition from_internal
+            (BorrowType K V : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self BorrowType K V in
-          match τ, α with
-          | [], [ node; height ] =>
+          match ε, τ, α with
+          | [], [], [ node; height ] =>
             ltac:(M.monadic
               (let node := M.alloc (| node |) in
               let height := M.alloc (| height |) in
@@ -1015,15 +1145,18 @@ Module collections.
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "core::ptr::non_null::NonNull")
+                              []
                               [
                                 Ty.apply
                                   (Ty.path "alloc::collections::btree::node::InternalNode")
+                                  []
                                   [ K; V ]
                               ],
                             "cast",
                             [
                               Ty.apply
                                 (Ty.path "alloc::collections::btree::node::LeafNode")
+                                []
                                 [ K; V ]
                             ]
                           |),
@@ -1033,7 +1166,7 @@ Module collections.
                     ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_from_internal :
@@ -1048,10 +1181,15 @@ Module collections.
                 this.node.as_ptr() as *mut InternalNode<K, V>
             }
         *)
-        Definition as_internal_ptr (BorrowType K V : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition as_internal_ptr
+            (BorrowType K V : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self BorrowType K V in
-          match τ, α with
-          | [], [ this ] =>
+          match ε, τ, α with
+          | [], [], [ this ] =>
             ltac:(M.monadic
               (let this := M.alloc (| this |) in
               M.rust_cast
@@ -1059,7 +1197,9 @@ Module collections.
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "core::ptr::non_null::NonNull")
-                      [ Ty.apply (Ty.path "alloc::collections::btree::node::LeafNode") [ K; V ] ],
+                      []
+                      [ Ty.apply (Ty.path "alloc::collections::btree::node::LeafNode") [] [ K; V ]
+                      ],
                     "as_ptr",
                     []
                   |),
@@ -1073,7 +1213,7 @@ Module collections.
                     |)
                   ]
                 |))))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_as_internal_ptr :
@@ -1087,10 +1227,15 @@ Module collections.
                 NodeRef { height: self.height, node: self.node, _marker: PhantomData }
             }
         *)
-        Definition forget_type (BorrowType K V : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition forget_type
+            (BorrowType K V : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self BorrowType K V in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               Value.StructRecord
@@ -1114,7 +1259,7 @@ Module collections.
                     |));
                   ("_marker", Value.StructTuple "core::marker::PhantomData" [])
                 ]))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_forget_type :
@@ -1127,6 +1272,7 @@ Module collections.
         Definition Self (K V : Ty.t) : Ty.t :=
           Ty.apply
             (Ty.path "alloc::collections::btree::node::NodeRef")
+            []
             [
               Ty.path "alloc::collections::btree::node::marker::Mut";
               K;
@@ -1140,10 +1286,15 @@ Module collections.
                 unsafe { &mut *ptr }
             }
         *)
-        Definition as_internal_mut (K V : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition as_internal_mut
+            (K V : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self K V in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
@@ -1153,6 +1304,7 @@ Module collections.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "alloc::collections::btree::node::NodeRef")
+                          []
                           [
                             Ty.path "alloc::collections::btree::node::marker::Mut";
                             K;
@@ -1167,7 +1319,7 @@ Module collections.
                   |) in
                 M.alloc (| M.read (| ptr |) |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_as_internal_mut :
@@ -1184,10 +1336,15 @@ Module collections.
                 unsafe { self.as_internal_mut().edges.as_mut_slice().get_unchecked_mut(index) }
             }
         *)
-        Definition edge_area_mut (K V : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition edge_area_mut
+            (K V : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self K V in
-          match τ, α with
-          | [ _ as I; Output ], [ self; index ] =>
+          match ε, τ, α with
+          | [], [ _ as I; Output ], [ self; index ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let index := M.alloc (| index |) in
@@ -1195,15 +1352,19 @@ Module collections.
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "slice")
+                    []
                     [
                       Ty.apply
                         (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                        []
                         [
                           Ty.apply
                             (Ty.path "core::ptr::non_null::NonNull")
+                            []
                             [
                               Ty.apply
                                 (Ty.path "alloc::collections::btree::node::LeafNode")
+                                []
                                 [ K; V ]
                             ]
                         ]
@@ -1216,15 +1377,19 @@ Module collections.
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "array")
+                        [ Value.Integer 12 ]
                         [
                           Ty.apply
                             (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                            []
                             [
                               Ty.apply
                                 (Ty.path "core::ptr::non_null::NonNull")
+                                []
                                 [
                                   Ty.apply
                                     (Ty.path "alloc::collections::btree::node::LeafNode")
+                                    []
                                     [ K; V ]
                                 ]
                             ]
@@ -1238,6 +1403,7 @@ Module collections.
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "alloc::collections::btree::node::NodeRef")
+                              []
                               [
                                 Ty.path "alloc::collections::btree::node::marker::Mut";
                                 K;
@@ -1257,7 +1423,7 @@ Module collections.
                   M.read (| index |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_edge_area_mut :
@@ -1273,12 +1439,13 @@ Module collections.
         *)
         Definition correct_childrens_parent_links
             (K V : Ty.t)
+            (ε : list Value.t)
             (τ : list Ty.t)
             (α : list Value.t)
             : M :=
           let Self : Ty.t := Self K V in
-          match τ, α with
-          | [ R ], [ self; range ] =>
+          match ε, τ, α with
+          | [], [ R ], [ self; range ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let range := M.alloc (| range |) in
@@ -1363,6 +1530,7 @@ Module collections.
                                                                           Ty.apply
                                                                             (Ty.path
                                                                               "alloc::collections::btree::node::NodeRef")
+                                                                            []
                                                                             [
                                                                               Ty.path
                                                                                 "alloc::collections::btree::node::marker::Mut";
@@ -1415,10 +1583,12 @@ Module collections.
                                                 Ty.apply
                                                   (Ty.path
                                                     "alloc::collections::btree::node::Handle")
+                                                  []
                                                   [
                                                     Ty.apply
                                                       (Ty.path
                                                         "alloc::collections::btree::node::NodeRef")
+                                                      []
                                                       [
                                                         Ty.path
                                                           "alloc::collections::btree::node::marker::Mut";
@@ -1439,10 +1609,12 @@ Module collections.
                                                     Ty.apply
                                                       (Ty.path
                                                         "alloc::collections::btree::node::Handle")
+                                                      []
                                                       [
                                                         Ty.apply
                                                           (Ty.path
                                                             "alloc::collections::btree::node::NodeRef")
+                                                          []
                                                           [
                                                             Ty.path
                                                               "alloc::collections::btree::node::marker::Mut";
@@ -1463,6 +1635,7 @@ Module collections.
                                                         Ty.apply
                                                           (Ty.path
                                                             "alloc::collections::btree::node::NodeRef")
+                                                          []
                                                           [
                                                             Ty.path
                                                               "alloc::collections::btree::node::marker::Mut";
@@ -1490,7 +1663,7 @@ Module collections.
                     ]
                   |))
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_correct_childrens_parent_links :
@@ -1508,12 +1681,13 @@ Module collections.
         *)
         Definition correct_all_childrens_parent_links
             (K V : Ty.t)
+            (ε : list Value.t)
             (τ : list Ty.t)
             (α : list Value.t)
             : M :=
           let Self : Ty.t := Self K V in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
@@ -1523,6 +1697,7 @@ Module collections.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "alloc::collections::btree::node::NodeRef")
+                          []
                           [
                             Ty.path "alloc::collections::btree::node::marker::Mut";
                             K;
@@ -1541,6 +1716,7 @@ Module collections.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "alloc::collections::btree::node::NodeRef")
+                          []
                           [
                             Ty.path "alloc::collections::btree::node::marker::Mut";
                             K;
@@ -1548,7 +1724,11 @@ Module collections.
                             Ty.path "alloc::collections::btree::node::marker::Internal"
                           ],
                         "correct_childrens_parent_links",
-                        [ Ty.apply (Ty.path "core::ops::range::RangeInclusive") [ Ty.path "usize" ]
+                        [
+                          Ty.apply
+                            (Ty.path "core::ops::range::RangeInclusive")
+                            []
+                            [ Ty.path "usize" ]
                         ]
                       |),
                       [
@@ -1557,6 +1737,7 @@ Module collections.
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "core::ops::range::RangeInclusive")
+                              []
                               [ Ty.path "usize" ],
                             "new",
                             []
@@ -1568,7 +1749,7 @@ Module collections.
                   |) in
                 M.alloc (| Value.Tuple [] |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_correct_all_childrens_parent_links :
@@ -1593,10 +1774,10 @@ Module collections.
                 }
             }
         *)
-        Definition push (K V : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition push (K V : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self K V in
-          match τ, α with
-          | [], [ self; key; val; edge ] =>
+          match ε, τ, α with
+          | [], [], [ self; key; val; edge ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let key := M.alloc (| key |) in
@@ -1655,6 +1836,7 @@ Module collections.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "alloc::collections::btree::node::NodeRef")
+                          []
                           [
                             Ty.path "alloc::collections::btree::node::marker::Mut";
                             K;
@@ -1718,7 +1900,7 @@ Module collections.
                   M.alloc (|
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ K ],
+                        Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ K ],
                         "write",
                         []
                       |),
@@ -1727,6 +1909,7 @@ Module collections.
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "alloc::collections::btree::node::NodeRef")
+                              []
                               [
                                 Ty.path "alloc::collections::btree::node::marker::Mut";
                                 K;
@@ -1736,7 +1919,7 @@ Module collections.
                             "key_area_mut",
                             [
                               Ty.path "usize";
-                              Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ K ]
+                              Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ K ]
                             ]
                           |),
                           [ M.read (| self |); M.read (| idx |) ]
@@ -1749,7 +1932,7 @@ Module collections.
                   M.alloc (|
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ V ],
+                        Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ V ],
                         "write",
                         []
                       |),
@@ -1758,6 +1941,7 @@ Module collections.
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "alloc::collections::btree::node::NodeRef")
+                              []
                               [
                                 Ty.path "alloc::collections::btree::node::marker::Mut";
                                 K;
@@ -1767,7 +1951,7 @@ Module collections.
                             "val_area_mut",
                             [
                               Ty.path "usize";
-                              Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ V ]
+                              Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ V ]
                             ]
                           |),
                           [ M.read (| self |); M.read (| idx |) ]
@@ -1782,12 +1966,15 @@ Module collections.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                          []
                           [
                             Ty.apply
                               (Ty.path "core::ptr::non_null::NonNull")
+                              []
                               [
                                 Ty.apply
                                   (Ty.path "alloc::collections::btree::node::LeafNode")
+                                  []
                                   [ K; V ]
                               ]
                           ],
@@ -1799,6 +1986,7 @@ Module collections.
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "alloc::collections::btree::node::NodeRef")
+                              []
                               [
                                 Ty.path "alloc::collections::btree::node::marker::Mut";
                                 K;
@@ -1810,12 +1998,15 @@ Module collections.
                               Ty.path "usize";
                               Ty.apply
                                 (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                []
                                 [
                                   Ty.apply
                                     (Ty.path "core::ptr::non_null::NonNull")
+                                    []
                                     [
                                       Ty.apply
                                         (Ty.path "alloc::collections::btree::node::LeafNode")
+                                        []
                                         [ K; V ]
                                     ]
                                 ]
@@ -1842,9 +2033,11 @@ Module collections.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "alloc::collections::btree::node::Handle")
+                          []
                           [
                             Ty.apply
                               (Ty.path "alloc::collections::btree::node::NodeRef")
+                              []
                               [
                                 Ty.path "alloc::collections::btree::node::marker::Mut";
                                 K;
@@ -1861,9 +2054,11 @@ Module collections.
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "alloc::collections::btree::node::Handle")
+                              []
                               [
                                 Ty.apply
                                   (Ty.path "alloc::collections::btree::node::NodeRef")
+                                  []
                                   [
                                     Ty.path "alloc::collections::btree::node::marker::Mut";
                                     K;
@@ -1880,6 +2075,7 @@ Module collections.
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "alloc::collections::btree::node::NodeRef")
+                                  []
                                   [
                                     Ty.path "alloc::collections::btree::node::marker::Mut";
                                     K;
@@ -1899,7 +2095,7 @@ Module collections.
                   |) in
                 M.alloc (| Value.Tuple [] |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_push :
@@ -1909,7 +2105,10 @@ Module collections.
       
       Module Impl_alloc_collections_btree_node_NodeRef_BorrowType_K_V_Type_.
         Definition Self (BorrowType K V Type_ : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "alloc::collections::btree::node::NodeRef") [ BorrowType; K; V; Type_ ].
+          Ty.apply
+            (Ty.path "alloc::collections::btree::node::NodeRef")
+            []
+            [ BorrowType; K; V; Type_ ].
         
         (*
             pub fn len(&self) -> usize {
@@ -1918,10 +2117,15 @@ Module collections.
                 unsafe { usize::from(( *Self::as_leaf_ptr(self)).len) }
             }
         *)
-        Definition len (BorrowType K V Type_ : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition len
+            (BorrowType K V Type_ : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self BorrowType K V Type_ in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.call_closure (|
@@ -1939,6 +2143,7 @@ Module collections.
                         M.get_associated_function (|
                           Ty.apply
                             (Ty.path "alloc::collections::btree::node::NodeRef")
+                            []
                             [ BorrowType; K; V; Type_ ],
                           "as_leaf_ptr",
                           []
@@ -1951,7 +2156,7 @@ Module collections.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_len :
@@ -1963,10 +2168,15 @@ Module collections.
                 self.height
             }
         *)
-        Definition height (BorrowType K V Type_ : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition height
+            (BorrowType K V Type_ : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self BorrowType K V Type_ in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
@@ -1976,7 +2186,7 @@ Module collections.
                   "height"
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_height :
@@ -1988,10 +2198,15 @@ Module collections.
                 NodeRef { height: self.height, node: self.node, _marker: PhantomData }
             }
         *)
-        Definition reborrow (BorrowType K V Type_ : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition reborrow
+            (BorrowType K V Type_ : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self BorrowType K V Type_ in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               Value.StructRecord
@@ -2015,7 +2230,7 @@ Module collections.
                     |));
                   ("_marker", Value.StructTuple "core::marker::PhantomData" [])
                 ]))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_reborrow :
@@ -2035,19 +2250,21 @@ Module collections.
         *)
         Definition as_leaf_ptr
             (BorrowType K V Type_ : Ty.t)
+            (ε : list Value.t)
             (τ : list Ty.t)
             (α : list Value.t)
             : M :=
           let Self : Ty.t := Self BorrowType K V Type_ in
-          match τ, α with
-          | [], [ this ] =>
+          match ε, τ, α with
+          | [], [], [ this ] =>
             ltac:(M.monadic
               (let this := M.alloc (| this |) in
               M.call_closure (|
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "core::ptr::non_null::NonNull")
-                    [ Ty.apply (Ty.path "alloc::collections::btree::node::LeafNode") [ K; V ] ],
+                    []
+                    [ Ty.apply (Ty.path "alloc::collections::btree::node::LeafNode") [] [ K; V ] ],
                   "as_ptr",
                   []
                 |),
@@ -2061,7 +2278,7 @@ Module collections.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_as_leaf_ptr :
@@ -2091,10 +2308,15 @@ Module collections.
                     .ok_or(self)
             }
         *)
-        Definition ascend (BorrowType K V Type_ : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition ascend
+            (BorrowType K V Type_ : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self BorrowType K V Type_ in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
@@ -2108,6 +2330,7 @@ Module collections.
                         M.get_associated_function (|
                           Ty.apply
                             (Ty.path "alloc::collections::btree::node::NodeRef")
+                            []
                             [ BorrowType; K; V; Type_ ],
                           "as_leaf_ptr",
                           []
@@ -2120,12 +2343,15 @@ Module collections.
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "core::option::Option")
+                        []
                         [
                           Ty.apply
                             (Ty.path "alloc::collections::btree::node::Handle")
+                            []
                             [
                               Ty.apply
                                 (Ty.path "alloc::collections::btree::node::NodeRef")
+                                []
                                 [
                                   BorrowType;
                                   K;
@@ -2139,6 +2365,7 @@ Module collections.
                       [
                         Ty.apply
                           (Ty.path "alloc::collections::btree::node::NodeRef")
+                          []
                           [ BorrowType; K; V; Type_ ]
                       ]
                     |),
@@ -2147,15 +2374,19 @@ Module collections.
                         M.get_associated_function (|
                           Ty.apply
                             (Ty.path "core::option::Option")
+                            []
                             [
                               Ty.apply
                                 (Ty.path "&")
+                                []
                                 [
                                   Ty.apply
                                     (Ty.path "core::ptr::non_null::NonNull")
+                                    []
                                     [
                                       Ty.apply
                                         (Ty.path "alloc::collections::btree::node::InternalNode")
+                                        []
                                         [ K; V ]
                                     ]
                                 ]
@@ -2164,9 +2395,11 @@ Module collections.
                           [
                             Ty.apply
                               (Ty.path "alloc::collections::btree::node::Handle")
+                              []
                               [
                                 Ty.apply
                                   (Ty.path "alloc::collections::btree::node::NodeRef")
+                                  []
                                   [
                                     BorrowType;
                                     K;
@@ -2181,13 +2414,16 @@ Module collections.
                                   [
                                     Ty.apply
                                       (Ty.path "&")
+                                      []
                                       [
                                         Ty.apply
                                           (Ty.path "core::ptr::non_null::NonNull")
+                                          []
                                           [
                                             Ty.apply
                                               (Ty.path
                                                 "alloc::collections::btree::node::InternalNode")
+                                              []
                                               [ K; V ]
                                           ]
                                       ]
@@ -2195,9 +2431,11 @@ Module collections.
                               ]
                               (Ty.apply
                                 (Ty.path "alloc::collections::btree::node::Handle")
+                                []
                                 [
                                   Ty.apply
                                     (Ty.path "alloc::collections::btree::node::NodeRef")
+                                    []
                                     [
                                       BorrowType;
                                       K;
@@ -2213,12 +2451,15 @@ Module collections.
                             M.get_associated_function (|
                               Ty.apply
                                 (Ty.path "core::option::Option")
+                                []
                                 [
                                   Ty.apply
                                     (Ty.path "core::ptr::non_null::NonNull")
+                                    []
                                     [
                                       Ty.apply
                                         (Ty.path "alloc::collections::btree::node::InternalNode")
+                                        []
                                         [ K; V ]
                                     ]
                                 ],
@@ -2253,6 +2494,7 @@ Module collections.
                                                     Ty.apply
                                                       (Ty.path
                                                         "alloc::collections::btree::node::NodeRef")
+                                                      []
                                                       [
                                                         BorrowType;
                                                         K;
@@ -2292,6 +2534,7 @@ Module collections.
                                                         Ty.apply
                                                           (Ty.path
                                                             "core::mem::maybe_uninit::MaybeUninit")
+                                                          []
                                                           [ Ty.path "u16" ],
                                                         "assume_init",
                                                         []
@@ -2322,7 +2565,7 @@ Module collections.
                   |)
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_ascend :
@@ -2336,21 +2579,24 @@ Module collections.
         *)
         Definition first_edge
             (BorrowType K V Type_ : Ty.t)
+            (ε : list Value.t)
             (τ : list Ty.t)
             (α : list Value.t)
             : M :=
           let Self : Ty.t := Self BorrowType K V Type_ in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.call_closure (|
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "alloc::collections::btree::node::Handle")
+                    []
                     [
                       Ty.apply
                         (Ty.path "alloc::collections::btree::node::NodeRef")
+                        []
                         [ BorrowType; K; V; Type_ ];
                       Ty.path "alloc::collections::btree::node::marker::Edge"
                     ],
@@ -2359,7 +2605,7 @@ Module collections.
                 |),
                 [ M.read (| self |); Value.Integer 0 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_first_edge :
@@ -2375,10 +2621,15 @@ Module collections.
                 unsafe { Handle::new_edge(self, len) }
             }
         *)
-        Definition last_edge (BorrowType K V Type_ : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition last_edge
+            (BorrowType K V Type_ : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self BorrowType K V Type_ in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
@@ -2388,6 +2639,7 @@ Module collections.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "alloc::collections::btree::node::NodeRef")
+                          []
                           [ BorrowType; K; V; Type_ ],
                         "len",
                         []
@@ -2400,9 +2652,11 @@ Module collections.
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "alloc::collections::btree::node::Handle")
+                        []
                         [
                           Ty.apply
                             (Ty.path "alloc::collections::btree::node::NodeRef")
+                            []
                             [ BorrowType; K; V; Type_ ];
                           Ty.path "alloc::collections::btree::node::marker::Edge"
                         ],
@@ -2413,7 +2667,7 @@ Module collections.
                   |)
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_last_edge :
@@ -2430,10 +2684,15 @@ Module collections.
                 unsafe { Handle::new_kv(self, 0) }
             }
         *)
-        Definition first_kv (BorrowType K V Type_ : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition first_kv
+            (BorrowType K V Type_ : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self BorrowType K V Type_ in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
@@ -2443,6 +2702,7 @@ Module collections.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "alloc::collections::btree::node::NodeRef")
+                          []
                           [ BorrowType; K; V; Type_ ],
                         "len",
                         []
@@ -2479,9 +2739,11 @@ Module collections.
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "alloc::collections::btree::node::Handle")
+                        []
                         [
                           Ty.apply
                             (Ty.path "alloc::collections::btree::node::NodeRef")
+                            []
                             [ BorrowType; K; V; Type_ ];
                           Ty.path "alloc::collections::btree::node::marker::KV"
                         ],
@@ -2492,7 +2754,7 @@ Module collections.
                   |)
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_first_kv :
@@ -2509,10 +2771,15 @@ Module collections.
                 unsafe { Handle::new_kv(self, len - 1) }
             }
         *)
-        Definition last_kv (BorrowType K V Type_ : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition last_kv
+            (BorrowType K V Type_ : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self BorrowType K V Type_ in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
@@ -2522,6 +2789,7 @@ Module collections.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "alloc::collections::btree::node::NodeRef")
+                          []
                           [ BorrowType; K; V; Type_ ],
                         "len",
                         []
@@ -2558,9 +2826,11 @@ Module collections.
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "alloc::collections::btree::node::Handle")
+                        []
                         [
                           Ty.apply
                             (Ty.path "alloc::collections::btree::node::NodeRef")
+                            []
                             [ BorrowType; K; V; Type_ ];
                           Ty.path "alloc::collections::btree::node::marker::KV"
                         ],
@@ -2574,7 +2844,7 @@ Module collections.
                   |)
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_last_kv :
@@ -2594,10 +2864,15 @@ Module collections.
                 }
             }
         *)
-        Definition eq (BorrowType K V Type_ : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition eq
+            (BorrowType K V Type_ : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self BorrowType K V Type_ in
-          match τ, α with
-          | [], [ self; other ] =>
+          match ε, τ, α with
+          | [], [], [ self; other ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let other := M.alloc (| other |) in
@@ -2642,19 +2917,23 @@ Module collections.
                                           "core::cmp::PartialEq",
                                           Ty.apply
                                             (Ty.path "core::ptr::non_null::NonNull")
+                                            []
                                             [
                                               Ty.apply
                                                 (Ty.path
                                                   "alloc::collections::btree::node::LeafNode")
+                                                []
                                                 [ K; V ]
                                             ],
                                           [
                                             Ty.apply
                                               (Ty.path "core::ptr::non_null::NonNull")
+                                              []
                                               [
                                                 Ty.apply
                                                   (Ty.path
                                                     "alloc::collections::btree::node::LeafNode")
+                                                  []
                                                   [ K; V ]
                                               ]
                                           ],
@@ -2781,7 +3060,7 @@ Module collections.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_eq :
@@ -2795,6 +3074,7 @@ Module collections.
         Definition Self (K V Type_ : Ty.t) : Ty.t :=
           Ty.apply
             (Ty.path "alloc::collections::btree::node::NodeRef")
+            []
             [ Ty.path "alloc::collections::btree::node::marker::Immut"; K; V; Type_ ].
         
         (*
@@ -2804,10 +3084,15 @@ Module collections.
                 unsafe { &*ptr }
             }
         *)
-        Definition into_leaf (K V Type_ : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition into_leaf
+            (K V Type_ : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self K V Type_ in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
@@ -2817,6 +3102,7 @@ Module collections.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "alloc::collections::btree::node::NodeRef")
+                          []
                           [ Ty.path "alloc::collections::btree::node::marker::Immut"; K; V; Type_ ],
                         "as_leaf_ptr",
                         []
@@ -2826,7 +3112,7 @@ Module collections.
                   |) in
                 M.alloc (| M.read (| ptr |) |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_into_leaf :
@@ -2841,10 +3127,15 @@ Module collections.
                 }
             }
         *)
-        Definition keys (K V Type_ : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition keys
+            (K V Type_ : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self K V Type_ in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
@@ -2854,6 +3145,7 @@ Module collections.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "alloc::collections::btree::node::NodeRef")
+                          []
                           [ Ty.path "alloc::collections::btree::node::marker::Immut"; K; V; Type_ ],
                         "into_leaf",
                         []
@@ -2864,7 +3156,7 @@ Module collections.
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ K ],
+                      Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ K ],
                       "slice_assume_init_ref",
                       []
                     |),
@@ -2873,9 +3165,10 @@ Module collections.
                         M.get_associated_function (|
                           Ty.apply
                             (Ty.path "slice")
-                            [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ K ] ],
+                            []
+                            [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ K ] ],
                           "get_unchecked",
-                          [ Ty.apply (Ty.path "core::ops::range::RangeTo") [ Ty.path "usize" ] ]
+                          [ Ty.apply (Ty.path "core::ops::range::RangeTo") [] [ Ty.path "usize" ] ]
                         |),
                         [
                           (* Unsize *)
@@ -2914,7 +3207,7 @@ Module collections.
                   |)
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_keys :
@@ -2926,6 +3219,7 @@ Module collections.
         Definition Self (K V : Ty.t) : Ty.t :=
           Ty.apply
             (Ty.path "alloc::collections::btree::node::NodeRef")
+            []
             [
               Ty.path "alloc::collections::btree::node::marker::Dying";
               K;
@@ -2954,10 +3248,15 @@ Module collections.
                 ret
             }
         *)
-        Definition deallocate_and_ascend (K V : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition deallocate_and_ascend
+            (K V : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self K V in
-          match τ, α with
-          | [ A ], [ self; alloc ] =>
+          match ε, τ, α with
+          | [], [ A ], [ self; alloc ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let alloc := M.alloc (| alloc |) in
@@ -2984,12 +3283,15 @@ Module collections.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "core::result::Result")
+                          []
                           [
                             Ty.apply
                               (Ty.path "alloc::collections::btree::node::Handle")
+                              []
                               [
                                 Ty.apply
                                   (Ty.path "alloc::collections::btree::node::NodeRef")
+                                  []
                                   [
                                     Ty.path "alloc::collections::btree::node::marker::Dying";
                                     K;
@@ -3000,6 +3302,7 @@ Module collections.
                               ];
                             Ty.apply
                               (Ty.path "alloc::collections::btree::node::NodeRef")
+                              []
                               [
                                 Ty.path "alloc::collections::btree::node::marker::Dying";
                                 K;
@@ -3015,6 +3318,7 @@ Module collections.
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "alloc::collections::btree::node::NodeRef")
+                              []
                               [
                                 Ty.path "alloc::collections::btree::node::marker::Dying";
                                 K;
@@ -3040,9 +3344,11 @@ Module collections.
                             M.get_associated_function (|
                               Ty.apply
                                 (Ty.path "core::ptr::non_null::NonNull")
+                                []
                                 [
                                   Ty.apply
                                     (Ty.path "alloc::collections::btree::node::LeafNode")
+                                    []
                                     [ K; V ]
                                 ],
                               "cast",
@@ -3075,6 +3381,7 @@ Module collections.
                                             Ty.apply
                                               (Ty.path
                                                 "alloc::collections::btree::node::InternalNode")
+                                              []
                                               [ K; V ]
                                           ]
                                         |),
@@ -3091,6 +3398,7 @@ Module collections.
                                           [
                                             Ty.apply
                                               (Ty.path "alloc::collections::btree::node::LeafNode")
+                                              []
                                               [ K; V ]
                                           ]
                                         |),
@@ -3106,7 +3414,7 @@ Module collections.
                   M.alloc (| Value.Tuple [] |) in
                 ret
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_deallocate_and_ascend :
@@ -3118,6 +3426,7 @@ Module collections.
         Definition Self (K V Type_ : Ty.t) : Ty.t :=
           Ty.apply
             (Ty.path "alloc::collections::btree::node::NodeRef")
+            []
             [ Ty.path "alloc::collections::btree::node::marker::Mut"; K; V; Type_ ].
         
         (*
@@ -3125,10 +3434,15 @@ Module collections.
                 NodeRef { height: self.height, node: self.node, _marker: PhantomData }
             }
         *)
-        Definition reborrow_mut (K V Type_ : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition reborrow_mut
+            (K V Type_ : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self K V Type_ in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               Value.StructRecord
@@ -3152,7 +3466,7 @@ Module collections.
                     |));
                   ("_marker", Value.StructTuple "core::marker::PhantomData" [])
                 ]))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_reborrow_mut :
@@ -3166,10 +3480,15 @@ Module collections.
                 unsafe { &mut *ptr }
             }
         *)
-        Definition as_leaf_mut (K V Type_ : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition as_leaf_mut
+            (K V Type_ : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self K V Type_ in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
@@ -3179,6 +3498,7 @@ Module collections.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "alloc::collections::btree::node::NodeRef")
+                          []
                           [ Ty.path "alloc::collections::btree::node::marker::Mut"; K; V; Type_ ],
                         "as_leaf_ptr",
                         []
@@ -3188,7 +3508,7 @@ Module collections.
                   |) in
                 M.alloc (| M.read (| ptr |) |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_as_leaf_mut :
@@ -3202,10 +3522,15 @@ Module collections.
                 unsafe { &mut *ptr }
             }
         *)
-        Definition into_leaf_mut (K V Type_ : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition into_leaf_mut
+            (K V Type_ : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self K V Type_ in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
@@ -3215,6 +3540,7 @@ Module collections.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "alloc::collections::btree::node::NodeRef")
+                          []
                           [ Ty.path "alloc::collections::btree::node::marker::Mut"; K; V; Type_ ],
                         "as_leaf_ptr",
                         []
@@ -3224,7 +3550,7 @@ Module collections.
                   |) in
                 M.alloc (| M.read (| ptr |) |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_into_leaf_mut :
@@ -3236,10 +3562,15 @@ Module collections.
                 NodeRef { height: self.height, node: self.node, _marker: PhantomData }
             }
         *)
-        Definition dormant (K V Type_ : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition dormant
+            (K V Type_ : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self K V Type_ in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               Value.StructRecord
@@ -3263,7 +3594,7 @@ Module collections.
                     |));
                   ("_marker", Value.StructTuple "core::marker::PhantomData" [])
                 ]))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_dormant :
@@ -3280,10 +3611,15 @@ Module collections.
                 unsafe { self.as_leaf_mut().keys.as_mut_slice().get_unchecked_mut(index) }
             }
         *)
-        Definition key_area_mut (K V Type_ : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition key_area_mut
+            (K V Type_ : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self K V Type_ in
-          match τ, α with
-          | [ _ as I; Output ], [ self; index ] =>
+          match ε, τ, α with
+          | [], [ _ as I; Output ], [ self; index ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let index := M.alloc (| index |) in
@@ -3291,7 +3627,8 @@ Module collections.
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "slice")
-                    [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ K ] ],
+                    []
+                    [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ K ] ],
                   "get_unchecked_mut",
                   [ I ]
                 |),
@@ -3300,7 +3637,8 @@ Module collections.
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "array")
-                        [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ K ] ],
+                        [ Value.Integer 11 ]
+                        [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ K ] ],
                       "as_mut_slice",
                       []
                     |),
@@ -3310,6 +3648,7 @@ Module collections.
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "alloc::collections::btree::node::NodeRef")
+                              []
                               [ Ty.path "alloc::collections::btree::node::marker::Mut"; K; V; Type_
                               ],
                             "as_leaf_mut",
@@ -3325,7 +3664,7 @@ Module collections.
                   M.read (| index |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_key_area_mut :
@@ -3343,10 +3682,15 @@ Module collections.
                 unsafe { self.as_leaf_mut().vals.as_mut_slice().get_unchecked_mut(index) }
             }
         *)
-        Definition val_area_mut (K V Type_ : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition val_area_mut
+            (K V Type_ : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self K V Type_ in
-          match τ, α with
-          | [ _ as I; Output ], [ self; index ] =>
+          match ε, τ, α with
+          | [], [ _ as I; Output ], [ self; index ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let index := M.alloc (| index |) in
@@ -3354,7 +3698,8 @@ Module collections.
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "slice")
-                    [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ V ] ],
+                    []
+                    [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ V ] ],
                   "get_unchecked_mut",
                   [ I ]
                 |),
@@ -3363,7 +3708,8 @@ Module collections.
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "array")
-                        [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ V ] ],
+                        [ Value.Integer 11 ]
+                        [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ V ] ],
                       "as_mut_slice",
                       []
                     |),
@@ -3373,6 +3719,7 @@ Module collections.
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "alloc::collections::btree::node::NodeRef")
+                              []
                               [ Ty.path "alloc::collections::btree::node::marker::Mut"; K; V; Type_
                               ],
                             "as_leaf_mut",
@@ -3388,7 +3735,7 @@ Module collections.
                   M.read (| index |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_val_area_mut :
@@ -3399,10 +3746,15 @@ Module collections.
                 &mut self.as_leaf_mut().len
             }
         *)
-        Definition len_mut (K V Type_ : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition len_mut
+            (K V Type_ : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self K V Type_ in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.SubPointer.get_struct_record_field (|
@@ -3410,6 +3762,7 @@ Module collections.
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "alloc::collections::btree::node::NodeRef")
+                      []
                       [ Ty.path "alloc::collections::btree::node::marker::Mut"; K; V; Type_ ],
                     "as_leaf_mut",
                     []
@@ -3419,7 +3772,7 @@ Module collections.
                 "alloc::collections::btree::node::LeafNode",
                 "len"
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_len_mut :
@@ -3431,6 +3784,7 @@ Module collections.
         Definition Self (K V Type_ : Ty.t) : Ty.t :=
           Ty.apply
             (Ty.path "alloc::collections::btree::node::NodeRef")
+            []
             [ Ty.path "alloc::collections::btree::node::marker::DormantMut"; K; V; Type_ ].
         
         (*
@@ -3438,10 +3792,15 @@ Module collections.
                 NodeRef { height: self.height, node: self.node, _marker: PhantomData }
             }
         *)
-        Definition awaken (K V Type_ : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition awaken
+            (K V Type_ : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self K V Type_ in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               Value.StructRecord
@@ -3465,7 +3824,7 @@ Module collections.
                     |));
                   ("_marker", Value.StructTuple "core::marker::PhantomData" [])
                 ]))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_awaken :
@@ -3477,6 +3836,7 @@ Module collections.
         Definition Self (K V Type_ : Ty.t) : Ty.t :=
           Ty.apply
             (Ty.path "alloc::collections::btree::node::NodeRef")
+            []
             [ Ty.path "alloc::collections::btree::node::marker::Dying"; K; V; Type_ ].
         
         (*
@@ -3486,10 +3846,15 @@ Module collections.
                 unsafe { &mut *ptr }
             }
         *)
-        Definition as_leaf_dying (K V Type_ : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition as_leaf_dying
+            (K V Type_ : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self K V Type_ in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
@@ -3499,6 +3864,7 @@ Module collections.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "alloc::collections::btree::node::NodeRef")
+                          []
                           [ Ty.path "alloc::collections::btree::node::marker::Dying"; K; V; Type_ ],
                         "as_leaf_ptr",
                         []
@@ -3508,7 +3874,7 @@ Module collections.
                   |) in
                 M.alloc (| M.read (| ptr |) |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_as_leaf_dying :
@@ -3522,6 +3888,7 @@ Module collections.
         Definition Self (K V Type_ : Ty.t) : Ty.t :=
           Ty.apply
             (Ty.path "alloc::collections::btree::node::NodeRef")
+            []
             [ Ty.path "alloc::collections::btree::node::marker::ValMut"; K; V; Type_ ].
         
         (*
@@ -3540,10 +3907,15 @@ Module collections.
                 (key, val)
             }
         *)
-        Definition into_key_val_mut_at (K V Type_ : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition into_key_val_mut_at
+            (K V Type_ : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self K V Type_ in
-          match τ, α with
-          | [], [ self; idx ] =>
+          match ε, τ, α with
+          | [], [], [ self; idx ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let idx := M.alloc (| idx |) in
@@ -3554,6 +3926,7 @@ Module collections.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "alloc::collections::btree::node::NodeRef")
+                          []
                           [ Ty.path "alloc::collections::btree::node::marker::ValMut"; K; V; Type_
                           ],
                         "as_leaf_ptr",
@@ -3584,7 +3957,7 @@ Module collections.
                   M.alloc (|
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ K ],
+                        Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ K ],
                         "assume_init_ref",
                         []
                       |),
@@ -3593,10 +3966,16 @@ Module collections.
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "*const")
+                              []
                               [
                                 Ty.apply
                                   (Ty.path "slice")
-                                  [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ K ]
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                      []
+                                      [ K ]
                                   ]
                               ],
                             "get_unchecked",
@@ -3611,7 +3990,7 @@ Module collections.
                   M.alloc (|
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ V ],
+                        Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ V ],
                         "assume_init_mut",
                         []
                       |),
@@ -3620,10 +3999,16 @@ Module collections.
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "*mut")
+                              []
                               [
                                 Ty.apply
                                   (Ty.path "slice")
-                                  [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ V ]
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                      []
+                                      [ V ]
                                   ]
                               ],
                             "get_unchecked_mut",
@@ -3636,7 +4021,7 @@ Module collections.
                   |) in
                 M.alloc (| Value.Tuple [ M.read (| key |); M.read (| val |) ] |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_into_key_val_mut_at :
@@ -3653,6 +4038,7 @@ Module collections.
         Definition Self (K V : Ty.t) : Ty.t :=
           Ty.apply
             (Ty.path "alloc::collections::btree::node::NodeRef")
+            []
             [
               Ty.path "alloc::collections::btree::node::marker::Mut";
               K;
@@ -3667,10 +4053,15 @@ Module collections.
                 unsafe { ( *leaf).parent_idx.write(parent_idx as u16) };
             }
         *)
-        Definition set_parent_link (K V : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition set_parent_link
+            (K V : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self K V in
-          match τ, α with
-          | [], [ self; parent; parent_idx ] =>
+          match ε, τ, α with
+          | [], [], [ self; parent; parent_idx ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let parent := M.alloc (| parent |) in
@@ -3682,6 +4073,7 @@ Module collections.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "alloc::collections::btree::node::NodeRef")
+                          []
                           [
                             Ty.path "alloc::collections::btree::node::marker::Mut";
                             K;
@@ -3707,7 +4099,10 @@ Module collections.
                   M.alloc (|
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ Ty.path "u16" ],
+                        Ty.apply
+                          (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                          []
+                          [ Ty.path "u16" ],
                         "write",
                         []
                       |),
@@ -3723,7 +4118,7 @@ Module collections.
                   |) in
                 M.alloc (| Value.Tuple [] |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_set_parent_link :
@@ -3735,10 +4130,15 @@ Module collections.
                 NodeRef { height: self.height, node: self.node, _marker: PhantomData }
             }
         *)
-        Definition cast_to_leaf_unchecked (K V : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition cast_to_leaf_unchecked
+            (K V : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self K V in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
@@ -3819,7 +4219,7 @@ Module collections.
                     ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_cast_to_leaf_unchecked :
@@ -3832,10 +4232,15 @@ Module collections.
                 NodeRef { height: self.height, node: self.node, _marker: PhantomData }
             }
         *)
-        Definition cast_to_internal_unchecked (K V : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition cast_to_internal_unchecked
+            (K V : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self K V in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
@@ -3916,7 +4321,7 @@ Module collections.
                     ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_cast_to_internal_unchecked :
@@ -3947,10 +4352,15 @@ Module collections.
                 }
             }
         *)
-        Definition choose_parent_kv (K V : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition choose_parent_kv
+            (K V : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self K V in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
@@ -3960,6 +4370,7 @@ Module collections.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "alloc::collections::btree::node::NodeRef")
+                          []
                           [
                             Ty.path "alloc::collections::btree::node::marker::Mut";
                             K;
@@ -3976,6 +4387,7 @@ Module collections.
                             [
                               Ty.apply
                                 (Ty.path "alloc::collections::btree::node::NodeRef")
+                                []
                                 [
                                   Ty.path "alloc::collections::btree::node::marker::Mut";
                                   K;
@@ -4005,9 +4417,11 @@ Module collections.
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "alloc::collections::btree::node::Handle")
+                                  []
                                   [
                                     Ty.apply
                                       (Ty.path "alloc::collections::btree::node::NodeRef")
+                                      []
                                       [
                                         Ty.path "alloc::collections::btree::node::marker::Mut";
                                         K;
@@ -4050,10 +4464,12 @@ Module collections.
                                                       Ty.apply
                                                         (Ty.path
                                                           "alloc::collections::btree::node::Handle")
+                                                        []
                                                         [
                                                           Ty.apply
                                                             (Ty.path
                                                               "alloc::collections::btree::node::NodeRef")
+                                                            []
                                                             [
                                                               Ty.path
                                                                 "alloc::collections::btree::node::marker::Mut";
@@ -4075,10 +4491,12 @@ Module collections.
                                                     Ty.apply
                                                       (Ty.path
                                                         "alloc::collections::btree::node::Handle")
+                                                      []
                                                       [
                                                         Ty.apply
                                                           (Ty.path
                                                             "alloc::collections::btree::node::NodeRef")
+                                                          []
                                                           [
                                                             Ty.path
                                                               "alloc::collections::btree::node::marker::Mut";
@@ -4099,10 +4517,12 @@ Module collections.
                                                         Ty.apply
                                                           (Ty.path
                                                             "alloc::collections::btree::node::Handle")
+                                                          []
                                                           [
                                                             Ty.apply
                                                               (Ty.path
                                                                 "alloc::collections::btree::node::NodeRef")
+                                                              []
                                                               [
                                                                 Ty.path
                                                                   "alloc::collections::btree::node::marker::Mut";
@@ -4141,9 +4561,11 @@ Module collections.
                                       M.get_associated_function (|
                                         Ty.apply
                                           (Ty.path "alloc::collections::btree::node::Handle")
+                                          []
                                           [
                                             Ty.apply
                                               (Ty.path "alloc::collections::btree::node::NodeRef")
+                                              []
                                               [
                                                 Ty.path
                                                   "alloc::collections::btree::node::marker::Mut";
@@ -4188,10 +4610,12 @@ Module collections.
                                                               Ty.apply
                                                                 (Ty.path
                                                                   "alloc::collections::btree::node::Handle")
+                                                                []
                                                                 [
                                                                   Ty.apply
                                                                     (Ty.path
                                                                       "alloc::collections::btree::node::NodeRef")
+                                                                    []
                                                                     [
                                                                       Ty.path
                                                                         "alloc::collections::btree::node::marker::Mut";
@@ -4214,10 +4638,12 @@ Module collections.
                                                             Ty.apply
                                                               (Ty.path
                                                                 "alloc::collections::btree::node::Handle")
+                                                              []
                                                               [
                                                                 Ty.apply
                                                                   (Ty.path
                                                                     "alloc::collections::btree::node::NodeRef")
+                                                                  []
                                                                   [
                                                                     Ty.path
                                                                       "alloc::collections::btree::node::marker::Mut";
@@ -4238,10 +4664,12 @@ Module collections.
                                                                 Ty.apply
                                                                   (Ty.path
                                                                     "alloc::collections::btree::node::Handle")
+                                                                  []
                                                                   [
                                                                     Ty.apply
                                                                       (Ty.path
                                                                         "alloc::collections::btree::node::NodeRef")
+                                                                      []
                                                                       [
                                                                         Ty.path
                                                                           "alloc::collections::btree::node::marker::Mut";
@@ -4332,7 +4760,7 @@ Module collections.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_choose_parent_kv :
@@ -4344,6 +4772,7 @@ Module collections.
         Definition Self (K V : Ty.t) : Ty.t :=
           Ty.apply
             (Ty.path "alloc::collections::btree::node::NodeRef")
+            []
             [
               Ty.path "alloc::collections::btree::node::marker::Owned";
               K;
@@ -4358,10 +4787,15 @@ Module collections.
                 leaf.parent = None;
             }
         *)
-        Definition clear_parent_link (K V : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition clear_parent_link
+            (K V : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self K V in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
@@ -4371,6 +4805,7 @@ Module collections.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "alloc::collections::btree::node::NodeRef")
+                          []
                           [
                             Ty.path "alloc::collections::btree::node::marker::Owned";
                             K;
@@ -4389,6 +4824,7 @@ Module collections.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "alloc::collections::btree::node::NodeRef")
+                          []
                           [
                             Ty.path "alloc::collections::btree::node::marker::Mut";
                             K;
@@ -4412,7 +4848,7 @@ Module collections.
                   |) in
                 M.alloc (| Value.Tuple [] |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_clear_parent_link :
@@ -4423,16 +4859,17 @@ Module collections.
                 NodeRef::new_leaf(alloc).forget_type()
             }
         *)
-        Definition new (K V : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition new (K V : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self K V in
-          match τ, α with
-          | [ A ], [ alloc ] =>
+          match ε, τ, α with
+          | [], [ A ], [ alloc ] =>
             ltac:(M.monadic
               (let alloc := M.alloc (| alloc |) in
               M.call_closure (|
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "alloc::collections::btree::node::NodeRef")
+                    []
                     [
                       Ty.path "alloc::collections::btree::node::marker::Owned";
                       K;
@@ -4447,6 +4884,7 @@ Module collections.
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "alloc::collections::btree::node::NodeRef")
+                        []
                         [
                           Ty.path "alloc::collections::btree::node::marker::Owned";
                           K;
@@ -4460,7 +4898,7 @@ Module collections.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_new :
@@ -4478,10 +4916,15 @@ Module collections.
                 NodeRef { height: self.height, node: self.node, _marker: PhantomData }
             }
         *)
-        Definition push_internal_level (K V : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition push_internal_level
+            (K V : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self K V in
-          match τ, α with
-          | [ A ], [ self; alloc ] =>
+          match ε, τ, α with
+          | [], [ A ], [ self; alloc ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let alloc := M.alloc (| alloc |) in
@@ -4494,6 +4937,7 @@ Module collections.
                         [
                           Ty.apply
                             (Ty.path "alloc::collections::btree::node::NodeRef")
+                            []
                             [
                               Ty.path "alloc::collections::btree::node::marker::Owned";
                               K;
@@ -4506,6 +4950,7 @@ Module collections.
                                 [
                                   Ty.apply
                                     (Ty.path "alloc::collections::btree::node::NodeRef")
+                                    []
                                     [
                                       Ty.path "alloc::collections::btree::node::marker::Owned";
                                       K;
@@ -4517,6 +4962,7 @@ Module collections.
                             ]
                             (Ty.apply
                               (Ty.path "alloc::collections::btree::node::NodeRef")
+                              []
                               [
                                 Ty.path "alloc::collections::btree::node::marker::Owned";
                                 K;
@@ -4542,6 +4988,7 @@ Module collections.
                                           M.get_associated_function (|
                                             Ty.apply
                                               (Ty.path "alloc::collections::btree::node::NodeRef")
+                                              []
                                               [
                                                 Ty.path
                                                   "alloc::collections::btree::node::marker::Owned";
@@ -4559,6 +5006,7 @@ Module collections.
                                                 Ty.apply
                                                   (Ty.path
                                                     "alloc::collections::btree::node::NodeRef")
+                                                  []
                                                   [
                                                     Ty.path
                                                       "alloc::collections::btree::node::marker::Owned";
@@ -4605,7 +5053,7 @@ Module collections.
                     ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_push_internal_level :
@@ -4632,10 +5080,15 @@ Module collections.
                 }
             }
         *)
-        Definition pop_internal_level (K V : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition pop_internal_level
+            (K V : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self K V in
-          match τ, α with
-          | [ A ], [ self; alloc ] =>
+          match ε, τ, α with
+          | [], [ A ], [ self; alloc ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let alloc := M.alloc (| alloc |) in
@@ -4687,6 +5140,7 @@ Module collections.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "alloc::collections::btree::node::NodeRef")
+                          []
                           [
                             Ty.path "alloc::collections::btree::node::marker::Mut";
                             K;
@@ -4701,6 +5155,7 @@ Module collections.
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "alloc::collections::btree::node::NodeRef")
+                              []
                               [
                                 Ty.path "alloc::collections::btree::node::marker::Owned";
                                 K;
@@ -4721,6 +5176,7 @@ Module collections.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "alloc::collections::btree::node::NodeRef")
+                          []
                           [
                             Ty.path "alloc::collections::btree::node::marker::Mut";
                             K;
@@ -4744,12 +5200,15 @@ Module collections.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                          []
                           [
                             Ty.apply
                               (Ty.path "core::ptr::non_null::NonNull")
+                              []
                               [
                                 Ty.apply
                                   (Ty.path "alloc::collections::btree::node::LeafNode")
+                                  []
                                   [ K; V ]
                               ]
                           ],
@@ -4785,6 +5244,7 @@ Module collections.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "alloc::collections::btree::node::NodeRef")
+                          []
                           [
                             Ty.path "alloc::collections::btree::node::marker::Owned";
                             K;
@@ -4807,9 +5267,11 @@ Module collections.
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "core::ptr::non_null::NonNull")
+                              []
                               [
                                 Ty.apply
                                   (Ty.path "alloc::collections::btree::node::LeafNode")
+                                  []
                                   [ K; V ]
                               ],
                             "cast",
@@ -4824,6 +5286,7 @@ Module collections.
                             [
                               Ty.apply
                                 (Ty.path "alloc::collections::btree::node::InternalNode")
+                                []
                                 [ K; V ]
                             ]
                           |),
@@ -4834,7 +5297,7 @@ Module collections.
                   |) in
                 M.alloc (| Value.Tuple [] |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_pop_internal_level :
@@ -4847,6 +5310,7 @@ Module collections.
         Definition Self (K V Type_ : Ty.t) : Ty.t :=
           Ty.apply
             (Ty.path "alloc::collections::btree::node::NodeRef")
+            []
             [ Ty.path "alloc::collections::btree::node::marker::Owned"; K; V; Type_ ].
         
         (*
@@ -4854,10 +5318,15 @@ Module collections.
                 NodeRef { height: self.height, node: self.node, _marker: PhantomData }
             }
         *)
-        Definition borrow_mut (K V Type_ : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition borrow_mut
+            (K V Type_ : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self K V Type_ in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               Value.StructRecord
@@ -4881,7 +5350,7 @@ Module collections.
                     |));
                   ("_marker", Value.StructTuple "core::marker::PhantomData" [])
                 ]))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_borrow_mut :
@@ -4893,10 +5362,15 @@ Module collections.
                 NodeRef { height: self.height, node: self.node, _marker: PhantomData }
             }
         *)
-        Definition borrow_valmut (K V Type_ : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition borrow_valmut
+            (K V Type_ : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self K V Type_ in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               Value.StructRecord
@@ -4920,7 +5394,7 @@ Module collections.
                     |));
                   ("_marker", Value.StructTuple "core::marker::PhantomData" [])
                 ]))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_borrow_valmut :
@@ -4932,10 +5406,15 @@ Module collections.
                 NodeRef { height: self.height, node: self.node, _marker: PhantomData }
             }
         *)
-        Definition into_dying (K V Type_ : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition into_dying
+            (K V Type_ : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self K V Type_ in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               Value.StructRecord
@@ -4959,7 +5438,7 @@ Module collections.
                     |));
                   ("_marker", Value.StructTuple "core::marker::PhantomData" [])
                 ]))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_into_dying :
@@ -4971,6 +5450,7 @@ Module collections.
         Definition Self (K V : Ty.t) : Ty.t :=
           Ty.apply
             (Ty.path "alloc::collections::btree::node::NodeRef")
+            []
             [
               Ty.path "alloc::collections::btree::node::marker::Mut";
               K;
@@ -4990,10 +5470,10 @@ Module collections.
                 }
             }
         *)
-        Definition push (K V : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition push (K V : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self K V in
-          match τ, α with
-          | [], [ self; key; val ] =>
+          match ε, τ, α with
+          | [], [], [ self; key; val ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let key := M.alloc (| key |) in
@@ -5005,6 +5485,7 @@ Module collections.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "alloc::collections::btree::node::NodeRef")
+                          []
                           [
                             Ty.path "alloc::collections::btree::node::marker::Mut";
                             K;
@@ -5070,7 +5551,7 @@ Module collections.
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
-                            Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ K ],
+                            Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ K ],
                             "write",
                             []
                           |),
@@ -5079,6 +5560,7 @@ Module collections.
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "alloc::collections::btree::node::NodeRef")
+                                  []
                                   [
                                     Ty.path "alloc::collections::btree::node::marker::Mut";
                                     K;
@@ -5088,7 +5570,7 @@ Module collections.
                                 "key_area_mut",
                                 [
                                   Ty.path "usize";
-                                  Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ K ]
+                                  Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ K ]
                                 ]
                               |),
                               [ M.read (| self |); M.read (| idx |) ]
@@ -5100,7 +5582,7 @@ Module collections.
                     M.alloc (|
                       M.call_closure (|
                         M.get_associated_function (|
-                          Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ V ],
+                          Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ V ],
                           "write",
                           []
                         |),
@@ -5109,6 +5591,7 @@ Module collections.
                             M.get_associated_function (|
                               Ty.apply
                                 (Ty.path "alloc::collections::btree::node::NodeRef")
+                                []
                                 [
                                   Ty.path "alloc::collections::btree::node::marker::Mut";
                                   K;
@@ -5118,7 +5601,7 @@ Module collections.
                               "val_area_mut",
                               [
                                 Ty.path "usize";
-                                Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ V ]
+                                Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ V ]
                               ]
                             |),
                             [ M.read (| self |); M.read (| idx |) ]
@@ -5130,7 +5613,7 @@ Module collections.
                   |)
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_push :
@@ -5143,6 +5626,7 @@ Module collections.
         Definition Self (BorrowType K V : Ty.t) : Ty.t :=
           Ty.apply
             (Ty.path "alloc::collections::btree::node::NodeRef")
+            []
             [ BorrowType; K; V; Ty.path "alloc::collections::btree::node::marker::Leaf" ].
         
         (*
@@ -5150,10 +5634,15 @@ Module collections.
                 NodeRef { height: self.height, node: self.node, _marker: PhantomData }
             }
         *)
-        Definition forget_type (BorrowType K V : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition forget_type
+            (BorrowType K V : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self BorrowType K V in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               Value.StructRecord
@@ -5177,7 +5666,7 @@ Module collections.
                     |));
                   ("_marker", Value.StructTuple "core::marker::PhantomData" [])
                 ]))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_forget_type :
@@ -5190,6 +5679,7 @@ Module collections.
         Definition Self (BorrowType K V : Ty.t) : Ty.t :=
           Ty.apply
             (Ty.path "alloc::collections::btree::node::NodeRef")
+            []
             [ BorrowType; K; V; Ty.path "alloc::collections::btree::node::marker::LeafOrInternal" ].
         
         (*
@@ -5214,10 +5704,15 @@ Module collections.
                 }
             }
         *)
-        Definition force (BorrowType K V : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition force
+            (BorrowType K V : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self BorrowType K V in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
@@ -5300,7 +5795,7 @@ Module collections.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_force :
@@ -5312,18 +5807,19 @@ Module collections.
       (* StructRecord
         {
           name := "Handle";
+          const_params := [];
           ty_params := [ "Node"; "Type_" ];
           fields :=
             [
               ("node", Node);
               ("idx", Ty.path "usize");
-              ("_marker", Ty.apply (Ty.path "core::marker::PhantomData") [ Type_ ])
+              ("_marker", Ty.apply (Ty.path "core::marker::PhantomData") [] [ Type_ ])
             ];
         } *)
       
       Module Impl_core_marker_Copy_where_core_marker_Copy_Node_for_alloc_collections_btree_node_Handle_Node_Type_.
         Definition Self (Node Type_ : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "alloc::collections::btree::node::Handle") [ Node; Type_ ].
+          Ty.apply (Ty.path "alloc::collections::btree::node::Handle") [] [ Node; Type_ ].
         
         Axiom Implements :
           forall (Node Type_ : Ty.t),
@@ -5336,21 +5832,26 @@ Module collections.
       
       Module Impl_core_clone_Clone_where_core_marker_Copy_Node_for_alloc_collections_btree_node_Handle_Node_Type_.
         Definition Self (Node Type_ : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "alloc::collections::btree::node::Handle") [ Node; Type_ ].
+          Ty.apply (Ty.path "alloc::collections::btree::node::Handle") [] [ Node; Type_ ].
         
         (*
             fn clone(&self) -> Self {
                 *self
             }
         *)
-        Definition clone (Node Type_ : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition clone
+            (Node Type_ : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self Node Type_ in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (| M.read (| self |) |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -5364,17 +5865,22 @@ Module collections.
       
       Module Impl_alloc_collections_btree_node_Handle_Node_Type_.
         Definition Self (Node Type_ : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "alloc::collections::btree::node::Handle") [ Node; Type_ ].
+          Ty.apply (Ty.path "alloc::collections::btree::node::Handle") [] [ Node; Type_ ].
         
         (*
             pub fn into_node(self) -> Node {
                 self.node
             }
         *)
-        Definition into_node (Node Type_ : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition into_node
+            (Node Type_ : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self Node Type_ in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
@@ -5384,7 +5890,7 @@ Module collections.
                   "node"
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_into_node :
@@ -5396,10 +5902,15 @@ Module collections.
                 self.idx
             }
         *)
-        Definition idx (Node Type_ : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition idx
+            (Node Type_ : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self Node Type_ in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
@@ -5409,7 +5920,7 @@ Module collections.
                   "idx"
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_idx :
@@ -5421,9 +5932,11 @@ Module collections.
         Definition Self (BorrowType K V NodeType : Ty.t) : Ty.t :=
           Ty.apply
             (Ty.path "alloc::collections::btree::node::Handle")
+            []
             [
               Ty.apply
                 (Ty.path "alloc::collections::btree::node::NodeRef")
+                []
                 [ BorrowType; K; V; NodeType ];
               Ty.path "alloc::collections::btree::node::marker::KV"
             ].
@@ -5435,10 +5948,15 @@ Module collections.
                 Handle { node, idx, _marker: PhantomData }
             }
         *)
-        Definition new_kv (BorrowType K V NodeType : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition new_kv
+            (BorrowType K V NodeType : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self BorrowType K V NodeType in
-          match τ, α with
-          | [], [ node; idx ] =>
+          match ε, τ, α with
+          | [], [], [ node; idx ] =>
             ltac:(M.monadic
               (let node := M.alloc (| node |) in
               let idx := M.alloc (| idx |) in
@@ -5469,6 +5987,7 @@ Module collections.
                                                   Ty.apply
                                                     (Ty.path
                                                       "alloc::collections::btree::node::NodeRef")
+                                                    []
                                                     [ BorrowType; K; V; NodeType ],
                                                   "len",
                                                   []
@@ -5510,7 +6029,7 @@ Module collections.
                     ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_new_kv :
@@ -5527,21 +6046,24 @@ Module collections.
         *)
         Definition left_edge
             (BorrowType K V NodeType : Ty.t)
+            (ε : list Value.t)
             (τ : list Ty.t)
             (α : list Value.t)
             : M :=
           let Self : Ty.t := Self BorrowType K V NodeType in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.call_closure (|
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "alloc::collections::btree::node::Handle")
+                    []
                     [
                       Ty.apply
                         (Ty.path "alloc::collections::btree::node::NodeRef")
+                        []
                         [ BorrowType; K; V; NodeType ];
                       Ty.path "alloc::collections::btree::node::marker::Edge"
                     ],
@@ -5565,7 +6087,7 @@ Module collections.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_left_edge :
@@ -5582,21 +6104,24 @@ Module collections.
         *)
         Definition right_edge
             (BorrowType K V NodeType : Ty.t)
+            (ε : list Value.t)
             (τ : list Ty.t)
             (α : list Value.t)
             : M :=
           let Self : Ty.t := Self BorrowType K V NodeType in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.call_closure (|
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "alloc::collections::btree::node::Handle")
+                    []
                     [
                       Ty.apply
                         (Ty.path "alloc::collections::btree::node::NodeRef")
+                        []
                         [ BorrowType; K; V; NodeType ];
                       Ty.path "alloc::collections::btree::node::marker::Edge"
                     ],
@@ -5623,7 +6148,7 @@ Module collections.
                     (Value.Integer 1)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_right_edge :
@@ -5638,9 +6163,11 @@ Module collections.
         Definition Self (BorrowType K V NodeType HandleType : Ty.t) : Ty.t :=
           Ty.apply
             (Ty.path "alloc::collections::btree::node::Handle")
+            []
             [
               Ty.apply
                 (Ty.path "alloc::collections::btree::node::NodeRef")
+                []
                 [ BorrowType; K; V; NodeType ];
               HandleType
             ].
@@ -5653,12 +6180,13 @@ Module collections.
         *)
         Definition eq
             (BorrowType K V NodeType HandleType : Ty.t)
+            (ε : list Value.t)
             (τ : list Ty.t)
             (α : list Value.t)
             : M :=
           let Self : Ty.t := Self BorrowType K V NodeType HandleType in
-          match τ, α with
-          | [], [ self; other ] =>
+          match ε, τ, α with
+          | [], [], [ self; other ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let other := M.alloc (| other |) in
@@ -5696,6 +6224,7 @@ Module collections.
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "alloc::collections::btree::node::NodeRef")
+                                  []
                                   [ BorrowType; K; V; NodeType ],
                                 "eq",
                                 []
@@ -5724,7 +6253,7 @@ Module collections.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -5740,9 +6269,11 @@ Module collections.
         Definition Self (BorrowType K V NodeType HandleType : Ty.t) : Ty.t :=
           Ty.apply
             (Ty.path "alloc::collections::btree::node::Handle")
+            []
             [
               Ty.apply
                 (Ty.path "alloc::collections::btree::node::NodeRef")
+                []
                 [ BorrowType; K; V; NodeType ];
               HandleType
             ].
@@ -5755,12 +6286,13 @@ Module collections.
         *)
         Definition reborrow
             (BorrowType K V NodeType HandleType : Ty.t)
+            (ε : list Value.t)
             (τ : list Ty.t)
             (α : list Value.t)
             : M :=
           let Self : Ty.t := Self BorrowType K V NodeType HandleType in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               Value.StructRecord
@@ -5771,6 +6303,7 @@ Module collections.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "alloc::collections::btree::node::NodeRef")
+                          []
                           [ BorrowType; K; V; NodeType ],
                         "reborrow",
                         []
@@ -5793,7 +6326,7 @@ Module collections.
                     |));
                   ("_marker", Value.StructTuple "core::marker::PhantomData" [])
                 ]))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_reborrow :
@@ -5808,9 +6341,11 @@ Module collections.
         Definition Self (K V NodeType HandleType : Ty.t) : Ty.t :=
           Ty.apply
             (Ty.path "alloc::collections::btree::node::Handle")
+            []
             [
               Ty.apply
                 (Ty.path "alloc::collections::btree::node::NodeRef")
+                []
                 [ Ty.path "alloc::collections::btree::node::marker::Mut"; K; V; NodeType ];
               HandleType
             ].
@@ -5825,12 +6360,13 @@ Module collections.
         *)
         Definition reborrow_mut
             (K V NodeType HandleType : Ty.t)
+            (ε : list Value.t)
             (τ : list Ty.t)
             (α : list Value.t)
             : M :=
           let Self : Ty.t := Self K V NodeType HandleType in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               Value.StructRecord
@@ -5841,6 +6377,7 @@ Module collections.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "alloc::collections::btree::node::NodeRef")
+                          []
                           [ Ty.path "alloc::collections::btree::node::marker::Mut"; K; V; NodeType
                           ],
                         "reborrow_mut",
@@ -5864,7 +6401,7 @@ Module collections.
                     |));
                   ("_marker", Value.StructTuple "core::marker::PhantomData" [])
                 ]))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_reborrow_mut :
@@ -5881,12 +6418,13 @@ Module collections.
         *)
         Definition dormant
             (K V NodeType HandleType : Ty.t)
+            (ε : list Value.t)
             (τ : list Ty.t)
             (α : list Value.t)
             : M :=
           let Self : Ty.t := Self K V NodeType HandleType in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               Value.StructRecord
@@ -5897,6 +6435,7 @@ Module collections.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "alloc::collections::btree::node::NodeRef")
+                          []
                           [ Ty.path "alloc::collections::btree::node::marker::Mut"; K; V; NodeType
                           ],
                         "dormant",
@@ -5920,7 +6459,7 @@ Module collections.
                     |));
                   ("_marker", Value.StructTuple "core::marker::PhantomData" [])
                 ]))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_dormant :
@@ -5935,9 +6474,11 @@ Module collections.
         Definition Self (K V NodeType HandleType : Ty.t) : Ty.t :=
           Ty.apply
             (Ty.path "alloc::collections::btree::node::Handle")
+            []
             [
               Ty.apply
                 (Ty.path "alloc::collections::btree::node::NodeRef")
+                []
                 [ Ty.path "alloc::collections::btree::node::marker::DormantMut"; K; V; NodeType ];
               HandleType
             ].
@@ -5947,10 +6488,15 @@ Module collections.
                 Handle { node: unsafe { self.node.awaken() }, idx: self.idx, _marker: PhantomData }
             }
         *)
-        Definition awaken (K V NodeType HandleType : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition awaken
+            (K V NodeType HandleType : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self K V NodeType HandleType in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               Value.StructRecord
@@ -5961,6 +6507,7 @@ Module collections.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "alloc::collections::btree::node::NodeRef")
+                          []
                           [
                             Ty.path "alloc::collections::btree::node::marker::DormantMut";
                             K;
@@ -5990,7 +6537,7 @@ Module collections.
                     |));
                   ("_marker", Value.StructTuple "core::marker::PhantomData" [])
                 ]))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_awaken :
@@ -6005,9 +6552,11 @@ Module collections.
         Definition Self (BorrowType K V NodeType : Ty.t) : Ty.t :=
           Ty.apply
             (Ty.path "alloc::collections::btree::node::Handle")
+            []
             [
               Ty.apply
                 (Ty.path "alloc::collections::btree::node::NodeRef")
+                []
                 [ BorrowType; K; V; NodeType ];
               Ty.path "alloc::collections::btree::node::marker::Edge"
             ].
@@ -6021,12 +6570,13 @@ Module collections.
         *)
         Definition new_edge
             (BorrowType K V NodeType : Ty.t)
+            (ε : list Value.t)
             (τ : list Ty.t)
             (α : list Value.t)
             : M :=
           let Self : Ty.t := Self BorrowType K V NodeType in
-          match τ, α with
-          | [], [ node; idx ] =>
+          match ε, τ, α with
+          | [], [], [ node; idx ] =>
             ltac:(M.monadic
               (let node := M.alloc (| node |) in
               let idx := M.alloc (| idx |) in
@@ -6057,6 +6607,7 @@ Module collections.
                                                   Ty.apply
                                                     (Ty.path
                                                       "alloc::collections::btree::node::NodeRef")
+                                                    []
                                                     [ BorrowType; K; V; NodeType ],
                                                   "len",
                                                   []
@@ -6098,7 +6649,7 @@ Module collections.
                     ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_new_edge :
@@ -6119,12 +6670,13 @@ Module collections.
         *)
         Definition left_kv
             (BorrowType K V NodeType : Ty.t)
+            (ε : list Value.t)
             (τ : list Ty.t)
             (α : list Value.t)
             : M :=
           let Self : Ty.t := Self BorrowType K V NodeType in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
@@ -6156,9 +6708,11 @@ Module collections.
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "alloc::collections::btree::node::Handle")
+                                    []
                                     [
                                       Ty.apply
                                         (Ty.path "alloc::collections::btree::node::NodeRef")
+                                        []
                                         [ BorrowType; K; V; NodeType ];
                                       Ty.path "alloc::collections::btree::node::marker::KV"
                                     ],
@@ -6195,7 +6749,7 @@ Module collections.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_left_kv :
@@ -6216,12 +6770,13 @@ Module collections.
         *)
         Definition right_kv
             (BorrowType K V NodeType : Ty.t)
+            (ε : list Value.t)
             (τ : list Ty.t)
             (α : list Value.t)
             : M :=
           let Self : Ty.t := Self BorrowType K V NodeType in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
@@ -6245,6 +6800,7 @@ Module collections.
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "alloc::collections::btree::node::NodeRef")
+                                      []
                                       [ BorrowType; K; V; NodeType ],
                                     "len",
                                     []
@@ -6268,9 +6824,11 @@ Module collections.
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "alloc::collections::btree::node::Handle")
+                                    []
                                     [
                                       Ty.apply
                                         (Ty.path "alloc::collections::btree::node::NodeRef")
+                                        []
                                         [ BorrowType; K; V; NodeType ];
                                       Ty.path "alloc::collections::btree::node::marker::KV"
                                     ],
@@ -6304,7 +6862,7 @@ Module collections.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_right_kv :
@@ -6318,6 +6876,7 @@ Module collections.
       (*
       Enum LeftOrRight
       {
+        const_params := [];
         ty_params := [ "T" ];
         variants :=
           [
@@ -6347,9 +6906,9 @@ Module collections.
           }
       }
       *)
-      Definition splitpoint (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ edge_idx ] =>
+      Definition splitpoint (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ edge_idx ] =>
           ltac:(M.monadic
             (let edge_idx := M.alloc (| edge_idx |) in
             M.read (|
@@ -6491,7 +7050,7 @@ Module collections.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Function_splitpoint :
@@ -6501,9 +7060,11 @@ Module collections.
         Definition Self (K V : Ty.t) : Ty.t :=
           Ty.apply
             (Ty.path "alloc::collections::btree::node::Handle")
+            []
             [
               Ty.apply
                 (Ty.path "alloc::collections::btree::node::NodeRef")
+                []
                 [
                   Ty.path "alloc::collections::btree::node::marker::Mut";
                   K;
@@ -6531,10 +7092,15 @@ Module collections.
                 }
             }
         *)
-        Definition insert_fit (K V : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition insert_fit
+            (K V : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self K V in
-          match τ, α with
-          | [], [ self; key; val ] =>
+          match ε, τ, α with
+          | [], [], [ self; key; val ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let key := M.alloc (| key |) in
@@ -6565,6 +7131,7 @@ Module collections.
                                                   Ty.apply
                                                     (Ty.path
                                                       "alloc::collections::btree::node::NodeRef")
+                                                    []
                                                     [
                                                       Ty.path
                                                         "alloc::collections::btree::node::marker::Mut";
@@ -6623,6 +7190,7 @@ Module collections.
                         M.get_associated_function (|
                           Ty.apply
                             (Ty.path "alloc::collections::btree::node::NodeRef")
+                            []
                             [
                               Ty.path "alloc::collections::btree::node::marker::Mut";
                               K;
@@ -6651,6 +7219,7 @@ Module collections.
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "alloc::collections::btree::node::NodeRef")
+                              []
                               [
                                 Ty.path "alloc::collections::btree::node::marker::Mut";
                                 K;
@@ -6659,10 +7228,12 @@ Module collections.
                               ],
                             "key_area_mut",
                             [
-                              Ty.apply (Ty.path "core::ops::range::RangeTo") [ Ty.path "usize" ];
+                              Ty.apply (Ty.path "core::ops::range::RangeTo") [] [ Ty.path "usize" ];
                               Ty.apply
                                 (Ty.path "slice")
-                                [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ K ] ]
+                                []
+                                [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ K ]
+                                ]
                             ]
                           |),
                           [
@@ -6696,6 +7267,7 @@ Module collections.
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "alloc::collections::btree::node::NodeRef")
+                              []
                               [
                                 Ty.path "alloc::collections::btree::node::marker::Mut";
                                 K;
@@ -6704,10 +7276,12 @@ Module collections.
                               ],
                             "val_area_mut",
                             [
-                              Ty.apply (Ty.path "core::ops::range::RangeTo") [ Ty.path "usize" ];
+                              Ty.apply (Ty.path "core::ops::range::RangeTo") [] [ Ty.path "usize" ];
                               Ty.apply
                                 (Ty.path "slice")
-                                [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ V ] ]
+                                []
+                                [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ V ]
+                                ]
                             ]
                           |),
                           [
@@ -6738,6 +7312,7 @@ Module collections.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "alloc::collections::btree::node::NodeRef")
+                          []
                           [
                             Ty.path "alloc::collections::btree::node::marker::Mut";
                             K;
@@ -6762,9 +7337,11 @@ Module collections.
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "alloc::collections::btree::node::Handle")
+                        []
                         [
                           Ty.apply
                             (Ty.path "alloc::collections::btree::node::NodeRef")
+                            []
                             [
                               Ty.path "alloc::collections::btree::node::marker::Mut";
                               K;
@@ -6795,7 +7372,7 @@ Module collections.
                   |)
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_insert_fit :
@@ -6834,10 +7411,10 @@ Module collections.
                 }
             }
         *)
-        Definition insert (K V : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition insert (K V : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self K V in
-          match τ, α with
-          | [ A ], [ self; key; val; alloc ] =>
+          match ε, τ, α with
+          | [], [ A ], [ self; key; val; alloc ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let key := M.alloc (| key |) in
@@ -6857,6 +7434,7 @@ Module collections.
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "alloc::collections::btree::node::NodeRef")
+                                      []
                                       [
                                         Ty.path "alloc::collections::btree::node::marker::Mut";
                                         K;
@@ -6886,9 +7464,11 @@ Module collections.
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "alloc::collections::btree::node::Handle")
+                                  []
                                   [
                                     Ty.apply
                                       (Ty.path "alloc::collections::btree::node::NodeRef")
+                                      []
                                       [
                                         Ty.path "alloc::collections::btree::node::marker::Mut";
                                         K;
@@ -6911,9 +7491,11 @@ Module collections.
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "alloc::collections::btree::node::Handle")
+                                    []
                                     [
                                       Ty.apply
                                         (Ty.path "alloc::collections::btree::node::NodeRef")
+                                        []
                                         [
                                           Ty.path "alloc::collections::btree::node::marker::Mut";
                                           K;
@@ -6962,9 +7544,11 @@ Module collections.
                                       M.get_associated_function (|
                                         Ty.apply
                                           (Ty.path "alloc::collections::btree::node::Handle")
+                                          []
                                           [
                                             Ty.apply
                                               (Ty.path "alloc::collections::btree::node::NodeRef")
+                                              []
                                               [
                                                 Ty.path
                                                   "alloc::collections::btree::node::marker::Mut";
@@ -6996,9 +7580,11 @@ Module collections.
                                       M.get_associated_function (|
                                         Ty.apply
                                           (Ty.path "alloc::collections::btree::node::Handle")
+                                          []
                                           [
                                             Ty.apply
                                               (Ty.path "alloc::collections::btree::node::NodeRef")
+                                              []
                                               [
                                                 Ty.path
                                                   "alloc::collections::btree::node::marker::Mut";
@@ -7035,10 +7621,12 @@ Module collections.
                                                   Ty.apply
                                                     (Ty.path
                                                       "alloc::collections::btree::node::Handle")
+                                                    []
                                                     [
                                                       Ty.apply
                                                         (Ty.path
                                                           "alloc::collections::btree::node::NodeRef")
+                                                        []
                                                         [
                                                           Ty.path
                                                             "alloc::collections::btree::node::marker::Mut";
@@ -7059,6 +7647,7 @@ Module collections.
                                                       Ty.apply
                                                         (Ty.path
                                                           "alloc::collections::btree::node::NodeRef")
+                                                        []
                                                         [
                                                           Ty.path
                                                             "alloc::collections::btree::node::marker::Mut";
@@ -7097,10 +7686,12 @@ Module collections.
                                                   Ty.apply
                                                     (Ty.path
                                                       "alloc::collections::btree::node::Handle")
+                                                    []
                                                     [
                                                       Ty.apply
                                                         (Ty.path
                                                           "alloc::collections::btree::node::NodeRef")
+                                                        []
                                                         [
                                                           Ty.path
                                                             "alloc::collections::btree::node::marker::Mut";
@@ -7121,6 +7712,7 @@ Module collections.
                                                       Ty.apply
                                                         (Ty.path
                                                           "alloc::collections::btree::node::NodeRef")
+                                                        []
                                                         [
                                                           Ty.path
                                                             "alloc::collections::btree::node::marker::Owned";
@@ -7153,9 +7745,11 @@ Module collections.
                                       M.get_associated_function (|
                                         Ty.apply
                                           (Ty.path "alloc::collections::btree::node::Handle")
+                                          []
                                           [
                                             Ty.apply
                                               (Ty.path "alloc::collections::btree::node::NodeRef")
+                                              []
                                               [
                                                 Ty.path
                                                   "alloc::collections::btree::node::marker::Mut";
@@ -7175,10 +7769,12 @@ Module collections.
                                             M.get_associated_function (|
                                               Ty.apply
                                                 (Ty.path "alloc::collections::btree::node::Handle")
+                                                []
                                                 [
                                                   Ty.apply
                                                     (Ty.path
                                                       "alloc::collections::btree::node::NodeRef")
+                                                    []
                                                     [
                                                       Ty.path
                                                         "alloc::collections::btree::node::marker::Mut";
@@ -7217,7 +7813,7 @@ Module collections.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_insert :
@@ -7258,10 +7854,16 @@ Module collections.
                 }
             }
         *)
-        Definition insert_recursing (K V : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition insert_recursing
+            (K V : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self K V in
-          match τ, α with
-          | [ A; impl_FnOnce_SplitResult_'a__K__V__marker_LeafOrInternal__ ],
+          match ε, τ, α with
+          | [],
+              [ A; impl_FnOnce_SplitResult_'a__K__V__marker_LeafOrInternal__ ],
               [ self; key; value; alloc; split_root ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
@@ -7279,9 +7881,11 @@ Module collections.
                             M.get_associated_function (|
                               Ty.apply
                                 (Ty.path "alloc::collections::btree::node::Handle")
+                                []
                                 [
                                   Ty.apply
                                     (Ty.path "alloc::collections::btree::node::NodeRef")
+                                    []
                                     [
                                       Ty.path "alloc::collections::btree::node::marker::Mut";
                                       K;
@@ -7319,9 +7923,11 @@ Module collections.
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "alloc::collections::btree::node::Handle")
+                                            []
                                             [
                                               Ty.apply
                                                 (Ty.path "alloc::collections::btree::node::NodeRef")
+                                                []
                                                 [
                                                   Ty.path
                                                     "alloc::collections::btree::node::marker::DormantMut";
@@ -7360,6 +7966,7 @@ Module collections.
                                       M.get_associated_function (|
                                         Ty.apply
                                           (Ty.path "alloc::collections::btree::node::SplitResult")
+                                          []
                                           [
                                             K;
                                             V;
@@ -7398,6 +8005,7 @@ Module collections.
                                                     Ty.apply
                                                       (Ty.path
                                                         "alloc::collections::btree::node::NodeRef")
+                                                      []
                                                       [
                                                         Ty.path
                                                           "alloc::collections::btree::node::marker::Mut";
@@ -7437,10 +8045,12 @@ Module collections.
                                                             Ty.apply
                                                               (Ty.path
                                                                 "alloc::collections::btree::node::Handle")
+                                                              []
                                                               [
                                                                 Ty.apply
                                                                   (Ty.path
                                                                     "alloc::collections::btree::node::NodeRef")
+                                                                  []
                                                                   [
                                                                     Ty.path
                                                                       "alloc::collections::btree::node::marker::Mut";
@@ -7514,10 +8124,12 @@ Module collections.
                                                                         Ty.apply
                                                                           (Ty.path
                                                                             "alloc::collections::btree::node::Handle")
+                                                                          []
                                                                           [
                                                                             Ty.apply
                                                                               (Ty.path
                                                                                 "alloc::collections::btree::node::NodeRef")
+                                                                              []
                                                                               [
                                                                                 Ty.path
                                                                                   "alloc::collections::btree::node::marker::DormantMut";
@@ -7553,6 +8165,7 @@ Module collections.
                                                                   Ty.apply
                                                                     (Ty.path
                                                                       "alloc::collections::btree::node::SplitResult")
+                                                                    []
                                                                     [
                                                                       K;
                                                                       V;
@@ -7591,6 +8204,7 @@ Module collections.
                                                                         Ty.apply
                                                                           (Ty.path
                                                                             "alloc::collections::btree::node::SplitResult")
+                                                                          []
                                                                           [
                                                                             K;
                                                                             V;
@@ -7622,10 +8236,12 @@ Module collections.
                                                                 Ty.apply
                                                                   (Ty.path
                                                                     "alloc::collections::btree::node::Handle")
+                                                                  []
                                                                   [
                                                                     Ty.apply
                                                                       (Ty.path
                                                                         "alloc::collections::btree::node::NodeRef")
+                                                                      []
                                                                       [
                                                                         Ty.path
                                                                           "alloc::collections::btree::node::marker::DormantMut";
@@ -7659,7 +8275,7 @@ Module collections.
                     |)
                   |)))
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_insert_recursing :
@@ -7672,9 +8288,11 @@ Module collections.
         Definition Self (K V : Ty.t) : Ty.t :=
           Ty.apply
             (Ty.path "alloc::collections::btree::node::Handle")
+            []
             [
               Ty.apply
                 (Ty.path "alloc::collections::btree::node::NodeRef")
+                []
                 [
                   Ty.path "alloc::collections::btree::node::marker::Mut";
                   K;
@@ -7693,10 +8311,15 @@ Module collections.
                 child.set_parent_link(ptr, idx);
             }
         *)
-        Definition correct_parent_link (K V : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition correct_parent_link
+            (K V : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self K V in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
@@ -7706,9 +8329,11 @@ Module collections.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "core::ptr::non_null::NonNull")
+                          []
                           [
                             Ty.apply
                               (Ty.path "alloc::collections::btree::node::InternalNode")
+                              []
                               [ K; V ]
                           ],
                         "new_unchecked",
@@ -7719,6 +8344,7 @@ Module collections.
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "alloc::collections::btree::node::NodeRef")
+                              []
                               [
                                 Ty.path "alloc::collections::btree::node::marker::Mut";
                                 K;
@@ -7753,9 +8379,11 @@ Module collections.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "alloc::collections::btree::node::Handle")
+                          []
                           [
                             Ty.apply
                               (Ty.path "alloc::collections::btree::node::NodeRef")
+                              []
                               [
                                 Ty.path "alloc::collections::btree::node::marker::Mut";
                                 K;
@@ -7776,6 +8404,7 @@ Module collections.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "alloc::collections::btree::node::NodeRef")
+                          []
                           [
                             Ty.path "alloc::collections::btree::node::marker::Mut";
                             K;
@@ -7790,7 +8419,7 @@ Module collections.
                   |) in
                 M.alloc (| Value.Tuple [] |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_correct_parent_link :
@@ -7812,10 +8441,15 @@ Module collections.
                 }
             }
         *)
-        Definition insert_fit (K V : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition insert_fit
+            (K V : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self K V in
-          match τ, α with
-          | [], [ self; key; val; edge ] =>
+          match ε, τ, α with
+          | [], [], [ self; key; val; edge ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let key := M.alloc (| key |) in
@@ -7847,6 +8481,7 @@ Module collections.
                                                   Ty.apply
                                                     (Ty.path
                                                       "alloc::collections::btree::node::NodeRef")
+                                                    []
                                                     [
                                                       Ty.path
                                                         "alloc::collections::btree::node::marker::Mut";
@@ -7972,6 +8607,7 @@ Module collections.
                         M.get_associated_function (|
                           Ty.apply
                             (Ty.path "alloc::collections::btree::node::NodeRef")
+                            []
                             [
                               Ty.path "alloc::collections::btree::node::marker::Mut";
                               K;
@@ -8000,6 +8636,7 @@ Module collections.
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "alloc::collections::btree::node::NodeRef")
+                              []
                               [
                                 Ty.path "alloc::collections::btree::node::marker::Mut";
                                 K;
@@ -8008,10 +8645,12 @@ Module collections.
                               ],
                             "key_area_mut",
                             [
-                              Ty.apply (Ty.path "core::ops::range::RangeTo") [ Ty.path "usize" ];
+                              Ty.apply (Ty.path "core::ops::range::RangeTo") [] [ Ty.path "usize" ];
                               Ty.apply
                                 (Ty.path "slice")
-                                [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ K ] ]
+                                []
+                                [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ K ]
+                                ]
                             ]
                           |),
                           [
@@ -8045,6 +8684,7 @@ Module collections.
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "alloc::collections::btree::node::NodeRef")
+                              []
                               [
                                 Ty.path "alloc::collections::btree::node::marker::Mut";
                                 K;
@@ -8053,10 +8693,12 @@ Module collections.
                               ],
                             "val_area_mut",
                             [
-                              Ty.apply (Ty.path "core::ops::range::RangeTo") [ Ty.path "usize" ];
+                              Ty.apply (Ty.path "core::ops::range::RangeTo") [] [ Ty.path "usize" ];
                               Ty.apply
                                 (Ty.path "slice")
-                                [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ V ] ]
+                                []
+                                [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ V ]
+                                ]
                             ]
                           |),
                           [
@@ -8089,9 +8731,11 @@ Module collections.
                         [
                           Ty.apply
                             (Ty.path "core::ptr::non_null::NonNull")
+                            []
                             [
                               Ty.apply
                                 (Ty.path "alloc::collections::btree::node::LeafNode")
+                                []
                                 [ K; V ]
                             ]
                         ]
@@ -8101,6 +8745,7 @@ Module collections.
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "alloc::collections::btree::node::NodeRef")
+                              []
                               [
                                 Ty.path "alloc::collections::btree::node::marker::Mut";
                                 K;
@@ -8109,18 +8754,22 @@ Module collections.
                               ],
                             "edge_area_mut",
                             [
-                              Ty.apply (Ty.path "core::ops::range::RangeTo") [ Ty.path "usize" ];
+                              Ty.apply (Ty.path "core::ops::range::RangeTo") [] [ Ty.path "usize" ];
                               Ty.apply
                                 (Ty.path "slice")
+                                []
                                 [
                                   Ty.apply
                                     (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                    []
                                     [
                                       Ty.apply
                                         (Ty.path "core::ptr::non_null::NonNull")
+                                        []
                                         [
                                           Ty.apply
                                             (Ty.path "alloc::collections::btree::node::LeafNode")
+                                            []
                                             [ K; V ]
                                         ]
                                     ]
@@ -8170,6 +8819,7 @@ Module collections.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "alloc::collections::btree::node::NodeRef")
+                          []
                           [
                             Ty.path "alloc::collections::btree::node::marker::Mut";
                             K;
@@ -8195,6 +8845,7 @@ Module collections.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "alloc::collections::btree::node::NodeRef")
+                          []
                           [
                             Ty.path "alloc::collections::btree::node::marker::Mut";
                             K;
@@ -8202,7 +8853,7 @@ Module collections.
                             Ty.path "alloc::collections::btree::node::marker::Internal"
                           ],
                         "correct_childrens_parent_links",
-                        [ Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "usize" ] ]
+                        [ Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ] ]
                       |),
                       [
                         M.SubPointer.get_struct_record_field (|
@@ -8232,7 +8883,7 @@ Module collections.
                   |) in
                 M.alloc (| Value.Tuple [] |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_insert_fit :
@@ -8269,10 +8920,10 @@ Module collections.
                 }
             }
         *)
-        Definition insert (K V : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition insert (K V : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self K V in
-          match τ, α with
-          | [ A ], [ self; key; val; edge; alloc ] =>
+          match ε, τ, α with
+          | [], [ A ], [ self; key; val; edge; alloc ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let key := M.alloc (| key |) in
@@ -8344,6 +8995,7 @@ Module collections.
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "alloc::collections::btree::node::NodeRef")
+                                      []
                                       [
                                         Ty.path "alloc::collections::btree::node::marker::Mut";
                                         K;
@@ -8373,9 +9025,11 @@ Module collections.
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "alloc::collections::btree::node::Handle")
+                                  []
                                   [
                                     Ty.apply
                                       (Ty.path "alloc::collections::btree::node::NodeRef")
+                                      []
                                       [
                                         Ty.path "alloc::collections::btree::node::marker::Mut";
                                         K;
@@ -8424,9 +9078,11 @@ Module collections.
                                       M.get_associated_function (|
                                         Ty.apply
                                           (Ty.path "alloc::collections::btree::node::Handle")
+                                          []
                                           [
                                             Ty.apply
                                               (Ty.path "alloc::collections::btree::node::NodeRef")
+                                              []
                                               [
                                                 Ty.path
                                                   "alloc::collections::btree::node::marker::Mut";
@@ -8458,9 +9114,11 @@ Module collections.
                                       M.get_associated_function (|
                                         Ty.apply
                                           (Ty.path "alloc::collections::btree::node::Handle")
+                                          []
                                           [
                                             Ty.apply
                                               (Ty.path "alloc::collections::btree::node::NodeRef")
+                                              []
                                               [
                                                 Ty.path
                                                   "alloc::collections::btree::node::marker::Mut";
@@ -8497,10 +9155,12 @@ Module collections.
                                                   Ty.apply
                                                     (Ty.path
                                                       "alloc::collections::btree::node::Handle")
+                                                    []
                                                     [
                                                       Ty.apply
                                                         (Ty.path
                                                           "alloc::collections::btree::node::NodeRef")
+                                                        []
                                                         [
                                                           Ty.path
                                                             "alloc::collections::btree::node::marker::Mut";
@@ -8521,6 +9181,7 @@ Module collections.
                                                       Ty.apply
                                                         (Ty.path
                                                           "alloc::collections::btree::node::NodeRef")
+                                                        []
                                                         [
                                                           Ty.path
                                                             "alloc::collections::btree::node::marker::Mut";
@@ -8559,10 +9220,12 @@ Module collections.
                                                   Ty.apply
                                                     (Ty.path
                                                       "alloc::collections::btree::node::Handle")
+                                                    []
                                                     [
                                                       Ty.apply
                                                         (Ty.path
                                                           "alloc::collections::btree::node::NodeRef")
+                                                        []
                                                         [
                                                           Ty.path
                                                             "alloc::collections::btree::node::marker::Mut";
@@ -8583,6 +9246,7 @@ Module collections.
                                                       Ty.apply
                                                         (Ty.path
                                                           "alloc::collections::btree::node::NodeRef")
+                                                        []
                                                         [
                                                           Ty.path
                                                             "alloc::collections::btree::node::marker::Owned";
@@ -8615,9 +9279,11 @@ Module collections.
                                       M.get_associated_function (|
                                         Ty.apply
                                           (Ty.path "alloc::collections::btree::node::Handle")
+                                          []
                                           [
                                             Ty.apply
                                               (Ty.path "alloc::collections::btree::node::NodeRef")
+                                              []
                                               [
                                                 Ty.path
                                                   "alloc::collections::btree::node::marker::Mut";
@@ -8649,7 +9315,7 @@ Module collections.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_insert :
@@ -8663,9 +9329,11 @@ Module collections.
         Definition Self (BorrowType K V : Ty.t) : Ty.t :=
           Ty.apply
             (Ty.path "alloc::collections::btree::node::Handle")
+            []
             [
               Ty.apply
                 (Ty.path "alloc::collections::btree::node::NodeRef")
+                []
                 [ BorrowType; K; V; Ty.path "alloc::collections::btree::node::marker::Internal" ];
               Ty.path "alloc::collections::btree::node::marker::Edge"
             ].
@@ -8688,10 +9356,15 @@ Module collections.
                 NodeRef { node, height: self.node.height - 1, _marker: PhantomData }
             }
         *)
-        Definition descend (BorrowType K V : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition descend
+            (BorrowType K V : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self BorrowType K V in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
@@ -8703,6 +9376,7 @@ Module collections.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "alloc::collections::btree::node::NodeRef")
+                          []
                           [
                             BorrowType;
                             K;
@@ -8727,12 +9401,15 @@ Module collections.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                          []
                           [
                             Ty.apply
                               (Ty.path "core::ptr::non_null::NonNull")
+                              []
                               [
                                 Ty.apply
                                   (Ty.path "alloc::collections::btree::node::LeafNode")
+                                  []
                                   [ K; V ]
                               ]
                           ],
@@ -8744,15 +9421,19 @@ Module collections.
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "slice")
+                              []
                               [
                                 Ty.apply
                                   (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                  []
                                   [
                                     Ty.apply
                                       (Ty.path "core::ptr::non_null::NonNull")
+                                      []
                                       [
                                         Ty.apply
                                           (Ty.path "alloc::collections::btree::node::LeafNode")
+                                          []
                                           [ K; V ]
                                       ]
                                   ]
@@ -8804,7 +9485,7 @@ Module collections.
                     ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_descend :
@@ -8819,21 +9500,24 @@ Module collections.
         *)
         Definition forget_node_type
             (BorrowType K V : Ty.t)
+            (ε : list Value.t)
             (τ : list Ty.t)
             (α : list Value.t)
             : M :=
           let Self : Ty.t := Self BorrowType K V in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.call_closure (|
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "alloc::collections::btree::node::Handle")
+                    []
                     [
                       Ty.apply
                         (Ty.path "alloc::collections::btree::node::NodeRef")
+                        []
                         [
                           BorrowType;
                           K;
@@ -8850,6 +9534,7 @@ Module collections.
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "alloc::collections::btree::node::NodeRef")
+                        []
                         [
                           BorrowType;
                           K;
@@ -8878,7 +9563,7 @@ Module collections.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_forget_node_type :
@@ -8893,9 +9578,11 @@ Module collections.
         Definition Self (K V NodeType : Ty.t) : Ty.t :=
           Ty.apply
             (Ty.path "alloc::collections::btree::node::Handle")
+            []
             [
               Ty.apply
                 (Ty.path "alloc::collections::btree::node::NodeRef")
+                []
                 [ Ty.path "alloc::collections::btree::node::marker::Immut"; K; V; NodeType ];
               Ty.path "alloc::collections::btree::node::marker::KV"
             ].
@@ -8909,10 +9596,15 @@ Module collections.
                 (k, v)
             }
         *)
-        Definition into_kv (K V NodeType : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition into_kv
+            (K V NodeType : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self K V NodeType in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
@@ -8948,6 +9640,7 @@ Module collections.
                                                   Ty.apply
                                                     (Ty.path
                                                       "alloc::collections::btree::node::NodeRef")
+                                                    []
                                                     [
                                                       Ty.path
                                                         "alloc::collections::btree::node::marker::Immut";
@@ -8998,6 +9691,7 @@ Module collections.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "alloc::collections::btree::node::NodeRef")
+                          []
                           [ Ty.path "alloc::collections::btree::node::marker::Immut"; K; V; NodeType
                           ],
                         "into_leaf",
@@ -9018,7 +9712,7 @@ Module collections.
                   M.alloc (|
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ K ],
+                        Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ K ],
                         "assume_init_ref",
                         []
                       |),
@@ -9027,7 +9721,9 @@ Module collections.
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "slice")
-                              [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ K ] ],
+                              []
+                              [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ K ]
+                              ],
                             "get_unchecked",
                             [ Ty.path "usize" ]
                           |),
@@ -9055,7 +9751,7 @@ Module collections.
                   M.alloc (|
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ V ],
+                        Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ V ],
                         "assume_init_ref",
                         []
                       |),
@@ -9064,7 +9760,9 @@ Module collections.
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "slice")
-                              [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ V ] ],
+                              []
+                              [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ V ]
+                              ],
                             "get_unchecked",
                             [ Ty.path "usize" ]
                           |),
@@ -9090,7 +9788,7 @@ Module collections.
                   |) in
                 M.alloc (| Value.Tuple [ M.read (| k |); M.read (| v |) ] |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_into_kv :
@@ -9102,9 +9800,11 @@ Module collections.
         Definition Self (K V NodeType : Ty.t) : Ty.t :=
           Ty.apply
             (Ty.path "alloc::collections::btree::node::Handle")
+            []
             [
               Ty.apply
                 (Ty.path "alloc::collections::btree::node::NodeRef")
+                []
                 [ Ty.path "alloc::collections::btree::node::marker::Mut"; K; V; NodeType ];
               Ty.path "alloc::collections::btree::node::marker::KV"
             ].
@@ -9114,15 +9814,20 @@ Module collections.
                 unsafe { self.node.key_area_mut(self.idx).assume_init_mut() }
             }
         *)
-        Definition key_mut (K V NodeType : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition key_mut
+            (K V NodeType : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self K V NodeType in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.call_closure (|
                 M.get_associated_function (|
-                  Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ K ],
+                  Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ K ],
                   "assume_init_mut",
                   []
                 |),
@@ -9131,11 +9836,12 @@ Module collections.
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "alloc::collections::btree::node::NodeRef")
+                        []
                         [ Ty.path "alloc::collections::btree::node::marker::Mut"; K; V; NodeType ],
                       "key_area_mut",
                       [
                         Ty.path "usize";
-                        Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ K ]
+                        Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ K ]
                       ]
                     |),
                     [
@@ -9155,7 +9861,7 @@ Module collections.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_key_mut :
@@ -9169,10 +9875,15 @@ Module collections.
                 unsafe { leaf.vals.get_unchecked_mut(self.idx).assume_init_mut() }
             }
         *)
-        Definition into_val_mut (K V NodeType : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition into_val_mut
+            (K V NodeType : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self K V NodeType in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
@@ -9208,6 +9919,7 @@ Module collections.
                                                   Ty.apply
                                                     (Ty.path
                                                       "alloc::collections::btree::node::NodeRef")
+                                                    []
                                                     [
                                                       Ty.path
                                                         "alloc::collections::btree::node::marker::Mut";
@@ -9258,6 +9970,7 @@ Module collections.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "alloc::collections::btree::node::NodeRef")
+                          []
                           [ Ty.path "alloc::collections::btree::node::marker::Mut"; K; V; NodeType
                           ],
                         "into_leaf_mut",
@@ -9277,7 +9990,7 @@ Module collections.
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ V ],
+                      Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ V ],
                       "assume_init_mut",
                       []
                     |),
@@ -9286,7 +9999,8 @@ Module collections.
                         M.get_associated_function (|
                           Ty.apply
                             (Ty.path "slice")
-                            [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ V ] ],
+                            []
+                            [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ V ] ],
                           "get_unchecked_mut",
                           [ Ty.path "usize" ]
                         |),
@@ -9311,7 +10025,7 @@ Module collections.
                   |)
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_into_val_mut :
@@ -9327,10 +10041,15 @@ Module collections.
                 (k, v)
             }
         *)
-        Definition into_kv_valmut (K V NodeType : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition into_kv_valmut
+            (K V NodeType : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self K V NodeType in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
@@ -9366,6 +10085,7 @@ Module collections.
                                                   Ty.apply
                                                     (Ty.path
                                                       "alloc::collections::btree::node::NodeRef")
+                                                    []
                                                     [
                                                       Ty.path
                                                         "alloc::collections::btree::node::marker::Mut";
@@ -9416,6 +10136,7 @@ Module collections.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "alloc::collections::btree::node::NodeRef")
+                          []
                           [ Ty.path "alloc::collections::btree::node::marker::Mut"; K; V; NodeType
                           ],
                         "into_leaf_mut",
@@ -9436,7 +10157,7 @@ Module collections.
                   M.alloc (|
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ K ],
+                        Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ K ],
                         "assume_init_ref",
                         []
                       |),
@@ -9445,7 +10166,9 @@ Module collections.
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "slice")
-                              [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ K ] ],
+                              []
+                              [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ K ]
+                              ],
                             "get_unchecked",
                             [ Ty.path "usize" ]
                           |),
@@ -9473,7 +10196,7 @@ Module collections.
                   M.alloc (|
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ V ],
+                        Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ V ],
                         "assume_init_mut",
                         []
                       |),
@@ -9482,7 +10205,9 @@ Module collections.
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "slice")
-                              [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ V ] ],
+                              []
+                              [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ V ]
+                              ],
                             "get_unchecked_mut",
                             [ Ty.path "usize" ]
                           |),
@@ -9508,7 +10233,7 @@ Module collections.
                   |) in
                 M.alloc (| Value.Tuple [ M.read (| k |); M.read (| v |) ] |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_into_kv_valmut :
@@ -9527,10 +10252,15 @@ Module collections.
                 }
             }
         *)
-        Definition kv_mut (K V NodeType : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition kv_mut
+            (K V NodeType : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self K V NodeType in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
@@ -9566,6 +10296,7 @@ Module collections.
                                                   Ty.apply
                                                     (Ty.path
                                                       "alloc::collections::btree::node::NodeRef")
+                                                    []
                                                     [
                                                       Ty.path
                                                         "alloc::collections::btree::node::marker::Mut";
@@ -9616,6 +10347,7 @@ Module collections.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "alloc::collections::btree::node::NodeRef")
+                          []
                           [ Ty.path "alloc::collections::btree::node::marker::Mut"; K; V; NodeType
                           ],
                         "as_leaf_mut",
@@ -9634,7 +10366,7 @@ Module collections.
                   M.alloc (|
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ K ],
+                        Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ K ],
                         "assume_init_mut",
                         []
                       |),
@@ -9643,7 +10375,9 @@ Module collections.
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "slice")
-                              [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ K ] ],
+                              []
+                              [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ K ]
+                              ],
                             "get_unchecked_mut",
                             [ Ty.path "usize" ]
                           |),
@@ -9671,7 +10405,7 @@ Module collections.
                   M.alloc (|
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ V ],
+                        Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ V ],
                         "assume_init_mut",
                         []
                       |),
@@ -9680,7 +10414,9 @@ Module collections.
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "slice")
-                              [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ V ] ],
+                              []
+                              [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ V ]
+                              ],
                             "get_unchecked_mut",
                             [ Ty.path "usize" ]
                           |),
@@ -9706,7 +10442,7 @@ Module collections.
                   |) in
                 M.alloc (| Value.Tuple [ M.read (| key |); M.read (| val |) ] |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_kv_mut :
@@ -9719,10 +10455,15 @@ Module collections.
                 (mem::replace(key, k), mem::replace(val, v))
             }
         *)
-        Definition replace_kv (K V NodeType : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition replace_kv
+            (K V NodeType : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self K V NodeType in
-          match τ, α with
-          | [], [ self; k; v ] =>
+          match ε, τ, α with
+          | [], [], [ self; k; v ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let k := M.alloc (| k |) in
@@ -9734,9 +10475,11 @@ Module collections.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "alloc::collections::btree::node::Handle")
+                          []
                           [
                             Ty.apply
                               (Ty.path "alloc::collections::btree::node::NodeRef")
+                              []
                               [
                                 Ty.path "alloc::collections::btree::node::marker::Mut";
                                 K;
@@ -9774,7 +10517,7 @@ Module collections.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_replace_kv :
@@ -9804,10 +10547,15 @@ Module collections.
                 }
             }
         *)
-        Definition split_leaf_data (K V NodeType : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition split_leaf_data
+            (K V NodeType : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self K V NodeType in
-          match τ, α with
-          | [], [ self; new_node ] =>
+          match ε, τ, α with
+          | [], [], [ self; new_node ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let new_node := M.alloc (| new_node |) in
@@ -9844,6 +10592,7 @@ Module collections.
                                                   Ty.apply
                                                     (Ty.path
                                                       "alloc::collections::btree::node::NodeRef")
+                                                    []
                                                     [
                                                       Ty.path
                                                         "alloc::collections::btree::node::marker::Mut";
@@ -9894,6 +10643,7 @@ Module collections.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "alloc::collections::btree::node::NodeRef")
+                          []
                           [ Ty.path "alloc::collections::btree::node::marker::Mut"; K; V; NodeType
                           ],
                         "len",
@@ -9937,7 +10687,7 @@ Module collections.
                   M.alloc (|
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ K ],
+                        Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ K ],
                         "assume_init_read",
                         []
                       |),
@@ -9946,6 +10696,7 @@ Module collections.
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "alloc::collections::btree::node::NodeRef")
+                              []
                               [
                                 Ty.path "alloc::collections::btree::node::marker::Mut";
                                 K;
@@ -9955,7 +10706,7 @@ Module collections.
                             "key_area_mut",
                             [
                               Ty.path "usize";
-                              Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ K ]
+                              Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ K ]
                             ]
                           |),
                           [
@@ -9980,7 +10731,7 @@ Module collections.
                   M.alloc (|
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ V ],
+                        Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ V ],
                         "assume_init_read",
                         []
                       |),
@@ -9989,6 +10740,7 @@ Module collections.
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "alloc::collections::btree::node::NodeRef")
+                              []
                               [
                                 Ty.path "alloc::collections::btree::node::marker::Mut";
                                 K;
@@ -9998,7 +10750,7 @@ Module collections.
                             "val_area_mut",
                             [
                               Ty.path "usize";
-                              Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ V ]
+                              Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ V ]
                             ]
                           |),
                           [
@@ -10028,6 +10780,7 @@ Module collections.
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "alloc::collections::btree::node::NodeRef")
+                              []
                               [
                                 Ty.path "alloc::collections::btree::node::marker::Mut";
                                 K;
@@ -10036,10 +10789,12 @@ Module collections.
                               ],
                             "key_area_mut",
                             [
-                              Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "usize" ];
+                              Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ];
                               Ty.apply
                                 (Ty.path "slice")
-                                [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ K ] ]
+                                []
+                                [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ K ]
+                                ]
                             ]
                           |),
                           [
@@ -10071,8 +10826,11 @@ Module collections.
                             "core::ops::index::IndexMut",
                             Ty.apply
                               (Ty.path "array")
-                              [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ K ] ],
-                            [ Ty.apply (Ty.path "core::ops::range::RangeTo") [ Ty.path "usize" ] ],
+                              [ Value.Integer 11 ]
+                              [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ K ]
+                              ],
+                            [ Ty.apply (Ty.path "core::ops::range::RangeTo") [] [ Ty.path "usize" ]
+                            ],
                             "index_mut",
                             []
                           |),
@@ -10099,6 +10857,7 @@ Module collections.
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "alloc::collections::btree::node::NodeRef")
+                              []
                               [
                                 Ty.path "alloc::collections::btree::node::marker::Mut";
                                 K;
@@ -10107,10 +10866,12 @@ Module collections.
                               ],
                             "val_area_mut",
                             [
-                              Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "usize" ];
+                              Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ];
                               Ty.apply
                                 (Ty.path "slice")
-                                [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ V ] ]
+                                []
+                                [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ V ]
+                                ]
                             ]
                           |),
                           [
@@ -10142,8 +10903,11 @@ Module collections.
                             "core::ops::index::IndexMut",
                             Ty.apply
                               (Ty.path "array")
-                              [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ V ] ],
-                            [ Ty.apply (Ty.path "core::ops::range::RangeTo") [ Ty.path "usize" ] ],
+                              [ Value.Integer 11 ]
+                              [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ V ]
+                              ],
+                            [ Ty.apply (Ty.path "core::ops::range::RangeTo") [] [ Ty.path "usize" ]
+                            ],
                             "index_mut",
                             []
                           |),
@@ -10167,6 +10931,7 @@ Module collections.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "alloc::collections::btree::node::NodeRef")
+                          []
                           [ Ty.path "alloc::collections::btree::node::marker::Mut"; K; V; NodeType
                           ],
                         "len_mut",
@@ -10191,7 +10956,7 @@ Module collections.
                   |) in
                 M.alloc (| Value.Tuple [ M.read (| k |); M.read (| v |) ] |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_split_leaf_data :
@@ -10206,9 +10971,11 @@ Module collections.
         Definition Self (K V NodeType : Ty.t) : Ty.t :=
           Ty.apply
             (Ty.path "alloc::collections::btree::node::Handle")
+            []
             [
               Ty.apply
                 (Ty.path "alloc::collections::btree::node::NodeRef")
+                []
                 [ Ty.path "alloc::collections::btree::node::marker::ValMut"; K; V; NodeType ];
               Ty.path "alloc::collections::btree::node::marker::KV"
             ].
@@ -10218,16 +10985,22 @@ Module collections.
                 unsafe { self.node.into_key_val_mut_at(self.idx) }
             }
         *)
-        Definition into_kv_valmut (K V NodeType : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition into_kv_valmut
+            (K V NodeType : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self K V NodeType in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.call_closure (|
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "alloc::collections::btree::node::NodeRef")
+                    []
                     [ Ty.path "alloc::collections::btree::node::marker::ValMut"; K; V; NodeType ],
                   "into_key_val_mut_at",
                   []
@@ -10249,7 +11022,7 @@ Module collections.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_into_kv_valmut :
@@ -10262,9 +11035,11 @@ Module collections.
         Definition Self (K V NodeType : Ty.t) : Ty.t :=
           Ty.apply
             (Ty.path "alloc::collections::btree::node::Handle")
+            []
             [
               Ty.apply
                 (Ty.path "alloc::collections::btree::node::NodeRef")
+                []
                 [ Ty.path "alloc::collections::btree::node::marker::Dying"; K; V; NodeType ];
               Ty.path "alloc::collections::btree::node::marker::KV"
             ].
@@ -10280,10 +11055,15 @@ Module collections.
                 }
             }
         *)
-        Definition into_key_val (K V NodeType : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition into_key_val
+            (K V NodeType : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self K V NodeType in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
@@ -10319,6 +11099,7 @@ Module collections.
                                                   Ty.apply
                                                     (Ty.path
                                                       "alloc::collections::btree::node::NodeRef")
+                                                    []
                                                     [
                                                       Ty.path
                                                         "alloc::collections::btree::node::marker::Dying";
@@ -10369,6 +11150,7 @@ Module collections.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "alloc::collections::btree::node::NodeRef")
+                          []
                           [ Ty.path "alloc::collections::btree::node::marker::Dying"; K; V; NodeType
                           ],
                         "as_leaf_dying",
@@ -10387,7 +11169,7 @@ Module collections.
                   M.alloc (|
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ K ],
+                        Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ K ],
                         "assume_init_read",
                         []
                       |),
@@ -10396,7 +11178,9 @@ Module collections.
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "slice")
-                              [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ K ] ],
+                              []
+                              [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ K ]
+                              ],
                             "get_unchecked_mut",
                             [ Ty.path "usize" ]
                           |),
@@ -10424,7 +11208,7 @@ Module collections.
                   M.alloc (|
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ V ],
+                        Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ V ],
                         "assume_init_read",
                         []
                       |),
@@ -10433,7 +11217,9 @@ Module collections.
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "slice")
-                              [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ V ] ],
+                              []
+                              [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ V ]
+                              ],
                             "get_unchecked_mut",
                             [ Ty.path "usize" ]
                           |),
@@ -10459,7 +11245,7 @@ Module collections.
                   |) in
                 M.alloc (| Value.Tuple [ M.read (| key |); M.read (| val |) ] |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_into_key_val :
@@ -10476,10 +11262,15 @@ Module collections.
                 }
             }
         *)
-        Definition drop_key_val (K V NodeType : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition drop_key_val
+            (K V NodeType : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self K V NodeType in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
@@ -10515,6 +11306,7 @@ Module collections.
                                                   Ty.apply
                                                     (Ty.path
                                                       "alloc::collections::btree::node::NodeRef")
+                                                    []
                                                     [
                                                       Ty.path
                                                         "alloc::collections::btree::node::marker::Dying";
@@ -10565,6 +11357,7 @@ Module collections.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "alloc::collections::btree::node::NodeRef")
+                          []
                           [ Ty.path "alloc::collections::btree::node::marker::Dying"; K; V; NodeType
                           ],
                         "as_leaf_dying",
@@ -10583,7 +11376,7 @@ Module collections.
                   M.alloc (|
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ K ],
+                        Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ K ],
                         "assume_init_drop",
                         []
                       |),
@@ -10592,7 +11385,9 @@ Module collections.
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "slice")
-                              [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ K ] ],
+                              []
+                              [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ K ]
+                              ],
                             "get_unchecked_mut",
                             [ Ty.path "usize" ]
                           |),
@@ -10620,7 +11415,7 @@ Module collections.
                   M.alloc (|
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ V ],
+                        Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ V ],
                         "assume_init_drop",
                         []
                       |),
@@ -10629,7 +11424,9 @@ Module collections.
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "slice")
-                              [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ V ] ],
+                              []
+                              [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ V ]
+                              ],
                             "get_unchecked_mut",
                             [ Ty.path "usize" ]
                           |),
@@ -10655,7 +11452,7 @@ Module collections.
                   |) in
                 M.alloc (| Value.Tuple [] |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_drop_key_val :
@@ -10668,9 +11465,11 @@ Module collections.
         Definition Self (K V : Ty.t) : Ty.t :=
           Ty.apply
             (Ty.path "alloc::collections::btree::node::Handle")
+            []
             [
               Ty.apply
                 (Ty.path "alloc::collections::btree::node::NodeRef")
+                []
                 [
                   Ty.path "alloc::collections::btree::node::marker::Mut";
                   K;
@@ -10690,10 +11489,10 @@ Module collections.
                 SplitResult { left: self.node, kv, right }
             }
         *)
-        Definition split (K V : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition split (K V : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self K V in
-          match τ, α with
-          | [ A ], [ self; alloc ] =>
+          match ε, τ, α with
+          | [], [ A ], [ self; alloc ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let alloc := M.alloc (| alloc |) in
@@ -10702,7 +11501,7 @@ Module collections.
                   M.alloc (|
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "alloc::collections::btree::node::LeafNode") [ K; V ],
+                        Ty.apply (Ty.path "alloc::collections::btree::node::LeafNode") [] [ K; V ],
                         "new",
                         [ A ]
                       |),
@@ -10715,9 +11514,11 @@ Module collections.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "alloc::collections::btree::node::Handle")
+                          []
                           [
                             Ty.apply
                               (Ty.path "alloc::collections::btree::node::NodeRef")
+                              []
                               [
                                 Ty.path "alloc::collections::btree::node::marker::Mut";
                                 K;
@@ -10738,6 +11539,7 @@ Module collections.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "alloc::collections::btree::node::NodeRef")
+                          []
                           [
                             Ty.path "alloc::collections::btree::node::marker::Owned";
                             K;
@@ -10767,7 +11569,7 @@ Module collections.
                     ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_split :
@@ -10787,10 +11589,10 @@ Module collections.
                 }
             }
         *)
-        Definition remove (K V : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition remove (K V : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self K V in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
@@ -10800,6 +11602,7 @@ Module collections.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "alloc::collections::btree::node::NodeRef")
+                          []
                           [
                             Ty.path "alloc::collections::btree::node::marker::Mut";
                             K;
@@ -10827,6 +11630,7 @@ Module collections.
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "alloc::collections::btree::node::NodeRef")
+                              []
                               [
                                 Ty.path "alloc::collections::btree::node::marker::Mut";
                                 K;
@@ -10835,10 +11639,12 @@ Module collections.
                               ],
                             "key_area_mut",
                             [
-                              Ty.apply (Ty.path "core::ops::range::RangeTo") [ Ty.path "usize" ];
+                              Ty.apply (Ty.path "core::ops::range::RangeTo") [] [ Ty.path "usize" ];
                               Ty.apply
                                 (Ty.path "slice")
-                                [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ K ] ]
+                                []
+                                [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ K ]
+                                ]
                             ]
                           |),
                           [
@@ -10871,6 +11677,7 @@ Module collections.
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "alloc::collections::btree::node::NodeRef")
+                              []
                               [
                                 Ty.path "alloc::collections::btree::node::marker::Mut";
                                 K;
@@ -10879,10 +11686,12 @@ Module collections.
                               ],
                             "val_area_mut",
                             [
-                              Ty.apply (Ty.path "core::ops::range::RangeTo") [ Ty.path "usize" ];
+                              Ty.apply (Ty.path "core::ops::range::RangeTo") [] [ Ty.path "usize" ];
                               Ty.apply
                                 (Ty.path "slice")
-                                [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ V ] ]
+                                []
+                                [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ V ]
+                                ]
                             ]
                           |),
                           [
@@ -10912,6 +11721,7 @@ Module collections.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "alloc::collections::btree::node::NodeRef")
+                          []
                           [
                             Ty.path "alloc::collections::btree::node::marker::Mut";
                             K;
@@ -10940,9 +11750,11 @@ Module collections.
                         M.get_associated_function (|
                           Ty.apply
                             (Ty.path "alloc::collections::btree::node::Handle")
+                            []
                             [
                               Ty.apply
                                 (Ty.path "alloc::collections::btree::node::NodeRef")
+                                []
                                 [
                                   Ty.path "alloc::collections::btree::node::marker::Mut";
                                   K;
@@ -10959,7 +11771,7 @@ Module collections.
                     ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_remove :
@@ -10971,9 +11783,11 @@ Module collections.
         Definition Self (K V : Ty.t) : Ty.t :=
           Ty.apply
             (Ty.path "alloc::collections::btree::node::Handle")
+            []
             [
               Ty.apply
                 (Ty.path "alloc::collections::btree::node::NodeRef")
+                []
                 [
                   Ty.path "alloc::collections::btree::node::marker::Mut";
                   K;
@@ -11005,10 +11819,10 @@ Module collections.
                 }
             }
         *)
-        Definition split (K V : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition split (K V : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self K V in
-          match τ, α with
-          | [ A ], [ self; alloc ] =>
+          match ε, τ, α with
+          | [], [ A ], [ self; alloc ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let alloc := M.alloc (| alloc |) in
@@ -11019,6 +11833,7 @@ Module collections.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "alloc::collections::btree::node::NodeRef")
+                          []
                           [
                             Ty.path "alloc::collections::btree::node::marker::Mut";
                             K;
@@ -11041,7 +11856,10 @@ Module collections.
                   M.alloc (|
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "alloc::collections::btree::node::InternalNode") [ K; V ],
+                        Ty.apply
+                          (Ty.path "alloc::collections::btree::node::InternalNode")
+                          []
+                          [ K; V ],
                         "new",
                         [ A ]
                       |),
@@ -11054,9 +11872,11 @@ Module collections.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "alloc::collections::btree::node::Handle")
+                          []
                           [
                             Ty.apply
                               (Ty.path "alloc::collections::btree::node::NodeRef")
+                              []
                               [
                                 Ty.path "alloc::collections::btree::node::marker::Mut";
                                 K;
@@ -11111,9 +11931,11 @@ Module collections.
                         [
                           Ty.apply
                             (Ty.path "core::ptr::non_null::NonNull")
+                            []
                             [
                               Ty.apply
                                 (Ty.path "alloc::collections::btree::node::LeafNode")
+                                []
                                 [ K; V ]
                             ]
                         ]
@@ -11123,6 +11945,7 @@ Module collections.
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "alloc::collections::btree::node::NodeRef")
+                              []
                               [
                                 Ty.path "alloc::collections::btree::node::marker::Mut";
                                 K;
@@ -11131,18 +11954,22 @@ Module collections.
                               ],
                             "edge_area_mut",
                             [
-                              Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "usize" ];
+                              Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ];
                               Ty.apply
                                 (Ty.path "slice")
+                                []
                                 [
                                   Ty.apply
                                     (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                    []
                                     [
                                       Ty.apply
                                         (Ty.path "core::ptr::non_null::NonNull")
+                                        []
                                         [
                                           Ty.apply
                                             (Ty.path "alloc::collections::btree::node::LeafNode")
+                                            []
                                             [ K; V ]
                                         ]
                                     ]
@@ -11182,20 +12009,25 @@ Module collections.
                             "core::ops::index::IndexMut",
                             Ty.apply
                               (Ty.path "array")
+                              [ Value.Integer 12 ]
                               [
                                 Ty.apply
                                   (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                  []
                                   [
                                     Ty.apply
                                       (Ty.path "core::ptr::non_null::NonNull")
+                                      []
                                       [
                                         Ty.apply
                                           (Ty.path "alloc::collections::btree::node::LeafNode")
+                                          []
                                           [ K; V ]
                                       ]
                                   ]
                               ],
-                            [ Ty.apply (Ty.path "core::ops::range::RangeTo") [ Ty.path "usize" ] ],
+                            [ Ty.apply (Ty.path "core::ops::range::RangeTo") [] [ Ty.path "usize" ]
+                            ],
                             "index_mut",
                             []
                           |),
@@ -11237,6 +12069,7 @@ Module collections.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "alloc::collections::btree::node::NodeRef")
+                          []
                           [
                             Ty.path "alloc::collections::btree::node::marker::Owned";
                             K;
@@ -11266,7 +12099,7 @@ Module collections.
                     ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_split :
@@ -11283,10 +12116,15 @@ Module collections.
                 }
             }
         *)
-        Definition consider_for_balancing (K V : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition consider_for_balancing
+            (K V : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self K V in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
@@ -11298,9 +12136,11 @@ Module collections.
                         [
                           Ty.apply
                             (Ty.path "alloc::collections::btree::node::Handle")
+                            []
                             [
                               Ty.apply
                                 (Ty.path "alloc::collections::btree::node::NodeRef")
+                                []
                                 [
                                   Ty.path "alloc::collections::btree::node::marker::Mut";
                                   K;
@@ -11322,9 +12162,11 @@ Module collections.
                         [
                           Ty.apply
                             (Ty.path "alloc::collections::btree::node::Handle")
+                            []
                             [
                               Ty.apply
                                 (Ty.path "alloc::collections::btree::node::NodeRef")
+                                []
                                 [
                                   Ty.path "alloc::collections::btree::node::marker::Mut";
                                   K;
@@ -11348,9 +12190,11 @@ Module collections.
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "alloc::collections::btree::node::Handle")
+                              []
                               [
                                 Ty.apply
                                   (Ty.path "alloc::collections::btree::node::NodeRef")
+                                  []
                                   [
                                     Ty.path "alloc::collections::btree::node::marker::Mut";
                                     K;
@@ -11367,9 +12211,11 @@ Module collections.
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "alloc::collections::btree::node::Handle")
+                                  []
                                   [
                                     Ty.apply
                                       (Ty.path "alloc::collections::btree::node::NodeRef")
+                                      []
                                       [
                                         Ty.path "alloc::collections::btree::node::marker::Mut";
                                         K;
@@ -11390,9 +12236,11 @@ Module collections.
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "alloc::collections::btree::node::Handle")
+                              []
                               [
                                 Ty.apply
                                   (Ty.path "alloc::collections::btree::node::NodeRef")
+                                  []
                                   [
                                     Ty.path "alloc::collections::btree::node::marker::Mut";
                                     K;
@@ -11409,9 +12257,11 @@ Module collections.
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "alloc::collections::btree::node::Handle")
+                                  []
                                   [
                                     Ty.apply
                                       (Ty.path "alloc::collections::btree::node::NodeRef")
+                                      []
                                       [
                                         Ty.path "alloc::collections::btree::node::marker::Mut";
                                         K;
@@ -11430,7 +12280,7 @@ Module collections.
                     ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_consider_for_balancing :
@@ -11441,15 +12291,18 @@ Module collections.
       (* StructRecord
         {
           name := "BalancingContext";
+          const_params := [];
           ty_params := [ "K"; "V" ];
           fields :=
             [
               ("parent",
                 Ty.apply
                   (Ty.path "alloc::collections::btree::node::Handle")
+                  []
                   [
                     Ty.apply
                       (Ty.path "alloc::collections::btree::node::NodeRef")
+                      []
                       [
                         Ty.path "alloc::collections::btree::node::marker::Mut";
                         K;
@@ -11461,6 +12314,7 @@ Module collections.
               ("left_child",
                 Ty.apply
                   (Ty.path "alloc::collections::btree::node::NodeRef")
+                  []
                   [
                     Ty.path "alloc::collections::btree::node::marker::Mut";
                     K;
@@ -11470,6 +12324,7 @@ Module collections.
               ("right_child",
                 Ty.apply
                   (Ty.path "alloc::collections::btree::node::NodeRef")
+                  []
                   [
                     Ty.path "alloc::collections::btree::node::marker::Mut";
                     K;
@@ -11483,23 +12338,29 @@ Module collections.
       
       Module Impl_alloc_collections_btree_node_BalancingContext_K_V.
         Definition Self (K V : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "alloc::collections::btree::node::BalancingContext") [ K; V ].
+          Ty.apply (Ty.path "alloc::collections::btree::node::BalancingContext") [] [ K; V ].
         
         (*
             pub fn left_child_len(&self) -> usize {
                 self.left_child.len()
             }
         *)
-        Definition left_child_len (K V : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition left_child_len
+            (K V : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self K V in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.call_closure (|
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "alloc::collections::btree::node::NodeRef")
+                    []
                     [
                       Ty.path "alloc::collections::btree::node::marker::Mut";
                       K;
@@ -11517,7 +12378,7 @@ Module collections.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_left_child_len :
@@ -11529,16 +12390,22 @@ Module collections.
                 self.right_child.len()
             }
         *)
-        Definition right_child_len (K V : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition right_child_len
+            (K V : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self K V in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.call_closure (|
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "alloc::collections::btree::node::NodeRef")
+                    []
                     [
                       Ty.path "alloc::collections::btree::node::marker::Mut";
                       K;
@@ -11556,7 +12423,7 @@ Module collections.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_right_child_len :
@@ -11568,10 +12435,15 @@ Module collections.
                 self.left_child
             }
         *)
-        Definition into_left_child (K V : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition into_left_child
+            (K V : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self K V in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
@@ -11581,7 +12453,7 @@ Module collections.
                   "left_child"
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_into_left_child :
@@ -11593,10 +12465,15 @@ Module collections.
                 self.right_child
             }
         *)
-        Definition into_right_child (K V : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition into_right_child
+            (K V : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self K V in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
@@ -11606,7 +12483,7 @@ Module collections.
                   "right_child"
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_into_right_child :
@@ -11618,10 +12495,15 @@ Module collections.
                 self.left_child.len() + 1 + self.right_child.len() <= CAPACITY
             }
         *)
-        Definition can_merge (K V : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition can_merge
+            (K V : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self K V in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               BinOp.Pure.le
@@ -11633,6 +12515,7 @@ Module collections.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "alloc::collections::btree::node::NodeRef")
+                          []
                           [
                             Ty.path "alloc::collections::btree::node::marker::Mut";
                             K;
@@ -11655,6 +12538,7 @@ Module collections.
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "alloc::collections::btree::node::NodeRef")
+                        []
                         [
                           Ty.path "alloc::collections::btree::node::marker::Mut";
                           K;
@@ -11673,7 +12557,7 @@ Module collections.
                     ]
                   |)))
                 (M.read (| M.get_constant (| "alloc::collections::btree::node::CAPACITY" |) |))))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_can_merge :
@@ -11743,10 +12627,15 @@ Module collections.
                 result(parent_node, left_node)
             }
         *)
-        Definition do_merge (K V : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition do_merge
+            (K V : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self K V in
-          match τ, α with
-          | [ F; R; A ], [ self; result; alloc ] =>
+          match ε, τ, α with
+          | [], [ F; R; A ], [ self; result; alloc ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let result := M.alloc (| result |) in
@@ -11788,6 +12677,7 @@ Module collections.
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "alloc::collections::btree::node::NodeRef")
+                                  []
                                   [
                                     Ty.path "alloc::collections::btree::node::marker::Mut";
                                     K;
@@ -11814,6 +12704,7 @@ Module collections.
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "alloc::collections::btree::node::NodeRef")
+                                  []
                                   [
                                     Ty.path "alloc::collections::btree::node::marker::Mut";
                                     K;
@@ -11841,6 +12732,7 @@ Module collections.
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "alloc::collections::btree::node::NodeRef")
+                                  []
                                   [
                                     Ty.path "alloc::collections::btree::node::marker::Mut";
                                     K;
@@ -11910,6 +12802,7 @@ Module collections.
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "alloc::collections::btree::node::NodeRef")
+                                    []
                                     [
                                       Ty.path "alloc::collections::btree::node::marker::Mut";
                                       K;
@@ -11936,6 +12829,7 @@ Module collections.
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "alloc::collections::btree::node::NodeRef")
+                                        []
                                         [
                                           Ty.path "alloc::collections::btree::node::marker::Mut";
                                           K;
@@ -11947,12 +12841,15 @@ Module collections.
                                       [
                                         Ty.apply
                                           (Ty.path "core::ops::range::RangeTo")
+                                          []
                                           [ Ty.path "usize" ];
                                         Ty.apply
                                           (Ty.path "slice")
+                                          []
                                           [
                                             Ty.apply
                                               (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                              []
                                               [ K ]
                                           ]
                                       ]
@@ -11972,7 +12869,10 @@ Module collections.
                             M.alloc (|
                               M.call_closure (|
                                 M.get_associated_function (|
-                                  Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ K ],
+                                  Ty.apply
+                                    (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                    []
+                                    [ K ],
                                   "write",
                                   []
                                 |),
@@ -11981,6 +12881,7 @@ Module collections.
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "alloc::collections::btree::node::NodeRef")
+                                        []
                                         [
                                           Ty.path "alloc::collections::btree::node::marker::Mut";
                                           K;
@@ -11993,6 +12894,7 @@ Module collections.
                                         Ty.path "usize";
                                         Ty.apply
                                           (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                          []
                                           [ K ]
                                       ]
                                     |),
@@ -12014,6 +12916,7 @@ Module collections.
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "alloc::collections::btree::node::NodeRef")
+                                        []
                                         [
                                           Ty.path "alloc::collections::btree::node::marker::Mut";
                                           K;
@@ -12025,12 +12928,15 @@ Module collections.
                                       [
                                         Ty.apply
                                           (Ty.path "core::ops::range::RangeTo")
+                                          []
                                           [ Ty.path "usize" ];
                                         Ty.apply
                                           (Ty.path "slice")
+                                          []
                                           [
                                             Ty.apply
                                               (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                              []
                                               [ K ]
                                           ]
                                       ]
@@ -12046,6 +12952,7 @@ Module collections.
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "alloc::collections::btree::node::NodeRef")
+                                        []
                                         [
                                           Ty.path "alloc::collections::btree::node::marker::Mut";
                                           K;
@@ -12057,12 +12964,15 @@ Module collections.
                                       [
                                         Ty.apply
                                           (Ty.path "core::ops::range::Range")
+                                          []
                                           [ Ty.path "usize" ];
                                         Ty.apply
                                           (Ty.path "slice")
+                                          []
                                           [
                                             Ty.apply
                                               (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                              []
                                               [ K ]
                                           ]
                                       ]
@@ -12096,6 +13006,7 @@ Module collections.
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "alloc::collections::btree::node::NodeRef")
+                                        []
                                         [
                                           Ty.path "alloc::collections::btree::node::marker::Mut";
                                           K;
@@ -12107,12 +13018,15 @@ Module collections.
                                       [
                                         Ty.apply
                                           (Ty.path "core::ops::range::RangeTo")
+                                          []
                                           [ Ty.path "usize" ];
                                         Ty.apply
                                           (Ty.path "slice")
+                                          []
                                           [
                                             Ty.apply
                                               (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                              []
                                               [ V ]
                                           ]
                                       ]
@@ -12132,7 +13046,10 @@ Module collections.
                             M.alloc (|
                               M.call_closure (|
                                 M.get_associated_function (|
-                                  Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ V ],
+                                  Ty.apply
+                                    (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                    []
+                                    [ V ],
                                   "write",
                                   []
                                 |),
@@ -12141,6 +13058,7 @@ Module collections.
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "alloc::collections::btree::node::NodeRef")
+                                        []
                                         [
                                           Ty.path "alloc::collections::btree::node::marker::Mut";
                                           K;
@@ -12153,6 +13071,7 @@ Module collections.
                                         Ty.path "usize";
                                         Ty.apply
                                           (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                          []
                                           [ V ]
                                       ]
                                     |),
@@ -12174,6 +13093,7 @@ Module collections.
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "alloc::collections::btree::node::NodeRef")
+                                        []
                                         [
                                           Ty.path "alloc::collections::btree::node::marker::Mut";
                                           K;
@@ -12185,12 +13105,15 @@ Module collections.
                                       [
                                         Ty.apply
                                           (Ty.path "core::ops::range::RangeTo")
+                                          []
                                           [ Ty.path "usize" ];
                                         Ty.apply
                                           (Ty.path "slice")
+                                          []
                                           [
                                             Ty.apply
                                               (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                              []
                                               [ V ]
                                           ]
                                       ]
@@ -12206,6 +13129,7 @@ Module collections.
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "alloc::collections::btree::node::NodeRef")
+                                        []
                                         [
                                           Ty.path "alloc::collections::btree::node::marker::Mut";
                                           K;
@@ -12217,12 +13141,15 @@ Module collections.
                                       [
                                         Ty.apply
                                           (Ty.path "core::ops::range::Range")
+                                          []
                                           [ Ty.path "usize" ];
                                         Ty.apply
                                           (Ty.path "slice")
+                                          []
                                           [
                                             Ty.apply
                                               (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                              []
                                               [ V ]
                                           ]
                                       ]
@@ -12252,9 +13179,11 @@ Module collections.
                                   [
                                     Ty.apply
                                       (Ty.path "core::ptr::non_null::NonNull")
+                                      []
                                       [
                                         Ty.apply
                                           (Ty.path "alloc::collections::btree::node::LeafNode")
+                                          []
                                           [ K; V ]
                                       ]
                                   ]
@@ -12264,6 +13193,7 @@ Module collections.
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "alloc::collections::btree::node::NodeRef")
+                                        []
                                         [
                                           Ty.path "alloc::collections::btree::node::marker::Mut";
                                           K;
@@ -12275,19 +13205,24 @@ Module collections.
                                       [
                                         Ty.apply
                                           (Ty.path "core::ops::range::RangeTo")
+                                          []
                                           [ Ty.path "usize" ];
                                         Ty.apply
                                           (Ty.path "slice")
+                                          []
                                           [
                                             Ty.apply
                                               (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                              []
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::ptr::non_null::NonNull")
+                                                  []
                                                   [
                                                     Ty.apply
                                                       (Ty.path
                                                         "alloc::collections::btree::node::LeafNode")
+                                                      []
                                                       [ K; V ]
                                                   ]
                                               ]
@@ -12320,6 +13255,7 @@ Module collections.
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "alloc::collections::btree::node::NodeRef")
+                                    []
                                     [
                                       Ty.path "alloc::collections::btree::node::marker::Mut";
                                       K;
@@ -12327,7 +13263,11 @@ Module collections.
                                       Ty.path "alloc::collections::btree::node::marker::Internal"
                                     ],
                                   "correct_childrens_parent_links",
-                                  [ Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "usize" ]
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::ops::range::Range")
+                                      []
+                                      [ Ty.path "usize" ]
                                   ]
                                 |),
                                 [
@@ -12351,6 +13291,7 @@ Module collections.
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "alloc::collections::btree::node::NodeRef")
+                                    []
                                     [
                                       Ty.path "alloc::collections::btree::node::marker::Mut";
                                       K;
@@ -12395,6 +13336,7 @@ Module collections.
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "alloc::collections::btree::node::NodeRef")
+                                            []
                                             [
                                               Ty.path
                                                 "alloc::collections::btree::node::marker::Mut";
@@ -12411,6 +13353,7 @@ Module collections.
                                             M.get_associated_function (|
                                               Ty.apply
                                                 (Ty.path "alloc::collections::btree::node::NodeRef")
+                                                []
                                                 [
                                                   Ty.path
                                                     "alloc::collections::btree::node::marker::Mut";
@@ -12433,6 +13376,7 @@ Module collections.
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "alloc::collections::btree::node::NodeRef")
+                                            []
                                             [
                                               Ty.path
                                                 "alloc::collections::btree::node::marker::Mut";
@@ -12455,10 +13399,12 @@ Module collections.
                                           [
                                             Ty.apply
                                               (Ty.path "core::ptr::non_null::NonNull")
+                                              []
                                               [
                                                 Ty.apply
                                                   (Ty.path
                                                     "alloc::collections::btree::node::LeafNode")
+                                                  []
                                                   [ K; V ]
                                               ]
                                           ]
@@ -12468,6 +13414,7 @@ Module collections.
                                             M.get_associated_function (|
                                               Ty.apply
                                                 (Ty.path "alloc::collections::btree::node::NodeRef")
+                                                []
                                                 [
                                                   Ty.path
                                                     "alloc::collections::btree::node::marker::Mut";
@@ -12480,20 +13427,25 @@ Module collections.
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::ops::range::RangeTo")
+                                                  []
                                                   [ Ty.path "usize" ];
                                                 Ty.apply
                                                   (Ty.path "slice")
+                                                  []
                                                   [
                                                     Ty.apply
                                                       (Ty.path
                                                         "core::mem::maybe_uninit::MaybeUninit")
+                                                      []
                                                       [
                                                         Ty.apply
                                                           (Ty.path "core::ptr::non_null::NonNull")
+                                                          []
                                                           [
                                                             Ty.apply
                                                               (Ty.path
                                                                 "alloc::collections::btree::node::LeafNode")
+                                                              []
                                                               [ K; V ]
                                                           ]
                                                       ]
@@ -12517,6 +13469,7 @@ Module collections.
                                             M.get_associated_function (|
                                               Ty.apply
                                                 (Ty.path "alloc::collections::btree::node::NodeRef")
+                                                []
                                                 [
                                                   Ty.path
                                                     "alloc::collections::btree::node::marker::Mut";
@@ -12529,20 +13482,25 @@ Module collections.
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::ops::range::Range")
+                                                  []
                                                   [ Ty.path "usize" ];
                                                 Ty.apply
                                                   (Ty.path "slice")
+                                                  []
                                                   [
                                                     Ty.apply
                                                       (Ty.path
                                                         "core::mem::maybe_uninit::MaybeUninit")
+                                                      []
                                                       [
                                                         Ty.apply
                                                           (Ty.path "core::ptr::non_null::NonNull")
+                                                          []
                                                           [
                                                             Ty.apply
                                                               (Ty.path
                                                                 "alloc::collections::btree::node::LeafNode")
+                                                              []
                                                               [ K; V ]
                                                           ]
                                                       ]
@@ -12576,6 +13534,7 @@ Module collections.
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "alloc::collections::btree::node::NodeRef")
+                                            []
                                             [
                                               Ty.path
                                                 "alloc::collections::btree::node::marker::Mut";
@@ -12588,6 +13547,7 @@ Module collections.
                                           [
                                             Ty.apply
                                               (Ty.path "core::ops::range::Range")
+                                              []
                                               [ Ty.path "usize" ]
                                           ]
                                         |),
@@ -12626,10 +13586,12 @@ Module collections.
                                             M.get_associated_function (|
                                               Ty.apply
                                                 (Ty.path "core::ptr::non_null::NonNull")
+                                                []
                                                 [
                                                   Ty.apply
                                                     (Ty.path
                                                       "alloc::collections::btree::node::LeafNode")
+                                                    []
                                                     [ K; V ]
                                                 ],
                                               "cast",
@@ -12653,6 +13615,7 @@ Module collections.
                                                 Ty.apply
                                                   (Ty.path
                                                     "alloc::collections::btree::node::InternalNode")
+                                                  []
                                                   [ K; V ]
                                               ]
                                             |),
@@ -12680,10 +13643,12 @@ Module collections.
                                             M.get_associated_function (|
                                               Ty.apply
                                                 (Ty.path "core::ptr::non_null::NonNull")
+                                                []
                                                 [
                                                   Ty.apply
                                                     (Ty.path
                                                       "alloc::collections::btree::node::LeafNode")
+                                                    []
                                                     [ K; V ]
                                                 ],
                                               "cast",
@@ -12707,6 +13672,7 @@ Module collections.
                                                 Ty.apply
                                                   (Ty.path
                                                     "alloc::collections::btree::node::LeafNode")
+                                                  []
                                                   [ K; V ]
                                               ]
                                             |),
@@ -12728,6 +13694,7 @@ Module collections.
                                   [
                                     Ty.apply
                                       (Ty.path "alloc::collections::btree::node::NodeRef")
+                                      []
                                       [
                                         Ty.path "alloc::collections::btree::node::marker::Mut";
                                         K;
@@ -12736,6 +13703,7 @@ Module collections.
                                       ];
                                     Ty.apply
                                       (Ty.path "alloc::collections::btree::node::NodeRef")
+                                      []
                                       [
                                         Ty.path "alloc::collections::btree::node::marker::Mut";
                                         K;
@@ -12757,7 +13725,7 @@ Module collections.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_do_merge :
@@ -12772,16 +13740,24 @@ Module collections.
                 self.do_merge(|parent, _child| parent, alloc)
             }
         *)
-        Definition merge_tracking_parent (K V : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition merge_tracking_parent
+            (K V : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self K V in
-          match τ, α with
-          | [ A ], [ self; alloc ] =>
+          match ε, τ, α with
+          | [], [ A ], [ self; alloc ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let alloc := M.alloc (| alloc |) in
               M.call_closure (|
                 M.get_associated_function (|
-                  Ty.apply (Ty.path "alloc::collections::btree::node::BalancingContext") [ K; V ],
+                  Ty.apply
+                    (Ty.path "alloc::collections::btree::node::BalancingContext")
+                    []
+                    [ K; V ],
                   "do_merge",
                   [
                     Ty.function
@@ -12790,6 +13766,7 @@ Module collections.
                           [
                             Ty.apply
                               (Ty.path "alloc::collections::btree::node::NodeRef")
+                              []
                               [
                                 Ty.path "alloc::collections::btree::node::marker::Mut";
                                 K;
@@ -12798,6 +13775,7 @@ Module collections.
                               ];
                             Ty.apply
                               (Ty.path "alloc::collections::btree::node::NodeRef")
+                              []
                               [
                                 Ty.path "alloc::collections::btree::node::marker::Mut";
                                 K;
@@ -12808,6 +13786,7 @@ Module collections.
                       ]
                       (Ty.apply
                         (Ty.path "alloc::collections::btree::node::NodeRef")
+                        []
                         [
                           Ty.path "alloc::collections::btree::node::marker::Mut";
                           K;
@@ -12816,6 +13795,7 @@ Module collections.
                         ]);
                     Ty.apply
                       (Ty.path "alloc::collections::btree::node::NodeRef")
+                      []
                       [
                         Ty.path "alloc::collections::btree::node::marker::Mut";
                         K;
@@ -12854,7 +13834,7 @@ Module collections.
                   M.read (| alloc |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_merge_tracking_parent :
@@ -12869,16 +13849,24 @@ Module collections.
                 self.do_merge(|_parent, child| child, alloc)
             }
         *)
-        Definition merge_tracking_child (K V : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition merge_tracking_child
+            (K V : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self K V in
-          match τ, α with
-          | [ A ], [ self; alloc ] =>
+          match ε, τ, α with
+          | [], [ A ], [ self; alloc ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let alloc := M.alloc (| alloc |) in
               M.call_closure (|
                 M.get_associated_function (|
-                  Ty.apply (Ty.path "alloc::collections::btree::node::BalancingContext") [ K; V ],
+                  Ty.apply
+                    (Ty.path "alloc::collections::btree::node::BalancingContext")
+                    []
+                    [ K; V ],
                   "do_merge",
                   [
                     Ty.function
@@ -12887,6 +13875,7 @@ Module collections.
                           [
                             Ty.apply
                               (Ty.path "alloc::collections::btree::node::NodeRef")
+                              []
                               [
                                 Ty.path "alloc::collections::btree::node::marker::Mut";
                                 K;
@@ -12895,6 +13884,7 @@ Module collections.
                               ];
                             Ty.apply
                               (Ty.path "alloc::collections::btree::node::NodeRef")
+                              []
                               [
                                 Ty.path "alloc::collections::btree::node::marker::Mut";
                                 K;
@@ -12905,6 +13895,7 @@ Module collections.
                       ]
                       (Ty.apply
                         (Ty.path "alloc::collections::btree::node::NodeRef")
+                        []
                         [
                           Ty.path "alloc::collections::btree::node::marker::Mut";
                           K;
@@ -12913,6 +13904,7 @@ Module collections.
                         ]);
                     Ty.apply
                       (Ty.path "alloc::collections::btree::node::NodeRef")
+                      []
                       [
                         Ty.path "alloc::collections::btree::node::marker::Mut";
                         K;
@@ -12951,7 +13943,7 @@ Module collections.
                   M.read (| alloc |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_merge_tracking_child :
@@ -12978,10 +13970,15 @@ Module collections.
                 unsafe { Handle::new_edge(child, new_idx) }
             }
         *)
-        Definition merge_tracking_child_edge (K V : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition merge_tracking_child_edge
+            (K V : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self K V in
-          match τ, α with
-          | [ A ], [ self; track_edge_idx; alloc ] =>
+          match ε, τ, α with
+          | [], [ A ], [ self; track_edge_idx; alloc ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let track_edge_idx := M.alloc (| track_edge_idx |) in
@@ -12993,6 +13990,7 @@ Module collections.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "alloc::collections::btree::node::NodeRef")
+                          []
                           [
                             Ty.path "alloc::collections::btree::node::marker::Mut";
                             K;
@@ -13017,6 +14015,7 @@ Module collections.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "alloc::collections::btree::node::NodeRef")
+                          []
                           [
                             Ty.path "alloc::collections::btree::node::marker::Mut";
                             K;
@@ -13108,6 +14107,7 @@ Module collections.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "alloc::collections::btree::node::BalancingContext")
+                          []
                           [ K; V ],
                         "merge_tracking_child",
                         [ A ]
@@ -13156,9 +14156,11 @@ Module collections.
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "alloc::collections::btree::node::Handle")
+                        []
                         [
                           Ty.apply
                             (Ty.path "alloc::collections::btree::node::NodeRef")
+                            []
                             [
                               Ty.path "alloc::collections::btree::node::marker::Mut";
                               K;
@@ -13174,7 +14176,7 @@ Module collections.
                   |)
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_merge_tracking_child_edge :
@@ -13193,10 +14195,15 @@ Module collections.
                 unsafe { Handle::new_edge(self.right_child, 1 + track_right_edge_idx) }
             }
         *)
-        Definition steal_left (K V : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition steal_left
+            (K V : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self K V in
-          match τ, α with
-          | [], [ self; track_right_edge_idx ] =>
+          match ε, τ, α with
+          | [], [], [ self; track_right_edge_idx ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let track_right_edge_idx := M.alloc (| track_right_edge_idx |) in
@@ -13207,6 +14214,7 @@ Module collections.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "alloc::collections::btree::node::BalancingContext")
+                          []
                           [ K; V ],
                         "bulk_steal_left",
                         []
@@ -13219,9 +14227,11 @@ Module collections.
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "alloc::collections::btree::node::Handle")
+                        []
                         [
                           Ty.apply
                             (Ty.path "alloc::collections::btree::node::NodeRef")
+                            []
                             [
                               Ty.path "alloc::collections::btree::node::marker::Mut";
                               K;
@@ -13249,7 +14259,7 @@ Module collections.
                   |)
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_steal_left :
@@ -13265,10 +14275,15 @@ Module collections.
                 unsafe { Handle::new_edge(self.left_child, track_left_edge_idx) }
             }
         *)
-        Definition steal_right (K V : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition steal_right
+            (K V : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self K V in
-          match τ, α with
-          | [], [ self; track_left_edge_idx ] =>
+          match ε, τ, α with
+          | [], [], [ self; track_left_edge_idx ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let track_left_edge_idx := M.alloc (| track_left_edge_idx |) in
@@ -13279,6 +14294,7 @@ Module collections.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "alloc::collections::btree::node::BalancingContext")
+                          []
                           [ K; V ],
                         "bulk_steal_right",
                         []
@@ -13291,9 +14307,11 @@ Module collections.
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "alloc::collections::btree::node::Handle")
+                        []
                         [
                           Ty.apply
                             (Ty.path "alloc::collections::btree::node::NodeRef")
+                            []
                             [
                               Ty.path "alloc::collections::btree::node::marker::Mut";
                               K;
@@ -13318,7 +14336,7 @@ Module collections.
                   |)
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_steal_right :
@@ -13388,10 +14406,15 @@ Module collections.
                 }
             }
         *)
-        Definition bulk_steal_left (K V : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition bulk_steal_left
+            (K V : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self K V in
-          match τ, α with
-          | [], [ self; count ] =>
+          match ε, τ, α with
+          | [], [], [ self; count ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let count := M.alloc (| count |) in
@@ -13434,6 +14457,7 @@ Module collections.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "alloc::collections::btree::node::NodeRef")
+                          []
                           [
                             Ty.path "alloc::collections::btree::node::marker::Mut";
                             K;
@@ -13460,6 +14484,7 @@ Module collections.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "alloc::collections::btree::node::NodeRef")
+                          []
                           [
                             Ty.path "alloc::collections::btree::node::marker::Mut";
                             K;
@@ -13554,6 +14579,7 @@ Module collections.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "alloc::collections::btree::node::NodeRef")
+                          []
                           [
                             Ty.path "alloc::collections::btree::node::marker::Mut";
                             K;
@@ -13573,6 +14599,7 @@ Module collections.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "alloc::collections::btree::node::NodeRef")
+                          []
                           [
                             Ty.path "alloc::collections::btree::node::marker::Mut";
                             K;
@@ -13596,6 +14623,7 @@ Module collections.
                             M.get_associated_function (|
                               Ty.apply
                                 (Ty.path "alloc::collections::btree::node::NodeRef")
+                                []
                                 [
                                   Ty.path "alloc::collections::btree::node::marker::Mut";
                                   K;
@@ -13604,10 +14632,18 @@ Module collections.
                                 ],
                               "key_area_mut",
                               [
-                                Ty.apply (Ty.path "core::ops::range::RangeTo") [ Ty.path "usize" ];
+                                Ty.apply
+                                  (Ty.path "core::ops::range::RangeTo")
+                                  []
+                                  [ Ty.path "usize" ];
                                 Ty.apply
                                   (Ty.path "slice")
-                                  [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ K ]
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                      []
+                                      [ K ]
                                   ]
                               ]
                             |),
@@ -13631,6 +14667,7 @@ Module collections.
                             M.get_associated_function (|
                               Ty.apply
                                 (Ty.path "alloc::collections::btree::node::NodeRef")
+                                []
                                 [
                                   Ty.path "alloc::collections::btree::node::marker::Mut";
                                   K;
@@ -13639,10 +14676,18 @@ Module collections.
                                 ],
                               "val_area_mut",
                               [
-                                Ty.apply (Ty.path "core::ops::range::RangeTo") [ Ty.path "usize" ];
+                                Ty.apply
+                                  (Ty.path "core::ops::range::RangeTo")
+                                  []
+                                  [ Ty.path "usize" ];
                                 Ty.apply
                                   (Ty.path "slice")
-                                  [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ V ]
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                      []
+                                      [ V ]
                                   ]
                               ]
                             |),
@@ -13669,6 +14714,7 @@ Module collections.
                             M.get_associated_function (|
                               Ty.apply
                                 (Ty.path "alloc::collections::btree::node::NodeRef")
+                                []
                                 [
                                   Ty.path "alloc::collections::btree::node::marker::Mut";
                                   K;
@@ -13677,10 +14723,15 @@ Module collections.
                                 ],
                               "key_area_mut",
                               [
-                                Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "usize" ];
+                                Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ];
                                 Ty.apply
                                   (Ty.path "slice")
-                                  [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ K ]
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                      []
+                                      [ K ]
                                   ]
                               ]
                             |),
@@ -13702,6 +14753,7 @@ Module collections.
                             M.get_associated_function (|
                               Ty.apply
                                 (Ty.path "alloc::collections::btree::node::NodeRef")
+                                []
                                 [
                                   Ty.path "alloc::collections::btree::node::marker::Mut";
                                   K;
@@ -13710,10 +14762,18 @@ Module collections.
                                 ],
                               "key_area_mut",
                               [
-                                Ty.apply (Ty.path "core::ops::range::RangeTo") [ Ty.path "usize" ];
+                                Ty.apply
+                                  (Ty.path "core::ops::range::RangeTo")
+                                  []
+                                  [ Ty.path "usize" ];
                                 Ty.apply
                                   (Ty.path "slice")
-                                  [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ K ]
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                      []
+                                      [ K ]
                                   ]
                               ]
                             |),
@@ -13745,6 +14805,7 @@ Module collections.
                             M.get_associated_function (|
                               Ty.apply
                                 (Ty.path "alloc::collections::btree::node::NodeRef")
+                                []
                                 [
                                   Ty.path "alloc::collections::btree::node::marker::Mut";
                                   K;
@@ -13753,10 +14814,15 @@ Module collections.
                                 ],
                               "val_area_mut",
                               [
-                                Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "usize" ];
+                                Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ];
                                 Ty.apply
                                   (Ty.path "slice")
-                                  [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ V ]
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                      []
+                                      [ V ]
                                   ]
                               ]
                             |),
@@ -13778,6 +14844,7 @@ Module collections.
                             M.get_associated_function (|
                               Ty.apply
                                 (Ty.path "alloc::collections::btree::node::NodeRef")
+                                []
                                 [
                                   Ty.path "alloc::collections::btree::node::marker::Mut";
                                   K;
@@ -13786,10 +14853,18 @@ Module collections.
                                 ],
                               "val_area_mut",
                               [
-                                Ty.apply (Ty.path "core::ops::range::RangeTo") [ Ty.path "usize" ];
+                                Ty.apply
+                                  (Ty.path "core::ops::range::RangeTo")
+                                  []
+                                  [ Ty.path "usize" ];
                                 Ty.apply
                                   (Ty.path "slice")
-                                  [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ V ]
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                      []
+                                      [ V ]
                                   ]
                               ]
                             |),
@@ -13813,7 +14888,7 @@ Module collections.
                     M.alloc (|
                       M.call_closure (|
                         M.get_associated_function (|
-                          Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ K ],
+                          Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ K ],
                           "assume_init_read",
                           []
                         |),
@@ -13822,6 +14897,7 @@ Module collections.
                             M.get_associated_function (|
                               Ty.apply
                                 (Ty.path "alloc::collections::btree::node::NodeRef")
+                                []
                                 [
                                   Ty.path "alloc::collections::btree::node::marker::Mut";
                                   K;
@@ -13831,7 +14907,7 @@ Module collections.
                               "key_area_mut",
                               [
                                 Ty.path "usize";
-                                Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ K ]
+                                Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ K ]
                               ]
                             |),
                             [ M.read (| left_node |); M.read (| new_left_len |) ]
@@ -13843,7 +14919,7 @@ Module collections.
                     M.alloc (|
                       M.call_closure (|
                         M.get_associated_function (|
-                          Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ V ],
+                          Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ V ],
                           "assume_init_read",
                           []
                         |),
@@ -13852,6 +14928,7 @@ Module collections.
                             M.get_associated_function (|
                               Ty.apply
                                 (Ty.path "alloc::collections::btree::node::NodeRef")
+                                []
                                 [
                                   Ty.path "alloc::collections::btree::node::marker::Mut";
                                   K;
@@ -13861,7 +14938,7 @@ Module collections.
                               "val_area_mut",
                               [
                                 Ty.path "usize";
-                                Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ V ]
+                                Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ V ]
                               ]
                             |),
                             [ M.read (| left_node |); M.read (| new_left_len |) ]
@@ -13875,9 +14952,11 @@ Module collections.
                         M.get_associated_function (|
                           Ty.apply
                             (Ty.path "alloc::collections::btree::node::Handle")
+                            []
                             [
                               Ty.apply
                                 (Ty.path "alloc::collections::btree::node::NodeRef")
+                                []
                                 [
                                   Ty.path "alloc::collections::btree::node::marker::Mut";
                                   K;
@@ -13911,7 +14990,10 @@ Module collections.
                             M.alloc (|
                               M.call_closure (|
                                 M.get_associated_function (|
-                                  Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ K ],
+                                  Ty.apply
+                                    (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                    []
+                                    [ K ],
                                   "write",
                                   []
                                 |),
@@ -13920,6 +15002,7 @@ Module collections.
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "alloc::collections::btree::node::NodeRef")
+                                        []
                                         [
                                           Ty.path "alloc::collections::btree::node::marker::Mut";
                                           K;
@@ -13932,6 +15015,7 @@ Module collections.
                                         Ty.path "usize";
                                         Ty.apply
                                           (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                          []
                                           [ K ]
                                       ]
                                     |),
@@ -13951,7 +15035,10 @@ Module collections.
                             M.alloc (|
                               M.call_closure (|
                                 M.get_associated_function (|
-                                  Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ V ],
+                                  Ty.apply
+                                    (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                    []
+                                    [ V ],
                                   "write",
                                   []
                                 |),
@@ -13960,6 +15047,7 @@ Module collections.
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "alloc::collections::btree::node::NodeRef")
+                                        []
                                         [
                                           Ty.path "alloc::collections::btree::node::marker::Mut";
                                           K;
@@ -13972,6 +15060,7 @@ Module collections.
                                         Ty.path "usize";
                                         Ty.apply
                                           (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                          []
                                           [ V ]
                                       ]
                                     |),
@@ -13998,6 +15087,7 @@ Module collections.
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "alloc::collections::btree::node::NodeRef")
+                              []
                               [
                                 Ty.path "alloc::collections::btree::node::marker::Mut";
                                 K;
@@ -14012,6 +15102,7 @@ Module collections.
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "alloc::collections::btree::node::NodeRef")
+                                  []
                                   [
                                     Ty.path "alloc::collections::btree::node::marker::Mut";
                                     K;
@@ -14030,6 +15121,7 @@ Module collections.
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "alloc::collections::btree::node::NodeRef")
+                              []
                               [
                                 Ty.path "alloc::collections::btree::node::marker::Mut";
                                 K;
@@ -14044,6 +15136,7 @@ Module collections.
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "alloc::collections::btree::node::NodeRef")
+                                  []
                                   [
                                     Ty.path "alloc::collections::btree::node::marker::Mut";
                                     K;
@@ -14087,9 +15180,11 @@ Module collections.
                                 [
                                   Ty.apply
                                     (Ty.path "core::ptr::non_null::NonNull")
+                                    []
                                     [
                                       Ty.apply
                                         (Ty.path "alloc::collections::btree::node::LeafNode")
+                                        []
                                         [ K; V ]
                                     ]
                                 ]
@@ -14099,6 +15194,7 @@ Module collections.
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "alloc::collections::btree::node::NodeRef")
+                                      []
                                       [
                                         Ty.path "alloc::collections::btree::node::marker::Mut";
                                         K;
@@ -14109,19 +15205,24 @@ Module collections.
                                     [
                                       Ty.apply
                                         (Ty.path "core::ops::range::RangeTo")
+                                        []
                                         [ Ty.path "usize" ];
                                       Ty.apply
                                         (Ty.path "slice")
+                                        []
                                         [
                                           Ty.apply
                                             (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                            []
                                             [
                                               Ty.apply
                                                 (Ty.path "core::ptr::non_null::NonNull")
+                                                []
                                                 [
                                                   Ty.apply
                                                     (Ty.path
                                                       "alloc::collections::btree::node::LeafNode")
+                                                    []
                                                     [ K; V ]
                                                 ]
                                             ]
@@ -14153,9 +15254,11 @@ Module collections.
                                 [
                                   Ty.apply
                                     (Ty.path "core::ptr::non_null::NonNull")
+                                    []
                                     [
                                       Ty.apply
                                         (Ty.path "alloc::collections::btree::node::LeafNode")
+                                        []
                                         [ K; V ]
                                     ]
                                 ]
@@ -14165,6 +15268,7 @@ Module collections.
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "alloc::collections::btree::node::NodeRef")
+                                      []
                                       [
                                         Ty.path "alloc::collections::btree::node::marker::Mut";
                                         K;
@@ -14175,19 +15279,24 @@ Module collections.
                                     [
                                       Ty.apply
                                         (Ty.path "core::ops::range::Range")
+                                        []
                                         [ Ty.path "usize" ];
                                       Ty.apply
                                         (Ty.path "slice")
+                                        []
                                         [
                                           Ty.apply
                                             (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                            []
                                             [
                                               Ty.apply
                                                 (Ty.path "core::ptr::non_null::NonNull")
+                                                []
                                                 [
                                                   Ty.apply
                                                     (Ty.path
                                                       "alloc::collections::btree::node::LeafNode")
+                                                    []
                                                     [ K; V ]
                                                 ]
                                             ]
@@ -14216,6 +15325,7 @@ Module collections.
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "alloc::collections::btree::node::NodeRef")
+                                      []
                                       [
                                         Ty.path "alloc::collections::btree::node::marker::Mut";
                                         K;
@@ -14226,19 +15336,24 @@ Module collections.
                                     [
                                       Ty.apply
                                         (Ty.path "core::ops::range::RangeTo")
+                                        []
                                         [ Ty.path "usize" ];
                                       Ty.apply
                                         (Ty.path "slice")
+                                        []
                                         [
                                           Ty.apply
                                             (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                            []
                                             [
                                               Ty.apply
                                                 (Ty.path "core::ptr::non_null::NonNull")
+                                                []
                                                 [
                                                   Ty.apply
                                                     (Ty.path
                                                       "alloc::collections::btree::node::LeafNode")
+                                                    []
                                                     [ K; V ]
                                                 ]
                                             ]
@@ -14261,6 +15376,7 @@ Module collections.
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "alloc::collections::btree::node::NodeRef")
+                                  []
                                   [
                                     Ty.path "alloc::collections::btree::node::marker::Mut";
                                     K;
@@ -14268,7 +15384,12 @@ Module collections.
                                     Ty.path "alloc::collections::btree::node::marker::Internal"
                                   ],
                                 "correct_childrens_parent_links",
-                                [ Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "usize" ] ]
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::ops::range::Range")
+                                    []
+                                    [ Ty.path "usize" ]
+                                ]
                               |),
                               [
                                 right;
@@ -14317,7 +15438,7 @@ Module collections.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_bulk_steal_left :
@@ -14388,10 +15509,15 @@ Module collections.
                 }
             }
         *)
-        Definition bulk_steal_right (K V : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition bulk_steal_right
+            (K V : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self K V in
-          match τ, α with
-          | [], [ self; count ] =>
+          match ε, τ, α with
+          | [], [], [ self; count ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let count := M.alloc (| count |) in
@@ -14434,6 +15560,7 @@ Module collections.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "alloc::collections::btree::node::NodeRef")
+                          []
                           [
                             Ty.path "alloc::collections::btree::node::marker::Mut";
                             K;
@@ -14460,6 +15587,7 @@ Module collections.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "alloc::collections::btree::node::NodeRef")
+                          []
                           [
                             Ty.path "alloc::collections::btree::node::marker::Mut";
                             K;
@@ -14554,6 +15682,7 @@ Module collections.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "alloc::collections::btree::node::NodeRef")
+                          []
                           [
                             Ty.path "alloc::collections::btree::node::marker::Mut";
                             K;
@@ -14573,6 +15702,7 @@ Module collections.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "alloc::collections::btree::node::NodeRef")
+                          []
                           [
                             Ty.path "alloc::collections::btree::node::marker::Mut";
                             K;
@@ -14591,7 +15721,7 @@ Module collections.
                     M.alloc (|
                       M.call_closure (|
                         M.get_associated_function (|
-                          Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ K ],
+                          Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ K ],
                           "assume_init_read",
                           []
                         |),
@@ -14600,6 +15730,7 @@ Module collections.
                             M.get_associated_function (|
                               Ty.apply
                                 (Ty.path "alloc::collections::btree::node::NodeRef")
+                                []
                                 [
                                   Ty.path "alloc::collections::btree::node::marker::Mut";
                                   K;
@@ -14609,7 +15740,7 @@ Module collections.
                               "key_area_mut",
                               [
                                 Ty.path "usize";
-                                Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ K ]
+                                Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ K ]
                               ]
                             |),
                             [
@@ -14624,7 +15755,7 @@ Module collections.
                     M.alloc (|
                       M.call_closure (|
                         M.get_associated_function (|
-                          Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ V ],
+                          Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ V ],
                           "assume_init_read",
                           []
                         |),
@@ -14633,6 +15764,7 @@ Module collections.
                             M.get_associated_function (|
                               Ty.apply
                                 (Ty.path "alloc::collections::btree::node::NodeRef")
+                                []
                                 [
                                   Ty.path "alloc::collections::btree::node::marker::Mut";
                                   K;
@@ -14642,7 +15774,7 @@ Module collections.
                               "val_area_mut",
                               [
                                 Ty.path "usize";
-                                Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ V ]
+                                Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ V ]
                               ]
                             |),
                             [
@@ -14659,9 +15791,11 @@ Module collections.
                         M.get_associated_function (|
                           Ty.apply
                             (Ty.path "alloc::collections::btree::node::Handle")
+                            []
                             [
                               Ty.apply
                                 (Ty.path "alloc::collections::btree::node::NodeRef")
+                                []
                                 [
                                   Ty.path "alloc::collections::btree::node::marker::Mut";
                                   K;
@@ -14695,7 +15829,10 @@ Module collections.
                             M.alloc (|
                               M.call_closure (|
                                 M.get_associated_function (|
-                                  Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ K ],
+                                  Ty.apply
+                                    (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                    []
+                                    [ K ],
                                   "write",
                                   []
                                 |),
@@ -14704,6 +15841,7 @@ Module collections.
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "alloc::collections::btree::node::NodeRef")
+                                        []
                                         [
                                           Ty.path "alloc::collections::btree::node::marker::Mut";
                                           K;
@@ -14716,6 +15854,7 @@ Module collections.
                                         Ty.path "usize";
                                         Ty.apply
                                           (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                          []
                                           [ K ]
                                       ]
                                     |),
@@ -14729,7 +15868,10 @@ Module collections.
                             M.alloc (|
                               M.call_closure (|
                                 M.get_associated_function (|
-                                  Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ V ],
+                                  Ty.apply
+                                    (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                    []
+                                    [ V ],
                                   "write",
                                   []
                                 |),
@@ -14738,6 +15880,7 @@ Module collections.
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "alloc::collections::btree::node::NodeRef")
+                                        []
                                         [
                                           Ty.path "alloc::collections::btree::node::marker::Mut";
                                           K;
@@ -14750,6 +15893,7 @@ Module collections.
                                         Ty.path "usize";
                                         Ty.apply
                                           (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                          []
                                           [ V ]
                                       ]
                                     |),
@@ -14771,6 +15915,7 @@ Module collections.
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "alloc::collections::btree::node::NodeRef")
+                                        []
                                         [
                                           Ty.path "alloc::collections::btree::node::marker::Mut";
                                           K;
@@ -14782,12 +15927,15 @@ Module collections.
                                       [
                                         Ty.apply
                                           (Ty.path "core::ops::range::RangeTo")
+                                          []
                                           [ Ty.path "usize" ];
                                         Ty.apply
                                           (Ty.path "slice")
+                                          []
                                           [
                                             Ty.apply
                                               (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                              []
                                               [ K ]
                                           ]
                                       ]
@@ -14809,6 +15957,7 @@ Module collections.
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "alloc::collections::btree::node::NodeRef")
+                                        []
                                         [
                                           Ty.path "alloc::collections::btree::node::marker::Mut";
                                           K;
@@ -14820,12 +15969,15 @@ Module collections.
                                       [
                                         Ty.apply
                                           (Ty.path "core::ops::range::Range")
+                                          []
                                           [ Ty.path "usize" ];
                                         Ty.apply
                                           (Ty.path "slice")
+                                          []
                                           [
                                             Ty.apply
                                               (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                              []
                                               [ K ]
                                           ]
                                       ]
@@ -14859,6 +16011,7 @@ Module collections.
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "alloc::collections::btree::node::NodeRef")
+                                        []
                                         [
                                           Ty.path "alloc::collections::btree::node::marker::Mut";
                                           K;
@@ -14870,12 +16023,15 @@ Module collections.
                                       [
                                         Ty.apply
                                           (Ty.path "core::ops::range::RangeTo")
+                                          []
                                           [ Ty.path "usize" ];
                                         Ty.apply
                                           (Ty.path "slice")
+                                          []
                                           [
                                             Ty.apply
                                               (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                              []
                                               [ V ]
                                           ]
                                       ]
@@ -14897,6 +16053,7 @@ Module collections.
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "alloc::collections::btree::node::NodeRef")
+                                        []
                                         [
                                           Ty.path "alloc::collections::btree::node::marker::Mut";
                                           K;
@@ -14908,12 +16065,15 @@ Module collections.
                                       [
                                         Ty.apply
                                           (Ty.path "core::ops::range::Range")
+                                          []
                                           [ Ty.path "usize" ];
                                         Ty.apply
                                           (Ty.path "slice")
+                                          []
                                           [
                                             Ty.apply
                                               (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                              []
                                               [ V ]
                                           ]
                                       ]
@@ -14947,6 +16107,7 @@ Module collections.
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "alloc::collections::btree::node::NodeRef")
+                                        []
                                         [
                                           Ty.path "alloc::collections::btree::node::marker::Mut";
                                           K;
@@ -14958,12 +16119,15 @@ Module collections.
                                       [
                                         Ty.apply
                                           (Ty.path "core::ops::range::RangeTo")
+                                          []
                                           [ Ty.path "usize" ];
                                         Ty.apply
                                           (Ty.path "slice")
+                                          []
                                           [
                                             Ty.apply
                                               (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                              []
                                               [ K ]
                                           ]
                                       ]
@@ -14991,6 +16155,7 @@ Module collections.
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "alloc::collections::btree::node::NodeRef")
+                                        []
                                         [
                                           Ty.path "alloc::collections::btree::node::marker::Mut";
                                           K;
@@ -15002,12 +16167,15 @@ Module collections.
                                       [
                                         Ty.apply
                                           (Ty.path "core::ops::range::RangeTo")
+                                          []
                                           [ Ty.path "usize" ];
                                         Ty.apply
                                           (Ty.path "slice")
+                                          []
                                           [
                                             Ty.apply
                                               (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                              []
                                               [ V ]
                                           ]
                                       ]
@@ -15034,6 +16202,7 @@ Module collections.
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "alloc::collections::btree::node::NodeRef")
+                              []
                               [
                                 Ty.path "alloc::collections::btree::node::marker::Mut";
                                 K;
@@ -15048,6 +16217,7 @@ Module collections.
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "alloc::collections::btree::node::NodeRef")
+                                  []
                                   [
                                     Ty.path "alloc::collections::btree::node::marker::Mut";
                                     K;
@@ -15066,6 +16236,7 @@ Module collections.
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "alloc::collections::btree::node::NodeRef")
+                              []
                               [
                                 Ty.path "alloc::collections::btree::node::marker::Mut";
                                 K;
@@ -15080,6 +16251,7 @@ Module collections.
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "alloc::collections::btree::node::NodeRef")
+                                  []
                                   [
                                     Ty.path "alloc::collections::btree::node::marker::Mut";
                                     K;
@@ -15123,9 +16295,11 @@ Module collections.
                                 [
                                   Ty.apply
                                     (Ty.path "core::ptr::non_null::NonNull")
+                                    []
                                     [
                                       Ty.apply
                                         (Ty.path "alloc::collections::btree::node::LeafNode")
+                                        []
                                         [ K; V ]
                                     ]
                                 ]
@@ -15135,6 +16309,7 @@ Module collections.
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "alloc::collections::btree::node::NodeRef")
+                                      []
                                       [
                                         Ty.path "alloc::collections::btree::node::marker::Mut";
                                         K;
@@ -15145,19 +16320,24 @@ Module collections.
                                     [
                                       Ty.apply
                                         (Ty.path "core::ops::range::RangeTo")
+                                        []
                                         [ Ty.path "usize" ];
                                       Ty.apply
                                         (Ty.path "slice")
+                                        []
                                         [
                                           Ty.apply
                                             (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                            []
                                             [
                                               Ty.apply
                                                 (Ty.path "core::ptr::non_null::NonNull")
+                                                []
                                                 [
                                                   Ty.apply
                                                     (Ty.path
                                                       "alloc::collections::btree::node::LeafNode")
+                                                    []
                                                     [ K; V ]
                                                 ]
                                             ]
@@ -15175,6 +16355,7 @@ Module collections.
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "alloc::collections::btree::node::NodeRef")
+                                      []
                                       [
                                         Ty.path "alloc::collections::btree::node::marker::Mut";
                                         K;
@@ -15185,19 +16366,24 @@ Module collections.
                                     [
                                       Ty.apply
                                         (Ty.path "core::ops::range::Range")
+                                        []
                                         [ Ty.path "usize" ];
                                       Ty.apply
                                         (Ty.path "slice")
+                                        []
                                         [
                                           Ty.apply
                                             (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                            []
                                             [
                                               Ty.apply
                                                 (Ty.path "core::ptr::non_null::NonNull")
+                                                []
                                                 [
                                                   Ty.apply
                                                     (Ty.path
                                                       "alloc::collections::btree::node::LeafNode")
+                                                    []
                                                     [ K; V ]
                                                 ]
                                             ]
@@ -15233,9 +16419,11 @@ Module collections.
                                 [
                                   Ty.apply
                                     (Ty.path "core::ptr::non_null::NonNull")
+                                    []
                                     [
                                       Ty.apply
                                         (Ty.path "alloc::collections::btree::node::LeafNode")
+                                        []
                                         [ K; V ]
                                     ]
                                 ]
@@ -15245,6 +16433,7 @@ Module collections.
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "alloc::collections::btree::node::NodeRef")
+                                      []
                                       [
                                         Ty.path "alloc::collections::btree::node::marker::Mut";
                                         K;
@@ -15255,19 +16444,24 @@ Module collections.
                                     [
                                       Ty.apply
                                         (Ty.path "core::ops::range::RangeTo")
+                                        []
                                         [ Ty.path "usize" ];
                                       Ty.apply
                                         (Ty.path "slice")
+                                        []
                                         [
                                           Ty.apply
                                             (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                            []
                                             [
                                               Ty.apply
                                                 (Ty.path "core::ptr::non_null::NonNull")
+                                                []
                                                 [
                                                   Ty.apply
                                                     (Ty.path
                                                       "alloc::collections::btree::node::LeafNode")
+                                                    []
                                                     [ K; V ]
                                                 ]
                                             ]
@@ -15297,6 +16491,7 @@ Module collections.
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "alloc::collections::btree::node::NodeRef")
+                                  []
                                   [
                                     Ty.path "alloc::collections::btree::node::marker::Mut";
                                     K;
@@ -15304,7 +16499,12 @@ Module collections.
                                     Ty.path "alloc::collections::btree::node::marker::Internal"
                                   ],
                                 "correct_childrens_parent_links",
-                                [ Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "usize" ] ]
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::ops::range::Range")
+                                    []
+                                    [ Ty.path "usize" ]
+                                ]
                               |),
                               [
                                 left;
@@ -15331,6 +16531,7 @@ Module collections.
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "alloc::collections::btree::node::NodeRef")
+                                  []
                                   [
                                     Ty.path "alloc::collections::btree::node::marker::Mut";
                                     K;
@@ -15338,7 +16539,12 @@ Module collections.
                                     Ty.path "alloc::collections::btree::node::marker::Internal"
                                   ],
                                 "correct_childrens_parent_links",
-                                [ Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "usize" ] ]
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::ops::range::Range")
+                                    []
+                                    [ Ty.path "usize" ]
+                                ]
                               |),
                               [
                                 right;
@@ -15387,7 +16593,7 @@ Module collections.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_bulk_steal_right :
@@ -15400,9 +16606,11 @@ Module collections.
         Definition Self (BorrowType K V : Ty.t) : Ty.t :=
           Ty.apply
             (Ty.path "alloc::collections::btree::node::Handle")
+            []
             [
               Ty.apply
                 (Ty.path "alloc::collections::btree::node::NodeRef")
+                []
                 [ BorrowType; K; V; Ty.path "alloc::collections::btree::node::marker::Leaf" ];
               Ty.path "alloc::collections::btree::node::marker::Edge"
             ].
@@ -15416,21 +16624,24 @@ Module collections.
         *)
         Definition forget_node_type
             (BorrowType K V : Ty.t)
+            (ε : list Value.t)
             (τ : list Ty.t)
             (α : list Value.t)
             : M :=
           let Self : Ty.t := Self BorrowType K V in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.call_closure (|
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "alloc::collections::btree::node::Handle")
+                    []
                     [
                       Ty.apply
                         (Ty.path "alloc::collections::btree::node::NodeRef")
+                        []
                         [
                           BorrowType;
                           K;
@@ -15447,6 +16658,7 @@ Module collections.
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "alloc::collections::btree::node::NodeRef")
+                        []
                         [ BorrowType; K; V; Ty.path "alloc::collections::btree::node::marker::Leaf"
                         ],
                       "forget_type",
@@ -15471,7 +16683,7 @@ Module collections.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_forget_node_type :
@@ -15487,9 +16699,11 @@ Module collections.
         Definition Self (BorrowType K V : Ty.t) : Ty.t :=
           Ty.apply
             (Ty.path "alloc::collections::btree::node::Handle")
+            []
             [
               Ty.apply
                 (Ty.path "alloc::collections::btree::node::NodeRef")
+                []
                 [ BorrowType; K; V; Ty.path "alloc::collections::btree::node::marker::Leaf" ];
               Ty.path "alloc::collections::btree::node::marker::KV"
             ].
@@ -15503,21 +16717,24 @@ Module collections.
         *)
         Definition forget_node_type
             (BorrowType K V : Ty.t)
+            (ε : list Value.t)
             (τ : list Ty.t)
             (α : list Value.t)
             : M :=
           let Self : Ty.t := Self BorrowType K V in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.call_closure (|
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "alloc::collections::btree::node::Handle")
+                    []
                     [
                       Ty.apply
                         (Ty.path "alloc::collections::btree::node::NodeRef")
+                        []
                         [
                           BorrowType;
                           K;
@@ -15534,6 +16751,7 @@ Module collections.
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "alloc::collections::btree::node::NodeRef")
+                        []
                         [ BorrowType; K; V; Ty.path "alloc::collections::btree::node::marker::Leaf"
                         ],
                       "forget_type",
@@ -15558,7 +16776,7 @@ Module collections.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_forget_node_type :
@@ -15573,9 +16791,11 @@ Module collections.
         Definition Self (BorrowType K V Type_ : Ty.t) : Ty.t :=
           Ty.apply
             (Ty.path "alloc::collections::btree::node::Handle")
+            []
             [
               Ty.apply
                 (Ty.path "alloc::collections::btree::node::NodeRef")
+                []
                 [
                   BorrowType;
                   K;
@@ -15602,10 +16822,15 @@ Module collections.
                 }
             }
         *)
-        Definition force (BorrowType K V Type_ : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition force
+            (BorrowType K V Type_ : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self BorrowType K V Type_ in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
@@ -15615,6 +16840,7 @@ Module collections.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "alloc::collections::btree::node::NodeRef")
+                          []
                           [
                             BorrowType;
                             K;
@@ -15697,7 +16923,7 @@ Module collections.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_force :
@@ -15709,9 +16935,11 @@ Module collections.
         Definition Self (K V Type_ : Ty.t) : Ty.t :=
           Ty.apply
             (Ty.path "alloc::collections::btree::node::Handle")
+            []
             [
               Ty.apply
                 (Ty.path "alloc::collections::btree::node::NodeRef")
+                []
                 [
                   Ty.path "alloc::collections::btree::node::marker::Mut";
                   K;
@@ -15731,12 +16959,13 @@ Module collections.
         *)
         Definition cast_to_leaf_unchecked
             (K V Type_ : Ty.t)
+            (ε : list Value.t)
             (τ : list Ty.t)
             (α : list Value.t)
             : M :=
           let Self : Ty.t := Self K V Type_ in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
@@ -15746,6 +16975,7 @@ Module collections.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "alloc::collections::btree::node::NodeRef")
+                          []
                           [
                             Ty.path "alloc::collections::btree::node::marker::Mut";
                             K;
@@ -15783,7 +17013,7 @@ Module collections.
                     ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_cast_to_leaf_unchecked :
@@ -15798,9 +17028,11 @@ Module collections.
         Definition Self (K V : Ty.t) : Ty.t :=
           Ty.apply
             (Ty.path "alloc::collections::btree::node::Handle")
+            []
             [
               Ty.apply
                 (Ty.path "alloc::collections::btree::node::NodeRef")
+                []
                 [
                   Ty.path "alloc::collections::btree::node::marker::Mut";
                   K;
@@ -15853,10 +17085,15 @@ Module collections.
                 }
             }
         *)
-        Definition move_suffix (K V : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition move_suffix
+            (K V : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self K V in
-          match τ, α with
-          | [], [ self; _ as right ] =>
+          match ε, τ, α with
+          | [], [], [ self; _ as right ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let right := M.alloc (| right |) in
@@ -15875,9 +17112,11 @@ Module collections.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "alloc::collections::btree::node::Handle")
+                          []
                           [
                             Ty.apply
                               (Ty.path "alloc::collections::btree::node::NodeRef")
+                              []
                               [
                                 Ty.path "alloc::collections::btree::node::marker::Mut";
                                 K;
@@ -15894,9 +17133,11 @@ Module collections.
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "alloc::collections::btree::node::Handle")
+                              []
                               [
                                 Ty.apply
                                   (Ty.path "alloc::collections::btree::node::NodeRef")
+                                  []
                                   [
                                     Ty.path "alloc::collections::btree::node::marker::Mut";
                                     K;
@@ -15920,6 +17161,7 @@ Module collections.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "alloc::collections::btree::node::NodeRef")
+                          []
                           [
                             Ty.path "alloc::collections::btree::node::marker::Mut";
                             K;
@@ -15945,6 +17187,7 @@ Module collections.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "alloc::collections::btree::node::NodeRef")
+                          []
                           [
                             Ty.path "alloc::collections::btree::node::marker::Mut";
                             K;
@@ -15972,6 +17215,7 @@ Module collections.
                                       M.get_associated_function (|
                                         Ty.apply
                                           (Ty.path "alloc::collections::btree::node::NodeRef")
+                                          []
                                           [
                                             Ty.path "alloc::collections::btree::node::marker::Mut";
                                             K;
@@ -16065,6 +17309,7 @@ Module collections.
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "alloc::collections::btree::node::NodeRef")
+                                  []
                                   [
                                     Ty.path "alloc::collections::btree::node::marker::Mut";
                                     K;
@@ -16085,6 +17330,7 @@ Module collections.
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "alloc::collections::btree::node::NodeRef")
+                                  []
                                   [
                                     Ty.path "alloc::collections::btree::node::marker::Mut";
                                     K;
@@ -16111,6 +17357,7 @@ Module collections.
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "alloc::collections::btree::node::NodeRef")
+                                      []
                                       [
                                         Ty.path "alloc::collections::btree::node::marker::Mut";
                                         K;
@@ -16122,12 +17369,15 @@ Module collections.
                                     [
                                       Ty.apply
                                         (Ty.path "core::ops::range::Range")
+                                        []
                                         [ Ty.path "usize" ];
                                       Ty.apply
                                         (Ty.path "slice")
+                                        []
                                         [
                                           Ty.apply
                                             (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                            []
                                             [ K ]
                                         ]
                                     ]
@@ -16146,6 +17396,7 @@ Module collections.
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "alloc::collections::btree::node::NodeRef")
+                                      []
                                       [
                                         Ty.path "alloc::collections::btree::node::marker::Mut";
                                         K;
@@ -16157,12 +17408,15 @@ Module collections.
                                     [
                                       Ty.apply
                                         (Ty.path "core::ops::range::RangeTo")
+                                        []
                                         [ Ty.path "usize" ];
                                       Ty.apply
                                         (Ty.path "slice")
+                                        []
                                         [
                                           Ty.apply
                                             (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                            []
                                             [ K ]
                                         ]
                                     ]
@@ -16189,6 +17443,7 @@ Module collections.
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "alloc::collections::btree::node::NodeRef")
+                                      []
                                       [
                                         Ty.path "alloc::collections::btree::node::marker::Mut";
                                         K;
@@ -16200,12 +17455,15 @@ Module collections.
                                     [
                                       Ty.apply
                                         (Ty.path "core::ops::range::Range")
+                                        []
                                         [ Ty.path "usize" ];
                                       Ty.apply
                                         (Ty.path "slice")
+                                        []
                                         [
                                           Ty.apply
                                             (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                            []
                                             [ V ]
                                         ]
                                     ]
@@ -16224,6 +17482,7 @@ Module collections.
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "alloc::collections::btree::node::NodeRef")
+                                      []
                                       [
                                         Ty.path "alloc::collections::btree::node::marker::Mut";
                                         K;
@@ -16235,12 +17494,15 @@ Module collections.
                                     [
                                       Ty.apply
                                         (Ty.path "core::ops::range::RangeTo")
+                                        []
                                         [ Ty.path "usize" ];
                                       Ty.apply
                                         (Ty.path "slice")
+                                        []
                                         [
                                           Ty.apply
                                             (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                            []
                                             [ V ]
                                         ]
                                     ]
@@ -16263,6 +17525,7 @@ Module collections.
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "alloc::collections::btree::node::NodeRef")
+                                      []
                                       [
                                         Ty.path "alloc::collections::btree::node::marker::Mut";
                                         K;
@@ -16279,6 +17542,7 @@ Module collections.
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "alloc::collections::btree::node::NodeRef")
+                                      []
                                       [
                                         Ty.path "alloc::collections::btree::node::marker::Mut";
                                         K;
@@ -16320,10 +17584,12 @@ Module collections.
                                         [
                                           Ty.apply
                                             (Ty.path "core::ptr::non_null::NonNull")
+                                            []
                                             [
                                               Ty.apply
                                                 (Ty.path
                                                   "alloc::collections::btree::node::LeafNode")
+                                                []
                                                 [ K; V ]
                                             ]
                                         ]
@@ -16333,6 +17599,7 @@ Module collections.
                                           M.get_associated_function (|
                                             Ty.apply
                                               (Ty.path "alloc::collections::btree::node::NodeRef")
+                                              []
                                               [
                                                 Ty.path
                                                   "alloc::collections::btree::node::marker::Mut";
@@ -16345,19 +17612,24 @@ Module collections.
                                             [
                                               Ty.apply
                                                 (Ty.path "core::ops::range::Range")
+                                                []
                                                 [ Ty.path "usize" ];
                                               Ty.apply
                                                 (Ty.path "slice")
+                                                []
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                                    []
                                                     [
                                                       Ty.apply
                                                         (Ty.path "core::ptr::non_null::NonNull")
+                                                        []
                                                         [
                                                           Ty.apply
                                                             (Ty.path
                                                               "alloc::collections::btree::node::LeafNode")
+                                                            []
                                                             [ K; V ]
                                                         ]
                                                     ]
@@ -16386,6 +17658,7 @@ Module collections.
                                           M.get_associated_function (|
                                             Ty.apply
                                               (Ty.path "alloc::collections::btree::node::NodeRef")
+                                              []
                                               [
                                                 Ty.path
                                                   "alloc::collections::btree::node::marker::Mut";
@@ -16398,19 +17671,24 @@ Module collections.
                                             [
                                               Ty.apply
                                                 (Ty.path "core::ops::range::Range")
+                                                []
                                                 [ Ty.path "usize" ];
                                               Ty.apply
                                                 (Ty.path "slice")
+                                                []
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                                    []
                                                     [
                                                       Ty.apply
                                                         (Ty.path "core::ptr::non_null::NonNull")
+                                                        []
                                                         [
                                                           Ty.apply
                                                             (Ty.path
                                                               "alloc::collections::btree::node::LeafNode")
+                                                            []
                                                             [ K; V ]
                                                         ]
                                                     ]
@@ -16440,6 +17718,7 @@ Module collections.
                                       M.get_associated_function (|
                                         Ty.apply
                                           (Ty.path "alloc::collections::btree::node::NodeRef")
+                                          []
                                           [
                                             Ty.path "alloc::collections::btree::node::marker::Mut";
                                             K;
@@ -16451,6 +17730,7 @@ Module collections.
                                         [
                                           Ty.apply
                                             (Ty.path "core::ops::range::Range")
+                                            []
                                             [ Ty.path "usize" ]
                                         ]
                                       |),
@@ -16507,7 +17787,7 @@ Module collections.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_move_suffix :
@@ -16518,6 +17798,7 @@ Module collections.
       (*
       Enum ForceResult
       {
+        const_params := [];
         ty_params := [ "Leaf"; "Internal" ];
         variants :=
           [
@@ -16538,17 +17819,20 @@ Module collections.
       (* StructRecord
         {
           name := "SplitResult";
+          const_params := [];
           ty_params := [ "K"; "V"; "NodeType" ];
           fields :=
             [
               ("left",
                 Ty.apply
                   (Ty.path "alloc::collections::btree::node::NodeRef")
+                  []
                   [ Ty.path "alloc::collections::btree::node::marker::Mut"; K; V; NodeType ]);
               ("kv", Ty.tuple [ K; V ]);
               ("right",
                 Ty.apply
                   (Ty.path "alloc::collections::btree::node::NodeRef")
+                  []
                   [ Ty.path "alloc::collections::btree::node::marker::Owned"; K; V; NodeType ])
             ];
         } *)
@@ -16557,6 +17841,7 @@ Module collections.
         Definition Self (K V : Ty.t) : Ty.t :=
           Ty.apply
             (Ty.path "alloc::collections::btree::node::SplitResult")
+            []
             [ K; V; Ty.path "alloc::collections::btree::node::marker::Leaf" ].
         
         (*
@@ -16564,10 +17849,15 @@ Module collections.
                 SplitResult { left: self.left.forget_type(), kv: self.kv, right: self.right.forget_type() }
             }
         *)
-        Definition forget_node_type (K V : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition forget_node_type
+            (K V : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self K V in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               Value.StructRecord
@@ -16578,6 +17868,7 @@ Module collections.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "alloc::collections::btree::node::NodeRef")
+                          []
                           [
                             Ty.path "alloc::collections::btree::node::marker::Mut";
                             K;
@@ -16610,6 +17901,7 @@ Module collections.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "alloc::collections::btree::node::NodeRef")
+                          []
                           [
                             Ty.path "alloc::collections::btree::node::marker::Owned";
                             K;
@@ -16630,7 +17922,7 @@ Module collections.
                       ]
                     |))
                 ]))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_forget_node_type :
@@ -16642,6 +17934,7 @@ Module collections.
         Definition Self (K V : Ty.t) : Ty.t :=
           Ty.apply
             (Ty.path "alloc::collections::btree::node::SplitResult")
+            []
             [ K; V; Ty.path "alloc::collections::btree::node::marker::Internal" ].
         
         (*
@@ -16649,10 +17942,15 @@ Module collections.
                 SplitResult { left: self.left.forget_type(), kv: self.kv, right: self.right.forget_type() }
             }
         *)
-        Definition forget_node_type (K V : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition forget_node_type
+            (K V : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self K V in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               Value.StructRecord
@@ -16663,6 +17961,7 @@ Module collections.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "alloc::collections::btree::node::NodeRef")
+                          []
                           [
                             Ty.path "alloc::collections::btree::node::marker::Mut";
                             K;
@@ -16695,6 +17994,7 @@ Module collections.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "alloc::collections::btree::node::NodeRef")
+                          []
                           [
                             Ty.path "alloc::collections::btree::node::marker::Owned";
                             K;
@@ -16715,7 +18015,7 @@ Module collections.
                       ]
                     |))
                 ]))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_forget_node_type :
@@ -16727,6 +18027,7 @@ Module collections.
         (*
         Enum Leaf
         {
+          const_params := [];
           ty_params := [];
           variants := [];
         }
@@ -16735,6 +18036,7 @@ Module collections.
         (*
         Enum Internal
         {
+          const_params := [];
           ty_params := [];
           variants := [];
         }
@@ -16743,6 +18045,7 @@ Module collections.
         (*
         Enum LeafOrInternal
         {
+          const_params := [];
           ty_params := [];
           variants := [];
         }
@@ -16751,6 +18054,7 @@ Module collections.
         (*
         Enum Owned
         {
+          const_params := [];
           ty_params := [];
           variants := [];
         }
@@ -16759,6 +18063,7 @@ Module collections.
         (*
         Enum Dying
         {
+          const_params := [];
           ty_params := [];
           variants := [];
         }
@@ -16767,6 +18072,7 @@ Module collections.
         (*
         Enum DormantMut
         {
+          const_params := [];
           ty_params := [];
           variants := [];
         }
@@ -16775,36 +18081,42 @@ Module collections.
         (* StructTuple
           {
             name := "Immut";
+            const_params := [];
             ty_params := [];
             fields :=
               [
                 Ty.apply
                   (Ty.path "core::marker::PhantomData")
-                  [ Ty.apply (Ty.path "&") [ Ty.tuple [] ] ]
+                  []
+                  [ Ty.apply (Ty.path "&") [] [ Ty.tuple [] ] ]
               ];
           } *)
         
         (* StructTuple
           {
             name := "Mut";
+            const_params := [];
             ty_params := [];
             fields :=
               [
                 Ty.apply
                   (Ty.path "core::marker::PhantomData")
-                  [ Ty.apply (Ty.path "&mut") [ Ty.tuple [] ] ]
+                  []
+                  [ Ty.apply (Ty.path "&mut") [] [ Ty.tuple [] ] ]
               ];
           } *)
         
         (* StructTuple
           {
             name := "ValMut";
+            const_params := [];
             ty_params := [];
             fields :=
               [
                 Ty.apply
                   (Ty.path "core::marker::PhantomData")
-                  [ Ty.apply (Ty.path "&mut") [ Ty.tuple [] ] ]
+                  []
+                  [ Ty.apply (Ty.path "&mut") [] [ Ty.tuple [] ] ]
               ];
           } *)
         
@@ -16886,6 +18198,7 @@ Module collections.
         (*
         Enum KV
         {
+          const_params := [];
           ty_params := [];
           variants := [];
         }
@@ -16894,6 +18207,7 @@ Module collections.
         (*
         Enum Edge
         {
+          const_params := [];
           ty_params := [];
           variants := [];
         }
@@ -16913,9 +18227,9 @@ Module collections.
           }
       }
       *)
-      Definition slice_insert (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ T ], [ slice; idx; val ] =>
+      Definition slice_insert (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ T ], [ slice; idx; val ] =>
           ltac:(M.monadic
             (let slice := M.alloc (| slice |) in
             let idx := M.alloc (| idx |) in
@@ -16927,7 +18241,8 @@ Module collections.
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "slice")
-                        [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ] ],
+                        []
+                        [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ],
                       "len",
                       []
                     |),
@@ -16981,7 +18296,8 @@ Module collections.
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "slice")
-                        [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ] ],
+                        []
+                        [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ],
                       "as_mut_ptr",
                       []
                     |),
@@ -17008,7 +18324,8 @@ Module collections.
                             M.call_closure (|
                               M.get_function (|
                                 "core::intrinsics::copy",
-                                [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ] ]
+                                [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]
+                                ]
                               |),
                               [
                                 (* MutToConstPointer *)
@@ -17017,9 +18334,11 @@ Module collections.
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "*mut")
+                                        []
                                         [
                                           Ty.apply
                                             (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                            []
                                             [ T ]
                                         ],
                                       "add",
@@ -17031,9 +18350,11 @@ Module collections.
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "*mut")
+                                      []
                                       [
                                         Ty.apply
                                           (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                          []
                                           [ T ]
                                       ],
                                     "add",
@@ -17065,7 +18386,7 @@ Module collections.
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ],
+                      Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ],
                       "write",
                       []
                     |),
@@ -17074,7 +18395,8 @@ Module collections.
                         M.get_associated_function (|
                           Ty.apply
                             (Ty.path "*mut")
-                            [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ] ],
+                            []
+                            [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ],
                           "add",
                           []
                         |),
@@ -17086,7 +18408,7 @@ Module collections.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Function_slice_insert :
@@ -17104,9 +18426,9 @@ Module collections.
           }
       }
       *)
-      Definition slice_remove (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ T ], [ slice; idx ] =>
+      Definition slice_remove (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ T ], [ slice; idx ] =>
           ltac:(M.monadic
             (let slice := M.alloc (| slice |) in
             let idx := M.alloc (| idx |) in
@@ -17117,7 +18439,8 @@ Module collections.
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "slice")
-                        [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ] ],
+                        []
+                        [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ],
                       "len",
                       []
                     |),
@@ -17171,7 +18494,8 @@ Module collections.
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "slice")
-                        [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ] ],
+                        []
+                        [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ],
                       "as_mut_ptr",
                       []
                     |),
@@ -17182,7 +18506,7 @@ Module collections.
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ],
+                      Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ],
                       "assume_init_read",
                       []
                     |),
@@ -17191,7 +18515,8 @@ Module collections.
                         M.get_associated_function (|
                           Ty.apply
                             (Ty.path "*mut")
-                            [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ] ],
+                            []
+                            [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ],
                           "add",
                           []
                         |),
@@ -17205,7 +18530,7 @@ Module collections.
                   M.call_closure (|
                     M.get_function (|
                       "core::intrinsics::copy",
-                      [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ] ]
+                      [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ]
                     |),
                     [
                       (* MutToConstPointer *)
@@ -17214,7 +18539,9 @@ Module collections.
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "*mut")
-                              [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ] ],
+                              []
+                              [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]
+                              ],
                             "add",
                             []
                           |),
@@ -17227,7 +18554,8 @@ Module collections.
                         M.get_associated_function (|
                           Ty.apply
                             (Ty.path "*mut")
-                            [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ] ],
+                            []
+                            [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ],
                           "add",
                           []
                         |),
@@ -17242,7 +18570,7 @@ Module collections.
                 |) in
               ret
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Function_slice_remove :
@@ -17256,9 +18584,9 @@ Module collections.
           }
       }
       *)
-      Definition slice_shl (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ T ], [ slice; distance ] =>
+      Definition slice_shl (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ T ], [ slice; distance ] =>
           ltac:(M.monadic
             (let slice := M.alloc (| slice |) in
             let distance := M.alloc (| distance |) in
@@ -17269,7 +18597,8 @@ Module collections.
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "slice")
-                        [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ] ],
+                        []
+                        [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ],
                       "as_mut_ptr",
                       []
                     |),
@@ -17281,7 +18610,7 @@ Module collections.
                   M.call_closure (|
                     M.get_function (|
                       "core::intrinsics::copy",
-                      [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ] ]
+                      [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ]
                     |),
                     [
                       (* MutToConstPointer *)
@@ -17290,7 +18619,9 @@ Module collections.
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "*mut")
-                              [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ] ],
+                              []
+                              [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]
+                              ],
                             "add",
                             []
                           |),
@@ -17303,7 +18634,9 @@ Module collections.
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "slice")
-                              [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ] ],
+                              []
+                              [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]
+                              ],
                             "len",
                             []
                           |),
@@ -17315,7 +18648,7 @@ Module collections.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Function_slice_shl :
@@ -17329,9 +18662,9 @@ Module collections.
           }
       }
       *)
-      Definition slice_shr (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ T ], [ slice; distance ] =>
+      Definition slice_shr (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ T ], [ slice; distance ] =>
           ltac:(M.monadic
             (let slice := M.alloc (| slice |) in
             let distance := M.alloc (| distance |) in
@@ -17342,7 +18675,8 @@ Module collections.
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "slice")
-                        [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ] ],
+                        []
+                        [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ],
                       "as_mut_ptr",
                       []
                     |),
@@ -17354,7 +18688,7 @@ Module collections.
                   M.call_closure (|
                     M.get_function (|
                       "core::intrinsics::copy",
-                      [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ] ]
+                      [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ]
                     |),
                     [
                       (* MutToConstPointer *) M.pointer_coercion (M.read (| slice_ptr |));
@@ -17362,7 +18696,8 @@ Module collections.
                         M.get_associated_function (|
                           Ty.apply
                             (Ty.path "*mut")
-                            [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ] ],
+                            []
+                            [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ],
                           "add",
                           []
                         |),
@@ -17374,7 +18709,9 @@ Module collections.
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "slice")
-                              [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ] ],
+                              []
+                              [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]
+                              ],
                             "len",
                             []
                           |),
@@ -17386,7 +18723,7 @@ Module collections.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Function_slice_shr :
@@ -17400,9 +18737,9 @@ Module collections.
           }
       }
       *)
-      Definition move_to_slice (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ T ], [ src; dst ] =>
+      Definition move_to_slice (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ T ], [ src; dst ] =>
           ltac:(M.monadic
             (let src := M.alloc (| src |) in
             let dst := M.alloc (| dst |) in
@@ -17422,9 +18759,11 @@ Module collections.
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "slice")
+                                        []
                                         [
                                           Ty.apply
                                             (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                            []
                                             [ T ]
                                         ],
                                       "len",
@@ -17436,9 +18775,11 @@ Module collections.
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "slice")
+                                        []
                                         [
                                           Ty.apply
                                             (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                            []
                                             [ T ]
                                         ],
                                       "len",
@@ -17466,14 +18807,15 @@ Module collections.
                   M.call_closure (|
                     M.get_function (|
                       "core::intrinsics::copy_nonoverlapping",
-                      [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ] ]
+                      [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ]
                     |),
                     [
                       M.call_closure (|
                         M.get_associated_function (|
                           Ty.apply
                             (Ty.path "slice")
-                            [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ] ],
+                            []
+                            [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ],
                           "as_ptr",
                           []
                         |),
@@ -17483,7 +18825,8 @@ Module collections.
                         M.get_associated_function (|
                           Ty.apply
                             (Ty.path "slice")
-                            [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ] ],
+                            []
+                            [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ],
                           "as_mut_ptr",
                           []
                         |),
@@ -17493,7 +18836,8 @@ Module collections.
                         M.get_associated_function (|
                           Ty.apply
                             (Ty.path "slice")
-                            [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ] ],
+                            []
+                            [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ],
                           "len",
                           []
                         |),
@@ -17504,7 +18848,7 @@ Module collections.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Function_move_to_slice :

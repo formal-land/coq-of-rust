@@ -4,6 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 (*
 Enum VeryVerboseEnumOfThingsToDoWithNumbers
 {
+  const_params := [];
   ty_params := [];
   variants :=
     [
@@ -32,9 +33,9 @@ Module Impl_enums_type_aliases_v2_VeryVerboseEnumOfThingsToDoWithNumbers.
           }
       }
   *)
-  Definition run (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; x; y ] =>
+  Definition run (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; x; y ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let x := M.alloc (| x |) in
@@ -64,7 +65,7 @@ Module Impl_enums_type_aliases_v2_VeryVerboseEnumOfThingsToDoWithNumbers.
             ]
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_run : M.IsAssociatedFunction Self "run" run.

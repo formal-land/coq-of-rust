@@ -4,6 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 (* StructRecord
   {
     name := "Number";
+    const_params := [];
     ty_params := [];
     fields := [ ("value", Ty.path "i32") ];
   } *)
@@ -11,7 +12,7 @@ Require Import CoqOfRust.CoqOfRust.
 Module Impl_core_convert_From_i32_for_from_Number.
   Definition Self : Ty.t := Ty.path "from::Number".
   
-  Parameter from : (list Ty.t) -> (list Value.t) -> M.
+  Parameter from : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -21,6 +22,6 @@ Module Impl_core_convert_From_i32_for_from_Number.
       (* Instance *) [ ("from", InstanceField.Method from) ].
 End Impl_core_convert_From_i32_for_from_Number.
 
-Parameter main : (list Ty.t) -> (list Value.t) -> M.
+Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_main : M.IsFunction "from::main" main.

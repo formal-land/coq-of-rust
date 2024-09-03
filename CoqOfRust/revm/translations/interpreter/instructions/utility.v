@@ -8,9 +8,9 @@ Module instructions.
         i16::from_be_bytes(core::slice::from_raw_parts(ptr, 2).try_into().unwrap())
     }
     *)
-    Definition read_i16 (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ ptr ] =>
+    Definition read_i16 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ ptr ] =>
         ltac:(M.monadic
           (let ptr := M.alloc (| ptr |) in
           M.call_closure (|
@@ -20,8 +20,9 @@ Module instructions.
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "core::result::Result")
+                    []
                     [
-                      Ty.apply (Ty.path "array") [ Ty.path "u8" ];
+                      Ty.apply (Ty.path "array") [ Value.Integer 2 ] [ Ty.path "u8" ];
                       Ty.path "core::array::TryFromSliceError"
                     ],
                   "unwrap",
@@ -31,8 +32,8 @@ Module instructions.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::convert::TryInto",
-                      Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "slice") [ Ty.path "u8" ] ],
-                      [ Ty.apply (Ty.path "array") [ Ty.path "u8" ] ],
+                      Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                      [ Ty.apply (Ty.path "array") [ Value.Integer 2 ] [ Ty.path "u8" ] ],
                       "try_into",
                       []
                     |),
@@ -47,7 +48,7 @@ Module instructions.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_read_i16 :
@@ -58,9 +59,9 @@ Module instructions.
         u16::from_be_bytes(core::slice::from_raw_parts(ptr, 2).try_into().unwrap())
     }
     *)
-    Definition read_u16 (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ ptr ] =>
+    Definition read_u16 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ ptr ] =>
         ltac:(M.monadic
           (let ptr := M.alloc (| ptr |) in
           M.call_closure (|
@@ -70,8 +71,9 @@ Module instructions.
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "core::result::Result")
+                    []
                     [
-                      Ty.apply (Ty.path "array") [ Ty.path "u8" ];
+                      Ty.apply (Ty.path "array") [ Value.Integer 2 ] [ Ty.path "u8" ];
                       Ty.path "core::array::TryFromSliceError"
                     ],
                   "unwrap",
@@ -81,8 +83,8 @@ Module instructions.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::convert::TryInto",
-                      Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "slice") [ Ty.path "u8" ] ],
-                      [ Ty.apply (Ty.path "array") [ Ty.path "u8" ] ],
+                      Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                      [ Ty.apply (Ty.path "array") [ Value.Integer 2 ] [ Ty.path "u8" ] ],
                       "try_into",
                       []
                     |),
@@ -97,7 +99,7 @@ Module instructions.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_read_u16 :

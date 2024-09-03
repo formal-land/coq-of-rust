@@ -5,24 +5,26 @@ Module vec.
   (* StructRecord
     {
       name := "Vec";
+      const_params := [];
       ty_params := [ "T"; "A" ];
       fields :=
-        [ ("buf", Ty.apply (Ty.path "alloc::raw_vec::RawVec") [ T; A ]); ("len", Ty.path "usize") ];
+        [ ("buf", Ty.apply (Ty.path "alloc::raw_vec::RawVec") [] [ T; A ]); ("len", Ty.path "usize")
+        ];
     } *)
   
   Module Impl_alloc_vec_Vec_T_alloc_alloc_Global.
     Definition Self (T : Ty.t) : Ty.t :=
-      Ty.apply (Ty.path "alloc::vec::Vec") [ T; Ty.path "alloc::alloc::Global" ].
+      Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; Ty.path "alloc::alloc::Global" ].
     
     (*
         pub const fn new() -> Self {
             Vec { buf: RawVec::NEW, len: 0 }
         }
     *)
-    Definition new (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition new (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [] =>
+      match ε, τ, α with
+      | [], [], [] =>
         ltac:(M.monadic
           (Value.StructRecord
             "alloc::vec::Vec"
@@ -30,7 +32,7 @@ Module vec.
               ("buf", M.read (| M.get_constant (| "alloc::raw_vec::NEW" |) |));
               ("len", Value.Integer 0)
             ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_new : forall (T : Ty.t), M.IsAssociatedFunction (Self T) "new" (new T).
@@ -40,21 +42,21 @@ Module vec.
             Self::with_capacity_in(capacity, Global)
         }
     *)
-    Definition with_capacity (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition with_capacity (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [ capacity ] =>
+      match ε, τ, α with
+      | [], [], [ capacity ] =>
         ltac:(M.monadic
           (let capacity := M.alloc (| capacity |) in
           M.call_closure (|
             M.get_associated_function (|
-              Ty.apply (Ty.path "alloc::vec::Vec") [ T; Ty.path "alloc::alloc::Global" ],
+              Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; Ty.path "alloc::alloc::Global" ],
               "with_capacity_in",
               []
             |),
             [ M.read (| capacity |); Value.StructTuple "alloc::alloc::Global" [] ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_with_capacity :
@@ -66,17 +68,22 @@ Module vec.
             unsafe { Self::from_raw_parts_in(ptr, length, capacity, Global) }
         }
     *)
-    Definition from_raw_parts (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition from_raw_parts
+        (T : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [ ptr; length; capacity ] =>
+      match ε, τ, α with
+      | [], [], [ ptr; length; capacity ] =>
         ltac:(M.monadic
           (let ptr := M.alloc (| ptr |) in
           let length := M.alloc (| length |) in
           let capacity := M.alloc (| capacity |) in
           M.call_closure (|
             M.get_associated_function (|
-              Ty.apply (Ty.path "alloc::vec::Vec") [ T; Ty.path "alloc::alloc::Global" ],
+              Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; Ty.path "alloc::alloc::Global" ],
               "from_raw_parts_in",
               []
             |),
@@ -87,7 +94,7 @@ Module vec.
               Value.StructTuple "alloc::alloc::Global" []
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_from_raw_parts :
@@ -96,17 +103,17 @@ Module vec.
   End Impl_alloc_vec_Vec_T_alloc_alloc_Global.
   
   Module Impl_alloc_vec_Vec_T_A.
-    Definition Self (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ].
+    Definition Self (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ].
     
     (*
         pub const fn new_in(alloc: A) -> Self {
             Vec { buf: RawVec::new_in(alloc), len: 0 }
         }
     *)
-    Definition new_in (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition new_in (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ alloc ] =>
+      match ε, τ, α with
+      | [], [], [ alloc ] =>
         ltac:(M.monadic
           (let alloc := M.alloc (| alloc |) in
           Value.StructRecord
@@ -115,7 +122,7 @@ Module vec.
               ("buf",
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "alloc::raw_vec::RawVec") [ T; A ],
+                    Ty.apply (Ty.path "alloc::raw_vec::RawVec") [] [ T; A ],
                     "new_in",
                     []
                   |),
@@ -123,7 +130,7 @@ Module vec.
                 |));
               ("len", Value.Integer 0)
             ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_new_in :
@@ -135,10 +142,15 @@ Module vec.
             Vec { buf: RawVec::with_capacity_in(capacity, alloc), len: 0 }
         }
     *)
-    Definition with_capacity_in (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition with_capacity_in
+        (T A : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ capacity; alloc ] =>
+      match ε, τ, α with
+      | [], [], [ capacity; alloc ] =>
         ltac:(M.monadic
           (let capacity := M.alloc (| capacity |) in
           let alloc := M.alloc (| alloc |) in
@@ -148,7 +160,7 @@ Module vec.
               ("buf",
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "alloc::raw_vec::RawVec") [ T; A ],
+                    Ty.apply (Ty.path "alloc::raw_vec::RawVec") [] [ T; A ],
                     "with_capacity_in",
                     []
                   |),
@@ -156,7 +168,7 @@ Module vec.
                 |));
               ("len", Value.Integer 0)
             ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_with_capacity_in :
@@ -168,10 +180,15 @@ Module vec.
             unsafe { Vec { buf: RawVec::from_raw_parts_in(ptr, capacity, alloc), len: length } }
         }
     *)
-    Definition from_raw_parts_in (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition from_raw_parts_in
+        (T A : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ ptr; length; capacity; alloc ] =>
+      match ε, τ, α with
+      | [], [], [ ptr; length; capacity; alloc ] =>
         ltac:(M.monadic
           (let ptr := M.alloc (| ptr |) in
           let length := M.alloc (| length |) in
@@ -183,7 +200,7 @@ Module vec.
               ("buf",
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "alloc::raw_vec::RawVec") [ T; A ],
+                    Ty.apply (Ty.path "alloc::raw_vec::RawVec") [] [ T; A ],
                     "from_raw_parts_in",
                     []
                   |),
@@ -191,7 +208,7 @@ Module vec.
                 |));
               ("len", M.read (| length |))
             ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_from_raw_parts_in :
@@ -204,10 +221,15 @@ Module vec.
             (me.as_mut_ptr(), me.len(), me.capacity())
         }
     *)
-    Definition into_raw_parts (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition into_raw_parts
+        (T A : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -217,7 +239,8 @@ Module vec.
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "core::mem::manually_drop::ManuallyDrop")
-                      [ Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ] ],
+                      []
+                      [ Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ] ],
                     "new",
                     []
                   |),
@@ -229,7 +252,7 @@ Module vec.
                 [
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                      Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                       "as_mut_ptr",
                       []
                     |),
@@ -239,7 +262,8 @@ Module vec.
                           "core::ops::deref::DerefMut",
                           Ty.apply
                             (Ty.path "core::mem::manually_drop::ManuallyDrop")
-                            [ Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ] ],
+                            []
+                            [ Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ] ],
                           [],
                           "deref_mut",
                           []
@@ -250,7 +274,7 @@ Module vec.
                   |);
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                      Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                       "len",
                       []
                     |),
@@ -260,7 +284,8 @@ Module vec.
                           "core::ops::deref::Deref",
                           Ty.apply
                             (Ty.path "core::mem::manually_drop::ManuallyDrop")
-                            [ Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ] ],
+                            []
+                            [ Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ] ],
                           [],
                           "deref",
                           []
@@ -271,7 +296,7 @@ Module vec.
                   |);
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                      Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                       "capacity",
                       []
                     |),
@@ -281,7 +306,8 @@ Module vec.
                           "core::ops::deref::Deref",
                           Ty.apply
                             (Ty.path "core::mem::manually_drop::ManuallyDrop")
-                            [ Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ] ],
+                            []
+                            [ Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ] ],
                           [],
                           "deref",
                           []
@@ -293,7 +319,7 @@ Module vec.
                 ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_into_raw_parts :
@@ -310,10 +336,15 @@ Module vec.
             (ptr, len, capacity, alloc)
         }
     *)
-    Definition into_raw_parts_with_alloc (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition into_raw_parts_with_alloc
+        (T A : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -323,7 +354,8 @@ Module vec.
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "core::mem::manually_drop::ManuallyDrop")
-                      [ Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ] ],
+                      []
+                      [ Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ] ],
                     "new",
                     []
                   |),
@@ -334,7 +366,7 @@ Module vec.
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                    Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                     "len",
                     []
                   |),
@@ -344,7 +376,8 @@ Module vec.
                         "core::ops::deref::Deref",
                         Ty.apply
                           (Ty.path "core::mem::manually_drop::ManuallyDrop")
-                          [ Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ] ],
+                          []
+                          [ Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ] ],
                         [],
                         "deref",
                         []
@@ -358,7 +391,7 @@ Module vec.
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                    Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                     "capacity",
                     []
                   |),
@@ -368,7 +401,8 @@ Module vec.
                         "core::ops::deref::Deref",
                         Ty.apply
                           (Ty.path "core::mem::manually_drop::ManuallyDrop")
-                          [ Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ] ],
+                          []
+                          [ Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ] ],
                         [],
                         "deref",
                         []
@@ -382,7 +416,7 @@ Module vec.
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                    Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                     "as_mut_ptr",
                     []
                   |),
@@ -392,7 +426,8 @@ Module vec.
                         "core::ops::deref::DerefMut",
                         Ty.apply
                           (Ty.path "core::mem::manually_drop::ManuallyDrop")
-                          [ Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ] ],
+                          []
+                          [ Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ] ],
                         [],
                         "deref_mut",
                         []
@@ -409,7 +444,7 @@ Module vec.
                   [
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                        Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                         "allocator",
                         []
                       |),
@@ -419,7 +454,8 @@ Module vec.
                             "core::ops::deref::Deref",
                             Ty.apply
                               (Ty.path "core::mem::manually_drop::ManuallyDrop")
-                              [ Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ] ],
+                              []
+                              [ Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ] ],
                             [],
                             "deref",
                             []
@@ -436,7 +472,7 @@ Module vec.
                 [ M.read (| ptr |); M.read (| len |); M.read (| capacity |); M.read (| alloc |) ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_into_raw_parts_with_alloc :
@@ -448,22 +484,22 @@ Module vec.
             self.buf.capacity()
         }
     *)
-    Definition capacity (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition capacity (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
             M.get_associated_function (|
-              Ty.apply (Ty.path "alloc::raw_vec::RawVec") [ T; A ],
+              Ty.apply (Ty.path "alloc::raw_vec::RawVec") [] [ T; A ],
               "capacity",
               []
             |),
             [ M.SubPointer.get_struct_record_field (| M.read (| self |), "alloc::vec::Vec", "buf" |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_capacity :
@@ -475,10 +511,10 @@ Module vec.
             self.buf.reserve(self.len, additional);
         }
     *)
-    Definition reserve (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition reserve (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ self; additional ] =>
+      match ε, τ, α with
+      | [], [], [ self; additional ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let additional := M.alloc (| additional |) in
@@ -487,7 +523,7 @@ Module vec.
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "alloc::raw_vec::RawVec") [ T; A ],
+                    Ty.apply (Ty.path "alloc::raw_vec::RawVec") [] [ T; A ],
                     "reserve",
                     []
                   |),
@@ -510,7 +546,7 @@ Module vec.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_reserve :
@@ -522,10 +558,15 @@ Module vec.
             self.buf.reserve_exact(self.len, additional);
         }
     *)
-    Definition reserve_exact (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition reserve_exact
+        (T A : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ self; additional ] =>
+      match ε, τ, α with
+      | [], [], [ self; additional ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let additional := M.alloc (| additional |) in
@@ -534,7 +575,7 @@ Module vec.
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "alloc::raw_vec::RawVec") [ T; A ],
+                    Ty.apply (Ty.path "alloc::raw_vec::RawVec") [] [ T; A ],
                     "reserve_exact",
                     []
                   |),
@@ -557,7 +598,7 @@ Module vec.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_reserve_exact :
@@ -569,16 +610,16 @@ Module vec.
             self.buf.try_reserve(self.len, additional)
         }
     *)
-    Definition try_reserve (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition try_reserve (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ self; additional ] =>
+      match ε, τ, α with
+      | [], [], [ self; additional ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let additional := M.alloc (| additional |) in
           M.call_closure (|
             M.get_associated_function (|
-              Ty.apply (Ty.path "alloc::raw_vec::RawVec") [ T; A ],
+              Ty.apply (Ty.path "alloc::raw_vec::RawVec") [] [ T; A ],
               "try_reserve",
               []
             |),
@@ -598,7 +639,7 @@ Module vec.
               M.read (| additional |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_try_reserve :
@@ -610,16 +651,21 @@ Module vec.
             self.buf.try_reserve_exact(self.len, additional)
         }
     *)
-    Definition try_reserve_exact (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition try_reserve_exact
+        (T A : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ self; additional ] =>
+      match ε, τ, α with
+      | [], [], [ self; additional ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let additional := M.alloc (| additional |) in
           M.call_closure (|
             M.get_associated_function (|
-              Ty.apply (Ty.path "alloc::raw_vec::RawVec") [ T; A ],
+              Ty.apply (Ty.path "alloc::raw_vec::RawVec") [] [ T; A ],
               "try_reserve_exact",
               []
             |),
@@ -639,7 +685,7 @@ Module vec.
               M.read (| additional |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_try_reserve_exact :
@@ -656,10 +702,15 @@ Module vec.
             }
         }
     *)
-    Definition shrink_to_fit (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition shrink_to_fit
+        (T A : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -674,7 +725,7 @@ Module vec.
                           BinOp.Pure.gt
                             (M.call_closure (|
                               M.get_associated_function (|
-                                Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                                Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                                 "capacity",
                                 []
                               |),
@@ -693,7 +744,7 @@ Module vec.
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
-                            Ty.apply (Ty.path "alloc::raw_vec::RawVec") [ T; A ],
+                            Ty.apply (Ty.path "alloc::raw_vec::RawVec") [] [ T; A ],
                             "shrink_to_fit",
                             []
                           |),
@@ -718,7 +769,7 @@ Module vec.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_shrink_to_fit :
@@ -732,10 +783,10 @@ Module vec.
             }
         }
     *)
-    Definition shrink_to (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition shrink_to (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ self; min_capacity ] =>
+      match ε, τ, α with
+      | [], [], [ self; min_capacity ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let min_capacity := M.alloc (| min_capacity |) in
@@ -751,7 +802,7 @@ Module vec.
                           BinOp.Pure.gt
                             (M.call_closure (|
                               M.get_associated_function (|
-                                Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                                Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                                 "capacity",
                                 []
                               |),
@@ -764,7 +815,7 @@ Module vec.
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
-                            Ty.apply (Ty.path "alloc::raw_vec::RawVec") [ T; A ],
+                            Ty.apply (Ty.path "alloc::raw_vec::RawVec") [] [ T; A ],
                             "shrink_to_fit",
                             []
                           |),
@@ -795,7 +846,7 @@ Module vec.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_shrink_to :
@@ -813,10 +864,15 @@ Module vec.
             }
         }
     *)
-    Definition into_boxed_slice (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition into_boxed_slice
+        (T A : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -824,7 +880,7 @@ Module vec.
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                    Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                     "shrink_to_fit",
                     []
                   |),
@@ -837,7 +893,8 @@ Module vec.
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "core::mem::manually_drop::ManuallyDrop")
-                      [ Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ] ],
+                      []
+                      [ Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ] ],
                     "new",
                     []
                   |),
@@ -849,7 +906,7 @@ Module vec.
                 M.call_closure (|
                   M.get_function (|
                     "core::ptr::read",
-                    [ Ty.apply (Ty.path "alloc::raw_vec::RawVec") [ T; A ] ]
+                    [ Ty.apply (Ty.path "alloc::raw_vec::RawVec") [] [ T; A ] ]
                   |),
                   [
                     M.SubPointer.get_struct_record_field (|
@@ -858,7 +915,8 @@ Module vec.
                           "core::ops::deref::Deref",
                           Ty.apply
                             (Ty.path "core::mem::manually_drop::ManuallyDrop")
-                            [ Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ] ],
+                            []
+                            [ Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ] ],
                           [],
                           "deref",
                           []
@@ -875,7 +933,7 @@ Module vec.
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                    Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                     "len",
                     []
                   |),
@@ -885,7 +943,8 @@ Module vec.
                         "core::ops::deref::Deref",
                         Ty.apply
                           (Ty.path "core::mem::manually_drop::ManuallyDrop")
-                          [ Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ] ],
+                          []
+                          [ Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ] ],
                         [],
                         "deref",
                         []
@@ -900,10 +959,12 @@ Module vec.
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "alloc::boxed::Box")
+                    []
                     [
                       Ty.apply
                         (Ty.path "slice")
-                        [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ] ];
+                        []
+                        [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ];
                       A
                     ],
                   "assume_init",
@@ -912,7 +973,7 @@ Module vec.
                 [
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "alloc::raw_vec::RawVec") [ T; A ],
+                      Ty.apply (Ty.path "alloc::raw_vec::RawVec") [] [ T; A ],
                       "into_box",
                       []
                     |),
@@ -922,7 +983,7 @@ Module vec.
               |)
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_into_boxed_slice :
@@ -952,10 +1013,10 @@ Module vec.
             }
         }
     *)
-    Definition truncate (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition truncate (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ self; len ] =>
+      match ε, τ, α with
+      | [], [], [ self; len ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let len := M.alloc (| len |) in
@@ -1009,14 +1070,14 @@ Module vec.
                       [
                         M.call_closure (|
                           M.get_associated_function (|
-                            Ty.apply (Ty.path "*mut") [ T ],
+                            Ty.apply (Ty.path "*mut") [] [ T ],
                             "add",
                             []
                           |),
                           [
                             M.call_closure (|
                               M.get_associated_function (|
-                                Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                                Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                                 "as_mut_ptr",
                                 []
                               |),
@@ -1043,7 +1104,7 @@ Module vec.
                     M.call_closure (|
                       M.get_function (|
                         "core::ptr::drop_in_place",
-                        [ Ty.apply (Ty.path "slice") [ T ] ]
+                        [ Ty.apply (Ty.path "slice") [] [ T ] ]
                       |),
                       [ M.read (| s |) ]
                     |)
@@ -1051,7 +1112,7 @@ Module vec.
                 M.alloc (| Value.Tuple [] |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_truncate :
@@ -1063,23 +1124,23 @@ Module vec.
             self
         }
     *)
-    Definition as_slice (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition as_slice (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
             M.get_trait_method (|
               "core::ops::deref::Deref",
-              Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+              Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
               [],
               "deref",
               []
             |),
             [ M.read (| self |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_as_slice :
@@ -1091,23 +1152,28 @@ Module vec.
             self
         }
     *)
-    Definition as_mut_slice (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition as_mut_slice
+        (T A : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
             M.get_trait_method (|
               "core::ops::deref::DerefMut",
-              Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+              Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
               [],
               "deref_mut",
               []
             |),
             [ M.read (| self |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_as_mut_slice :
@@ -1121,17 +1187,17 @@ Module vec.
             self.buf.ptr()
         }
     *)
-    Definition as_ptr (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition as_ptr (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           (* MutToConstPointer *)
           M.pointer_coercion
             (M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "alloc::raw_vec::RawVec") [ T; A ],
+                Ty.apply (Ty.path "alloc::raw_vec::RawVec") [] [ T; A ],
                 "ptr",
                 []
               |),
@@ -1143,7 +1209,7 @@ Module vec.
                 |)
               ]
             |))))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_as_ptr :
@@ -1157,22 +1223,22 @@ Module vec.
             self.buf.ptr()
         }
     *)
-    Definition as_mut_ptr (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition as_mut_ptr (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
             M.get_associated_function (|
-              Ty.apply (Ty.path "alloc::raw_vec::RawVec") [ T; A ],
+              Ty.apply (Ty.path "alloc::raw_vec::RawVec") [] [ T; A ],
               "ptr",
               []
             |),
             [ M.SubPointer.get_struct_record_field (| M.read (| self |), "alloc::vec::Vec", "buf" |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_as_mut_ptr :
@@ -1184,22 +1250,22 @@ Module vec.
             self.buf.allocator()
         }
     *)
-    Definition allocator (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition allocator (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
             M.get_associated_function (|
-              Ty.apply (Ty.path "alloc::raw_vec::RawVec") [ T; A ],
+              Ty.apply (Ty.path "alloc::raw_vec::RawVec") [] [ T; A ],
               "allocator",
               []
             |),
             [ M.SubPointer.get_struct_record_field (| M.read (| self |), "alloc::vec::Vec", "buf" |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_allocator :
@@ -1213,10 +1279,10 @@ Module vec.
             self.len = new_len;
         }
     *)
-    Definition set_len (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition set_len (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ self; new_len ] =>
+      match ε, τ, α with
+      | [], [], [ self; new_len ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let new_len := M.alloc (| new_len |) in
@@ -1243,7 +1309,7 @@ Module vec.
                                           (M.read (| new_len |))
                                           (M.call_closure (|
                                             M.get_associated_function (|
-                                              Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                                              Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                                               "capacity",
                                               []
                                             |),
@@ -1286,7 +1352,7 @@ Module vec.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_set_len :
@@ -1318,10 +1384,10 @@ Module vec.
             }
         }
     *)
-    Definition swap_remove (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition swap_remove (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ self; index ] =>
+      match ε, τ, α with
+      | [], [], [ self; index ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let index := M.alloc (| index |) in
@@ -1330,7 +1396,7 @@ Module vec.
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                    Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                     "len",
                     []
                   |),
@@ -1364,11 +1430,15 @@ Module vec.
                   M.get_function (| "core::ptr::read", [ T ] |),
                   [
                     M.call_closure (|
-                      M.get_associated_function (| Ty.apply (Ty.path "*const") [ T ], "add", [] |),
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "*const") [] [ T ],
+                        "add",
+                        []
+                      |),
                       [
                         M.call_closure (|
                           M.get_associated_function (|
-                            Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                            Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                             "as_ptr",
                             []
                           |),
@@ -1384,7 +1454,7 @@ Module vec.
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                    Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                     "as_mut_ptr",
                     []
                   |),
@@ -1399,14 +1469,18 @@ Module vec.
                     (* MutToConstPointer *)
                     M.pointer_coercion
                       (M.call_closure (|
-                        M.get_associated_function (| Ty.apply (Ty.path "*mut") [ T ], "add", [] |),
+                        M.get_associated_function (|
+                          Ty.apply (Ty.path "*mut") [] [ T ],
+                          "add",
+                          []
+                        |),
                         [
                           M.read (| base_ptr |);
                           BinOp.Wrap.sub Integer.Usize (M.read (| len |)) (Value.Integer 1)
                         ]
                       |));
                     M.call_closure (|
-                      M.get_associated_function (| Ty.apply (Ty.path "*mut") [ T ], "add", [] |),
+                      M.get_associated_function (| Ty.apply (Ty.path "*mut") [] [ T ], "add", [] |),
                       [ M.read (| base_ptr |); M.read (| index |) ]
                     |);
                     Value.Integer 1
@@ -1417,7 +1491,7 @@ Module vec.
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                    Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                     "set_len",
                     []
                   |),
@@ -1429,7 +1503,7 @@ Module vec.
               |) in
             value
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_swap_remove :
@@ -1474,10 +1548,10 @@ Module vec.
             }
         }
     *)
-    Definition insert (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition insert (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ self; index; element ] =>
+      match ε, τ, α with
+      | [], [], [ self; index; element ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let index := M.alloc (| index |) in
@@ -1487,7 +1561,7 @@ Module vec.
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                    Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                     "len",
                     []
                   |),
@@ -1507,7 +1581,7 @@ Module vec.
                               (M.read (| len |))
                               (M.call_closure (|
                                 M.get_associated_function (|
-                                  Ty.apply (Ty.path "alloc::raw_vec::RawVec") [ T; A ],
+                                  Ty.apply (Ty.path "alloc::raw_vec::RawVec") [] [ T; A ],
                                   "capacity",
                                   []
                                 |),
@@ -1525,7 +1599,7 @@ Module vec.
                         M.alloc (|
                           M.call_closure (|
                             M.get_associated_function (|
-                              Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                              Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                               "reserve",
                               []
                             |),
@@ -1540,11 +1614,11 @@ Module vec.
               let~ p :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_associated_function (| Ty.apply (Ty.path "*mut") [ T ], "add", [] |),
+                    M.get_associated_function (| Ty.apply (Ty.path "*mut") [] [ T ], "add", [] |),
                     [
                       M.call_closure (|
                         M.get_associated_function (|
-                          Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                          Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                           "as_mut_ptr",
                           []
                         |),
@@ -1573,7 +1647,7 @@ Module vec.
                                 (* MutToConstPointer *) M.pointer_coercion (M.read (| p |));
                                 M.call_closure (|
                                   M.get_associated_function (|
-                                    Ty.apply (Ty.path "*mut") [ T ],
+                                    Ty.apply (Ty.path "*mut") [] [ T ],
                                     "add",
                                     []
                                   |),
@@ -1632,7 +1706,7 @@ Module vec.
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                    Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                     "set_len",
                     []
                   |),
@@ -1644,7 +1718,7 @@ Module vec.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_insert :
@@ -1682,10 +1756,10 @@ Module vec.
             }
         }
     *)
-    Definition remove (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition remove (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ self; index ] =>
+      match ε, τ, α with
+      | [], [], [ self; index ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let index := M.alloc (| index |) in
@@ -1694,7 +1768,7 @@ Module vec.
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                    Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                     "len",
                     []
                   |),
@@ -1727,11 +1801,11 @@ Module vec.
               let~ ptr :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_associated_function (| Ty.apply (Ty.path "*mut") [ T ], "add", [] |),
+                    M.get_associated_function (| Ty.apply (Ty.path "*mut") [] [ T ], "add", [] |),
                     [
                       M.call_closure (|
                         M.get_associated_function (|
-                          Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                          Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                           "as_mut_ptr",
                           []
                         |),
@@ -1758,7 +1832,7 @@ Module vec.
                       M.pointer_coercion
                         (M.call_closure (|
                           M.get_associated_function (|
-                            Ty.apply (Ty.path "*mut") [ T ],
+                            Ty.apply (Ty.path "*mut") [] [ T ],
                             "add",
                             []
                           |),
@@ -1777,7 +1851,7 @@ Module vec.
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                    Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                     "set_len",
                     []
                   |),
@@ -1789,7 +1863,7 @@ Module vec.
               |) in
             ret
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_remove :
@@ -1804,10 +1878,10 @@ Module vec.
             self.retain_mut(|elem| f(elem));
         }
     *)
-    Definition retain (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition retain (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [ F ], [ self; f ] =>
+      match ε, τ, α with
+      | [], [ F ], [ self; f ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
@@ -1816,9 +1890,12 @@ Module vec.
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                    Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                     "retain_mut",
-                    [ Ty.function [ Ty.tuple [ Ty.apply (Ty.path "&mut") [ T ] ] ] (Ty.path "bool")
+                    [
+                      Ty.function
+                        [ Ty.tuple [ Ty.apply (Ty.path "&mut") [] [ T ] ] ]
+                        (Ty.path "bool")
                     ]
                   |),
                   [
@@ -1838,7 +1915,7 @@ Module vec.
                                       M.get_trait_method (|
                                         "core::ops::function::FnMut",
                                         F,
-                                        [ Ty.tuple [ Ty.apply (Ty.path "&") [ T ] ] ],
+                                        [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ] ],
                                         "call_mut",
                                         []
                                       |),
@@ -1853,7 +1930,7 @@ Module vec.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_retain :
@@ -1954,10 +2031,10 @@ Module vec.
             drop(g);
         }
     *)
-    Definition retain_mut (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition retain_mut (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [ F ], [ self; f ] =>
+      match ε, τ, α with
+      | [], [ F ], [ self; f ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
@@ -1966,7 +2043,7 @@ Module vec.
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                    Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                     "len",
                     []
                   |),
@@ -1977,7 +2054,7 @@ Module vec.
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                    Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                     "set_len",
                     []
                   |),
@@ -2014,14 +2091,14 @@ Module vec.
                 M.call_closure (|
                   M.get_function (|
                     "core::mem::drop",
-                    [ Ty.apply (Ty.path "alloc::vec::retain_mut::BackshiftOnDrop") [ T; A ] ]
+                    [ Ty.apply (Ty.path "alloc::vec::retain_mut::BackshiftOnDrop") [] [ T; A ] ]
                   |),
                   [ M.read (| g |) ]
                 |)
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_retain_mut :
@@ -2037,20 +2114,28 @@ Module vec.
             self.dedup_by(|a, b| key(a) == key(b))
         }
     *)
-    Definition dedup_by_key (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition dedup_by_key
+        (T A : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [ F; K ], [ self; key ] =>
+      match ε, τ, α with
+      | [], [ F; K ], [ self; key ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let key := M.alloc (| key |) in
           M.call_closure (|
             M.get_associated_function (|
-              Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+              Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
               "dedup_by",
               [
                 Ty.function
-                  [ Ty.tuple [ Ty.apply (Ty.path "&mut") [ T ]; Ty.apply (Ty.path "&mut") [ T ] ] ]
+                  [
+                    Ty.tuple
+                      [ Ty.apply (Ty.path "&mut") [] [ T ]; Ty.apply (Ty.path "&mut") [] [ T ] ]
+                  ]
                   (Ty.path "bool")
               ]
             |),
@@ -2087,7 +2172,7 @@ Module vec.
                                               M.get_trait_method (|
                                                 "core::ops::function::FnMut",
                                                 F,
-                                                [ Ty.tuple [ Ty.apply (Ty.path "&mut") [ T ] ] ],
+                                                [ Ty.tuple [ Ty.apply (Ty.path "&mut") [] [ T ] ] ],
                                                 "call_mut",
                                                 []
                                               |),
@@ -2099,7 +2184,7 @@ Module vec.
                                               M.get_trait_method (|
                                                 "core::ops::function::FnMut",
                                                 F,
-                                                [ Ty.tuple [ Ty.apply (Ty.path "&mut") [ T ] ] ],
+                                                [ Ty.tuple [ Ty.apply (Ty.path "&mut") [] [ T ] ] ],
                                                 "call_mut",
                                                 []
                                               |),
@@ -2116,7 +2201,7 @@ Module vec.
                     end))
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_dedup_by_key :
@@ -2252,10 +2337,10 @@ Module vec.
             }
         }
     *)
-    Definition dedup_by (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition dedup_by (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [ F ], [ self; same_bucket ] =>
+      match ε, τ, α with
+      | [], [ F ], [ self; same_bucket ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let same_bucket := M.alloc (| same_bucket |) in
@@ -2266,7 +2351,7 @@ Module vec.
                   M.alloc (|
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                        Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                         "len",
                         []
                       |),
@@ -2295,7 +2380,7 @@ Module vec.
                   M.alloc (|
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                        Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                         "as_mut_ptr",
                         []
                       |),
@@ -2328,7 +2413,7 @@ Module vec.
                                     M.alloc (|
                                       M.call_closure (|
                                         M.get_associated_function (|
-                                          Ty.apply (Ty.path "*mut") [ T ],
+                                          Ty.apply (Ty.path "*mut") [] [ T ],
                                           "add",
                                           []
                                         |),
@@ -2349,7 +2434,7 @@ Module vec.
                                     M.alloc (|
                                       M.call_closure (|
                                         M.get_associated_function (|
-                                          Ty.apply (Ty.path "*mut") [ T ],
+                                          Ty.apply (Ty.path "*mut") [] [ T ],
                                           "add",
                                           []
                                         |),
@@ -2364,8 +2449,8 @@ Module vec.
                                         [
                                           Ty.tuple
                                             [
-                                              Ty.apply (Ty.path "&mut") [ T ];
-                                              Ty.apply (Ty.path "&mut") [ T ]
+                                              Ty.apply (Ty.path "&mut") [] [ T ];
+                                              Ty.apply (Ty.path "&mut") [] [ T ]
                                             ]
                                         ],
                                         "call_mut",
@@ -2460,7 +2545,7 @@ Module vec.
                         [
                           M.call_closure (|
                             M.get_associated_function (|
-                              Ty.apply (Ty.path "*mut") [ T ],
+                              Ty.apply (Ty.path "*mut") [] [ T ],
                               "add",
                               []
                             |),
@@ -2500,7 +2585,7 @@ Module vec.
                                 M.alloc (|
                                   M.call_closure (|
                                     M.get_associated_function (|
-                                      Ty.apply (Ty.path "*mut") [ T ],
+                                      Ty.apply (Ty.path "*mut") [] [ T ],
                                       "add",
                                       []
                                     |),
@@ -2520,7 +2605,7 @@ Module vec.
                                 M.alloc (|
                                   M.call_closure (|
                                     M.get_associated_function (|
-                                      Ty.apply (Ty.path "*mut") [ T ],
+                                      Ty.apply (Ty.path "*mut") [] [ T ],
                                       "add",
                                       []
                                     |),
@@ -2555,8 +2640,8 @@ Module vec.
                                       [
                                         Ty.tuple
                                           [
-                                            Ty.apply (Ty.path "&mut") [ T ];
-                                            Ty.apply (Ty.path "&mut") [ T ]
+                                            Ty.apply (Ty.path "&mut") [] [ T ];
+                                            Ty.apply (Ty.path "&mut") [] [ T ]
                                           ]
                                       ],
                                       "call_mut",
@@ -2607,7 +2692,7 @@ Module vec.
                                         M.alloc (|
                                           M.call_closure (|
                                             M.get_associated_function (|
-                                              Ty.apply (Ty.path "*mut") [ T ],
+                                              Ty.apply (Ty.path "*mut") [] [ T ],
                                               "add",
                                               []
                                             |),
@@ -2689,7 +2774,7 @@ Module vec.
                   M.alloc (|
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                        Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                         "set_len",
                         []
                       |),
@@ -2716,7 +2801,7 @@ Module vec.
                     M.call_closure (|
                       M.get_function (|
                         "core::mem::forget",
-                        [ Ty.apply (Ty.path "alloc::vec::dedup_by::FillGapOnDrop") [ T; A ] ]
+                        [ Ty.apply (Ty.path "alloc::vec::dedup_by::FillGapOnDrop") [] [ T; A ] ]
                       |),
                       [ M.read (| gap |) ]
                     |)
@@ -2724,7 +2809,7 @@ Module vec.
                 M.alloc (| Value.Tuple [] |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_dedup_by :
@@ -2745,10 +2830,10 @@ Module vec.
             }
         }
     *)
-    Definition push (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition push (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ self; value ] =>
+      match ε, τ, α with
+      | [], [], [ self; value ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let value := M.alloc (| value |) in
@@ -2772,7 +2857,7 @@ Module vec.
                               |))
                               (M.call_closure (|
                                 M.get_associated_function (|
-                                  Ty.apply (Ty.path "alloc::raw_vec::RawVec") [ T; A ],
+                                  Ty.apply (Ty.path "alloc::raw_vec::RawVec") [] [ T; A ],
                                   "capacity",
                                   []
                                 |),
@@ -2790,7 +2875,7 @@ Module vec.
                         M.alloc (|
                           M.call_closure (|
                             M.get_associated_function (|
-                              Ty.apply (Ty.path "alloc::raw_vec::RawVec") [ T; A ],
+                              Ty.apply (Ty.path "alloc::raw_vec::RawVec") [] [ T; A ],
                               "reserve_for_push",
                               []
                             |),
@@ -2817,11 +2902,11 @@ Module vec.
             let~ end_ :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.apply (Ty.path "*mut") [ T ], "add", [] |),
+                  M.get_associated_function (| Ty.apply (Ty.path "*mut") [] [ T ], "add", [] |),
                   [
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                        Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                         "as_mut_ptr",
                         []
                       |),
@@ -2854,7 +2939,7 @@ Module vec.
               M.write (| β, BinOp.Wrap.add Integer.Usize (M.read (| β |)) (Value.Integer 1) |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_push :
@@ -2874,10 +2959,15 @@ Module vec.
             Ok(())
         }
     *)
-    Definition push_within_capacity (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition push_within_capacity
+        (T A : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ self; value ] =>
+      match ε, τ, α with
+      | [], [], [ self; value ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let value := M.alloc (| value |) in
@@ -2903,7 +2993,7 @@ Module vec.
                                   |))
                                   (M.call_closure (|
                                     M.get_associated_function (|
-                                      Ty.apply (Ty.path "alloc::raw_vec::RawVec") [ T; A ],
+                                      Ty.apply (Ty.path "alloc::raw_vec::RawVec") [] [ T; A ],
                                       "capacity",
                                       []
                                     |),
@@ -2936,11 +3026,15 @@ Module vec.
                   let~ end_ :=
                     M.alloc (|
                       M.call_closure (|
-                        M.get_associated_function (| Ty.apply (Ty.path "*mut") [ T ], "add", [] |),
+                        M.get_associated_function (|
+                          Ty.apply (Ty.path "*mut") [] [ T ],
+                          "add",
+                          []
+                        |),
                         [
                           M.call_closure (|
                             M.get_associated_function (|
-                              Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                              Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                               "as_mut_ptr",
                               []
                             |),
@@ -2978,7 +3072,7 @@ Module vec.
                 M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_push_within_capacity :
@@ -2998,10 +3092,10 @@ Module vec.
             }
         }
     *)
-    Definition pop (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition pop (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -3053,7 +3147,7 @@ Module vec.
                               |))
                               (M.call_closure (|
                                 M.get_associated_function (|
-                                  Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                                  Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                                   "capacity",
                                   []
                                 |),
@@ -3071,14 +3165,14 @@ Module vec.
                             [
                               M.call_closure (|
                                 M.get_associated_function (|
-                                  Ty.apply (Ty.path "*const") [ T ],
+                                  Ty.apply (Ty.path "*const") [] [ T ],
                                   "add",
                                   []
                                 |),
                                 [
                                   M.call_closure (|
                                     M.get_associated_function (|
-                                      Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                                      Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                                       "as_ptr",
                                       []
                                     |),
@@ -3086,7 +3180,7 @@ Module vec.
                                   |);
                                   M.call_closure (|
                                     M.get_associated_function (|
-                                      Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                                      Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                                       "len",
                                       []
                                     |),
@@ -3101,7 +3195,7 @@ Module vec.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_pop :
@@ -3116,10 +3210,10 @@ Module vec.
             }
         }
     *)
-    Definition append (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition append (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ self; other ] =>
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
@@ -3128,7 +3222,7 @@ Module vec.
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                    Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                     "append_elements",
                     []
                   |),
@@ -3139,7 +3233,7 @@ Module vec.
                         (M.alloc (|
                           M.call_closure (|
                             M.get_associated_function (|
-                              Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                              Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                               "as_slice",
                               []
                             |),
@@ -3154,7 +3248,7 @@ Module vec.
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                    Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                     "set_len",
                     []
                   |),
@@ -3163,7 +3257,7 @@ Module vec.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_append :
@@ -3179,10 +3273,15 @@ Module vec.
             self.len += count;
         }
     *)
-    Definition append_elements (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition append_elements
+        (T A : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ self; other ] =>
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
@@ -3190,7 +3289,7 @@ Module vec.
             let~ count :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.apply (Ty.path "slice") [ T ], "len", [] |),
+                  M.get_associated_function (| Ty.apply (Ty.path "slice") [] [ T ], "len", [] |),
                   [ M.read (| other |) ]
                 |)
               |) in
@@ -3198,7 +3297,7 @@ Module vec.
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                    Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                     "reserve",
                     []
                   |),
@@ -3209,7 +3308,7 @@ Module vec.
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                    Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                     "len",
                     []
                   |),
@@ -3223,11 +3322,11 @@ Module vec.
                   [
                     M.rust_cast (M.read (| other |));
                     M.call_closure (|
-                      M.get_associated_function (| Ty.apply (Ty.path "*mut") [ T ], "add", [] |),
+                      M.get_associated_function (| Ty.apply (Ty.path "*mut") [] [ T ], "add", [] |),
                       [
                         M.call_closure (|
                           M.get_associated_function (|
-                            Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                            Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                             "as_mut_ptr",
                             []
                           |),
@@ -3250,7 +3349,7 @@ Module vec.
               M.write (| β, BinOp.Wrap.add Integer.Usize (M.read (| β |)) (M.read (| count |)) |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_append_elements :
@@ -3288,10 +3387,10 @@ Module vec.
             }
         }
     *)
-    Definition drain (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition drain (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [ R ], [ self; range ] =>
+      match ε, τ, α with
+      | [], [ R ], [ self; range ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let range := M.alloc (| range |) in
@@ -3300,7 +3399,7 @@ Module vec.
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                    Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                     "len",
                     []
                   |),
@@ -3338,7 +3437,7 @@ Module vec.
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
-                            Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                            Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                             "set_len",
                             []
                           |),
@@ -3352,14 +3451,14 @@ Module vec.
                           [
                             M.call_closure (|
                               M.get_associated_function (|
-                                Ty.apply (Ty.path "*const") [ T ],
+                                Ty.apply (Ty.path "*const") [] [ T ],
                                 "add",
                                 []
                               |),
                               [
                                 M.call_closure (|
                                   M.get_associated_function (|
-                                    Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                                    Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                                     "as_ptr",
                                     []
                                   |),
@@ -3382,7 +3481,7 @@ Module vec.
                           ("iter",
                             M.call_closure (|
                               M.get_associated_function (|
-                                Ty.apply (Ty.path "slice") [ T ],
+                                Ty.apply (Ty.path "slice") [] [ T ],
                                 "iter",
                                 []
                               |),
@@ -3394,11 +3493,13 @@ Module vec.
                                 "core::convert::From",
                                 Ty.apply
                                   (Ty.path "core::ptr::non_null::NonNull")
-                                  [ Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ] ],
+                                  []
+                                  [ Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ] ],
                                 [
                                   Ty.apply
                                     (Ty.path "&mut")
-                                    [ Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ] ]
+                                    []
+                                    [ Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ] ]
                                 ],
                                 "from",
                                 []
@@ -3410,7 +3511,7 @@ Module vec.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_drain :
@@ -3433,10 +3534,10 @@ Module vec.
             }
         }
     *)
-    Definition clear (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition clear (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -3444,7 +3545,7 @@ Module vec.
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                    Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                     "as_mut_slice",
                     []
                   |),
@@ -3465,14 +3566,14 @@ Module vec.
                 M.call_closure (|
                   M.get_function (|
                     "core::ptr::drop_in_place",
-                    [ Ty.apply (Ty.path "slice") [ T ] ]
+                    [ Ty.apply (Ty.path "slice") [] [ T ] ]
                   |),
                   [ M.read (| elems |) ]
                 |)
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_clear :
@@ -3484,16 +3585,16 @@ Module vec.
             self.len
         }
     *)
-    Definition len (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition len (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
             M.SubPointer.get_struct_record_field (| M.read (| self |), "alloc::vec::Vec", "len" |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_len :
@@ -3505,23 +3606,23 @@ Module vec.
             self.len() == 0
         }
     *)
-    Definition is_empty (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition is_empty (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           BinOp.Pure.eq
             (M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                 "len",
                 []
               |),
               [ M.read (| self |) ]
             |))
             (Value.Integer 0)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_is_empty :
@@ -3565,10 +3666,10 @@ Module vec.
             other
         }
     *)
-    Definition split_off (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition split_off (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ self; at_ ] =>
+      match ε, τ, α with
+      | [], [], [ self; at_ ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let at_ := M.alloc (| at_ |) in
@@ -3588,7 +3689,7 @@ Module vec.
                                   (M.read (| at_ |))
                                   (M.call_closure (|
                                     M.get_associated_function (|
-                                      Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                                      Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                                       "len",
                                       []
                                     |),
@@ -3605,7 +3706,7 @@ Module vec.
                                   M.read (| at_ |);
                                   M.call_closure (|
                                     M.get_associated_function (|
-                                      Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                                      Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                                       "len",
                                       []
                                     |),
@@ -3636,20 +3737,20 @@ Module vec.
                                   M.call_closure (|
                                     M.get_function (|
                                       "core::mem::replace",
-                                      [ Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ] ]
+                                      [ Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ] ]
                                     |),
                                     [
                                       M.read (| self |);
                                       M.call_closure (|
                                         M.get_associated_function (|
-                                          Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                                          Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                                           "with_capacity_in",
                                           []
                                         |),
                                         [
                                           M.call_closure (|
                                             M.get_associated_function (|
-                                              Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                                              Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                                               "capacity",
                                               []
                                             |),
@@ -3666,7 +3767,7 @@ Module vec.
                                             [
                                               M.call_closure (|
                                                 M.get_associated_function (|
-                                                  Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                                                  Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                                                   "allocator",
                                                   []
                                                 |),
@@ -3702,7 +3803,7 @@ Module vec.
                   M.alloc (|
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                        Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                         "with_capacity_in",
                         []
                       |),
@@ -3713,7 +3814,7 @@ Module vec.
                           [
                             M.call_closure (|
                               M.get_associated_function (|
-                                Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                                Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                                 "allocator",
                                 []
                               |),
@@ -3729,7 +3830,7 @@ Module vec.
                     M.alloc (|
                       M.call_closure (|
                         M.get_associated_function (|
-                          Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                          Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                           "set_len",
                           []
                         |),
@@ -3740,7 +3841,7 @@ Module vec.
                     M.alloc (|
                       M.call_closure (|
                         M.get_associated_function (|
-                          Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                          Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                           "set_len",
                           []
                         |),
@@ -3754,14 +3855,14 @@ Module vec.
                         [
                           M.call_closure (|
                             M.get_associated_function (|
-                              Ty.apply (Ty.path "*const") [ T ],
+                              Ty.apply (Ty.path "*const") [] [ T ],
                               "add",
                               []
                             |),
                             [
                               M.call_closure (|
                                 M.get_associated_function (|
-                                  Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                                  Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                                   "as_ptr",
                                   []
                                 |),
@@ -3772,7 +3873,7 @@ Module vec.
                           |);
                           M.call_closure (|
                             M.get_associated_function (|
-                              Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                              Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                               "as_mut_ptr",
                               []
                             |),
@@ -3780,7 +3881,7 @@ Module vec.
                           |);
                           M.call_closure (|
                             M.get_associated_function (|
-                              Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                              Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                               "len",
                               []
                             |),
@@ -3793,7 +3894,7 @@ Module vec.
                 other
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_split_off :
@@ -3813,10 +3914,10 @@ Module vec.
             }
         }
     *)
-    Definition resize_with (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition resize_with (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [ F ], [ self; new_len; f ] =>
+      match ε, τ, α with
+      | [], [ F ], [ self; new_len; f ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let new_len := M.alloc (| new_len |) in
@@ -3826,7 +3927,7 @@ Module vec.
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                    Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                     "len",
                     []
                   |),
@@ -3846,14 +3947,16 @@ Module vec.
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
-                            Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                            Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                             "extend_trusted",
                             [
                               Ty.apply
                                 (Ty.path "core::iter::adapters::take::Take")
+                                []
                                 [
                                   Ty.apply
                                     (Ty.path "core::iter::sources::repeat_with::RepeatWith")
+                                    []
                                     [ F ]
                                 ]
                             ]
@@ -3865,6 +3968,7 @@ Module vec.
                                 "core::iter::traits::iterator::Iterator",
                                 Ty.apply
                                   (Ty.path "core::iter::sources::repeat_with::RepeatWith")
+                                  []
                                   [ F ],
                                 [],
                                 "take",
@@ -3894,7 +3998,7 @@ Module vec.
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
-                            Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                            Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                             "truncate",
                             []
                           |),
@@ -3905,7 +4009,7 @@ Module vec.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_resize_with :
@@ -3921,10 +4025,10 @@ Module vec.
             unsafe { slice::from_raw_parts_mut(me.as_mut_ptr(), me.len) }
         }
     *)
-    Definition leak (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition leak (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -3934,7 +4038,8 @@ Module vec.
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "core::mem::manually_drop::ManuallyDrop")
-                      [ Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ] ],
+                      []
+                      [ Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ] ],
                     "new",
                     []
                   |),
@@ -3947,7 +4052,7 @@ Module vec.
                 [
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                      Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                       "as_mut_ptr",
                       []
                     |),
@@ -3957,7 +4062,8 @@ Module vec.
                           "core::ops::deref::DerefMut",
                           Ty.apply
                             (Ty.path "core::mem::manually_drop::ManuallyDrop")
-                            [ Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ] ],
+                            []
+                            [ Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ] ],
                           [],
                           "deref_mut",
                           []
@@ -3973,7 +4079,8 @@ Module vec.
                           "core::ops::deref::Deref",
                           Ty.apply
                             (Ty.path "core::mem::manually_drop::ManuallyDrop")
-                            [ Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ] ],
+                            []
+                            [ Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ] ],
                           [],
                           "deref",
                           []
@@ -3988,7 +4095,7 @@ Module vec.
               |)
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_leak :
@@ -4008,25 +4115,30 @@ Module vec.
             }
         }
     *)
-    Definition spare_capacity_mut (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition spare_capacity_mut
+        (T A : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
             M.get_function (|
               "core::slice::raw::from_raw_parts_mut",
-              [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ] ]
+              [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ]
             |),
             [
               M.rust_cast
                 (M.call_closure (|
-                  M.get_associated_function (| Ty.apply (Ty.path "*mut") [ T ], "add", [] |),
+                  M.get_associated_function (| Ty.apply (Ty.path "*mut") [] [ T ], "add", [] |),
                   [
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                        Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                         "as_mut_ptr",
                         []
                       |),
@@ -4045,7 +4157,7 @@ Module vec.
                 Integer.Usize
                 (M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "alloc::raw_vec::RawVec") [ T; A ],
+                    Ty.apply (Ty.path "alloc::raw_vec::RawVec") [] [ T; A ],
                     "capacity",
                     []
                   |),
@@ -4066,7 +4178,7 @@ Module vec.
                 |))
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_spare_capacity_mut :
@@ -4081,10 +4193,15 @@ Module vec.
             (init, spare)
         }
     *)
-    Definition split_at_spare_mut (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition split_at_spare_mut
+        (T A : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -4092,7 +4209,7 @@ Module vec.
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                    Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                     "split_at_spare_mut_with_len",
                     []
                   |),
@@ -4111,7 +4228,7 @@ Module vec.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_split_at_spare_mut :
@@ -4142,10 +4259,15 @@ Module vec.
             }
         }
     *)
-    Definition split_at_spare_mut_with_len (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition split_at_spare_mut_with_len
+        (T A : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -4153,7 +4275,7 @@ Module vec.
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                    Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                     "as_mut_ptr",
                     []
                   |),
@@ -4163,7 +4285,7 @@ Module vec.
             let~ spare_ptr :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.apply (Ty.path "*mut") [ T ], "add", [] |),
+                  M.get_associated_function (| Ty.apply (Ty.path "*mut") [] [ T ], "add", [] |),
                   [
                     M.read (| ptr |);
                     M.read (|
@@ -4180,9 +4302,9 @@ Module vec.
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "*mut") [ T ],
+                    Ty.apply (Ty.path "*mut") [] [ T ],
                     "cast",
-                    [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ] ]
+                    [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ]
                   |),
                   [ M.read (| spare_ptr |) ]
                 |)
@@ -4193,7 +4315,7 @@ Module vec.
                   Integer.Usize
                   (M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "alloc::raw_vec::RawVec") [ T; A ],
+                      Ty.apply (Ty.path "alloc::raw_vec::RawVec") [] [ T; A ],
                       "capacity",
                       []
                     |),
@@ -4234,7 +4356,7 @@ Module vec.
                 M.call_closure (|
                   M.get_function (|
                     "core::slice::raw::from_raw_parts_mut",
-                    [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ] ]
+                    [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ]
                   |),
                   [ M.read (| spare_ptr |); M.read (| spare_len |) ]
                 |)
@@ -4252,7 +4374,7 @@ Module vec.
                 ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_split_at_spare_mut_with_len :
@@ -4272,10 +4394,10 @@ Module vec.
             }
         }
     *)
-    Definition resize (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition resize (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ self; new_len; value ] =>
+      match ε, τ, α with
+      | [], [], [ self; new_len; value ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let new_len := M.alloc (| new_len |) in
@@ -4285,7 +4407,7 @@ Module vec.
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                    Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                     "len",
                     []
                   |),
@@ -4304,7 +4426,7 @@ Module vec.
                     M.alloc (|
                       M.call_closure (|
                         M.get_associated_function (|
-                          Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                          Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                           "extend_with",
                           []
                         |),
@@ -4321,7 +4443,7 @@ Module vec.
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
-                            Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                            Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                             "truncate",
                             []
                           |),
@@ -4332,7 +4454,7 @@ Module vec.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_resize :
@@ -4344,30 +4466,38 @@ Module vec.
             self.spec_extend(other.iter())
         }
     *)
-    Definition extend_from_slice (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition extend_from_slice
+        (T A : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ self; other ] =>
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.call_closure (|
             M.get_trait_method (|
               "alloc::vec::spec_extend::SpecExtend",
-              Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
-              [ Ty.apply (Ty.path "&") [ T ]; Ty.apply (Ty.path "core::slice::iter::Iter") [ T ] ],
+              Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
+              [
+                Ty.apply (Ty.path "&") [] [ T ];
+                Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ]
+              ],
               "spec_extend",
               []
             |),
             [
               M.read (| self |);
               M.call_closure (|
-                M.get_associated_function (| Ty.apply (Ty.path "slice") [ T ], "iter", [] |),
+                M.get_associated_function (| Ty.apply (Ty.path "slice") [] [ T ], "iter", [] |),
                 [ M.read (| other |) ]
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_extend_from_slice :
@@ -4389,10 +4519,15 @@ Module vec.
             }
         }
     *)
-    Definition extend_from_within (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition extend_from_within
+        (T A : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [ R ], [ self; src ] =>
+      match ε, τ, α with
+      | [], [ R ], [ self; src ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let src := M.alloc (| src |) in
@@ -4409,7 +4544,7 @@ Module vec.
                         ("end_",
                           M.call_closure (|
                             M.get_associated_function (|
-                              Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                              Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                               "len",
                               []
                             |),
@@ -4423,7 +4558,7 @@ Module vec.
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                    Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                     "reserve",
                     []
                   |),
@@ -4432,7 +4567,7 @@ Module vec.
                     M.call_closure (|
                       M.get_trait_method (|
                         "core::iter::traits::exact_size::ExactSizeIterator",
-                        Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "usize" ],
+                        Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
                         [],
                         "len",
                         []
@@ -4447,7 +4582,7 @@ Module vec.
                 M.call_closure (|
                   M.get_trait_method (|
                     "alloc::vec::ExtendFromWithinSpec",
-                    Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                    Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                     [],
                     "spec_extend_from_within",
                     []
@@ -4457,7 +4592,7 @@ Module vec.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_extend_from_within :
@@ -4492,10 +4627,10 @@ Module vec.
             }
         }
     *)
-    Definition extend_with (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition extend_with (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ self; n; value ] =>
+      match ε, τ, α with
+      | [], [], [ self; n; value ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let n := M.alloc (| n |) in
@@ -4505,7 +4640,7 @@ Module vec.
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                    Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                     "reserve",
                     []
                   |),
@@ -4515,11 +4650,11 @@ Module vec.
             let~ ptr :=
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.apply (Ty.path "*mut") [ T ], "add", [] |),
+                  M.get_associated_function (| Ty.apply (Ty.path "*mut") [] [ T ], "add", [] |),
                   [
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                        Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                         "as_mut_ptr",
                         []
                       |),
@@ -4527,7 +4662,7 @@ Module vec.
                     |);
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                        Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                         "len",
                         []
                       |),
@@ -4560,7 +4695,7 @@ Module vec.
                     M.call_closure (|
                       M.get_trait_method (|
                         "core::iter::traits::collect::IntoIterator",
-                        Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "usize" ],
+                        Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
                         [],
                         "into_iter",
                         []
@@ -4586,6 +4721,7 @@ Module vec.
                                       "core::iter::traits::iterator::Iterator",
                                       Ty.apply
                                         (Ty.path "core::ops::range::Range")
+                                        []
                                         [ Ty.path "usize" ],
                                       [],
                                       "next",
@@ -4634,7 +4770,7 @@ Module vec.
                                           ptr,
                                           M.call_closure (|
                                             M.get_associated_function (|
-                                              Ty.apply (Ty.path "*mut") [ T ],
+                                              Ty.apply (Ty.path "*mut") [] [ T ],
                                               "add",
                                               []
                                             |),
@@ -4690,7 +4826,7 @@ Module vec.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_extend_with :
@@ -4701,19 +4837,22 @@ Module vec.
             self.dedup_by(|a, b| a == b)
         }
     *)
-    Definition dedup (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition dedup (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
             M.get_associated_function (|
-              Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+              Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
               "dedup_by",
               [
                 Ty.function
-                  [ Ty.tuple [ Ty.apply (Ty.path "&mut") [ T ]; Ty.apply (Ty.path "&mut") [ T ] ] ]
+                  [
+                    Ty.tuple
+                      [ Ty.apply (Ty.path "&mut") [] [ T ]; Ty.apply (Ty.path "&mut") [] [ T ] ]
+                  ]
                   (Ty.path "bool")
               ]
             |),
@@ -4739,8 +4878,8 @@ Module vec.
                                       M.call_closure (|
                                         M.get_trait_method (|
                                           "core::cmp::PartialEq",
-                                          Ty.apply (Ty.path "&mut") [ T ],
-                                          [ Ty.apply (Ty.path "&mut") [ T ] ],
+                                          Ty.apply (Ty.path "&mut") [] [ T ],
+                                          [ Ty.apply (Ty.path "&mut") [] [ T ] ],
                                           "eq",
                                           []
                                         |),
@@ -4754,7 +4893,7 @@ Module vec.
                     end))
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_dedup :
@@ -4785,10 +4924,15 @@ Module vec.
             }
         }
     *)
-    Definition extend_desugared (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition extend_desugared
+        (T A : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [ _ as I ], [ self; iterator ] =>
+      match ε, τ, α with
+      | [], [ _ as I ], [ self; iterator ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let iterator := M.alloc (| iterator |) in
@@ -4824,7 +4968,7 @@ Module vec.
                           M.alloc (|
                             M.call_closure (|
                               M.get_associated_function (|
-                                Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                                Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                                 "len",
                                 []
                               |),
@@ -4844,7 +4988,7 @@ Module vec.
                                           (M.read (| len |))
                                           (M.call_closure (|
                                             M.get_associated_function (|
-                                              Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                                              Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                                               "capacity",
                                               []
                                             |),
@@ -4879,7 +5023,7 @@ Module vec.
                                             M.alloc (|
                                               M.call_closure (|
                                                 M.get_associated_function (|
-                                                  Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                                                  Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                                                   "reserve",
                                                   []
                                                 |),
@@ -4909,14 +5053,14 @@ Module vec.
                               [
                                 M.call_closure (|
                                   M.get_associated_function (|
-                                    Ty.apply (Ty.path "*mut") [ T ],
+                                    Ty.apply (Ty.path "*mut") [] [ T ],
                                     "add",
                                     []
                                   |),
                                   [
                                     M.call_closure (|
                                       M.get_associated_function (|
-                                        Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                                        Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                                         "as_mut_ptr",
                                         []
                                       |),
@@ -4933,7 +5077,7 @@ Module vec.
                           M.alloc (|
                             M.call_closure (|
                               M.get_associated_function (|
-                                Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                                Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                                 "set_len",
                                 []
                               |),
@@ -4959,7 +5103,7 @@ Module vec.
                 |)))
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_extend_desugared :
@@ -4998,10 +5142,15 @@ Module vec.
             }
         }
     *)
-    Definition extend_trusted (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition extend_trusted
+        (T A : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [ impl_iter_TrustedLen_Item___T_ ], [ self; iterator ] =>
+      match ε, τ, α with
+      | [], [ impl_iter_TrustedLen_Item___T_ ], [ self; iterator ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let iterator := M.alloc (| iterator |) in
@@ -5147,6 +5296,7 @@ Module vec.
                                                                                               Ty.apply
                                                                                                 (Ty.path
                                                                                                   "core::option::Option")
+                                                                                                []
                                                                                                 [
                                                                                                   Ty.path
                                                                                                     "usize"
@@ -5194,7 +5344,7 @@ Module vec.
                               M.alloc (|
                                 M.call_closure (|
                                   M.get_associated_function (|
-                                    Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                                    Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                                     "reserve",
                                     []
                                   |),
@@ -5205,7 +5355,7 @@ Module vec.
                               M.alloc (|
                                 M.call_closure (|
                                   M.get_associated_function (|
-                                    Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                                    Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                                     "as_mut_ptr",
                                     []
                                   |),
@@ -5263,7 +5413,10 @@ Module vec.
                                                             [
                                                               M.call_closure (|
                                                                 M.get_associated_function (|
-                                                                  Ty.apply (Ty.path "*mut") [ T ],
+                                                                  Ty.apply
+                                                                    (Ty.path "*mut")
+                                                                    []
+                                                                    [ T ],
                                                                   "add",
                                                                   []
                                                                 |),
@@ -5337,7 +5490,7 @@ Module vec.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_extend_trusted :
@@ -5353,10 +5506,10 @@ Module vec.
             Splice { drain: self.drain(range), replace_with: replace_with.into_iter() }
         }
     *)
-    Definition splice (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition splice (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [ R; _ as I ], [ self; range; replace_with ] =>
+      match ε, τ, α with
+      | [], [ R; _ as I ], [ self; range; replace_with ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let range := M.alloc (| range |) in
@@ -5367,7 +5520,7 @@ Module vec.
               ("drain",
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                    Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                     "drain",
                     [ R ]
                   |),
@@ -5385,7 +5538,7 @@ Module vec.
                   [ M.read (| replace_with |) ]
                 |))
             ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_splice :
@@ -5407,10 +5560,10 @@ Module vec.
             ExtractIf { vec: self, idx: 0, del: 0, old_len, pred: filter }
         }
     *)
-    Definition extract_if (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition extract_if (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [ F ], [ self; filter ] =>
+      match ε, τ, α with
+      | [], [ F ], [ self; filter ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let filter := M.alloc (| filter |) in
@@ -5419,7 +5572,7 @@ Module vec.
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                    Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                     "len",
                     []
                   |),
@@ -5431,7 +5584,7 @@ Module vec.
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                      Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                       "set_len",
                       []
                     |),
@@ -5451,7 +5604,7 @@ Module vec.
                 ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_extract_if :
@@ -5460,9 +5613,9 @@ Module vec.
   End Impl_alloc_vec_Vec_T_A.
   
   
-  Module Impl_alloc_vec_Vec_array_T_A.
-    Definition Self (T A : Ty.t) : Ty.t :=
-      Ty.apply (Ty.path "alloc::vec::Vec") [ Ty.apply (Ty.path "array") [ T ]; A ].
+  Module Impl_alloc_vec_Vec_array_N_T_A.
+    Definition Self (N : Value.t) (T A : Ty.t) : Ty.t :=
+      Ty.apply (Ty.path "alloc::vec::Vec") [] [ Ty.apply (Ty.path "array") [ N ] [ T ]; A ].
     
     (*
         pub fn into_flattened(self) -> Vec<T, A> {
@@ -5486,10 +5639,16 @@ Module vec.
             unsafe { Vec::<T, A>::from_raw_parts_in(ptr.cast(), new_len, new_cap, alloc) }
         }
     *)
-    Definition into_flattened (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ self ] =>
+    Definition into_flattened
+        (N : Value.t)
+        (T A : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      let Self : Ty.t := Self N T A in
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -5497,7 +5656,10 @@ Module vec.
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "alloc::vec::Vec") [ Ty.apply (Ty.path "array") [ T ]; A ],
+                    Ty.apply
+                      (Ty.path "alloc::vec::Vec")
+                      []
+                      [ Ty.apply (Ty.path "array") [ N ] [ T ]; A ],
                     "into_raw_parts_with_alloc",
                     []
                   |),
@@ -5536,6 +5698,7 @@ Module vec.
                                       M.get_associated_function (|
                                         Ty.apply
                                           (Ty.path "core::option::Option")
+                                          []
                                           [ Ty.path "usize" ],
                                         "expect",
                                         []
@@ -5599,7 +5762,7 @@ Module vec.
                             M.alloc (|
                               M.call_closure (|
                                 M.get_associated_function (|
-                                  Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                                  Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                                   "from_raw_parts_in",
                                   []
                                 |),
@@ -5608,7 +5771,8 @@ Module vec.
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "*mut")
-                                        [ Ty.apply (Ty.path "array") [ T ] ],
+                                        []
+                                        [ Ty.apply (Ty.path "array") [ N ] [ T ] ],
                                       "cast",
                                       [ T ]
                                     |),
@@ -5625,13 +5789,13 @@ Module vec.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_into_flattened :
-      forall (T A : Ty.t),
-      M.IsAssociatedFunction (Self T A) "into_flattened" (into_flattened T A).
-  End Impl_alloc_vec_Vec_array_T_A.
+      forall (N : Value.t) (T A : Ty.t),
+      M.IsAssociatedFunction (Self N T A) "into_flattened" (into_flattened N T A).
+  End Impl_alloc_vec_Vec_array_N_T_A.
   
   
   
@@ -5640,9 +5804,9 @@ Module vec.
       <T as SpecFromElem>::from_elem(elem, n, Global)
   }
   *)
-  Definition from_elem (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [ T ], [ elem; n ] =>
+  Definition from_elem (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [ T ], [ elem; n ] =>
       ltac:(M.monadic
         (let elem := M.alloc (| elem |) in
         let n := M.alloc (| n |) in
@@ -5656,7 +5820,7 @@ Module vec.
           |),
           [ M.read (| elem |); M.read (| n |); Value.StructTuple "alloc::alloc::Global" [] ]
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Function_from_elem : M.IsFunction "alloc::vec::from_elem" from_elem.
@@ -5666,9 +5830,9 @@ Module vec.
       <T as SpecFromElem>::from_elem(elem, n, alloc)
   }
   *)
-  Definition from_elem_in (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [ T; A ], [ elem; n; alloc ] =>
+  Definition from_elem_in (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [ T; A ], [ elem; n; alloc ] =>
       ltac:(M.monadic
         (let elem := M.alloc (| elem |) in
         let n := M.alloc (| n |) in
@@ -5683,7 +5847,7 @@ Module vec.
           |),
           [ M.read (| elem |); M.read (| n |); M.read (| alloc |) ]
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Function_from_elem_in : M.IsFunction "alloc::vec::from_elem_in" from_elem_in.
@@ -5692,7 +5856,7 @@ Module vec.
   (* Empty module 'ExtendFromWithinSpec' *)
   
   Module Impl_alloc_vec_ExtendFromWithinSpec_where_core_clone_Clone_T_where_core_alloc_Allocator_A_for_alloc_vec_Vec_T_A.
-    Definition Self (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ].
+    Definition Self (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ].
     
     (*
         default unsafe fn spec_extend_from_within(&mut self, src: Range<usize>) {
@@ -5712,10 +5876,15 @@ Module vec.
                 .for_each(|_| *len += 1);
         }
     *)
-    Definition spec_extend_from_within (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition spec_extend_from_within
+        (T A : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ self; src ] =>
+      match ε, τ, α with
+      | [], [], [ self; src ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let src := M.alloc (| src |) in
@@ -5724,7 +5893,7 @@ Module vec.
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                    Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                     "split_at_spare_mut_with_len",
                     []
                   |),
@@ -5744,9 +5913,9 @@ Module vec.
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
-                            Ty.apply (Ty.path "slice") [ T ],
+                            Ty.apply (Ty.path "slice") [] [ T ],
                             "get_unchecked",
-                            [ Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "usize" ] ]
+                            [ Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ] ]
                           |),
                           [ M.read (| this |); M.read (| src |) ]
                         |)
@@ -5758,16 +5927,20 @@ Module vec.
                             "core::iter::traits::iterator::Iterator",
                             Ty.apply
                               (Ty.path "core::iter::adapters::map::Map")
+                              []
                               [
                                 Ty.apply
                                   (Ty.path "core::iter::adapters::zip::Zip")
+                                  []
                                   [
-                                    Ty.apply (Ty.path "core::slice::iter::Iter") [ T ];
+                                    Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ];
                                     Ty.apply
                                       (Ty.path "core::slice::iter::IterMut")
+                                      []
                                       [
                                         Ty.apply
                                           (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                          []
                                           [ T ]
                                       ]
                                   ];
@@ -5777,24 +5950,26 @@ Module vec.
                                       [
                                         Ty.tuple
                                           [
-                                            Ty.apply (Ty.path "&") [ T ];
+                                            Ty.apply (Ty.path "&") [] [ T ];
                                             Ty.apply
                                               (Ty.path "&mut")
+                                              []
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                                  []
                                                   [ T ]
                                               ]
                                           ]
                                       ]
                                   ]
-                                  (Ty.apply (Ty.path "&mut") [ T ])
+                                  (Ty.apply (Ty.path "&mut") [] [ T ])
                               ],
                             [],
                             "for_each",
                             [
                               Ty.function
-                                [ Ty.tuple [ Ty.apply (Ty.path "&mut") [ T ] ] ]
+                                [ Ty.tuple [ Ty.apply (Ty.path "&mut") [] [ T ] ] ]
                                 (Ty.tuple [])
                             ]
                           |),
@@ -5804,38 +5979,43 @@ Module vec.
                                 "core::iter::traits::iterator::Iterator",
                                 Ty.apply
                                   (Ty.path "core::iter::adapters::zip::Zip")
+                                  []
                                   [
-                                    Ty.apply (Ty.path "core::slice::iter::Iter") [ T ];
+                                    Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ];
                                     Ty.apply
                                       (Ty.path "core::slice::iter::IterMut")
+                                      []
                                       [
                                         Ty.apply
                                           (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                          []
                                           [ T ]
                                       ]
                                   ],
                                 [],
                                 "map",
                                 [
-                                  Ty.apply (Ty.path "&mut") [ T ];
+                                  Ty.apply (Ty.path "&mut") [] [ T ];
                                   Ty.function
                                     [
                                       Ty.tuple
                                         [
                                           Ty.tuple
                                             [
-                                              Ty.apply (Ty.path "&") [ T ];
+                                              Ty.apply (Ty.path "&") [] [ T ];
                                               Ty.apply
                                                 (Ty.path "&mut")
+                                                []
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                                    []
                                                     [ T ]
                                                 ]
                                             ]
                                         ]
                                     ]
-                                    (Ty.apply (Ty.path "&mut") [ T ])
+                                    (Ty.apply (Ty.path "&mut") [] [ T ])
                                 ]
                               |),
                               [
@@ -5843,15 +6023,21 @@ Module vec.
                                   M.get_function (|
                                     "core::iter::adapters::zip::zip",
                                     [
-                                      Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "slice") [ T ] ];
+                                      Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [ Ty.apply (Ty.path "slice") [] [ T ] ];
                                       Ty.apply
                                         (Ty.path "&mut")
+                                        []
                                         [
                                           Ty.apply
                                             (Ty.path "slice")
+                                            []
                                             [
                                               Ty.apply
                                                 (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                                []
                                                 [ T ]
                                             ]
                                         ]
@@ -5880,6 +6066,7 @@ Module vec.
                                                     Ty.apply
                                                       (Ty.path
                                                         "core::mem::maybe_uninit::MaybeUninit")
+                                                      []
                                                       [ T ],
                                                     "write",
                                                     []
@@ -5935,7 +6122,7 @@ Module vec.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -5949,7 +6136,7 @@ Module vec.
   End Impl_alloc_vec_ExtendFromWithinSpec_where_core_clone_Clone_T_where_core_alloc_Allocator_A_for_alloc_vec_Vec_T_A.
   
   Module Impl_alloc_vec_ExtendFromWithinSpec_where_core_marker_Copy_T_where_core_alloc_Allocator_A_for_alloc_vec_Vec_T_A.
-    Definition Self (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ].
+    Definition Self (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ].
     
     (*
         unsafe fn spec_extend_from_within(&mut self, src: Range<usize>) {
@@ -5978,10 +6165,15 @@ Module vec.
             self.len += count;
         }
     *)
-    Definition spec_extend_from_within (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition spec_extend_from_within
+        (T A : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ self; src ] =>
+      match ε, τ, α with
+      | [], [], [ self; src ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let src := M.alloc (| src |) in
@@ -5991,7 +6183,7 @@ Module vec.
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::iter::traits::exact_size::ExactSizeIterator",
-                    Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "usize" ],
+                    Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
                     [],
                     "len",
                     []
@@ -6004,7 +6196,7 @@ Module vec.
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                      Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                       "split_at_spare_mut",
                       []
                     |),
@@ -6022,9 +6214,10 @@ Module vec.
                         M.alloc (|
                           M.call_closure (|
                             M.get_associated_function (|
-                              Ty.apply (Ty.path "slice") [ T ],
+                              Ty.apply (Ty.path "slice") [] [ T ],
                               "get_unchecked",
-                              [ Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "usize" ] ]
+                              [ Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ]
+                              ]
                             |),
                             [ M.read (| init |); M.read (| src |) ]
                           |)
@@ -6036,7 +6229,7 @@ Module vec.
                             [
                               M.call_closure (|
                                 M.get_associated_function (|
-                                  Ty.apply (Ty.path "slice") [ T ],
+                                  Ty.apply (Ty.path "slice") [] [ T ],
                                   "as_ptr",
                                   []
                                 |),
@@ -6047,9 +6240,11 @@ Module vec.
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "slice")
+                                      []
                                       [
                                         Ty.apply
                                           (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                          []
                                           [ T ]
                                       ],
                                     "as_mut_ptr",
@@ -6074,7 +6269,7 @@ Module vec.
               M.write (| β, BinOp.Wrap.add Integer.Usize (M.read (| β |)) (M.read (| count |)) |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -6088,20 +6283,20 @@ Module vec.
   End Impl_alloc_vec_ExtendFromWithinSpec_where_core_marker_Copy_T_where_core_alloc_Allocator_A_for_alloc_vec_Vec_T_A.
   
   Module Impl_core_ops_deref_Deref_where_core_alloc_Allocator_A_for_alloc_vec_Vec_T_A.
-    Definition Self (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ].
+    Definition Self (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ].
     
     (*     type Target = [T]; *)
-    Definition _Target (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "slice") [ T ].
+    Definition _Target (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "slice") [] [ T ].
     
     (*
         fn deref(&self) -> &[T] {
             unsafe { slice::from_raw_parts(self.as_ptr(), self.len) }
         }
     *)
-    Definition deref (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition deref (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
@@ -6109,7 +6304,7 @@ Module vec.
             [
               M.call_closure (|
                 M.get_associated_function (|
-                  Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                  Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                   "as_ptr",
                   []
                 |),
@@ -6124,7 +6319,7 @@ Module vec.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -6138,17 +6333,17 @@ Module vec.
   End Impl_core_ops_deref_Deref_where_core_alloc_Allocator_A_for_alloc_vec_Vec_T_A.
   
   Module Impl_core_ops_deref_DerefMut_where_core_alloc_Allocator_A_for_alloc_vec_Vec_T_A.
-    Definition Self (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ].
+    Definition Self (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ].
     
     (*
         fn deref_mut(&mut self) -> &mut [T] {
             unsafe { slice::from_raw_parts_mut(self.as_mut_ptr(), self.len) }
         }
     *)
-    Definition deref_mut (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition deref_mut (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
@@ -6156,7 +6351,7 @@ Module vec.
             [
               M.call_closure (|
                 M.get_associated_function (|
-                  Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                  Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                   "as_mut_ptr",
                   []
                 |),
@@ -6171,7 +6366,7 @@ Module vec.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -6184,7 +6379,7 @@ Module vec.
   End Impl_core_ops_deref_DerefMut_where_core_alloc_Allocator_A_for_alloc_vec_Vec_T_A.
   
   Module Impl_core_clone_Clone_where_core_clone_Clone_T_where_core_alloc_Allocator_A_where_core_clone_Clone_A_for_alloc_vec_Vec_T_A.
-    Definition Self (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ].
+    Definition Self (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ].
     
     (*
         fn clone(&self) -> Self {
@@ -6192,10 +6387,10 @@ Module vec.
             <[T]>::to_vec_in(&**self, alloc)
         }
     *)
-    Definition clone (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition clone (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -6206,7 +6401,7 @@ Module vec.
                   [
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                        Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                         "allocator",
                         []
                       |),
@@ -6218,7 +6413,7 @@ Module vec.
             M.alloc (|
               M.call_closure (|
                 M.get_associated_function (|
-                  Ty.apply (Ty.path "slice") [ T ],
+                  Ty.apply (Ty.path "slice") [] [ T ],
                   "to_vec_in",
                   [ A ]
                 |),
@@ -6226,7 +6421,7 @@ Module vec.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::deref::Deref",
-                      Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                      Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                       [],
                       "deref",
                       []
@@ -6238,7 +6433,7 @@ Module vec.
               |)
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     (*
@@ -6246,10 +6441,10 @@ Module vec.
             crate::slice::SpecCloneIntoVec::clone_into(other.as_slice(), self);
         }
     *)
-    Definition clone_from (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition clone_from (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ self; other ] =>
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
@@ -6259,7 +6454,7 @@ Module vec.
                 M.call_closure (|
                   M.get_trait_method (|
                     "alloc::slice::SpecCloneIntoVec",
-                    Ty.apply (Ty.path "slice") [ T ],
+                    Ty.apply (Ty.path "slice") [] [ T ],
                     [ T; A ],
                     "clone_into",
                     []
@@ -6267,7 +6462,7 @@ Module vec.
                   [
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                        Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                         "as_slice",
                         []
                       |),
@@ -6279,7 +6474,7 @@ Module vec.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -6296,24 +6491,24 @@ Module vec.
   End Impl_core_clone_Clone_where_core_clone_Clone_T_where_core_alloc_Allocator_A_where_core_clone_Clone_A_for_alloc_vec_Vec_T_A.
   
   Module Impl_core_hash_Hash_where_core_hash_Hash_T_where_core_alloc_Allocator_A_for_alloc_vec_Vec_T_A.
-    Definition Self (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ].
+    Definition Self (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ].
     
     (*
         fn hash<H: Hasher>(&self, state: &mut H) {
             Hash::hash(&**self, state)
         }
     *)
-    Definition hash (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition hash (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [ H ], [ self; state ] =>
+      match ε, τ, α with
+      | [], [ H ], [ self; state ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
           M.call_closure (|
             M.get_trait_method (|
               "core::hash::Hash",
-              Ty.apply (Ty.path "slice") [ T ],
+              Ty.apply (Ty.path "slice") [] [ T ],
               [],
               "hash",
               [ H ]
@@ -6322,7 +6517,7 @@ Module vec.
               M.call_closure (|
                 M.get_trait_method (|
                   "core::ops::deref::Deref",
-                  Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                  Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                   [],
                   "deref",
                   []
@@ -6332,7 +6527,7 @@ Module vec.
               M.read (| state |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -6345,7 +6540,7 @@ Module vec.
   End Impl_core_hash_Hash_where_core_hash_Hash_T_where_core_alloc_Allocator_A_for_alloc_vec_Vec_T_A.
   
   Module Impl_core_ops_index_Index_where_core_slice_index_SliceIndex_I_slice_T_where_core_alloc_Allocator_A_I_for_alloc_vec_Vec_T_A.
-    Definition Self (T I A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ].
+    Definition Self (T I A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ].
     
     (*     type Output = I::Output; *)
     Definition _Output (T I A : Ty.t) : Ty.t := Ty.associated.
@@ -6355,17 +6550,17 @@ Module vec.
             Index::index(&**self, index)
         }
     *)
-    Definition index (T I A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition index (T I A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T I A in
-      match τ, α with
-      | [], [ self; index ] =>
+      match ε, τ, α with
+      | [], [], [ self; index ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let index := M.alloc (| index |) in
           M.call_closure (|
             M.get_trait_method (|
               "core::ops::index::Index",
-              Ty.apply (Ty.path "slice") [ T ],
+              Ty.apply (Ty.path "slice") [] [ T ],
               [ I ],
               "index",
               []
@@ -6374,7 +6569,7 @@ Module vec.
               M.call_closure (|
                 M.get_trait_method (|
                   "core::ops::deref::Deref",
-                  Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                  Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                   [],
                   "deref",
                   []
@@ -6384,7 +6579,7 @@ Module vec.
               M.read (| index |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -6401,24 +6596,24 @@ Module vec.
   End Impl_core_ops_index_Index_where_core_slice_index_SliceIndex_I_slice_T_where_core_alloc_Allocator_A_I_for_alloc_vec_Vec_T_A.
   
   Module Impl_core_ops_index_IndexMut_where_core_slice_index_SliceIndex_I_slice_T_where_core_alloc_Allocator_A_I_for_alloc_vec_Vec_T_A.
-    Definition Self (T I A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ].
+    Definition Self (T I A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ].
     
     (*
         fn index_mut(&mut self, index: I) -> &mut Self::Output {
             IndexMut::index_mut(&mut **self, index)
         }
     *)
-    Definition index_mut (T I A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition index_mut (T I A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T I A in
-      match τ, α with
-      | [], [ self; index ] =>
+      match ε, τ, α with
+      | [], [], [ self; index ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let index := M.alloc (| index |) in
           M.call_closure (|
             M.get_trait_method (|
               "core::ops::index::IndexMut",
-              Ty.apply (Ty.path "slice") [ T ],
+              Ty.apply (Ty.path "slice") [] [ T ],
               [ I ],
               "index_mut",
               []
@@ -6427,7 +6622,7 @@ Module vec.
               M.call_closure (|
                 M.get_trait_method (|
                   "core::ops::deref::DerefMut",
-                  Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                  Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                   [],
                   "deref_mut",
                   []
@@ -6437,7 +6632,7 @@ Module vec.
               M.read (| index |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -6451,23 +6646,23 @@ Module vec.
   
   Module Impl_core_iter_traits_collect_FromIterator_T_for_alloc_vec_Vec_T_alloc_alloc_Global.
     Definition Self (T : Ty.t) : Ty.t :=
-      Ty.apply (Ty.path "alloc::vec::Vec") [ T; Ty.path "alloc::alloc::Global" ].
+      Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; Ty.path "alloc::alloc::Global" ].
     
     (*
         fn from_iter<I: IntoIterator<Item = T>>(iter: I) -> Vec<T> {
             <Self as SpecFromIter<T, I::IntoIter>>::from_iter(iter.into_iter())
         }
     *)
-    Definition from_iter (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition from_iter (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [ _ as I ], [ iter ] =>
+      match ε, τ, α with
+      | [], [ _ as I ], [ iter ] =>
         ltac:(M.monadic
           (let iter := M.alloc (| iter |) in
           M.call_closure (|
             M.get_trait_method (|
               "alloc::vec::spec_from_iter::SpecFromIter",
-              Ty.apply (Ty.path "alloc::vec::Vec") [ T; Ty.path "alloc::alloc::Global" ],
+              Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; Ty.path "alloc::alloc::Global" ],
               [ T; Ty.associated ],
               "from_iter",
               []
@@ -6485,7 +6680,7 @@ Module vec.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -6498,14 +6693,14 @@ Module vec.
   End Impl_core_iter_traits_collect_FromIterator_T_for_alloc_vec_Vec_T_alloc_alloc_Global.
   
   Module Impl_core_iter_traits_collect_IntoIterator_where_core_alloc_Allocator_A_for_alloc_vec_Vec_T_A.
-    Definition Self (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ].
+    Definition Self (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ].
     
     (*     type Item = T; *)
     Definition _Item (T A : Ty.t) : Ty.t := T.
     
     (*     type IntoIter = IntoIter<T, A>; *)
     Definition _IntoIter (T A : Ty.t) : Ty.t :=
-      Ty.apply (Ty.path "alloc::vec::into_iter::IntoIter") [ T; A ].
+      Ty.apply (Ty.path "alloc::vec::into_iter::IntoIter") [] [ T; A ].
     
     (*
         fn into_iter(self) -> Self::IntoIter {
@@ -6530,10 +6725,10 @@ Module vec.
             }
         }
     *)
-    Definition into_iter (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition into_iter (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -6543,7 +6738,8 @@ Module vec.
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "core::mem::manually_drop::ManuallyDrop")
-                      [ Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ] ],
+                      []
+                      [ Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ] ],
                     "new",
                     []
                   |),
@@ -6554,7 +6750,7 @@ Module vec.
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::mem::manually_drop::ManuallyDrop") [ A ],
+                    Ty.apply (Ty.path "core::mem::manually_drop::ManuallyDrop") [] [ A ],
                     "new",
                     []
                   |),
@@ -6564,7 +6760,7 @@ Module vec.
                       [
                         M.call_closure (|
                           M.get_associated_function (|
-                            Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                            Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                             "allocator",
                             []
                           |),
@@ -6574,7 +6770,8 @@ Module vec.
                                 "core::ops::deref::Deref",
                                 Ty.apply
                                   (Ty.path "core::mem::manually_drop::ManuallyDrop")
-                                  [ Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ] ],
+                                  []
+                                  [ Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ] ],
                                 [],
                                 "deref",
                                 []
@@ -6592,7 +6789,7 @@ Module vec.
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                    Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                     "as_mut_ptr",
                     []
                   |),
@@ -6602,7 +6799,8 @@ Module vec.
                         "core::ops::deref::DerefMut",
                         Ty.apply
                           (Ty.path "core::mem::manually_drop::ManuallyDrop")
-                          [ Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ] ],
+                          []
+                          [ Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ] ],
                         [],
                         "deref_mut",
                         []
@@ -6628,7 +6826,7 @@ Module vec.
                           M.pointer_coercion
                             (M.call_closure (|
                               M.get_associated_function (|
-                                Ty.apply (Ty.path "*mut") [ T ],
+                                Ty.apply (Ty.path "*mut") [] [ T ],
                                 "wrapping_byte_add",
                                 []
                               |),
@@ -6636,7 +6834,7 @@ Module vec.
                                 M.read (| begin |);
                                 M.call_closure (|
                                   M.get_associated_function (|
-                                    Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                                    Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                                     "len",
                                     []
                                   |),
@@ -6646,7 +6844,8 @@ Module vec.
                                         "core::ops::deref::Deref",
                                         Ty.apply
                                           (Ty.path "core::mem::manually_drop::ManuallyDrop")
-                                          [ Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ] ],
+                                          []
+                                          [ Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ] ],
                                         [],
                                         "deref",
                                         []
@@ -6666,7 +6865,7 @@ Module vec.
                             (M.pointer_coercion
                               (M.call_closure (|
                                 M.get_associated_function (|
-                                  Ty.apply (Ty.path "*mut") [ T ],
+                                  Ty.apply (Ty.path "*mut") [] [ T ],
                                   "add",
                                   []
                                 |),
@@ -6674,7 +6873,7 @@ Module vec.
                                   M.read (| begin |);
                                   M.call_closure (|
                                     M.get_associated_function (|
-                                      Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                                      Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                                       "len",
                                       []
                                     |),
@@ -6684,7 +6883,8 @@ Module vec.
                                           "core::ops::deref::Deref",
                                           Ty.apply
                                             (Ty.path "core::mem::manually_drop::ManuallyDrop")
-                                            [ Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ] ],
+                                            []
+                                            [ Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ] ],
                                           [],
                                           "deref",
                                           []
@@ -6703,7 +6903,7 @@ Module vec.
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "alloc::raw_vec::RawVec") [ T; A ],
+                    Ty.apply (Ty.path "alloc::raw_vec::RawVec") [] [ T; A ],
                     "capacity",
                     []
                   |),
@@ -6714,7 +6914,8 @@ Module vec.
                           "core::ops::deref::Deref",
                           Ty.apply
                             (Ty.path "core::mem::manually_drop::ManuallyDrop")
-                            [ Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ] ],
+                            []
+                            [ Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ] ],
                           [],
                           "deref",
                           []
@@ -6734,7 +6935,7 @@ Module vec.
                   ("buf",
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ],
+                        Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                         "new_unchecked",
                         []
                       |),
@@ -6748,7 +6949,7 @@ Module vec.
                 ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -6767,32 +6968,33 @@ Module vec.
   
   Module Impl_core_iter_traits_collect_IntoIterator_where_core_alloc_Allocator_A_for_ref__alloc_vec_Vec_T_A.
     Definition Self (T A : Ty.t) : Ty.t :=
-      Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ] ].
+      Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ] ].
     
     (*     type Item = &'a T; *)
-    Definition _Item (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "&") [ T ].
+    Definition _Item (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "&") [] [ T ].
     
     (*     type IntoIter = slice::Iter<'a, T>; *)
-    Definition _IntoIter (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "core::slice::iter::Iter") [ T ].
+    Definition _IntoIter (T A : Ty.t) : Ty.t :=
+      Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ].
     
     (*
         fn into_iter(self) -> Self::IntoIter {
             self.iter()
         }
     *)
-    Definition into_iter (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition into_iter (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.apply (Ty.path "slice") [ T ], "iter", [] |),
+            M.get_associated_function (| Ty.apply (Ty.path "slice") [] [ T ], "iter", [] |),
             [
               M.call_closure (|
                 M.get_trait_method (|
                   "core::ops::deref::Deref",
-                  Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                  Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                   [],
                   "deref",
                   []
@@ -6801,7 +7003,7 @@ Module vec.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -6820,33 +7022,33 @@ Module vec.
   
   Module Impl_core_iter_traits_collect_IntoIterator_where_core_alloc_Allocator_A_for_ref_mut_alloc_vec_Vec_T_A.
     Definition Self (T A : Ty.t) : Ty.t :=
-      Ty.apply (Ty.path "&mut") [ Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ] ].
+      Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ] ].
     
     (*     type Item = &'a mut T; *)
-    Definition _Item (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "&mut") [ T ].
+    Definition _Item (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "&mut") [] [ T ].
     
     (*     type IntoIter = slice::IterMut<'a, T>; *)
     Definition _IntoIter (T A : Ty.t) : Ty.t :=
-      Ty.apply (Ty.path "core::slice::iter::IterMut") [ T ].
+      Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ].
     
     (*
         fn into_iter(self) -> Self::IntoIter {
             self.iter_mut()
         }
     *)
-    Definition into_iter (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition into_iter (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.apply (Ty.path "slice") [ T ], "iter_mut", [] |),
+            M.get_associated_function (| Ty.apply (Ty.path "slice") [] [ T ], "iter_mut", [] |),
             [
               M.call_closure (|
                 M.get_trait_method (|
                   "core::ops::deref::DerefMut",
-                  Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                  Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                   [],
                   "deref_mut",
                   []
@@ -6855,7 +7057,7 @@ Module vec.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -6873,24 +7075,24 @@ Module vec.
   End Impl_core_iter_traits_collect_IntoIterator_where_core_alloc_Allocator_A_for_ref_mut_alloc_vec_Vec_T_A.
   
   Module Impl_core_iter_traits_collect_Extend_where_core_alloc_Allocator_A_T_for_alloc_vec_Vec_T_A.
-    Definition Self (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ].
+    Definition Self (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ].
     
     (*
         fn extend<I: IntoIterator<Item = T>>(&mut self, iter: I) {
             <Self as SpecExtend<T, I::IntoIter>>::spec_extend(self, iter.into_iter())
         }
     *)
-    Definition extend (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition extend (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [ _ as I ], [ self; iter ] =>
+      match ε, τ, α with
+      | [], [ _ as I ], [ self; iter ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let iter := M.alloc (| iter |) in
           M.call_closure (|
             M.get_trait_method (|
               "alloc::vec::spec_extend::SpecExtend",
-              Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+              Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
               [ T; Ty.associated ],
               "spec_extend",
               []
@@ -6909,7 +7111,7 @@ Module vec.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     (*
@@ -6917,10 +7119,10 @@ Module vec.
             self.push(item);
         }
     *)
-    Definition extend_one (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition extend_one (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ self; item ] =>
+      match ε, τ, α with
+      | [], [], [ self; item ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let item := M.alloc (| item |) in
@@ -6929,7 +7131,7 @@ Module vec.
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                    Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                     "push",
                     []
                   |),
@@ -6938,7 +7140,7 @@ Module vec.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     (*
@@ -6946,10 +7148,15 @@ Module vec.
             self.reserve(additional);
         }
     *)
-    Definition extend_reserve (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition extend_reserve
+        (T A : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ self; additional ] =>
+      match ε, τ, α with
+      | [], [], [ self; additional ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let additional := M.alloc (| additional |) in
@@ -6958,7 +7165,7 @@ Module vec.
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                    Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                     "reserve",
                     []
                   |),
@@ -6967,7 +7174,7 @@ Module vec.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -6986,25 +7193,25 @@ Module vec.
   
   
   Module Impl_core_iter_traits_collect_Extend_where_core_marker_Copy_T_where_core_alloc_Allocator_A_ref__T_for_alloc_vec_Vec_T_A.
-    Definition Self (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ].
+    Definition Self (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ].
     
     (*
         fn extend<I: IntoIterator<Item = &'a T>>(&mut self, iter: I) {
             self.spec_extend(iter.into_iter())
         }
     *)
-    Definition extend (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition extend (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [ _ as I ], [ self; iter ] =>
+      match ε, τ, α with
+      | [], [ _ as I ], [ self; iter ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let iter := M.alloc (| iter |) in
           M.call_closure (|
             M.get_trait_method (|
               "alloc::vec::spec_extend::SpecExtend",
-              Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
-              [ Ty.apply (Ty.path "&") [ T ]; Ty.associated ],
+              Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
+              [ Ty.apply (Ty.path "&") [] [ T ]; Ty.associated ],
               "spec_extend",
               []
             |),
@@ -7022,7 +7229,7 @@ Module vec.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     (*
@@ -7030,10 +7237,10 @@ Module vec.
             self.push(item);
         }
     *)
-    Definition extend_one (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition extend_one (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ self; β1 ] =>
+      match ε, τ, α with
+      | [], [], [ self; β1 ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let β1 := M.alloc (| β1 |) in
@@ -7049,7 +7256,7 @@ Module vec.
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
-                            Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                            Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                             "push",
                             []
                           |),
@@ -7060,7 +7267,7 @@ Module vec.
                   |)))
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     (*
@@ -7068,10 +7275,15 @@ Module vec.
             self.reserve(additional);
         }
     *)
-    Definition extend_reserve (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition extend_reserve
+        (T A : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ self; additional ] =>
+      match ε, τ, α with
+      | [], [], [ self; additional ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let additional := M.alloc (| additional |) in
@@ -7080,7 +7292,7 @@ Module vec.
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                    Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                     "reserve",
                     []
                   |),
@@ -7089,7 +7301,7 @@ Module vec.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -7097,7 +7309,7 @@ Module vec.
       M.IsTraitInstance
         "core::iter::traits::collect::Extend"
         (Self T A)
-        (* Trait polymorphic types *) [ (* A *) Ty.apply (Ty.path "&") [ T ] ]
+        (* Trait polymorphic types *) [ (* A *) Ty.apply (Ty.path "&") [] [ T ] ]
         (* Instance *)
         [
           ("extend", InstanceField.Method (extend T A));
@@ -7107,25 +7319,30 @@ Module vec.
   End Impl_core_iter_traits_collect_Extend_where_core_marker_Copy_T_where_core_alloc_Allocator_A_ref__T_for_alloc_vec_Vec_T_A.
   
   Module Impl_core_cmp_PartialOrd_where_core_cmp_PartialOrd_T_where_core_alloc_Allocator_A1_where_core_alloc_Allocator_A2_alloc_vec_Vec_T_A2_for_alloc_vec_Vec_T_A1.
-    Definition Self (T A1 A2 : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::vec::Vec") [ T; A1 ].
+    Definition Self (T A1 A2 : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A1 ].
     
     (*
         fn partial_cmp(&self, other: &Vec<T, A2>) -> Option<Ordering> {
             PartialOrd::partial_cmp(&**self, &**other)
         }
     *)
-    Definition partial_cmp (T A1 A2 : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition partial_cmp
+        (T A1 A2 : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
       let Self : Ty.t := Self T A1 A2 in
-      match τ, α with
-      | [], [ self; other ] =>
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.call_closure (|
             M.get_trait_method (|
               "core::cmp::PartialOrd",
-              Ty.apply (Ty.path "slice") [ T ],
-              [ Ty.apply (Ty.path "slice") [ T ] ],
+              Ty.apply (Ty.path "slice") [] [ T ],
+              [ Ty.apply (Ty.path "slice") [] [ T ] ],
               "partial_cmp",
               []
             |),
@@ -7133,7 +7350,7 @@ Module vec.
               M.call_closure (|
                 M.get_trait_method (|
                   "core::ops::deref::Deref",
-                  Ty.apply (Ty.path "alloc::vec::Vec") [ T; A1 ],
+                  Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A1 ],
                   [],
                   "deref",
                   []
@@ -7143,7 +7360,7 @@ Module vec.
               M.call_closure (|
                 M.get_trait_method (|
                   "core::ops::deref::Deref",
-                  Ty.apply (Ty.path "alloc::vec::Vec") [ T; A2 ],
+                  Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A2 ],
                   [],
                   "deref",
                   []
@@ -7152,7 +7369,7 @@ Module vec.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -7160,12 +7377,13 @@ Module vec.
       M.IsTraitInstance
         "core::cmp::PartialOrd"
         (Self T A1 A2)
-        (* Trait polymorphic types *) [ (* Rhs *) Ty.apply (Ty.path "alloc::vec::Vec") [ T; A2 ] ]
+        (* Trait polymorphic types *)
+        [ (* Rhs *) Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A2 ] ]
         (* Instance *) [ ("partial_cmp", InstanceField.Method (partial_cmp T A1 A2)) ].
   End Impl_core_cmp_PartialOrd_where_core_cmp_PartialOrd_T_where_core_alloc_Allocator_A1_where_core_alloc_Allocator_A2_alloc_vec_Vec_T_A2_for_alloc_vec_Vec_T_A1.
   
   Module Impl_core_cmp_Eq_where_core_cmp_Eq_T_where_core_alloc_Allocator_A_for_alloc_vec_Vec_T_A.
-    Definition Self (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ].
+    Definition Self (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ].
     
     Axiom Implements :
       forall (T A : Ty.t),
@@ -7177,24 +7395,24 @@ Module vec.
   End Impl_core_cmp_Eq_where_core_cmp_Eq_T_where_core_alloc_Allocator_A_for_alloc_vec_Vec_T_A.
   
   Module Impl_core_cmp_Ord_where_core_cmp_Ord_T_where_core_alloc_Allocator_A_for_alloc_vec_Vec_T_A.
-    Definition Self (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ].
+    Definition Self (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ].
     
     (*
         fn cmp(&self, other: &Self) -> Ordering {
             Ord::cmp(&**self, &**other)
         }
     *)
-    Definition cmp (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition cmp (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ self; other ] =>
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.call_closure (|
             M.get_trait_method (|
               "core::cmp::Ord",
-              Ty.apply (Ty.path "slice") [ T ],
+              Ty.apply (Ty.path "slice") [] [ T ],
               [],
               "cmp",
               []
@@ -7203,7 +7421,7 @@ Module vec.
               M.call_closure (|
                 M.get_trait_method (|
                   "core::ops::deref::Deref",
-                  Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                  Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                   [],
                   "deref",
                   []
@@ -7213,7 +7431,7 @@ Module vec.
               M.call_closure (|
                 M.get_trait_method (|
                   "core::ops::deref::Deref",
-                  Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                  Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                   [],
                   "deref",
                   []
@@ -7222,7 +7440,7 @@ Module vec.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -7235,7 +7453,7 @@ Module vec.
   End Impl_core_cmp_Ord_where_core_cmp_Ord_T_where_core_alloc_Allocator_A_for_alloc_vec_Vec_T_A.
   
   Module Impl_core_ops_drop_Drop_where_core_alloc_Allocator_A_for_alloc_vec_Vec_T_A.
-    Definition Self (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ].
+    Definition Self (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ].
     
     (*
         fn drop(&mut self) {
@@ -7248,21 +7466,24 @@ Module vec.
             // RawVec handles deallocation
         }
     *)
-    Definition drop (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition drop (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_function (| "core::ptr::drop_in_place", [ Ty.apply (Ty.path "slice") [ T ] ] |),
+            M.get_function (|
+              "core::ptr::drop_in_place",
+              [ Ty.apply (Ty.path "slice") [] [ T ] ]
+            |),
             [
               M.call_closure (|
                 M.get_function (| "core::ptr::slice_from_raw_parts_mut", [ T ] |),
                 [
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                      Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                       "as_mut_ptr",
                       []
                     |),
@@ -7279,7 +7500,7 @@ Module vec.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -7293,27 +7514,27 @@ Module vec.
   
   Module Impl_core_default_Default_for_alloc_vec_Vec_T_alloc_alloc_Global.
     Definition Self (T : Ty.t) : Ty.t :=
-      Ty.apply (Ty.path "alloc::vec::Vec") [ T; Ty.path "alloc::alloc::Global" ].
+      Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; Ty.path "alloc::alloc::Global" ].
     
     (*
         fn default() -> Vec<T> {
             Vec::new()
         }
     *)
-    Definition default (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition default (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [] =>
+      match ε, τ, α with
+      | [], [], [] =>
         ltac:(M.monadic
           (M.call_closure (|
             M.get_associated_function (|
-              Ty.apply (Ty.path "alloc::vec::Vec") [ T; Ty.path "alloc::alloc::Global" ],
+              Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; Ty.path "alloc::alloc::Global" ],
               "new",
               []
             |),
             []
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -7326,24 +7547,24 @@ Module vec.
   End Impl_core_default_Default_for_alloc_vec_Vec_T_alloc_alloc_Global.
   
   Module Impl_core_fmt_Debug_where_core_fmt_Debug_T_where_core_alloc_Allocator_A_for_alloc_vec_Vec_T_A.
-    Definition Self (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ].
+    Definition Self (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ].
     
     (*
         fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
             fmt::Debug::fmt(&**self, f)
         }
     *)
-    Definition fmt (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition fmt (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ self; f ] =>
+      match ε, τ, α with
+      | [], [], [ self; f ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
             M.get_trait_method (|
               "core::fmt::Debug",
-              Ty.apply (Ty.path "slice") [ T ],
+              Ty.apply (Ty.path "slice") [] [ T ],
               [],
               "fmt",
               []
@@ -7352,7 +7573,7 @@ Module vec.
               M.call_closure (|
                 M.get_trait_method (|
                   "core::ops::deref::Deref",
-                  Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                  Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                   [],
                   "deref",
                   []
@@ -7362,7 +7583,7 @@ Module vec.
               M.read (| f |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -7375,21 +7596,21 @@ Module vec.
   End Impl_core_fmt_Debug_where_core_fmt_Debug_T_where_core_alloc_Allocator_A_for_alloc_vec_Vec_T_A.
   
   Module Impl_core_convert_AsRef_where_core_alloc_Allocator_A_alloc_vec_Vec_T_A_for_alloc_vec_Vec_T_A.
-    Definition Self (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ].
+    Definition Self (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ].
     
     (*
         fn as_ref(&self) -> &Vec<T, A> {
             self
         }
     *)
-    Definition as_ref (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition as_ref (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (| self |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -7397,26 +7618,26 @@ Module vec.
       M.IsTraitInstance
         "core::convert::AsRef"
         (Self T A)
-        (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ] ]
+        (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ] ]
         (* Instance *) [ ("as_ref", InstanceField.Method (as_ref T A)) ].
   End Impl_core_convert_AsRef_where_core_alloc_Allocator_A_alloc_vec_Vec_T_A_for_alloc_vec_Vec_T_A.
   
   Module Impl_core_convert_AsMut_where_core_alloc_Allocator_A_alloc_vec_Vec_T_A_for_alloc_vec_Vec_T_A.
-    Definition Self (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ].
+    Definition Self (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ].
     
     (*
         fn as_mut(&mut self) -> &mut Vec<T, A> {
             self
         }
     *)
-    Definition as_mut (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition as_mut (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (| self |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -7424,35 +7645,35 @@ Module vec.
       M.IsTraitInstance
         "core::convert::AsMut"
         (Self T A)
-        (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ] ]
+        (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ] ]
         (* Instance *) [ ("as_mut", InstanceField.Method (as_mut T A)) ].
   End Impl_core_convert_AsMut_where_core_alloc_Allocator_A_alloc_vec_Vec_T_A_for_alloc_vec_Vec_T_A.
   
   Module Impl_core_convert_AsRef_where_core_alloc_Allocator_A_slice_T_for_alloc_vec_Vec_T_A.
-    Definition Self (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ].
+    Definition Self (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ].
     
     (*
         fn as_ref(&self) -> &[T] {
             self
         }
     *)
-    Definition as_ref (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition as_ref (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
             M.get_trait_method (|
               "core::ops::deref::Deref",
-              Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+              Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
               [],
               "deref",
               []
             |),
             [ M.read (| self |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -7460,35 +7681,35 @@ Module vec.
       M.IsTraitInstance
         "core::convert::AsRef"
         (Self T A)
-        (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "slice") [ T ] ]
+        (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "slice") [] [ T ] ]
         (* Instance *) [ ("as_ref", InstanceField.Method (as_ref T A)) ].
   End Impl_core_convert_AsRef_where_core_alloc_Allocator_A_slice_T_for_alloc_vec_Vec_T_A.
   
   Module Impl_core_convert_AsMut_where_core_alloc_Allocator_A_slice_T_for_alloc_vec_Vec_T_A.
-    Definition Self (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ].
+    Definition Self (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ].
     
     (*
         fn as_mut(&mut self) -> &mut [T] {
             self
         }
     *)
-    Definition as_mut (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition as_mut (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
             M.get_trait_method (|
               "core::ops::deref::DerefMut",
-              Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+              Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
               [],
               "deref_mut",
               []
             |),
             [ M.read (| self |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -7496,30 +7717,30 @@ Module vec.
       M.IsTraitInstance
         "core::convert::AsMut"
         (Self T A)
-        (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "slice") [ T ] ]
+        (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "slice") [] [ T ] ]
         (* Instance *) [ ("as_mut", InstanceField.Method (as_mut T A)) ].
   End Impl_core_convert_AsMut_where_core_alloc_Allocator_A_slice_T_for_alloc_vec_Vec_T_A.
   
   Module Impl_core_convert_From_where_core_clone_Clone_T_ref__slice_T_for_alloc_vec_Vec_T_alloc_alloc_Global.
     Definition Self (T : Ty.t) : Ty.t :=
-      Ty.apply (Ty.path "alloc::vec::Vec") [ T; Ty.path "alloc::alloc::Global" ].
+      Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; Ty.path "alloc::alloc::Global" ].
     
     (*
         fn from(s: &[T]) -> Vec<T> {
             s.to_vec()
         }
     *)
-    Definition from (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition from (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [ s ] =>
+      match ε, τ, α with
+      | [], [], [ s ] =>
         ltac:(M.monadic
           (let s := M.alloc (| s |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.apply (Ty.path "slice") [ T ], "to_vec", [] |),
+            M.get_associated_function (| Ty.apply (Ty.path "slice") [] [ T ], "to_vec", [] |),
             [ M.read (| s |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -7528,30 +7749,30 @@ Module vec.
         "core::convert::From"
         (Self T)
         (* Trait polymorphic types *)
-        [ (* T *) Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "slice") [ T ] ] ]
+        [ (* T *) Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ] ]
         (* Instance *) [ ("from", InstanceField.Method (from T)) ].
   End Impl_core_convert_From_where_core_clone_Clone_T_ref__slice_T_for_alloc_vec_Vec_T_alloc_alloc_Global.
   
   Module Impl_core_convert_From_where_core_clone_Clone_T_ref_mut_slice_T_for_alloc_vec_Vec_T_alloc_alloc_Global.
     Definition Self (T : Ty.t) : Ty.t :=
-      Ty.apply (Ty.path "alloc::vec::Vec") [ T; Ty.path "alloc::alloc::Global" ].
+      Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; Ty.path "alloc::alloc::Global" ].
     
     (*
         fn from(s: &mut [T]) -> Vec<T> {
             s.to_vec()
         }
     *)
-    Definition from (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition from (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [ s ] =>
+      match ε, τ, α with
+      | [], [], [ s ] =>
         ltac:(M.monadic
           (let s := M.alloc (| s |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.apply (Ty.path "slice") [ T ], "to_vec", [] |),
+            M.get_associated_function (| Ty.apply (Ty.path "slice") [] [ T ], "to_vec", [] |),
             [ M.read (| s |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -7560,80 +7781,96 @@ Module vec.
         "core::convert::From"
         (Self T)
         (* Trait polymorphic types *)
-        [ (* T *) Ty.apply (Ty.path "&mut") [ Ty.apply (Ty.path "slice") [ T ] ] ]
+        [ (* T *) Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ] ]
         (* Instance *) [ ("from", InstanceField.Method (from T)) ].
   End Impl_core_convert_From_where_core_clone_Clone_T_ref_mut_slice_T_for_alloc_vec_Vec_T_alloc_alloc_Global.
   
-  Module Impl_core_convert_From_where_core_clone_Clone_T_ref__array_T_for_alloc_vec_Vec_T_alloc_alloc_Global.
-    Definition Self (T : Ty.t) : Ty.t :=
-      Ty.apply (Ty.path "alloc::vec::Vec") [ T; Ty.path "alloc::alloc::Global" ].
+  Module Impl_core_convert_From_where_core_clone_Clone_T_ref__array_N_T_for_alloc_vec_Vec_T_alloc_alloc_Global.
+    Definition Self (N : Value.t) (T : Ty.t) : Ty.t :=
+      Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; Ty.path "alloc::alloc::Global" ].
     
     (*
         fn from(s: &[T; N]) -> Vec<T> {
             Self::from(s.as_slice())
         }
     *)
-    Definition from (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [ s ] =>
+    Definition from
+        (N : Value.t)
+        (T : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      let Self : Ty.t := Self N T in
+      match ε, τ, α with
+      | [], [], [ s ] =>
         ltac:(M.monadic
           (let s := M.alloc (| s |) in
           M.call_closure (|
             M.get_trait_method (|
               "core::convert::From",
-              Ty.apply (Ty.path "alloc::vec::Vec") [ T; Ty.path "alloc::alloc::Global" ],
-              [ Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "slice") [ T ] ] ],
-              "from",
-              []
-            |),
-            [
-              M.call_closure (|
-                M.get_associated_function (| Ty.apply (Ty.path "array") [ T ], "as_slice", [] |),
-                [ M.read (| s |) ]
-              |)
-            ]
-          |)))
-      | _, _ => M.impossible
-      end.
-    
-    Axiom Implements :
-      forall (T : Ty.t),
-      M.IsTraitInstance
-        "core::convert::From"
-        (Self T)
-        (* Trait polymorphic types *)
-        [ (* T *) Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "array") [ T ] ] ]
-        (* Instance *) [ ("from", InstanceField.Method (from T)) ].
-  End Impl_core_convert_From_where_core_clone_Clone_T_ref__array_T_for_alloc_vec_Vec_T_alloc_alloc_Global.
-  
-  Module Impl_core_convert_From_where_core_clone_Clone_T_ref_mut_array_T_for_alloc_vec_Vec_T_alloc_alloc_Global.
-    Definition Self (T : Ty.t) : Ty.t :=
-      Ty.apply (Ty.path "alloc::vec::Vec") [ T; Ty.path "alloc::alloc::Global" ].
-    
-    (*
-        fn from(s: &mut [T; N]) -> Vec<T> {
-            Self::from(s.as_mut_slice())
-        }
-    *)
-    Definition from (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [ s ] =>
-        ltac:(M.monadic
-          (let s := M.alloc (| s |) in
-          M.call_closure (|
-            M.get_trait_method (|
-              "core::convert::From",
-              Ty.apply (Ty.path "alloc::vec::Vec") [ T; Ty.path "alloc::alloc::Global" ],
-              [ Ty.apply (Ty.path "&mut") [ Ty.apply (Ty.path "slice") [ T ] ] ],
+              Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; Ty.path "alloc::alloc::Global" ],
+              [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ] ],
               "from",
               []
             |),
             [
               M.call_closure (|
                 M.get_associated_function (|
-                  Ty.apply (Ty.path "array") [ T ],
+                  Ty.apply (Ty.path "array") [ N ] [ T ],
+                  "as_slice",
+                  []
+                |),
+                [ M.read (| s |) ]
+              |)
+            ]
+          |)))
+      | _, _, _ => M.impossible
+      end.
+    
+    Axiom Implements :
+      forall (N : Value.t) (T : Ty.t),
+      M.IsTraitInstance
+        "core::convert::From"
+        (Self N T)
+        (* Trait polymorphic types *)
+        [ (* T *) Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "array") [ N ] [ T ] ] ]
+        (* Instance *) [ ("from", InstanceField.Method (from N T)) ].
+  End Impl_core_convert_From_where_core_clone_Clone_T_ref__array_N_T_for_alloc_vec_Vec_T_alloc_alloc_Global.
+  
+  Module Impl_core_convert_From_where_core_clone_Clone_T_ref_mut_array_N_T_for_alloc_vec_Vec_T_alloc_alloc_Global.
+    Definition Self (N : Value.t) (T : Ty.t) : Ty.t :=
+      Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; Ty.path "alloc::alloc::Global" ].
+    
+    (*
+        fn from(s: &mut [T; N]) -> Vec<T> {
+            Self::from(s.as_mut_slice())
+        }
+    *)
+    Definition from
+        (N : Value.t)
+        (T : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      let Self : Ty.t := Self N T in
+      match ε, τ, α with
+      | [], [], [ s ] =>
+        ltac:(M.monadic
+          (let s := M.alloc (| s |) in
+          M.call_closure (|
+            M.get_trait_method (|
+              "core::convert::From",
+              Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; Ty.path "alloc::alloc::Global" ],
+              [ Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ] ],
+              "from",
+              []
+            |),
+            [
+              M.call_closure (|
+                M.get_associated_function (|
+                  Ty.apply (Ty.path "array") [ N ] [ T ],
                   "as_mut_slice",
                   []
                 |),
@@ -7641,37 +7878,43 @@ Module vec.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
-      forall (T : Ty.t),
+      forall (N : Value.t) (T : Ty.t),
       M.IsTraitInstance
         "core::convert::From"
-        (Self T)
+        (Self N T)
         (* Trait polymorphic types *)
-        [ (* T *) Ty.apply (Ty.path "&mut") [ Ty.apply (Ty.path "array") [ T ] ] ]
-        (* Instance *) [ ("from", InstanceField.Method (from T)) ].
-  End Impl_core_convert_From_where_core_clone_Clone_T_ref_mut_array_T_for_alloc_vec_Vec_T_alloc_alloc_Global.
+        [ (* T *) Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "array") [ N ] [ T ] ] ]
+        (* Instance *) [ ("from", InstanceField.Method (from N T)) ].
+  End Impl_core_convert_From_where_core_clone_Clone_T_ref_mut_array_N_T_for_alloc_vec_Vec_T_alloc_alloc_Global.
   
-  Module Impl_core_convert_From_array_T_for_alloc_vec_Vec_T_alloc_alloc_Global.
-    Definition Self (T : Ty.t) : Ty.t :=
-      Ty.apply (Ty.path "alloc::vec::Vec") [ T; Ty.path "alloc::alloc::Global" ].
+  Module Impl_core_convert_From_array_N_T_for_alloc_vec_Vec_T_alloc_alloc_Global.
+    Definition Self (N : Value.t) (T : Ty.t) : Ty.t :=
+      Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; Ty.path "alloc::alloc::Global" ].
     
     (*
         fn from(s: [T; N]) -> Vec<T> {
             <[T]>::into_vec(Box::new(s))
         }
     *)
-    Definition from (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [ s ] =>
+    Definition from
+        (N : Value.t)
+        (T : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      let Self : Ty.t := Self N T in
+      match ε, τ, α with
+      | [], [], [ s ] =>
         ltac:(M.monadic
           (let s := M.alloc (| s |) in
           M.call_closure (|
             M.get_associated_function (|
-              Ty.apply (Ty.path "slice") [ T ],
+              Ty.apply (Ty.path "slice") [] [ T ],
               "into_vec",
               [ Ty.path "alloc::alloc::Global" ]
             |),
@@ -7682,7 +7925,8 @@ Module vec.
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "alloc::boxed::Box")
-                      [ Ty.apply (Ty.path "array") [ T ]; Ty.path "alloc::alloc::Global" ],
+                      []
+                      [ Ty.apply (Ty.path "array") [ N ] [ T ]; Ty.path "alloc::alloc::Global" ],
                     "new",
                     []
                   |),
@@ -7690,42 +7934,42 @@ Module vec.
                 |))
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
-      forall (T : Ty.t),
+      forall (N : Value.t) (T : Ty.t),
       M.IsTraitInstance
         "core::convert::From"
-        (Self T)
-        (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "array") [ T ] ]
-        (* Instance *) [ ("from", InstanceField.Method (from T)) ].
-  End Impl_core_convert_From_array_T_for_alloc_vec_Vec_T_alloc_alloc_Global.
+        (Self N T)
+        (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "array") [ N ] [ T ] ]
+        (* Instance *) [ ("from", InstanceField.Method (from N T)) ].
+  End Impl_core_convert_From_array_N_T_for_alloc_vec_Vec_T_alloc_alloc_Global.
   
   Module Impl_core_convert_From_where_alloc_borrow_ToOwned_slice_T_alloc_borrow_Cow_slice_T_for_alloc_vec_Vec_T_alloc_alloc_Global.
     Definition Self (T : Ty.t) : Ty.t :=
-      Ty.apply (Ty.path "alloc::vec::Vec") [ T; Ty.path "alloc::alloc::Global" ].
+      Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; Ty.path "alloc::alloc::Global" ].
     
     (*
         fn from(s: Cow<'a, [T]>) -> Vec<T> {
             s.into_owned()
         }
     *)
-    Definition from (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition from (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [ s ] =>
+      match ε, τ, α with
+      | [], [], [ s ] =>
         ltac:(M.monadic
           (let s := M.alloc (| s |) in
           M.call_closure (|
             M.get_associated_function (|
-              Ty.apply (Ty.path "alloc::borrow::Cow") [ Ty.apply (Ty.path "slice") [ T ] ],
+              Ty.apply (Ty.path "alloc::borrow::Cow") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
               "into_owned",
               []
             |),
             [ M.read (| s |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -7734,29 +7978,30 @@ Module vec.
         "core::convert::From"
         (Self T)
         (* Trait polymorphic types *)
-        [ (* T *) Ty.apply (Ty.path "alloc::borrow::Cow") [ Ty.apply (Ty.path "slice") [ T ] ] ]
+        [ (* T *) Ty.apply (Ty.path "alloc::borrow::Cow") [] [ Ty.apply (Ty.path "slice") [] [ T ] ]
+        ]
         (* Instance *) [ ("from", InstanceField.Method (from T)) ].
   End Impl_core_convert_From_where_alloc_borrow_ToOwned_slice_T_alloc_borrow_Cow_slice_T_for_alloc_vec_Vec_T_alloc_alloc_Global.
   
   Module Impl_core_convert_From_where_core_alloc_Allocator_A_alloc_boxed_Box_slice_T_A_for_alloc_vec_Vec_T_A.
-    Definition Self (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ].
+    Definition Self (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ].
     
     (*
         fn from(s: Box<[T], A>) -> Self {
             s.into_vec()
         }
     *)
-    Definition from (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition from (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ s ] =>
+      match ε, τ, α with
+      | [], [], [ s ] =>
         ltac:(M.monadic
           (let s := M.alloc (| s |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.apply (Ty.path "slice") [ T ], "into_vec", [ A ] |),
+            M.get_associated_function (| Ty.apply (Ty.path "slice") [] [ T ], "into_vec", [ A ] |),
             [ M.read (| s |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -7765,34 +8010,37 @@ Module vec.
         "core::convert::From"
         (Self T A)
         (* Trait polymorphic types *)
-        [ (* T *) Ty.apply (Ty.path "alloc::boxed::Box") [ Ty.apply (Ty.path "slice") [ T ]; A ] ]
+        [
+          (* T *)
+          Ty.apply (Ty.path "alloc::boxed::Box") [] [ Ty.apply (Ty.path "slice") [] [ T ]; A ]
+        ]
         (* Instance *) [ ("from", InstanceField.Method (from T A)) ].
   End Impl_core_convert_From_where_core_alloc_Allocator_A_alloc_boxed_Box_slice_T_A_for_alloc_vec_Vec_T_A.
   
   Module Impl_core_convert_From_where_core_alloc_Allocator_A_alloc_vec_Vec_T_A_for_alloc_boxed_Box_slice_T_A.
     Definition Self (T A : Ty.t) : Ty.t :=
-      Ty.apply (Ty.path "alloc::boxed::Box") [ Ty.apply (Ty.path "slice") [ T ]; A ].
+      Ty.apply (Ty.path "alloc::boxed::Box") [] [ Ty.apply (Ty.path "slice") [] [ T ]; A ].
     
     (*
         fn from(v: Vec<T, A>) -> Self {
             v.into_boxed_slice()
         }
     *)
-    Definition from (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition from (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ v ] =>
+      match ε, τ, α with
+      | [], [], [ v ] =>
         ltac:(M.monadic
           (let v := M.alloc (| v |) in
           M.call_closure (|
             M.get_associated_function (|
-              Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+              Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
               "into_boxed_slice",
               []
             |),
             [ M.read (| v |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -7800,29 +8048,32 @@ Module vec.
       M.IsTraitInstance
         "core::convert::From"
         (Self T A)
-        (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ] ]
+        (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ] ]
         (* Instance *) [ ("from", InstanceField.Method (from T A)) ].
   End Impl_core_convert_From_where_core_alloc_Allocator_A_alloc_vec_Vec_T_A_for_alloc_boxed_Box_slice_T_A.
   
   Module Impl_core_convert_From_ref__str_for_alloc_vec_Vec_u8_alloc_alloc_Global.
     Definition Self : Ty.t :=
-      Ty.apply (Ty.path "alloc::vec::Vec") [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ].
+      Ty.apply (Ty.path "alloc::vec::Vec") [] [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ].
     
     (*
         fn from(s: &str) -> Vec<u8> {
             From::from(s.as_bytes())
         }
     *)
-    Definition from (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ s ] =>
+    Definition from (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ s ] =>
         ltac:(M.monadic
           (let s := M.alloc (| s |) in
           M.call_closure (|
             M.get_trait_method (|
               "core::convert::From",
-              Ty.apply (Ty.path "alloc::vec::Vec") [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
-              [ Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "slice") [ Ty.path "u8" ] ] ],
+              Ty.apply
+                (Ty.path "alloc::vec::Vec")
+                []
+                [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
+              [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ] ],
               "from",
               []
             |),
@@ -7833,22 +8084,23 @@ Module vec.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
       M.IsTraitInstance
         "core::convert::From"
         Self
-        (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+        (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
         (* Instance *) [ ("from", InstanceField.Method from) ].
   End Impl_core_convert_From_ref__str_for_alloc_vec_Vec_u8_alloc_alloc_Global.
   
-  Module Impl_core_convert_TryFrom_where_core_alloc_Allocator_A_alloc_vec_Vec_T_A_for_array_T.
-    Definition Self (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "array") [ T ].
+  Module Impl_core_convert_TryFrom_where_core_alloc_Allocator_A_alloc_vec_Vec_T_A_for_array_N_T.
+    Definition Self (N : Value.t) (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "array") [ N ] [ T ].
     
     (*     type Error = Vec<T, A>; *)
-    Definition _Error (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ].
+    Definition _Error (N : Value.t) (T A : Ty.t) : Ty.t :=
+      Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ].
     
     (*
         fn try_from(mut vec: Vec<T, A>) -> Result<[T; N], Vec<T, A>> {
@@ -7868,10 +8120,16 @@ Module vec.
             Ok(array)
         }
     *)
-    Definition try_from (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ vec ] =>
+    Definition try_from
+        (N : Value.t)
+        (T A : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      let Self : Ty.t := Self N T A in
+      match ε, τ, α with
+      | [], [], [ vec ] =>
         ltac:(M.monadic
           (let vec := M.alloc (| vec |) in
           M.catch_return (|
@@ -7889,7 +8147,7 @@ Module vec.
                                 BinOp.Pure.ne
                                   (M.call_closure (|
                                     M.get_associated_function (|
-                                      Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                                      Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                                       "len",
                                       []
                                     |),
@@ -7915,7 +8173,7 @@ Module vec.
                   M.alloc (|
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                        Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                         "set_len",
                         []
                       |),
@@ -7925,12 +8183,15 @@ Module vec.
                 let~ array :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_function (| "core::ptr::read", [ Ty.apply (Ty.path "array") [ T ] ] |),
+                      M.get_function (|
+                        "core::ptr::read",
+                        [ Ty.apply (Ty.path "array") [ N ] [ T ] ]
+                      |),
                       [
                         M.rust_cast
                           (M.call_closure (|
                             M.get_associated_function (|
-                              Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                              Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                               "as_ptr",
                               []
                             |),
@@ -7942,19 +8203,19 @@ Module vec.
                 M.alloc (| Value.StructTuple "core::result::Result::Ok" [ M.read (| array |) ] |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
-      forall (T A : Ty.t),
+      forall (N : Value.t) (T A : Ty.t),
       M.IsTraitInstance
         "core::convert::TryFrom"
-        (Self T A)
-        (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ] ]
+        (Self N T A)
+        (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ] ]
         (* Instance *)
         [
-          ("Error", InstanceField.Ty (_Error T A));
-          ("try_from", InstanceField.Method (try_from T A))
+          ("Error", InstanceField.Ty (_Error N T A));
+          ("try_from", InstanceField.Method (try_from N T A))
         ].
-  End Impl_core_convert_TryFrom_where_core_alloc_Allocator_A_alloc_vec_Vec_T_A_for_array_T.
+  End Impl_core_convert_TryFrom_where_core_alloc_Allocator_A_alloc_vec_Vec_T_A_for_array_N_T.
 End vec.

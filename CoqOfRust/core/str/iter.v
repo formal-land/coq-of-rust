@@ -6,17 +6,18 @@ Module str.
     (* StructRecord
       {
         name := "Chars";
+        const_params := [];
         ty_params := [];
-        fields := [ ("iter", Ty.apply (Ty.path "core::slice::iter::Iter") [ Ty.path "u8" ]) ];
+        fields := [ ("iter", Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ]) ];
       } *)
     
     Module Impl_core_clone_Clone_for_core_str_iter_Chars.
       Definition Self : Ty.t := Ty.path "core::str::iter::Chars".
       
       (* Clone *)
-      Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructRecord
@@ -26,7 +27,7 @@ Module str.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::clone::Clone",
-                      Ty.apply (Ty.path "core::slice::iter::Iter") [ Ty.path "u8" ],
+                      Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ],
                       [],
                       "clone",
                       []
@@ -40,7 +41,7 @@ Module str.
                     ]
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -64,14 +65,14 @@ Module str.
               unsafe { next_code_point(&mut self.iter).map(|ch| char::from_u32_unchecked(ch)) }
           }
       *)
-      Definition next (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition next (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "core::option::Option") [ Ty.path "u32" ],
+                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u32" ],
                 "map",
                 [ Ty.path "char"; Ty.function [ Ty.tuple [ Ty.path "u32" ] ] (Ty.path "char") ]
               |),
@@ -79,7 +80,7 @@ Module str.
                 M.call_closure (|
                   M.get_function (|
                     "core::str::validations::next_code_point",
-                    [ Ty.apply (Ty.path "core::slice::iter::Iter") [ Ty.path "u8" ] ]
+                    [ Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ] ]
                   |),
                   [
                     M.SubPointer.get_struct_record_field (|
@@ -114,7 +115,7 @@ Module str.
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -122,9 +123,9 @@ Module str.
               super::count::count_chars(self.as_str())
           }
       *)
-      Definition count (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition count (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -136,7 +137,7 @@ Module str.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -188,9 +189,9 @@ Module str.
               NonZeroUsize::new(remainder).map_or(Ok(()), Err)
           }
       *)
-      Definition advance_by (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; remainder ] =>
+      Definition advance_by (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; remainder ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let remainder := M.alloc (| remainder |) in
@@ -216,14 +217,17 @@ Module str.
                           M.alloc (|
                             M.call_closure (|
                               M.get_associated_function (|
-                                Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                 "array_chunks",
                                 []
                               |),
                               [
                                 M.call_closure (|
                                   M.get_associated_function (|
-                                    Ty.apply (Ty.path "core::slice::iter::Iter") [ Ty.path "u8" ],
+                                    Ty.apply
+                                      (Ty.path "core::slice::iter::Iter")
+                                      []
+                                      [ Ty.path "u8" ],
                                     "as_slice",
                                     []
                                   |),
@@ -270,6 +274,7 @@ Module str.
                                               "core::iter::traits::iterator::Iterator",
                                               Ty.apply
                                                 (Ty.path "core::slice::iter::ArrayChunks")
+                                                [ Value.Integer 32 ]
                                                 [ Ty.path "u8" ],
                                               [],
                                               "next",
@@ -299,7 +304,9 @@ Module str.
                                             |))
                                         |) in
                                       let~ start_bytes :=
-                                        M.alloc (| repeat (Value.Bool false) 32 |) in
+                                        M.alloc (|
+                                          repeat (| Value.Bool false, Value.Integer 32 |)
+                                        |) in
                                       let~ _ :=
                                         M.use
                                           (M.match_operator (|
@@ -309,6 +316,7 @@ Module str.
                                                   "core::iter::traits::collect::IntoIterator",
                                                   Ty.apply
                                                     (Ty.path "core::ops::range::Range")
+                                                    []
                                                     [ Ty.path "usize" ],
                                                   [],
                                                   "into_iter",
@@ -344,6 +352,7 @@ Module str.
                                                                 Ty.apply
                                                                   (Ty.path
                                                                     "core::ops::range::Range")
+                                                                  []
                                                                   [ Ty.path "usize" ],
                                                                 [],
                                                                 "next",
@@ -416,9 +425,11 @@ Module str.
                                                   "core::iter::traits::iterator::Iterator",
                                                   Ty.apply
                                                     (Ty.path "core::iter::adapters::map::Map")
+                                                    []
                                                     [
                                                       Ty.apply
                                                         (Ty.path "core::array::iter::IntoIter")
+                                                        [ Value.Integer 32 ]
                                                         [ Ty.path "bool" ];
                                                       Ty.function
                                                         [ Ty.tuple [ Ty.path "bool" ] ]
@@ -434,6 +445,7 @@ Module str.
                                                       "core::iter::traits::iterator::Iterator",
                                                       Ty.apply
                                                         (Ty.path "core::array::iter::IntoIter")
+                                                        [ Value.Integer 32 ]
                                                         [ Ty.path "bool" ],
                                                       [],
                                                       "map",
@@ -450,6 +462,7 @@ Module str.
                                                           "core::iter::traits::collect::IntoIterator",
                                                           Ty.apply
                                                             (Ty.path "array")
+                                                            [ Value.Integer 32 ]
                                                             [ Ty.path "bool" ],
                                                           [],
                                                           "into_iter",
@@ -501,6 +514,7 @@ Module str.
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "core::result::Result")
+                                  []
                                   [ Ty.tuple []; Ty.path "core::num::nonzero::NonZeroUsize" ],
                                 "unwrap_unchecked",
                                 []
@@ -509,7 +523,10 @@ Module str.
                                 M.call_closure (|
                                   M.get_trait_method (|
                                     "core::iter::traits::iterator::Iterator",
-                                    Ty.apply (Ty.path "core::slice::iter::Iter") [ Ty.path "u8" ],
+                                    Ty.apply
+                                      (Ty.path "core::slice::iter::Iter")
+                                      []
+                                      [ Ty.path "u8" ],
                                     [],
                                     "advance_by",
                                     []
@@ -542,6 +559,7 @@ Module str.
                                                 "core::iter::traits::exact_size::ExactSizeIterator",
                                                 Ty.apply
                                                   (Ty.path "core::slice::iter::Iter")
+                                                  []
                                                   [ Ty.path "u8" ],
                                                 [],
                                                 "len",
@@ -569,6 +587,7 @@ Module str.
                                             M.get_associated_function (|
                                               Ty.apply
                                                 (Ty.path "core::slice::iter::Iter")
+                                                []
                                                 [ Ty.path "u8" ],
                                               "as_slice",
                                               []
@@ -619,6 +638,7 @@ Module str.
                                           M.get_associated_function (|
                                             Ty.apply
                                               (Ty.path "core::result::Result")
+                                              []
                                               [
                                                 Ty.tuple [];
                                                 Ty.path "core::num::nonzero::NonZeroUsize"
@@ -632,6 +652,7 @@ Module str.
                                                 "core::iter::traits::iterator::Iterator",
                                                 Ty.apply
                                                   (Ty.path "core::slice::iter::Iter")
+                                                  []
                                                   [ Ty.path "u8" ],
                                                 [],
                                                 "advance_by",
@@ -689,6 +710,7 @@ Module str.
                                             "core::iter::traits::exact_size::ExactSizeIterator",
                                             Ty.apply
                                               (Ty.path "core::slice::iter::Iter")
+                                              []
                                               [ Ty.path "u8" ],
                                             [],
                                             "len",
@@ -718,7 +740,10 @@ Module str.
                                 M.SubPointer.get_array_field (|
                                   M.call_closure (|
                                     M.get_associated_function (|
-                                      Ty.apply (Ty.path "core::slice::iter::Iter") [ Ty.path "u8" ],
+                                      Ty.apply
+                                        (Ty.path "core::slice::iter::Iter")
+                                        []
+                                        [ Ty.path "u8" ],
                                       "as_slice",
                                       []
                                     |),
@@ -749,6 +774,7 @@ Module str.
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "core::result::Result")
+                                      []
                                       [ Ty.tuple []; Ty.path "core::num::nonzero::NonZeroUsize" ],
                                     "unwrap_unchecked",
                                     []
@@ -759,6 +785,7 @@ Module str.
                                         "core::iter::traits::iterator::Iterator",
                                         Ty.apply
                                           (Ty.path "core::slice::iter::Iter")
+                                          []
                                           [ Ty.path "u8" ],
                                         [],
                                         "advance_by",
@@ -796,16 +823,19 @@ Module str.
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "core::option::Option")
+                      []
                       [ Ty.path "core::num::nonzero::NonZeroUsize" ],
                     "map_or",
                     [
                       Ty.apply
                         (Ty.path "core::result::Result")
+                        []
                         [ Ty.tuple []; Ty.path "core::num::nonzero::NonZeroUsize" ];
                       Ty.function
                         [ Ty.path "core::num::nonzero::NonZeroUsize" ]
                         (Ty.apply
                           (Ty.path "core::result::Result")
+                          []
                           [ Ty.tuple []; Ty.path "core::num::nonzero::NonZeroUsize" ])
                     ]
                   |),
@@ -824,7 +854,7 @@ Module str.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -836,9 +866,9 @@ Module str.
               ((len + 3) / 4, Some(len))
           }
       *)
-      Definition size_hint (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition size_hint (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -847,7 +877,7 @@ Module str.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::iter::traits::exact_size::ExactSizeIterator",
-                      Ty.apply (Ty.path "core::slice::iter::Iter") [ Ty.path "u8" ],
+                      Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ],
                       [],
                       "len",
                       []
@@ -872,7 +902,7 @@ Module str.
                   ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -881,9 +911,9 @@ Module str.
               self.next_back()
           }
       *)
-      Definition last (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition last (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -896,7 +926,7 @@ Module str.
               |),
               [ self ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -926,9 +956,9 @@ Module str.
               Ok(())
           }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -943,6 +973,7 @@ Module str.
                             "core::ops::try_trait::Try",
                             Ty.apply
                               (Ty.path "core::result::Result")
+                              []
                               [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                             [],
                             "branch",
@@ -995,10 +1026,12 @@ Module str.
                                         "core::ops::try_trait::FromResidual",
                                         Ty.apply
                                           (Ty.path "core::result::Result")
+                                          []
                                           [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                         [
                                           Ty.apply
                                             (Ty.path "core::result::Result")
+                                            []
                                             [
                                               Ty.path "core::convert::Infallible";
                                               Ty.path "core::fmt::Error"
@@ -1033,6 +1066,7 @@ Module str.
                             "core::ops::try_trait::Try",
                             Ty.apply
                               (Ty.path "core::result::Result")
+                              []
                               [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                             [],
                             "branch",
@@ -1099,10 +1133,12 @@ Module str.
                                         "core::ops::try_trait::FromResidual",
                                         Ty.apply
                                           (Ty.path "core::result::Result")
+                                          []
                                           [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                         [
                                           Ty.apply
                                             (Ty.path "core::result::Result")
+                                            []
                                             [
                                               Ty.path "core::convert::Infallible";
                                               Ty.path "core::fmt::Error"
@@ -1137,6 +1173,7 @@ Module str.
                             "core::ops::try_trait::Try",
                             Ty.apply
                               (Ty.path "core::result::Result")
+                              []
                               [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                             [],
                             "branch",
@@ -1187,10 +1224,12 @@ Module str.
                                         "core::ops::try_trait::FromResidual",
                                         Ty.apply
                                           (Ty.path "core::result::Result")
+                                          []
                                           [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                         [
                                           Ty.apply
                                             (Ty.path "core::result::Result")
+                                            []
                                             [
                                               Ty.path "core::convert::Infallible";
                                               Ty.path "core::fmt::Error"
@@ -1220,7 +1259,7 @@ Module str.
                   M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1241,14 +1280,14 @@ Module str.
               unsafe { next_code_point_reverse(&mut self.iter).map(|ch| char::from_u32_unchecked(ch)) }
           }
       *)
-      Definition next_back (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition next_back (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "core::option::Option") [ Ty.path "u32" ],
+                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u32" ],
                 "map",
                 [ Ty.path "char"; Ty.function [ Ty.tuple [ Ty.path "u32" ] ] (Ty.path "char") ]
               |),
@@ -1256,7 +1295,7 @@ Module str.
                 M.call_closure (|
                   M.get_function (|
                     "core::str::validations::next_code_point_reverse",
-                    [ Ty.apply (Ty.path "core::slice::iter::Iter") [ Ty.path "u8" ] ]
+                    [ Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ] ]
                   |),
                   [
                     M.SubPointer.get_struct_record_field (|
@@ -1291,7 +1330,7 @@ Module str.
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1322,9 +1361,9 @@ Module str.
               unsafe { from_utf8_unchecked(self.iter.as_slice()) }
           }
       *)
-      Definition as_str (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition as_str (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -1332,7 +1371,7 @@ Module str.
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::slice::iter::Iter") [ Ty.path "u8" ],
+                    Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ],
                     "as_slice",
                     []
                   |),
@@ -1346,7 +1385,7 @@ Module str.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_as_str : M.IsAssociatedFunction Self "as_str" as_str.
@@ -1355,6 +1394,7 @@ Module str.
     (* StructRecord
       {
         name := "CharIndices";
+        const_params := [];
         ty_params := [];
         fields := [ ("front_offset", Ty.path "usize"); ("iter", Ty.path "core::str::iter::Chars") ];
       } *)
@@ -1363,9 +1403,9 @@ Module str.
       Definition Self : Ty.t := Ty.path "core::str::iter::CharIndices".
       
       (* Clone *)
-      Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructRecord
@@ -1400,7 +1440,7 @@ Module str.
                     ]
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1415,9 +1455,9 @@ Module str.
       Definition Self : Ty.t := Ty.path "core::str::iter::CharIndices".
       
       (* Debug *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -1450,7 +1490,7 @@ Module str.
                   |))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1481,9 +1521,9 @@ Module str.
               }
           }
       *)
-      Definition next (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition next (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -1492,7 +1532,7 @@ Module str.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::iter::traits::exact_size::ExactSizeIterator",
-                      Ty.apply (Ty.path "core::slice::iter::Iter") [ Ty.path "u8" ],
+                      Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ],
                       [],
                       "len",
                       []
@@ -1556,7 +1596,7 @@ Module str.
                           M.call_closure (|
                             M.get_trait_method (|
                               "core::iter::traits::exact_size::ExactSizeIterator",
-                              Ty.apply (Ty.path "core::slice::iter::Iter") [ Ty.path "u8" ],
+                              Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ],
                               [],
                               "len",
                               []
@@ -1596,7 +1636,7 @@ Module str.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -1604,9 +1644,9 @@ Module str.
               self.iter.count()
           }
       *)
-      Definition count (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition count (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -1627,7 +1667,7 @@ Module str.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -1635,9 +1675,9 @@ Module str.
               self.iter.size_hint()
           }
       *)
-      Definition size_hint (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition size_hint (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -1656,7 +1696,7 @@ Module str.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -1665,9 +1705,9 @@ Module str.
               self.next_back()
           }
       *)
-      Definition last (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition last (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -1680,7 +1720,7 @@ Module str.
               |),
               [ self ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1709,14 +1749,14 @@ Module str.
               })
           }
       *)
-      Definition next_back (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition next_back (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "core::option::Option") [ Ty.path "char" ],
+                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "char" ],
                 "map",
                 [
                   Ty.tuple [ Ty.path "usize"; Ty.path "char" ];
@@ -1770,6 +1810,7 @@ Module str.
                                             "core::iter::traits::exact_size::ExactSizeIterator",
                                             Ty.apply
                                               (Ty.path "core::slice::iter::Iter")
+                                              []
                                               [ Ty.path "u8" ],
                                             [],
                                             "len",
@@ -1796,7 +1837,7 @@ Module str.
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1826,9 +1867,9 @@ Module str.
               self.iter.as_str()
           }
       *)
-      Definition as_str (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition as_str (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -1841,7 +1882,7 @@ Module str.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_as_str : M.IsAssociatedFunction Self "as_str" as_str.
@@ -1851,9 +1892,9 @@ Module str.
               self.front_offset
           }
       *)
-      Definition offset (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition offset (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -1863,7 +1904,7 @@ Module str.
                 "front_offset"
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_offset : M.IsAssociatedFunction Self "offset" offset.
@@ -1872,12 +1913,14 @@ Module str.
     (* StructTuple
       {
         name := "Bytes";
+        const_params := [];
         ty_params := [];
         fields :=
           [
             Ty.apply
               (Ty.path "core::iter::adapters::copied::Copied")
-              [ Ty.apply (Ty.path "core::slice::iter::Iter") [ Ty.path "u8" ] ]
+              []
+              [ Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ] ]
           ];
       } *)
     
@@ -1885,9 +1928,9 @@ Module str.
       Definition Self : Ty.t := Ty.path "core::str::iter::Bytes".
       
       (* Clone *)
-      Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -1898,7 +1941,8 @@ Module str.
                     "core::clone::Clone",
                     Ty.apply
                       (Ty.path "core::iter::adapters::copied::Copied")
-                      [ Ty.apply (Ty.path "core::slice::iter::Iter") [ Ty.path "u8" ] ],
+                      []
+                      [ Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ] ],
                     [],
                     "clone",
                     []
@@ -1912,7 +1956,7 @@ Module str.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1927,9 +1971,9 @@ Module str.
       Definition Self : Ty.t := Ty.path "core::str::iter::Bytes".
       
       (* Debug *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -1953,7 +1997,7 @@ Module str.
                   |))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1975,9 +2019,9 @@ Module str.
               self.0.next()
           }
       *)
-      Definition next (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition next (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -1985,7 +2029,8 @@ Module str.
                 "core::iter::traits::iterator::Iterator",
                 Ty.apply
                   (Ty.path "core::iter::adapters::copied::Copied")
-                  [ Ty.apply (Ty.path "core::slice::iter::Iter") [ Ty.path "u8" ] ],
+                  []
+                  [ Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ] ],
                 [],
                 "next",
                 []
@@ -1998,7 +2043,7 @@ Module str.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -2006,9 +2051,9 @@ Module str.
               self.0.size_hint()
           }
       *)
-      Definition size_hint (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition size_hint (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -2016,7 +2061,8 @@ Module str.
                 "core::iter::traits::iterator::Iterator",
                 Ty.apply
                   (Ty.path "core::iter::adapters::copied::Copied")
-                  [ Ty.apply (Ty.path "core::slice::iter::Iter") [ Ty.path "u8" ] ],
+                  []
+                  [ Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ] ],
                 [],
                 "size_hint",
                 []
@@ -2029,7 +2075,7 @@ Module str.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -2037,9 +2083,9 @@ Module str.
               self.0.count()
           }
       *)
-      Definition count (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition count (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -2047,7 +2093,8 @@ Module str.
                 "core::iter::traits::iterator::Iterator",
                 Ty.apply
                   (Ty.path "core::iter::adapters::copied::Copied")
-                  [ Ty.apply (Ty.path "core::slice::iter::Iter") [ Ty.path "u8" ] ],
+                  []
+                  [ Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ] ],
                 [],
                 "count",
                 []
@@ -2058,7 +2105,7 @@ Module str.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -2066,9 +2113,9 @@ Module str.
               self.0.last()
           }
       *)
-      Definition last (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition last (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -2076,7 +2123,8 @@ Module str.
                 "core::iter::traits::iterator::Iterator",
                 Ty.apply
                   (Ty.path "core::iter::adapters::copied::Copied")
-                  [ Ty.apply (Ty.path "core::slice::iter::Iter") [ Ty.path "u8" ] ],
+                  []
+                  [ Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ] ],
                 [],
                 "last",
                 []
@@ -2087,7 +2135,7 @@ Module str.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -2095,9 +2143,9 @@ Module str.
               self.0.nth(n)
           }
       *)
-      Definition nth (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; n ] =>
+      Definition nth (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; n ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
@@ -2106,7 +2154,8 @@ Module str.
                 "core::iter::traits::iterator::Iterator",
                 Ty.apply
                   (Ty.path "core::iter::adapters::copied::Copied")
-                  [ Ty.apply (Ty.path "core::slice::iter::Iter") [ Ty.path "u8" ] ],
+                  []
+                  [ Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ] ],
                 [],
                 "nth",
                 []
@@ -2120,7 +2169,7 @@ Module str.
                 M.read (| n |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -2131,9 +2180,9 @@ Module str.
               self.0.all(f)
           }
       *)
-      Definition all (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ F ], [ self; f ] =>
+      Definition all (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ F ], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -2142,7 +2191,8 @@ Module str.
                 "core::iter::traits::iterator::Iterator",
                 Ty.apply
                   (Ty.path "core::iter::adapters::copied::Copied")
-                  [ Ty.apply (Ty.path "core::slice::iter::Iter") [ Ty.path "u8" ] ],
+                  []
+                  [ Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ] ],
                 [],
                 "all",
                 [ F ]
@@ -2156,7 +2206,7 @@ Module str.
                 M.read (| f |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -2167,9 +2217,9 @@ Module str.
               self.0.any(f)
           }
       *)
-      Definition any (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ F ], [ self; f ] =>
+      Definition any (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ F ], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -2178,7 +2228,8 @@ Module str.
                 "core::iter::traits::iterator::Iterator",
                 Ty.apply
                   (Ty.path "core::iter::adapters::copied::Copied")
-                  [ Ty.apply (Ty.path "core::slice::iter::Iter") [ Ty.path "u8" ] ],
+                  []
+                  [ Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ] ],
                 [],
                 "any",
                 [ F ]
@@ -2192,7 +2243,7 @@ Module str.
                 M.read (| f |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -2203,9 +2254,9 @@ Module str.
               self.0.find(predicate)
           }
       *)
-      Definition find (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ P ], [ self; predicate ] =>
+      Definition find (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ P ], [ self; predicate ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let predicate := M.alloc (| predicate |) in
@@ -2214,7 +2265,8 @@ Module str.
                 "core::iter::traits::iterator::Iterator",
                 Ty.apply
                   (Ty.path "core::iter::adapters::copied::Copied")
-                  [ Ty.apply (Ty.path "core::slice::iter::Iter") [ Ty.path "u8" ] ],
+                  []
+                  [ Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ] ],
                 [],
                 "find",
                 [ P ]
@@ -2228,7 +2280,7 @@ Module str.
                 M.read (| predicate |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -2239,9 +2291,9 @@ Module str.
               self.0.position(predicate)
           }
       *)
-      Definition position (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ P ], [ self; predicate ] =>
+      Definition position (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ P ], [ self; predicate ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let predicate := M.alloc (| predicate |) in
@@ -2250,7 +2302,8 @@ Module str.
                 "core::iter::traits::iterator::Iterator",
                 Ty.apply
                   (Ty.path "core::iter::adapters::copied::Copied")
-                  [ Ty.apply (Ty.path "core::slice::iter::Iter") [ Ty.path "u8" ] ],
+                  []
+                  [ Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ] ],
                 [],
                 "position",
                 [ P ]
@@ -2264,7 +2317,7 @@ Module str.
                 M.read (| predicate |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -2275,9 +2328,9 @@ Module str.
               self.0.rposition(predicate)
           }
       *)
-      Definition rposition (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ P ], [ self; predicate ] =>
+      Definition rposition (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ P ], [ self; predicate ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let predicate := M.alloc (| predicate |) in
@@ -2286,7 +2339,8 @@ Module str.
                 "core::iter::traits::iterator::Iterator",
                 Ty.apply
                   (Ty.path "core::iter::adapters::copied::Copied")
-                  [ Ty.apply (Ty.path "core::slice::iter::Iter") [ Ty.path "u8" ] ],
+                  []
+                  [ Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ] ],
                 [],
                 "rposition",
                 [ P ]
@@ -2300,7 +2354,7 @@ Module str.
                 M.read (| predicate |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -2310,9 +2364,13 @@ Module str.
               unsafe { self.0.__iterator_get_unchecked(idx) }
           }
       *)
-      Definition __iterator_get_unchecked (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; idx ] =>
+      Definition __iterator_get_unchecked
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        match ε, τ, α with
+        | [], [], [ self; idx ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let idx := M.alloc (| idx |) in
@@ -2321,7 +2379,8 @@ Module str.
                 "core::iter::traits::iterator::Iterator",
                 Ty.apply
                   (Ty.path "core::iter::adapters::copied::Copied")
-                  [ Ty.apply (Ty.path "core::slice::iter::Iter") [ Ty.path "u8" ] ],
+                  []
+                  [ Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ] ],
                 [],
                 "__iterator_get_unchecked",
                 []
@@ -2335,7 +2394,7 @@ Module str.
                 M.read (| idx |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -2368,9 +2427,9 @@ Module str.
               self.0.next_back()
           }
       *)
-      Definition next_back (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition next_back (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -2378,7 +2437,8 @@ Module str.
                 "core::iter::traits::double_ended::DoubleEndedIterator",
                 Ty.apply
                   (Ty.path "core::iter::adapters::copied::Copied")
-                  [ Ty.apply (Ty.path "core::slice::iter::Iter") [ Ty.path "u8" ] ],
+                  []
+                  [ Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ] ],
                 [],
                 "next_back",
                 []
@@ -2391,7 +2451,7 @@ Module str.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -2399,9 +2459,9 @@ Module str.
               self.0.nth_back(n)
           }
       *)
-      Definition nth_back (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; n ] =>
+      Definition nth_back (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; n ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
@@ -2410,7 +2470,8 @@ Module str.
                 "core::iter::traits::double_ended::DoubleEndedIterator",
                 Ty.apply
                   (Ty.path "core::iter::adapters::copied::Copied")
-                  [ Ty.apply (Ty.path "core::slice::iter::Iter") [ Ty.path "u8" ] ],
+                  []
+                  [ Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ] ],
                 [],
                 "nth_back",
                 []
@@ -2424,7 +2485,7 @@ Module str.
                 M.read (| n |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -2435,9 +2496,9 @@ Module str.
               self.0.rfind(predicate)
           }
       *)
-      Definition rfind (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ P ], [ self; predicate ] =>
+      Definition rfind (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ P ], [ self; predicate ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let predicate := M.alloc (| predicate |) in
@@ -2446,7 +2507,8 @@ Module str.
                 "core::iter::traits::double_ended::DoubleEndedIterator",
                 Ty.apply
                   (Ty.path "core::iter::adapters::copied::Copied")
-                  [ Ty.apply (Ty.path "core::slice::iter::Iter") [ Ty.path "u8" ] ],
+                  []
+                  [ Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ] ],
                 [],
                 "rfind",
                 [ P ]
@@ -2460,7 +2522,7 @@ Module str.
                 M.read (| predicate |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -2484,9 +2546,9 @@ Module str.
               self.0.len()
           }
       *)
-      Definition len (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition len (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -2494,7 +2556,8 @@ Module str.
                 "core::iter::traits::exact_size::ExactSizeIterator",
                 Ty.apply
                   (Ty.path "core::iter::adapters::copied::Copied")
-                  [ Ty.apply (Ty.path "core::slice::iter::Iter") [ Ty.path "u8" ] ],
+                  []
+                  [ Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ] ],
                 [],
                 "len",
                 []
@@ -2507,7 +2570,7 @@ Module str.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -2515,9 +2578,9 @@ Module str.
               self.0.is_empty()
           }
       *)
-      Definition is_empty (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition is_empty (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -2525,7 +2588,8 @@ Module str.
                 "core::iter::traits::exact_size::ExactSizeIterator",
                 Ty.apply
                   (Ty.path "core::iter::adapters::copied::Copied")
-                  [ Ty.apply (Ty.path "core::slice::iter::Iter") [ Ty.path "u8" ] ],
+                  []
+                  [ Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ] ],
                 [],
                 "is_empty",
                 []
@@ -2538,7 +2602,7 @@ Module str.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -2602,7 +2666,7 @@ Module str.
     
     Module Impl_core_clone_Clone_where_core_str_pattern_Pattern_P_for_core_str_iter_SplitInternal_P.
       Definition Self (P : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::str::iter::SplitInternal") [ P ].
+        Ty.apply (Ty.path "core::str::iter::SplitInternal") [] [ P ].
       
       (*
                   fn clone(&self) -> Self {
@@ -2610,10 +2674,10 @@ Module str.
                       $e
                   }
       *)
-      Definition clone (P : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition clone (P : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self P in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -2642,7 +2706,7 @@ Module str.
                   ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -2657,6 +2721,7 @@ Module str.
     (* StructRecord
       {
         name := "SplitInternal";
+        const_params := [];
         ty_params := [ "P" ];
         fields :=
           [
@@ -2670,7 +2735,7 @@ Module str.
     
     Module Impl_core_fmt_Debug_where_core_str_pattern_Pattern_P_for_core_str_iter_SplitInternal_P.
       Definition Self (P : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::str::iter::SplitInternal") [ P ].
+        Ty.apply (Ty.path "core::str::iter::SplitInternal") [] [ P ].
       
       (*
           fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
@@ -2683,10 +2748,10 @@ Module str.
                   .finish()
           }
       *)
-      Definition fmt (P : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (P : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self P in
-        match τ, α with
-        | [], [ self; f ] =>
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -2795,7 +2860,7 @@ Module str.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -2809,7 +2874,7 @@ Module str.
     
     Module Impl_core_str_iter_SplitInternal_P.
       Definition Self (P : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::str::iter::SplitInternal") [ P ].
+        Ty.apply (Ty.path "core::str::iter::SplitInternal") [] [ P ].
       
       (*
           fn get_end(&mut self) -> Option<&'a str> {
@@ -2826,10 +2891,10 @@ Module str.
               None
           }
       *)
-      Definition get_end (P : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition get_end (P : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self P in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.catch_return (|
@@ -2918,6 +2983,7 @@ Module str.
                                                   [
                                                     Ty.apply
                                                       (Ty.path "core::ops::range::Range")
+                                                      []
                                                       [ Ty.path "usize" ]
                                                   ]
                                                 |),
@@ -2978,7 +3044,7 @@ Module str.
                   M.alloc (| Value.StructTuple "core::option::Option::None" [] |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_get_end :
@@ -3003,10 +3069,10 @@ Module str.
               }
           }
       *)
-      Definition next (P : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition next (P : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self P in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.catch_return (|
@@ -3094,7 +3160,11 @@ Module str.
                                 M.get_associated_function (|
                                   Ty.path "str",
                                   "get_unchecked",
-                                  [ Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "usize" ]
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::ops::range::Range")
+                                      []
+                                      [ Ty.path "usize" ]
                                   ]
                                 |),
                                 [
@@ -3133,7 +3203,7 @@ Module str.
                           M.alloc (|
                             M.call_closure (|
                               M.get_associated_function (|
-                                Ty.apply (Ty.path "core::str::iter::SplitInternal") [ P ],
+                                Ty.apply (Ty.path "core::str::iter::SplitInternal") [] [ P ],
                                 "get_end",
                                 []
                               |),
@@ -3144,7 +3214,7 @@ Module str.
                   |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_next :
@@ -3171,10 +3241,15 @@ Module str.
               }
           }
       *)
-      Definition next_inclusive (P : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition next_inclusive
+          (P : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self P in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.catch_return (|
@@ -3261,7 +3336,11 @@ Module str.
                                 M.get_associated_function (|
                                   Ty.path "str",
                                   "get_unchecked",
-                                  [ Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "usize" ]
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::ops::range::Range")
+                                      []
+                                      [ Ty.path "usize" ]
                                   ]
                                 |),
                                 [
@@ -3300,7 +3379,7 @@ Module str.
                           M.alloc (|
                             M.call_closure (|
                               M.get_associated_function (|
-                                Ty.apply (Ty.path "core::str::iter::SplitInternal") [ P ],
+                                Ty.apply (Ty.path "core::str::iter::SplitInternal") [] [ P ],
                                 "get_end",
                                 []
                               |),
@@ -3311,7 +3390,7 @@ Module str.
                   |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_next_inclusive :
@@ -3355,10 +3434,10 @@ Module str.
               }
           }
       *)
-      Definition next_back (P : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition next_back (P : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self P in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.catch_return (|
@@ -3422,7 +3501,7 @@ Module str.
                               M.alloc (|
                                 M.call_closure (|
                                   M.get_associated_function (|
-                                    Ty.apply (Ty.path "core::str::iter::SplitInternal") [ P ],
+                                    Ty.apply (Ty.path "core::str::iter::SplitInternal") [] [ P ],
                                     "next_back",
                                     []
                                   |),
@@ -3562,7 +3641,11 @@ Module str.
                                 M.get_associated_function (|
                                   Ty.path "str",
                                   "get_unchecked",
-                                  [ Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "usize" ]
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::ops::range::Range")
+                                      []
+                                      [ Ty.path "usize" ]
                                   ]
                                 |),
                                 [
@@ -3618,6 +3701,7 @@ Module str.
                                     [
                                       Ty.apply
                                         (Ty.path "core::ops::range::Range")
+                                        []
                                         [ Ty.path "usize" ]
                                     ]
                                   |),
@@ -3651,7 +3735,7 @@ Module str.
                   |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_next_back :
@@ -3701,10 +3785,15 @@ Module str.
               }
           }
       *)
-      Definition next_back_inclusive (P : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition next_back_inclusive
+          (P : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self P in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.catch_return (|
@@ -3768,7 +3857,7 @@ Module str.
                               M.alloc (|
                                 M.call_closure (|
                                   M.get_associated_function (|
-                                    Ty.apply (Ty.path "core::str::iter::SplitInternal") [ P ],
+                                    Ty.apply (Ty.path "core::str::iter::SplitInternal") [] [ P ],
                                     "next_back_inclusive",
                                     []
                                   |),
@@ -3907,7 +3996,11 @@ Module str.
                                 M.get_associated_function (|
                                   Ty.path "str",
                                   "get_unchecked",
-                                  [ Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "usize" ]
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::ops::range::Range")
+                                      []
+                                      [ Ty.path "usize" ]
                                   ]
                                 |),
                                 [
@@ -3963,6 +4056,7 @@ Module str.
                                     [
                                       Ty.apply
                                         (Ty.path "core::ops::range::Range")
+                                        []
                                         [ Ty.path "usize" ]
                                     ]
                                   |),
@@ -3996,7 +4090,7 @@ Module str.
                   |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_next_back_inclusive :
@@ -4014,10 +4108,10 @@ Module str.
               Some(unsafe { self.matcher.haystack().get_unchecked(self.start..self.end) })
           }
       *)
-      Definition remainder (P : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition remainder (P : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self P in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.catch_return (|
@@ -4056,7 +4150,7 @@ Module str.
                           M.get_associated_function (|
                             Ty.path "str",
                             "get_unchecked",
-                            [ Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "usize" ] ]
+                            [ Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ] ]
                           |),
                           [
                             M.call_closure (|
@@ -4101,7 +4195,7 @@ Module str.
                   |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_remainder :
@@ -4112,12 +4206,13 @@ Module str.
     (* StructTuple
       {
         name := "Split";
+        const_params := [];
         ty_params := [ "P" ];
-        fields := [ Ty.apply (Ty.path "core::str::iter::SplitInternal") [ P ] ];
+        fields := [ Ty.apply (Ty.path "core::str::iter::SplitInternal") [] [ P ] ];
       } *)
     
     Module Impl_core_fmt_Debug_where_core_str_pattern_Pattern_P_for_core_str_iter_Split_P.
-      Definition Self (P : Ty.t) : Ty.t := Ty.apply (Ty.path "core::str::iter::Split") [ P ].
+      Definition Self (P : Ty.t) : Ty.t := Ty.apply (Ty.path "core::str::iter::Split") [] [ P ].
       
       (*
                   fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
@@ -4126,10 +4221,10 @@ Module str.
                           .finish()
                   }
       *)
-      Definition fmt (P : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (P : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self P in
-        match τ, α with
-        | [], [ self; f ] =>
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -4168,7 +4263,7 @@ Module str.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -4181,25 +4276,25 @@ Module str.
     End Impl_core_fmt_Debug_where_core_str_pattern_Pattern_P_for_core_str_iter_Split_P.
     
     Module Impl_core_iter_traits_iterator_Iterator_where_core_str_pattern_Pattern_P_for_core_str_iter_Split_P.
-      Definition Self (P : Ty.t) : Ty.t := Ty.apply (Ty.path "core::str::iter::Split") [ P ].
+      Definition Self (P : Ty.t) : Ty.t := Ty.apply (Ty.path "core::str::iter::Split") [] [ P ].
       
       (*             type Item = $iterty; *)
-      Definition _Item (P : Ty.t) : Ty.t := Ty.apply (Ty.path "&") [ Ty.path "str" ].
+      Definition _Item (P : Ty.t) : Ty.t := Ty.apply (Ty.path "&") [] [ Ty.path "str" ].
       
       (*
                   fn next(&mut self) -> Option<$iterty> {
                       self.0.next()
                   }
       *)
-      Definition next (P : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition next (P : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self P in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "core::str::iter::SplitInternal") [ P ],
+                Ty.apply (Ty.path "core::str::iter::SplitInternal") [] [ P ],
                 "next",
                 []
               |),
@@ -4211,7 +4306,7 @@ Module str.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -4225,17 +4320,17 @@ Module str.
     End Impl_core_iter_traits_iterator_Iterator_where_core_str_pattern_Pattern_P_for_core_str_iter_Split_P.
     
     Module Impl_core_clone_Clone_where_core_str_pattern_Pattern_P_for_core_str_iter_Split_P.
-      Definition Self (P : Ty.t) : Ty.t := Ty.apply (Ty.path "core::str::iter::Split") [ P ].
+      Definition Self (P : Ty.t) : Ty.t := Ty.apply (Ty.path "core::str::iter::Split") [] [ P ].
       
       (*
                   fn clone(&self) -> Self {
                       $forward_iterator(self.0.clone())
                   }
       *)
-      Definition clone (P : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition clone (P : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self P in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -4244,7 +4339,7 @@ Module str.
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::clone::Clone",
-                    Ty.apply (Ty.path "core::str::iter::SplitInternal") [ P ],
+                    Ty.apply (Ty.path "core::str::iter::SplitInternal") [] [ P ],
                     [],
                     "clone",
                     []
@@ -4258,7 +4353,7 @@ Module str.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -4273,12 +4368,13 @@ Module str.
     (* StructTuple
       {
         name := "RSplit";
+        const_params := [];
         ty_params := [ "P" ];
-        fields := [ Ty.apply (Ty.path "core::str::iter::SplitInternal") [ P ] ];
+        fields := [ Ty.apply (Ty.path "core::str::iter::SplitInternal") [] [ P ] ];
       } *)
     
     Module Impl_core_fmt_Debug_where_core_str_pattern_Pattern_P_for_core_str_iter_RSplit_P.
-      Definition Self (P : Ty.t) : Ty.t := Ty.apply (Ty.path "core::str::iter::RSplit") [ P ].
+      Definition Self (P : Ty.t) : Ty.t := Ty.apply (Ty.path "core::str::iter::RSplit") [] [ P ].
       
       (*
                   fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
@@ -4287,10 +4383,10 @@ Module str.
                           .finish()
                   }
       *)
-      Definition fmt (P : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (P : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self P in
-        match τ, α with
-        | [], [ self; f ] =>
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -4329,7 +4425,7 @@ Module str.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -4342,25 +4438,25 @@ Module str.
     End Impl_core_fmt_Debug_where_core_str_pattern_Pattern_P_for_core_str_iter_RSplit_P.
     
     Module Impl_core_iter_traits_iterator_Iterator_where_core_str_pattern_Pattern_P_for_core_str_iter_RSplit_P.
-      Definition Self (P : Ty.t) : Ty.t := Ty.apply (Ty.path "core::str::iter::RSplit") [ P ].
+      Definition Self (P : Ty.t) : Ty.t := Ty.apply (Ty.path "core::str::iter::RSplit") [] [ P ].
       
       (*             type Item = $iterty; *)
-      Definition _Item (P : Ty.t) : Ty.t := Ty.apply (Ty.path "&") [ Ty.path "str" ].
+      Definition _Item (P : Ty.t) : Ty.t := Ty.apply (Ty.path "&") [] [ Ty.path "str" ].
       
       (*
                   fn next(&mut self) -> Option<$iterty> {
                       self.0.next_back()
                   }
       *)
-      Definition next (P : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition next (P : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self P in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "core::str::iter::SplitInternal") [ P ],
+                Ty.apply (Ty.path "core::str::iter::SplitInternal") [] [ P ],
                 "next_back",
                 []
               |),
@@ -4372,7 +4468,7 @@ Module str.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -4386,17 +4482,17 @@ Module str.
     End Impl_core_iter_traits_iterator_Iterator_where_core_str_pattern_Pattern_P_for_core_str_iter_RSplit_P.
     
     Module Impl_core_clone_Clone_where_core_str_pattern_Pattern_P_for_core_str_iter_RSplit_P.
-      Definition Self (P : Ty.t) : Ty.t := Ty.apply (Ty.path "core::str::iter::RSplit") [ P ].
+      Definition Self (P : Ty.t) : Ty.t := Ty.apply (Ty.path "core::str::iter::RSplit") [] [ P ].
       
       (*
                   fn clone(&self) -> Self {
                       $reverse_iterator(self.0.clone())
                   }
       *)
-      Definition clone (P : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition clone (P : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self P in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -4405,7 +4501,7 @@ Module str.
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::clone::Clone",
-                    Ty.apply (Ty.path "core::str::iter::SplitInternal") [ P ],
+                    Ty.apply (Ty.path "core::str::iter::SplitInternal") [] [ P ],
                     [],
                     "clone",
                     []
@@ -4419,7 +4515,7 @@ Module str.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -4432,7 +4528,7 @@ Module str.
     End Impl_core_clone_Clone_where_core_str_pattern_Pattern_P_for_core_str_iter_RSplit_P.
     
     Module Impl_core_iter_traits_marker_FusedIterator_where_core_str_pattern_Pattern_P_for_core_str_iter_Split_P.
-      Definition Self (P : Ty.t) : Ty.t := Ty.apply (Ty.path "core::str::iter::Split") [ P ].
+      Definition Self (P : Ty.t) : Ty.t := Ty.apply (Ty.path "core::str::iter::Split") [] [ P ].
       
       Axiom Implements :
         forall (P : Ty.t),
@@ -4444,7 +4540,7 @@ Module str.
     End Impl_core_iter_traits_marker_FusedIterator_where_core_str_pattern_Pattern_P_for_core_str_iter_Split_P.
     
     Module Impl_core_iter_traits_marker_FusedIterator_where_core_str_pattern_Pattern_P_for_core_str_iter_RSplit_P.
-      Definition Self (P : Ty.t) : Ty.t := Ty.apply (Ty.path "core::str::iter::RSplit") [ P ].
+      Definition Self (P : Ty.t) : Ty.t := Ty.apply (Ty.path "core::str::iter::RSplit") [] [ P ].
       
       Axiom Implements :
         forall (P : Ty.t),
@@ -4456,22 +4552,22 @@ Module str.
     End Impl_core_iter_traits_marker_FusedIterator_where_core_str_pattern_Pattern_P_for_core_str_iter_RSplit_P.
     
     Module Impl_core_iter_traits_double_ended_DoubleEndedIterator_where_core_str_pattern_Pattern_P_for_core_str_iter_Split_P.
-      Definition Self (P : Ty.t) : Ty.t := Ty.apply (Ty.path "core::str::iter::Split") [ P ].
+      Definition Self (P : Ty.t) : Ty.t := Ty.apply (Ty.path "core::str::iter::Split") [] [ P ].
       
       (*
                   fn next_back(&mut self) -> Option<$iterty> {
                       self.0.next_back()
                   }
       *)
-      Definition next_back (P : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition next_back (P : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self P in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "core::str::iter::SplitInternal") [ P ],
+                Ty.apply (Ty.path "core::str::iter::SplitInternal") [] [ P ],
                 "next_back",
                 []
               |),
@@ -4483,7 +4579,7 @@ Module str.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -4496,22 +4592,22 @@ Module str.
     End Impl_core_iter_traits_double_ended_DoubleEndedIterator_where_core_str_pattern_Pattern_P_for_core_str_iter_Split_P.
     
     Module Impl_core_iter_traits_double_ended_DoubleEndedIterator_where_core_str_pattern_Pattern_P_for_core_str_iter_RSplit_P.
-      Definition Self (P : Ty.t) : Ty.t := Ty.apply (Ty.path "core::str::iter::RSplit") [ P ].
+      Definition Self (P : Ty.t) : Ty.t := Ty.apply (Ty.path "core::str::iter::RSplit") [] [ P ].
       
       (*
                   fn next_back(&mut self) -> Option<$iterty> {
                       self.0.next()
                   }
       *)
-      Definition next_back (P : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition next_back (P : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self P in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "core::str::iter::SplitInternal") [ P ],
+                Ty.apply (Ty.path "core::str::iter::SplitInternal") [] [ P ],
                 "next",
                 []
               |),
@@ -4523,7 +4619,7 @@ Module str.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -4536,22 +4632,22 @@ Module str.
     End Impl_core_iter_traits_double_ended_DoubleEndedIterator_where_core_str_pattern_Pattern_P_for_core_str_iter_RSplit_P.
     
     Module Impl_core_str_iter_Split_P.
-      Definition Self (P : Ty.t) : Ty.t := Ty.apply (Ty.path "core::str::iter::Split") [ P ].
+      Definition Self (P : Ty.t) : Ty.t := Ty.apply (Ty.path "core::str::iter::Split") [] [ P ].
       
       (*
           pub fn remainder(&self) -> Option<&'a str> {
               self.0.remainder()
           }
       *)
-      Definition remainder (P : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition remainder (P : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self P in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "core::str::iter::SplitInternal") [ P ],
+                Ty.apply (Ty.path "core::str::iter::SplitInternal") [] [ P ],
                 "remainder",
                 []
               |),
@@ -4563,7 +4659,7 @@ Module str.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_remainder :
@@ -4572,22 +4668,22 @@ Module str.
     End Impl_core_str_iter_Split_P.
     
     Module Impl_core_str_iter_RSplit_P.
-      Definition Self (P : Ty.t) : Ty.t := Ty.apply (Ty.path "core::str::iter::RSplit") [ P ].
+      Definition Self (P : Ty.t) : Ty.t := Ty.apply (Ty.path "core::str::iter::RSplit") [] [ P ].
       
       (*
           pub fn remainder(&self) -> Option<&'a str> {
               self.0.remainder()
           }
       *)
-      Definition remainder (P : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition remainder (P : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self P in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "core::str::iter::SplitInternal") [ P ],
+                Ty.apply (Ty.path "core::str::iter::SplitInternal") [] [ P ],
                 "remainder",
                 []
               |),
@@ -4599,7 +4695,7 @@ Module str.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_remainder :
@@ -4610,13 +4706,14 @@ Module str.
     (* StructTuple
       {
         name := "SplitTerminator";
+        const_params := [];
         ty_params := [ "P" ];
-        fields := [ Ty.apply (Ty.path "core::str::iter::SplitInternal") [ P ] ];
+        fields := [ Ty.apply (Ty.path "core::str::iter::SplitInternal") [] [ P ] ];
       } *)
     
     Module Impl_core_fmt_Debug_where_core_str_pattern_Pattern_P_for_core_str_iter_SplitTerminator_P.
       Definition Self (P : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::str::iter::SplitTerminator") [ P ].
+        Ty.apply (Ty.path "core::str::iter::SplitTerminator") [] [ P ].
       
       (*
                   fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
@@ -4625,10 +4722,10 @@ Module str.
                           .finish()
                   }
       *)
-      Definition fmt (P : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (P : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self P in
-        match τ, α with
-        | [], [ self; f ] =>
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -4667,7 +4764,7 @@ Module str.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -4681,25 +4778,25 @@ Module str.
     
     Module Impl_core_iter_traits_iterator_Iterator_where_core_str_pattern_Pattern_P_for_core_str_iter_SplitTerminator_P.
       Definition Self (P : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::str::iter::SplitTerminator") [ P ].
+        Ty.apply (Ty.path "core::str::iter::SplitTerminator") [] [ P ].
       
       (*             type Item = $iterty; *)
-      Definition _Item (P : Ty.t) : Ty.t := Ty.apply (Ty.path "&") [ Ty.path "str" ].
+      Definition _Item (P : Ty.t) : Ty.t := Ty.apply (Ty.path "&") [] [ Ty.path "str" ].
       
       (*
                   fn next(&mut self) -> Option<$iterty> {
                       self.0.next()
                   }
       *)
-      Definition next (P : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition next (P : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self P in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "core::str::iter::SplitInternal") [ P ],
+                Ty.apply (Ty.path "core::str::iter::SplitInternal") [] [ P ],
                 "next",
                 []
               |),
@@ -4711,7 +4808,7 @@ Module str.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -4726,17 +4823,17 @@ Module str.
     
     Module Impl_core_clone_Clone_where_core_str_pattern_Pattern_P_for_core_str_iter_SplitTerminator_P.
       Definition Self (P : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::str::iter::SplitTerminator") [ P ].
+        Ty.apply (Ty.path "core::str::iter::SplitTerminator") [] [ P ].
       
       (*
                   fn clone(&self) -> Self {
                       $forward_iterator(self.0.clone())
                   }
       *)
-      Definition clone (P : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition clone (P : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self P in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -4745,7 +4842,7 @@ Module str.
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::clone::Clone",
-                    Ty.apply (Ty.path "core::str::iter::SplitInternal") [ P ],
+                    Ty.apply (Ty.path "core::str::iter::SplitInternal") [] [ P ],
                     [],
                     "clone",
                     []
@@ -4759,7 +4856,7 @@ Module str.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -4774,13 +4871,14 @@ Module str.
     (* StructTuple
       {
         name := "RSplitTerminator";
+        const_params := [];
         ty_params := [ "P" ];
-        fields := [ Ty.apply (Ty.path "core::str::iter::SplitInternal") [ P ] ];
+        fields := [ Ty.apply (Ty.path "core::str::iter::SplitInternal") [] [ P ] ];
       } *)
     
     Module Impl_core_fmt_Debug_where_core_str_pattern_Pattern_P_for_core_str_iter_RSplitTerminator_P.
       Definition Self (P : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::str::iter::RSplitTerminator") [ P ].
+        Ty.apply (Ty.path "core::str::iter::RSplitTerminator") [] [ P ].
       
       (*
                   fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
@@ -4789,10 +4887,10 @@ Module str.
                           .finish()
                   }
       *)
-      Definition fmt (P : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (P : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self P in
-        match τ, α with
-        | [], [ self; f ] =>
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -4831,7 +4929,7 @@ Module str.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -4845,25 +4943,25 @@ Module str.
     
     Module Impl_core_iter_traits_iterator_Iterator_where_core_str_pattern_Pattern_P_for_core_str_iter_RSplitTerminator_P.
       Definition Self (P : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::str::iter::RSplitTerminator") [ P ].
+        Ty.apply (Ty.path "core::str::iter::RSplitTerminator") [] [ P ].
       
       (*             type Item = $iterty; *)
-      Definition _Item (P : Ty.t) : Ty.t := Ty.apply (Ty.path "&") [ Ty.path "str" ].
+      Definition _Item (P : Ty.t) : Ty.t := Ty.apply (Ty.path "&") [] [ Ty.path "str" ].
       
       (*
                   fn next(&mut self) -> Option<$iterty> {
                       self.0.next_back()
                   }
       *)
-      Definition next (P : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition next (P : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self P in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "core::str::iter::SplitInternal") [ P ],
+                Ty.apply (Ty.path "core::str::iter::SplitInternal") [] [ P ],
                 "next_back",
                 []
               |),
@@ -4875,7 +4973,7 @@ Module str.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -4890,17 +4988,17 @@ Module str.
     
     Module Impl_core_clone_Clone_where_core_str_pattern_Pattern_P_for_core_str_iter_RSplitTerminator_P.
       Definition Self (P : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::str::iter::RSplitTerminator") [ P ].
+        Ty.apply (Ty.path "core::str::iter::RSplitTerminator") [] [ P ].
       
       (*
                   fn clone(&self) -> Self {
                       $reverse_iterator(self.0.clone())
                   }
       *)
-      Definition clone (P : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition clone (P : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self P in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -4909,7 +5007,7 @@ Module str.
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::clone::Clone",
-                    Ty.apply (Ty.path "core::str::iter::SplitInternal") [ P ],
+                    Ty.apply (Ty.path "core::str::iter::SplitInternal") [] [ P ],
                     [],
                     "clone",
                     []
@@ -4923,7 +5021,7 @@ Module str.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -4937,7 +5035,7 @@ Module str.
     
     Module Impl_core_iter_traits_marker_FusedIterator_where_core_str_pattern_Pattern_P_for_core_str_iter_SplitTerminator_P.
       Definition Self (P : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::str::iter::SplitTerminator") [ P ].
+        Ty.apply (Ty.path "core::str::iter::SplitTerminator") [] [ P ].
       
       Axiom Implements :
         forall (P : Ty.t),
@@ -4950,7 +5048,7 @@ Module str.
     
     Module Impl_core_iter_traits_marker_FusedIterator_where_core_str_pattern_Pattern_P_for_core_str_iter_RSplitTerminator_P.
       Definition Self (P : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::str::iter::RSplitTerminator") [ P ].
+        Ty.apply (Ty.path "core::str::iter::RSplitTerminator") [] [ P ].
       
       Axiom Implements :
         forall (P : Ty.t),
@@ -4963,22 +5061,22 @@ Module str.
     
     Module Impl_core_iter_traits_double_ended_DoubleEndedIterator_where_core_str_pattern_Pattern_P_for_core_str_iter_SplitTerminator_P.
       Definition Self (P : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::str::iter::SplitTerminator") [ P ].
+        Ty.apply (Ty.path "core::str::iter::SplitTerminator") [] [ P ].
       
       (*
                   fn next_back(&mut self) -> Option<$iterty> {
                       self.0.next_back()
                   }
       *)
-      Definition next_back (P : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition next_back (P : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self P in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "core::str::iter::SplitInternal") [ P ],
+                Ty.apply (Ty.path "core::str::iter::SplitInternal") [] [ P ],
                 "next_back",
                 []
               |),
@@ -4990,7 +5088,7 @@ Module str.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -5004,22 +5102,22 @@ Module str.
     
     Module Impl_core_iter_traits_double_ended_DoubleEndedIterator_where_core_str_pattern_Pattern_P_for_core_str_iter_RSplitTerminator_P.
       Definition Self (P : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::str::iter::RSplitTerminator") [ P ].
+        Ty.apply (Ty.path "core::str::iter::RSplitTerminator") [] [ P ].
       
       (*
                   fn next_back(&mut self) -> Option<$iterty> {
                       self.0.next()
                   }
       *)
-      Definition next_back (P : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition next_back (P : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self P in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "core::str::iter::SplitInternal") [ P ],
+                Ty.apply (Ty.path "core::str::iter::SplitInternal") [] [ P ],
                 "next",
                 []
               |),
@@ -5031,7 +5129,7 @@ Module str.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -5045,22 +5143,22 @@ Module str.
     
     Module Impl_core_str_iter_SplitTerminator_P.
       Definition Self (P : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::str::iter::SplitTerminator") [ P ].
+        Ty.apply (Ty.path "core::str::iter::SplitTerminator") [] [ P ].
       
       (*
           pub fn remainder(&self) -> Option<&'a str> {
               self.0.remainder()
           }
       *)
-      Definition remainder (P : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition remainder (P : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self P in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "core::str::iter::SplitInternal") [ P ],
+                Ty.apply (Ty.path "core::str::iter::SplitInternal") [] [ P ],
                 "remainder",
                 []
               |),
@@ -5072,7 +5170,7 @@ Module str.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_remainder :
@@ -5082,22 +5180,22 @@ Module str.
     
     Module Impl_core_str_iter_RSplitTerminator_P.
       Definition Self (P : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::str::iter::RSplitTerminator") [ P ].
+        Ty.apply (Ty.path "core::str::iter::RSplitTerminator") [] [ P ].
       
       (*
           pub fn remainder(&self) -> Option<&'a str> {
               self.0.remainder()
           }
       *)
-      Definition remainder (P : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition remainder (P : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self P in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "core::str::iter::SplitInternal") [ P ],
+                Ty.apply (Ty.path "core::str::iter::SplitInternal") [] [ P ],
                 "remainder",
                 []
               |),
@@ -5109,7 +5207,7 @@ Module str.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_remainder :
@@ -5119,7 +5217,7 @@ Module str.
     
     Module Impl_core_clone_Clone_where_core_str_pattern_Pattern_P_for_core_str_iter_SplitNInternal_P.
       Definition Self (P : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::str::iter::SplitNInternal") [ P ].
+        Ty.apply (Ty.path "core::str::iter::SplitNInternal") [] [ P ].
       
       (*
                   fn clone(&self) -> Self {
@@ -5127,10 +5225,10 @@ Module str.
                       $e
                   }
       *)
-      Definition clone (P : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition clone (P : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self P in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -5143,7 +5241,7 @@ Module str.
                       M.call_closure (|
                         M.get_trait_method (|
                           "core::clone::Clone",
-                          Ty.apply (Ty.path "core::str::iter::SplitInternal") [ P ],
+                          Ty.apply (Ty.path "core::str::iter::SplitInternal") [] [ P ],
                           [],
                           "clone",
                           []
@@ -5159,7 +5257,7 @@ Module str.
                   ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -5174,17 +5272,18 @@ Module str.
     (* StructRecord
       {
         name := "SplitNInternal";
+        const_params := [];
         ty_params := [ "P" ];
         fields :=
           [
-            ("iter", Ty.apply (Ty.path "core::str::iter::SplitInternal") [ P ]);
+            ("iter", Ty.apply (Ty.path "core::str::iter::SplitInternal") [] [ P ]);
             ("count", Ty.path "usize")
           ];
       } *)
     
     Module Impl_core_fmt_Debug_where_core_str_pattern_Pattern_P_for_core_str_iter_SplitNInternal_P.
       Definition Self (P : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::str::iter::SplitNInternal") [ P ].
+        Ty.apply (Ty.path "core::str::iter::SplitNInternal") [] [ P ].
       
       (*
           fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
@@ -5194,10 +5293,10 @@ Module str.
                   .finish()
           }
       *)
-      Definition fmt (P : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (P : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self P in
-        match τ, α with
-        | [], [ self; f ] =>
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -5254,7 +5353,7 @@ Module str.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -5268,7 +5367,7 @@ Module str.
     
     Module Impl_core_str_iter_SplitNInternal_P.
       Definition Self (P : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::str::iter::SplitNInternal") [ P ].
+        Ty.apply (Ty.path "core::str::iter::SplitNInternal") [] [ P ].
       
       (*
           fn next(&mut self) -> Option<&'a str> {
@@ -5285,10 +5384,10 @@ Module str.
               }
           }
       *)
-      Definition next (P : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition next (P : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self P in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -5320,7 +5419,7 @@ Module str.
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
-                            Ty.apply (Ty.path "core::str::iter::SplitInternal") [ P ],
+                            Ty.apply (Ty.path "core::str::iter::SplitInternal") [] [ P ],
                             "get_end",
                             []
                           |),
@@ -5349,7 +5448,7 @@ Module str.
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
-                            Ty.apply (Ty.path "core::str::iter::SplitInternal") [ P ],
+                            Ty.apply (Ty.path "core::str::iter::SplitInternal") [] [ P ],
                             "next",
                             []
                           |),
@@ -5365,7 +5464,7 @@ Module str.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_next :
@@ -5390,10 +5489,10 @@ Module str.
               }
           }
       *)
-      Definition next_back (P : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition next_back (P : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self P in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -5425,7 +5524,7 @@ Module str.
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
-                            Ty.apply (Ty.path "core::str::iter::SplitInternal") [ P ],
+                            Ty.apply (Ty.path "core::str::iter::SplitInternal") [] [ P ],
                             "get_end",
                             []
                           |),
@@ -5454,7 +5553,7 @@ Module str.
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
-                            Ty.apply (Ty.path "core::str::iter::SplitInternal") [ P ],
+                            Ty.apply (Ty.path "core::str::iter::SplitInternal") [] [ P ],
                             "next_back",
                             []
                           |),
@@ -5470,7 +5569,7 @@ Module str.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_next_back :
@@ -5482,15 +5581,15 @@ Module str.
               self.iter.remainder()
           }
       *)
-      Definition remainder (P : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition remainder (P : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self P in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "core::str::iter::SplitInternal") [ P ],
+                Ty.apply (Ty.path "core::str::iter::SplitInternal") [] [ P ],
                 "remainder",
                 []
               |),
@@ -5502,7 +5601,7 @@ Module str.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_remainder :
@@ -5513,12 +5612,13 @@ Module str.
     (* StructTuple
       {
         name := "SplitN";
+        const_params := [];
         ty_params := [ "P" ];
-        fields := [ Ty.apply (Ty.path "core::str::iter::SplitNInternal") [ P ] ];
+        fields := [ Ty.apply (Ty.path "core::str::iter::SplitNInternal") [] [ P ] ];
       } *)
     
     Module Impl_core_fmt_Debug_where_core_str_pattern_Pattern_P_for_core_str_iter_SplitN_P.
-      Definition Self (P : Ty.t) : Ty.t := Ty.apply (Ty.path "core::str::iter::SplitN") [ P ].
+      Definition Self (P : Ty.t) : Ty.t := Ty.apply (Ty.path "core::str::iter::SplitN") [] [ P ].
       
       (*
                   fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
@@ -5527,10 +5627,10 @@ Module str.
                           .finish()
                   }
       *)
-      Definition fmt (P : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (P : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self P in
-        match τ, α with
-        | [], [ self; f ] =>
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -5569,7 +5669,7 @@ Module str.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -5582,25 +5682,25 @@ Module str.
     End Impl_core_fmt_Debug_where_core_str_pattern_Pattern_P_for_core_str_iter_SplitN_P.
     
     Module Impl_core_iter_traits_iterator_Iterator_where_core_str_pattern_Pattern_P_for_core_str_iter_SplitN_P.
-      Definition Self (P : Ty.t) : Ty.t := Ty.apply (Ty.path "core::str::iter::SplitN") [ P ].
+      Definition Self (P : Ty.t) : Ty.t := Ty.apply (Ty.path "core::str::iter::SplitN") [] [ P ].
       
       (*             type Item = $iterty; *)
-      Definition _Item (P : Ty.t) : Ty.t := Ty.apply (Ty.path "&") [ Ty.path "str" ].
+      Definition _Item (P : Ty.t) : Ty.t := Ty.apply (Ty.path "&") [] [ Ty.path "str" ].
       
       (*
                   fn next(&mut self) -> Option<$iterty> {
                       self.0.next()
                   }
       *)
-      Definition next (P : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition next (P : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self P in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "core::str::iter::SplitNInternal") [ P ],
+                Ty.apply (Ty.path "core::str::iter::SplitNInternal") [] [ P ],
                 "next",
                 []
               |),
@@ -5612,7 +5712,7 @@ Module str.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -5626,17 +5726,17 @@ Module str.
     End Impl_core_iter_traits_iterator_Iterator_where_core_str_pattern_Pattern_P_for_core_str_iter_SplitN_P.
     
     Module Impl_core_clone_Clone_where_core_str_pattern_Pattern_P_for_core_str_iter_SplitN_P.
-      Definition Self (P : Ty.t) : Ty.t := Ty.apply (Ty.path "core::str::iter::SplitN") [ P ].
+      Definition Self (P : Ty.t) : Ty.t := Ty.apply (Ty.path "core::str::iter::SplitN") [] [ P ].
       
       (*
                   fn clone(&self) -> Self {
                       $forward_iterator(self.0.clone())
                   }
       *)
-      Definition clone (P : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition clone (P : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self P in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -5645,7 +5745,7 @@ Module str.
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::clone::Clone",
-                    Ty.apply (Ty.path "core::str::iter::SplitNInternal") [ P ],
+                    Ty.apply (Ty.path "core::str::iter::SplitNInternal") [] [ P ],
                     [],
                     "clone",
                     []
@@ -5659,7 +5759,7 @@ Module str.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -5674,12 +5774,13 @@ Module str.
     (* StructTuple
       {
         name := "RSplitN";
+        const_params := [];
         ty_params := [ "P" ];
-        fields := [ Ty.apply (Ty.path "core::str::iter::SplitNInternal") [ P ] ];
+        fields := [ Ty.apply (Ty.path "core::str::iter::SplitNInternal") [] [ P ] ];
       } *)
     
     Module Impl_core_fmt_Debug_where_core_str_pattern_Pattern_P_for_core_str_iter_RSplitN_P.
-      Definition Self (P : Ty.t) : Ty.t := Ty.apply (Ty.path "core::str::iter::RSplitN") [ P ].
+      Definition Self (P : Ty.t) : Ty.t := Ty.apply (Ty.path "core::str::iter::RSplitN") [] [ P ].
       
       (*
                   fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
@@ -5688,10 +5789,10 @@ Module str.
                           .finish()
                   }
       *)
-      Definition fmt (P : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (P : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self P in
-        match τ, α with
-        | [], [ self; f ] =>
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -5730,7 +5831,7 @@ Module str.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -5743,25 +5844,25 @@ Module str.
     End Impl_core_fmt_Debug_where_core_str_pattern_Pattern_P_for_core_str_iter_RSplitN_P.
     
     Module Impl_core_iter_traits_iterator_Iterator_where_core_str_pattern_Pattern_P_for_core_str_iter_RSplitN_P.
-      Definition Self (P : Ty.t) : Ty.t := Ty.apply (Ty.path "core::str::iter::RSplitN") [ P ].
+      Definition Self (P : Ty.t) : Ty.t := Ty.apply (Ty.path "core::str::iter::RSplitN") [] [ P ].
       
       (*             type Item = $iterty; *)
-      Definition _Item (P : Ty.t) : Ty.t := Ty.apply (Ty.path "&") [ Ty.path "str" ].
+      Definition _Item (P : Ty.t) : Ty.t := Ty.apply (Ty.path "&") [] [ Ty.path "str" ].
       
       (*
                   fn next(&mut self) -> Option<$iterty> {
                       self.0.next_back()
                   }
       *)
-      Definition next (P : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition next (P : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self P in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "core::str::iter::SplitNInternal") [ P ],
+                Ty.apply (Ty.path "core::str::iter::SplitNInternal") [] [ P ],
                 "next_back",
                 []
               |),
@@ -5773,7 +5874,7 @@ Module str.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -5787,17 +5888,17 @@ Module str.
     End Impl_core_iter_traits_iterator_Iterator_where_core_str_pattern_Pattern_P_for_core_str_iter_RSplitN_P.
     
     Module Impl_core_clone_Clone_where_core_str_pattern_Pattern_P_for_core_str_iter_RSplitN_P.
-      Definition Self (P : Ty.t) : Ty.t := Ty.apply (Ty.path "core::str::iter::RSplitN") [ P ].
+      Definition Self (P : Ty.t) : Ty.t := Ty.apply (Ty.path "core::str::iter::RSplitN") [] [ P ].
       
       (*
                   fn clone(&self) -> Self {
                       $reverse_iterator(self.0.clone())
                   }
       *)
-      Definition clone (P : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition clone (P : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self P in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -5806,7 +5907,7 @@ Module str.
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::clone::Clone",
-                    Ty.apply (Ty.path "core::str::iter::SplitNInternal") [ P ],
+                    Ty.apply (Ty.path "core::str::iter::SplitNInternal") [] [ P ],
                     [],
                     "clone",
                     []
@@ -5820,7 +5921,7 @@ Module str.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -5833,7 +5934,7 @@ Module str.
     End Impl_core_clone_Clone_where_core_str_pattern_Pattern_P_for_core_str_iter_RSplitN_P.
     
     Module Impl_core_iter_traits_marker_FusedIterator_where_core_str_pattern_Pattern_P_for_core_str_iter_SplitN_P.
-      Definition Self (P : Ty.t) : Ty.t := Ty.apply (Ty.path "core::str::iter::SplitN") [ P ].
+      Definition Self (P : Ty.t) : Ty.t := Ty.apply (Ty.path "core::str::iter::SplitN") [] [ P ].
       
       Axiom Implements :
         forall (P : Ty.t),
@@ -5845,7 +5946,7 @@ Module str.
     End Impl_core_iter_traits_marker_FusedIterator_where_core_str_pattern_Pattern_P_for_core_str_iter_SplitN_P.
     
     Module Impl_core_iter_traits_marker_FusedIterator_where_core_str_pattern_Pattern_P_for_core_str_iter_RSplitN_P.
-      Definition Self (P : Ty.t) : Ty.t := Ty.apply (Ty.path "core::str::iter::RSplitN") [ P ].
+      Definition Self (P : Ty.t) : Ty.t := Ty.apply (Ty.path "core::str::iter::RSplitN") [] [ P ].
       
       Axiom Implements :
         forall (P : Ty.t),
@@ -5857,22 +5958,22 @@ Module str.
     End Impl_core_iter_traits_marker_FusedIterator_where_core_str_pattern_Pattern_P_for_core_str_iter_RSplitN_P.
     
     Module Impl_core_str_iter_SplitN_P.
-      Definition Self (P : Ty.t) : Ty.t := Ty.apply (Ty.path "core::str::iter::SplitN") [ P ].
+      Definition Self (P : Ty.t) : Ty.t := Ty.apply (Ty.path "core::str::iter::SplitN") [] [ P ].
       
       (*
           pub fn remainder(&self) -> Option<&'a str> {
               self.0.remainder()
           }
       *)
-      Definition remainder (P : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition remainder (P : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self P in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "core::str::iter::SplitNInternal") [ P ],
+                Ty.apply (Ty.path "core::str::iter::SplitNInternal") [] [ P ],
                 "remainder",
                 []
               |),
@@ -5884,7 +5985,7 @@ Module str.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_remainder :
@@ -5893,22 +5994,22 @@ Module str.
     End Impl_core_str_iter_SplitN_P.
     
     Module Impl_core_str_iter_RSplitN_P.
-      Definition Self (P : Ty.t) : Ty.t := Ty.apply (Ty.path "core::str::iter::RSplitN") [ P ].
+      Definition Self (P : Ty.t) : Ty.t := Ty.apply (Ty.path "core::str::iter::RSplitN") [] [ P ].
       
       (*
           pub fn remainder(&self) -> Option<&'a str> {
               self.0.remainder()
           }
       *)
-      Definition remainder (P : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition remainder (P : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self P in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "core::str::iter::SplitNInternal") [ P ],
+                Ty.apply (Ty.path "core::str::iter::SplitNInternal") [] [ P ],
                 "remainder",
                 []
               |),
@@ -5920,7 +6021,7 @@ Module str.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_remainder :
@@ -5930,7 +6031,7 @@ Module str.
     
     Module Impl_core_clone_Clone_where_core_str_pattern_Pattern_P_for_core_str_iter_MatchIndicesInternal_P.
       Definition Self (P : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::str::iter::MatchIndicesInternal") [ P ].
+        Ty.apply (Ty.path "core::str::iter::MatchIndicesInternal") [] [ P ].
       
       (*
                   fn clone(&self) -> Self {
@@ -5938,10 +6039,10 @@ Module str.
                       $e
                   }
       *)
-      Definition clone (P : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition clone (P : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self P in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -5963,7 +6064,7 @@ Module str.
                   ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -5978,23 +6079,24 @@ Module str.
     (* StructTuple
       {
         name := "MatchIndicesInternal";
+        const_params := [];
         ty_params := [ "P" ];
         fields := [ Ty.associated ];
       } *)
     
     Module Impl_core_fmt_Debug_where_core_str_pattern_Pattern_P_for_core_str_iter_MatchIndicesInternal_P.
       Definition Self (P : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::str::iter::MatchIndicesInternal") [ P ].
+        Ty.apply (Ty.path "core::str::iter::MatchIndicesInternal") [] [ P ].
       
       (*
           fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
               f.debug_tuple("MatchIndicesInternal").field(&self.0).finish()
           }
       *)
-      Definition fmt (P : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (P : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self P in
-        match τ, α with
-        | [], [ self; f ] =>
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -6033,7 +6135,7 @@ Module str.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -6047,7 +6149,7 @@ Module str.
     
     Module Impl_core_str_iter_MatchIndicesInternal_P.
       Definition Self (P : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::str::iter::MatchIndicesInternal") [ P ].
+        Ty.apply (Ty.path "core::str::iter::MatchIndicesInternal") [] [ P ].
       
       (*
           fn next(&mut self) -> Option<(usize, &'a str)> {
@@ -6057,23 +6159,24 @@ Module str.
                   .map(|(start, end)| unsafe { (start, self.0.haystack().get_unchecked(start..end)) })
           }
       *)
-      Definition next (P : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition next (P : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self P in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "core::option::Option")
+                  []
                   [ Ty.tuple [ Ty.path "usize"; Ty.path "usize" ] ],
                 "map",
                 [
-                  Ty.tuple [ Ty.path "usize"; Ty.apply (Ty.path "&") [ Ty.path "str" ] ];
+                  Ty.tuple [ Ty.path "usize"; Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ];
                   Ty.function
                     [ Ty.tuple [ Ty.tuple [ Ty.path "usize"; Ty.path "usize" ] ] ]
-                    (Ty.tuple [ Ty.path "usize"; Ty.apply (Ty.path "&") [ Ty.path "str" ] ])
+                    (Ty.tuple [ Ty.path "usize"; Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ])
                 ]
               |),
               [
@@ -6117,6 +6220,7 @@ Module str.
                                         [
                                           Ty.apply
                                             (Ty.path "core::ops::range::Range")
+                                            []
                                             [ Ty.path "usize" ]
                                         ]
                                       |),
@@ -6152,7 +6256,7 @@ Module str.
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_next :
@@ -6170,23 +6274,24 @@ Module str.
                   .map(|(start, end)| unsafe { (start, self.0.haystack().get_unchecked(start..end)) })
           }
       *)
-      Definition next_back (P : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition next_back (P : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self P in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "core::option::Option")
+                  []
                   [ Ty.tuple [ Ty.path "usize"; Ty.path "usize" ] ],
                 "map",
                 [
-                  Ty.tuple [ Ty.path "usize"; Ty.apply (Ty.path "&") [ Ty.path "str" ] ];
+                  Ty.tuple [ Ty.path "usize"; Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ];
                   Ty.function
                     [ Ty.tuple [ Ty.tuple [ Ty.path "usize"; Ty.path "usize" ] ] ]
-                    (Ty.tuple [ Ty.path "usize"; Ty.apply (Ty.path "&") [ Ty.path "str" ] ])
+                    (Ty.tuple [ Ty.path "usize"; Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ])
                 ]
               |),
               [
@@ -6230,6 +6335,7 @@ Module str.
                                         [
                                           Ty.apply
                                             (Ty.path "core::ops::range::Range")
+                                            []
                                             [ Ty.path "usize" ]
                                         ]
                                       |),
@@ -6265,7 +6371,7 @@ Module str.
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_next_back :
@@ -6276,12 +6382,14 @@ Module str.
     (* StructTuple
       {
         name := "MatchIndices";
+        const_params := [];
         ty_params := [ "P" ];
-        fields := [ Ty.apply (Ty.path "core::str::iter::MatchIndicesInternal") [ P ] ];
+        fields := [ Ty.apply (Ty.path "core::str::iter::MatchIndicesInternal") [] [ P ] ];
       } *)
     
     Module Impl_core_fmt_Debug_where_core_str_pattern_Pattern_P_for_core_str_iter_MatchIndices_P.
-      Definition Self (P : Ty.t) : Ty.t := Ty.apply (Ty.path "core::str::iter::MatchIndices") [ P ].
+      Definition Self (P : Ty.t) : Ty.t :=
+        Ty.apply (Ty.path "core::str::iter::MatchIndices") [] [ P ].
       
       (*
                   fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
@@ -6290,10 +6398,10 @@ Module str.
                           .finish()
                   }
       *)
-      Definition fmt (P : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (P : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self P in
-        match τ, α with
-        | [], [ self; f ] =>
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -6332,7 +6440,7 @@ Module str.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -6345,26 +6453,27 @@ Module str.
     End Impl_core_fmt_Debug_where_core_str_pattern_Pattern_P_for_core_str_iter_MatchIndices_P.
     
     Module Impl_core_iter_traits_iterator_Iterator_where_core_str_pattern_Pattern_P_for_core_str_iter_MatchIndices_P.
-      Definition Self (P : Ty.t) : Ty.t := Ty.apply (Ty.path "core::str::iter::MatchIndices") [ P ].
+      Definition Self (P : Ty.t) : Ty.t :=
+        Ty.apply (Ty.path "core::str::iter::MatchIndices") [] [ P ].
       
       (*             type Item = $iterty; *)
       Definition _Item (P : Ty.t) : Ty.t :=
-        Ty.tuple [ Ty.path "usize"; Ty.apply (Ty.path "&") [ Ty.path "str" ] ].
+        Ty.tuple [ Ty.path "usize"; Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ].
       
       (*
                   fn next(&mut self) -> Option<$iterty> {
                       self.0.next()
                   }
       *)
-      Definition next (P : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition next (P : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self P in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "core::str::iter::MatchIndicesInternal") [ P ],
+                Ty.apply (Ty.path "core::str::iter::MatchIndicesInternal") [] [ P ],
                 "next",
                 []
               |),
@@ -6376,7 +6485,7 @@ Module str.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -6390,17 +6499,18 @@ Module str.
     End Impl_core_iter_traits_iterator_Iterator_where_core_str_pattern_Pattern_P_for_core_str_iter_MatchIndices_P.
     
     Module Impl_core_clone_Clone_where_core_str_pattern_Pattern_P_for_core_str_iter_MatchIndices_P.
-      Definition Self (P : Ty.t) : Ty.t := Ty.apply (Ty.path "core::str::iter::MatchIndices") [ P ].
+      Definition Self (P : Ty.t) : Ty.t :=
+        Ty.apply (Ty.path "core::str::iter::MatchIndices") [] [ P ].
       
       (*
                   fn clone(&self) -> Self {
                       $forward_iterator(self.0.clone())
                   }
       *)
-      Definition clone (P : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition clone (P : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self P in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -6409,7 +6519,7 @@ Module str.
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::clone::Clone",
-                    Ty.apply (Ty.path "core::str::iter::MatchIndicesInternal") [ P ],
+                    Ty.apply (Ty.path "core::str::iter::MatchIndicesInternal") [] [ P ],
                     [],
                     "clone",
                     []
@@ -6423,7 +6533,7 @@ Module str.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -6438,13 +6548,14 @@ Module str.
     (* StructTuple
       {
         name := "RMatchIndices";
+        const_params := [];
         ty_params := [ "P" ];
-        fields := [ Ty.apply (Ty.path "core::str::iter::MatchIndicesInternal") [ P ] ];
+        fields := [ Ty.apply (Ty.path "core::str::iter::MatchIndicesInternal") [] [ P ] ];
       } *)
     
     Module Impl_core_fmt_Debug_where_core_str_pattern_Pattern_P_for_core_str_iter_RMatchIndices_P.
       Definition Self (P : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::str::iter::RMatchIndices") [ P ].
+        Ty.apply (Ty.path "core::str::iter::RMatchIndices") [] [ P ].
       
       (*
                   fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
@@ -6453,10 +6564,10 @@ Module str.
                           .finish()
                   }
       *)
-      Definition fmt (P : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (P : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self P in
-        match τ, α with
-        | [], [ self; f ] =>
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -6495,7 +6606,7 @@ Module str.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -6509,26 +6620,26 @@ Module str.
     
     Module Impl_core_iter_traits_iterator_Iterator_where_core_str_pattern_Pattern_P_for_core_str_iter_RMatchIndices_P.
       Definition Self (P : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::str::iter::RMatchIndices") [ P ].
+        Ty.apply (Ty.path "core::str::iter::RMatchIndices") [] [ P ].
       
       (*             type Item = $iterty; *)
       Definition _Item (P : Ty.t) : Ty.t :=
-        Ty.tuple [ Ty.path "usize"; Ty.apply (Ty.path "&") [ Ty.path "str" ] ].
+        Ty.tuple [ Ty.path "usize"; Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ].
       
       (*
                   fn next(&mut self) -> Option<$iterty> {
                       self.0.next_back()
                   }
       *)
-      Definition next (P : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition next (P : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self P in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "core::str::iter::MatchIndicesInternal") [ P ],
+                Ty.apply (Ty.path "core::str::iter::MatchIndicesInternal") [] [ P ],
                 "next_back",
                 []
               |),
@@ -6540,7 +6651,7 @@ Module str.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -6555,17 +6666,17 @@ Module str.
     
     Module Impl_core_clone_Clone_where_core_str_pattern_Pattern_P_for_core_str_iter_RMatchIndices_P.
       Definition Self (P : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::str::iter::RMatchIndices") [ P ].
+        Ty.apply (Ty.path "core::str::iter::RMatchIndices") [] [ P ].
       
       (*
                   fn clone(&self) -> Self {
                       $reverse_iterator(self.0.clone())
                   }
       *)
-      Definition clone (P : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition clone (P : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self P in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -6574,7 +6685,7 @@ Module str.
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::clone::Clone",
-                    Ty.apply (Ty.path "core::str::iter::MatchIndicesInternal") [ P ],
+                    Ty.apply (Ty.path "core::str::iter::MatchIndicesInternal") [] [ P ],
                     [],
                     "clone",
                     []
@@ -6588,7 +6699,7 @@ Module str.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -6601,7 +6712,8 @@ Module str.
     End Impl_core_clone_Clone_where_core_str_pattern_Pattern_P_for_core_str_iter_RMatchIndices_P.
     
     Module Impl_core_iter_traits_marker_FusedIterator_where_core_str_pattern_Pattern_P_for_core_str_iter_MatchIndices_P.
-      Definition Self (P : Ty.t) : Ty.t := Ty.apply (Ty.path "core::str::iter::MatchIndices") [ P ].
+      Definition Self (P : Ty.t) : Ty.t :=
+        Ty.apply (Ty.path "core::str::iter::MatchIndices") [] [ P ].
       
       Axiom Implements :
         forall (P : Ty.t),
@@ -6614,7 +6726,7 @@ Module str.
     
     Module Impl_core_iter_traits_marker_FusedIterator_where_core_str_pattern_Pattern_P_for_core_str_iter_RMatchIndices_P.
       Definition Self (P : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::str::iter::RMatchIndices") [ P ].
+        Ty.apply (Ty.path "core::str::iter::RMatchIndices") [] [ P ].
       
       Axiom Implements :
         forall (P : Ty.t),
@@ -6626,22 +6738,23 @@ Module str.
     End Impl_core_iter_traits_marker_FusedIterator_where_core_str_pattern_Pattern_P_for_core_str_iter_RMatchIndices_P.
     
     Module Impl_core_iter_traits_double_ended_DoubleEndedIterator_where_core_str_pattern_Pattern_P_for_core_str_iter_MatchIndices_P.
-      Definition Self (P : Ty.t) : Ty.t := Ty.apply (Ty.path "core::str::iter::MatchIndices") [ P ].
+      Definition Self (P : Ty.t) : Ty.t :=
+        Ty.apply (Ty.path "core::str::iter::MatchIndices") [] [ P ].
       
       (*
                   fn next_back(&mut self) -> Option<$iterty> {
                       self.0.next_back()
                   }
       *)
-      Definition next_back (P : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition next_back (P : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self P in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "core::str::iter::MatchIndicesInternal") [ P ],
+                Ty.apply (Ty.path "core::str::iter::MatchIndicesInternal") [] [ P ],
                 "next_back",
                 []
               |),
@@ -6653,7 +6766,7 @@ Module str.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -6667,22 +6780,22 @@ Module str.
     
     Module Impl_core_iter_traits_double_ended_DoubleEndedIterator_where_core_str_pattern_Pattern_P_for_core_str_iter_RMatchIndices_P.
       Definition Self (P : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::str::iter::RMatchIndices") [ P ].
+        Ty.apply (Ty.path "core::str::iter::RMatchIndices") [] [ P ].
       
       (*
                   fn next_back(&mut self) -> Option<$iterty> {
                       self.0.next()
                   }
       *)
-      Definition next_back (P : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition next_back (P : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self P in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "core::str::iter::MatchIndicesInternal") [ P ],
+                Ty.apply (Ty.path "core::str::iter::MatchIndicesInternal") [] [ P ],
                 "next",
                 []
               |),
@@ -6694,7 +6807,7 @@ Module str.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -6708,7 +6821,7 @@ Module str.
     
     Module Impl_core_clone_Clone_where_core_str_pattern_Pattern_P_for_core_str_iter_MatchesInternal_P.
       Definition Self (P : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::str::iter::MatchesInternal") [ P ].
+        Ty.apply (Ty.path "core::str::iter::MatchesInternal") [] [ P ].
       
       (*
                   fn clone(&self) -> Self {
@@ -6716,10 +6829,10 @@ Module str.
                       $e
                   }
       *)
-      Definition clone (P : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition clone (P : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self P in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -6741,7 +6854,7 @@ Module str.
                   ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -6756,23 +6869,24 @@ Module str.
     (* StructTuple
       {
         name := "MatchesInternal";
+        const_params := [];
         ty_params := [ "P" ];
         fields := [ Ty.associated ];
       } *)
     
     Module Impl_core_fmt_Debug_where_core_str_pattern_Pattern_P_for_core_str_iter_MatchesInternal_P.
       Definition Self (P : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::str::iter::MatchesInternal") [ P ].
+        Ty.apply (Ty.path "core::str::iter::MatchesInternal") [] [ P ].
       
       (*
           fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
               f.debug_tuple("MatchesInternal").field(&self.0).finish()
           }
       *)
-      Definition fmt (P : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (P : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self P in
-        match τ, α with
-        | [], [ self; f ] =>
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -6811,7 +6925,7 @@ Module str.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -6825,7 +6939,7 @@ Module str.
     
     Module Impl_core_str_iter_MatchesInternal_P.
       Definition Self (P : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::str::iter::MatchesInternal") [ P ].
+        Ty.apply (Ty.path "core::str::iter::MatchesInternal") [] [ P ].
       
       (*
           fn next(&mut self) -> Option<&'a str> {
@@ -6836,23 +6950,24 @@ Module str.
               })
           }
       *)
-      Definition next (P : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition next (P : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self P in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "core::option::Option")
+                  []
                   [ Ty.tuple [ Ty.path "usize"; Ty.path "usize" ] ],
                 "map",
                 [
-                  Ty.apply (Ty.path "&") [ Ty.path "str" ];
+                  Ty.apply (Ty.path "&") [] [ Ty.path "str" ];
                   Ty.function
                     [ Ty.tuple [ Ty.tuple [ Ty.path "usize"; Ty.path "usize" ] ] ]
-                    (Ty.apply (Ty.path "&") [ Ty.path "str" ])
+                    (Ty.apply (Ty.path "&") [] [ Ty.path "str" ])
                 ]
               |),
               [
@@ -6893,6 +7008,7 @@ Module str.
                                     [
                                       Ty.apply
                                         (Ty.path "core::ops::range::Range")
+                                        []
                                         [ Ty.path "usize" ]
                                     ]
                                   |),
@@ -6924,7 +7040,7 @@ Module str.
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_next :
@@ -6943,23 +7059,24 @@ Module str.
               })
           }
       *)
-      Definition next_back (P : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition next_back (P : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self P in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "core::option::Option")
+                  []
                   [ Ty.tuple [ Ty.path "usize"; Ty.path "usize" ] ],
                 "map",
                 [
-                  Ty.apply (Ty.path "&") [ Ty.path "str" ];
+                  Ty.apply (Ty.path "&") [] [ Ty.path "str" ];
                   Ty.function
                     [ Ty.tuple [ Ty.tuple [ Ty.path "usize"; Ty.path "usize" ] ] ]
-                    (Ty.apply (Ty.path "&") [ Ty.path "str" ])
+                    (Ty.apply (Ty.path "&") [] [ Ty.path "str" ])
                 ]
               |),
               [
@@ -7000,6 +7117,7 @@ Module str.
                                     [
                                       Ty.apply
                                         (Ty.path "core::ops::range::Range")
+                                        []
                                         [ Ty.path "usize" ]
                                     ]
                                   |),
@@ -7031,7 +7149,7 @@ Module str.
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_next_back :
@@ -7042,12 +7160,13 @@ Module str.
     (* StructTuple
       {
         name := "Matches";
+        const_params := [];
         ty_params := [ "P" ];
-        fields := [ Ty.apply (Ty.path "core::str::iter::MatchesInternal") [ P ] ];
+        fields := [ Ty.apply (Ty.path "core::str::iter::MatchesInternal") [] [ P ] ];
       } *)
     
     Module Impl_core_fmt_Debug_where_core_str_pattern_Pattern_P_for_core_str_iter_Matches_P.
-      Definition Self (P : Ty.t) : Ty.t := Ty.apply (Ty.path "core::str::iter::Matches") [ P ].
+      Definition Self (P : Ty.t) : Ty.t := Ty.apply (Ty.path "core::str::iter::Matches") [] [ P ].
       
       (*
                   fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
@@ -7056,10 +7175,10 @@ Module str.
                           .finish()
                   }
       *)
-      Definition fmt (P : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (P : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self P in
-        match τ, α with
-        | [], [ self; f ] =>
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -7098,7 +7217,7 @@ Module str.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -7111,25 +7230,25 @@ Module str.
     End Impl_core_fmt_Debug_where_core_str_pattern_Pattern_P_for_core_str_iter_Matches_P.
     
     Module Impl_core_iter_traits_iterator_Iterator_where_core_str_pattern_Pattern_P_for_core_str_iter_Matches_P.
-      Definition Self (P : Ty.t) : Ty.t := Ty.apply (Ty.path "core::str::iter::Matches") [ P ].
+      Definition Self (P : Ty.t) : Ty.t := Ty.apply (Ty.path "core::str::iter::Matches") [] [ P ].
       
       (*             type Item = $iterty; *)
-      Definition _Item (P : Ty.t) : Ty.t := Ty.apply (Ty.path "&") [ Ty.path "str" ].
+      Definition _Item (P : Ty.t) : Ty.t := Ty.apply (Ty.path "&") [] [ Ty.path "str" ].
       
       (*
                   fn next(&mut self) -> Option<$iterty> {
                       self.0.next()
                   }
       *)
-      Definition next (P : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition next (P : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self P in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "core::str::iter::MatchesInternal") [ P ],
+                Ty.apply (Ty.path "core::str::iter::MatchesInternal") [] [ P ],
                 "next",
                 []
               |),
@@ -7141,7 +7260,7 @@ Module str.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -7155,17 +7274,17 @@ Module str.
     End Impl_core_iter_traits_iterator_Iterator_where_core_str_pattern_Pattern_P_for_core_str_iter_Matches_P.
     
     Module Impl_core_clone_Clone_where_core_str_pattern_Pattern_P_for_core_str_iter_Matches_P.
-      Definition Self (P : Ty.t) : Ty.t := Ty.apply (Ty.path "core::str::iter::Matches") [ P ].
+      Definition Self (P : Ty.t) : Ty.t := Ty.apply (Ty.path "core::str::iter::Matches") [] [ P ].
       
       (*
                   fn clone(&self) -> Self {
                       $forward_iterator(self.0.clone())
                   }
       *)
-      Definition clone (P : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition clone (P : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self P in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -7174,7 +7293,7 @@ Module str.
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::clone::Clone",
-                    Ty.apply (Ty.path "core::str::iter::MatchesInternal") [ P ],
+                    Ty.apply (Ty.path "core::str::iter::MatchesInternal") [] [ P ],
                     [],
                     "clone",
                     []
@@ -7188,7 +7307,7 @@ Module str.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -7203,12 +7322,13 @@ Module str.
     (* StructTuple
       {
         name := "RMatches";
+        const_params := [];
         ty_params := [ "P" ];
-        fields := [ Ty.apply (Ty.path "core::str::iter::MatchesInternal") [ P ] ];
+        fields := [ Ty.apply (Ty.path "core::str::iter::MatchesInternal") [] [ P ] ];
       } *)
     
     Module Impl_core_fmt_Debug_where_core_str_pattern_Pattern_P_for_core_str_iter_RMatches_P.
-      Definition Self (P : Ty.t) : Ty.t := Ty.apply (Ty.path "core::str::iter::RMatches") [ P ].
+      Definition Self (P : Ty.t) : Ty.t := Ty.apply (Ty.path "core::str::iter::RMatches") [] [ P ].
       
       (*
                   fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
@@ -7217,10 +7337,10 @@ Module str.
                           .finish()
                   }
       *)
-      Definition fmt (P : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (P : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self P in
-        match τ, α with
-        | [], [ self; f ] =>
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -7259,7 +7379,7 @@ Module str.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -7272,25 +7392,25 @@ Module str.
     End Impl_core_fmt_Debug_where_core_str_pattern_Pattern_P_for_core_str_iter_RMatches_P.
     
     Module Impl_core_iter_traits_iterator_Iterator_where_core_str_pattern_Pattern_P_for_core_str_iter_RMatches_P.
-      Definition Self (P : Ty.t) : Ty.t := Ty.apply (Ty.path "core::str::iter::RMatches") [ P ].
+      Definition Self (P : Ty.t) : Ty.t := Ty.apply (Ty.path "core::str::iter::RMatches") [] [ P ].
       
       (*             type Item = $iterty; *)
-      Definition _Item (P : Ty.t) : Ty.t := Ty.apply (Ty.path "&") [ Ty.path "str" ].
+      Definition _Item (P : Ty.t) : Ty.t := Ty.apply (Ty.path "&") [] [ Ty.path "str" ].
       
       (*
                   fn next(&mut self) -> Option<$iterty> {
                       self.0.next_back()
                   }
       *)
-      Definition next (P : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition next (P : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self P in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "core::str::iter::MatchesInternal") [ P ],
+                Ty.apply (Ty.path "core::str::iter::MatchesInternal") [] [ P ],
                 "next_back",
                 []
               |),
@@ -7302,7 +7422,7 @@ Module str.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -7316,17 +7436,17 @@ Module str.
     End Impl_core_iter_traits_iterator_Iterator_where_core_str_pattern_Pattern_P_for_core_str_iter_RMatches_P.
     
     Module Impl_core_clone_Clone_where_core_str_pattern_Pattern_P_for_core_str_iter_RMatches_P.
-      Definition Self (P : Ty.t) : Ty.t := Ty.apply (Ty.path "core::str::iter::RMatches") [ P ].
+      Definition Self (P : Ty.t) : Ty.t := Ty.apply (Ty.path "core::str::iter::RMatches") [] [ P ].
       
       (*
                   fn clone(&self) -> Self {
                       $reverse_iterator(self.0.clone())
                   }
       *)
-      Definition clone (P : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition clone (P : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self P in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -7335,7 +7455,7 @@ Module str.
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::clone::Clone",
-                    Ty.apply (Ty.path "core::str::iter::MatchesInternal") [ P ],
+                    Ty.apply (Ty.path "core::str::iter::MatchesInternal") [] [ P ],
                     [],
                     "clone",
                     []
@@ -7349,7 +7469,7 @@ Module str.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -7362,7 +7482,7 @@ Module str.
     End Impl_core_clone_Clone_where_core_str_pattern_Pattern_P_for_core_str_iter_RMatches_P.
     
     Module Impl_core_iter_traits_marker_FusedIterator_where_core_str_pattern_Pattern_P_for_core_str_iter_Matches_P.
-      Definition Self (P : Ty.t) : Ty.t := Ty.apply (Ty.path "core::str::iter::Matches") [ P ].
+      Definition Self (P : Ty.t) : Ty.t := Ty.apply (Ty.path "core::str::iter::Matches") [] [ P ].
       
       Axiom Implements :
         forall (P : Ty.t),
@@ -7374,7 +7494,7 @@ Module str.
     End Impl_core_iter_traits_marker_FusedIterator_where_core_str_pattern_Pattern_P_for_core_str_iter_Matches_P.
     
     Module Impl_core_iter_traits_marker_FusedIterator_where_core_str_pattern_Pattern_P_for_core_str_iter_RMatches_P.
-      Definition Self (P : Ty.t) : Ty.t := Ty.apply (Ty.path "core::str::iter::RMatches") [ P ].
+      Definition Self (P : Ty.t) : Ty.t := Ty.apply (Ty.path "core::str::iter::RMatches") [] [ P ].
       
       Axiom Implements :
         forall (P : Ty.t),
@@ -7386,22 +7506,22 @@ Module str.
     End Impl_core_iter_traits_marker_FusedIterator_where_core_str_pattern_Pattern_P_for_core_str_iter_RMatches_P.
     
     Module Impl_core_iter_traits_double_ended_DoubleEndedIterator_where_core_str_pattern_Pattern_P_for_core_str_iter_Matches_P.
-      Definition Self (P : Ty.t) : Ty.t := Ty.apply (Ty.path "core::str::iter::Matches") [ P ].
+      Definition Self (P : Ty.t) : Ty.t := Ty.apply (Ty.path "core::str::iter::Matches") [] [ P ].
       
       (*
                   fn next_back(&mut self) -> Option<$iterty> {
                       self.0.next_back()
                   }
       *)
-      Definition next_back (P : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition next_back (P : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self P in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "core::str::iter::MatchesInternal") [ P ],
+                Ty.apply (Ty.path "core::str::iter::MatchesInternal") [] [ P ],
                 "next_back",
                 []
               |),
@@ -7413,7 +7533,7 @@ Module str.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -7426,22 +7546,22 @@ Module str.
     End Impl_core_iter_traits_double_ended_DoubleEndedIterator_where_core_str_pattern_Pattern_P_for_core_str_iter_Matches_P.
     
     Module Impl_core_iter_traits_double_ended_DoubleEndedIterator_where_core_str_pattern_Pattern_P_for_core_str_iter_RMatches_P.
-      Definition Self (P : Ty.t) : Ty.t := Ty.apply (Ty.path "core::str::iter::RMatches") [ P ].
+      Definition Self (P : Ty.t) : Ty.t := Ty.apply (Ty.path "core::str::iter::RMatches") [] [ P ].
       
       (*
                   fn next_back(&mut self) -> Option<$iterty> {
                       self.0.next()
                   }
       *)
-      Definition next_back (P : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition next_back (P : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self P in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "core::str::iter::MatchesInternal") [ P ],
+                Ty.apply (Ty.path "core::str::iter::MatchesInternal") [] [ P ],
                 "next",
                 []
               |),
@@ -7453,7 +7573,7 @@ Module str.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -7468,13 +7588,15 @@ Module str.
     (* StructTuple
       {
         name := "Lines";
+        const_params := [];
         ty_params := [];
         fields :=
           [
             Ty.apply
               (Ty.path "core::iter::adapters::map::Map")
+              []
               [
-                Ty.apply (Ty.path "core::str::iter::SplitInclusive") [ Ty.path "char" ];
+                Ty.apply (Ty.path "core::str::iter::SplitInclusive") [] [ Ty.path "char" ];
                 Ty.path "core::str::LinesMap"
               ]
           ];
@@ -7484,9 +7606,9 @@ Module str.
       Definition Self : Ty.t := Ty.path "core::str::iter::Lines".
       
       (* Clone *)
-      Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -7497,8 +7619,9 @@ Module str.
                     "core::clone::Clone",
                     Ty.apply
                       (Ty.path "core::iter::adapters::map::Map")
+                      []
                       [
-                        Ty.apply (Ty.path "core::str::iter::SplitInclusive") [ Ty.path "char" ];
+                        Ty.apply (Ty.path "core::str::iter::SplitInclusive") [] [ Ty.path "char" ];
                         Ty.path "core::str::LinesMap"
                       ],
                     [],
@@ -7514,7 +7637,7 @@ Module str.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -7529,9 +7652,9 @@ Module str.
       Definition Self : Ty.t := Ty.path "core::str::iter::Lines".
       
       (* Debug *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -7555,7 +7678,7 @@ Module str.
                   |))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -7570,16 +7693,16 @@ Module str.
       Definition Self : Ty.t := Ty.path "core::str::iter::Lines".
       
       (*     type Item = &'a str; *)
-      Definition _Item : Ty.t := Ty.apply (Ty.path "&") [ Ty.path "str" ].
+      Definition _Item : Ty.t := Ty.apply (Ty.path "&") [] [ Ty.path "str" ].
       
       (*
           fn next(&mut self) -> Option<&'a str> {
               self.0.next()
           }
       *)
-      Definition next (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition next (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -7587,8 +7710,9 @@ Module str.
                 "core::iter::traits::iterator::Iterator",
                 Ty.apply
                   (Ty.path "core::iter::adapters::map::Map")
+                  []
                   [
-                    Ty.apply (Ty.path "core::str::iter::SplitInclusive") [ Ty.path "char" ];
+                    Ty.apply (Ty.path "core::str::iter::SplitInclusive") [] [ Ty.path "char" ];
                     Ty.path "core::str::LinesMap"
                   ],
                 [],
@@ -7603,7 +7727,7 @@ Module str.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -7611,9 +7735,9 @@ Module str.
               self.0.size_hint()
           }
       *)
-      Definition size_hint (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition size_hint (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -7621,8 +7745,9 @@ Module str.
                 "core::iter::traits::iterator::Iterator",
                 Ty.apply
                   (Ty.path "core::iter::adapters::map::Map")
+                  []
                   [
-                    Ty.apply (Ty.path "core::str::iter::SplitInclusive") [ Ty.path "char" ];
+                    Ty.apply (Ty.path "core::str::iter::SplitInclusive") [] [ Ty.path "char" ];
                     Ty.path "core::str::LinesMap"
                   ],
                 [],
@@ -7637,7 +7762,7 @@ Module str.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -7645,9 +7770,9 @@ Module str.
               self.next_back()
           }
       *)
-      Definition last (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition last (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -7660,7 +7785,7 @@ Module str.
               |),
               [ self ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -7685,9 +7810,9 @@ Module str.
               self.0.next_back()
           }
       *)
-      Definition next_back (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition next_back (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -7695,8 +7820,9 @@ Module str.
                 "core::iter::traits::double_ended::DoubleEndedIterator",
                 Ty.apply
                   (Ty.path "core::iter::adapters::map::Map")
+                  []
                   [
-                    Ty.apply (Ty.path "core::str::iter::SplitInclusive") [ Ty.path "char" ];
+                    Ty.apply (Ty.path "core::str::iter::SplitInclusive") [] [ Ty.path "char" ];
                     Ty.path "core::str::LinesMap"
                   ],
                 [],
@@ -7711,7 +7837,7 @@ Module str.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -7736,6 +7862,7 @@ Module str.
     (* StructTuple
       {
         name := "LinesAny";
+        const_params := [];
         ty_params := [];
         fields := [ Ty.path "core::str::iter::Lines" ];
       } *)
@@ -7744,9 +7871,9 @@ Module str.
       Definition Self : Ty.t := Ty.path "core::str::iter::LinesAny".
       
       (* Clone *)
-      Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -7769,7 +7896,7 @@ Module str.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -7784,9 +7911,9 @@ Module str.
       Definition Self : Ty.t := Ty.path "core::str::iter::LinesAny".
       
       (* Debug *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -7810,7 +7937,7 @@ Module str.
                   |))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -7825,16 +7952,16 @@ Module str.
       Definition Self : Ty.t := Ty.path "core::str::iter::LinesAny".
       
       (*     type Item = &'a str; *)
-      Definition _Item : Ty.t := Ty.apply (Ty.path "&") [ Ty.path "str" ].
+      Definition _Item : Ty.t := Ty.apply (Ty.path "&") [] [ Ty.path "str" ].
       
       (*
           fn next(&mut self) -> Option<&'a str> {
               self.0.next()
           }
       *)
-      Definition next (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition next (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -7853,7 +7980,7 @@ Module str.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -7861,9 +7988,9 @@ Module str.
               self.0.size_hint()
           }
       *)
-      Definition size_hint (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition size_hint (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -7882,7 +8009,7 @@ Module str.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -7906,9 +8033,9 @@ Module str.
               self.0.next_back()
           }
       *)
-      Definition next_back (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition next_back (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -7927,7 +8054,7 @@ Module str.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -7952,14 +8079,19 @@ Module str.
     (* StructRecord
       {
         name := "SplitWhitespace";
+        const_params := [];
         ty_params := [];
         fields :=
           [
             ("inner",
               Ty.apply
                 (Ty.path "core::iter::adapters::filter::Filter")
+                []
                 [
-                  Ty.apply (Ty.path "core::str::iter::Split") [ Ty.path "core::str::IsWhitespace" ];
+                  Ty.apply
+                    (Ty.path "core::str::iter::Split")
+                    []
+                    [ Ty.path "core::str::IsWhitespace" ];
                   Ty.path "core::str::IsNotEmpty"
                 ])
           ];
@@ -7969,9 +8101,9 @@ Module str.
       Definition Self : Ty.t := Ty.path "core::str::iter::SplitWhitespace".
       
       (* Clone *)
-      Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructRecord
@@ -7983,9 +8115,11 @@ Module str.
                       "core::clone::Clone",
                       Ty.apply
                         (Ty.path "core::iter::adapters::filter::Filter")
+                        []
                         [
                           Ty.apply
                             (Ty.path "core::str::iter::Split")
+                            []
                             [ Ty.path "core::str::IsWhitespace" ];
                           Ty.path "core::str::IsNotEmpty"
                         ],
@@ -8002,7 +8136,7 @@ Module str.
                     ]
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -8017,9 +8151,9 @@ Module str.
       Definition Self : Ty.t := Ty.path "core::str::iter::SplitWhitespace".
       
       (* Debug *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -8044,7 +8178,7 @@ Module str.
                   |))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -8058,18 +8192,22 @@ Module str.
     (* StructRecord
       {
         name := "SplitAsciiWhitespace";
+        const_params := [];
         ty_params := [];
         fields :=
           [
             ("inner",
               Ty.apply
                 (Ty.path "core::iter::adapters::map::Map")
+                []
                 [
                   Ty.apply
                     (Ty.path "core::iter::adapters::filter::Filter")
+                    []
                     [
                       Ty.apply
                         (Ty.path "core::slice::iter::Split")
+                        []
                         [ Ty.path "u8"; Ty.path "core::str::IsAsciiWhitespace" ];
                       Ty.path "core::str::BytesIsNotEmpty"
                     ];
@@ -8082,9 +8220,9 @@ Module str.
       Definition Self : Ty.t := Ty.path "core::str::iter::SplitAsciiWhitespace".
       
       (* Clone *)
-      Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructRecord
@@ -8096,12 +8234,15 @@ Module str.
                       "core::clone::Clone",
                       Ty.apply
                         (Ty.path "core::iter::adapters::map::Map")
+                        []
                         [
                           Ty.apply
                             (Ty.path "core::iter::adapters::filter::Filter")
+                            []
                             [
                               Ty.apply
                                 (Ty.path "core::slice::iter::Split")
+                                []
                                 [ Ty.path "u8"; Ty.path "core::str::IsAsciiWhitespace" ];
                               Ty.path "core::str::BytesIsNotEmpty"
                             ];
@@ -8120,7 +8261,7 @@ Module str.
                     ]
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -8135,9 +8276,9 @@ Module str.
       Definition Self : Ty.t := Ty.path "core::str::iter::SplitAsciiWhitespace".
       
       (* Debug *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -8162,7 +8303,7 @@ Module str.
                   |))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -8176,24 +8317,25 @@ Module str.
     (* StructTuple
       {
         name := "SplitInclusive";
+        const_params := [];
         ty_params := [ "P" ];
-        fields := [ Ty.apply (Ty.path "core::str::iter::SplitInternal") [ P ] ];
+        fields := [ Ty.apply (Ty.path "core::str::iter::SplitInternal") [] [ P ] ];
       } *)
     
     Module Impl_core_iter_traits_iterator_Iterator_for_core_str_iter_SplitWhitespace.
       Definition Self : Ty.t := Ty.path "core::str::iter::SplitWhitespace".
       
       (*     type Item = &'a str; *)
-      Definition _Item : Ty.t := Ty.apply (Ty.path "&") [ Ty.path "str" ].
+      Definition _Item : Ty.t := Ty.apply (Ty.path "&") [] [ Ty.path "str" ].
       
       (*
           fn next(&mut self) -> Option<&'a str> {
               self.inner.next()
           }
       *)
-      Definition next (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition next (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -8201,9 +8343,11 @@ Module str.
                 "core::iter::traits::iterator::Iterator",
                 Ty.apply
                   (Ty.path "core::iter::adapters::filter::Filter")
+                  []
                   [
                     Ty.apply
                       (Ty.path "core::str::iter::Split")
+                      []
                       [ Ty.path "core::str::IsWhitespace" ];
                     Ty.path "core::str::IsNotEmpty"
                   ],
@@ -8219,7 +8363,7 @@ Module str.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -8227,9 +8371,9 @@ Module str.
               self.inner.size_hint()
           }
       *)
-      Definition size_hint (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition size_hint (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -8237,9 +8381,11 @@ Module str.
                 "core::iter::traits::iterator::Iterator",
                 Ty.apply
                   (Ty.path "core::iter::adapters::filter::Filter")
+                  []
                   [
                     Ty.apply
                       (Ty.path "core::str::iter::Split")
+                      []
                       [ Ty.path "core::str::IsWhitespace" ];
                     Ty.path "core::str::IsNotEmpty"
                   ],
@@ -8255,7 +8401,7 @@ Module str.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -8263,9 +8409,9 @@ Module str.
               self.next_back()
           }
       *)
-      Definition last (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition last (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -8278,7 +8424,7 @@ Module str.
               |),
               [ self ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -8303,9 +8449,9 @@ Module str.
               self.inner.next_back()
           }
       *)
-      Definition next_back (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition next_back (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -8313,9 +8459,11 @@ Module str.
                 "core::iter::traits::double_ended::DoubleEndedIterator",
                 Ty.apply
                   (Ty.path "core::iter::adapters::filter::Filter")
+                  []
                   [
                     Ty.apply
                       (Ty.path "core::str::iter::Split")
+                      []
                       [ Ty.path "core::str::IsWhitespace" ];
                     Ty.path "core::str::IsNotEmpty"
                   ],
@@ -8331,7 +8479,7 @@ Module str.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -8361,14 +8509,17 @@ Module str.
               self.inner.iter.remainder()
           }
       *)
-      Definition remainder (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition remainder (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "core::str::iter::Split") [ Ty.path "core::str::IsWhitespace" ],
+                Ty.apply
+                  (Ty.path "core::str::iter::Split")
+                  []
+                  [ Ty.path "core::str::IsWhitespace" ],
                 "remainder",
                 []
               |),
@@ -8384,7 +8535,7 @@ Module str.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_remainder : M.IsAssociatedFunction Self "remainder" remainder.
@@ -8394,16 +8545,16 @@ Module str.
       Definition Self : Ty.t := Ty.path "core::str::iter::SplitAsciiWhitespace".
       
       (*     type Item = &'a str; *)
-      Definition _Item : Ty.t := Ty.apply (Ty.path "&") [ Ty.path "str" ].
+      Definition _Item : Ty.t := Ty.apply (Ty.path "&") [] [ Ty.path "str" ].
       
       (*
           fn next(&mut self) -> Option<&'a str> {
               self.inner.next()
           }
       *)
-      Definition next (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition next (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -8411,12 +8562,15 @@ Module str.
                 "core::iter::traits::iterator::Iterator",
                 Ty.apply
                   (Ty.path "core::iter::adapters::map::Map")
+                  []
                   [
                     Ty.apply
                       (Ty.path "core::iter::adapters::filter::Filter")
+                      []
                       [
                         Ty.apply
                           (Ty.path "core::slice::iter::Split")
+                          []
                           [ Ty.path "u8"; Ty.path "core::str::IsAsciiWhitespace" ];
                         Ty.path "core::str::BytesIsNotEmpty"
                       ];
@@ -8434,7 +8588,7 @@ Module str.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -8442,9 +8596,9 @@ Module str.
               self.inner.size_hint()
           }
       *)
-      Definition size_hint (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition size_hint (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -8452,12 +8606,15 @@ Module str.
                 "core::iter::traits::iterator::Iterator",
                 Ty.apply
                   (Ty.path "core::iter::adapters::map::Map")
+                  []
                   [
                     Ty.apply
                       (Ty.path "core::iter::adapters::filter::Filter")
+                      []
                       [
                         Ty.apply
                           (Ty.path "core::slice::iter::Split")
+                          []
                           [ Ty.path "u8"; Ty.path "core::str::IsAsciiWhitespace" ];
                         Ty.path "core::str::BytesIsNotEmpty"
                       ];
@@ -8475,7 +8632,7 @@ Module str.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -8483,9 +8640,9 @@ Module str.
               self.next_back()
           }
       *)
-      Definition last (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition last (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -8498,7 +8655,7 @@ Module str.
               |),
               [ self ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -8523,9 +8680,9 @@ Module str.
               self.inner.next_back()
           }
       *)
-      Definition next_back (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition next_back (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -8533,12 +8690,15 @@ Module str.
                 "core::iter::traits::double_ended::DoubleEndedIterator",
                 Ty.apply
                   (Ty.path "core::iter::adapters::map::Map")
+                  []
                   [
                     Ty.apply
                       (Ty.path "core::iter::adapters::filter::Filter")
+                      []
                       [
                         Ty.apply
                           (Ty.path "core::slice::iter::Split")
+                          []
                           [ Ty.path "u8"; Ty.path "core::str::IsAsciiWhitespace" ];
                         Ty.path "core::str::BytesIsNotEmpty"
                       ];
@@ -8556,7 +8716,7 @@ Module str.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -8591,9 +8751,9 @@ Module str.
               Some(unsafe { crate::str::from_utf8_unchecked(&self.inner.iter.iter.v) })
           }
       *)
-      Definition remainder (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition remainder (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.catch_return (|
@@ -8668,7 +8828,7 @@ Module str.
                   |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_remainder : M.IsAssociatedFunction Self "remainder" remainder.
@@ -8676,25 +8836,25 @@ Module str.
     
     Module Impl_core_iter_traits_iterator_Iterator_where_core_str_pattern_Pattern_P_for_core_str_iter_SplitInclusive_P.
       Definition Self (P : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::str::iter::SplitInclusive") [ P ].
+        Ty.apply (Ty.path "core::str::iter::SplitInclusive") [] [ P ].
       
       (*     type Item = &'a str; *)
-      Definition _Item (P : Ty.t) : Ty.t := Ty.apply (Ty.path "&") [ Ty.path "str" ].
+      Definition _Item (P : Ty.t) : Ty.t := Ty.apply (Ty.path "&") [] [ Ty.path "str" ].
       
       (*
           fn next(&mut self) -> Option<&'a str> {
               self.0.next_inclusive()
           }
       *)
-      Definition next (P : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition next (P : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self P in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "core::str::iter::SplitInternal") [ P ],
+                Ty.apply (Ty.path "core::str::iter::SplitInternal") [] [ P ],
                 "next_inclusive",
                 []
               |),
@@ -8706,7 +8866,7 @@ Module str.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -8721,17 +8881,17 @@ Module str.
     
     Module Impl_core_fmt_Debug_where_core_str_pattern_Pattern_P_for_core_str_iter_SplitInclusive_P.
       Definition Self (P : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::str::iter::SplitInclusive") [ P ].
+        Ty.apply (Ty.path "core::str::iter::SplitInclusive") [] [ P ].
       
       (*
           fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
               f.debug_struct("SplitInclusive").field("0", &self.0).finish()
           }
       *)
-      Definition fmt (P : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (P : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self P in
-        match τ, α with
-        | [], [ self; f ] =>
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -8771,7 +8931,7 @@ Module str.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -8785,17 +8945,17 @@ Module str.
     
     Module Impl_core_clone_Clone_where_core_str_pattern_Pattern_P_for_core_str_iter_SplitInclusive_P.
       Definition Self (P : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::str::iter::SplitInclusive") [ P ].
+        Ty.apply (Ty.path "core::str::iter::SplitInclusive") [] [ P ].
       
       (*
           fn clone(&self) -> Self {
               SplitInclusive(self.0.clone())
           }
       *)
-      Definition clone (P : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition clone (P : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self P in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -8804,7 +8964,7 @@ Module str.
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::clone::Clone",
-                    Ty.apply (Ty.path "core::str::iter::SplitInternal") [ P ],
+                    Ty.apply (Ty.path "core::str::iter::SplitInternal") [] [ P ],
                     [],
                     "clone",
                     []
@@ -8818,7 +8978,7 @@ Module str.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -8832,22 +8992,22 @@ Module str.
     
     Module Impl_core_iter_traits_double_ended_DoubleEndedIterator_where_core_str_pattern_Pattern_P_for_core_str_iter_SplitInclusive_P.
       Definition Self (P : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::str::iter::SplitInclusive") [ P ].
+        Ty.apply (Ty.path "core::str::iter::SplitInclusive") [] [ P ].
       
       (*
           fn next_back(&mut self) -> Option<&'a str> {
               self.0.next_back_inclusive()
           }
       *)
-      Definition next_back (P : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition next_back (P : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self P in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "core::str::iter::SplitInternal") [ P ],
+                Ty.apply (Ty.path "core::str::iter::SplitInternal") [] [ P ],
                 "next_back_inclusive",
                 []
               |),
@@ -8859,7 +9019,7 @@ Module str.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -8873,7 +9033,7 @@ Module str.
     
     Module Impl_core_iter_traits_marker_FusedIterator_where_core_str_pattern_Pattern_P_for_core_str_iter_SplitInclusive_P.
       Definition Self (P : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::str::iter::SplitInclusive") [ P ].
+        Ty.apply (Ty.path "core::str::iter::SplitInclusive") [] [ P ].
       
       Axiom Implements :
         forall (P : Ty.t),
@@ -8886,22 +9046,22 @@ Module str.
     
     Module Impl_core_str_iter_SplitInclusive_P.
       Definition Self (P : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::str::iter::SplitInclusive") [ P ].
+        Ty.apply (Ty.path "core::str::iter::SplitInclusive") [] [ P ].
       
       (*
           pub fn remainder(&self) -> Option<&'a str> {
               self.0.remainder()
           }
       *)
-      Definition remainder (P : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition remainder (P : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self P in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "core::str::iter::SplitInternal") [ P ],
+                Ty.apply (Ty.path "core::str::iter::SplitInternal") [] [ P ],
                 "remainder",
                 []
               |),
@@ -8913,7 +9073,7 @@ Module str.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_remainder :
@@ -8924,6 +9084,7 @@ Module str.
     (* StructRecord
       {
         name := "EncodeUtf16";
+        const_params := [];
         ty_params := [];
         fields := [ ("chars", Ty.path "core::str::iter::Chars"); ("extra", Ty.path "u16") ];
       } *)
@@ -8932,9 +9093,9 @@ Module str.
       Definition Self : Ty.t := Ty.path "core::str::iter::EncodeUtf16".
       
       (* Clone *)
-      Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructRecord
@@ -8969,7 +9130,7 @@ Module str.
                     ]
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -8988,9 +9149,9 @@ Module str.
               f.debug_struct("EncodeUtf16").finish_non_exhaustive()
           }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -9013,7 +9174,7 @@ Module str.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -9048,9 +9209,9 @@ Module str.
               })
           }
       *)
-      Definition next (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition next (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.catch_return (|
@@ -9108,11 +9269,11 @@ Module str.
                         fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                       ]
                     |) in
-                  let~ buf := M.alloc (| repeat (Value.Integer 0) 2 |) in
+                  let~ buf := M.alloc (| repeat (| Value.Integer 0, Value.Integer 2 |) |) in
                   M.alloc (|
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "core::option::Option") [ Ty.path "char" ],
+                        Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "char" ],
                         "map",
                         [ Ty.path "u16"; Ty.function [ Ty.tuple [ Ty.path "char" ] ] (Ty.path "u16")
                         ]
@@ -9150,7 +9311,7 @@ Module str.
                                             M.alloc (|
                                               M.call_closure (|
                                                 M.get_associated_function (|
-                                                  Ty.apply (Ty.path "slice") [ Ty.path "u16" ],
+                                                  Ty.apply (Ty.path "slice") [] [ Ty.path "u16" ],
                                                   "len",
                                                   []
                                                 |),
@@ -9220,7 +9381,7 @@ Module str.
                   |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -9243,9 +9404,9 @@ Module str.
               }
           }
       *)
-      Definition size_hint (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition size_hint (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -9254,7 +9415,7 @@ Module str.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::iter::traits::exact_size::ExactSizeIterator",
-                      Ty.apply (Ty.path "core::slice::iter::Iter") [ Ty.path "u8" ],
+                      Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ],
                       [],
                       "len",
                       []
@@ -9321,7 +9482,7 @@ Module str.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -9351,22 +9512,27 @@ Module str.
     (* StructRecord
       {
         name := "EscapeDebug";
+        const_params := [];
         ty_params := [];
         fields :=
           [
             ("inner",
               Ty.apply
                 (Ty.path "core::iter::adapters::chain::Chain")
+                []
                 [
                   Ty.apply
                     (Ty.path "core::iter::adapters::flatten::Flatten")
+                    []
                     [
                       Ty.apply
                         (Ty.path "core::option::IntoIter")
+                        []
                         [ Ty.path "core::char::EscapeDebug" ]
                     ];
                   Ty.apply
                     (Ty.path "core::iter::adapters::flatten::FlatMap")
+                    []
                     [
                       Ty.path "core::str::iter::Chars";
                       Ty.path "core::char::EscapeDebug";
@@ -9380,9 +9546,9 @@ Module str.
       Definition Self : Ty.t := Ty.path "core::str::iter::EscapeDebug".
       
       (* Clone *)
-      Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructRecord
@@ -9394,16 +9560,20 @@ Module str.
                       "core::clone::Clone",
                       Ty.apply
                         (Ty.path "core::iter::adapters::chain::Chain")
+                        []
                         [
                           Ty.apply
                             (Ty.path "core::iter::adapters::flatten::Flatten")
+                            []
                             [
                               Ty.apply
                                 (Ty.path "core::option::IntoIter")
+                                []
                                 [ Ty.path "core::char::EscapeDebug" ]
                             ];
                           Ty.apply
                             (Ty.path "core::iter::adapters::flatten::FlatMap")
+                            []
                             [
                               Ty.path "core::str::iter::Chars";
                               Ty.path "core::char::EscapeDebug";
@@ -9423,7 +9593,7 @@ Module str.
                     ]
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -9438,9 +9608,9 @@ Module str.
       Definition Self : Ty.t := Ty.path "core::str::iter::EscapeDebug".
       
       (* Debug *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -9465,7 +9635,7 @@ Module str.
                   |))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -9479,12 +9649,14 @@ Module str.
     (* StructRecord
       {
         name := "EscapeDefault";
+        const_params := [];
         ty_params := [];
         fields :=
           [
             ("inner",
               Ty.apply
                 (Ty.path "core::iter::adapters::flatten::FlatMap")
+                []
                 [
                   Ty.path "core::str::iter::Chars";
                   Ty.path "core::char::EscapeDefault";
@@ -9497,9 +9669,9 @@ Module str.
       Definition Self : Ty.t := Ty.path "core::str::iter::EscapeDefault".
       
       (* Clone *)
-      Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructRecord
@@ -9511,6 +9683,7 @@ Module str.
                       "core::clone::Clone",
                       Ty.apply
                         (Ty.path "core::iter::adapters::flatten::FlatMap")
+                        []
                         [
                           Ty.path "core::str::iter::Chars";
                           Ty.path "core::char::EscapeDefault";
@@ -9529,7 +9702,7 @@ Module str.
                     ]
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -9544,9 +9717,9 @@ Module str.
       Definition Self : Ty.t := Ty.path "core::str::iter::EscapeDefault".
       
       (* Debug *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -9571,7 +9744,7 @@ Module str.
                   |))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -9585,12 +9758,14 @@ Module str.
     (* StructRecord
       {
         name := "EscapeUnicode";
+        const_params := [];
         ty_params := [];
         fields :=
           [
             ("inner",
               Ty.apply
                 (Ty.path "core::iter::adapters::flatten::FlatMap")
+                []
                 [
                   Ty.path "core::str::iter::Chars";
                   Ty.path "core::char::EscapeUnicode";
@@ -9603,9 +9778,9 @@ Module str.
       Definition Self : Ty.t := Ty.path "core::str::iter::EscapeUnicode".
       
       (* Clone *)
-      Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructRecord
@@ -9617,6 +9792,7 @@ Module str.
                       "core::clone::Clone",
                       Ty.apply
                         (Ty.path "core::iter::adapters::flatten::FlatMap")
+                        []
                         [
                           Ty.path "core::str::iter::Chars";
                           Ty.path "core::char::EscapeUnicode";
@@ -9635,7 +9811,7 @@ Module str.
                     ]
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -9650,9 +9826,9 @@ Module str.
       Definition Self : Ty.t := Ty.path "core::str::iter::EscapeUnicode".
       
       (* Debug *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -9677,7 +9853,7 @@ Module str.
                   |))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -9696,9 +9872,9 @@ Module str.
                       self.clone().try_for_each(|c| f.write_char(c))
                   }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -9713,9 +9889,11 @@ Module str.
                     [ Ty.tuple [ Ty.path "char" ] ]
                     (Ty.apply
                       (Ty.path "core::result::Result")
+                      []
                       [ Ty.tuple []; Ty.path "core::fmt::Error" ]);
                   Ty.apply
                     (Ty.path "core::result::Result")
+                    []
                     [ Ty.tuple []; Ty.path "core::fmt::Error" ]
                 ]
               |),
@@ -9759,7 +9937,7 @@ Module str.
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -9777,9 +9955,9 @@ Module str.
       Definition _Item : Ty.t := Ty.path "char".
       
       (*             fn next(&mut self) -> Option<char> { self.inner.next() } *)
-      Definition next (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition next (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -9787,16 +9965,20 @@ Module str.
                 "core::iter::traits::iterator::Iterator",
                 Ty.apply
                   (Ty.path "core::iter::adapters::chain::Chain")
+                  []
                   [
                     Ty.apply
                       (Ty.path "core::iter::adapters::flatten::Flatten")
+                      []
                       [
                         Ty.apply
                           (Ty.path "core::option::IntoIter")
+                          []
                           [ Ty.path "core::char::EscapeDebug" ]
                       ];
                     Ty.apply
                       (Ty.path "core::iter::adapters::flatten::FlatMap")
+                      []
                       [
                         Ty.path "core::str::iter::Chars";
                         Ty.path "core::char::EscapeDebug";
@@ -9815,13 +9997,13 @@ Module str.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*             fn size_hint(&self) -> (usize, Option<usize>) { self.inner.size_hint() } *)
-      Definition size_hint (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition size_hint (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -9829,16 +10011,20 @@ Module str.
                 "core::iter::traits::iterator::Iterator",
                 Ty.apply
                   (Ty.path "core::iter::adapters::chain::Chain")
+                  []
                   [
                     Ty.apply
                       (Ty.path "core::iter::adapters::flatten::Flatten")
+                      []
                       [
                         Ty.apply
                           (Ty.path "core::option::IntoIter")
+                          []
                           [ Ty.path "core::char::EscapeDebug" ]
                       ];
                     Ty.apply
                       (Ty.path "core::iter::adapters::flatten::FlatMap")
+                      []
                       [
                         Ty.path "core::str::iter::Chars";
                         Ty.path "core::char::EscapeDebug";
@@ -9857,7 +10043,7 @@ Module str.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -9867,9 +10053,9 @@ Module str.
                       self.inner.try_fold(init, fold)
                   }
       *)
-      Definition try_fold (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ Acc; Fold; R ], [ self; init; fold ] =>
+      Definition try_fold (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ Acc; Fold; R ], [ self; init; fold ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let init := M.alloc (| init |) in
@@ -9879,16 +10065,20 @@ Module str.
                 "core::iter::traits::iterator::Iterator",
                 Ty.apply
                   (Ty.path "core::iter::adapters::chain::Chain")
+                  []
                   [
                     Ty.apply
                       (Ty.path "core::iter::adapters::flatten::Flatten")
+                      []
                       [
                         Ty.apply
                           (Ty.path "core::option::IntoIter")
+                          []
                           [ Ty.path "core::char::EscapeDebug" ]
                       ];
                     Ty.apply
                       (Ty.path "core::iter::adapters::flatten::FlatMap")
+                      []
                       [
                         Ty.path "core::str::iter::Chars";
                         Ty.path "core::char::EscapeDebug";
@@ -9909,7 +10099,7 @@ Module str.
                 M.read (| fold |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -9919,9 +10109,9 @@ Module str.
                       self.inner.fold(init, fold)
                   }
       *)
-      Definition fold (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ Acc; Fold ], [ self; init; fold ] =>
+      Definition fold (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ Acc; Fold ], [ self; init; fold ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let init := M.alloc (| init |) in
@@ -9931,16 +10121,20 @@ Module str.
                 "core::iter::traits::iterator::Iterator",
                 Ty.apply
                   (Ty.path "core::iter::adapters::chain::Chain")
+                  []
                   [
                     Ty.apply
                       (Ty.path "core::iter::adapters::flatten::Flatten")
+                      []
                       [
                         Ty.apply
                           (Ty.path "core::option::IntoIter")
+                          []
                           [ Ty.path "core::char::EscapeDebug" ]
                       ];
                     Ty.apply
                       (Ty.path "core::iter::adapters::flatten::FlatMap")
+                      []
                       [
                         Ty.path "core::str::iter::Chars";
                         Ty.path "core::char::EscapeDebug";
@@ -9963,7 +10157,7 @@ Module str.
                 M.read (| fold |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -10000,9 +10194,9 @@ Module str.
                       self.clone().try_for_each(|c| f.write_char(c))
                   }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -10017,9 +10211,11 @@ Module str.
                     [ Ty.tuple [ Ty.path "char" ] ]
                     (Ty.apply
                       (Ty.path "core::result::Result")
+                      []
                       [ Ty.tuple []; Ty.path "core::fmt::Error" ]);
                   Ty.apply
                     (Ty.path "core::result::Result")
+                    []
                     [ Ty.tuple []; Ty.path "core::fmt::Error" ]
                 ]
               |),
@@ -10063,7 +10259,7 @@ Module str.
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -10081,9 +10277,9 @@ Module str.
       Definition _Item : Ty.t := Ty.path "char".
       
       (*             fn next(&mut self) -> Option<char> { self.inner.next() } *)
-      Definition next (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition next (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -10091,6 +10287,7 @@ Module str.
                 "core::iter::traits::iterator::Iterator",
                 Ty.apply
                   (Ty.path "core::iter::adapters::flatten::FlatMap")
+                  []
                   [
                     Ty.path "core::str::iter::Chars";
                     Ty.path "core::char::EscapeDefault";
@@ -10108,13 +10305,13 @@ Module str.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*             fn size_hint(&self) -> (usize, Option<usize>) { self.inner.size_hint() } *)
-      Definition size_hint (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition size_hint (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -10122,6 +10319,7 @@ Module str.
                 "core::iter::traits::iterator::Iterator",
                 Ty.apply
                   (Ty.path "core::iter::adapters::flatten::FlatMap")
+                  []
                   [
                     Ty.path "core::str::iter::Chars";
                     Ty.path "core::char::EscapeDefault";
@@ -10139,7 +10337,7 @@ Module str.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -10149,9 +10347,9 @@ Module str.
                       self.inner.try_fold(init, fold)
                   }
       *)
-      Definition try_fold (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ Acc; Fold; R ], [ self; init; fold ] =>
+      Definition try_fold (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ Acc; Fold; R ], [ self; init; fold ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let init := M.alloc (| init |) in
@@ -10161,6 +10359,7 @@ Module str.
                 "core::iter::traits::iterator::Iterator",
                 Ty.apply
                   (Ty.path "core::iter::adapters::flatten::FlatMap")
+                  []
                   [
                     Ty.path "core::str::iter::Chars";
                     Ty.path "core::char::EscapeDefault";
@@ -10180,7 +10379,7 @@ Module str.
                 M.read (| fold |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -10190,9 +10389,9 @@ Module str.
                       self.inner.fold(init, fold)
                   }
       *)
-      Definition fold (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ Acc; Fold ], [ self; init; fold ] =>
+      Definition fold (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ Acc; Fold ], [ self; init; fold ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let init := M.alloc (| init |) in
@@ -10202,6 +10401,7 @@ Module str.
                 "core::iter::traits::iterator::Iterator",
                 Ty.apply
                   (Ty.path "core::iter::adapters::flatten::FlatMap")
+                  []
                   [
                     Ty.path "core::str::iter::Chars";
                     Ty.path "core::char::EscapeDefault";
@@ -10223,7 +10423,7 @@ Module str.
                 M.read (| fold |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -10260,9 +10460,9 @@ Module str.
                       self.clone().try_for_each(|c| f.write_char(c))
                   }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -10277,9 +10477,11 @@ Module str.
                     [ Ty.tuple [ Ty.path "char" ] ]
                     (Ty.apply
                       (Ty.path "core::result::Result")
+                      []
                       [ Ty.tuple []; Ty.path "core::fmt::Error" ]);
                   Ty.apply
                     (Ty.path "core::result::Result")
+                    []
                     [ Ty.tuple []; Ty.path "core::fmt::Error" ]
                 ]
               |),
@@ -10323,7 +10525,7 @@ Module str.
                       end))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -10341,9 +10543,9 @@ Module str.
       Definition _Item : Ty.t := Ty.path "char".
       
       (*             fn next(&mut self) -> Option<char> { self.inner.next() } *)
-      Definition next (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition next (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -10351,6 +10553,7 @@ Module str.
                 "core::iter::traits::iterator::Iterator",
                 Ty.apply
                   (Ty.path "core::iter::adapters::flatten::FlatMap")
+                  []
                   [
                     Ty.path "core::str::iter::Chars";
                     Ty.path "core::char::EscapeUnicode";
@@ -10368,13 +10571,13 @@ Module str.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*             fn size_hint(&self) -> (usize, Option<usize>) { self.inner.size_hint() } *)
-      Definition size_hint (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition size_hint (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -10382,6 +10585,7 @@ Module str.
                 "core::iter::traits::iterator::Iterator",
                 Ty.apply
                   (Ty.path "core::iter::adapters::flatten::FlatMap")
+                  []
                   [
                     Ty.path "core::str::iter::Chars";
                     Ty.path "core::char::EscapeUnicode";
@@ -10399,7 +10603,7 @@ Module str.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -10409,9 +10613,9 @@ Module str.
                       self.inner.try_fold(init, fold)
                   }
       *)
-      Definition try_fold (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ Acc; Fold; R ], [ self; init; fold ] =>
+      Definition try_fold (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ Acc; Fold; R ], [ self; init; fold ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let init := M.alloc (| init |) in
@@ -10421,6 +10625,7 @@ Module str.
                 "core::iter::traits::iterator::Iterator",
                 Ty.apply
                   (Ty.path "core::iter::adapters::flatten::FlatMap")
+                  []
                   [
                     Ty.path "core::str::iter::Chars";
                     Ty.path "core::char::EscapeUnicode";
@@ -10440,7 +10645,7 @@ Module str.
                 M.read (| fold |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -10450,9 +10655,9 @@ Module str.
                       self.inner.fold(init, fold)
                   }
       *)
-      Definition fold (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ Acc; Fold ], [ self; init; fold ] =>
+      Definition fold (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ Acc; Fold ], [ self; init; fold ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let init := M.alloc (| init |) in
@@ -10462,6 +10667,7 @@ Module str.
                 "core::iter::traits::iterator::Iterator",
                 Ty.apply
                   (Ty.path "core::iter::adapters::flatten::FlatMap")
+                  []
                   [
                     Ty.path "core::str::iter::Chars";
                     Ty.path "core::char::EscapeUnicode";
@@ -10483,7 +10689,7 @@ Module str.
                 M.read (| fold |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :

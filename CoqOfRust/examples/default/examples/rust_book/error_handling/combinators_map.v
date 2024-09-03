@@ -4,6 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 (*
 Enum Food
 {
+  const_params := [];
   ty_params := [];
   variants :=
     [
@@ -30,9 +31,9 @@ Module Impl_core_fmt_Debug_for_combinators_map_Food.
   Definition Self : Ty.t := Ty.path "combinators_map::Food".
   
   (* Debug *)
-  Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; f ] =>
+  Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; f ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let f := M.alloc (| f |) in
@@ -64,7 +65,7 @@ Module Impl_core_fmt_Debug_for_combinators_map_Food.
             |)
           ]
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -78,6 +79,7 @@ End Impl_core_fmt_Debug_for_combinators_map_Food.
 (* StructTuple
   {
     name := "Peeled";
+    const_params := [];
     ty_params := [];
     fields := [ Ty.path "combinators_map::Food" ];
   } *)
@@ -86,9 +88,9 @@ Module Impl_core_fmt_Debug_for_combinators_map_Peeled.
   Definition Self : Ty.t := Ty.path "combinators_map::Peeled".
   
   (* Debug *)
-  Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; f ] =>
+  Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; f ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let f := M.alloc (| f |) in
@@ -112,7 +114,7 @@ Module Impl_core_fmt_Debug_for_combinators_map_Peeled.
               |))
           ]
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -126,6 +128,7 @@ End Impl_core_fmt_Debug_for_combinators_map_Peeled.
 (* StructTuple
   {
     name := "Chopped";
+    const_params := [];
     ty_params := [];
     fields := [ Ty.path "combinators_map::Food" ];
   } *)
@@ -134,9 +137,9 @@ Module Impl_core_fmt_Debug_for_combinators_map_Chopped.
   Definition Self : Ty.t := Ty.path "combinators_map::Chopped".
   
   (* Debug *)
-  Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; f ] =>
+  Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; f ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let f := M.alloc (| f |) in
@@ -160,7 +163,7 @@ Module Impl_core_fmt_Debug_for_combinators_map_Chopped.
               |))
           ]
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -174,6 +177,7 @@ End Impl_core_fmt_Debug_for_combinators_map_Chopped.
 (* StructTuple
   {
     name := "Cooked";
+    const_params := [];
     ty_params := [];
     fields := [ Ty.path "combinators_map::Food" ];
   } *)
@@ -182,9 +186,9 @@ Module Impl_core_fmt_Debug_for_combinators_map_Cooked.
   Definition Self : Ty.t := Ty.path "combinators_map::Cooked".
   
   (* Debug *)
-  Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; f ] =>
+  Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; f ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let f := M.alloc (| f |) in
@@ -208,7 +212,7 @@ Module Impl_core_fmt_Debug_for_combinators_map_Cooked.
               |))
           ]
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -227,9 +231,9 @@ fn peel(food: Option<Food>) -> Option<Peeled> {
     }
 }
 *)
-Definition peel (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [ food ] =>
+Definition peel (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [ food ] =>
     ltac:(M.monadic
       (let food := M.alloc (| food |) in
       M.read (|
@@ -253,7 +257,7 @@ Definition peel (τ : list Ty.t) (α : list Value.t) : M :=
           ]
         |)
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_peel : M.IsFunction "combinators_map::peel" peel.
@@ -266,9 +270,9 @@ fn chop(peeled: Option<Peeled>) -> Option<Chopped> {
     }
 }
 *)
-Definition chop (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [ peeled ] =>
+Definition chop (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [ peeled ] =>
     ltac:(M.monadic
       (let peeled := M.alloc (| peeled |) in
       M.read (|
@@ -294,7 +298,7 @@ Definition chop (τ : list Ty.t) (α : list Value.t) : M :=
           ]
         |)
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_chop : M.IsFunction "combinators_map::chop" chop.
@@ -304,14 +308,14 @@ fn cook(chopped: Option<Chopped>) -> Option<Cooked> {
     chopped.map(|Chopped(food)| Cooked(food))
 }
 *)
-Definition cook (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [ chopped ] =>
+Definition cook (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [ chopped ] =>
     ltac:(M.monadic
       (let chopped := M.alloc (| chopped |) in
       M.call_closure (|
         M.get_associated_function (|
-          Ty.apply (Ty.path "core::option::Option") [ Ty.path "combinators_map::Chopped" ],
+          Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "combinators_map::Chopped" ],
           "map",
           [
             Ty.path "combinators_map::Cooked";
@@ -346,7 +350,7 @@ Definition cook (τ : list Ty.t) (α : list Value.t) : M :=
                 end))
         ]
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_cook : M.IsFunction "combinators_map::cook" cook.
@@ -358,14 +362,14 @@ fn process(food: Option<Food>) -> Option<Cooked> {
         .map(|Chopped(f)| Cooked(f))
 }
 *)
-Definition process (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [ food ] =>
+Definition process (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [ food ] =>
     ltac:(M.monadic
       (let food := M.alloc (| food |) in
       M.call_closure (|
         M.get_associated_function (|
-          Ty.apply (Ty.path "core::option::Option") [ Ty.path "combinators_map::Chopped" ],
+          Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "combinators_map::Chopped" ],
           "map",
           [
             Ty.path "combinators_map::Cooked";
@@ -377,7 +381,7 @@ Definition process (τ : list Ty.t) (α : list Value.t) : M :=
         [
           M.call_closure (|
             M.get_associated_function (|
-              Ty.apply (Ty.path "core::option::Option") [ Ty.path "combinators_map::Peeled" ],
+              Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "combinators_map::Peeled" ],
               "map",
               [
                 Ty.path "combinators_map::Chopped";
@@ -389,7 +393,7 @@ Definition process (τ : list Ty.t) (α : list Value.t) : M :=
             [
               M.call_closure (|
                 M.get_associated_function (|
-                  Ty.apply (Ty.path "core::option::Option") [ Ty.path "combinators_map::Food" ],
+                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "combinators_map::Food" ],
                   "map",
                   [
                     Ty.path "combinators_map::Peeled";
@@ -466,7 +470,7 @@ Definition process (τ : list Ty.t) (α : list Value.t) : M :=
                 end))
         ]
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_process : M.IsFunction "combinators_map::process" process.
@@ -479,9 +483,9 @@ fn eat(food: Option<Cooked>) {
     }
 }
 *)
-Definition eat (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [ food ] =>
+Definition eat (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [ food ] =>
     ltac:(M.monadic
       (let food := M.alloc (| food |) in
       M.read (|
@@ -567,7 +571,7 @@ Definition eat (τ : list Ty.t) (α : list Value.t) : M :=
           ]
         |)
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_eat : M.IsFunction "combinators_map::eat" eat.
@@ -588,9 +592,9 @@ fn main() {
     eat(cooked_potato);
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [] =>
+Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
         let~ apple :=
@@ -670,7 +674,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_main : M.IsFunction "combinators_map::main" main.

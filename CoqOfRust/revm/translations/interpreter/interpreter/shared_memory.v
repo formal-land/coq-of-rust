@@ -6,16 +6,19 @@ Module interpreter.
     (* StructRecord
       {
         name := "SharedMemory";
+        const_params := [];
         ty_params := [];
         fields :=
           [
             ("buffer",
               Ty.apply
                 (Ty.path "alloc::vec::Vec")
+                []
                 [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]);
             ("checkpoints",
               Ty.apply
                 (Ty.path "alloc::vec::Vec")
+                []
                 [ Ty.path "usize"; Ty.path "alloc::alloc::Global" ]);
             ("last_checkpoint", Ty.path "usize")
           ];
@@ -26,9 +29,9 @@ Module interpreter.
         Ty.path "revm_interpreter::interpreter::shared_memory::SharedMemory".
       
       (* Clone *)
-      Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructRecord
@@ -40,6 +43,7 @@ Module interpreter.
                       "core::clone::Clone",
                       Ty.apply
                         (Ty.path "alloc::vec::Vec")
+                        []
                         [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                       [],
                       "clone",
@@ -59,6 +63,7 @@ Module interpreter.
                       "core::clone::Clone",
                       Ty.apply
                         (Ty.path "alloc::vec::Vec")
+                        []
                         [ Ty.path "usize"; Ty.path "alloc::alloc::Global" ],
                       [],
                       "clone",
@@ -84,7 +89,7 @@ Module interpreter.
                     ]
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -112,9 +117,9 @@ Module interpreter.
         Ty.path "revm_interpreter::interpreter::shared_memory::SharedMemory".
       
       (* PartialEq *)
-      Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -125,10 +130,12 @@ Module interpreter.
                     "core::cmp::PartialEq",
                     Ty.apply
                       (Ty.path "alloc::vec::Vec")
+                      []
                       [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                     [
                       Ty.apply
                         (Ty.path "alloc::vec::Vec")
+                        []
                         [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
                     ],
                     "eq",
@@ -153,10 +160,12 @@ Module interpreter.
                       "core::cmp::PartialEq",
                       Ty.apply
                         (Ty.path "alloc::vec::Vec")
+                        []
                         [ Ty.path "usize"; Ty.path "alloc::alloc::Global" ],
                       [
                         Ty.apply
                           (Ty.path "alloc::vec::Vec")
+                          []
                           [ Ty.path "usize"; Ty.path "alloc::alloc::Global" ]
                       ],
                       "eq",
@@ -193,7 +202,7 @@ Module interpreter.
                     |)
                   |))))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -221,9 +230,13 @@ Module interpreter.
         Ty.path "revm_interpreter::interpreter::shared_memory::SharedMemory".
       
       (* Eq *)
-      Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition assert_receiver_is_total_eq
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -246,7 +259,7 @@ Module interpreter.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -263,9 +276,9 @@ Module interpreter.
         Ty.path "revm_interpreter::interpreter::shared_memory::SharedMemory".
       
       (* Hash *)
-      Definition hash (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ __H ], [ self; state ] =>
+      Definition hash (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ __H ], [ self; state ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
@@ -277,6 +290,7 @@ Module interpreter.
                       "core::hash::Hash",
                       Ty.apply
                         (Ty.path "alloc::vec::Vec")
+                        []
                         [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                       [],
                       "hash",
@@ -299,6 +313,7 @@ Module interpreter.
                       "core::hash::Hash",
                       Ty.apply
                         (Ty.path "alloc::vec::Vec")
+                        []
                         [ Ty.path "usize"; Ty.path "alloc::alloc::Global" ],
                       [],
                       "hash",
@@ -328,7 +343,7 @@ Module interpreter.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -351,6 +366,7 @@ Module interpreter.
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "alloc::vec::Vec")
+                        []
                         [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                       "new",
                       []
@@ -362,6 +378,7 @@ Module interpreter.
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "alloc::vec::Vec")
+                        []
                         [ Ty.path "usize"; Ty.path "alloc::alloc::Global" ],
                       "new",
                       []
@@ -387,9 +404,9 @@ Module interpreter.
                   .finish_non_exhaustive()
           }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -447,7 +464,11 @@ Module interpreter.
                         M.call_closure (|
                           M.get_function (|
                             "const_hex::encode",
-                            [ Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "slice") [ Ty.path "u8" ] ]
+                            [
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
                             ]
                           |),
                           [
@@ -467,7 +488,7 @@ Module interpreter.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -487,9 +508,9 @@ Module interpreter.
               Self::new()
           }
       *)
-      Definition default (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [] =>
+      Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [] =>
           ltac:(M.monadic
             (M.call_closure (|
               M.get_associated_function (|
@@ -499,7 +520,7 @@ Module interpreter.
               |),
               []
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -519,9 +540,9 @@ Module interpreter.
               Self::with_capacity(4 * 1024) // from evmone
           }
       *)
-      Definition new (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [] =>
+      Definition new (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [] =>
           ltac:(M.monadic
             (M.call_closure (|
               M.get_associated_function (|
@@ -531,7 +552,7 @@ Module interpreter.
               |),
               [ BinOp.Wrap.mul Integer.Usize (Value.Integer 4) (Value.Integer 1024) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -547,9 +568,9 @@ Module interpreter.
               }
           }
       *)
-      Definition with_capacity (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ capacity ] =>
+      Definition with_capacity (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ capacity ] =>
           ltac:(M.monadic
             (let capacity := M.alloc (| capacity |) in
             Value.StructRecord
@@ -560,6 +581,7 @@ Module interpreter.
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "alloc::vec::Vec")
+                        []
                         [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                       "with_capacity",
                       []
@@ -571,6 +593,7 @@ Module interpreter.
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "alloc::vec::Vec")
+                        []
                         [ Ty.path "usize"; Ty.path "alloc::alloc::Global" ],
                       "with_capacity",
                       []
@@ -579,7 +602,7 @@ Module interpreter.
                   |));
                 ("last_checkpoint", Value.Integer 0)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_with_capacity :
@@ -592,9 +615,9 @@ Module interpreter.
               self.last_checkpoint = new_checkpoint;
           }
       *)
-      Definition new_context (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition new_context (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -604,6 +627,7 @@ Module interpreter.
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "alloc::vec::Vec")
+                        []
                         [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                       "len",
                       []
@@ -623,6 +647,7 @@ Module interpreter.
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "alloc::vec::Vec")
+                        []
                         [ Ty.path "usize"; Ty.path "alloc::alloc::Global" ],
                       "push",
                       []
@@ -648,7 +673,7 @@ Module interpreter.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_new_context : M.IsAssociatedFunction Self "new_context" new_context.
@@ -662,9 +687,9 @@ Module interpreter.
               }
           }
       *)
-      Definition free_context (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition free_context (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -679,6 +704,7 @@ Module interpreter.
                             M.get_associated_function (|
                               Ty.apply
                                 (Ty.path "alloc::vec::Vec")
+                                []
                                 [ Ty.path "usize"; Ty.path "alloc::alloc::Global" ],
                               "pop",
                               []
@@ -708,7 +734,7 @@ Module interpreter.
                           |),
                           M.call_closure (|
                             M.get_associated_function (|
-                              Ty.apply (Ty.path "core::option::Option") [ Ty.path "usize" ],
+                              Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
                               "unwrap_or_default",
                               []
                             |),
@@ -717,14 +743,15 @@ Module interpreter.
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "core::option::Option")
-                                    [ Ty.apply (Ty.path "&") [ Ty.path "usize" ] ],
+                                    []
+                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "usize" ] ],
                                   "cloned",
                                   []
                                 |),
                                 [
                                   M.call_closure (|
                                     M.get_associated_function (|
-                                      Ty.apply (Ty.path "slice") [ Ty.path "usize" ],
+                                      Ty.apply (Ty.path "slice") [] [ Ty.path "usize" ],
                                       "last",
                                       []
                                     |),
@@ -734,6 +761,7 @@ Module interpreter.
                                           "core::ops::deref::Deref",
                                           Ty.apply
                                             (Ty.path "alloc::vec::Vec")
+                                            []
                                             [ Ty.path "usize"; Ty.path "alloc::alloc::Global" ],
                                           [],
                                           "deref",
@@ -760,6 +788,7 @@ Module interpreter.
                             M.get_associated_function (|
                               Ty.apply
                                 (Ty.path "alloc::vec::Vec")
+                                []
                                 [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                               "set_len",
                               []
@@ -779,7 +808,7 @@ Module interpreter.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_free_context :
@@ -790,9 +819,9 @@ Module interpreter.
               self.buffer.len() - self.last_checkpoint
           }
       *)
-      Definition len (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition len (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             BinOp.Wrap.sub
@@ -801,6 +830,7 @@ Module interpreter.
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "alloc::vec::Vec")
+                    []
                     [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                   "len",
                   []
@@ -820,7 +850,7 @@ Module interpreter.
                   "last_checkpoint"
                 |)
               |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_len : M.IsAssociatedFunction Self "len" len.
@@ -830,9 +860,9 @@ Module interpreter.
               self.len() == 0
           }
       *)
-      Definition is_empty (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition is_empty (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             BinOp.Pure.eq
@@ -845,7 +875,7 @@ Module interpreter.
                 [ M.read (| self |) ]
               |))
               (Value.Integer 0)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_is_empty : M.IsAssociatedFunction Self "is_empty" is_empty.
@@ -855,9 +885,9 @@ Module interpreter.
               crate::gas::memory_gas_for_len(self.len())
           }
       *)
-      Definition current_expansion_cost (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition current_expansion_cost (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -873,7 +903,7 @@ Module interpreter.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_current_expansion_cost :
@@ -884,9 +914,9 @@ Module interpreter.
               self.buffer.resize(self.last_checkpoint + new_size, 0);
           }
       *)
-      Definition resize (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; new_size ] =>
+      Definition resize (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; new_size ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let new_size := M.alloc (| new_size |) in
@@ -897,6 +927,7 @@ Module interpreter.
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "alloc::vec::Vec")
+                        []
                         [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                       "resize",
                       []
@@ -923,7 +954,7 @@ Module interpreter.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_resize : M.IsAssociatedFunction Self "resize" resize.
@@ -933,9 +964,9 @@ Module interpreter.
               self.slice_range(offset..offset + size)
           }
       *)
-      Definition slice (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; offset; size ] =>
+      Definition slice (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; offset; size ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let offset := M.alloc (| offset |) in
@@ -956,7 +987,7 @@ Module interpreter.
                   ]
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_slice : M.IsAssociatedFunction Self "slice" slice.
@@ -969,9 +1000,9 @@ Module interpreter.
               }
           }
       *)
-      Definition slice_range (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; β1 ] =>
+      Definition slice_range (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; β1 ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let β1 := M.alloc (| β1 |) in
@@ -1000,9 +1031,10 @@ Module interpreter.
                         M.alloc (|
                           M.call_closure (|
                             M.get_associated_function (|
-                              Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                              Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                               "get",
-                              [ Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "usize" ] ]
+                              [ Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ]
+                              ]
                             |),
                             [
                               M.call_closure (|
@@ -1182,7 +1214,7 @@ Module interpreter.
                     |)))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_slice_range : M.IsAssociatedFunction Self "slice_range" slice_range.
@@ -1196,9 +1228,9 @@ Module interpreter.
               }
           }
       *)
-      Definition slice_mut (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; offset; size ] =>
+      Definition slice_mut (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; offset; size ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let offset := M.alloc (| offset |) in
@@ -1214,9 +1246,9 @@ Module interpreter.
                     M.alloc (|
                       M.call_closure (|
                         M.get_associated_function (|
-                          Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                          Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                           "get_mut",
-                          [ Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "usize" ] ]
+                          [ Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ] ]
                         |),
                         [
                           M.call_closure (|
@@ -1339,7 +1371,7 @@ Module interpreter.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_slice_mut : M.IsAssociatedFunction Self "slice_mut" slice_mut.
@@ -1349,9 +1381,9 @@ Module interpreter.
               self.slice(offset, 1)[0]
           }
       *)
-      Definition get_byte (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; offset ] =>
+      Definition get_byte (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; offset ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let offset := M.alloc (| offset |) in
@@ -1368,7 +1400,7 @@ Module interpreter.
                 M.alloc (| Value.Integer 0 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_get_byte : M.IsAssociatedFunction Self "get_byte" get_byte.
@@ -1378,9 +1410,9 @@ Module interpreter.
               self.slice(offset, 32).try_into().unwrap()
           }
       *)
-      Definition get_word (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; offset ] =>
+      Definition get_word (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; offset ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let offset := M.alloc (| offset |) in
@@ -1388,8 +1420,12 @@ Module interpreter.
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "core::result::Result")
+                  []
                   [
-                    Ty.path "alloy_primitives::bits::fixed::FixedBytes";
+                    Ty.apply
+                      (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                      [ Value.Integer 32 ]
+                      [];
                     Ty.path "core::array::TryFromSliceError"
                   ],
                 "unwrap",
@@ -1399,8 +1435,13 @@ Module interpreter.
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::convert::TryInto",
-                    Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "slice") [ Ty.path "u8" ] ],
-                    [ Ty.path "alloy_primitives::bits::fixed::FixedBytes" ],
+                    Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                    [
+                      Ty.apply
+                        (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                        [ Value.Integer 32 ]
+                        []
+                    ],
                     "try_into",
                     []
                   |),
@@ -1417,7 +1458,7 @@ Module interpreter.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_get_word : M.IsAssociatedFunction Self "get_word" get_word.
@@ -1427,17 +1468,20 @@ Module interpreter.
               self.get_word(offset).into()
           }
       *)
-      Definition get_u256 (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; offset ] =>
+      Definition get_u256 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; offset ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let offset := M.alloc (| offset |) in
             M.call_closure (|
               M.get_trait_method (|
                 "core::convert::Into",
-                Ty.path "alloy_primitives::bits::fixed::FixedBytes",
-                [ Ty.path "ruint::Uint" ],
+                Ty.apply
+                  (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                  [ Value.Integer 32 ]
+                  [],
+                [ Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [] ],
                 "into",
                 []
               |),
@@ -1452,7 +1496,7 @@ Module interpreter.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_get_u256 : M.IsAssociatedFunction Self "get_u256" get_u256.
@@ -1462,9 +1506,9 @@ Module interpreter.
               self.set(offset, &[byte]);
           }
       *)
-      Definition set_byte (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; offset; byte ] =>
+      Definition set_byte (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; offset; byte ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let offset := M.alloc (| offset |) in
@@ -1488,7 +1532,7 @@ Module interpreter.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_set_byte : M.IsAssociatedFunction Self "set_byte" set_byte.
@@ -1498,9 +1542,9 @@ Module interpreter.
               self.set(offset, &value[..]);
           }
       *)
-      Definition set_word (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; offset; value ] =>
+      Definition set_word (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; offset; value ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let offset := M.alloc (| offset |) in
@@ -1520,7 +1564,10 @@ Module interpreter.
                       M.call_closure (|
                         M.get_trait_method (|
                           "core::ops::index::Index",
-                          Ty.path "alloy_primitives::bits::fixed::FixedBytes",
+                          Ty.apply
+                            (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                            [ Value.Integer 32 ]
+                            [],
                           [ Ty.path "core::ops::range::RangeFull" ],
                           "index",
                           []
@@ -1532,7 +1579,7 @@ Module interpreter.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_set_word : M.IsAssociatedFunction Self "set_word" set_word.
@@ -1542,9 +1589,9 @@ Module interpreter.
               self.set(offset, &value.to_be_bytes::<32>());
           }
       *)
-      Definition set_u256 (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; offset; value ] =>
+      Definition set_u256 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; offset; value ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let offset := M.alloc (| offset |) in
@@ -1566,7 +1613,10 @@ Module interpreter.
                         (M.alloc (|
                           M.call_closure (|
                             M.get_associated_function (|
-                              Ty.path "ruint::Uint",
+                              Ty.apply
+                                (Ty.path "ruint::Uint")
+                                [ Value.Integer 256; Value.Integer 4 ]
+                                [],
                               "to_be_bytes",
                               []
                             |),
@@ -1578,7 +1628,7 @@ Module interpreter.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_set_u256 : M.IsAssociatedFunction Self "set_u256" set_u256.
@@ -1590,9 +1640,9 @@ Module interpreter.
               }
           }
       *)
-      Definition set (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; offset; value ] =>
+      Definition set (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; offset; value ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let offset := M.alloc (| offset |) in
@@ -1609,7 +1659,7 @@ Module interpreter.
                             UnOp.Pure.not
                               (M.call_closure (|
                                 M.get_associated_function (|
-                                  Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                  Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                   "is_empty",
                                   []
                                 |),
@@ -1621,7 +1671,7 @@ Module interpreter.
                         M.alloc (|
                           M.call_closure (|
                             M.get_associated_function (|
-                              Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                              Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                               "copy_from_slice",
                               []
                             |),
@@ -1638,7 +1688,7 @@ Module interpreter.
                                   M.read (| offset |);
                                   M.call_closure (|
                                     M.get_associated_function (|
-                                      Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                      Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                       "len",
                                       []
                                     |),
@@ -1655,7 +1705,7 @@ Module interpreter.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_set : M.IsAssociatedFunction Self "set" set.
@@ -1680,9 +1730,9 @@ Module interpreter.
                   .fill(0);
           }
       *)
-      Definition set_data (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; memory_offset; data_offset; len; data ] =>
+      Definition set_data (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; memory_offset; data_offset; len; data ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let memory_offset := M.alloc (| memory_offset |) in
@@ -1705,7 +1755,7 @@ Module interpreter.
                                     (M.read (| data_offset |))
                                     (M.call_closure (|
                                       M.get_associated_function (|
-                                        Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                        Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                         "len",
                                         []
                                       |),
@@ -1721,7 +1771,7 @@ Module interpreter.
                                     M.alloc (|
                                       M.call_closure (|
                                         M.get_associated_function (|
-                                          Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                          Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                           "fill",
                                           []
                                         |),
@@ -1761,7 +1811,7 @@ Module interpreter.
                             (M.read (| len |));
                           M.call_closure (|
                             M.get_associated_function (|
-                              Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                              Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                               "len",
                               []
                             |),
@@ -1801,7 +1851,10 @@ Module interpreter.
                                                   (M.read (| data_offset |))
                                                   (M.call_closure (|
                                                     M.get_associated_function (|
-                                                      Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                                      Ty.apply
+                                                        (Ty.path "slice")
+                                                        []
+                                                        [ Ty.path "u8" ],
                                                       "len",
                                                       []
                                                     |),
@@ -1812,7 +1865,10 @@ Module interpreter.
                                                     (M.read (| data_end |))
                                                     (M.call_closure (|
                                                       M.get_associated_function (|
-                                                        Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                                        Ty.apply
+                                                          (Ty.path "slice")
+                                                          []
+                                                          [ Ty.path "u8" ],
                                                         "len",
                                                         []
                                                       |),
@@ -1849,9 +1905,9 @@ Module interpreter.
                     M.alloc (|
                       M.call_closure (|
                         M.get_associated_function (|
-                          Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                          Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                           "get_unchecked",
-                          [ Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "usize" ] ]
+                          [ Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ] ]
                         |),
                         [
                           M.read (| data |);
@@ -1865,7 +1921,7 @@ Module interpreter.
                     M.alloc (|
                       M.call_closure (|
                         M.get_associated_function (|
-                          Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                          Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                           "copy_from_slice",
                           []
                         |),
@@ -1886,7 +1942,7 @@ Module interpreter.
                     M.alloc (|
                       M.call_closure (|
                         M.get_associated_function (|
-                          Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                          Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                           "fill",
                           []
                         |),
@@ -1916,7 +1972,7 @@ Module interpreter.
                   M.alloc (| Value.Tuple [] |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_set_data : M.IsAssociatedFunction Self "set_data" set_data.
@@ -1926,9 +1982,9 @@ Module interpreter.
               self.context_memory_mut().copy_within(src..src + len, dst);
           }
       *)
-      Definition copy (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; dst; src; len ] =>
+      Definition copy (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; dst; src; len ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let dst := M.alloc (| dst |) in
@@ -1939,9 +1995,9 @@ Module interpreter.
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                      Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                       "copy_within",
-                      [ Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "usize" ] ]
+                      [ Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ] ]
                     |),
                     [
                       M.call_closure (|
@@ -1965,7 +2021,7 @@ Module interpreter.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_copy : M.IsAssociatedFunction Self "copy" copy.
@@ -1979,16 +2035,16 @@ Module interpreter.
               }
           }
       *)
-      Definition context_memory (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition context_memory (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                 "get_unchecked",
-                [ Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "usize" ] ]
+                [ Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ] ]
               |),
               [
                 M.call_closure (|
@@ -1996,6 +2052,7 @@ Module interpreter.
                     "core::ops::deref::Deref",
                     Ty.apply
                       (Ty.path "alloc::vec::Vec")
+                      []
                       [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                     [],
                     "deref",
@@ -2025,6 +2082,7 @@ Module interpreter.
                         M.get_associated_function (|
                           Ty.apply
                             (Ty.path "alloc::vec::Vec")
+                            []
                             [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                           "len",
                           []
@@ -2040,7 +2098,7 @@ Module interpreter.
                   ]
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_context_memory :
@@ -2053,9 +2111,9 @@ Module interpreter.
               unsafe { self.buffer.get_unchecked_mut(self.last_checkpoint..buf_len) }
           }
       *)
-      Definition context_memory_mut (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition context_memory_mut (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -2065,6 +2123,7 @@ Module interpreter.
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "alloc::vec::Vec")
+                        []
                         [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                       "len",
                       []
@@ -2081,9 +2140,9 @@ Module interpreter.
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                    Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                     "get_unchecked_mut",
-                    [ Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "usize" ] ]
+                    [ Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ] ]
                   |),
                   [
                     M.call_closure (|
@@ -2091,6 +2150,7 @@ Module interpreter.
                         "core::ops::deref::DerefMut",
                         Ty.apply
                           (Ty.path "alloc::vec::Vec")
+                          []
                           [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                         [],
                         "deref_mut",
@@ -2121,7 +2181,7 @@ Module interpreter.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_context_memory_mut :
@@ -2133,9 +2193,9 @@ Module interpreter.
         len.saturating_add(31) / 32
     }
     *)
-    Definition num_words (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ len ] =>
+    Definition num_words (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ len ] =>
         ltac:(M.monadic
           (let len := M.alloc (| len |) in
           BinOp.Wrap.div
@@ -2145,7 +2205,7 @@ Module interpreter.
               [ M.read (| len |); Value.Integer 31 ]
             |))
             (Value.Integer 32)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_num_words :

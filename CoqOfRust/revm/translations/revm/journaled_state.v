@@ -5,12 +5,14 @@ Module journaled_state.
   (* StructRecord
     {
       name := "JournaledState";
+      const_params := [];
       ty_params := [];
       fields :=
         [
           ("state",
             Ty.apply
               (Ty.path "std::collections::hash::map::HashMap")
+              []
               [
                 Ty.path "alloy_primitives::bits::address::Address";
                 Ty.path "revm_primitives::state::Account";
@@ -19,18 +21,24 @@ Module journaled_state.
           ("transient_storage",
             Ty.apply
               (Ty.path "std::collections::hash::map::HashMap")
+              []
               [
                 Ty.tuple
-                  [ Ty.path "alloy_primitives::bits::address::Address"; Ty.path "ruint::Uint" ];
-                Ty.path "ruint::Uint";
+                  [
+                    Ty.path "alloy_primitives::bits::address::Address";
+                    Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] []
+                  ];
+                Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [];
                 Ty.path "std::hash::random::RandomState"
               ]);
           ("logs",
             Ty.apply
               (Ty.path "alloc::vec::Vec")
+              []
               [
                 Ty.apply
                   (Ty.path "alloy_primitives::log::Log")
+                  []
                   [ Ty.path "alloy_primitives::log::LogData" ];
                 Ty.path "alloc::alloc::Global"
               ]);
@@ -38,9 +46,11 @@ Module journaled_state.
           ("journal",
             Ty.apply
               (Ty.path "alloc::vec::Vec")
+              []
               [
                 Ty.apply
                   (Ty.path "alloc::vec::Vec")
+                  []
                   [ Ty.path "revm::journaled_state::JournalEntry"; Ty.path "alloc::alloc::Global" ];
                 Ty.path "alloc::alloc::Global"
               ]);
@@ -48,6 +58,7 @@ Module journaled_state.
           ("warm_preloaded_addresses",
             Ty.apply
               (Ty.path "std::collections::hash::set::HashSet")
+              []
               [
                 Ty.path "alloy_primitives::bits::address::Address";
                 Ty.path "std::hash::random::RandomState"
@@ -59,9 +70,9 @@ Module journaled_state.
     Definition Self : Ty.t := Ty.path "revm::journaled_state::JournaledState".
     
     (* Debug *)
-    Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; f ] =>
+    Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; f ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
@@ -158,7 +169,7 @@ Module journaled_state.
               |)
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -173,9 +184,9 @@ Module journaled_state.
     Definition Self : Ty.t := Ty.path "revm::journaled_state::JournaledState".
     
     (* Clone *)
-    Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           Value.StructRecord
@@ -187,6 +198,7 @@ Module journaled_state.
                     "core::clone::Clone",
                     Ty.apply
                       (Ty.path "std::collections::hash::map::HashMap")
+                      []
                       [
                         Ty.path "alloy_primitives::bits::address::Address";
                         Ty.path "revm_primitives::state::Account";
@@ -210,13 +222,17 @@ Module journaled_state.
                     "core::clone::Clone",
                     Ty.apply
                       (Ty.path "std::collections::hash::map::HashMap")
+                      []
                       [
                         Ty.tuple
                           [
                             Ty.path "alloy_primitives::bits::address::Address";
-                            Ty.path "ruint::Uint"
+                            Ty.apply
+                              (Ty.path "ruint::Uint")
+                              [ Value.Integer 256; Value.Integer 4 ]
+                              []
                           ];
-                        Ty.path "ruint::Uint";
+                        Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [];
                         Ty.path "std::hash::random::RandomState"
                       ],
                     [],
@@ -237,9 +253,11 @@ Module journaled_state.
                     "core::clone::Clone",
                     Ty.apply
                       (Ty.path "alloc::vec::Vec")
+                      []
                       [
                         Ty.apply
                           (Ty.path "alloy_primitives::log::Log")
+                          []
                           [ Ty.path "alloy_primitives::log::LogData" ];
                         Ty.path "alloc::alloc::Global"
                       ],
@@ -272,9 +290,11 @@ Module journaled_state.
                     "core::clone::Clone",
                     Ty.apply
                       (Ty.path "alloc::vec::Vec")
+                      []
                       [
                         Ty.apply
                           (Ty.path "alloc::vec::Vec")
+                          []
                           [
                             Ty.path "revm::journaled_state::JournalEntry";
                             Ty.path "alloc::alloc::Global"
@@ -316,6 +336,7 @@ Module journaled_state.
                     "core::clone::Clone",
                     Ty.apply
                       (Ty.path "std::collections::hash::set::HashSet")
+                      []
                       [
                         Ty.path "alloy_primitives::bits::address::Address";
                         Ty.path "std::hash::random::RandomState"
@@ -333,7 +354,7 @@ Module journaled_state.
                   ]
                 |))
             ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -359,9 +380,9 @@ Module journaled_state.
     Definition Self : Ty.t := Ty.path "revm::journaled_state::JournaledState".
     
     (* PartialEq *)
-    Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; other ] =>
+    Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
@@ -376,6 +397,7 @@ Module journaled_state.
                           "core::cmp::PartialEq",
                           Ty.apply
                             (Ty.path "std::collections::hash::map::HashMap")
+                            []
                             [
                               Ty.path "alloy_primitives::bits::address::Address";
                               Ty.path "revm_primitives::state::Account";
@@ -384,6 +406,7 @@ Module journaled_state.
                           [
                             Ty.apply
                               (Ty.path "std::collections::hash::map::HashMap")
+                              []
                               [
                                 Ty.path "alloy_primitives::bits::address::Address";
                                 Ty.path "revm_primitives::state::Account";
@@ -412,25 +435,39 @@ Module journaled_state.
                             "core::cmp::PartialEq",
                             Ty.apply
                               (Ty.path "std::collections::hash::map::HashMap")
+                              []
                               [
                                 Ty.tuple
                                   [
                                     Ty.path "alloy_primitives::bits::address::Address";
-                                    Ty.path "ruint::Uint"
+                                    Ty.apply
+                                      (Ty.path "ruint::Uint")
+                                      [ Value.Integer 256; Value.Integer 4 ]
+                                      []
                                   ];
-                                Ty.path "ruint::Uint";
+                                Ty.apply
+                                  (Ty.path "ruint::Uint")
+                                  [ Value.Integer 256; Value.Integer 4 ]
+                                  [];
                                 Ty.path "std::hash::random::RandomState"
                               ],
                             [
                               Ty.apply
                                 (Ty.path "std::collections::hash::map::HashMap")
+                                []
                                 [
                                   Ty.tuple
                                     [
                                       Ty.path "alloy_primitives::bits::address::Address";
-                                      Ty.path "ruint::Uint"
+                                      Ty.apply
+                                        (Ty.path "ruint::Uint")
+                                        [ Value.Integer 256; Value.Integer 4 ]
+                                        []
                                     ];
-                                  Ty.path "ruint::Uint";
+                                  Ty.apply
+                                    (Ty.path "ruint::Uint")
+                                    [ Value.Integer 256; Value.Integer 4 ]
+                                    [];
                                   Ty.path "std::hash::random::RandomState"
                                 ]
                             ],
@@ -457,18 +494,22 @@ Module journaled_state.
                           "core::cmp::PartialEq",
                           Ty.apply
                             (Ty.path "alloc::vec::Vec")
+                            []
                             [
                               Ty.apply
                                 (Ty.path "alloy_primitives::log::Log")
+                                []
                                 [ Ty.path "alloy_primitives::log::LogData" ];
                               Ty.path "alloc::alloc::Global"
                             ],
                           [
                             Ty.apply
                               (Ty.path "alloc::vec::Vec")
+                              []
                               [
                                 Ty.apply
                                   (Ty.path "alloy_primitives::log::Log")
+                                  []
                                   [ Ty.path "alloy_primitives::log::LogData" ];
                                 Ty.path "alloc::alloc::Global"
                               ]
@@ -513,9 +554,11 @@ Module journaled_state.
                       "core::cmp::PartialEq",
                       Ty.apply
                         (Ty.path "alloc::vec::Vec")
+                        []
                         [
                           Ty.apply
                             (Ty.path "alloc::vec::Vec")
+                            []
                             [
                               Ty.path "revm::journaled_state::JournalEntry";
                               Ty.path "alloc::alloc::Global"
@@ -525,9 +568,11 @@ Module journaled_state.
                       [
                         Ty.apply
                           (Ty.path "alloc::vec::Vec")
+                          []
                           [
                             Ty.apply
                               (Ty.path "alloc::vec::Vec")
+                              []
                               [
                                 Ty.path "revm::journaled_state::JournalEntry";
                                 Ty.path "alloc::alloc::Global"
@@ -581,6 +626,7 @@ Module journaled_state.
                   "core::cmp::PartialEq",
                   Ty.apply
                     (Ty.path "std::collections::hash::set::HashSet")
+                    []
                     [
                       Ty.path "alloy_primitives::bits::address::Address";
                       Ty.path "std::hash::random::RandomState"
@@ -588,6 +634,7 @@ Module journaled_state.
                   [
                     Ty.apply
                       (Ty.path "std::collections::hash::set::HashSet")
+                      []
                       [
                         Ty.path "alloy_primitives::bits::address::Address";
                         Ty.path "std::hash::random::RandomState"
@@ -610,7 +657,7 @@ Module journaled_state.
                 ]
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -636,9 +683,13 @@ Module journaled_state.
     Definition Self : Ty.t := Ty.path "revm::journaled_state::JournaledState".
     
     (* Eq *)
-    Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition assert_receiver_is_total_eq
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -693,7 +744,7 @@ Module journaled_state.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -721,9 +772,9 @@ Module journaled_state.
             }
         }
     *)
-    Definition new (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ spec; warm_preloaded_addresses ] =>
+    Definition new (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ spec; warm_preloaded_addresses ] =>
         ltac:(M.monadic
           (let spec := M.alloc (| spec |) in
           let warm_preloaded_addresses := M.alloc (| warm_preloaded_addresses |) in
@@ -735,6 +786,7 @@ Module journaled_state.
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "std::collections::hash::map::HashMap")
+                      []
                       [
                         Ty.path "alloy_primitives::bits::address::Address";
                         Ty.path "revm_primitives::state::Account";
@@ -751,13 +803,17 @@ Module journaled_state.
                     "core::default::Default",
                     Ty.apply
                       (Ty.path "std::collections::hash::map::HashMap")
+                      []
                       [
                         Ty.tuple
                           [
                             Ty.path "alloy_primitives::bits::address::Address";
-                            Ty.path "ruint::Uint"
+                            Ty.apply
+                              (Ty.path "ruint::Uint")
+                              [ Value.Integer 256; Value.Integer 4 ]
+                              []
                           ];
-                        Ty.path "ruint::Uint";
+                        Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [];
                         Ty.path "std::hash::random::RandomState"
                       ],
                     [],
@@ -771,9 +827,11 @@ Module journaled_state.
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "alloc::vec::Vec")
+                      []
                       [
                         Ty.apply
                           (Ty.path "alloy_primitives::log::Log")
+                          []
                           [ Ty.path "alloy_primitives::log::LogData" ];
                         Ty.path "alloc::alloc::Global"
                       ],
@@ -787,9 +845,11 @@ Module journaled_state.
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "slice")
+                      []
                       [
                         Ty.apply
                           (Ty.path "alloc::vec::Vec")
+                          []
                           [
                             Ty.path "revm::journaled_state::JournalEntry";
                             Ty.path "alloc::alloc::Global"
@@ -806,12 +866,15 @@ Module journaled_state.
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "alloc::boxed::Box")
+                              []
                               [
                                 Ty.apply
                                   (Ty.path "array")
+                                  [ Value.Integer 1 ]
                                   [
                                     Ty.apply
                                       (Ty.path "alloc::vec::Vec")
+                                      []
                                       [
                                         Ty.path "revm::journaled_state::JournalEntry";
                                         Ty.path "alloc::alloc::Global"
@@ -830,6 +893,7 @@ Module journaled_state.
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "alloc::vec::Vec")
+                                        []
                                         [
                                           Ty.path "revm::journaled_state::JournalEntry";
                                           Ty.path "alloc::alloc::Global"
@@ -850,7 +914,7 @@ Module journaled_state.
               ("spec", M.read (| spec |));
               ("warm_preloaded_addresses", M.read (| warm_preloaded_addresses |))
             ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -860,9 +924,9 @@ Module journaled_state.
             &mut self.state
         }
     *)
-    Definition state (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition state (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.SubPointer.get_struct_record_field (|
@@ -870,7 +934,7 @@ Module journaled_state.
             "revm::journaled_state::JournaledState",
             "state"
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_state : M.IsAssociatedFunction Self "state" state.
@@ -880,9 +944,9 @@ Module journaled_state.
             self.spec = spec;
         }
     *)
-    Definition set_spec_id (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; spec ] =>
+    Definition set_spec_id (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; spec ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let spec := M.alloc (| spec |) in
@@ -898,7 +962,7 @@ Module journaled_state.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_set_spec_id : M.IsAssociatedFunction Self "set_spec_id" set_spec_id.
@@ -910,9 +974,9 @@ Module journaled_state.
             }
         }
     *)
-    Definition touch (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; address ] =>
+    Definition touch (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; address ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let address := M.alloc (| address |) in
@@ -928,6 +992,7 @@ Module journaled_state.
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "std::collections::hash::map::HashMap")
+                              []
                               [
                                 Ty.path "alloy_primitives::bits::address::Address";
                                 Ty.path "revm_primitives::state::Account";
@@ -966,12 +1031,15 @@ Module journaled_state.
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "core::option::Option")
+                                  []
                                   [
                                     Ty.apply
                                       (Ty.path "&mut")
+                                      []
                                       [
                                         Ty.apply
                                           (Ty.path "alloc::vec::Vec")
+                                          []
                                           [
                                             Ty.path "revm::journaled_state::JournalEntry";
                                             Ty.path "alloc::alloc::Global"
@@ -986,9 +1054,11 @@ Module journaled_state.
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "slice")
+                                      []
                                       [
                                         Ty.apply
                                           (Ty.path "alloc::vec::Vec")
+                                          []
                                           [
                                             Ty.path "revm::journaled_state::JournalEntry";
                                             Ty.path "alloc::alloc::Global"
@@ -1003,9 +1073,11 @@ Module journaled_state.
                                         "core::ops::deref::DerefMut",
                                         Ty.apply
                                           (Ty.path "alloc::vec::Vec")
+                                          []
                                           [
                                             Ty.apply
                                               (Ty.path "alloc::vec::Vec")
+                                              []
                                               [
                                                 Ty.path "revm::journaled_state::JournalEntry";
                                                 Ty.path "alloc::alloc::Global"
@@ -1038,7 +1110,7 @@ Module journaled_state.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_touch : M.IsAssociatedFunction Self "touch" touch.
@@ -1051,9 +1123,9 @@ Module journaled_state.
             }
         }
     *)
-    Definition touch_account (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ journal; address; account ] =>
+    Definition touch_account (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ journal; address; account ] =>
         ltac:(M.monadic
           (let journal := M.alloc (| journal |) in
           let address := M.alloc (| address |) in
@@ -1084,6 +1156,7 @@ Module journaled_state.
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "alloc::vec::Vec")
+                              []
                               [
                                 Ty.path "revm::journaled_state::JournalEntry";
                                 Ty.path "alloc::alloc::Global"
@@ -1115,7 +1188,7 @@ Module journaled_state.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_touch_account :
@@ -1127,9 +1200,9 @@ Module journaled_state.
             *self = Self::new(spec, HashSet::new());
         }
     *)
-    Definition clear (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition clear (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -1156,6 +1229,7 @@ Module journaled_state.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "std::collections::hash::set::HashSet")
+                          []
                           [
                             Ty.path "alloy_primitives::bits::address::Address";
                             Ty.path "std::hash::random::RandomState"
@@ -1170,7 +1244,7 @@ Module journaled_state.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_clear : M.IsAssociatedFunction Self "clear" clear.
@@ -1197,9 +1271,9 @@ Module journaled_state.
             (state, logs)
         }
     *)
-    Definition finalize (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition finalize (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -1264,13 +1338,20 @@ Module journaled_state.
                             "core::default::Default",
                             Ty.apply
                               (Ty.path "std::collections::hash::map::HashMap")
+                              []
                               [
                                 Ty.tuple
                                   [
                                     Ty.path "alloy_primitives::bits::address::Address";
-                                    Ty.path "ruint::Uint"
+                                    Ty.apply
+                                      (Ty.path "ruint::Uint")
+                                      [ Value.Integer 256; Value.Integer 4 ]
+                                      []
                                   ];
-                                Ty.path "ruint::Uint";
+                                Ty.apply
+                                  (Ty.path "ruint::Uint")
+                                  [ Value.Integer 256; Value.Integer 4 ]
+                                  [];
                                 Ty.path "std::hash::random::RandomState"
                               ],
                             [],
@@ -1287,9 +1368,11 @@ Module journaled_state.
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "slice")
+                              []
                               [
                                 Ty.apply
                                   (Ty.path "alloc::vec::Vec")
+                                  []
                                   [
                                     Ty.path "revm::journaled_state::JournalEntry";
                                     Ty.path "alloc::alloc::Global"
@@ -1306,12 +1389,15 @@ Module journaled_state.
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "alloc::boxed::Box")
+                                      []
                                       [
                                         Ty.apply
                                           (Ty.path "array")
+                                          [ Value.Integer 1 ]
                                           [
                                             Ty.apply
                                               (Ty.path "alloc::vec::Vec")
+                                              []
                                               [
                                                 Ty.path "revm::journaled_state::JournalEntry";
                                                 Ty.path "alloc::alloc::Global"
@@ -1330,6 +1416,7 @@ Module journaled_state.
                                             M.get_associated_function (|
                                               Ty.apply
                                                 (Ty.path "alloc::vec::Vec")
+                                                []
                                                 [
                                                   Ty.path "revm::journaled_state::JournalEntry";
                                                   Ty.path "alloc::alloc::Global"
@@ -1356,6 +1443,7 @@ Module journaled_state.
                             [
                               Ty.apply
                                 (Ty.path "std::collections::hash::map::HashMap")
+                                []
                                 [
                                   Ty.path "alloy_primitives::bits::address::Address";
                                   Ty.path "revm_primitives::state::Account";
@@ -1374,9 +1462,11 @@ Module journaled_state.
                             [
                               Ty.apply
                                 (Ty.path "alloc::vec::Vec")
+                                []
                                 [
                                   Ty.apply
                                     (Ty.path "alloy_primitives::log::Log")
+                                    []
                                     [ Ty.path "alloy_primitives::log::LogData" ];
                                   Ty.path "alloc::alloc::Global"
                                 ]
@@ -1389,7 +1479,7 @@ Module journaled_state.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_finalize : M.IsAssociatedFunction Self "finalize" finalize.
@@ -1401,9 +1491,9 @@ Module journaled_state.
                 .expect("Account expected to be loaded") // Always assume that acc is already loaded
         }
     *)
-    Definition account (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; address ] =>
+    Definition account (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; address ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let address := M.alloc (| address |) in
@@ -1411,7 +1501,8 @@ Module journaled_state.
             M.get_associated_function (|
               Ty.apply
                 (Ty.path "core::option::Option")
-                [ Ty.apply (Ty.path "&") [ Ty.path "revm_primitives::state::Account" ] ],
+                []
+                [ Ty.apply (Ty.path "&") [] [ Ty.path "revm_primitives::state::Account" ] ],
               "expect",
               []
             |),
@@ -1420,6 +1511,7 @@ Module journaled_state.
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "std::collections::hash::map::HashMap")
+                    []
                     [
                       Ty.path "alloy_primitives::bits::address::Address";
                       Ty.path "revm_primitives::state::Account";
@@ -1440,7 +1532,7 @@ Module journaled_state.
               M.read (| Value.String "Account expected to be loaded" |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_account : M.IsAssociatedFunction Self "account" account.
@@ -1450,9 +1542,9 @@ Module journaled_state.
             self.depth as u64
         }
     *)
-    Definition depth (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition depth (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.rust_cast
@@ -1463,7 +1555,7 @@ Module journaled_state.
                 "depth"
               |)
             |))))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_depth : M.IsAssociatedFunction Self "depth" depth.
@@ -1482,9 +1574,9 @@ Module journaled_state.
             account.info.code = Some(code);
         }
     *)
-    Definition set_code (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; address; code ] =>
+    Definition set_code (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; address; code ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let address := M.alloc (| address |) in
@@ -1496,7 +1588,9 @@ Module journaled_state.
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "core::option::Option")
-                      [ Ty.apply (Ty.path "&mut") [ Ty.path "revm_primitives::state::Account" ] ],
+                      []
+                      [ Ty.apply (Ty.path "&mut") [] [ Ty.path "revm_primitives::state::Account" ]
+                      ],
                     "unwrap",
                     []
                   |),
@@ -1505,6 +1599,7 @@ Module journaled_state.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "std::collections::hash::map::HashMap")
+                          []
                           [
                             Ty.path "alloy_primitives::bits::address::Address";
                             Ty.path "revm_primitives::state::Account";
@@ -1538,12 +1633,15 @@ Module journaled_state.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "core::option::Option")
+                          []
                           [
                             Ty.apply
                               (Ty.path "&mut")
+                              []
                               [
                                 Ty.apply
                                   (Ty.path "alloc::vec::Vec")
+                                  []
                                   [
                                     Ty.path "revm::journaled_state::JournalEntry";
                                     Ty.path "alloc::alloc::Global"
@@ -1558,9 +1656,11 @@ Module journaled_state.
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "slice")
+                              []
                               [
                                 Ty.apply
                                   (Ty.path "alloc::vec::Vec")
+                                  []
                                   [
                                     Ty.path "revm::journaled_state::JournalEntry";
                                     Ty.path "alloc::alloc::Global"
@@ -1575,9 +1675,11 @@ Module journaled_state.
                                 "core::ops::deref::DerefMut",
                                 Ty.apply
                                   (Ty.path "alloc::vec::Vec")
+                                  []
                                   [
                                     Ty.apply
                                       (Ty.path "alloc::vec::Vec")
+                                      []
                                       [
                                         Ty.path "revm::journaled_state::JournalEntry";
                                         Ty.path "alloc::alloc::Global"
@@ -1611,6 +1713,7 @@ Module journaled_state.
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "alloc::vec::Vec")
+                      []
                       [
                         Ty.path "revm::journaled_state::JournalEntry";
                         Ty.path "alloc::alloc::Global"
@@ -1623,12 +1726,15 @@ Module journaled_state.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "core::option::Option")
+                          []
                           [
                             Ty.apply
                               (Ty.path "&mut")
+                              []
                               [
                                 Ty.apply
                                   (Ty.path "alloc::vec::Vec")
+                                  []
                                   [
                                     Ty.path "revm::journaled_state::JournalEntry";
                                     Ty.path "alloc::alloc::Global"
@@ -1643,9 +1749,11 @@ Module journaled_state.
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "slice")
+                              []
                               [
                                 Ty.apply
                                   (Ty.path "alloc::vec::Vec")
+                                  []
                                   [
                                     Ty.path "revm::journaled_state::JournalEntry";
                                     Ty.path "alloc::alloc::Global"
@@ -1660,9 +1768,11 @@ Module journaled_state.
                                 "core::ops::deref::DerefMut",
                                 Ty.apply
                                   (Ty.path "alloc::vec::Vec")
+                                  []
                                   [
                                     Ty.apply
                                       (Ty.path "alloc::vec::Vec")
+                                      []
                                       [
                                         Ty.path "revm::journaled_state::JournalEntry";
                                         Ty.path "alloc::alloc::Global"
@@ -1726,7 +1836,7 @@ Module journaled_state.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_set_code : M.IsAssociatedFunction Self "set_code" set_code.
@@ -1749,9 +1859,9 @@ Module journaled_state.
             Some(account.info.nonce)
         }
     *)
-    Definition inc_nonce (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; address ] =>
+    Definition inc_nonce (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; address ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let address := M.alloc (| address |) in
@@ -1764,7 +1874,12 @@ Module journaled_state.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "core::option::Option")
-                          [ Ty.apply (Ty.path "&mut") [ Ty.path "revm_primitives::state::Account" ]
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "&mut")
+                              []
+                              [ Ty.path "revm_primitives::state::Account" ]
                           ],
                         "unwrap",
                         []
@@ -1774,6 +1889,7 @@ Module journaled_state.
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "std::collections::hash::map::HashMap")
+                              []
                               [
                                 Ty.path "alloy_primitives::bits::address::Address";
                                 Ty.path "revm_primitives::state::Account";
@@ -1842,12 +1958,15 @@ Module journaled_state.
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "core::option::Option")
+                              []
                               [
                                 Ty.apply
                                   (Ty.path "&mut")
+                                  []
                                   [
                                     Ty.apply
                                       (Ty.path "alloc::vec::Vec")
+                                      []
                                       [
                                         Ty.path "revm::journaled_state::JournalEntry";
                                         Ty.path "alloc::alloc::Global"
@@ -1862,9 +1981,11 @@ Module journaled_state.
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "slice")
+                                  []
                                   [
                                     Ty.apply
                                       (Ty.path "alloc::vec::Vec")
+                                      []
                                       [
                                         Ty.path "revm::journaled_state::JournalEntry";
                                         Ty.path "alloc::alloc::Global"
@@ -1879,9 +2000,11 @@ Module journaled_state.
                                     "core::ops::deref::DerefMut",
                                     Ty.apply
                                       (Ty.path "alloc::vec::Vec")
+                                      []
                                       [
                                         Ty.apply
                                           (Ty.path "alloc::vec::Vec")
+                                          []
                                           [
                                             Ty.path "revm::journaled_state::JournalEntry";
                                             Ty.path "alloc::alloc::Global"
@@ -1915,6 +2038,7 @@ Module journaled_state.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "alloc::vec::Vec")
+                          []
                           [
                             Ty.path "revm::journaled_state::JournalEntry";
                             Ty.path "alloc::alloc::Global"
@@ -1927,12 +2051,15 @@ Module journaled_state.
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "core::option::Option")
+                              []
                               [
                                 Ty.apply
                                   (Ty.path "&mut")
+                                  []
                                   [
                                     Ty.apply
                                       (Ty.path "alloc::vec::Vec")
+                                      []
                                       [
                                         Ty.path "revm::journaled_state::JournalEntry";
                                         Ty.path "alloc::alloc::Global"
@@ -1947,9 +2074,11 @@ Module journaled_state.
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "slice")
+                                  []
                                   [
                                     Ty.apply
                                       (Ty.path "alloc::vec::Vec")
+                                      []
                                       [
                                         Ty.path "revm::journaled_state::JournalEntry";
                                         Ty.path "alloc::alloc::Global"
@@ -1964,9 +2093,11 @@ Module journaled_state.
                                     "core::ops::deref::DerefMut",
                                     Ty.apply
                                       (Ty.path "alloc::vec::Vec")
+                                      []
                                       [
                                         Ty.apply
                                           (Ty.path "alloc::vec::Vec")
+                                          []
                                           [
                                             Ty.path "revm::journaled_state::JournalEntry";
                                             Ty.path "alloc::alloc::Global"
@@ -2026,7 +2157,7 @@ Module journaled_state.
                 |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_inc_nonce : M.IsAssociatedFunction Self "inc_nonce" inc_nonce.
@@ -2075,9 +2206,9 @@ Module journaled_state.
             Ok(None)
         }
     *)
-    Definition transfer (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ DB ], [ self; from; to; balance; db ] =>
+    Definition transfer (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ DB ], [ self; from; to; balance; db ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let from := M.alloc (| from |) in
@@ -2095,16 +2226,19 @@ Module journaled_state.
                           "core::ops::try_trait::Try",
                           Ty.apply
                             (Ty.path "core::result::Result")
+                            []
                             [
                               Ty.tuple
                                 [
                                   Ty.apply
                                     (Ty.path "&mut")
+                                    []
                                     [ Ty.path "revm_primitives::state::Account" ];
                                   Ty.path "bool"
                                 ];
                               Ty.apply
                                 (Ty.path "revm_primitives::result::EVMError")
+                                []
                                 [ Ty.associated ]
                             ],
                           [],
@@ -2142,24 +2276,29 @@ Module journaled_state.
                                       "core::ops::try_trait::FromResidual",
                                       Ty.apply
                                         (Ty.path "core::result::Result")
+                                        []
                                         [
                                           Ty.apply
                                             (Ty.path "core::option::Option")
+                                            []
                                             [
                                               Ty.path
                                                 "revm_interpreter::instruction_result::InstructionResult"
                                             ];
                                           Ty.apply
                                             (Ty.path "revm_primitives::result::EVMError")
+                                            []
                                             [ Ty.associated ]
                                         ],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
+                                          []
                                           [
                                             Ty.path "core::convert::Infallible";
                                             Ty.apply
                                               (Ty.path "revm_primitives::result::EVMError")
+                                              []
                                               [ Ty.associated ]
                                           ]
                                       ],
@@ -2192,16 +2331,19 @@ Module journaled_state.
                           "core::ops::try_trait::Try",
                           Ty.apply
                             (Ty.path "core::result::Result")
+                            []
                             [
                               Ty.tuple
                                 [
                                   Ty.apply
                                     (Ty.path "&mut")
+                                    []
                                     [ Ty.path "revm_primitives::state::Account" ];
                                   Ty.path "bool"
                                 ];
                               Ty.apply
                                 (Ty.path "revm_primitives::result::EVMError")
+                                []
                                 [ Ty.associated ]
                             ],
                           [],
@@ -2239,24 +2381,29 @@ Module journaled_state.
                                       "core::ops::try_trait::FromResidual",
                                       Ty.apply
                                         (Ty.path "core::result::Result")
+                                        []
                                         [
                                           Ty.apply
                                             (Ty.path "core::option::Option")
+                                            []
                                             [
                                               Ty.path
                                                 "revm_interpreter::instruction_result::InstructionResult"
                                             ];
                                           Ty.apply
                                             (Ty.path "revm_primitives::result::EVMError")
+                                            []
                                             [ Ty.associated ]
                                         ],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
+                                          []
                                           [
                                             Ty.path "core::convert::Infallible";
                                             Ty.apply
                                               (Ty.path "revm_primitives::result::EVMError")
+                                              []
                                               [ Ty.associated ]
                                           ]
                                       ],
@@ -2288,9 +2435,11 @@ Module journaled_state.
                         M.get_associated_function (|
                           Ty.apply
                             (Ty.path "core::option::Option")
+                            []
                             [
                               Ty.apply
                                 (Ty.path "&mut")
+                                []
                                 [ Ty.path "revm_primitives::state::Account" ]
                             ],
                           "unwrap",
@@ -2301,6 +2450,7 @@ Module journaled_state.
                             M.get_associated_function (|
                               Ty.apply
                                 (Ty.path "std::collections::hash::map::HashMap")
+                                []
                                 [
                                   Ty.path "alloy_primitives::bits::address::Address";
                                   Ty.path "revm_primitives::state::Account";
@@ -2335,12 +2485,15 @@ Module journaled_state.
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "core::option::Option")
+                              []
                               [
                                 Ty.apply
                                   (Ty.path "&mut")
+                                  []
                                   [
                                     Ty.apply
                                       (Ty.path "alloc::vec::Vec")
+                                      []
                                       [
                                         Ty.path "revm::journaled_state::JournalEntry";
                                         Ty.path "alloc::alloc::Global"
@@ -2355,9 +2508,11 @@ Module journaled_state.
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "slice")
+                                  []
                                   [
                                     Ty.apply
                                       (Ty.path "alloc::vec::Vec")
+                                      []
                                       [
                                         Ty.path "revm::journaled_state::JournalEntry";
                                         Ty.path "alloc::alloc::Global"
@@ -2372,9 +2527,11 @@ Module journaled_state.
                                     "core::ops::deref::DerefMut",
                                     Ty.apply
                                       (Ty.path "alloc::vec::Vec")
+                                      []
                                       [
                                         Ty.apply
                                           (Ty.path "alloc::vec::Vec")
+                                          []
                                           [
                                             Ty.path "revm::journaled_state::JournalEntry";
                                             Ty.path "alloc::alloc::Global"
@@ -2417,7 +2574,11 @@ Module journaled_state.
                 M.match_operator (|
                   M.alloc (|
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "ruint::Uint", "checked_sub", [] |),
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [],
+                        "checked_sub",
+                        []
+                      |),
                       [ M.read (| M.read (| from_balance |) |); M.read (| balance |) ]
                     |)
                   |),
@@ -2440,9 +2601,11 @@ Module journaled_state.
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "core::option::Option")
+                                    []
                                     [
                                       Ty.apply
                                         (Ty.path "&mut")
+                                        []
                                         [ Ty.path "revm_primitives::state::Account" ]
                                     ],
                                   "unwrap",
@@ -2453,6 +2616,7 @@ Module journaled_state.
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "std::collections::hash::map::HashMap")
+                                        []
                                         [
                                           Ty.path "alloy_primitives::bits::address::Address";
                                           Ty.path "revm_primitives::state::Account";
@@ -2487,12 +2651,15 @@ Module journaled_state.
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "core::option::Option")
+                                      []
                                       [
                                         Ty.apply
                                           (Ty.path "&mut")
+                                          []
                                           [
                                             Ty.apply
                                               (Ty.path "alloc::vec::Vec")
+                                              []
                                               [
                                                 Ty.path "revm::journaled_state::JournalEntry";
                                                 Ty.path "alloc::alloc::Global"
@@ -2507,9 +2674,11 @@ Module journaled_state.
                                       M.get_associated_function (|
                                         Ty.apply
                                           (Ty.path "slice")
+                                          []
                                           [
                                             Ty.apply
                                               (Ty.path "alloc::vec::Vec")
+                                              []
                                               [
                                                 Ty.path "revm::journaled_state::JournalEntry";
                                                 Ty.path "alloc::alloc::Global"
@@ -2524,9 +2693,11 @@ Module journaled_state.
                                             "core::ops::deref::DerefMut",
                                             Ty.apply
                                               (Ty.path "alloc::vec::Vec")
+                                              []
                                               [
                                                 Ty.apply
                                                   (Ty.path "alloc::vec::Vec")
+                                                  []
                                                   [
                                                     Ty.path "revm::journaled_state::JournalEntry";
                                                     Ty.path "alloc::alloc::Global"
@@ -2570,7 +2741,10 @@ Module journaled_state.
                           M.alloc (|
                             M.call_closure (|
                               M.get_associated_function (|
-                                Ty.path "ruint::Uint",
+                                Ty.apply
+                                  (Ty.path "ruint::Uint")
+                                  [ Value.Integer 256; Value.Integer 4 ]
+                                  [],
                                 "checked_add",
                                 []
                               |),
@@ -2598,6 +2772,7 @@ Module journaled_state.
                                       M.get_associated_function (|
                                         Ty.apply
                                           (Ty.path "alloc::vec::Vec")
+                                          []
                                           [
                                             Ty.path "revm::journaled_state::JournalEntry";
                                             Ty.path "alloc::alloc::Global"
@@ -2610,12 +2785,15 @@ Module journaled_state.
                                           M.get_associated_function (|
                                             Ty.apply
                                               (Ty.path "core::option::Option")
+                                              []
                                               [
                                                 Ty.apply
                                                   (Ty.path "&mut")
+                                                  []
                                                   [
                                                     Ty.apply
                                                       (Ty.path "alloc::vec::Vec")
+                                                      []
                                                       [
                                                         Ty.path
                                                           "revm::journaled_state::JournalEntry";
@@ -2631,9 +2809,11 @@ Module journaled_state.
                                               M.get_associated_function (|
                                                 Ty.apply
                                                   (Ty.path "slice")
+                                                  []
                                                   [
                                                     Ty.apply
                                                       (Ty.path "alloc::vec::Vec")
+                                                      []
                                                       [
                                                         Ty.path
                                                           "revm::journaled_state::JournalEntry";
@@ -2649,9 +2829,11 @@ Module journaled_state.
                                                     "core::ops::deref::DerefMut",
                                                     Ty.apply
                                                       (Ty.path "alloc::vec::Vec")
+                                                      []
                                                       [
                                                         Ty.apply
                                                           (Ty.path "alloc::vec::Vec")
+                                                          []
                                                           [
                                                             Ty.path
                                                               "revm::journaled_state::JournalEntry";
@@ -2696,7 +2878,7 @@ Module journaled_state.
                 |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_transfer : M.IsAssociatedFunction Self "transfer" transfer.
@@ -2776,9 +2958,13 @@ Module journaled_state.
             Ok(checkpoint)
         }
     *)
-    Definition create_account_checkpoint (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; caller; address; balance; spec_id ] =>
+    Definition create_account_checkpoint
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      match ε, τ, α with
+      | [], [], [ self; caller; address; balance; spec_id ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let caller := M.alloc (| caller |) in
@@ -2805,7 +2991,12 @@ Module journaled_state.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "core::option::Option")
-                          [ Ty.apply (Ty.path "&mut") [ Ty.path "revm_primitives::state::Account" ]
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "&mut")
+                              []
+                              [ Ty.path "revm_primitives::state::Account" ]
                           ],
                         "unwrap",
                         []
@@ -2815,6 +3006,7 @@ Module journaled_state.
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "std::collections::hash::map::HashMap")
+                              []
                               [
                                 Ty.path "alloy_primitives::bits::address::Address";
                                 Ty.path "revm_primitives::state::Account";
@@ -2841,12 +3033,15 @@ Module journaled_state.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "core::option::Option")
+                          []
                           [
                             Ty.apply
                               (Ty.path "&mut")
+                              []
                               [
                                 Ty.apply
                                   (Ty.path "alloc::vec::Vec")
+                                  []
                                   [
                                     Ty.path "revm::journaled_state::JournalEntry";
                                     Ty.path "alloc::alloc::Global"
@@ -2861,9 +3056,11 @@ Module journaled_state.
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "slice")
+                              []
                               [
                                 Ty.apply
                                   (Ty.path "alloc::vec::Vec")
+                                  []
                                   [
                                     Ty.path "revm::journaled_state::JournalEntry";
                                     Ty.path "alloc::alloc::Global"
@@ -2878,9 +3075,11 @@ Module journaled_state.
                                 "core::ops::deref::DerefMut",
                                 Ty.apply
                                   (Ty.path "alloc::vec::Vec")
+                                  []
                                   [
                                     Ty.apply
                                       (Ty.path "alloc::vec::Vec")
+                                      []
                                       [
                                         Ty.path "revm::journaled_state::JournalEntry";
                                         Ty.path "alloc::alloc::Global"
@@ -2918,8 +3117,16 @@ Module journaled_state.
                                     M.call_closure (|
                                       M.get_trait_method (|
                                         "core::cmp::PartialEq",
-                                        Ty.path "alloy_primitives::bits::fixed::FixedBytes",
-                                        [ Ty.path "alloy_primitives::bits::fixed::FixedBytes" ],
+                                        Ty.apply
+                                          (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                                          [ Value.Integer 32 ]
+                                          [],
+                                        [
+                                          Ty.apply
+                                            (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                                            [ Value.Integer 32 ]
+                                            []
+                                        ],
                                         "ne",
                                         []
                                       |),
@@ -2958,6 +3165,7 @@ Module journaled_state.
                                       M.get_associated_function (|
                                         Ty.apply
                                           (Ty.path "std::collections::hash::set::HashSet")
+                                          []
                                           [
                                             Ty.path "alloy_primitives::bits::address::Address";
                                             Ty.path "std::hash::random::RandomState"
@@ -3024,6 +3232,7 @@ Module journaled_state.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "alloc::vec::Vec")
+                          []
                           [
                             Ty.path "revm::journaled_state::JournalEntry";
                             Ty.path "alloc::alloc::Global"
@@ -3072,7 +3281,14 @@ Module journaled_state.
                         "core::iter::traits::iterator::Iterator",
                         Ty.apply
                           (Ty.path "std::collections::hash::map::IterMut")
-                          [ Ty.path "ruint::Uint"; Ty.path "revm_primitives::state::StorageSlot" ],
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "ruint::Uint")
+                              [ Value.Integer 256; Value.Integer 4 ]
+                              [];
+                            Ty.path "revm_primitives::state::StorageSlot"
+                          ],
                         [],
                         "for_each",
                         [
@@ -3082,9 +3298,18 @@ Module journaled_state.
                                 [
                                   Ty.tuple
                                     [
-                                      Ty.apply (Ty.path "&") [ Ty.path "ruint::Uint" ];
+                                      Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "ruint::Uint")
+                                            [ Value.Integer 256; Value.Integer 4 ]
+                                            []
+                                        ];
                                       Ty.apply
                                         (Ty.path "&mut")
+                                        []
                                         [ Ty.path "revm_primitives::state::StorageSlot" ]
                                     ]
                                 ]
@@ -3097,8 +3322,12 @@ Module journaled_state.
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "std::collections::hash::map::HashMap")
+                              []
                               [
-                                Ty.path "ruint::Uint";
+                                Ty.apply
+                                  (Ty.path "ruint::Uint")
+                                  [ Value.Integer 256; Value.Integer 4 ]
+                                  [];
                                 Ty.path "revm_primitives::state::StorageSlot";
                                 Ty.path "std::hash::random::RandomState"
                               ],
@@ -3162,7 +3391,11 @@ Module journaled_state.
                 M.match_operator (|
                   M.alloc (|
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "ruint::Uint", "checked_add", [] |),
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [],
+                        "checked_add",
+                        []
+                      |),
                       [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
@@ -3253,9 +3486,11 @@ Module journaled_state.
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "core::option::Option")
+                                  []
                                   [
                                     Ty.apply
                                       (Ty.path "&mut")
+                                      []
                                       [ Ty.path "revm_primitives::state::Account" ]
                                   ],
                                 "unwrap",
@@ -3266,6 +3501,7 @@ Module journaled_state.
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "std::collections::hash::map::HashMap")
+                                      []
                                       [
                                         Ty.path "alloy_primitives::bits::address::Address";
                                         Ty.path "revm_primitives::state::Account";
@@ -3291,8 +3527,16 @@ Module journaled_state.
                             M.call_closure (|
                               M.get_trait_method (|
                                 "core::ops::arith::SubAssign",
-                                Ty.path "ruint::Uint",
-                                [ Ty.path "ruint::Uint" ],
+                                Ty.apply
+                                  (Ty.path "ruint::Uint")
+                                  [ Value.Integer 256; Value.Integer 4 ]
+                                  [],
+                                [
+                                  Ty.apply
+                                    (Ty.path "ruint::Uint")
+                                    [ Value.Integer 256; Value.Integer 4 ]
+                                    []
+                                ],
                                 "sub_assign",
                                 []
                               |),
@@ -3316,6 +3560,7 @@ Module journaled_state.
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "alloc::vec::Vec")
+                                  []
                                   [
                                     Ty.path "revm::journaled_state::JournalEntry";
                                     Ty.path "alloc::alloc::Global"
@@ -3342,7 +3587,7 @@ Module journaled_state.
                 |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_create_account_checkpoint :
@@ -3440,9 +3685,9 @@ Module journaled_state.
             }
         }
     *)
-    Definition journal_revert (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ state; transient_storage; journal_entries; is_spurious_dragon_enabled ] =>
+    Definition journal_revert (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ state; transient_storage; journal_entries; is_spurious_dragon_enabled ] =>
         ltac:(M.monadic
           (let state := M.alloc (| state |) in
           let transient_storage := M.alloc (| transient_storage |) in
@@ -3457,9 +3702,11 @@ Module journaled_state.
                       "core::iter::traits::collect::IntoIterator",
                       Ty.apply
                         (Ty.path "core::iter::adapters::rev::Rev")
+                        []
                         [
                           Ty.apply
                             (Ty.path "alloc::vec::into_iter::IntoIter")
+                            []
                             [
                               Ty.path "revm::journaled_state::JournalEntry";
                               Ty.path "alloc::alloc::Global"
@@ -3475,6 +3722,7 @@ Module journaled_state.
                           "core::iter::traits::iterator::Iterator",
                           Ty.apply
                             (Ty.path "alloc::vec::into_iter::IntoIter")
+                            []
                             [
                               Ty.path "revm::journaled_state::JournalEntry";
                               Ty.path "alloc::alloc::Global"
@@ -3489,6 +3737,7 @@ Module journaled_state.
                               "core::iter::traits::collect::IntoIterator",
                               Ty.apply
                                 (Ty.path "alloc::vec::Vec")
+                                []
                                 [
                                   Ty.path "revm::journaled_state::JournalEntry";
                                   Ty.path "alloc::alloc::Global"
@@ -3518,9 +3767,11 @@ Module journaled_state.
                                     "core::iter::traits::iterator::Iterator",
                                     Ty.apply
                                       (Ty.path "core::iter::adapters::rev::Rev")
+                                      []
                                       [
                                         Ty.apply
                                           (Ty.path "alloc::vec::into_iter::IntoIter")
+                                          []
                                           [
                                             Ty.path "revm::journaled_state::JournalEntry";
                                             Ty.path "alloc::alloc::Global"
@@ -3567,6 +3818,7 @@ Module journaled_state.
                                                     Ty.apply
                                                       (Ty.path
                                                         "std::collections::hash::map::HashMap")
+                                                      []
                                                       [
                                                         Ty.path
                                                           "alloy_primitives::bits::address::Address";
@@ -3654,9 +3906,11 @@ Module journaled_state.
                                                       M.get_associated_function (|
                                                         Ty.apply
                                                           (Ty.path "core::option::Option")
+                                                          []
                                                           [
                                                             Ty.apply
                                                               (Ty.path "&mut")
+                                                              []
                                                               [
                                                                 Ty.path
                                                                   "revm_primitives::state::Account"
@@ -3671,6 +3925,7 @@ Module journaled_state.
                                                             Ty.apply
                                                               (Ty.path
                                                                 "std::collections::hash::map::HashMap")
+                                                              []
                                                               [
                                                                 Ty.path
                                                                   "alloy_primitives::bits::address::Address";
@@ -3729,9 +3984,11 @@ Module journaled_state.
                                                   M.get_associated_function (|
                                                     Ty.apply
                                                       (Ty.path "core::option::Option")
+                                                      []
                                                       [
                                                         Ty.apply
                                                           (Ty.path "&mut")
+                                                          []
                                                           [
                                                             Ty.path
                                                               "revm_primitives::state::Account"
@@ -3746,6 +4003,7 @@ Module journaled_state.
                                                         Ty.apply
                                                           (Ty.path
                                                             "std::collections::hash::map::HashMap")
+                                                          []
                                                           [
                                                             Ty.path
                                                               "alloy_primitives::bits::address::Address";
@@ -3811,8 +4069,16 @@ Module journaled_state.
                                                 M.call_closure (|
                                                   M.get_trait_method (|
                                                     "core::ops::arith::AddAssign",
-                                                    Ty.path "ruint::Uint",
-                                                    [ Ty.path "ruint::Uint" ],
+                                                    Ty.apply
+                                                      (Ty.path "ruint::Uint")
+                                                      [ Value.Integer 256; Value.Integer 4 ]
+                                                      [],
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "ruint::Uint")
+                                                        [ Value.Integer 256; Value.Integer 4 ]
+                                                        []
+                                                    ],
                                                     "add_assign",
                                                     []
                                                   |),
@@ -3864,9 +4130,11 @@ Module journaled_state.
                                                           M.get_associated_function (|
                                                             Ty.apply
                                                               (Ty.path "core::option::Option")
+                                                              []
                                                               [
                                                                 Ty.apply
                                                                   (Ty.path "&mut")
+                                                                  []
                                                                   [
                                                                     Ty.path
                                                                       "revm_primitives::state::Account"
@@ -3881,6 +4149,7 @@ Module journaled_state.
                                                                 Ty.apply
                                                                   (Ty.path
                                                                     "std::collections::hash::map::HashMap")
+                                                                  []
                                                                   [
                                                                     Ty.path
                                                                       "alloy_primitives::bits::address::Address";
@@ -3905,8 +4174,17 @@ Module journaled_state.
                                                         M.call_closure (|
                                                           M.get_trait_method (|
                                                             "core::ops::arith::SubAssign",
-                                                            Ty.path "ruint::Uint",
-                                                            [ Ty.path "ruint::Uint" ],
+                                                            Ty.apply
+                                                              (Ty.path "ruint::Uint")
+                                                              [ Value.Integer 256; Value.Integer 4 ]
+                                                              [],
+                                                            [
+                                                              Ty.apply
+                                                                (Ty.path "ruint::Uint")
+                                                                [ Value.Integer 256; Value.Integer 4
+                                                                ]
+                                                                []
+                                                            ],
                                                             "sub_assign",
                                                             []
                                                           |),
@@ -3958,9 +4236,11 @@ Module journaled_state.
                                                   M.get_associated_function (|
                                                     Ty.apply
                                                       (Ty.path "core::option::Option")
+                                                      []
                                                       [
                                                         Ty.apply
                                                           (Ty.path "&mut")
+                                                          []
                                                           [
                                                             Ty.path
                                                               "revm_primitives::state::Account"
@@ -3975,6 +4255,7 @@ Module journaled_state.
                                                         Ty.apply
                                                           (Ty.path
                                                             "std::collections::hash::map::HashMap")
+                                                          []
                                                           [
                                                             Ty.path
                                                               "alloy_primitives::bits::address::Address";
@@ -3998,8 +4279,16 @@ Module journaled_state.
                                                 M.call_closure (|
                                                   M.get_trait_method (|
                                                     "core::ops::arith::AddAssign",
-                                                    Ty.path "ruint::Uint",
-                                                    [ Ty.path "ruint::Uint" ],
+                                                    Ty.apply
+                                                      (Ty.path "ruint::Uint")
+                                                      [ Value.Integer 256; Value.Integer 4 ]
+                                                      [],
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "ruint::Uint")
+                                                        [ Value.Integer 256; Value.Integer 4 ]
+                                                        []
+                                                    ],
                                                     "add_assign",
                                                     []
                                                   |),
@@ -4023,9 +4312,11 @@ Module journaled_state.
                                                   M.get_associated_function (|
                                                     Ty.apply
                                                       (Ty.path "core::option::Option")
+                                                      []
                                                       [
                                                         Ty.apply
                                                           (Ty.path "&mut")
+                                                          []
                                                           [
                                                             Ty.path
                                                               "revm_primitives::state::Account"
@@ -4040,6 +4331,7 @@ Module journaled_state.
                                                         Ty.apply
                                                           (Ty.path
                                                             "std::collections::hash::map::HashMap")
+                                                          []
                                                           [
                                                             Ty.path
                                                               "alloy_primitives::bits::address::Address";
@@ -4063,8 +4355,16 @@ Module journaled_state.
                                                 M.call_closure (|
                                                   M.get_trait_method (|
                                                     "core::ops::arith::SubAssign",
-                                                    Ty.path "ruint::Uint",
-                                                    [ Ty.path "ruint::Uint" ],
+                                                    Ty.apply
+                                                      (Ty.path "ruint::Uint")
+                                                      [ Value.Integer 256; Value.Integer 4 ]
+                                                      [],
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "ruint::Uint")
+                                                        [ Value.Integer 256; Value.Integer 4 ]
+                                                        []
+                                                    ],
                                                     "sub_assign",
                                                     []
                                                   |),
@@ -4100,9 +4400,11 @@ Module journaled_state.
                                                       M.get_associated_function (|
                                                         Ty.apply
                                                           (Ty.path "core::option::Option")
+                                                          []
                                                           [
                                                             Ty.apply
                                                               (Ty.path "&mut")
+                                                              []
                                                               [
                                                                 Ty.path
                                                                   "revm_primitives::state::Account"
@@ -4117,6 +4419,7 @@ Module journaled_state.
                                                             Ty.apply
                                                               (Ty.path
                                                                 "std::collections::hash::map::HashMap")
+                                                              []
                                                               [
                                                                 Ty.path
                                                                   "alloy_primitives::bits::address::Address";
@@ -4165,9 +4468,11 @@ Module journaled_state.
                                                     M.get_associated_function (|
                                                       Ty.apply
                                                         (Ty.path "core::option::Option")
+                                                        []
                                                         [
                                                           Ty.apply
                                                             (Ty.path "&mut")
+                                                            []
                                                             [
                                                               Ty.path
                                                                 "revm_primitives::state::Account"
@@ -4182,6 +4487,7 @@ Module journaled_state.
                                                           Ty.apply
                                                             (Ty.path
                                                               "std::collections::hash::map::HashMap")
+                                                            []
                                                             [
                                                               Ty.path
                                                                 "alloy_primitives::bits::address::Address";
@@ -4257,9 +4563,11 @@ Module journaled_state.
                                                     M.get_associated_function (|
                                                       Ty.apply
                                                         (Ty.path "core::option::Option")
+                                                        []
                                                         [
                                                           Ty.apply
                                                             (Ty.path "&mut")
+                                                            []
                                                             [
                                                               Ty.path
                                                                 "revm_primitives::state::Account"
@@ -4274,6 +4582,7 @@ Module journaled_state.
                                                           Ty.apply
                                                             (Ty.path
                                                               "std::collections::hash::map::HashMap")
+                                                            []
                                                             [
                                                               Ty.path
                                                                 "alloy_primitives::bits::address::Address";
@@ -4316,9 +4625,11 @@ Module journaled_state.
                                                             M.get_associated_function (|
                                                               Ty.apply
                                                                 (Ty.path "core::option::Option")
+                                                                []
                                                                 [
                                                                   Ty.apply
                                                                     (Ty.path "&mut")
+                                                                    []
                                                                     [
                                                                       Ty.path
                                                                         "revm_primitives::state::StorageSlot"
@@ -4333,15 +4644,30 @@ Module journaled_state.
                                                                   Ty.apply
                                                                     (Ty.path
                                                                       "std::collections::hash::map::HashMap")
+                                                                    []
                                                                     [
-                                                                      Ty.path "ruint::Uint";
+                                                                      Ty.apply
+                                                                        (Ty.path "ruint::Uint")
+                                                                        [
+                                                                          Value.Integer 256;
+                                                                          Value.Integer 4
+                                                                        ]
+                                                                        [];
                                                                       Ty.path
                                                                         "revm_primitives::state::StorageSlot";
                                                                       Ty.path
                                                                         "std::hash::random::RandomState"
                                                                     ],
                                                                   "get_mut",
-                                                                  [ Ty.path "ruint::Uint" ]
+                                                                  [
+                                                                    Ty.apply
+                                                                      (Ty.path "ruint::Uint")
+                                                                      [
+                                                                        Value.Integer 256;
+                                                                        Value.Integer 4
+                                                                      ]
+                                                                      []
+                                                                  ]
                                                                 |),
                                                                 [ M.read (| storage |); key ]
                                                               |)
@@ -4362,15 +4688,28 @@ Module journaled_state.
                                                             Ty.apply
                                                               (Ty.path
                                                                 "std::collections::hash::map::HashMap")
+                                                              []
                                                               [
-                                                                Ty.path "ruint::Uint";
+                                                                Ty.apply
+                                                                  (Ty.path "ruint::Uint")
+                                                                  [
+                                                                    Value.Integer 256;
+                                                                    Value.Integer 4
+                                                                  ]
+                                                                  [];
                                                                 Ty.path
                                                                   "revm_primitives::state::StorageSlot";
                                                                 Ty.path
                                                                   "std::hash::random::RandomState"
                                                               ],
                                                             "remove",
-                                                            [ Ty.path "ruint::Uint" ]
+                                                            [
+                                                              Ty.apply
+                                                                (Ty.path "ruint::Uint")
+                                                                [ Value.Integer 256; Value.Integer 4
+                                                                ]
+                                                                []
+                                                            ]
                                                           |),
                                                           [ M.read (| storage |); key ]
                                                         |)
@@ -4417,8 +4756,20 @@ Module journaled_state.
                                                           M.call_closure (|
                                                             M.get_trait_method (|
                                                               "core::cmp::PartialEq",
-                                                              Ty.path "ruint::Uint",
-                                                              [ Ty.path "ruint::Uint" ],
+                                                              Ty.apply
+                                                                (Ty.path "ruint::Uint")
+                                                                [ Value.Integer 256; Value.Integer 4
+                                                                ]
+                                                                [],
+                                                              [
+                                                                Ty.apply
+                                                                  (Ty.path "ruint::Uint")
+                                                                  [
+                                                                    Value.Integer 256;
+                                                                    Value.Integer 4
+                                                                  ]
+                                                                  []
+                                                              ],
                                                               "eq",
                                                               []
                                                             |),
@@ -4440,14 +4791,27 @@ Module journaled_state.
                                                             Ty.apply
                                                               (Ty.path
                                                                 "std::collections::hash::map::HashMap")
+                                                              []
                                                               [
                                                                 Ty.tuple
                                                                   [
                                                                     Ty.path
                                                                       "alloy_primitives::bits::address::Address";
-                                                                    Ty.path "ruint::Uint"
+                                                                    Ty.apply
+                                                                      (Ty.path "ruint::Uint")
+                                                                      [
+                                                                        Value.Integer 256;
+                                                                        Value.Integer 4
+                                                                      ]
+                                                                      []
                                                                   ];
-                                                                Ty.path "ruint::Uint";
+                                                                Ty.apply
+                                                                  (Ty.path "ruint::Uint")
+                                                                  [
+                                                                    Value.Integer 256;
+                                                                    Value.Integer 4
+                                                                  ]
+                                                                  [];
                                                                 Ty.path
                                                                   "std::hash::random::RandomState"
                                                               ],
@@ -4457,7 +4821,13 @@ Module journaled_state.
                                                                 [
                                                                   Ty.path
                                                                     "alloy_primitives::bits::address::Address";
-                                                                  Ty.path "ruint::Uint"
+                                                                  Ty.apply
+                                                                    (Ty.path "ruint::Uint")
+                                                                    [
+                                                                      Value.Integer 256;
+                                                                      Value.Integer 4
+                                                                    ]
+                                                                    []
                                                                 ]
                                                             ]
                                                           |),
@@ -4474,14 +4844,27 @@ Module journaled_state.
                                                             Ty.apply
                                                               (Ty.path
                                                                 "std::collections::hash::map::HashMap")
+                                                              []
                                                               [
                                                                 Ty.tuple
                                                                   [
                                                                     Ty.path
                                                                       "alloy_primitives::bits::address::Address";
-                                                                    Ty.path "ruint::Uint"
+                                                                    Ty.apply
+                                                                      (Ty.path "ruint::Uint")
+                                                                      [
+                                                                        Value.Integer 256;
+                                                                        Value.Integer 4
+                                                                      ]
+                                                                      []
                                                                   ];
-                                                                Ty.path "ruint::Uint";
+                                                                Ty.apply
+                                                                  (Ty.path "ruint::Uint")
+                                                                  [
+                                                                    Value.Integer 256;
+                                                                    Value.Integer 4
+                                                                  ]
+                                                                  [];
                                                                 Ty.path
                                                                   "std::hash::random::RandomState"
                                                               ],
@@ -4513,9 +4896,11 @@ Module journaled_state.
                                                   M.get_associated_function (|
                                                     Ty.apply
                                                       (Ty.path "core::option::Option")
+                                                      []
                                                       [
                                                         Ty.apply
                                                           (Ty.path "&mut")
+                                                          []
                                                           [
                                                             Ty.path
                                                               "revm_primitives::state::Account"
@@ -4530,6 +4915,7 @@ Module journaled_state.
                                                         Ty.apply
                                                           (Ty.path
                                                             "std::collections::hash::map::HashMap")
+                                                          []
                                                           [
                                                             Ty.path
                                                               "alloy_primitives::bits::address::Address";
@@ -4588,7 +4974,7 @@ Module journaled_state.
                 ]
               |))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_journal_revert :
@@ -4605,9 +4991,9 @@ Module journaled_state.
             checkpoint
         }
     *)
-    Definition checkpoint (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition checkpoint (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -4621,9 +5007,11 @@ Module journaled_state.
                         M.get_associated_function (|
                           Ty.apply
                             (Ty.path "alloc::vec::Vec")
+                            []
                             [
                               Ty.apply
                                 (Ty.path "alloy_primitives::log::Log")
+                                []
                                 [ Ty.path "alloy_primitives::log::LogData" ];
                               Ty.path "alloc::alloc::Global"
                             ],
@@ -4643,9 +5031,11 @@ Module journaled_state.
                         M.get_associated_function (|
                           Ty.apply
                             (Ty.path "alloc::vec::Vec")
+                            []
                             [
                               Ty.apply
                                 (Ty.path "alloc::vec::Vec")
+                                []
                                 [
                                   Ty.path "revm::journaled_state::JournalEntry";
                                   Ty.path "alloc::alloc::Global"
@@ -4679,9 +5069,11 @@ Module journaled_state.
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "alloc::vec::Vec")
+                      []
                       [
                         Ty.apply
                           (Ty.path "alloc::vec::Vec")
+                          []
                           [
                             Ty.path "revm::journaled_state::JournalEntry";
                             Ty.path "alloc::alloc::Global"
@@ -4702,6 +5094,7 @@ Module journaled_state.
                         "core::default::Default",
                         Ty.apply
                           (Ty.path "alloc::vec::Vec")
+                          []
                           [
                             Ty.path "revm::journaled_state::JournalEntry";
                             Ty.path "alloc::alloc::Global"
@@ -4717,7 +5110,7 @@ Module journaled_state.
               |) in
             checkpoint
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_checkpoint : M.IsAssociatedFunction Self "checkpoint" checkpoint.
@@ -4727,9 +5120,9 @@ Module journaled_state.
             self.depth -= 1;
         }
     *)
-    Definition checkpoint_commit (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition checkpoint_commit (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -4743,7 +5136,7 @@ Module journaled_state.
               M.write (| β, BinOp.Wrap.sub Integer.Usize (M.read (| β |)) (Value.Integer 1) |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_checkpoint_commit :
@@ -4774,9 +5167,9 @@ Module journaled_state.
             self.journal.truncate(checkpoint.journal_i);
         }
     *)
-    Definition checkpoint_revert (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; checkpoint ] =>
+    Definition checkpoint_revert (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; checkpoint ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let checkpoint := M.alloc (| checkpoint |) in
@@ -4831,9 +5224,11 @@ Module journaled_state.
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "alloc::vec::Vec")
+                      []
                       [
                         Ty.apply
                           (Ty.path "alloc::vec::Vec")
+                          []
                           [
                             Ty.path "revm::journaled_state::JournalEntry";
                             Ty.path "alloc::alloc::Global"
@@ -4859,15 +5254,19 @@ Module journaled_state.
                     "core::iter::traits::iterator::Iterator",
                     Ty.apply
                       (Ty.path "core::iter::adapters::take::Take")
+                      []
                       [
                         Ty.apply
                           (Ty.path "core::iter::adapters::rev::Rev")
+                          []
                           [
                             Ty.apply
                               (Ty.path "core::slice::iter::IterMut")
+                              []
                               [
                                 Ty.apply
                                   (Ty.path "alloc::vec::Vec")
+                                  []
                                   [
                                     Ty.path "revm::journaled_state::JournalEntry";
                                     Ty.path "alloc::alloc::Global"
@@ -4884,9 +5283,11 @@ Module journaled_state.
                             [
                               Ty.apply
                                 (Ty.path "&mut")
+                                []
                                 [
                                   Ty.apply
                                     (Ty.path "alloc::vec::Vec")
+                                    []
                                     [
                                       Ty.path "revm::journaled_state::JournalEntry";
                                       Ty.path "alloc::alloc::Global"
@@ -4903,12 +5304,15 @@ Module journaled_state.
                         "core::iter::traits::iterator::Iterator",
                         Ty.apply
                           (Ty.path "core::iter::adapters::rev::Rev")
+                          []
                           [
                             Ty.apply
                               (Ty.path "core::slice::iter::IterMut")
+                              []
                               [
                                 Ty.apply
                                   (Ty.path "alloc::vec::Vec")
+                                  []
                                   [
                                     Ty.path "revm::journaled_state::JournalEntry";
                                     Ty.path "alloc::alloc::Global"
@@ -4925,9 +5329,11 @@ Module journaled_state.
                             "core::iter::traits::iterator::Iterator",
                             Ty.apply
                               (Ty.path "core::slice::iter::IterMut")
+                              []
                               [
                                 Ty.apply
                                   (Ty.path "alloc::vec::Vec")
+                                  []
                                   [
                                     Ty.path "revm::journaled_state::JournalEntry";
                                     Ty.path "alloc::alloc::Global"
@@ -4942,9 +5348,11 @@ Module journaled_state.
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "slice")
+                                  []
                                   [
                                     Ty.apply
                                       (Ty.path "alloc::vec::Vec")
+                                      []
                                       [
                                         Ty.path "revm::journaled_state::JournalEntry";
                                         Ty.path "alloc::alloc::Global"
@@ -4959,9 +5367,11 @@ Module journaled_state.
                                     "core::ops::deref::DerefMut",
                                     Ty.apply
                                       (Ty.path "alloc::vec::Vec")
+                                      []
                                       [
                                         Ty.apply
                                           (Ty.path "alloc::vec::Vec")
+                                          []
                                           [
                                             Ty.path "revm::journaled_state::JournalEntry";
                                             Ty.path "alloc::alloc::Global"
@@ -5022,6 +5432,7 @@ Module journaled_state.
                                             [
                                               Ty.apply
                                                 (Ty.path "alloc::vec::Vec")
+                                                []
                                                 [
                                                   Ty.path "revm::journaled_state::JournalEntry";
                                                   Ty.path "alloc::alloc::Global"
@@ -5046,9 +5457,11 @@ Module journaled_state.
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "alloc::vec::Vec")
+                      []
                       [
                         Ty.apply
                           (Ty.path "alloy_primitives::log::Log")
+                          []
                           [ Ty.path "alloy_primitives::log::LogData" ];
                         Ty.path "alloc::alloc::Global"
                       ],
@@ -5077,9 +5490,11 @@ Module journaled_state.
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "alloc::vec::Vec")
+                      []
                       [
                         Ty.apply
                           (Ty.path "alloc::vec::Vec")
+                          []
                           [
                             Ty.path "revm::journaled_state::JournalEntry";
                             Ty.path "alloc::alloc::Global"
@@ -5107,7 +5522,7 @@ Module journaled_state.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_checkpoint_revert :
@@ -5174,9 +5589,9 @@ Module journaled_state.
             })
         }
     *)
-    Definition selfdestruct (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ DB ], [ self; address; target; db ] =>
+    Definition selfdestruct (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ DB ], [ self; address; target; db ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let address := M.alloc (| address |) in
@@ -5194,10 +5609,12 @@ Module journaled_state.
                             "core::ops::try_trait::Try",
                             Ty.apply
                               (Ty.path "core::result::Result")
+                              []
                               [
                                 Ty.path "revm_interpreter::host::LoadAccountResult";
                                 Ty.apply
                                   (Ty.path "revm_primitives::result::EVMError")
+                                  []
                                   [ Ty.associated ]
                               ],
                             [],
@@ -5235,19 +5652,23 @@ Module journaled_state.
                                         "core::ops::try_trait::FromResidual",
                                         Ty.apply
                                           (Ty.path "core::result::Result")
+                                          []
                                           [
                                             Ty.path "revm_interpreter::host::SelfDestructResult";
                                             Ty.apply
                                               (Ty.path "revm_primitives::result::EVMError")
+                                              []
                                               [ Ty.associated ]
                                           ],
                                         [
                                           Ty.apply
                                             (Ty.path "core::result::Result")
+                                            []
                                             [
                                               Ty.path "core::convert::Infallible";
                                               Ty.apply
                                                 (Ty.path "revm_primitives::result::EVMError")
+                                                []
                                                 [ Ty.associated ]
                                             ]
                                         ],
@@ -5303,9 +5724,11 @@ Module journaled_state.
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "core::option::Option")
+                                        []
                                         [
                                           Ty.apply
                                             (Ty.path "&mut")
+                                            []
                                             [ Ty.path "revm_primitives::state::Account" ]
                                         ],
                                       "unwrap",
@@ -5316,6 +5739,7 @@ Module journaled_state.
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "std::collections::hash::map::HashMap")
+                                            []
                                             [
                                               Ty.path "alloy_primitives::bits::address::Address";
                                               Ty.path "revm_primitives::state::Account";
@@ -5348,9 +5772,11 @@ Module journaled_state.
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "core::option::Option")
+                                    []
                                     [
                                       Ty.apply
                                         (Ty.path "&mut")
+                                        []
                                         [ Ty.path "revm_primitives::state::Account" ]
                                     ],
                                   "unwrap",
@@ -5361,6 +5787,7 @@ Module journaled_state.
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "std::collections::hash::map::HashMap")
+                                        []
                                         [
                                           Ty.path "alloy_primitives::bits::address::Address";
                                           Ty.path "revm_primitives::state::Account";
@@ -5394,12 +5821,15 @@ Module journaled_state.
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "core::option::Option")
+                                        []
                                         [
                                           Ty.apply
                                             (Ty.path "&mut")
+                                            []
                                             [
                                               Ty.apply
                                                 (Ty.path "alloc::vec::Vec")
+                                                []
                                                 [
                                                   Ty.path "revm::journaled_state::JournalEntry";
                                                   Ty.path "alloc::alloc::Global"
@@ -5414,9 +5844,11 @@ Module journaled_state.
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "slice")
+                                            []
                                             [
                                               Ty.apply
                                                 (Ty.path "alloc::vec::Vec")
+                                                []
                                                 [
                                                   Ty.path "revm::journaled_state::JournalEntry";
                                                   Ty.path "alloc::alloc::Global"
@@ -5431,9 +5863,11 @@ Module journaled_state.
                                               "core::ops::deref::DerefMut",
                                               Ty.apply
                                                 (Ty.path "alloc::vec::Vec")
+                                                []
                                                 [
                                                   Ty.apply
                                                     (Ty.path "alloc::vec::Vec")
+                                                    []
                                                     [
                                                       Ty.path "revm::journaled_state::JournalEntry";
                                                       Ty.path "alloc::alloc::Global"
@@ -5466,8 +5900,16 @@ Module journaled_state.
                               M.call_closure (|
                                 M.get_trait_method (|
                                   "core::ops::arith::AddAssign",
-                                  Ty.path "ruint::Uint",
-                                  [ Ty.path "ruint::Uint" ],
+                                  Ty.apply
+                                    (Ty.path "ruint::Uint")
+                                    [ Value.Integer 256; Value.Integer 4 ]
+                                    [],
+                                  [
+                                    Ty.apply
+                                      (Ty.path "ruint::Uint")
+                                      [ Value.Integer 256; Value.Integer 4 ]
+                                      []
+                                  ],
                                   "add_assign",
                                   []
                                 |),
@@ -5495,7 +5937,12 @@ Module journaled_state.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "core::option::Option")
-                          [ Ty.apply (Ty.path "&mut") [ Ty.path "revm_primitives::state::Account" ]
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "&mut")
+                              []
+                              [ Ty.path "revm_primitives::state::Account" ]
                           ],
                         "unwrap",
                         []
@@ -5505,6 +5952,7 @@ Module journaled_state.
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "std::collections::hash::map::HashMap")
+                              []
                               [
                                 Ty.path "alloy_primitives::bits::address::Address";
                                 Ty.path "revm_primitives::state::Account";
@@ -5714,6 +6162,7 @@ Module journaled_state.
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "alloc::vec::Vec")
+                                    []
                                     [
                                       Ty.path "revm::journaled_state::JournalEntry";
                                       Ty.path "alloc::alloc::Global"
@@ -5726,12 +6175,15 @@ Module journaled_state.
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "core::option::Option")
+                                        []
                                         [
                                           Ty.apply
                                             (Ty.path "&mut")
+                                            []
                                             [
                                               Ty.apply
                                                 (Ty.path "alloc::vec::Vec")
+                                                []
                                                 [
                                                   Ty.path "revm::journaled_state::JournalEntry";
                                                   Ty.path "alloc::alloc::Global"
@@ -5746,9 +6198,11 @@ Module journaled_state.
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "slice")
+                                            []
                                             [
                                               Ty.apply
                                                 (Ty.path "alloc::vec::Vec")
+                                                []
                                                 [
                                                   Ty.path "revm::journaled_state::JournalEntry";
                                                   Ty.path "alloc::alloc::Global"
@@ -5763,9 +6217,11 @@ Module journaled_state.
                                               "core::ops::deref::DerefMut",
                                               Ty.apply
                                                 (Ty.path "alloc::vec::Vec")
+                                                []
                                                 [
                                                   Ty.apply
                                                     (Ty.path "alloc::vec::Vec")
+                                                    []
                                                     [
                                                       Ty.path "revm::journaled_state::JournalEntry";
                                                       Ty.path "alloc::alloc::Global"
@@ -5807,8 +6263,16 @@ Module journaled_state.
                             M.call_closure (|
                               M.get_trait_method (|
                                 "core::cmp::PartialEq",
-                                Ty.path "ruint::Uint",
-                                [ Ty.path "ruint::Uint" ],
+                                Ty.apply
+                                  (Ty.path "ruint::Uint")
+                                  [ Value.Integer 256; Value.Integer 4 ]
+                                  [],
+                                [
+                                  Ty.apply
+                                    (Ty.path "ruint::Uint")
+                                    [ Value.Integer 256; Value.Integer 4 ]
+                                    []
+                                ],
                                 "ne",
                                 []
                               |),
@@ -5837,7 +6301,7 @@ Module journaled_state.
                 |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_selfdestruct : M.IsAssociatedFunction Self "selfdestruct" selfdestruct.
@@ -5869,9 +6333,9 @@ Module journaled_state.
             Ok(account)
         }
     *)
-    Definition initial_account_load (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ DB ], [ self; address; slots; db ] =>
+    Definition initial_account_load (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ DB ], [ self; address; slots; db ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let address := M.alloc (| address |) in
@@ -5888,6 +6352,7 @@ Module journaled_state.
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "std::collections::hash::map::HashMap")
+                              []
                               [
                                 Ty.path "alloy_primitives::bits::address::Address";
                                 Ty.path "revm_primitives::state::Account";
@@ -5921,6 +6386,7 @@ Module journaled_state.
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "std::collections::hash::map::OccupiedEntry")
+                                    []
                                     [
                                       Ty.path "alloy_primitives::bits::address::Address";
                                       Ty.path "revm_primitives::state::Account"
@@ -5945,6 +6411,7 @@ Module journaled_state.
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "std::collections::hash::map::VacantEntry")
+                                    []
                                     [
                                       Ty.path "alloy_primitives::bits::address::Address";
                                       Ty.path "revm_primitives::state::Account"
@@ -5958,6 +6425,7 @@ Module journaled_state.
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "core::option::Option")
+                                        []
                                         [ Ty.path "revm_primitives::state::Account" ],
                                       "unwrap_or",
                                       []
@@ -5967,6 +6435,7 @@ Module journaled_state.
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "core::option::Option")
+                                            []
                                             [ Ty.path "revm_primitives::state::AccountInfo" ],
                                           "map",
                                           [
@@ -5988,9 +6457,11 @@ Module journaled_state.
                                                     "core::ops::try_trait::Try",
                                                     Ty.apply
                                                       (Ty.path "core::result::Result")
+                                                      []
                                                       [
                                                         Ty.apply
                                                           (Ty.path "core::option::Option")
+                                                          []
                                                           [
                                                             Ty.path
                                                               "revm_primitives::state::AccountInfo"
@@ -5998,6 +6469,7 @@ Module journaled_state.
                                                         Ty.apply
                                                           (Ty.path
                                                             "revm_primitives::result::EVMError")
+                                                          []
                                                           [ Ty.associated ]
                                                       ],
                                                     [],
@@ -6009,9 +6481,11 @@ Module journaled_state.
                                                       M.get_associated_function (|
                                                         Ty.apply
                                                           (Ty.path "core::result::Result")
+                                                          []
                                                           [
                                                             Ty.apply
                                                               (Ty.path "core::option::Option")
+                                                              []
                                                               [
                                                                 Ty.path
                                                                   "revm_primitives::state::AccountInfo"
@@ -6023,12 +6497,14 @@ Module journaled_state.
                                                           Ty.apply
                                                             (Ty.path
                                                               "revm_primitives::result::EVMError")
+                                                            []
                                                             [ Ty.associated ];
                                                           Ty.function
                                                             [ Ty.associated ]
                                                             (Ty.apply
                                                               (Ty.path
                                                                 "revm_primitives::result::EVMError")
+                                                              []
                                                               [ Ty.associated ])
                                                         ]
                                                       |),
@@ -6069,9 +6545,11 @@ Module journaled_state.
                                                                 "core::ops::try_trait::FromResidual",
                                                                 Ty.apply
                                                                   (Ty.path "core::result::Result")
+                                                                  []
                                                                   [
                                                                     Ty.apply
                                                                       (Ty.path "&mut")
+                                                                      []
                                                                       [
                                                                         Ty.path
                                                                           "revm_primitives::state::Account"
@@ -6079,17 +6557,20 @@ Module journaled_state.
                                                                     Ty.apply
                                                                       (Ty.path
                                                                         "revm_primitives::result::EVMError")
+                                                                      []
                                                                       [ Ty.associated ]
                                                                   ],
                                                                 [
                                                                   Ty.apply
                                                                     (Ty.path "core::result::Result")
+                                                                    []
                                                                     [
                                                                       Ty.path
                                                                         "core::convert::Infallible";
                                                                       Ty.apply
                                                                         (Ty.path
                                                                           "revm_primitives::result::EVMError")
+                                                                        []
                                                                         [ Ty.associated ]
                                                                     ]
                                                                 ],
@@ -6171,7 +6652,18 @@ Module journaled_state.
                             "core::iter::traits::collect::IntoIterator",
                             Ty.apply
                               (Ty.path "&")
-                              [ Ty.apply (Ty.path "slice") [ Ty.path "ruint::Uint" ] ],
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "slice")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "ruint::Uint")
+                                      [ Value.Integer 256; Value.Integer 4 ]
+                                      []
+                                  ]
+                              ],
                             [],
                             "into_iter",
                             []
@@ -6193,7 +6685,13 @@ Module journaled_state.
                                           "core::iter::traits::iterator::Iterator",
                                           Ty.apply
                                             (Ty.path "core::slice::iter::Iter")
-                                            [ Ty.path "ruint::Uint" ],
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "ruint::Uint")
+                                                [ Value.Integer 256; Value.Integer 4 ]
+                                                []
+                                            ],
                                           [],
                                           "next",
                                           []
@@ -6233,8 +6731,13 @@ Module journaled_state.
                                                           Ty.apply
                                                             (Ty.path
                                                               "std::collections::hash::map::HashMap")
+                                                            []
                                                             [
-                                                              Ty.path "ruint::Uint";
+                                                              Ty.apply
+                                                                (Ty.path "ruint::Uint")
+                                                                [ Value.Integer 256; Value.Integer 4
+                                                                ]
+                                                                [];
                                                               Ty.path
                                                                 "revm_primitives::state::StorageSlot";
                                                               Ty.path
@@ -6269,11 +6772,19 @@ Module journaled_state.
                                                               "core::ops::try_trait::Try",
                                                               Ty.apply
                                                                 (Ty.path "core::result::Result")
+                                                                []
                                                                 [
-                                                                  Ty.path "ruint::Uint";
+                                                                  Ty.apply
+                                                                    (Ty.path "ruint::Uint")
+                                                                    [
+                                                                      Value.Integer 256;
+                                                                      Value.Integer 4
+                                                                    ]
+                                                                    [];
                                                                   Ty.apply
                                                                     (Ty.path
                                                                       "revm_primitives::result::EVMError")
+                                                                    []
                                                                     [ Ty.associated ]
                                                                 ],
                                                               [],
@@ -6285,8 +6796,15 @@ Module journaled_state.
                                                                 M.get_associated_function (|
                                                                   Ty.apply
                                                                     (Ty.path "core::result::Result")
+                                                                    []
                                                                     [
-                                                                      Ty.path "ruint::Uint";
+                                                                      Ty.apply
+                                                                        (Ty.path "ruint::Uint")
+                                                                        [
+                                                                          Value.Integer 256;
+                                                                          Value.Integer 4
+                                                                        ]
+                                                                        [];
                                                                       Ty.associated
                                                                     ],
                                                                   "map_err",
@@ -6294,12 +6812,14 @@ Module journaled_state.
                                                                     Ty.apply
                                                                       (Ty.path
                                                                         "revm_primitives::result::EVMError")
+                                                                      []
                                                                       [ Ty.associated ];
                                                                     Ty.function
                                                                       [ Ty.associated ]
                                                                       (Ty.apply
                                                                         (Ty.path
                                                                           "revm_primitives::result::EVMError")
+                                                                        []
                                                                         [ Ty.associated ])
                                                                   ]
                                                                 |),
@@ -6345,9 +6865,11 @@ Module journaled_state.
                                                                           Ty.apply
                                                                             (Ty.path
                                                                               "core::result::Result")
+                                                                            []
                                                                             [
                                                                               Ty.apply
                                                                                 (Ty.path "&mut")
+                                                                                []
                                                                                 [
                                                                                   Ty.path
                                                                                     "revm_primitives::state::Account"
@@ -6355,18 +6877,21 @@ Module journaled_state.
                                                                               Ty.apply
                                                                                 (Ty.path
                                                                                   "revm_primitives::result::EVMError")
+                                                                                []
                                                                                 [ Ty.associated ]
                                                                             ],
                                                                           [
                                                                             Ty.apply
                                                                               (Ty.path
                                                                                 "core::result::Result")
+                                                                              []
                                                                               [
                                                                                 Ty.path
                                                                                   "core::convert::Infallible";
                                                                                 Ty.apply
                                                                                   (Ty.path
                                                                                     "revm_primitives::result::EVMError")
+                                                                                  []
                                                                                   [ Ty.associated ]
                                                                               ]
                                                                           ],
@@ -6399,8 +6924,13 @@ Module journaled_state.
                                                           Ty.apply
                                                             (Ty.path
                                                               "std::collections::hash::map::VacantEntry")
+                                                            []
                                                             [
-                                                              Ty.path "ruint::Uint";
+                                                              Ty.apply
+                                                                (Ty.path "ruint::Uint")
+                                                                [ Value.Integer 256; Value.Integer 4
+                                                                ]
+                                                                [];
                                                               Ty.path
                                                                 "revm_primitives::state::StorageSlot"
                                                             ],
@@ -6435,7 +6965,7 @@ Module journaled_state.
                 M.alloc (| Value.StructTuple "core::result::Result::Ok" [ M.read (| account |) ] |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_initial_account_load :
@@ -6471,9 +7001,9 @@ Module journaled_state.
             })
         }
     *)
-    Definition load_account (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ DB ], [ self; address; db ] =>
+    Definition load_account (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ DB ], [ self; address; db ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let address := M.alloc (| address |) in
@@ -6490,6 +7020,7 @@ Module journaled_state.
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "std::collections::hash::map::HashMap")
+                              []
                               [
                                 Ty.path "alloy_primitives::bits::address::Address";
                                 Ty.path "revm_primitives::state::Account";
@@ -6525,6 +7056,7 @@ Module journaled_state.
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "std::collections::hash::map::OccupiedEntry")
+                                        []
                                         [
                                           Ty.path "alloy_primitives::bits::address::Address";
                                           Ty.path "revm_primitives::state::Account"
@@ -6561,9 +7093,11 @@ Module journaled_state.
                                                   "core::ops::try_trait::Try",
                                                   Ty.apply
                                                     (Ty.path "core::result::Result")
+                                                    []
                                                     [
                                                       Ty.apply
                                                         (Ty.path "core::option::Option")
+                                                        []
                                                         [
                                                           Ty.path
                                                             "revm_primitives::state::AccountInfo"
@@ -6571,6 +7105,7 @@ Module journaled_state.
                                                       Ty.apply
                                                         (Ty.path
                                                           "revm_primitives::result::EVMError")
+                                                        []
                                                         [ Ty.associated ]
                                                     ],
                                                   [],
@@ -6582,9 +7117,11 @@ Module journaled_state.
                                                     M.get_associated_function (|
                                                       Ty.apply
                                                         (Ty.path "core::result::Result")
+                                                        []
                                                         [
                                                           Ty.apply
                                                             (Ty.path "core::option::Option")
+                                                            []
                                                             [
                                                               Ty.path
                                                                 "revm_primitives::state::AccountInfo"
@@ -6596,12 +7133,14 @@ Module journaled_state.
                                                         Ty.apply
                                                           (Ty.path
                                                             "revm_primitives::result::EVMError")
+                                                          []
                                                           [ Ty.associated ];
                                                         Ty.function
                                                           [ Ty.associated ]
                                                           (Ty.apply
                                                             (Ty.path
                                                               "revm_primitives::result::EVMError")
+                                                            []
                                                             [ Ty.associated ])
                                                       ]
                                                     |),
@@ -6642,11 +7181,13 @@ Module journaled_state.
                                                               "core::ops::try_trait::FromResidual",
                                                               Ty.apply
                                                                 (Ty.path "core::result::Result")
+                                                                []
                                                                 [
                                                                   Ty.tuple
                                                                     [
                                                                       Ty.apply
                                                                         (Ty.path "&mut")
+                                                                        []
                                                                         [
                                                                           Ty.path
                                                                             "revm_primitives::state::Account"
@@ -6656,17 +7197,20 @@ Module journaled_state.
                                                                   Ty.apply
                                                                     (Ty.path
                                                                       "revm_primitives::result::EVMError")
+                                                                    []
                                                                     [ Ty.associated ]
                                                                 ],
                                                               [
                                                                 Ty.apply
                                                                   (Ty.path "core::result::Result")
+                                                                  []
                                                                   [
                                                                     Ty.path
                                                                       "core::convert::Infallible";
                                                                     Ty.apply
                                                                       (Ty.path
                                                                         "revm_primitives::result::EVMError")
+                                                                      []
                                                                       [ Ty.associated ]
                                                                   ]
                                                               ],
@@ -6731,6 +7275,7 @@ Module journaled_state.
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "alloc::vec::Vec")
+                                      []
                                       [
                                         Ty.path "revm::journaled_state::JournalEntry";
                                         Ty.path "alloc::alloc::Global"
@@ -6743,12 +7288,15 @@ Module journaled_state.
                                       M.get_associated_function (|
                                         Ty.apply
                                           (Ty.path "core::option::Option")
+                                          []
                                           [
                                             Ty.apply
                                               (Ty.path "&mut")
+                                              []
                                               [
                                                 Ty.apply
                                                   (Ty.path "alloc::vec::Vec")
+                                                  []
                                                   [
                                                     Ty.path "revm::journaled_state::JournalEntry";
                                                     Ty.path "alloc::alloc::Global"
@@ -6763,9 +7311,11 @@ Module journaled_state.
                                           M.get_associated_function (|
                                             Ty.apply
                                               (Ty.path "slice")
+                                              []
                                               [
                                                 Ty.apply
                                                   (Ty.path "alloc::vec::Vec")
+                                                  []
                                                   [
                                                     Ty.path "revm::journaled_state::JournalEntry";
                                                     Ty.path "alloc::alloc::Global"
@@ -6780,9 +7330,11 @@ Module journaled_state.
                                                 "core::ops::deref::DerefMut",
                                                 Ty.apply
                                                   (Ty.path "alloc::vec::Vec")
+                                                  []
                                                   [
                                                     Ty.apply
                                                       (Ty.path "alloc::vec::Vec")
+                                                      []
                                                       [
                                                         Ty.path
                                                           "revm::journaled_state::JournalEntry";
@@ -6819,6 +7371,7 @@ Module journaled_state.
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "std::collections::hash::set::HashSet")
+                                        []
                                         [
                                           Ty.path "alloy_primitives::bits::address::Address";
                                           Ty.path "std::hash::random::RandomState"
@@ -6843,6 +7396,7 @@ Module journaled_state.
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "std::collections::hash::map::VacantEntry")
+                                        []
                                         [
                                           Ty.path "alloy_primitives::bits::address::Address";
                                           Ty.path "revm_primitives::state::Account"
@@ -6860,7 +7414,7 @@ Module journaled_state.
                   |)
                 ]))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_load_account : M.IsAssociatedFunction Self "load_account" load_account.
@@ -6886,9 +7440,9 @@ Module journaled_state.
             Ok(LoadAccountResult { is_empty, is_cold })
         }
     *)
-    Definition load_account_exist (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ DB ], [ self; address; db ] =>
+    Definition load_account_exist (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ DB ], [ self; address; db ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let address := M.alloc (| address |) in
@@ -6912,16 +7466,19 @@ Module journaled_state.
                           "core::ops::try_trait::Try",
                           Ty.apply
                             (Ty.path "core::result::Result")
+                            []
                             [
                               Ty.tuple
                                 [
                                   Ty.apply
                                     (Ty.path "&mut")
+                                    []
                                     [ Ty.path "revm_primitives::state::Account" ];
                                   Ty.path "bool"
                                 ];
                               Ty.apply
                                 (Ty.path "revm_primitives::result::EVMError")
+                                []
                                 [ Ty.associated ]
                             ],
                           [],
@@ -6959,19 +7516,23 @@ Module journaled_state.
                                       "core::ops::try_trait::FromResidual",
                                       Ty.apply
                                         (Ty.path "core::result::Result")
+                                        []
                                         [
                                           Ty.path "revm_interpreter::host::LoadAccountResult";
                                           Ty.apply
                                             (Ty.path "revm_primitives::result::EVMError")
+                                            []
                                             [ Ty.associated ]
                                         ],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
+                                          []
                                           [
                                             Ty.path "core::convert::Infallible";
                                             Ty.apply
                                               (Ty.path "revm_primitives::result::EVMError")
+                                              []
                                               [ Ty.associated ]
                                           ]
                                       ],
@@ -7092,7 +7653,7 @@ Module journaled_state.
                 |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_load_account_exist :
@@ -7119,9 +7680,9 @@ Module journaled_state.
             Ok((acc, is_cold))
         }
     *)
-    Definition load_code (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ DB ], [ self; address; db ] =>
+    Definition load_code (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ DB ], [ self; address; db ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let address := M.alloc (| address |) in
@@ -7137,16 +7698,19 @@ Module journaled_state.
                           "core::ops::try_trait::Try",
                           Ty.apply
                             (Ty.path "core::result::Result")
+                            []
                             [
                               Ty.tuple
                                 [
                                   Ty.apply
                                     (Ty.path "&mut")
+                                    []
                                     [ Ty.path "revm_primitives::state::Account" ];
                                   Ty.path "bool"
                                 ];
                               Ty.apply
                                 (Ty.path "revm_primitives::result::EVMError")
+                                []
                                 [ Ty.associated ]
                             ],
                           [],
@@ -7184,25 +7748,30 @@ Module journaled_state.
                                       "core::ops::try_trait::FromResidual",
                                       Ty.apply
                                         (Ty.path "core::result::Result")
+                                        []
                                         [
                                           Ty.tuple
                                             [
                                               Ty.apply
                                                 (Ty.path "&mut")
+                                                []
                                                 [ Ty.path "revm_primitives::state::Account" ];
                                               Ty.path "bool"
                                             ];
                                           Ty.apply
                                             (Ty.path "revm_primitives::result::EVMError")
+                                            []
                                             [ Ty.associated ]
                                         ],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
+                                          []
                                           [
                                             Ty.path "core::convert::Infallible";
                                             Ty.apply
                                               (Ty.path "revm_primitives::result::EVMError")
+                                              []
                                               [ Ty.associated ]
                                           ]
                                       ],
@@ -7247,6 +7816,7 @@ Module journaled_state.
                                           M.get_associated_function (|
                                             Ty.apply
                                               (Ty.path "core::option::Option")
+                                              []
                                               [ Ty.path "revm_primitives::bytecode::Bytecode" ],
                                             "is_none",
                                             []
@@ -7280,11 +7850,17 @@ Module journaled_state.
                                                 M.call_closure (|
                                                   M.get_trait_method (|
                                                     "core::cmp::PartialEq",
-                                                    Ty.path
-                                                      "alloy_primitives::bits::fixed::FixedBytes",
+                                                    Ty.apply
+                                                      (Ty.path
+                                                        "alloy_primitives::bits::fixed::FixedBytes")
+                                                      [ Value.Integer 32 ]
+                                                      [],
                                                     [
-                                                      Ty.path
-                                                        "alloy_primitives::bits::fixed::FixedBytes"
+                                                      Ty.apply
+                                                        (Ty.path
+                                                          "alloy_primitives::bits::fixed::FixedBytes")
+                                                        [ Value.Integer 32 ]
+                                                        []
                                                     ],
                                                     "eq",
                                                     []
@@ -7350,12 +7926,14 @@ Module journaled_state.
                                                       "core::ops::try_trait::Try",
                                                       Ty.apply
                                                         (Ty.path "core::result::Result")
+                                                        []
                                                         [
                                                           Ty.path
                                                             "revm_primitives::bytecode::Bytecode";
                                                           Ty.apply
                                                             (Ty.path
                                                               "revm_primitives::result::EVMError")
+                                                            []
                                                             [ Ty.associated ]
                                                         ],
                                                       [],
@@ -7367,6 +7945,7 @@ Module journaled_state.
                                                         M.get_associated_function (|
                                                           Ty.apply
                                                             (Ty.path "core::result::Result")
+                                                            []
                                                             [
                                                               Ty.path
                                                                 "revm_primitives::bytecode::Bytecode";
@@ -7377,12 +7956,14 @@ Module journaled_state.
                                                             Ty.apply
                                                               (Ty.path
                                                                 "revm_primitives::result::EVMError")
+                                                              []
                                                               [ Ty.associated ];
                                                             Ty.function
                                                               [ Ty.associated ]
                                                               (Ty.apply
                                                                 (Ty.path
                                                                   "revm_primitives::result::EVMError")
+                                                                []
                                                                 [ Ty.associated ])
                                                           ]
                                                         |),
@@ -7436,11 +8017,13 @@ Module journaled_state.
                                                                   "core::ops::try_trait::FromResidual",
                                                                   Ty.apply
                                                                     (Ty.path "core::result::Result")
+                                                                    []
                                                                     [
                                                                       Ty.tuple
                                                                         [
                                                                           Ty.apply
                                                                             (Ty.path "&mut")
+                                                                            []
                                                                             [
                                                                               Ty.path
                                                                                 "revm_primitives::state::Account"
@@ -7450,18 +8033,21 @@ Module journaled_state.
                                                                       Ty.apply
                                                                         (Ty.path
                                                                           "revm_primitives::result::EVMError")
+                                                                        []
                                                                         [ Ty.associated ]
                                                                     ],
                                                                   [
                                                                     Ty.apply
                                                                       (Ty.path
                                                                         "core::result::Result")
+                                                                      []
                                                                       [
                                                                         Ty.path
                                                                           "core::convert::Infallible";
                                                                         Ty.apply
                                                                           (Ty.path
                                                                             "revm_primitives::result::EVMError")
+                                                                          []
                                                                           [ Ty.associated ]
                                                                       ]
                                                                   ],
@@ -7517,7 +8103,7 @@ Module journaled_state.
                 |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_load_code : M.IsAssociatedFunction Self "load_code" load_code.
@@ -7560,9 +8146,9 @@ Module journaled_state.
             Ok(load)
         }
     *)
-    Definition sload (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ DB ], [ self; address; key; db ] =>
+    Definition sload (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ DB ], [ self; address; key; db ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let address := M.alloc (| address |) in
@@ -7577,7 +8163,12 @@ Module journaled_state.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "core::option::Option")
-                          [ Ty.apply (Ty.path "&mut") [ Ty.path "revm_primitives::state::Account" ]
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "&mut")
+                              []
+                              [ Ty.path "revm_primitives::state::Account" ]
                           ],
                         "unwrap",
                         []
@@ -7587,6 +8178,7 @@ Module journaled_state.
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "std::collections::hash::map::HashMap")
+                              []
                               [
                                 Ty.path "alloy_primitives::bits::address::Address";
                                 Ty.path "revm_primitives::state::Account";
@@ -7626,8 +8218,12 @@ Module journaled_state.
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "std::collections::hash::map::HashMap")
+                              []
                               [
-                                Ty.path "ruint::Uint";
+                                Ty.apply
+                                  (Ty.path "ruint::Uint")
+                                  [ Value.Integer 256; Value.Integer 4 ]
+                                  [];
                                 Ty.path "revm_primitives::state::StorageSlot";
                                 Ty.path "std::hash::random::RandomState"
                               ],
@@ -7663,8 +8259,12 @@ Module journaled_state.
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "std::collections::hash::map::OccupiedEntry")
+                                            []
                                             [
-                                              Ty.path "ruint::Uint";
+                                              Ty.apply
+                                                (Ty.path "ruint::Uint")
+                                                [ Value.Integer 256; Value.Integer 4 ]
+                                                [];
                                               Ty.path "revm_primitives::state::StorageSlot"
                                             ],
                                           "get",
@@ -7711,10 +8311,15 @@ Module journaled_state.
                                                 "core::ops::try_trait::Try",
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
+                                                  []
                                                   [
-                                                    Ty.path "ruint::Uint";
+                                                    Ty.apply
+                                                      (Ty.path "ruint::Uint")
+                                                      [ Value.Integer 256; Value.Integer 4 ]
+                                                      [];
                                                     Ty.apply
                                                       (Ty.path "revm_primitives::result::EVMError")
+                                                      []
                                                       [ Ty.associated ]
                                                   ],
                                                 [],
@@ -7726,18 +8331,27 @@ Module journaled_state.
                                                   M.get_associated_function (|
                                                     Ty.apply
                                                       (Ty.path "core::result::Result")
-                                                      [ Ty.path "ruint::Uint"; Ty.associated ],
+                                                      []
+                                                      [
+                                                        Ty.apply
+                                                          (Ty.path "ruint::Uint")
+                                                          [ Value.Integer 256; Value.Integer 4 ]
+                                                          [];
+                                                        Ty.associated
+                                                      ],
                                                     "map_err",
                                                     [
                                                       Ty.apply
                                                         (Ty.path
                                                           "revm_primitives::result::EVMError")
+                                                        []
                                                         [ Ty.associated ];
                                                       Ty.function
                                                         [ Ty.associated ]
                                                         (Ty.apply
                                                           (Ty.path
                                                             "revm_primitives::result::EVMError")
+                                                          []
                                                           [ Ty.associated ])
                                                     ]
                                                   |),
@@ -7782,26 +8396,36 @@ Module journaled_state.
                                                             "core::ops::try_trait::FromResidual",
                                                             Ty.apply
                                                               (Ty.path "core::result::Result")
+                                                              []
                                                               [
                                                                 Ty.tuple
                                                                   [
-                                                                    Ty.path "ruint::Uint";
+                                                                    Ty.apply
+                                                                      (Ty.path "ruint::Uint")
+                                                                      [
+                                                                        Value.Integer 256;
+                                                                        Value.Integer 4
+                                                                      ]
+                                                                      [];
                                                                     Ty.path "bool"
                                                                   ];
                                                                 Ty.apply
                                                                   (Ty.path
                                                                     "revm_primitives::result::EVMError")
+                                                                  []
                                                                   [ Ty.associated ]
                                                               ],
                                                             [
                                                               Ty.apply
                                                                 (Ty.path "core::result::Result")
+                                                                []
                                                                 [
                                                                   Ty.path
                                                                     "core::convert::Infallible";
                                                                   Ty.apply
                                                                     (Ty.path
                                                                       "revm_primitives::result::EVMError")
+                                                                    []
                                                                     [ Ty.associated ]
                                                                 ]
                                                             ],
@@ -7835,6 +8459,7 @@ Module journaled_state.
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "alloc::vec::Vec")
+                                      []
                                       [
                                         Ty.path "revm::journaled_state::JournalEntry";
                                         Ty.path "alloc::alloc::Global"
@@ -7847,12 +8472,15 @@ Module journaled_state.
                                       M.get_associated_function (|
                                         Ty.apply
                                           (Ty.path "core::option::Option")
+                                          []
                                           [
                                             Ty.apply
                                               (Ty.path "&mut")
+                                              []
                                               [
                                                 Ty.apply
                                                   (Ty.path "alloc::vec::Vec")
+                                                  []
                                                   [
                                                     Ty.path "revm::journaled_state::JournalEntry";
                                                     Ty.path "alloc::alloc::Global"
@@ -7867,9 +8495,11 @@ Module journaled_state.
                                           M.get_associated_function (|
                                             Ty.apply
                                               (Ty.path "slice")
+                                              []
                                               [
                                                 Ty.apply
                                                   (Ty.path "alloc::vec::Vec")
+                                                  []
                                                   [
                                                     Ty.path "revm::journaled_state::JournalEntry";
                                                     Ty.path "alloc::alloc::Global"
@@ -7884,9 +8514,11 @@ Module journaled_state.
                                                 "core::ops::deref::DerefMut",
                                                 Ty.apply
                                                   (Ty.path "alloc::vec::Vec")
+                                                  []
                                                   [
                                                     Ty.apply
                                                       (Ty.path "alloc::vec::Vec")
+                                                      []
                                                       [
                                                         Ty.path
                                                           "revm::journaled_state::JournalEntry";
@@ -7927,8 +8559,12 @@ Module journaled_state.
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "std::collections::hash::map::VacantEntry")
+                                      []
                                       [
-                                        Ty.path "ruint::Uint";
+                                        Ty.apply
+                                          (Ty.path "ruint::Uint")
+                                          [ Value.Integer 256; Value.Integer 4 ]
+                                          [];
                                         Ty.path "revm_primitives::state::StorageSlot"
                                       ],
                                     "insert",
@@ -7954,7 +8590,7 @@ Module journaled_state.
                 M.alloc (| Value.StructTuple "core::result::Result::Ok" [ M.read (| load |) ] |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_sload : M.IsAssociatedFunction Self "sload" sload.
@@ -8002,9 +8638,9 @@ Module journaled_state.
             })
         }
     *)
-    Definition sstore (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ DB ], [ self; address; key; new; db ] =>
+    Definition sstore (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ DB ], [ self; address; key; new; db ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let address := M.alloc (| address |) in
@@ -8022,10 +8658,19 @@ Module journaled_state.
                           "core::ops::try_trait::Try",
                           Ty.apply
                             (Ty.path "core::result::Result")
+                            []
                             [
-                              Ty.tuple [ Ty.path "ruint::Uint"; Ty.path "bool" ];
+                              Ty.tuple
+                                [
+                                  Ty.apply
+                                    (Ty.path "ruint::Uint")
+                                    [ Value.Integer 256; Value.Integer 4 ]
+                                    [];
+                                  Ty.path "bool"
+                                ];
                               Ty.apply
                                 (Ty.path "revm_primitives::result::EVMError")
+                                []
                                 [ Ty.associated ]
                             ],
                           [],
@@ -8068,19 +8713,23 @@ Module journaled_state.
                                       "core::ops::try_trait::FromResidual",
                                       Ty.apply
                                         (Ty.path "core::result::Result")
+                                        []
                                         [
                                           Ty.path "revm_interpreter::host::SStoreResult";
                                           Ty.apply
                                             (Ty.path "revm_primitives::result::EVMError")
+                                            []
                                             [ Ty.associated ]
                                         ],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
+                                          []
                                           [
                                             Ty.path "core::convert::Infallible";
                                             Ty.apply
                                               (Ty.path "revm_primitives::result::EVMError")
+                                              []
                                               [ Ty.associated ]
                                           ]
                                       ],
@@ -8118,9 +8767,11 @@ Module journaled_state.
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "core::option::Option")
+                                  []
                                   [
                                     Ty.apply
                                       (Ty.path "&mut")
+                                      []
                                       [ Ty.path "revm_primitives::state::Account" ]
                                   ],
                                 "unwrap",
@@ -8131,6 +8782,7 @@ Module journaled_state.
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "std::collections::hash::map::HashMap")
+                                      []
                                       [
                                         Ty.path "alloy_primitives::bits::address::Address";
                                         Ty.path "revm_primitives::state::Account";
@@ -8157,9 +8809,11 @@ Module journaled_state.
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "core::option::Option")
+                                  []
                                   [
                                     Ty.apply
                                       (Ty.path "&mut")
+                                      []
                                       [ Ty.path "revm_primitives::state::StorageSlot" ]
                                   ],
                                 "unwrap",
@@ -8170,13 +8824,22 @@ Module journaled_state.
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "std::collections::hash::map::HashMap")
+                                      []
                                       [
-                                        Ty.path "ruint::Uint";
+                                        Ty.apply
+                                          (Ty.path "ruint::Uint")
+                                          [ Value.Integer 256; Value.Integer 4 ]
+                                          [];
                                         Ty.path "revm_primitives::state::StorageSlot";
                                         Ty.path "std::hash::random::RandomState"
                                       ],
                                     "get_mut",
-                                    [ Ty.path "ruint::Uint" ]
+                                    [
+                                      Ty.apply
+                                        (Ty.path "ruint::Uint")
+                                        [ Value.Integer 256; Value.Integer 4 ]
+                                        []
+                                    ]
                                   |),
                                   [
                                     M.SubPointer.get_struct_record_field (|
@@ -8202,8 +8865,16 @@ Module journaled_state.
                                         M.call_closure (|
                                           M.get_trait_method (|
                                             "core::cmp::PartialEq",
-                                            Ty.path "ruint::Uint",
-                                            [ Ty.path "ruint::Uint" ],
+                                            Ty.apply
+                                              (Ty.path "ruint::Uint")
+                                              [ Value.Integer 256; Value.Integer 4 ]
+                                              [],
+                                            [
+                                              Ty.apply
+                                                (Ty.path "ruint::Uint")
+                                                [ Value.Integer 256; Value.Integer 4 ]
+                                                []
+                                            ],
                                             "eq",
                                             []
                                           |),
@@ -8251,6 +8922,7 @@ Module journaled_state.
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "alloc::vec::Vec")
+                                  []
                                   [
                                     Ty.path "revm::journaled_state::JournalEntry";
                                     Ty.path "alloc::alloc::Global"
@@ -8263,12 +8935,15 @@ Module journaled_state.
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "core::option::Option")
+                                      []
                                       [
                                         Ty.apply
                                           (Ty.path "&mut")
+                                          []
                                           [
                                             Ty.apply
                                               (Ty.path "alloc::vec::Vec")
+                                              []
                                               [
                                                 Ty.path "revm::journaled_state::JournalEntry";
                                                 Ty.path "alloc::alloc::Global"
@@ -8283,9 +8958,11 @@ Module journaled_state.
                                       M.get_associated_function (|
                                         Ty.apply
                                           (Ty.path "slice")
+                                          []
                                           [
                                             Ty.apply
                                               (Ty.path "alloc::vec::Vec")
+                                              []
                                               [
                                                 Ty.path "revm::journaled_state::JournalEntry";
                                                 Ty.path "alloc::alloc::Global"
@@ -8300,9 +8977,11 @@ Module journaled_state.
                                             "core::ops::deref::DerefMut",
                                             Ty.apply
                                               (Ty.path "alloc::vec::Vec")
+                                              []
                                               [
                                                 Ty.apply
                                                   (Ty.path "alloc::vec::Vec")
+                                                  []
                                                   [
                                                     Ty.path "revm::journaled_state::JournalEntry";
                                                     Ty.path "alloc::alloc::Global"
@@ -8372,7 +9051,7 @@ Module journaled_state.
                 |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_sstore : M.IsAssociatedFunction Self "sstore" sstore.
@@ -8385,16 +9064,19 @@ Module journaled_state.
                 .unwrap_or_default()
         }
     *)
-    Definition tload (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; address; key ] =>
+    Definition tload (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; address; key ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let address := M.alloc (| address |) in
           let key := M.alloc (| key |) in
           M.call_closure (|
             M.get_associated_function (|
-              Ty.apply (Ty.path "core::option::Option") [ Ty.path "ruint::Uint" ],
+              Ty.apply
+                (Ty.path "core::option::Option")
+                []
+                [ Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [] ],
               "unwrap_or_default",
               []
             |),
@@ -8403,7 +9085,14 @@ Module journaled_state.
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "core::option::Option")
-                    [ Ty.apply (Ty.path "&") [ Ty.path "ruint::Uint" ] ],
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "&")
+                        []
+                        [ Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] []
+                        ]
+                    ],
                   "copied",
                   []
                 |),
@@ -8412,13 +9101,20 @@ Module journaled_state.
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "std::collections::hash::map::HashMap")
+                        []
                         [
                           Ty.tuple
                             [
                               Ty.path "alloy_primitives::bits::address::Address";
-                              Ty.path "ruint::Uint"
+                              Ty.apply
+                                (Ty.path "ruint::Uint")
+                                [ Value.Integer 256; Value.Integer 4 ]
+                                []
                             ];
-                          Ty.path "ruint::Uint";
+                          Ty.apply
+                            (Ty.path "ruint::Uint")
+                            [ Value.Integer 256; Value.Integer 4 ]
+                            [];
                           Ty.path "std::hash::random::RandomState"
                         ],
                       "get",
@@ -8426,7 +9122,10 @@ Module journaled_state.
                         Ty.tuple
                           [
                             Ty.path "alloy_primitives::bits::address::Address";
-                            Ty.path "ruint::Uint"
+                            Ty.apply
+                              (Ty.path "ruint::Uint")
+                              [ Value.Integer 256; Value.Integer 4 ]
+                              []
                           ]
                       ]
                     |),
@@ -8443,7 +9142,7 @@ Module journaled_state.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_tload : M.IsAssociatedFunction Self "tload" tload.
@@ -8484,9 +9183,9 @@ Module journaled_state.
             }
         }
     *)
-    Definition tstore (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; address; key; new ] =>
+    Definition tstore (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; address; key; new ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let address := M.alloc (| address |) in
@@ -8506,8 +9205,16 @@ Module journaled_state.
                               M.call_closure (|
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
-                                  Ty.path "ruint::Uint",
-                                  [ Ty.path "ruint::Uint" ],
+                                  Ty.apply
+                                    (Ty.path "ruint::Uint")
+                                    [ Value.Integer 256; Value.Integer 4 ]
+                                    [],
+                                  [
+                                    Ty.apply
+                                      (Ty.path "ruint::Uint")
+                                      [ Value.Integer 256; Value.Integer 4 ]
+                                      []
+                                  ],
                                   "eq",
                                   []
                                 |),
@@ -8521,13 +9228,20 @@ Module journaled_state.
                             M.get_associated_function (|
                               Ty.apply
                                 (Ty.path "std::collections::hash::map::HashMap")
+                                []
                                 [
                                   Ty.tuple
                                     [
                                       Ty.path "alloy_primitives::bits::address::Address";
-                                      Ty.path "ruint::Uint"
+                                      Ty.apply
+                                        (Ty.path "ruint::Uint")
+                                        [ Value.Integer 256; Value.Integer 4 ]
+                                        []
                                     ];
-                                  Ty.path "ruint::Uint";
+                                  Ty.apply
+                                    (Ty.path "ruint::Uint")
+                                    [ Value.Integer 256; Value.Integer 4 ]
+                                    [];
                                   Ty.path "std::hash::random::RandomState"
                                 ],
                               "remove",
@@ -8535,7 +9249,10 @@ Module journaled_state.
                                 Ty.tuple
                                   [
                                     Ty.path "alloy_primitives::bits::address::Address";
-                                    Ty.path "ruint::Uint"
+                                    Ty.apply
+                                      (Ty.path "ruint::Uint")
+                                      [ Value.Integer 256; Value.Integer 4 ]
+                                      []
                                   ]
                               ]
                             |),
@@ -8555,7 +9272,15 @@ Module journaled_state.
                           M.alloc (|
                             M.call_closure (|
                               M.get_associated_function (|
-                                Ty.apply (Ty.path "core::option::Option") [ Ty.path "ruint::Uint" ],
+                                Ty.apply
+                                  (Ty.path "core::option::Option")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "ruint::Uint")
+                                      [ Value.Integer 256; Value.Integer 4 ]
+                                      []
+                                  ],
                                 "unwrap_or_default",
                                 []
                               |),
@@ -8564,13 +9289,20 @@ Module journaled_state.
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "std::collections::hash::map::HashMap")
+                                      []
                                       [
                                         Ty.tuple
                                           [
                                             Ty.path "alloy_primitives::bits::address::Address";
-                                            Ty.path "ruint::Uint"
+                                            Ty.apply
+                                              (Ty.path "ruint::Uint")
+                                              [ Value.Integer 256; Value.Integer 4 ]
+                                              []
                                           ];
-                                        Ty.path "ruint::Uint";
+                                        Ty.apply
+                                          (Ty.path "ruint::Uint")
+                                          [ Value.Integer 256; Value.Integer 4 ]
+                                          [];
                                         Ty.path "std::hash::random::RandomState"
                                       ],
                                     "insert",
@@ -8600,8 +9332,16 @@ Module journaled_state.
                                       M.call_closure (|
                                         M.get_trait_method (|
                                           "core::cmp::PartialEq",
-                                          Ty.path "ruint::Uint",
-                                          [ Ty.path "ruint::Uint" ],
+                                          Ty.apply
+                                            (Ty.path "ruint::Uint")
+                                            [ Value.Integer 256; Value.Integer 4 ]
+                                            [],
+                                          [
+                                            Ty.apply
+                                              (Ty.path "ruint::Uint")
+                                              [ Value.Integer 256; Value.Integer 4 ]
+                                              []
+                                          ],
                                           "ne",
                                           []
                                         |),
@@ -8645,6 +9385,7 @@ Module journaled_state.
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "alloc::vec::Vec")
+                              []
                               [
                                 Ty.path "revm::journaled_state::JournalEntry";
                                 Ty.path "alloc::alloc::Global"
@@ -8657,12 +9398,15 @@ Module journaled_state.
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "core::option::Option")
+                                  []
                                   [
                                     Ty.apply
                                       (Ty.path "&mut")
+                                      []
                                       [
                                         Ty.apply
                                           (Ty.path "alloc::vec::Vec")
+                                          []
                                           [
                                             Ty.path "revm::journaled_state::JournalEntry";
                                             Ty.path "alloc::alloc::Global"
@@ -8677,9 +9421,11 @@ Module journaled_state.
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "slice")
+                                      []
                                       [
                                         Ty.apply
                                           (Ty.path "alloc::vec::Vec")
+                                          []
                                           [
                                             Ty.path "revm::journaled_state::JournalEntry";
                                             Ty.path "alloc::alloc::Global"
@@ -8694,9 +9440,11 @@ Module journaled_state.
                                         "core::ops::deref::DerefMut",
                                         Ty.apply
                                           (Ty.path "alloc::vec::Vec")
+                                          []
                                           [
                                             Ty.apply
                                               (Ty.path "alloc::vec::Vec")
+                                              []
                                               [
                                                 Ty.path "revm::journaled_state::JournalEntry";
                                                 Ty.path "alloc::alloc::Global"
@@ -8734,7 +9482,7 @@ Module journaled_state.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_tstore : M.IsAssociatedFunction Self "tstore" tstore.
@@ -8744,9 +9492,9 @@ Module journaled_state.
             self.logs.push(log);
         }
     *)
-    Definition log (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; log ] =>
+    Definition log (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; log ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let log := M.alloc (| log |) in
@@ -8757,9 +9505,11 @@ Module journaled_state.
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "alloc::vec::Vec")
+                      []
                       [
                         Ty.apply
                           (Ty.path "alloy_primitives::log::Log")
+                          []
                           [ Ty.path "alloy_primitives::log::LogData" ];
                         Ty.path "alloc::alloc::Global"
                       ],
@@ -8778,7 +9528,7 @@ Module journaled_state.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_log : M.IsAssociatedFunction Self "log" log.
@@ -8787,6 +9537,7 @@ Module journaled_state.
   (*
   Enum JournalEntry
   {
+    const_params := [];
     ty_params := [];
     variants :=
       [
@@ -8803,7 +9554,8 @@ Module journaled_state.
                 ("address", Ty.path "alloy_primitives::bits::address::Address");
                 ("target", Ty.path "alloy_primitives::bits::address::Address");
                 ("was_destroyed", Ty.path "bool");
-                ("had_balance", Ty.path "ruint::Uint")
+                ("had_balance",
+                  Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [])
               ];
           discriminant := None;
         };
@@ -8819,7 +9571,8 @@ Module journaled_state.
               [
                 ("from", Ty.path "alloy_primitives::bits::address::Address");
                 ("to", Ty.path "alloy_primitives::bits::address::Address");
-                ("balance", Ty.path "ruint::Uint")
+                ("balance",
+                  Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [])
               ];
           discriminant := None;
         };
@@ -8839,8 +9592,12 @@ Module journaled_state.
             StructRecord
               [
                 ("address", Ty.path "alloy_primitives::bits::address::Address");
-                ("key", Ty.path "ruint::Uint");
-                ("had_value", Ty.apply (Ty.path "core::option::Option") [ Ty.path "ruint::Uint" ])
+                ("key", Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] []);
+                ("had_value",
+                  Ty.apply
+                    (Ty.path "core::option::Option")
+                    []
+                    [ Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [] ])
               ];
           discriminant := None;
         };
@@ -8850,8 +9607,9 @@ Module journaled_state.
             StructRecord
               [
                 ("address", Ty.path "alloy_primitives::bits::address::Address");
-                ("key", Ty.path "ruint::Uint");
-                ("had_value", Ty.path "ruint::Uint")
+                ("key", Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] []);
+                ("had_value",
+                  Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [])
               ];
           discriminant := None;
         };
@@ -8868,9 +9626,9 @@ Module journaled_state.
     Definition Self : Ty.t := Ty.path "revm::journaled_state::JournalEntry".
     
     (* Debug *)
-    Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; f ] =>
+    Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; f ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
@@ -9187,7 +9945,7 @@ Module journaled_state.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -9202,9 +9960,9 @@ Module journaled_state.
     Definition Self : Ty.t := Ty.path "revm::journaled_state::JournalEntry".
     
     (* Clone *)
-    Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -9310,7 +10068,10 @@ Module journaled_state.
                             M.call_closure (|
                               M.get_trait_method (|
                                 "core::clone::Clone",
-                                Ty.path "ruint::Uint",
+                                Ty.apply
+                                  (Ty.path "ruint::Uint")
+                                  [ Value.Integer 256; Value.Integer 4 ]
+                                  [],
                                 [],
                                 "clone",
                                 []
@@ -9400,7 +10161,10 @@ Module journaled_state.
                             M.call_closure (|
                               M.get_trait_method (|
                                 "core::clone::Clone",
-                                Ty.path "ruint::Uint",
+                                Ty.apply
+                                  (Ty.path "ruint::Uint")
+                                  [ Value.Integer 256; Value.Integer 4 ]
+                                  [],
                                 [],
                                 "clone",
                                 []
@@ -9506,7 +10270,10 @@ Module journaled_state.
                             M.call_closure (|
                               M.get_trait_method (|
                                 "core::clone::Clone",
-                                Ty.path "ruint::Uint",
+                                Ty.apply
+                                  (Ty.path "ruint::Uint")
+                                  [ Value.Integer 256; Value.Integer 4 ]
+                                  [],
                                 [],
                                 "clone",
                                 []
@@ -9517,7 +10284,15 @@ Module journaled_state.
                             M.call_closure (|
                               M.get_trait_method (|
                                 "core::clone::Clone",
-                                Ty.apply (Ty.path "core::option::Option") [ Ty.path "ruint::Uint" ],
+                                Ty.apply
+                                  (Ty.path "core::option::Option")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "ruint::Uint")
+                                      [ Value.Integer 256; Value.Integer 4 ]
+                                      []
+                                  ],
                                 [],
                                 "clone",
                                 []
@@ -9569,7 +10344,10 @@ Module journaled_state.
                             M.call_closure (|
                               M.get_trait_method (|
                                 "core::clone::Clone",
-                                Ty.path "ruint::Uint",
+                                Ty.apply
+                                  (Ty.path "ruint::Uint")
+                                  [ Value.Integer 256; Value.Integer 4 ]
+                                  [],
                                 [],
                                 "clone",
                                 []
@@ -9580,7 +10358,10 @@ Module journaled_state.
                             M.call_closure (|
                               M.get_trait_method (|
                                 "core::clone::Clone",
-                                Ty.path "ruint::Uint",
+                                Ty.apply
+                                  (Ty.path "ruint::Uint")
+                                  [ Value.Integer 256; Value.Integer 4 ]
+                                  [],
                                 [],
                                 "clone",
                                 []
@@ -9619,7 +10400,7 @@ Module journaled_state.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -9645,9 +10426,9 @@ Module journaled_state.
     Definition Self : Ty.t := Ty.path "revm::journaled_state::JournalEntry".
     
     (* PartialEq *)
-    Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; other ] =>
+    Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
@@ -9809,8 +10590,16 @@ Module journaled_state.
                                   (M.call_closure (|
                                     M.get_trait_method (|
                                       "core::cmp::PartialEq",
-                                      Ty.path "ruint::Uint",
-                                      [ Ty.path "ruint::Uint" ],
+                                      Ty.apply
+                                        (Ty.path "ruint::Uint")
+                                        [ Value.Integer 256; Value.Integer 4 ]
+                                        [],
+                                      [
+                                        Ty.apply
+                                          (Ty.path "ruint::Uint")
+                                          [ Value.Integer 256; Value.Integer 4 ]
+                                          []
+                                      ],
                                       "eq",
                                       []
                                     |),
@@ -9927,8 +10716,16 @@ Module journaled_state.
                                   (M.call_closure (|
                                     M.get_trait_method (|
                                       "core::cmp::PartialEq",
-                                      Ty.path "ruint::Uint",
-                                      [ Ty.path "ruint::Uint" ],
+                                      Ty.apply
+                                        (Ty.path "ruint::Uint")
+                                        [ Value.Integer 256; Value.Integer 4 ]
+                                        [],
+                                      [
+                                        Ty.apply
+                                          (Ty.path "ruint::Uint")
+                                          [ Value.Integer 256; Value.Integer 4 ]
+                                          []
+                                      ],
                                       "eq",
                                       []
                                     |),
@@ -10065,8 +10862,16 @@ Module journaled_state.
                                     (M.call_closure (|
                                       M.get_trait_method (|
                                         "core::cmp::PartialEq",
-                                        Ty.path "ruint::Uint",
-                                        [ Ty.path "ruint::Uint" ],
+                                        Ty.apply
+                                          (Ty.path "ruint::Uint")
+                                          [ Value.Integer 256; Value.Integer 4 ]
+                                          [],
+                                        [
+                                          Ty.apply
+                                            (Ty.path "ruint::Uint")
+                                            [ Value.Integer 256; Value.Integer 4 ]
+                                            []
+                                        ],
                                         "eq",
                                         []
                                       |),
@@ -10079,11 +10884,23 @@ Module journaled_state.
                                       "core::cmp::PartialEq",
                                       Ty.apply
                                         (Ty.path "core::option::Option")
-                                        [ Ty.path "ruint::Uint" ],
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "ruint::Uint")
+                                            [ Value.Integer 256; Value.Integer 4 ]
+                                            []
+                                        ],
                                       [
                                         Ty.apply
                                           (Ty.path "core::option::Option")
-                                          [ Ty.path "ruint::Uint" ]
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "ruint::Uint")
+                                              [ Value.Integer 256; Value.Integer 4 ]
+                                              []
+                                          ]
                                       ],
                                       "eq",
                                       []
@@ -10157,8 +10974,16 @@ Module journaled_state.
                                     (M.call_closure (|
                                       M.get_trait_method (|
                                         "core::cmp::PartialEq",
-                                        Ty.path "ruint::Uint",
-                                        [ Ty.path "ruint::Uint" ],
+                                        Ty.apply
+                                          (Ty.path "ruint::Uint")
+                                          [ Value.Integer 256; Value.Integer 4 ]
+                                          [],
+                                        [
+                                          Ty.apply
+                                            (Ty.path "ruint::Uint")
+                                            [ Value.Integer 256; Value.Integer 4 ]
+                                            []
+                                        ],
                                         "eq",
                                         []
                                       |),
@@ -10169,8 +10994,16 @@ Module journaled_state.
                                   (M.call_closure (|
                                     M.get_trait_method (|
                                       "core::cmp::PartialEq",
-                                      Ty.path "ruint::Uint",
-                                      [ Ty.path "ruint::Uint" ],
+                                      Ty.apply
+                                        (Ty.path "ruint::Uint")
+                                        [ Value.Integer 256; Value.Integer 4 ]
+                                        [],
+                                      [
+                                        Ty.apply
+                                          (Ty.path "ruint::Uint")
+                                          [ Value.Integer 256; Value.Integer 4 ]
+                                          []
+                                      ],
                                       "eq",
                                       []
                                     |),
@@ -10226,7 +11059,7 @@ Module journaled_state.
               |)
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -10252,9 +11085,13 @@ Module journaled_state.
     Definition Self : Ty.t := Ty.path "revm::journaled_state::JournalEntry".
     
     (* Eq *)
-    Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition assert_receiver_is_total_eq
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -10284,7 +11121,7 @@ Module journaled_state.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -10300,9 +11137,9 @@ Module journaled_state.
     Definition Self : Ty.t := Ty.path "revm::journaled_state::JournalEntry".
     
     (* Hash *)
-    Definition hash (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ __H ], [ self; state ] =>
+    Definition hash (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ __H ], [ self; state ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
@@ -10423,7 +11260,10 @@ Module journaled_state.
                       M.call_closure (|
                         M.get_trait_method (|
                           "core::hash::Hash",
-                          Ty.path "ruint::Uint",
+                          Ty.apply
+                            (Ty.path "ruint::Uint")
+                            [ Value.Integer 256; Value.Integer 4 ]
+                            [],
                           [],
                           "hash",
                           [ __H ]
@@ -10507,7 +11347,10 @@ Module journaled_state.
                       M.call_closure (|
                         M.get_trait_method (|
                           "core::hash::Hash",
-                          Ty.path "ruint::Uint",
+                          Ty.apply
+                            (Ty.path "ruint::Uint")
+                            [ Value.Integer 256; Value.Integer 4 ]
+                            [],
                           [],
                           "hash",
                           [ __H ]
@@ -10601,7 +11444,10 @@ Module journaled_state.
                         M.call_closure (|
                           M.get_trait_method (|
                             "core::hash::Hash",
-                            Ty.path "ruint::Uint",
+                            Ty.apply
+                              (Ty.path "ruint::Uint")
+                              [ Value.Integer 256; Value.Integer 4 ]
+                              [],
                             [],
                             "hash",
                             [ __H ]
@@ -10613,7 +11459,15 @@ Module journaled_state.
                       M.call_closure (|
                         M.get_trait_method (|
                           "core::hash::Hash",
-                          Ty.apply (Ty.path "core::option::Option") [ Ty.path "ruint::Uint" ],
+                          Ty.apply
+                            (Ty.path "core::option::Option")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "ruint::Uint")
+                                [ Value.Integer 256; Value.Integer 4 ]
+                                []
+                            ],
                           [],
                           "hash",
                           [ __H ]
@@ -10663,7 +11517,10 @@ Module journaled_state.
                         M.call_closure (|
                           M.get_trait_method (|
                             "core::hash::Hash",
-                            Ty.path "ruint::Uint",
+                            Ty.apply
+                              (Ty.path "ruint::Uint")
+                              [ Value.Integer 256; Value.Integer 4 ]
+                              [],
                             [],
                             "hash",
                             [ __H ]
@@ -10675,7 +11532,10 @@ Module journaled_state.
                       M.call_closure (|
                         M.get_trait_method (|
                           "core::hash::Hash",
-                          Ty.path "ruint::Uint",
+                          Ty.apply
+                            (Ty.path "ruint::Uint")
+                            [ Value.Integer 256; Value.Integer 4 ]
+                            [],
                           [],
                           "hash",
                           [ __H ]
@@ -10708,7 +11568,7 @@ Module journaled_state.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -10722,6 +11582,7 @@ Module journaled_state.
   (* StructRecord
     {
       name := "JournalCheckpoint";
+      const_params := [];
       ty_params := [];
       fields := [ ("log_i", Ty.path "usize"); ("journal_i", Ty.path "usize") ];
     } *)
@@ -10730,9 +11591,9 @@ Module journaled_state.
     Definition Self : Ty.t := Ty.path "revm::journaled_state::JournalCheckpoint".
     
     (* Debug *)
-    Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; f ] =>
+    Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; f ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
@@ -10765,7 +11626,7 @@ Module journaled_state.
                 |))
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -10791,9 +11652,9 @@ Module journaled_state.
     Definition Self : Ty.t := Ty.path "revm::journaled_state::JournalCheckpoint".
     
     (* Clone *)
-    Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -10802,7 +11663,7 @@ Module journaled_state.
               [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -10828,9 +11689,9 @@ Module journaled_state.
     Definition Self : Ty.t := Ty.path "revm::journaled_state::JournalCheckpoint".
     
     (* PartialEq *)
-    Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; other ] =>
+    Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
@@ -10867,7 +11728,7 @@ Module journaled_state.
                   |)
                 |))))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -10893,9 +11754,13 @@ Module journaled_state.
     Definition Self : Ty.t := Ty.path "revm::journaled_state::JournalCheckpoint".
     
     (* Eq *)
-    Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition assert_receiver_is_total_eq
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -10904,7 +11769,7 @@ Module journaled_state.
               [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :

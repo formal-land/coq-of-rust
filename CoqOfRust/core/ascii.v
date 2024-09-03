@@ -5,17 +5,18 @@ Module ascii.
   (* StructTuple
     {
       name := "EscapeDefault";
+      const_params := [];
       ty_params := [];
-      fields := [ Ty.path "core::escape::EscapeIterInner" ];
+      fields := [ Ty.apply (Ty.path "core::escape::EscapeIterInner") [ Value.Integer 4 ] [] ];
     } *)
   
   Module Impl_core_clone_Clone_for_core_ascii_EscapeDefault.
     Definition Self : Ty.t := Ty.path "core::ascii::EscapeDefault".
     
     (* Clone *)
-    Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           Value.StructTuple
@@ -24,7 +25,7 @@ Module ascii.
               M.call_closure (|
                 M.get_trait_method (|
                   "core::clone::Clone",
-                  Ty.path "core::escape::EscapeIterInner",
+                  Ty.apply (Ty.path "core::escape::EscapeIterInner") [ Value.Integer 4 ] [],
                   [],
                   "clone",
                   []
@@ -38,7 +39,7 @@ Module ascii.
                 ]
               |)
             ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -56,15 +57,18 @@ Module ascii.
       EscapeDefault(escape::EscapeIterInner::new(data, range))
   }
   *)
-  Definition escape_default (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ c ] =>
+  Definition escape_default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ c ] =>
       ltac:(M.monadic
         (let c := M.alloc (| c |) in
         M.read (|
           let~ data :=
             M.alloc (|
-              repeat (Value.StructTuple "core::ascii::ascii_char::AsciiChar::Null" []) 4
+              repeat (|
+                Value.StructTuple "core::ascii::ascii_char::AsciiChar::Null" [],
+                Value.Integer 4
+              |)
             |) in
           let~ range :=
             M.alloc (|
@@ -79,7 +83,7 @@ Module ascii.
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.path "core::escape::EscapeIterInner",
+                    Ty.apply (Ty.path "core::escape::EscapeIterInner") [ Value.Integer 4 ] [],
                     "new",
                     []
                   |),
@@ -88,7 +92,7 @@ Module ascii.
               ]
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Function_escape_default : M.IsFunction "core::ascii::escape_default" escape_default.
@@ -104,13 +108,17 @@ Module ascii.
             self.0.next()
         }
     *)
-    Definition next (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition next (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "core::escape::EscapeIterInner", "next", [] |),
+            M.get_associated_function (|
+              Ty.apply (Ty.path "core::escape::EscapeIterInner") [ Value.Integer 4 ] [],
+              "next",
+              []
+            |),
             [
               M.SubPointer.get_struct_tuple_field (|
                 M.read (| self |),
@@ -119,7 +127,7 @@ Module ascii.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     (*
@@ -128,9 +136,9 @@ Module ascii.
             (n, Some(n))
         }
     *)
-    Definition size_hint (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition size_hint (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -138,7 +146,7 @@ Module ascii.
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.path "core::escape::EscapeIterInner",
+                    Ty.apply (Ty.path "core::escape::EscapeIterInner") [ Value.Integer 4 ] [],
                     "len",
                     []
                   |),
@@ -157,7 +165,7 @@ Module ascii.
                 ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     (*
@@ -165,16 +173,20 @@ Module ascii.
             self.0.len()
         }
     *)
-    Definition count (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition count (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "core::escape::EscapeIterInner", "len", [] |),
+            M.get_associated_function (|
+              Ty.apply (Ty.path "core::escape::EscapeIterInner") [ Value.Integer 4 ] [],
+              "len",
+              []
+            |),
             [ M.SubPointer.get_struct_tuple_field (| self, "core::ascii::EscapeDefault", 0 |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     (*
@@ -182,20 +194,20 @@ Module ascii.
             self.0.next_back()
         }
     *)
-    Definition last (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition last (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
             M.get_associated_function (|
-              Ty.path "core::escape::EscapeIterInner",
+              Ty.apply (Ty.path "core::escape::EscapeIterInner") [ Value.Integer 4 ] [],
               "next_back",
               []
             |),
             [ M.SubPointer.get_struct_tuple_field (| self, "core::ascii::EscapeDefault", 0 |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     (*
@@ -203,15 +215,15 @@ Module ascii.
             self.0.advance_by(n)
         }
     *)
-    Definition advance_by (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; n ] =>
+    Definition advance_by (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; n ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let n := M.alloc (| n |) in
           M.call_closure (|
             M.get_associated_function (|
-              Ty.path "core::escape::EscapeIterInner",
+              Ty.apply (Ty.path "core::escape::EscapeIterInner") [ Value.Integer 4 ] [],
               "advance_by",
               []
             |),
@@ -224,7 +236,7 @@ Module ascii.
               M.read (| n |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -251,14 +263,14 @@ Module ascii.
             self.0.next_back()
         }
     *)
-    Definition next_back (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition next_back (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
             M.get_associated_function (|
-              Ty.path "core::escape::EscapeIterInner",
+              Ty.apply (Ty.path "core::escape::EscapeIterInner") [ Value.Integer 4 ] [],
               "next_back",
               []
             |),
@@ -270,7 +282,7 @@ Module ascii.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     (*
@@ -278,15 +290,15 @@ Module ascii.
             self.0.advance_back_by(n)
         }
     *)
-    Definition advance_back_by (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; n ] =>
+    Definition advance_back_by (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; n ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let n := M.alloc (| n |) in
           M.call_closure (|
             M.get_associated_function (|
-              Ty.path "core::escape::EscapeIterInner",
+              Ty.apply (Ty.path "core::escape::EscapeIterInner") [ Value.Integer 4 ] [],
               "advance_back_by",
               []
             |),
@@ -299,7 +311,7 @@ Module ascii.
               M.read (| n |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -322,13 +334,17 @@ Module ascii.
             self.0.len()
         }
     *)
-    Definition len (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition len (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.path "core::escape::EscapeIterInner", "len", [] |),
+            M.get_associated_function (|
+              Ty.apply (Ty.path "core::escape::EscapeIterInner") [ Value.Integer 4 ] [],
+              "len",
+              []
+            |),
             [
               M.SubPointer.get_struct_tuple_field (|
                 M.read (| self |),
@@ -337,7 +353,7 @@ Module ascii.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -367,9 +383,9 @@ Module ascii.
             f.write_str(self.0.as_str())
         }
     *)
-    Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; f ] =>
+    Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; f ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
@@ -379,7 +395,7 @@ Module ascii.
               M.read (| f |);
               M.call_closure (|
                 M.get_associated_function (|
-                  Ty.path "core::escape::EscapeIterInner",
+                  Ty.apply (Ty.path "core::escape::EscapeIterInner") [ Value.Integer 4 ] [],
                   "as_str",
                   []
                 |),
@@ -393,7 +409,7 @@ Module ascii.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -412,9 +428,9 @@ Module ascii.
             f.debug_struct("EscapeDefault").finish_non_exhaustive()
         }
     *)
-    Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; f ] =>
+    Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; f ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
@@ -437,7 +453,7 @@ Module ascii.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :

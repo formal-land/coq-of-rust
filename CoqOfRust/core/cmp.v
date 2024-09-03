@@ -4,9 +4,15 @@ Require Import CoqOfRust.CoqOfRust.
 Module cmp.
   (* Trait *)
   Module PartialEq.
-    Definition ne (Rhs Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; other ] =>
+    Definition ne
+        (host : Value.t)
+        (Rhs Self : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
@@ -15,23 +21,28 @@ Module cmp.
               M.get_trait_method (| "core::cmp::PartialEq", Self, [ Rhs ], "eq", [] |),
               [ M.read (| self |); M.read (| other |) ]
             |))))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom ProvidedMethod_ne :
-      forall (Rhs : Ty.t),
-      M.IsProvidedMethod "core::cmp::PartialEq" "ne" (ne Rhs).
+      forall (host : Value.t) (Rhs : Ty.t),
+      M.IsProvidedMethod "core::cmp::PartialEq" "ne" (ne host Rhs).
   End PartialEq.
   
   (* Trait *)
   Module Eq.
-    Definition assert_receiver_is_total_eq (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition assert_receiver_is_total_eq
+        (Self : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           Value.Tuple []))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom ProvidedMethod_assert_receiver_is_total_eq :
@@ -41,13 +52,15 @@ Module cmp.
   (* StructRecord
     {
       name := "AssertParamIsEq";
+      const_params := [];
       ty_params := [ "T" ];
-      fields := [ ("_field", Ty.apply (Ty.path "core::marker::PhantomData") [ T ]) ];
+      fields := [ ("_field", Ty.apply (Ty.path "core::marker::PhantomData") [] [ T ]) ];
     } *)
   
   (*
   Enum Ordering
   {
+    const_params := [];
     ty_params := [];
     variants :=
       [
@@ -74,13 +87,13 @@ Module cmp.
     Definition Self : Ty.t := Ty.path "core::cmp::Ordering".
     
     (* Clone *)
-    Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (| M.read (| self |) |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -117,9 +130,9 @@ Module cmp.
     Definition Self : Ty.t := Ty.path "core::cmp::Ordering".
     
     (* PartialEq *)
-    Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; other ] =>
+    Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
@@ -146,7 +159,7 @@ Module cmp.
               |) in
             M.alloc (| BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)) |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -172,13 +185,17 @@ Module cmp.
     Definition Self : Ty.t := Ty.path "core::cmp::Ordering".
     
     (* Eq *)
-    Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition assert_receiver_is_total_eq
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           Value.Tuple []))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -194,9 +211,9 @@ Module cmp.
     Definition Self : Ty.t := Ty.path "core::cmp::Ordering".
     
     (* PartialOrd *)
-    Definition partial_cmp (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; other ] =>
+    Definition partial_cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
@@ -234,7 +251,7 @@ Module cmp.
               |)
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -249,9 +266,9 @@ Module cmp.
     Definition Self : Ty.t := Ty.path "core::cmp::Ordering".
     
     (* Ord *)
-    Definition cmp (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; other ] =>
+    Definition cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
@@ -283,7 +300,7 @@ Module cmp.
               |)
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -298,9 +315,9 @@ Module cmp.
     Definition Self : Ty.t := Ty.path "core::cmp::Ordering".
     
     (* Debug *)
-    Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; f ] =>
+    Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; f ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
@@ -332,7 +349,7 @@ Module cmp.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -347,9 +364,9 @@ Module cmp.
     Definition Self : Ty.t := Ty.path "core::cmp::Ordering".
     
     (* Hash *)
-    Definition hash (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ __H ], [ self; state ] =>
+    Definition hash (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ __H ], [ self; state ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
@@ -371,7 +388,7 @@ Module cmp.
               |)
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -390,9 +407,9 @@ Module cmp.
             matches!(self, Equal)
         }
     *)
-    Definition is_eq (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition is_eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [ host ], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -407,7 +424,7 @@ Module cmp.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_is_eq : M.IsAssociatedFunction Self "is_eq" is_eq.
@@ -417,9 +434,9 @@ Module cmp.
             !matches!(self, Equal)
         }
     *)
-    Definition is_ne (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition is_ne (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [ host ], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           UnOp.Pure.not
@@ -435,7 +452,7 @@ Module cmp.
                 ]
               |)
             |))))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_is_ne : M.IsAssociatedFunction Self "is_ne" is_ne.
@@ -445,9 +462,9 @@ Module cmp.
             matches!(self, Less)
         }
     *)
-    Definition is_lt (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition is_lt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [ host ], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -462,7 +479,7 @@ Module cmp.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_is_lt : M.IsAssociatedFunction Self "is_lt" is_lt.
@@ -472,9 +489,9 @@ Module cmp.
             matches!(self, Greater)
         }
     *)
-    Definition is_gt (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition is_gt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [ host ], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -489,7 +506,7 @@ Module cmp.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_is_gt : M.IsAssociatedFunction Self "is_gt" is_gt.
@@ -499,9 +516,9 @@ Module cmp.
             !matches!(self, Greater)
         }
     *)
-    Definition is_le (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition is_le (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [ host ], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           UnOp.Pure.not
@@ -517,7 +534,7 @@ Module cmp.
                 ]
               |)
             |))))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_is_le : M.IsAssociatedFunction Self "is_le" is_le.
@@ -527,9 +544,9 @@ Module cmp.
             !matches!(self, Less)
         }
     *)
-    Definition is_ge (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition is_ge (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [ host ], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           UnOp.Pure.not
@@ -545,7 +562,7 @@ Module cmp.
                 ]
               |)
             |))))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_is_ge : M.IsAssociatedFunction Self "is_ge" is_ge.
@@ -559,9 +576,9 @@ Module cmp.
             }
         }
     *)
-    Definition reverse (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition reverse (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [ host ], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -583,7 +600,7 @@ Module cmp.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_reverse : M.IsAssociatedFunction Self "reverse" reverse.
@@ -596,9 +613,9 @@ Module cmp.
             }
         }
     *)
-    Definition then_ (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; other ] =>
+    Definition then_ (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [ host ], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
@@ -614,7 +631,7 @@ Module cmp.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_then_ : M.IsAssociatedFunction Self "then_" then_.
@@ -627,9 +644,9 @@ Module cmp.
             }
         }
     *)
-    Definition then_with (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ F ], [ self; f ] =>
+    Definition then_with (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ F ], [ self; f ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
@@ -656,7 +673,7 @@ Module cmp.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_then_with : M.IsAssociatedFunction Self "then_with" then_with.
@@ -665,12 +682,13 @@ Module cmp.
   (* StructTuple
     {
       name := "Reverse";
+      const_params := [];
       ty_params := [ "T" ];
       fields := [ T ];
     } *)
   
   Module Impl_core_marker_StructuralPartialEq_for_core_cmp_Reverse_T.
-    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::cmp::Reverse") [ T ].
+    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::cmp::Reverse") [] [ T ].
     
     Axiom Implements :
       forall (T : Ty.t),
@@ -682,13 +700,13 @@ Module cmp.
   End Impl_core_marker_StructuralPartialEq_for_core_cmp_Reverse_T.
   
   Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_T_for_core_cmp_Reverse_T.
-    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::cmp::Reverse") [ T ].
+    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::cmp::Reverse") [] [ T ].
     
     (* PartialEq *)
-    Definition eq (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition eq (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [ self; other ] =>
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
@@ -699,7 +717,7 @@ Module cmp.
               M.SubPointer.get_struct_tuple_field (| M.read (| other |), "core::cmp::Reverse", 0 |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -712,7 +730,7 @@ Module cmp.
   End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_T_for_core_cmp_Reverse_T.
   
   Module Impl_core_marker_StructuralEq_for_core_cmp_Reverse_T.
-    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::cmp::Reverse") [ T ].
+    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::cmp::Reverse") [] [ T ].
     
     Axiom Implements :
       forall (T : Ty.t),
@@ -724,13 +742,18 @@ Module cmp.
   End Impl_core_marker_StructuralEq_for_core_cmp_Reverse_T.
   
   Module Impl_core_cmp_Eq_where_core_cmp_Eq_T_for_core_cmp_Reverse_T.
-    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::cmp::Reverse") [ T ].
+    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::cmp::Reverse") [] [ T ].
     
     (* Eq *)
-    Definition assert_receiver_is_total_eq (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition assert_receiver_is_total_eq
+        (T : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -739,7 +762,7 @@ Module cmp.
               [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -753,13 +776,13 @@ Module cmp.
   End Impl_core_cmp_Eq_where_core_cmp_Eq_T_for_core_cmp_Reverse_T.
   
   Module Impl_core_fmt_Debug_where_core_fmt_Debug_T_for_core_cmp_Reverse_T.
-    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::cmp::Reverse") [ T ].
+    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::cmp::Reverse") [] [ T ].
     
     (* Debug *)
-    Definition fmt (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition fmt (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [ self; f ] =>
+      match ε, τ, α with
+      | [], [], [ self; f ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
@@ -783,7 +806,7 @@ Module cmp.
                 |))
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -796,7 +819,7 @@ Module cmp.
   End Impl_core_fmt_Debug_where_core_fmt_Debug_T_for_core_cmp_Reverse_T.
   
   Module Impl_core_marker_Copy_where_core_marker_Copy_T_for_core_cmp_Reverse_T.
-    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::cmp::Reverse") [ T ].
+    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::cmp::Reverse") [] [ T ].
     
     Axiom Implements :
       forall (T : Ty.t),
@@ -808,13 +831,13 @@ Module cmp.
   End Impl_core_marker_Copy_where_core_marker_Copy_T_for_core_cmp_Reverse_T.
   
   Module Impl_core_default_Default_where_core_default_Default_T_for_core_cmp_Reverse_T.
-    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::cmp::Reverse") [ T ].
+    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::cmp::Reverse") [] [ T ].
     
     (* Default *)
-    Definition default (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition default (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [] =>
+      match ε, τ, α with
+      | [], [], [] =>
         ltac:(M.monadic
           (Value.StructTuple
             "core::cmp::Reverse"
@@ -824,7 +847,7 @@ Module cmp.
                 []
               |)
             ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -837,13 +860,13 @@ Module cmp.
   End Impl_core_default_Default_where_core_default_Default_T_for_core_cmp_Reverse_T.
   
   Module Impl_core_hash_Hash_where_core_hash_Hash_T_for_core_cmp_Reverse_T.
-    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::cmp::Reverse") [ T ].
+    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::cmp::Reverse") [] [ T ].
     
     (* Hash *)
-    Definition hash (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition hash (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [ __H ], [ self; state ] =>
+      match ε, τ, α with
+      | [], [ __H ], [ self; state ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
@@ -854,7 +877,7 @@ Module cmp.
               M.read (| state |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -867,17 +890,17 @@ Module cmp.
   End Impl_core_hash_Hash_where_core_hash_Hash_T_for_core_cmp_Reverse_T.
   
   Module Impl_core_cmp_PartialOrd_where_core_cmp_PartialOrd_T_for_core_cmp_Reverse_T.
-    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::cmp::Reverse") [ T ].
+    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::cmp::Reverse") [] [ T ].
     
     (*
         fn partial_cmp(&self, other: &Reverse<T>) -> Option<Ordering> {
             other.0.partial_cmp(&self.0)
         }
     *)
-    Definition partial_cmp (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition partial_cmp (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [ self; other ] =>
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
@@ -888,7 +911,7 @@ Module cmp.
               M.SubPointer.get_struct_tuple_field (| M.read (| self |), "core::cmp::Reverse", 0 |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     (*
@@ -896,10 +919,10 @@ Module cmp.
             other.0 < self.0
         }
     *)
-    Definition lt (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition lt (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [ self; other ] =>
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
@@ -910,7 +933,7 @@ Module cmp.
               M.SubPointer.get_struct_tuple_field (| M.read (| self |), "core::cmp::Reverse", 0 |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     (*
@@ -918,10 +941,10 @@ Module cmp.
             other.0 <= self.0
         }
     *)
-    Definition le (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition le (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [ self; other ] =>
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
@@ -932,7 +955,7 @@ Module cmp.
               M.SubPointer.get_struct_tuple_field (| M.read (| self |), "core::cmp::Reverse", 0 |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     (*
@@ -940,10 +963,10 @@ Module cmp.
             other.0 > self.0
         }
     *)
-    Definition gt (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition gt (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [ self; other ] =>
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
@@ -954,7 +977,7 @@ Module cmp.
               M.SubPointer.get_struct_tuple_field (| M.read (| self |), "core::cmp::Reverse", 0 |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     (*
@@ -962,10 +985,10 @@ Module cmp.
             other.0 >= self.0
         }
     *)
-    Definition ge (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition ge (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [ self; other ] =>
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
@@ -976,7 +999,7 @@ Module cmp.
               M.SubPointer.get_struct_tuple_field (| M.read (| self |), "core::cmp::Reverse", 0 |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -996,17 +1019,17 @@ Module cmp.
   End Impl_core_cmp_PartialOrd_where_core_cmp_PartialOrd_T_for_core_cmp_Reverse_T.
   
   Module Impl_core_cmp_Ord_where_core_cmp_Ord_T_for_core_cmp_Reverse_T.
-    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::cmp::Reverse") [ T ].
+    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::cmp::Reverse") [] [ T ].
     
     (*
         fn cmp(&self, other: &Reverse<T>) -> Ordering {
             other.0.cmp(&self.0)
         }
     *)
-    Definition cmp (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition cmp (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [ self; other ] =>
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
@@ -1017,7 +1040,7 @@ Module cmp.
               M.SubPointer.get_struct_tuple_field (| M.read (| self |), "core::cmp::Reverse", 0 |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -1030,17 +1053,17 @@ Module cmp.
   End Impl_core_cmp_Ord_where_core_cmp_Ord_T_for_core_cmp_Reverse_T.
   
   Module Impl_core_clone_Clone_where_core_clone_Clone_T_for_core_cmp_Reverse_T.
-    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::cmp::Reverse") [ T ].
+    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::cmp::Reverse") [] [ T ].
     
     (*
         fn clone(&self) -> Reverse<T> {
             Reverse(self.0.clone())
         }
     *)
-    Definition clone (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition clone (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           Value.StructTuple
@@ -1057,7 +1080,7 @@ Module cmp.
                 ]
               |)
             ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     (*
@@ -1065,10 +1088,10 @@ Module cmp.
             self.0.clone_from(&other.0)
         }
     *)
-    Definition clone_from (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition clone_from (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [ self; other ] =>
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
@@ -1079,7 +1102,7 @@ Module cmp.
               M.SubPointer.get_struct_tuple_field (| M.read (| other |), "core::cmp::Reverse", 0 |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -1097,9 +1120,9 @@ Module cmp.
   
   (* Trait *)
   Module Ord.
-    Definition max (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; other ] =>
+    Definition max (Self : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
@@ -1109,7 +1132,7 @@ Module cmp.
               [
                 Self;
                 Ty.function
-                  [ Ty.apply (Ty.path "&") [ Self ]; Ty.apply (Ty.path "&") [ Self ] ]
+                  [ Ty.apply (Ty.path "&") [] [ Self ]; Ty.apply (Ty.path "&") [] [ Self ] ]
                   (Ty.path "core::cmp::Ordering")
               ]
             |),
@@ -1119,13 +1142,13 @@ Module cmp.
               M.get_trait_method (| "core::cmp::Ord", Self, [], "cmp", [] |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom ProvidedMethod_max : M.IsProvidedMethod "core::cmp::Ord" "max" max.
-    Definition min (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; other ] =>
+    Definition min (Self : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
@@ -1135,7 +1158,7 @@ Module cmp.
               [
                 Self;
                 Ty.function
-                  [ Ty.apply (Ty.path "&") [ Self ]; Ty.apply (Ty.path "&") [ Self ] ]
+                  [ Ty.apply (Ty.path "&") [] [ Self ]; Ty.apply (Ty.path "&") [] [ Self ] ]
                   (Ty.path "core::cmp::Ordering")
               ]
             |),
@@ -1145,13 +1168,13 @@ Module cmp.
               M.get_trait_method (| "core::cmp::Ord", Self, [], "cmp", [] |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom ProvidedMethod_min : M.IsProvidedMethod "core::cmp::Ord" "min" min.
-    Definition clamp (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; min; max ] =>
+    Definition clamp (Self : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; min; max ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let min := M.alloc (| min |) in
@@ -1241,7 +1264,7 @@ Module cmp.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom ProvidedMethod_clamp : M.IsProvidedMethod "core::cmp::Ord" "clamp" clamp.
@@ -1249,9 +1272,9 @@ Module cmp.
   
   (* Trait *)
   Module PartialOrd.
-    Definition lt (Rhs Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; other ] =>
+    Definition lt (Rhs Self : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
@@ -1284,15 +1307,15 @@ Module cmp.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom ProvidedMethod_lt :
       forall (Rhs : Ty.t),
       M.IsProvidedMethod "core::cmp::PartialOrd" "lt" (lt Rhs).
-    Definition le (Rhs Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; other ] =>
+    Definition le (Rhs Self : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
@@ -1343,15 +1366,15 @@ Module cmp.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom ProvidedMethod_le :
       forall (Rhs : Ty.t),
       M.IsProvidedMethod "core::cmp::PartialOrd" "le" (le Rhs).
-    Definition gt (Rhs Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; other ] =>
+    Definition gt (Rhs Self : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
@@ -1384,15 +1407,15 @@ Module cmp.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom ProvidedMethod_gt :
       forall (Rhs : Ty.t),
       M.IsProvidedMethod "core::cmp::PartialOrd" "gt" (gt Rhs).
-    Definition ge (Rhs Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; other ] =>
+    Definition ge (Rhs Self : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
@@ -1443,7 +1466,7 @@ Module cmp.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom ProvidedMethod_ge :
@@ -1456,9 +1479,9 @@ Module cmp.
       v1.min(v2)
   }
   *)
-  Definition min (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [ T ], [ v1; v2 ] =>
+  Definition min (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [ T ], [ v1; v2 ] =>
       ltac:(M.monadic
         (let v1 := M.alloc (| v1 |) in
         let v2 := M.alloc (| v2 |) in
@@ -1466,7 +1489,7 @@ Module cmp.
           M.get_trait_method (| "core::cmp::Ord", T, [], "min", [] |),
           [ M.read (| v1 |); M.read (| v2 |) ]
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Function_min : M.IsFunction "core::cmp::min" min.
@@ -1479,9 +1502,9 @@ Module cmp.
       }
   }
   *)
-  Definition min_by (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [ T; F ], [ v1; v2; compare ] =>
+  Definition min_by (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [ T; F ], [ v1; v2; compare ] =>
       ltac:(M.monadic
         (let v1 := M.alloc (| v1 |) in
         let v2 := M.alloc (| v2 |) in
@@ -1493,7 +1516,7 @@ Module cmp.
                 M.get_trait_method (|
                   "core::ops::function::FnOnce",
                   F,
-                  [ Ty.tuple [ Ty.apply (Ty.path "&") [ T ]; Ty.apply (Ty.path "&") [ T ] ] ],
+                  [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ]; Ty.apply (Ty.path "&") [] [ T ] ] ],
                   "call_once",
                   []
                 |),
@@ -1526,7 +1549,7 @@ Module cmp.
             ]
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Function_min_by : M.IsFunction "core::cmp::min_by" min_by.
@@ -1536,9 +1559,9 @@ Module cmp.
       min_by(v1, v2, |v1, v2| f(v1).cmp(&f(v2)))
   }
   *)
-  Definition min_by_key (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [ T; F; K ], [ v1; v2; f ] =>
+  Definition min_by_key (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [ T; F; K ], [ v1; v2; f ] =>
       ltac:(M.monadic
         (let v1 := M.alloc (| v1 |) in
         let v2 := M.alloc (| v2 |) in
@@ -1549,7 +1572,7 @@ Module cmp.
             [
               T;
               Ty.function
-                [ Ty.tuple [ Ty.apply (Ty.path "&") [ T ]; Ty.apply (Ty.path "&") [ T ] ] ]
+                [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ]; Ty.apply (Ty.path "&") [] [ T ] ] ]
                 (Ty.path "core::cmp::Ordering")
             ]
           |),
@@ -1581,7 +1604,7 @@ Module cmp.
                                             M.get_trait_method (|
                                               "core::ops::function::FnMut",
                                               F,
-                                              [ Ty.tuple [ Ty.apply (Ty.path "&") [ T ] ] ],
+                                              [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ] ],
                                               "call_mut",
                                               []
                                             |),
@@ -1593,7 +1616,7 @@ Module cmp.
                                             M.get_trait_method (|
                                               "core::ops::function::FnMut",
                                               F,
-                                              [ Ty.tuple [ Ty.apply (Ty.path "&") [ T ] ] ],
+                                              [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ] ],
                                               "call_mut",
                                               []
                                             |),
@@ -1610,7 +1633,7 @@ Module cmp.
                   end))
           ]
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Function_min_by_key : M.IsFunction "core::cmp::min_by_key" min_by_key.
@@ -1620,9 +1643,9 @@ Module cmp.
       v1.max(v2)
   }
   *)
-  Definition max (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [ T ], [ v1; v2 ] =>
+  Definition max (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [ T ], [ v1; v2 ] =>
       ltac:(M.monadic
         (let v1 := M.alloc (| v1 |) in
         let v2 := M.alloc (| v2 |) in
@@ -1630,7 +1653,7 @@ Module cmp.
           M.get_trait_method (| "core::cmp::Ord", T, [], "max", [] |),
           [ M.read (| v1 |); M.read (| v2 |) ]
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Function_max : M.IsFunction "core::cmp::max" max.
@@ -1643,9 +1666,9 @@ Module cmp.
       }
   }
   *)
-  Definition max_by (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [ T; F ], [ v1; v2; compare ] =>
+  Definition max_by (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [ T; F ], [ v1; v2; compare ] =>
       ltac:(M.monadic
         (let v1 := M.alloc (| v1 |) in
         let v2 := M.alloc (| v2 |) in
@@ -1657,7 +1680,7 @@ Module cmp.
                 M.get_trait_method (|
                   "core::ops::function::FnOnce",
                   F,
-                  [ Ty.tuple [ Ty.apply (Ty.path "&") [ T ]; Ty.apply (Ty.path "&") [ T ] ] ],
+                  [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ]; Ty.apply (Ty.path "&") [] [ T ] ] ],
                   "call_once",
                   []
                 |),
@@ -1690,7 +1713,7 @@ Module cmp.
             ]
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Function_max_by : M.IsFunction "core::cmp::max_by" max_by.
@@ -1700,9 +1723,9 @@ Module cmp.
       max_by(v1, v2, |v1, v2| f(v1).cmp(&f(v2)))
   }
   *)
-  Definition max_by_key (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [ T; F; K ], [ v1; v2; f ] =>
+  Definition max_by_key (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [ T; F; K ], [ v1; v2; f ] =>
       ltac:(M.monadic
         (let v1 := M.alloc (| v1 |) in
         let v2 := M.alloc (| v2 |) in
@@ -1713,7 +1736,7 @@ Module cmp.
             [
               T;
               Ty.function
-                [ Ty.tuple [ Ty.apply (Ty.path "&") [ T ]; Ty.apply (Ty.path "&") [ T ] ] ]
+                [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ]; Ty.apply (Ty.path "&") [] [ T ] ] ]
                 (Ty.path "core::cmp::Ordering")
             ]
           |),
@@ -1745,7 +1768,7 @@ Module cmp.
                                             M.get_trait_method (|
                                               "core::ops::function::FnMut",
                                               F,
-                                              [ Ty.tuple [ Ty.apply (Ty.path "&") [ T ] ] ],
+                                              [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ] ],
                                               "call_mut",
                                               []
                                             |),
@@ -1757,7 +1780,7 @@ Module cmp.
                                             M.get_trait_method (|
                                               "core::ops::function::FnMut",
                                               F,
-                                              [ Ty.tuple [ Ty.apply (Ty.path "&") [ T ] ] ],
+                                              [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ] ],
                                               "call_mut",
                                               []
                                             |),
@@ -1774,7 +1797,7 @@ Module cmp.
                   end))
           ]
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Function_max_by_key : M.IsFunction "core::cmp::max_by_key" max_by_key.
@@ -1787,9 +1810,9 @@ Module cmp.
       if v1 <= v2 { [v1, v2] } else { [v2, v1] }
   }
   *)
-  Definition minmax (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [ T ], [ v1; v2 ] =>
+  Definition minmax (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [ T ], [ v1; v2 ] =>
       ltac:(M.monadic
         (let v1 := M.alloc (| v1 |) in
         let v2 := M.alloc (| v2 |) in
@@ -1814,7 +1837,7 @@ Module cmp.
             ]
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Function_minmax : M.IsFunction "core::cmp::minmax" minmax.
@@ -1827,9 +1850,9 @@ Module cmp.
       if compare(&v1, &v2).is_le() { [v1, v2] } else { [v2, v1] }
   }
   *)
-  Definition minmax_by (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [ T; F ], [ v1; v2; compare ] =>
+  Definition minmax_by (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [ T; F ], [ v1; v2; compare ] =>
       ltac:(M.monadic
         (let v1 := M.alloc (| v1 |) in
         let v2 := M.alloc (| v2 |) in
@@ -1856,7 +1879,10 @@ Module cmp.
                                 F,
                                 [
                                   Ty.tuple
-                                    [ Ty.apply (Ty.path "&") [ T ]; Ty.apply (Ty.path "&") [ T ] ]
+                                    [
+                                      Ty.apply (Ty.path "&") [] [ T ];
+                                      Ty.apply (Ty.path "&") [] [ T ]
+                                    ]
                                 ],
                                 "call_once",
                                 []
@@ -1873,7 +1899,7 @@ Module cmp.
             ]
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Function_minmax_by : M.IsFunction "core::cmp::minmax_by" minmax_by.
@@ -1887,9 +1913,9 @@ Module cmp.
       minmax_by(v1, v2, |v1, v2| f(v1).cmp(&f(v2)))
   }
   *)
-  Definition minmax_by_key (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [ T; F; K ], [ v1; v2; f ] =>
+  Definition minmax_by_key (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [ T; F; K ], [ v1; v2; f ] =>
       ltac:(M.monadic
         (let v1 := M.alloc (| v1 |) in
         let v2 := M.alloc (| v2 |) in
@@ -1900,7 +1926,7 @@ Module cmp.
             [
               T;
               Ty.function
-                [ Ty.tuple [ Ty.apply (Ty.path "&") [ T ]; Ty.apply (Ty.path "&") [ T ] ] ]
+                [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ]; Ty.apply (Ty.path "&") [] [ T ] ] ]
                 (Ty.path "core::cmp::Ordering")
             ]
           |),
@@ -1932,7 +1958,7 @@ Module cmp.
                                             M.get_trait_method (|
                                               "core::ops::function::FnMut",
                                               F,
-                                              [ Ty.tuple [ Ty.apply (Ty.path "&") [ T ] ] ],
+                                              [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ] ],
                                               "call_mut",
                                               []
                                             |),
@@ -1944,7 +1970,7 @@ Module cmp.
                                             M.get_trait_method (|
                                               "core::ops::function::FnMut",
                                               F,
-                                              [ Ty.tuple [ Ty.apply (Ty.path "&") [ T ] ] ],
+                                              [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ] ],
                                               "call_mut",
                                               []
                                             |),
@@ -1961,7 +1987,7 @@ Module cmp.
                   end))
           ]
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Function_minmax_by_key : M.IsFunction "core::cmp::minmax_by_key" minmax_by_key.
@@ -1975,14 +2001,14 @@ Module cmp.
                   true
               }
       *)
-      Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; _other ] =>
+      Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; _other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let _other := M.alloc (| _other |) in
             Value.Bool true))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -1990,14 +2016,14 @@ Module cmp.
                   false
               }
       *)
-      Definition ne (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; _other ] =>
+      Definition ne (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; _other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let _other := M.alloc (| _other |) in
             Value.Bool false))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -2009,531 +2035,595 @@ Module cmp.
     End Impl_core_cmp_PartialEq_for_Tuple_.
     
     Module Impl_core_cmp_PartialEq_for_bool.
-      Definition Self : Ty.t := Ty.path "bool".
+      Definition Self (host : Value.t) : Ty.t := Ty.path "bool".
       
       (*                 fn eq(&self, other: &$t) -> bool { ( *self) == ( *other) } *)
-      Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition eq (host : Value.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        let Self : Ty.t := Self host in
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             BinOp.Pure.eq (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*                 fn ne(&self, other: &$t) -> bool { ( *self) != ( *other) } *)
-      Definition ne (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition ne (host : Value.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        let Self : Ty.t := Self host in
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             BinOp.Pure.ne (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
+        forall (host : Value.t),
         M.IsTraitInstance
           "core::cmp::PartialEq"
-          Self
+          (Self host)
           (* Trait polymorphic types *) []
-          (* Instance *) [ ("eq", InstanceField.Method eq); ("ne", InstanceField.Method ne) ].
+          (* Instance *)
+          [ ("eq", InstanceField.Method (eq host)); ("ne", InstanceField.Method (ne host)) ].
     End Impl_core_cmp_PartialEq_for_bool.
     
     Module Impl_core_cmp_PartialEq_for_char.
-      Definition Self : Ty.t := Ty.path "char".
+      Definition Self (host : Value.t) : Ty.t := Ty.path "char".
       
       (*                 fn eq(&self, other: &$t) -> bool { ( *self) == ( *other) } *)
-      Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition eq (host : Value.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        let Self : Ty.t := Self host in
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             BinOp.Pure.eq (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*                 fn ne(&self, other: &$t) -> bool { ( *self) != ( *other) } *)
-      Definition ne (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition ne (host : Value.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        let Self : Ty.t := Self host in
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             BinOp.Pure.ne (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
+        forall (host : Value.t),
         M.IsTraitInstance
           "core::cmp::PartialEq"
-          Self
+          (Self host)
           (* Trait polymorphic types *) []
-          (* Instance *) [ ("eq", InstanceField.Method eq); ("ne", InstanceField.Method ne) ].
+          (* Instance *)
+          [ ("eq", InstanceField.Method (eq host)); ("ne", InstanceField.Method (ne host)) ].
     End Impl_core_cmp_PartialEq_for_char.
     
     Module Impl_core_cmp_PartialEq_for_usize.
-      Definition Self : Ty.t := Ty.path "usize".
+      Definition Self (host : Value.t) : Ty.t := Ty.path "usize".
       
       (*                 fn eq(&self, other: &$t) -> bool { ( *self) == ( *other) } *)
-      Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition eq (host : Value.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        let Self : Ty.t := Self host in
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             BinOp.Pure.eq (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*                 fn ne(&self, other: &$t) -> bool { ( *self) != ( *other) } *)
-      Definition ne (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition ne (host : Value.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        let Self : Ty.t := Self host in
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             BinOp.Pure.ne (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
+        forall (host : Value.t),
         M.IsTraitInstance
           "core::cmp::PartialEq"
-          Self
+          (Self host)
           (* Trait polymorphic types *) []
-          (* Instance *) [ ("eq", InstanceField.Method eq); ("ne", InstanceField.Method ne) ].
+          (* Instance *)
+          [ ("eq", InstanceField.Method (eq host)); ("ne", InstanceField.Method (ne host)) ].
     End Impl_core_cmp_PartialEq_for_usize.
     
     Module Impl_core_cmp_PartialEq_for_u8.
-      Definition Self : Ty.t := Ty.path "u8".
+      Definition Self (host : Value.t) : Ty.t := Ty.path "u8".
       
       (*                 fn eq(&self, other: &$t) -> bool { ( *self) == ( *other) } *)
-      Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition eq (host : Value.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        let Self : Ty.t := Self host in
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             BinOp.Pure.eq (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*                 fn ne(&self, other: &$t) -> bool { ( *self) != ( *other) } *)
-      Definition ne (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition ne (host : Value.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        let Self : Ty.t := Self host in
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             BinOp.Pure.ne (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
+        forall (host : Value.t),
         M.IsTraitInstance
           "core::cmp::PartialEq"
-          Self
+          (Self host)
           (* Trait polymorphic types *) []
-          (* Instance *) [ ("eq", InstanceField.Method eq); ("ne", InstanceField.Method ne) ].
+          (* Instance *)
+          [ ("eq", InstanceField.Method (eq host)); ("ne", InstanceField.Method (ne host)) ].
     End Impl_core_cmp_PartialEq_for_u8.
     
     Module Impl_core_cmp_PartialEq_for_u16.
-      Definition Self : Ty.t := Ty.path "u16".
+      Definition Self (host : Value.t) : Ty.t := Ty.path "u16".
       
       (*                 fn eq(&self, other: &$t) -> bool { ( *self) == ( *other) } *)
-      Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition eq (host : Value.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        let Self : Ty.t := Self host in
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             BinOp.Pure.eq (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*                 fn ne(&self, other: &$t) -> bool { ( *self) != ( *other) } *)
-      Definition ne (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition ne (host : Value.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        let Self : Ty.t := Self host in
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             BinOp.Pure.ne (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
+        forall (host : Value.t),
         M.IsTraitInstance
           "core::cmp::PartialEq"
-          Self
+          (Self host)
           (* Trait polymorphic types *) []
-          (* Instance *) [ ("eq", InstanceField.Method eq); ("ne", InstanceField.Method ne) ].
+          (* Instance *)
+          [ ("eq", InstanceField.Method (eq host)); ("ne", InstanceField.Method (ne host)) ].
     End Impl_core_cmp_PartialEq_for_u16.
     
     Module Impl_core_cmp_PartialEq_for_u32.
-      Definition Self : Ty.t := Ty.path "u32".
+      Definition Self (host : Value.t) : Ty.t := Ty.path "u32".
       
       (*                 fn eq(&self, other: &$t) -> bool { ( *self) == ( *other) } *)
-      Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition eq (host : Value.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        let Self : Ty.t := Self host in
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             BinOp.Pure.eq (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*                 fn ne(&self, other: &$t) -> bool { ( *self) != ( *other) } *)
-      Definition ne (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition ne (host : Value.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        let Self : Ty.t := Self host in
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             BinOp.Pure.ne (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
+        forall (host : Value.t),
         M.IsTraitInstance
           "core::cmp::PartialEq"
-          Self
+          (Self host)
           (* Trait polymorphic types *) []
-          (* Instance *) [ ("eq", InstanceField.Method eq); ("ne", InstanceField.Method ne) ].
+          (* Instance *)
+          [ ("eq", InstanceField.Method (eq host)); ("ne", InstanceField.Method (ne host)) ].
     End Impl_core_cmp_PartialEq_for_u32.
     
     Module Impl_core_cmp_PartialEq_for_u64.
-      Definition Self : Ty.t := Ty.path "u64".
+      Definition Self (host : Value.t) : Ty.t := Ty.path "u64".
       
       (*                 fn eq(&self, other: &$t) -> bool { ( *self) == ( *other) } *)
-      Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition eq (host : Value.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        let Self : Ty.t := Self host in
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             BinOp.Pure.eq (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*                 fn ne(&self, other: &$t) -> bool { ( *self) != ( *other) } *)
-      Definition ne (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition ne (host : Value.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        let Self : Ty.t := Self host in
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             BinOp.Pure.ne (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
+        forall (host : Value.t),
         M.IsTraitInstance
           "core::cmp::PartialEq"
-          Self
+          (Self host)
           (* Trait polymorphic types *) []
-          (* Instance *) [ ("eq", InstanceField.Method eq); ("ne", InstanceField.Method ne) ].
+          (* Instance *)
+          [ ("eq", InstanceField.Method (eq host)); ("ne", InstanceField.Method (ne host)) ].
     End Impl_core_cmp_PartialEq_for_u64.
     
     Module Impl_core_cmp_PartialEq_for_u128.
-      Definition Self : Ty.t := Ty.path "u128".
+      Definition Self (host : Value.t) : Ty.t := Ty.path "u128".
       
       (*                 fn eq(&self, other: &$t) -> bool { ( *self) == ( *other) } *)
-      Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition eq (host : Value.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        let Self : Ty.t := Self host in
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             BinOp.Pure.eq (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*                 fn ne(&self, other: &$t) -> bool { ( *self) != ( *other) } *)
-      Definition ne (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition ne (host : Value.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        let Self : Ty.t := Self host in
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             BinOp.Pure.ne (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
+        forall (host : Value.t),
         M.IsTraitInstance
           "core::cmp::PartialEq"
-          Self
+          (Self host)
           (* Trait polymorphic types *) []
-          (* Instance *) [ ("eq", InstanceField.Method eq); ("ne", InstanceField.Method ne) ].
+          (* Instance *)
+          [ ("eq", InstanceField.Method (eq host)); ("ne", InstanceField.Method (ne host)) ].
     End Impl_core_cmp_PartialEq_for_u128.
     
     Module Impl_core_cmp_PartialEq_for_isize.
-      Definition Self : Ty.t := Ty.path "isize".
+      Definition Self (host : Value.t) : Ty.t := Ty.path "isize".
       
       (*                 fn eq(&self, other: &$t) -> bool { ( *self) == ( *other) } *)
-      Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition eq (host : Value.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        let Self : Ty.t := Self host in
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             BinOp.Pure.eq (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*                 fn ne(&self, other: &$t) -> bool { ( *self) != ( *other) } *)
-      Definition ne (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition ne (host : Value.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        let Self : Ty.t := Self host in
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             BinOp.Pure.ne (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
+        forall (host : Value.t),
         M.IsTraitInstance
           "core::cmp::PartialEq"
-          Self
+          (Self host)
           (* Trait polymorphic types *) []
-          (* Instance *) [ ("eq", InstanceField.Method eq); ("ne", InstanceField.Method ne) ].
+          (* Instance *)
+          [ ("eq", InstanceField.Method (eq host)); ("ne", InstanceField.Method (ne host)) ].
     End Impl_core_cmp_PartialEq_for_isize.
     
     Module Impl_core_cmp_PartialEq_for_i8.
-      Definition Self : Ty.t := Ty.path "i8".
+      Definition Self (host : Value.t) : Ty.t := Ty.path "i8".
       
       (*                 fn eq(&self, other: &$t) -> bool { ( *self) == ( *other) } *)
-      Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition eq (host : Value.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        let Self : Ty.t := Self host in
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             BinOp.Pure.eq (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*                 fn ne(&self, other: &$t) -> bool { ( *self) != ( *other) } *)
-      Definition ne (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition ne (host : Value.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        let Self : Ty.t := Self host in
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             BinOp.Pure.ne (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
+        forall (host : Value.t),
         M.IsTraitInstance
           "core::cmp::PartialEq"
-          Self
+          (Self host)
           (* Trait polymorphic types *) []
-          (* Instance *) [ ("eq", InstanceField.Method eq); ("ne", InstanceField.Method ne) ].
+          (* Instance *)
+          [ ("eq", InstanceField.Method (eq host)); ("ne", InstanceField.Method (ne host)) ].
     End Impl_core_cmp_PartialEq_for_i8.
     
     Module Impl_core_cmp_PartialEq_for_i16.
-      Definition Self : Ty.t := Ty.path "i16".
+      Definition Self (host : Value.t) : Ty.t := Ty.path "i16".
       
       (*                 fn eq(&self, other: &$t) -> bool { ( *self) == ( *other) } *)
-      Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition eq (host : Value.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        let Self : Ty.t := Self host in
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             BinOp.Pure.eq (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*                 fn ne(&self, other: &$t) -> bool { ( *self) != ( *other) } *)
-      Definition ne (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition ne (host : Value.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        let Self : Ty.t := Self host in
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             BinOp.Pure.ne (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
+        forall (host : Value.t),
         M.IsTraitInstance
           "core::cmp::PartialEq"
-          Self
+          (Self host)
           (* Trait polymorphic types *) []
-          (* Instance *) [ ("eq", InstanceField.Method eq); ("ne", InstanceField.Method ne) ].
+          (* Instance *)
+          [ ("eq", InstanceField.Method (eq host)); ("ne", InstanceField.Method (ne host)) ].
     End Impl_core_cmp_PartialEq_for_i16.
     
     Module Impl_core_cmp_PartialEq_for_i32.
-      Definition Self : Ty.t := Ty.path "i32".
+      Definition Self (host : Value.t) : Ty.t := Ty.path "i32".
       
       (*                 fn eq(&self, other: &$t) -> bool { ( *self) == ( *other) } *)
-      Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition eq (host : Value.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        let Self : Ty.t := Self host in
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             BinOp.Pure.eq (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*                 fn ne(&self, other: &$t) -> bool { ( *self) != ( *other) } *)
-      Definition ne (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition ne (host : Value.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        let Self : Ty.t := Self host in
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             BinOp.Pure.ne (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
+        forall (host : Value.t),
         M.IsTraitInstance
           "core::cmp::PartialEq"
-          Self
+          (Self host)
           (* Trait polymorphic types *) []
-          (* Instance *) [ ("eq", InstanceField.Method eq); ("ne", InstanceField.Method ne) ].
+          (* Instance *)
+          [ ("eq", InstanceField.Method (eq host)); ("ne", InstanceField.Method (ne host)) ].
     End Impl_core_cmp_PartialEq_for_i32.
     
     Module Impl_core_cmp_PartialEq_for_i64.
-      Definition Self : Ty.t := Ty.path "i64".
+      Definition Self (host : Value.t) : Ty.t := Ty.path "i64".
       
       (*                 fn eq(&self, other: &$t) -> bool { ( *self) == ( *other) } *)
-      Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition eq (host : Value.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        let Self : Ty.t := Self host in
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             BinOp.Pure.eq (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*                 fn ne(&self, other: &$t) -> bool { ( *self) != ( *other) } *)
-      Definition ne (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition ne (host : Value.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        let Self : Ty.t := Self host in
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             BinOp.Pure.ne (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
+        forall (host : Value.t),
         M.IsTraitInstance
           "core::cmp::PartialEq"
-          Self
+          (Self host)
           (* Trait polymorphic types *) []
-          (* Instance *) [ ("eq", InstanceField.Method eq); ("ne", InstanceField.Method ne) ].
+          (* Instance *)
+          [ ("eq", InstanceField.Method (eq host)); ("ne", InstanceField.Method (ne host)) ].
     End Impl_core_cmp_PartialEq_for_i64.
     
     Module Impl_core_cmp_PartialEq_for_i128.
-      Definition Self : Ty.t := Ty.path "i128".
+      Definition Self (host : Value.t) : Ty.t := Ty.path "i128".
       
       (*                 fn eq(&self, other: &$t) -> bool { ( *self) == ( *other) } *)
-      Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition eq (host : Value.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        let Self : Ty.t := Self host in
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             BinOp.Pure.eq (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*                 fn ne(&self, other: &$t) -> bool { ( *self) != ( *other) } *)
-      Definition ne (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition ne (host : Value.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        let Self : Ty.t := Self host in
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             BinOp.Pure.ne (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
+        forall (host : Value.t),
         M.IsTraitInstance
           "core::cmp::PartialEq"
-          Self
+          (Self host)
           (* Trait polymorphic types *) []
-          (* Instance *) [ ("eq", InstanceField.Method eq); ("ne", InstanceField.Method ne) ].
+          (* Instance *)
+          [ ("eq", InstanceField.Method (eq host)); ("ne", InstanceField.Method (ne host)) ].
     End Impl_core_cmp_PartialEq_for_i128.
     
     Module Impl_core_cmp_PartialEq_for_f32.
-      Definition Self : Ty.t := Ty.path "f32".
+      Definition Self (host : Value.t) : Ty.t := Ty.path "f32".
       
       (*                 fn eq(&self, other: &$t) -> bool { ( *self) == ( *other) } *)
-      Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition eq (host : Value.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        let Self : Ty.t := Self host in
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             BinOp.Pure.eq (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*                 fn ne(&self, other: &$t) -> bool { ( *self) != ( *other) } *)
-      Definition ne (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition ne (host : Value.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        let Self : Ty.t := Self host in
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             BinOp.Pure.ne (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
+        forall (host : Value.t),
         M.IsTraitInstance
           "core::cmp::PartialEq"
-          Self
+          (Self host)
           (* Trait polymorphic types *) []
-          (* Instance *) [ ("eq", InstanceField.Method eq); ("ne", InstanceField.Method ne) ].
+          (* Instance *)
+          [ ("eq", InstanceField.Method (eq host)); ("ne", InstanceField.Method (ne host)) ].
     End Impl_core_cmp_PartialEq_for_f32.
     
     Module Impl_core_cmp_PartialEq_for_f64.
-      Definition Self : Ty.t := Ty.path "f64".
+      Definition Self (host : Value.t) : Ty.t := Ty.path "f64".
       
       (*                 fn eq(&self, other: &$t) -> bool { ( *self) == ( *other) } *)
-      Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition eq (host : Value.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        let Self : Ty.t := Self host in
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             BinOp.Pure.eq (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*                 fn ne(&self, other: &$t) -> bool { ( *self) != ( *other) } *)
-      Definition ne (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition ne (host : Value.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        let Self : Ty.t := Self host in
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             BinOp.Pure.ne (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
+        forall (host : Value.t),
         M.IsTraitInstance
           "core::cmp::PartialEq"
-          Self
+          (Self host)
           (* Trait polymorphic types *) []
-          (* Instance *) [ ("eq", InstanceField.Method eq); ("ne", InstanceField.Method ne) ].
+          (* Instance *)
+          [ ("eq", InstanceField.Method (eq host)); ("ne", InstanceField.Method (ne host)) ].
     End Impl_core_cmp_PartialEq_for_f64.
     
     Module Impl_core_cmp_Eq_for_Tuple_.
@@ -2649,9 +2739,9 @@ Module cmp.
                   Some(Equal)
               }
       *)
-      Definition partial_cmp (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; β1 ] =>
+      Definition partial_cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; β1 ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let β1 := M.alloc (| β1 |) in
@@ -2665,7 +2755,7 @@ Module cmp.
                       [ Value.StructTuple "core::cmp::Ordering::Equal" [] ]))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -2684,9 +2774,9 @@ Module cmp.
                   Some(self.cmp(other))
               }
       *)
-      Definition partial_cmp (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition partial_cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -2698,7 +2788,7 @@ Module cmp.
                   [ M.read (| self |); M.read (| other |) ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -2722,9 +2812,9 @@ Module cmp.
                           }
                       }
       *)
-      Definition partial_cmp (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition partial_cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -2793,51 +2883,51 @@ Module cmp.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*                 fn lt(&self, other: &$t) -> bool { ( *self) < ( *other) } *)
-      Definition lt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition lt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             BinOp.Pure.lt (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*                 fn le(&self, other: &$t) -> bool { ( *self) <= ( *other) } *)
-      Definition le (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition le (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             BinOp.Pure.le (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*                 fn ge(&self, other: &$t) -> bool { ( *self) >= ( *other) } *)
-      Definition ge (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition ge (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             BinOp.Pure.ge (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*                 fn gt(&self, other: &$t) -> bool { ( *self) > ( *other) } *)
-      Definition gt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition gt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             BinOp.Pure.gt (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -2868,9 +2958,9 @@ Module cmp.
                           }
                       }
       *)
-      Definition partial_cmp (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition partial_cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -2939,51 +3029,51 @@ Module cmp.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*                 fn lt(&self, other: &$t) -> bool { ( *self) < ( *other) } *)
-      Definition lt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition lt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             BinOp.Pure.lt (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*                 fn le(&self, other: &$t) -> bool { ( *self) <= ( *other) } *)
-      Definition le (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition le (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             BinOp.Pure.le (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*                 fn ge(&self, other: &$t) -> bool { ( *self) >= ( *other) } *)
-      Definition ge (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition ge (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             BinOp.Pure.ge (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*                 fn gt(&self, other: &$t) -> bool { ( *self) > ( *other) } *)
-      Definition gt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition gt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             BinOp.Pure.gt (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -3009,14 +3099,14 @@ Module cmp.
                   Equal
               }
       *)
-      Definition cmp (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; _other ] =>
+      Definition cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; _other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let _other := M.alloc (| _other |) in
             Value.StructTuple "core::cmp::Ordering::Equal" []))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -3044,9 +3134,9 @@ Module cmp.
                   }
               }
       *)
-      Definition cmp (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -3087,7 +3177,7 @@ Module cmp.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -3095,14 +3185,14 @@ Module cmp.
                   self & other
               }
       *)
-      Definition min (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition min (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             BinOp.Pure.bit_and (M.read (| self |)) (M.read (| other |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -3110,14 +3200,14 @@ Module cmp.
                   self | other
               }
       *)
-      Definition max (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition max (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             BinOp.Pure.bit_or (M.read (| self |)) (M.read (| other |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -3126,9 +3216,9 @@ Module cmp.
                   self.max(min).min(max)
               }
       *)
-      Definition clamp (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; min; max ] =>
+      Definition clamp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; min; max ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let min := M.alloc (| min |) in
@@ -3171,7 +3261,7 @@ Module cmp.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -3196,9 +3286,9 @@ Module cmp.
                           Some(self.cmp(other))
                       }
       *)
-      Definition partial_cmp (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition partial_cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -3210,51 +3300,51 @@ Module cmp.
                   [ M.read (| self |); M.read (| other |) ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*                 fn lt(&self, other: &$t) -> bool { ( *self) < ( *other) } *)
-      Definition lt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition lt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             BinOp.Pure.lt (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*                 fn le(&self, other: &$t) -> bool { ( *self) <= ( *other) } *)
-      Definition le (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition le (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             BinOp.Pure.le (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*                 fn ge(&self, other: &$t) -> bool { ( *self) >= ( *other) } *)
-      Definition ge (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition ge (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             BinOp.Pure.ge (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*                 fn gt(&self, other: &$t) -> bool { ( *self) > ( *other) } *)
-      Definition gt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition gt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             BinOp.Pure.gt (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -3284,9 +3374,9 @@ Module cmp.
                           else { Greater }
                       }
       *)
-      Definition cmp (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -3333,7 +3423,7 @@ Module cmp.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -3352,9 +3442,9 @@ Module cmp.
                           Some(self.cmp(other))
                       }
       *)
-      Definition partial_cmp (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition partial_cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -3366,51 +3456,51 @@ Module cmp.
                   [ M.read (| self |); M.read (| other |) ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*                 fn lt(&self, other: &$t) -> bool { ( *self) < ( *other) } *)
-      Definition lt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition lt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             BinOp.Pure.lt (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*                 fn le(&self, other: &$t) -> bool { ( *self) <= ( *other) } *)
-      Definition le (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition le (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             BinOp.Pure.le (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*                 fn ge(&self, other: &$t) -> bool { ( *self) >= ( *other) } *)
-      Definition ge (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition ge (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             BinOp.Pure.ge (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*                 fn gt(&self, other: &$t) -> bool { ( *self) > ( *other) } *)
-      Definition gt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition gt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             BinOp.Pure.gt (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -3440,9 +3530,9 @@ Module cmp.
                           else { Greater }
                       }
       *)
-      Definition cmp (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -3489,7 +3579,7 @@ Module cmp.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -3508,9 +3598,9 @@ Module cmp.
                           Some(self.cmp(other))
                       }
       *)
-      Definition partial_cmp (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition partial_cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -3522,51 +3612,51 @@ Module cmp.
                   [ M.read (| self |); M.read (| other |) ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*                 fn lt(&self, other: &$t) -> bool { ( *self) < ( *other) } *)
-      Definition lt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition lt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             BinOp.Pure.lt (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*                 fn le(&self, other: &$t) -> bool { ( *self) <= ( *other) } *)
-      Definition le (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition le (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             BinOp.Pure.le (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*                 fn ge(&self, other: &$t) -> bool { ( *self) >= ( *other) } *)
-      Definition ge (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition ge (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             BinOp.Pure.ge (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*                 fn gt(&self, other: &$t) -> bool { ( *self) > ( *other) } *)
-      Definition gt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition gt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             BinOp.Pure.gt (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -3596,9 +3686,9 @@ Module cmp.
                           else { Greater }
                       }
       *)
-      Definition cmp (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -3645,7 +3735,7 @@ Module cmp.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -3664,9 +3754,9 @@ Module cmp.
                           Some(self.cmp(other))
                       }
       *)
-      Definition partial_cmp (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition partial_cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -3678,51 +3768,51 @@ Module cmp.
                   [ M.read (| self |); M.read (| other |) ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*                 fn lt(&self, other: &$t) -> bool { ( *self) < ( *other) } *)
-      Definition lt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition lt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             BinOp.Pure.lt (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*                 fn le(&self, other: &$t) -> bool { ( *self) <= ( *other) } *)
-      Definition le (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition le (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             BinOp.Pure.le (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*                 fn ge(&self, other: &$t) -> bool { ( *self) >= ( *other) } *)
-      Definition ge (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition ge (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             BinOp.Pure.ge (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*                 fn gt(&self, other: &$t) -> bool { ( *self) > ( *other) } *)
-      Definition gt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition gt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             BinOp.Pure.gt (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -3752,9 +3842,9 @@ Module cmp.
                           else { Greater }
                       }
       *)
-      Definition cmp (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -3801,7 +3891,7 @@ Module cmp.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -3820,9 +3910,9 @@ Module cmp.
                           Some(self.cmp(other))
                       }
       *)
-      Definition partial_cmp (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition partial_cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -3834,51 +3924,51 @@ Module cmp.
                   [ M.read (| self |); M.read (| other |) ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*                 fn lt(&self, other: &$t) -> bool { ( *self) < ( *other) } *)
-      Definition lt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition lt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             BinOp.Pure.lt (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*                 fn le(&self, other: &$t) -> bool { ( *self) <= ( *other) } *)
-      Definition le (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition le (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             BinOp.Pure.le (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*                 fn ge(&self, other: &$t) -> bool { ( *self) >= ( *other) } *)
-      Definition ge (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition ge (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             BinOp.Pure.ge (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*                 fn gt(&self, other: &$t) -> bool { ( *self) > ( *other) } *)
-      Definition gt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition gt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             BinOp.Pure.gt (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -3908,9 +3998,9 @@ Module cmp.
                           else { Greater }
                       }
       *)
-      Definition cmp (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -3957,7 +4047,7 @@ Module cmp.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -3976,9 +4066,9 @@ Module cmp.
                           Some(self.cmp(other))
                       }
       *)
-      Definition partial_cmp (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition partial_cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -3990,51 +4080,51 @@ Module cmp.
                   [ M.read (| self |); M.read (| other |) ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*                 fn lt(&self, other: &$t) -> bool { ( *self) < ( *other) } *)
-      Definition lt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition lt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             BinOp.Pure.lt (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*                 fn le(&self, other: &$t) -> bool { ( *self) <= ( *other) } *)
-      Definition le (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition le (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             BinOp.Pure.le (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*                 fn ge(&self, other: &$t) -> bool { ( *self) >= ( *other) } *)
-      Definition ge (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition ge (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             BinOp.Pure.ge (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*                 fn gt(&self, other: &$t) -> bool { ( *self) > ( *other) } *)
-      Definition gt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition gt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             BinOp.Pure.gt (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -4064,9 +4154,9 @@ Module cmp.
                           else { Greater }
                       }
       *)
-      Definition cmp (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -4113,7 +4203,7 @@ Module cmp.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -4132,9 +4222,9 @@ Module cmp.
                           Some(self.cmp(other))
                       }
       *)
-      Definition partial_cmp (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition partial_cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -4146,51 +4236,51 @@ Module cmp.
                   [ M.read (| self |); M.read (| other |) ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*                 fn lt(&self, other: &$t) -> bool { ( *self) < ( *other) } *)
-      Definition lt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition lt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             BinOp.Pure.lt (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*                 fn le(&self, other: &$t) -> bool { ( *self) <= ( *other) } *)
-      Definition le (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition le (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             BinOp.Pure.le (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*                 fn ge(&self, other: &$t) -> bool { ( *self) >= ( *other) } *)
-      Definition ge (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition ge (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             BinOp.Pure.ge (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*                 fn gt(&self, other: &$t) -> bool { ( *self) > ( *other) } *)
-      Definition gt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition gt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             BinOp.Pure.gt (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -4220,9 +4310,9 @@ Module cmp.
                           else { Greater }
                       }
       *)
-      Definition cmp (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -4269,7 +4359,7 @@ Module cmp.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -4288,9 +4378,9 @@ Module cmp.
                           Some(self.cmp(other))
                       }
       *)
-      Definition partial_cmp (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition partial_cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -4302,51 +4392,51 @@ Module cmp.
                   [ M.read (| self |); M.read (| other |) ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*                 fn lt(&self, other: &$t) -> bool { ( *self) < ( *other) } *)
-      Definition lt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition lt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             BinOp.Pure.lt (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*                 fn le(&self, other: &$t) -> bool { ( *self) <= ( *other) } *)
-      Definition le (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition le (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             BinOp.Pure.le (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*                 fn ge(&self, other: &$t) -> bool { ( *self) >= ( *other) } *)
-      Definition ge (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition ge (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             BinOp.Pure.ge (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*                 fn gt(&self, other: &$t) -> bool { ( *self) > ( *other) } *)
-      Definition gt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition gt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             BinOp.Pure.gt (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -4376,9 +4466,9 @@ Module cmp.
                           else { Greater }
                       }
       *)
-      Definition cmp (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -4425,7 +4515,7 @@ Module cmp.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -4444,9 +4534,9 @@ Module cmp.
                           Some(self.cmp(other))
                       }
       *)
-      Definition partial_cmp (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition partial_cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -4458,51 +4548,51 @@ Module cmp.
                   [ M.read (| self |); M.read (| other |) ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*                 fn lt(&self, other: &$t) -> bool { ( *self) < ( *other) } *)
-      Definition lt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition lt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             BinOp.Pure.lt (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*                 fn le(&self, other: &$t) -> bool { ( *self) <= ( *other) } *)
-      Definition le (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition le (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             BinOp.Pure.le (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*                 fn ge(&self, other: &$t) -> bool { ( *self) >= ( *other) } *)
-      Definition ge (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition ge (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             BinOp.Pure.ge (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*                 fn gt(&self, other: &$t) -> bool { ( *self) > ( *other) } *)
-      Definition gt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition gt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             BinOp.Pure.gt (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -4532,9 +4622,9 @@ Module cmp.
                           else { Greater }
                       }
       *)
-      Definition cmp (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -4581,7 +4671,7 @@ Module cmp.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -4600,9 +4690,9 @@ Module cmp.
                           Some(self.cmp(other))
                       }
       *)
-      Definition partial_cmp (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition partial_cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -4614,51 +4704,51 @@ Module cmp.
                   [ M.read (| self |); M.read (| other |) ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*                 fn lt(&self, other: &$t) -> bool { ( *self) < ( *other) } *)
-      Definition lt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition lt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             BinOp.Pure.lt (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*                 fn le(&self, other: &$t) -> bool { ( *self) <= ( *other) } *)
-      Definition le (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition le (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             BinOp.Pure.le (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*                 fn ge(&self, other: &$t) -> bool { ( *self) >= ( *other) } *)
-      Definition ge (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition ge (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             BinOp.Pure.ge (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*                 fn gt(&self, other: &$t) -> bool { ( *self) > ( *other) } *)
-      Definition gt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition gt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             BinOp.Pure.gt (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -4688,9 +4778,9 @@ Module cmp.
                           else { Greater }
                       }
       *)
-      Definition cmp (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -4737,7 +4827,7 @@ Module cmp.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -4756,9 +4846,9 @@ Module cmp.
                           Some(self.cmp(other))
                       }
       *)
-      Definition partial_cmp (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition partial_cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -4770,51 +4860,51 @@ Module cmp.
                   [ M.read (| self |); M.read (| other |) ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*                 fn lt(&self, other: &$t) -> bool { ( *self) < ( *other) } *)
-      Definition lt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition lt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             BinOp.Pure.lt (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*                 fn le(&self, other: &$t) -> bool { ( *self) <= ( *other) } *)
-      Definition le (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition le (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             BinOp.Pure.le (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*                 fn ge(&self, other: &$t) -> bool { ( *self) >= ( *other) } *)
-      Definition ge (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition ge (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             BinOp.Pure.ge (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*                 fn gt(&self, other: &$t) -> bool { ( *self) > ( *other) } *)
-      Definition gt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition gt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             BinOp.Pure.gt (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -4844,9 +4934,9 @@ Module cmp.
                           else { Greater }
                       }
       *)
-      Definition cmp (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -4893,7 +4983,7 @@ Module cmp.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -4912,9 +5002,9 @@ Module cmp.
                           Some(self.cmp(other))
                       }
       *)
-      Definition partial_cmp (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition partial_cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -4926,51 +5016,51 @@ Module cmp.
                   [ M.read (| self |); M.read (| other |) ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*                 fn lt(&self, other: &$t) -> bool { ( *self) < ( *other) } *)
-      Definition lt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition lt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             BinOp.Pure.lt (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*                 fn le(&self, other: &$t) -> bool { ( *self) <= ( *other) } *)
-      Definition le (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition le (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             BinOp.Pure.le (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*                 fn ge(&self, other: &$t) -> bool { ( *self) >= ( *other) } *)
-      Definition ge (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition ge (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             BinOp.Pure.ge (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*                 fn gt(&self, other: &$t) -> bool { ( *self) > ( *other) } *)
-      Definition gt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition gt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             BinOp.Pure.gt (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -5000,9 +5090,9 @@ Module cmp.
                           else { Greater }
                       }
       *)
-      Definition cmp (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -5049,7 +5139,7 @@ Module cmp.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -5068,9 +5158,9 @@ Module cmp.
                           Some(self.cmp(other))
                       }
       *)
-      Definition partial_cmp (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition partial_cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -5082,51 +5172,51 @@ Module cmp.
                   [ M.read (| self |); M.read (| other |) ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*                 fn lt(&self, other: &$t) -> bool { ( *self) < ( *other) } *)
-      Definition lt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition lt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             BinOp.Pure.lt (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*                 fn le(&self, other: &$t) -> bool { ( *self) <= ( *other) } *)
-      Definition le (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition le (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             BinOp.Pure.le (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*                 fn ge(&self, other: &$t) -> bool { ( *self) >= ( *other) } *)
-      Definition ge (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition ge (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             BinOp.Pure.ge (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*                 fn gt(&self, other: &$t) -> bool { ( *self) > ( *other) } *)
-      Definition gt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition gt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             BinOp.Pure.gt (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -5156,9 +5246,9 @@ Module cmp.
                           else { Greater }
                       }
       *)
-      Definition cmp (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -5205,7 +5295,7 @@ Module cmp.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -5224,9 +5314,9 @@ Module cmp.
                   *self
               }
       *)
-      Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; β1 ] =>
+      Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; β1 ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let β1 := M.alloc (| β1 |) in
@@ -5234,7 +5324,7 @@ Module cmp.
               β1,
               [ fun γ => ltac:(M.monadic (M.never_to_any (| M.read (| M.read (| self |) |) |))) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -5260,9 +5350,9 @@ Module cmp.
                   *self
               }
       *)
-      Definition partial_cmp (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; β1 ] =>
+      Definition partial_cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; β1 ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let β1 := M.alloc (| β1 |) in
@@ -5270,7 +5360,7 @@ Module cmp.
               β1,
               [ fun γ => ltac:(M.monadic (M.never_to_any (| M.read (| M.read (| self |) |) |))) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -5289,9 +5379,9 @@ Module cmp.
                   *self
               }
       *)
-      Definition cmp (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; β1 ] =>
+      Definition cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; β1 ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let β1 := M.alloc (| β1 |) in
@@ -5299,7 +5389,7 @@ Module cmp.
               β1,
               [ fun γ => ltac:(M.monadic (M.never_to_any (| M.read (| M.read (| self |) |) |))) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -5311,17 +5401,17 @@ Module cmp.
     End Impl_core_cmp_Ord_for_never.
     
     Module Impl_core_cmp_PartialEq_where_core_marker_Sized_A_where_core_marker_Sized_B_where_core_cmp_PartialEq_A_B_ref__B_for_ref__A.
-      Definition Self (A B : Ty.t) : Ty.t := Ty.apply (Ty.path "&") [ A ].
+      Definition Self (A B : Ty.t) : Ty.t := Ty.apply (Ty.path "&") [] [ A ].
       
       (*
               fn eq(&self, other: &&B) -> bool {
                   PartialEq::eq( *self, *other)
               }
       *)
-      Definition eq (A B : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition eq (A B : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self A B in
-        match τ, α with
-        | [], [ self; other ] =>
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -5329,7 +5419,7 @@ Module cmp.
               M.get_trait_method (| "core::cmp::PartialEq", A, [ B ], "eq", [] |),
               [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -5337,10 +5427,10 @@ Module cmp.
                   PartialEq::ne( *self, *other)
               }
       *)
-      Definition ne (A B : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition ne (A B : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self A B in
-        match τ, α with
-        | [], [ self; other ] =>
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -5348,7 +5438,7 @@ Module cmp.
               M.get_trait_method (| "core::cmp::PartialEq", A, [ B ], "ne", [] |),
               [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -5356,23 +5446,28 @@ Module cmp.
         M.IsTraitInstance
           "core::cmp::PartialEq"
           (Self A B)
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.apply (Ty.path "&") [ B ] ]
+          (* Trait polymorphic types *) [ (* Rhs *) Ty.apply (Ty.path "&") [] [ B ] ]
           (* Instance *)
           [ ("eq", InstanceField.Method (eq A B)); ("ne", InstanceField.Method (ne A B)) ].
     End Impl_core_cmp_PartialEq_where_core_marker_Sized_A_where_core_marker_Sized_B_where_core_cmp_PartialEq_A_B_ref__B_for_ref__A.
     
     Module Impl_core_cmp_PartialOrd_where_core_marker_Sized_A_where_core_marker_Sized_B_where_core_cmp_PartialOrd_A_B_ref__B_for_ref__A.
-      Definition Self (A B : Ty.t) : Ty.t := Ty.apply (Ty.path "&") [ A ].
+      Definition Self (A B : Ty.t) : Ty.t := Ty.apply (Ty.path "&") [] [ A ].
       
       (*
               fn partial_cmp(&self, other: &&B) -> Option<Ordering> {
                   PartialOrd::partial_cmp( *self, *other)
               }
       *)
-      Definition partial_cmp (A B : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition partial_cmp
+          (A B : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self A B in
-        match τ, α with
-        | [], [ self; other ] =>
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -5380,7 +5475,7 @@ Module cmp.
               M.get_trait_method (| "core::cmp::PartialOrd", A, [ B ], "partial_cmp", [] |),
               [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -5388,10 +5483,10 @@ Module cmp.
                   PartialOrd::lt( *self, *other)
               }
       *)
-      Definition lt (A B : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition lt (A B : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self A B in
-        match τ, α with
-        | [], [ self; other ] =>
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -5399,7 +5494,7 @@ Module cmp.
               M.get_trait_method (| "core::cmp::PartialOrd", A, [ B ], "lt", [] |),
               [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -5407,10 +5502,10 @@ Module cmp.
                   PartialOrd::le( *self, *other)
               }
       *)
-      Definition le (A B : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition le (A B : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self A B in
-        match τ, α with
-        | [], [ self; other ] =>
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -5418,7 +5513,7 @@ Module cmp.
               M.get_trait_method (| "core::cmp::PartialOrd", A, [ B ], "le", [] |),
               [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -5426,10 +5521,10 @@ Module cmp.
                   PartialOrd::gt( *self, *other)
               }
       *)
-      Definition gt (A B : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition gt (A B : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self A B in
-        match τ, α with
-        | [], [ self; other ] =>
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -5437,7 +5532,7 @@ Module cmp.
               M.get_trait_method (| "core::cmp::PartialOrd", A, [ B ], "gt", [] |),
               [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -5445,10 +5540,10 @@ Module cmp.
                   PartialOrd::ge( *self, *other)
               }
       *)
-      Definition ge (A B : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition ge (A B : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self A B in
-        match τ, α with
-        | [], [ self; other ] =>
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -5456,7 +5551,7 @@ Module cmp.
               M.get_trait_method (| "core::cmp::PartialOrd", A, [ B ], "ge", [] |),
               [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -5464,7 +5559,7 @@ Module cmp.
         M.IsTraitInstance
           "core::cmp::PartialOrd"
           (Self A B)
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.apply (Ty.path "&") [ B ] ]
+          (* Trait polymorphic types *) [ (* Rhs *) Ty.apply (Ty.path "&") [] [ B ] ]
           (* Instance *)
           [
             ("partial_cmp", InstanceField.Method (partial_cmp A B));
@@ -5476,17 +5571,17 @@ Module cmp.
     End Impl_core_cmp_PartialOrd_where_core_marker_Sized_A_where_core_marker_Sized_B_where_core_cmp_PartialOrd_A_B_ref__B_for_ref__A.
     
     Module Impl_core_cmp_Ord_where_core_marker_Sized_A_where_core_cmp_Ord_A_for_ref__A.
-      Definition Self (A : Ty.t) : Ty.t := Ty.apply (Ty.path "&") [ A ].
+      Definition Self (A : Ty.t) : Ty.t := Ty.apply (Ty.path "&") [] [ A ].
       
       (*
               fn cmp(&self, other: &Self) -> Ordering {
                   Ord::cmp( *self, *other)
               }
       *)
-      Definition cmp (A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition cmp (A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self A in
-        match τ, α with
-        | [], [ self; other ] =>
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -5494,7 +5589,7 @@ Module cmp.
               M.get_trait_method (| "core::cmp::Ord", A, [], "cmp", [] |),
               [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -5507,7 +5602,7 @@ Module cmp.
     End Impl_core_cmp_Ord_where_core_marker_Sized_A_where_core_cmp_Ord_A_for_ref__A.
     
     Module Impl_core_cmp_Eq_where_core_marker_Sized_A_where_core_cmp_Eq_A_for_ref__A.
-      Definition Self (A : Ty.t) : Ty.t := Ty.apply (Ty.path "&") [ A ].
+      Definition Self (A : Ty.t) : Ty.t := Ty.apply (Ty.path "&") [] [ A ].
       
       Axiom Implements :
         forall (A : Ty.t),
@@ -5519,17 +5614,17 @@ Module cmp.
     End Impl_core_cmp_Eq_where_core_marker_Sized_A_where_core_cmp_Eq_A_for_ref__A.
     
     Module Impl_core_cmp_PartialEq_where_core_marker_Sized_A_where_core_marker_Sized_B_where_core_cmp_PartialEq_A_B_ref_mut_B_for_ref_mut_A.
-      Definition Self (A B : Ty.t) : Ty.t := Ty.apply (Ty.path "&mut") [ A ].
+      Definition Self (A B : Ty.t) : Ty.t := Ty.apply (Ty.path "&mut") [] [ A ].
       
       (*
               fn eq(&self, other: &&mut B) -> bool {
                   PartialEq::eq( *self, *other)
               }
       *)
-      Definition eq (A B : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition eq (A B : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self A B in
-        match τ, α with
-        | [], [ self; other ] =>
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -5537,7 +5632,7 @@ Module cmp.
               M.get_trait_method (| "core::cmp::PartialEq", A, [ B ], "eq", [] |),
               [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -5545,10 +5640,10 @@ Module cmp.
                   PartialEq::ne( *self, *other)
               }
       *)
-      Definition ne (A B : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition ne (A B : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self A B in
-        match τ, α with
-        | [], [ self; other ] =>
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -5556,7 +5651,7 @@ Module cmp.
               M.get_trait_method (| "core::cmp::PartialEq", A, [ B ], "ne", [] |),
               [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -5564,23 +5659,28 @@ Module cmp.
         M.IsTraitInstance
           "core::cmp::PartialEq"
           (Self A B)
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.apply (Ty.path "&mut") [ B ] ]
+          (* Trait polymorphic types *) [ (* Rhs *) Ty.apply (Ty.path "&mut") [] [ B ] ]
           (* Instance *)
           [ ("eq", InstanceField.Method (eq A B)); ("ne", InstanceField.Method (ne A B)) ].
     End Impl_core_cmp_PartialEq_where_core_marker_Sized_A_where_core_marker_Sized_B_where_core_cmp_PartialEq_A_B_ref_mut_B_for_ref_mut_A.
     
     Module Impl_core_cmp_PartialOrd_where_core_marker_Sized_A_where_core_marker_Sized_B_where_core_cmp_PartialOrd_A_B_ref_mut_B_for_ref_mut_A.
-      Definition Self (A B : Ty.t) : Ty.t := Ty.apply (Ty.path "&mut") [ A ].
+      Definition Self (A B : Ty.t) : Ty.t := Ty.apply (Ty.path "&mut") [] [ A ].
       
       (*
               fn partial_cmp(&self, other: &&mut B) -> Option<Ordering> {
                   PartialOrd::partial_cmp( *self, *other)
               }
       *)
-      Definition partial_cmp (A B : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition partial_cmp
+          (A B : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self A B in
-        match τ, α with
-        | [], [ self; other ] =>
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -5588,7 +5688,7 @@ Module cmp.
               M.get_trait_method (| "core::cmp::PartialOrd", A, [ B ], "partial_cmp", [] |),
               [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -5596,10 +5696,10 @@ Module cmp.
                   PartialOrd::lt( *self, *other)
               }
       *)
-      Definition lt (A B : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition lt (A B : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self A B in
-        match τ, α with
-        | [], [ self; other ] =>
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -5607,7 +5707,7 @@ Module cmp.
               M.get_trait_method (| "core::cmp::PartialOrd", A, [ B ], "lt", [] |),
               [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -5615,10 +5715,10 @@ Module cmp.
                   PartialOrd::le( *self, *other)
               }
       *)
-      Definition le (A B : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition le (A B : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self A B in
-        match τ, α with
-        | [], [ self; other ] =>
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -5626,7 +5726,7 @@ Module cmp.
               M.get_trait_method (| "core::cmp::PartialOrd", A, [ B ], "le", [] |),
               [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -5634,10 +5734,10 @@ Module cmp.
                   PartialOrd::gt( *self, *other)
               }
       *)
-      Definition gt (A B : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition gt (A B : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self A B in
-        match τ, α with
-        | [], [ self; other ] =>
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -5645,7 +5745,7 @@ Module cmp.
               M.get_trait_method (| "core::cmp::PartialOrd", A, [ B ], "gt", [] |),
               [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -5653,10 +5753,10 @@ Module cmp.
                   PartialOrd::ge( *self, *other)
               }
       *)
-      Definition ge (A B : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition ge (A B : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self A B in
-        match τ, α with
-        | [], [ self; other ] =>
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -5664,7 +5764,7 @@ Module cmp.
               M.get_trait_method (| "core::cmp::PartialOrd", A, [ B ], "ge", [] |),
               [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -5672,7 +5772,7 @@ Module cmp.
         M.IsTraitInstance
           "core::cmp::PartialOrd"
           (Self A B)
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.apply (Ty.path "&mut") [ B ] ]
+          (* Trait polymorphic types *) [ (* Rhs *) Ty.apply (Ty.path "&mut") [] [ B ] ]
           (* Instance *)
           [
             ("partial_cmp", InstanceField.Method (partial_cmp A B));
@@ -5684,17 +5784,17 @@ Module cmp.
     End Impl_core_cmp_PartialOrd_where_core_marker_Sized_A_where_core_marker_Sized_B_where_core_cmp_PartialOrd_A_B_ref_mut_B_for_ref_mut_A.
     
     Module Impl_core_cmp_Ord_where_core_marker_Sized_A_where_core_cmp_Ord_A_for_ref_mut_A.
-      Definition Self (A : Ty.t) : Ty.t := Ty.apply (Ty.path "&mut") [ A ].
+      Definition Self (A : Ty.t) : Ty.t := Ty.apply (Ty.path "&mut") [] [ A ].
       
       (*
               fn cmp(&self, other: &Self) -> Ordering {
                   Ord::cmp( *self, *other)
               }
       *)
-      Definition cmp (A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition cmp (A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self A in
-        match τ, α with
-        | [], [ self; other ] =>
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -5702,7 +5802,7 @@ Module cmp.
               M.get_trait_method (| "core::cmp::Ord", A, [], "cmp", [] |),
               [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -5715,7 +5815,7 @@ Module cmp.
     End Impl_core_cmp_Ord_where_core_marker_Sized_A_where_core_cmp_Ord_A_for_ref_mut_A.
     
     Module Impl_core_cmp_Eq_where_core_marker_Sized_A_where_core_cmp_Eq_A_for_ref_mut_A.
-      Definition Self (A : Ty.t) : Ty.t := Ty.apply (Ty.path "&mut") [ A ].
+      Definition Self (A : Ty.t) : Ty.t := Ty.apply (Ty.path "&mut") [] [ A ].
       
       Axiom Implements :
         forall (A : Ty.t),
@@ -5727,17 +5827,17 @@ Module cmp.
     End Impl_core_cmp_Eq_where_core_marker_Sized_A_where_core_cmp_Eq_A_for_ref_mut_A.
     
     Module Impl_core_cmp_PartialEq_where_core_marker_Sized_A_where_core_marker_Sized_B_where_core_cmp_PartialEq_A_B_ref_mut_B_for_ref__A.
-      Definition Self (A B : Ty.t) : Ty.t := Ty.apply (Ty.path "&") [ A ].
+      Definition Self (A B : Ty.t) : Ty.t := Ty.apply (Ty.path "&") [] [ A ].
       
       (*
               fn eq(&self, other: &&mut B) -> bool {
                   PartialEq::eq( *self, *other)
               }
       *)
-      Definition eq (A B : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition eq (A B : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self A B in
-        match τ, α with
-        | [], [ self; other ] =>
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -5745,7 +5845,7 @@ Module cmp.
               M.get_trait_method (| "core::cmp::PartialEq", A, [ B ], "eq", [] |),
               [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -5753,10 +5853,10 @@ Module cmp.
                   PartialEq::ne( *self, *other)
               }
       *)
-      Definition ne (A B : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition ne (A B : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self A B in
-        match τ, α with
-        | [], [ self; other ] =>
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -5764,7 +5864,7 @@ Module cmp.
               M.get_trait_method (| "core::cmp::PartialEq", A, [ B ], "ne", [] |),
               [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -5772,23 +5872,23 @@ Module cmp.
         M.IsTraitInstance
           "core::cmp::PartialEq"
           (Self A B)
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.apply (Ty.path "&mut") [ B ] ]
+          (* Trait polymorphic types *) [ (* Rhs *) Ty.apply (Ty.path "&mut") [] [ B ] ]
           (* Instance *)
           [ ("eq", InstanceField.Method (eq A B)); ("ne", InstanceField.Method (ne A B)) ].
     End Impl_core_cmp_PartialEq_where_core_marker_Sized_A_where_core_marker_Sized_B_where_core_cmp_PartialEq_A_B_ref_mut_B_for_ref__A.
     
     Module Impl_core_cmp_PartialEq_where_core_marker_Sized_A_where_core_marker_Sized_B_where_core_cmp_PartialEq_A_B_ref__B_for_ref_mut_A.
-      Definition Self (A B : Ty.t) : Ty.t := Ty.apply (Ty.path "&mut") [ A ].
+      Definition Self (A B : Ty.t) : Ty.t := Ty.apply (Ty.path "&mut") [] [ A ].
       
       (*
               fn eq(&self, other: &&B) -> bool {
                   PartialEq::eq( *self, *other)
               }
       *)
-      Definition eq (A B : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition eq (A B : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self A B in
-        match τ, α with
-        | [], [ self; other ] =>
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -5796,7 +5896,7 @@ Module cmp.
               M.get_trait_method (| "core::cmp::PartialEq", A, [ B ], "eq", [] |),
               [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -5804,10 +5904,10 @@ Module cmp.
                   PartialEq::ne( *self, *other)
               }
       *)
-      Definition ne (A B : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition ne (A B : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self A B in
-        match τ, α with
-        | [], [ self; other ] =>
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -5815,7 +5915,7 @@ Module cmp.
               M.get_trait_method (| "core::cmp::PartialEq", A, [ B ], "ne", [] |),
               [ M.read (| M.read (| self |) |); M.read (| M.read (| other |) |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -5823,7 +5923,7 @@ Module cmp.
         M.IsTraitInstance
           "core::cmp::PartialEq"
           (Self A B)
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.apply (Ty.path "&") [ B ] ]
+          (* Trait polymorphic types *) [ (* Rhs *) Ty.apply (Ty.path "&") [] [ B ] ]
           (* Instance *)
           [ ("eq", InstanceField.Method (eq A B)); ("ne", InstanceField.Method (ne A B)) ].
     End Impl_core_cmp_PartialEq_where_core_marker_Sized_A_where_core_marker_Sized_B_where_core_cmp_PartialEq_A_B_ref__B_for_ref_mut_A.

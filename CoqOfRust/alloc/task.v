@@ -4,9 +4,14 @@ Require Import CoqOfRust.CoqOfRust.
 Module task.
   (* Trait *)
   Module Wake.
-    Definition wake_by_ref (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition wake_by_ref
+        (Self : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -20,6 +25,7 @@ Module task.
                         "core::clone::Clone",
                         Ty.apply
                           (Ty.path "alloc::sync::Arc")
+                          []
                           [ Self; Ty.path "alloc::alloc::Global" ],
                         [],
                         "clone",
@@ -32,7 +38,7 @@ Module task.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom ProvidedMethod_wake_by_ref :
@@ -49,10 +55,10 @@ Module task.
             unsafe { Waker::from_raw(raw_waker(waker)) }
         }
     *)
-    Definition from (W : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition from (W : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self W in
-      match τ, α with
-      | [], [ waker ] =>
+      match ε, τ, α with
+      | [], [], [ waker ] =>
         ltac:(M.monadic
           (let waker := M.alloc (| waker |) in
           M.call_closure (|
@@ -64,7 +70,7 @@ Module task.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -73,7 +79,7 @@ Module task.
         "core::convert::From"
         (Self W)
         (* Trait polymorphic types *)
-        [ (* T *) Ty.apply (Ty.path "alloc::sync::Arc") [ W; Ty.path "alloc::alloc::Global" ] ]
+        [ (* T *) Ty.apply (Ty.path "alloc::sync::Arc") [] [ W; Ty.path "alloc::alloc::Global" ] ]
         (* Instance *) [ ("from", InstanceField.Method (from W)) ].
   End Impl_core_convert_From_where_alloc_task_Wake_W_where_core_marker_Send_W_where_core_marker_Sync_W_alloc_sync_Arc_W_alloc_alloc_Global_for_core_task_wake_Waker.
   
@@ -85,17 +91,17 @@ Module task.
             raw_waker(waker)
         }
     *)
-    Definition from (W : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition from (W : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self W in
-      match τ, α with
-      | [], [ waker ] =>
+      match ε, τ, α with
+      | [], [], [ waker ] =>
         ltac:(M.monadic
           (let waker := M.alloc (| waker |) in
           M.call_closure (|
             M.get_function (| "alloc::task::raw_waker", [ W ] |),
             [ M.read (| waker |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -104,7 +110,7 @@ Module task.
         "core::convert::From"
         (Self W)
         (* Trait polymorphic types *)
-        [ (* T *) Ty.apply (Ty.path "alloc::sync::Arc") [ W; Ty.path "alloc::alloc::Global" ] ]
+        [ (* T *) Ty.apply (Ty.path "alloc::sync::Arc") [] [ W; Ty.path "alloc::alloc::Global" ] ]
         (* Instance *) [ ("from", InstanceField.Method (from W)) ].
   End Impl_core_convert_From_where_alloc_task_Wake_W_where_core_marker_Send_W_where_core_marker_Sync_W_alloc_sync_Arc_W_alloc_alloc_Global_for_core_task_wake_RawWaker.
   
@@ -142,9 +148,9 @@ Module task.
       )
   }
   *)
-  Definition raw_waker (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [ W ], [ waker ] =>
+  Definition raw_waker (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [ W ], [ waker ] =>
       ltac:(M.monadic
         (let waker := M.alloc (| waker |) in
         M.call_closure (|
@@ -153,7 +159,7 @@ Module task.
             M.rust_cast
               (M.call_closure (|
                 M.get_associated_function (|
-                  Ty.apply (Ty.path "alloc::sync::Arc") [ W; Ty.path "alloc::alloc::Global" ],
+                  Ty.apply (Ty.path "alloc::sync::Arc") [] [ W; Ty.path "alloc::alloc::Global" ],
                   "into_raw",
                   []
                 |),
@@ -182,7 +188,7 @@ Module task.
             |)
           ]
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Function_raw_waker : M.IsFunction "alloc::task::raw_waker" raw_waker.
@@ -197,9 +203,9 @@ Module task.
             )
         }
     *)
-    Definition clone_waker (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ W ], [ waker ] =>
+    Definition clone_waker (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ W ], [ waker ] =>
         ltac:(M.monadic
           (let waker := M.alloc (| waker |) in
           M.read (|
@@ -207,7 +213,7 @@ Module task.
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "alloc::sync::Arc") [ W; Ty.path "alloc::alloc::Global" ],
+                    Ty.apply (Ty.path "alloc::sync::Arc") [] [ W; Ty.path "alloc::alloc::Global" ],
                     "increment_strong_count",
                     []
                   |),
@@ -245,7 +251,7 @@ Module task.
               |)
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_clone_waker : M.IsFunction "alloc::task::raw_waker::clone_waker" clone_waker.
@@ -256,9 +262,9 @@ Module task.
             <W as Wake>::wake(waker);
         }
     *)
-    Definition wake (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ W ], [ waker ] =>
+    Definition wake (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ W ], [ waker ] =>
         ltac:(M.monadic
           (let waker := M.alloc (| waker |) in
           M.read (|
@@ -266,7 +272,7 @@ Module task.
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "alloc::sync::Arc") [ W; Ty.path "alloc::alloc::Global" ],
+                    Ty.apply (Ty.path "alloc::sync::Arc") [] [ W; Ty.path "alloc::alloc::Global" ],
                     "from_raw",
                     []
                   |),
@@ -282,7 +288,7 @@ Module task.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_wake : M.IsFunction "alloc::task::raw_waker::wake" wake.
@@ -293,9 +299,9 @@ Module task.
             <W as Wake>::wake_by_ref(&waker);
         }
     *)
-    Definition wake_by_ref (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ W ], [ waker ] =>
+    Definition wake_by_ref (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ W ], [ waker ] =>
         ltac:(M.monadic
           (let waker := M.alloc (| waker |) in
           M.read (|
@@ -305,7 +311,12 @@ Module task.
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "core::mem::manually_drop::ManuallyDrop")
-                      [ Ty.apply (Ty.path "alloc::sync::Arc") [ W; Ty.path "alloc::alloc::Global" ]
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "alloc::sync::Arc")
+                          []
+                          [ W; Ty.path "alloc::alloc::Global" ]
                       ],
                     "new",
                     []
@@ -313,7 +324,10 @@ Module task.
                   [
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "alloc::sync::Arc") [ W; Ty.path "alloc::alloc::Global" ],
+                        Ty.apply
+                          (Ty.path "alloc::sync::Arc")
+                          []
+                          [ W; Ty.path "alloc::alloc::Global" ],
                         "from_raw",
                         []
                       |),
@@ -332,9 +346,11 @@ Module task.
                         "core::ops::deref::Deref",
                         Ty.apply
                           (Ty.path "core::mem::manually_drop::ManuallyDrop")
+                          []
                           [
                             Ty.apply
                               (Ty.path "alloc::sync::Arc")
+                              []
                               [ W; Ty.path "alloc::alloc::Global" ]
                           ],
                         [],
@@ -348,7 +364,7 @@ Module task.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_wake_by_ref : M.IsFunction "alloc::task::raw_waker::wake_by_ref" wake_by_ref.
@@ -358,9 +374,9 @@ Module task.
             unsafe { Arc::decrement_strong_count(waker as *const W) };
         }
     *)
-    Definition drop_waker (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ W ], [ waker ] =>
+    Definition drop_waker (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ W ], [ waker ] =>
         ltac:(M.monadic
           (let waker := M.alloc (| waker |) in
           M.read (|
@@ -368,7 +384,7 @@ Module task.
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "alloc::sync::Arc") [ W; Ty.path "alloc::alloc::Global" ],
+                    Ty.apply (Ty.path "alloc::sync::Arc") [] [ W; Ty.path "alloc::alloc::Global" ],
                     "decrement_strong_count",
                     []
                   |),
@@ -377,7 +393,7 @@ Module task.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_drop_waker : M.IsFunction "alloc::task::raw_waker::drop_waker" drop_waker.

@@ -17,22 +17,22 @@ Module ops.
         FromResidual::from_residual(Yeet(yeeted))
     }
     *)
-    Definition from_yeet (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ T; Y ], [ yeeted ] =>
+    Definition from_yeet (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ T; Y ], [ yeeted ] =>
         ltac:(M.monadic
           (let yeeted := M.alloc (| yeeted |) in
           M.call_closure (|
             M.get_trait_method (|
               "core::ops::try_trait::FromResidual",
               T,
-              [ Ty.apply (Ty.path "core::ops::try_trait::Yeet") [ Y ] ],
+              [ Ty.apply (Ty.path "core::ops::try_trait::Yeet") [] [ Y ] ],
               "from_residual",
               []
             |),
             [ Value.StructTuple "core::ops::try_trait::Yeet" [ M.read (| yeeted |) ] ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_from_yeet : M.IsFunction "core::ops::try_trait::from_yeet" from_yeet.
@@ -42,28 +42,29 @@ Module ops.
     
     Axiom ChangeOutputType :
       forall (T V : Ty.t),
-      (Ty.apply (Ty.path "core::ops::try_trait::ChangeOutputType") [ T; V ]) = Ty.associated.
+      (Ty.apply (Ty.path "core::ops::try_trait::ChangeOutputType") [] [ T; V ]) = Ty.associated.
     
     (* StructTuple
       {
         name := "NeverShortCircuit";
+        const_params := [];
         ty_params := [ "T" ];
         fields := [ T ];
       } *)
     
     Module Impl_core_ops_try_trait_NeverShortCircuit_T.
       Definition Self (T : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::ops::try_trait::NeverShortCircuit") [ T ].
+        Ty.apply (Ty.path "core::ops::try_trait::NeverShortCircuit") [] [ T ].
       
       (*
           pub fn wrap_mut_1<A>(mut f: impl FnMut(A) -> T) -> impl FnMut(A) -> NeverShortCircuit<T> {
               move |a| NeverShortCircuit(f(a))
           }
       *)
-      Definition wrap_mut_1 (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition wrap_mut_1 (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [ A; impl_FnMut_A__arrow_T ], [ f ] =>
+        match ε, τ, α with
+        | [], [ A; impl_FnMut_A__arrow_T ], [ f ] =>
           ltac:(M.monadic
             (let f := M.alloc (| f |) in
             M.closure
@@ -95,7 +96,7 @@ Module ops.
                     |)
                   | _ => M.impossible (||)
                   end))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_wrap_mut_1 :
@@ -107,10 +108,10 @@ Module ops.
               move |a, b| NeverShortCircuit(f(a, b))
           }
       *)
-      Definition wrap_mut_2 (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition wrap_mut_2 (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [ A; B; impl_FnMut_A__B__arrow_T ], [ f ] =>
+        match ε, τ, α with
+        | [], [ A; B; impl_FnMut_A__B__arrow_T ], [ f ] =>
           ltac:(M.monadic
             (let f := M.alloc (| f |) in
             M.closure
@@ -150,7 +151,7 @@ Module ops.
                     |)
                   | _ => M.impossible (||)
                   end))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_wrap_mut_2 :
@@ -161,6 +162,7 @@ Module ops.
     (*
     Enum NeverShortCircuitResidual
     {
+      const_params := [];
       ty_params := [];
       variants := [];
     }
@@ -168,7 +170,7 @@ Module ops.
     
     Module Impl_core_ops_try_trait_Try_for_core_ops_try_trait_NeverShortCircuit_T.
       Definition Self (T : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::ops::try_trait::NeverShortCircuit") [ T ].
+        Ty.apply (Ty.path "core::ops::try_trait::NeverShortCircuit") [] [ T ].
       
       (*     type Output = T; *)
       Definition _Output (T : Ty.t) : Ty.t := T.
@@ -182,10 +184,10 @@ Module ops.
               ControlFlow::Continue(self.0)
           }
       *)
-      Definition branch (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition branch (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -199,7 +201,7 @@ Module ops.
                   |)
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -207,14 +209,14 @@ Module ops.
               NeverShortCircuit(x)
           }
       *)
-      Definition from_output (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from_output (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ x ] =>
+        match ε, τ, α with
+        | [], [], [ x ] =>
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
             Value.StructTuple "core::ops::try_trait::NeverShortCircuit" [ M.read (| x |) ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -234,21 +236,26 @@ Module ops.
     
     Module Impl_core_ops_try_trait_FromResidual_for_core_ops_try_trait_NeverShortCircuit_T.
       Definition Self (T : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::ops::try_trait::NeverShortCircuit") [ T ].
+        Ty.apply (Ty.path "core::ops::try_trait::NeverShortCircuit") [] [ T ].
       
       (*
           fn from_residual(never: NeverShortCircuitResidual) -> Self {
               match never {}
           }
       *)
-      Definition from_residual (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from_residual
+          (T : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ never ] =>
+        match ε, τ, α with
+        | [], [], [ never ] =>
           ltac:(M.monadic
             (let never := M.alloc (| never |) in
             M.never_to_any (| M.read (| M.match_operator (| never, [] |) |) |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -266,7 +273,7 @@ Module ops.
       
       (*     type TryType = NeverShortCircuit<T>; *)
       Definition _TryType (T : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::ops::try_trait::NeverShortCircuit") [ T ].
+        Ty.apply (Ty.path "core::ops::try_trait::NeverShortCircuit") [] [ T ].
       
       Axiom Implements :
         forall (T : Ty.t),
@@ -280,18 +287,19 @@ Module ops.
     (* StructTuple
       {
         name := "Yeet";
+        const_params := [];
         ty_params := [ "T" ];
         fields := [ T ];
       } *)
     
     Module Impl_core_fmt_Debug_where_core_fmt_Debug_T_for_core_ops_try_trait_Yeet_T.
-      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::ops::try_trait::Yeet") [ T ].
+      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::ops::try_trait::Yeet") [] [ T ].
       
       (* Debug *)
-      Definition fmt (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self; f ] =>
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -315,7 +323,7 @@ Module ops.
                   |))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :

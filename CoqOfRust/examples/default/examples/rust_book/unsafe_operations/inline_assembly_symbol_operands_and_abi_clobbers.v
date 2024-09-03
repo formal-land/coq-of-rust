@@ -30,8 +30,11 @@ fn main() {
     }
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with | [], [] => ltac:(M.monadic (Value.Tuple [])) | _, _ => M.impossible end.
+Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [] => ltac:(M.monadic (Value.Tuple []))
+  | _, _, _ => M.impossible
+  end.
 
 Axiom Function_main : M.IsFunction "inline_assembly_symbol_operands_and_abi_clobbers::main" main.
 
@@ -42,9 +45,9 @@ Module main.
           arg * 2
       }
   *)
-  Definition foo (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ arg ] =>
+  Definition foo (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ arg ] =>
       ltac:(M.monadic
         (let arg := M.alloc (| arg |) in
         M.read (|
@@ -87,7 +90,7 @@ Module main.
             M.alloc (| Value.Tuple [] |) in
           M.alloc (| BinOp.Wrap.mul Integer.I32 (M.read (| arg |)) (Value.Integer 2) |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Function_foo :
@@ -113,9 +116,9 @@ Module main.
           }
       }
   *)
-  Definition call_foo (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ arg ] =>
+  Definition call_foo (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ arg ] =>
       ltac:(M.monadic
         (let arg := M.alloc (| arg |) in
         M.read (|
@@ -123,7 +126,7 @@ Module main.
           let~ _ := InlineAssembly in
           result
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Function_call_foo :

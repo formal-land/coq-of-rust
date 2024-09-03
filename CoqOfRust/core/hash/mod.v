@@ -4,9 +4,9 @@ Require Import CoqOfRust.CoqOfRust.
 Module hash.
   (* Trait *)
   Module Hash.
-    Definition hash_slice (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ H ], [ data; state ] =>
+    Definition hash_slice (Self : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ H ], [ data; state ] =>
         ltac:(M.monadic
           (let data := M.alloc (| data |) in
           let state := M.alloc (| state |) in
@@ -17,7 +17,7 @@ Module hash.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::iter::traits::collect::IntoIterator",
-                      Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "slice") [ Self ] ],
+                      Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Self ] ],
                       [],
                       "into_iter",
                       []
@@ -37,7 +37,7 @@ Module hash.
                                 M.call_closure (|
                                   M.get_trait_method (|
                                     "core::iter::traits::iterator::Iterator",
-                                    Ty.apply (Ty.path "core::slice::iter::Iter") [ Self ],
+                                    Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Self ],
                                     [],
                                     "next",
                                     []
@@ -79,7 +79,7 @@ Module hash.
                 ]
               |))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom ProvidedMethod_hash_slice : M.IsProvidedMethod "core::hash::Hash" "hash_slice" hash_slice.
@@ -87,9 +87,9 @@ Module hash.
   
   (* Trait *)
   Module Hasher.
-    Definition write_u8 (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; i ] =>
+    Definition write_u8 (Self : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; i ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let i := M.alloc (| i |) in
@@ -100,13 +100,13 @@ Module hash.
               (* Unsize *) M.pointer_coercion (M.alloc (| Value.Array [ M.read (| i |) ] |))
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom ProvidedMethod_write_u8 : M.IsProvidedMethod "core::hash::Hasher" "write_u8" write_u8.
-    Definition write_u16 (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; i ] =>
+    Definition write_u16 (Self : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; i ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let i := M.alloc (| i |) in
@@ -124,13 +124,13 @@ Module hash.
                 |))
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom ProvidedMethod_write_u16 : M.IsProvidedMethod "core::hash::Hasher" "write_u16" write_u16.
-    Definition write_u32 (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; i ] =>
+    Definition write_u32 (Self : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; i ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let i := M.alloc (| i |) in
@@ -148,13 +148,13 @@ Module hash.
                 |))
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom ProvidedMethod_write_u32 : M.IsProvidedMethod "core::hash::Hasher" "write_u32" write_u32.
-    Definition write_u64 (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; i ] =>
+    Definition write_u64 (Self : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; i ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let i := M.alloc (| i |) in
@@ -172,13 +172,13 @@ Module hash.
                 |))
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom ProvidedMethod_write_u64 : M.IsProvidedMethod "core::hash::Hasher" "write_u64" write_u64.
-    Definition write_u128 (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; i ] =>
+    Definition write_u128 (Self : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; i ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let i := M.alloc (| i |) in
@@ -196,14 +196,19 @@ Module hash.
                 |))
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom ProvidedMethod_write_u128 :
       M.IsProvidedMethod "core::hash::Hasher" "write_u128" write_u128.
-    Definition write_usize (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; i ] =>
+    Definition write_usize
+        (Self : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      match ε, τ, α with
+      | [], [], [ self; i ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let i := M.alloc (| i |) in
@@ -221,14 +226,14 @@ Module hash.
                 |))
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom ProvidedMethod_write_usize :
       M.IsProvidedMethod "core::hash::Hasher" "write_usize" write_usize.
-    Definition write_i8 (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; i ] =>
+    Definition write_i8 (Self : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; i ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let i := M.alloc (| i |) in
@@ -236,13 +241,13 @@ Module hash.
             M.get_trait_method (| "core::hash::Hasher", Self, [], "write_u8", [] |),
             [ M.read (| self |); M.rust_cast (M.read (| i |)) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom ProvidedMethod_write_i8 : M.IsProvidedMethod "core::hash::Hasher" "write_i8" write_i8.
-    Definition write_i16 (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; i ] =>
+    Definition write_i16 (Self : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; i ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let i := M.alloc (| i |) in
@@ -250,13 +255,13 @@ Module hash.
             M.get_trait_method (| "core::hash::Hasher", Self, [], "write_u16", [] |),
             [ M.read (| self |); M.rust_cast (M.read (| i |)) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom ProvidedMethod_write_i16 : M.IsProvidedMethod "core::hash::Hasher" "write_i16" write_i16.
-    Definition write_i32 (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; i ] =>
+    Definition write_i32 (Self : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; i ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let i := M.alloc (| i |) in
@@ -264,13 +269,13 @@ Module hash.
             M.get_trait_method (| "core::hash::Hasher", Self, [], "write_u32", [] |),
             [ M.read (| self |); M.rust_cast (M.read (| i |)) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom ProvidedMethod_write_i32 : M.IsProvidedMethod "core::hash::Hasher" "write_i32" write_i32.
-    Definition write_i64 (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; i ] =>
+    Definition write_i64 (Self : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; i ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let i := M.alloc (| i |) in
@@ -278,13 +283,13 @@ Module hash.
             M.get_trait_method (| "core::hash::Hasher", Self, [], "write_u64", [] |),
             [ M.read (| self |); M.rust_cast (M.read (| i |)) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom ProvidedMethod_write_i64 : M.IsProvidedMethod "core::hash::Hasher" "write_i64" write_i64.
-    Definition write_i128 (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; i ] =>
+    Definition write_i128 (Self : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; i ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let i := M.alloc (| i |) in
@@ -292,14 +297,19 @@ Module hash.
             M.get_trait_method (| "core::hash::Hasher", Self, [], "write_u128", [] |),
             [ M.read (| self |); M.rust_cast (M.read (| i |)) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom ProvidedMethod_write_i128 :
       M.IsProvidedMethod "core::hash::Hasher" "write_i128" write_i128.
-    Definition write_isize (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; i ] =>
+    Definition write_isize
+        (Self : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      match ε, τ, α with
+      | [], [], [ self; i ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let i := M.alloc (| i |) in
@@ -307,14 +317,19 @@ Module hash.
             M.get_trait_method (| "core::hash::Hasher", Self, [], "write_usize", [] |),
             [ M.read (| self |); M.rust_cast (M.read (| i |)) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom ProvidedMethod_write_isize :
       M.IsProvidedMethod "core::hash::Hasher" "write_isize" write_isize.
-    Definition write_length_prefix (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; len ] =>
+    Definition write_length_prefix
+        (Self : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      match ε, τ, α with
+      | [], [], [ self; len ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let len := M.alloc (| len |) in
@@ -328,14 +343,14 @@ Module hash.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom ProvidedMethod_write_length_prefix :
       M.IsProvidedMethod "core::hash::Hasher" "write_length_prefix" write_length_prefix.
-    Definition write_str (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; s ] =>
+    Definition write_str (Self : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; s ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let s := M.alloc (| s |) in
@@ -362,31 +377,31 @@ Module hash.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom ProvidedMethod_write_str : M.IsProvidedMethod "core::hash::Hasher" "write_str" write_str.
   End Hasher.
   
   Module Impl_core_hash_Hasher_where_core_hash_Hasher_H_where_core_marker_Sized_H_for_ref_mut_H.
-    Definition Self (H : Ty.t) : Ty.t := Ty.apply (Ty.path "&mut") [ H ].
+    Definition Self (H : Ty.t) : Ty.t := Ty.apply (Ty.path "&mut") [] [ H ].
     
     (*
         fn finish(&self) -> u64 {
             ( **self).finish()
         }
     *)
-    Definition finish (H : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition finish (H : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self H in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
             M.get_trait_method (| "core::hash::Hasher", H, [], "finish", [] |),
             [ M.read (| M.read (| self |) |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     (*
@@ -394,10 +409,10 @@ Module hash.
             ( **self).write(bytes)
         }
     *)
-    Definition write (H : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition write (H : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self H in
-      match τ, α with
-      | [], [ self; bytes ] =>
+      match ε, τ, α with
+      | [], [], [ self; bytes ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let bytes := M.alloc (| bytes |) in
@@ -405,7 +420,7 @@ Module hash.
             M.get_trait_method (| "core::hash::Hasher", H, [], "write", [] |),
             [ M.read (| M.read (| self |) |); M.read (| bytes |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     (*
@@ -413,10 +428,10 @@ Module hash.
             ( **self).write_u8(i)
         }
     *)
-    Definition write_u8 (H : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition write_u8 (H : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self H in
-      match τ, α with
-      | [], [ self; i ] =>
+      match ε, τ, α with
+      | [], [], [ self; i ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let i := M.alloc (| i |) in
@@ -424,7 +439,7 @@ Module hash.
             M.get_trait_method (| "core::hash::Hasher", H, [], "write_u8", [] |),
             [ M.read (| M.read (| self |) |); M.read (| i |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     (*
@@ -432,10 +447,10 @@ Module hash.
             ( **self).write_u16(i)
         }
     *)
-    Definition write_u16 (H : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition write_u16 (H : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self H in
-      match τ, α with
-      | [], [ self; i ] =>
+      match ε, τ, α with
+      | [], [], [ self; i ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let i := M.alloc (| i |) in
@@ -443,7 +458,7 @@ Module hash.
             M.get_trait_method (| "core::hash::Hasher", H, [], "write_u16", [] |),
             [ M.read (| M.read (| self |) |); M.read (| i |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     (*
@@ -451,10 +466,10 @@ Module hash.
             ( **self).write_u32(i)
         }
     *)
-    Definition write_u32 (H : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition write_u32 (H : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self H in
-      match τ, α with
-      | [], [ self; i ] =>
+      match ε, τ, α with
+      | [], [], [ self; i ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let i := M.alloc (| i |) in
@@ -462,7 +477,7 @@ Module hash.
             M.get_trait_method (| "core::hash::Hasher", H, [], "write_u32", [] |),
             [ M.read (| M.read (| self |) |); M.read (| i |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     (*
@@ -470,10 +485,10 @@ Module hash.
             ( **self).write_u64(i)
         }
     *)
-    Definition write_u64 (H : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition write_u64 (H : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self H in
-      match τ, α with
-      | [], [ self; i ] =>
+      match ε, τ, α with
+      | [], [], [ self; i ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let i := M.alloc (| i |) in
@@ -481,7 +496,7 @@ Module hash.
             M.get_trait_method (| "core::hash::Hasher", H, [], "write_u64", [] |),
             [ M.read (| M.read (| self |) |); M.read (| i |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     (*
@@ -489,10 +504,10 @@ Module hash.
             ( **self).write_u128(i)
         }
     *)
-    Definition write_u128 (H : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition write_u128 (H : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self H in
-      match τ, α with
-      | [], [ self; i ] =>
+      match ε, τ, α with
+      | [], [], [ self; i ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let i := M.alloc (| i |) in
@@ -500,7 +515,7 @@ Module hash.
             M.get_trait_method (| "core::hash::Hasher", H, [], "write_u128", [] |),
             [ M.read (| M.read (| self |) |); M.read (| i |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     (*
@@ -508,10 +523,10 @@ Module hash.
             ( **self).write_usize(i)
         }
     *)
-    Definition write_usize (H : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition write_usize (H : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self H in
-      match τ, α with
-      | [], [ self; i ] =>
+      match ε, τ, α with
+      | [], [], [ self; i ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let i := M.alloc (| i |) in
@@ -519,7 +534,7 @@ Module hash.
             M.get_trait_method (| "core::hash::Hasher", H, [], "write_usize", [] |),
             [ M.read (| M.read (| self |) |); M.read (| i |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     (*
@@ -527,10 +542,10 @@ Module hash.
             ( **self).write_i8(i)
         }
     *)
-    Definition write_i8 (H : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition write_i8 (H : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self H in
-      match τ, α with
-      | [], [ self; i ] =>
+      match ε, τ, α with
+      | [], [], [ self; i ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let i := M.alloc (| i |) in
@@ -538,7 +553,7 @@ Module hash.
             M.get_trait_method (| "core::hash::Hasher", H, [], "write_i8", [] |),
             [ M.read (| M.read (| self |) |); M.read (| i |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     (*
@@ -546,10 +561,10 @@ Module hash.
             ( **self).write_i16(i)
         }
     *)
-    Definition write_i16 (H : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition write_i16 (H : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self H in
-      match τ, α with
-      | [], [ self; i ] =>
+      match ε, τ, α with
+      | [], [], [ self; i ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let i := M.alloc (| i |) in
@@ -557,7 +572,7 @@ Module hash.
             M.get_trait_method (| "core::hash::Hasher", H, [], "write_i16", [] |),
             [ M.read (| M.read (| self |) |); M.read (| i |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     (*
@@ -565,10 +580,10 @@ Module hash.
             ( **self).write_i32(i)
         }
     *)
-    Definition write_i32 (H : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition write_i32 (H : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self H in
-      match τ, α with
-      | [], [ self; i ] =>
+      match ε, τ, α with
+      | [], [], [ self; i ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let i := M.alloc (| i |) in
@@ -576,7 +591,7 @@ Module hash.
             M.get_trait_method (| "core::hash::Hasher", H, [], "write_i32", [] |),
             [ M.read (| M.read (| self |) |); M.read (| i |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     (*
@@ -584,10 +599,10 @@ Module hash.
             ( **self).write_i64(i)
         }
     *)
-    Definition write_i64 (H : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition write_i64 (H : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self H in
-      match τ, α with
-      | [], [ self; i ] =>
+      match ε, τ, α with
+      | [], [], [ self; i ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let i := M.alloc (| i |) in
@@ -595,7 +610,7 @@ Module hash.
             M.get_trait_method (| "core::hash::Hasher", H, [], "write_i64", [] |),
             [ M.read (| M.read (| self |) |); M.read (| i |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     (*
@@ -603,10 +618,10 @@ Module hash.
             ( **self).write_i128(i)
         }
     *)
-    Definition write_i128 (H : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition write_i128 (H : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self H in
-      match τ, α with
-      | [], [ self; i ] =>
+      match ε, τ, α with
+      | [], [], [ self; i ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let i := M.alloc (| i |) in
@@ -614,7 +629,7 @@ Module hash.
             M.get_trait_method (| "core::hash::Hasher", H, [], "write_i128", [] |),
             [ M.read (| M.read (| self |) |); M.read (| i |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     (*
@@ -622,10 +637,10 @@ Module hash.
             ( **self).write_isize(i)
         }
     *)
-    Definition write_isize (H : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition write_isize (H : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self H in
-      match τ, α with
-      | [], [ self; i ] =>
+      match ε, τ, α with
+      | [], [], [ self; i ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let i := M.alloc (| i |) in
@@ -633,7 +648,7 @@ Module hash.
             M.get_trait_method (| "core::hash::Hasher", H, [], "write_isize", [] |),
             [ M.read (| M.read (| self |) |); M.read (| i |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     (*
@@ -641,10 +656,15 @@ Module hash.
             ( **self).write_length_prefix(len)
         }
     *)
-    Definition write_length_prefix (H : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition write_length_prefix
+        (H : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
       let Self : Ty.t := Self H in
-      match τ, α with
-      | [], [ self; len ] =>
+      match ε, τ, α with
+      | [], [], [ self; len ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let len := M.alloc (| len |) in
@@ -652,7 +672,7 @@ Module hash.
             M.get_trait_method (| "core::hash::Hasher", H, [], "write_length_prefix", [] |),
             [ M.read (| M.read (| self |) |); M.read (| len |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     (*
@@ -660,10 +680,10 @@ Module hash.
             ( **self).write_str(s)
         }
     *)
-    Definition write_str (H : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition write_str (H : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self H in
-      match τ, α with
-      | [], [ self; s ] =>
+      match ε, τ, α with
+      | [], [], [ self; s ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let s := M.alloc (| s |) in
@@ -671,7 +691,7 @@ Module hash.
             M.get_trait_method (| "core::hash::Hasher", H, [], "write_str", [] |),
             [ M.read (| M.read (| self |) |); M.read (| s |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -703,9 +723,9 @@ Module hash.
   
   (* Trait *)
   Module BuildHasher.
-    Definition hash_one (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ T ], [ self; x ] =>
+    Definition hash_one (Self : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ T ], [ self; x ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let x := M.alloc (| x |) in
@@ -731,7 +751,7 @@ Module hash.
               |)
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom ProvidedMethod_hash_one :
@@ -741,22 +761,24 @@ Module hash.
   (* StructTuple
     {
       name := "BuildHasherDefault";
+      const_params := [];
       ty_params := [ "H" ];
-      fields := [ Ty.apply (Ty.path "core::marker::PhantomData") [ Ty.function [] H ] ];
+      fields := [ Ty.apply (Ty.path "core::marker::PhantomData") [] [ Ty.function [] H ] ];
     } *)
   
   Module Impl_core_fmt_Debug_for_core_hash_BuildHasherDefault_H.
-    Definition Self (H : Ty.t) : Ty.t := Ty.apply (Ty.path "core::hash::BuildHasherDefault") [ H ].
+    Definition Self (H : Ty.t) : Ty.t :=
+      Ty.apply (Ty.path "core::hash::BuildHasherDefault") [] [ H ].
     
     (*
         fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
             f.debug_struct("BuildHasherDefault").finish()
         }
     *)
-    Definition fmt (H : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition fmt (H : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self H in
-      match τ, α with
-      | [], [ self; f ] =>
+      match ε, τ, α with
+      | [], [], [ self; f ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
@@ -779,7 +801,7 @@ Module hash.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -792,7 +814,8 @@ Module hash.
   End Impl_core_fmt_Debug_for_core_hash_BuildHasherDefault_H.
   
   Module Impl_core_hash_BuildHasher_where_core_default_Default_H_where_core_hash_Hasher_H_for_core_hash_BuildHasherDefault_H.
-    Definition Self (H : Ty.t) : Ty.t := Ty.apply (Ty.path "core::hash::BuildHasherDefault") [ H ].
+    Definition Self (H : Ty.t) : Ty.t :=
+      Ty.apply (Ty.path "core::hash::BuildHasherDefault") [] [ H ].
     
     (*     type Hasher = H; *)
     Definition _Hasher (H : Ty.t) : Ty.t := H.
@@ -802,17 +825,17 @@ Module hash.
             H::default()
         }
     *)
-    Definition build_hasher (H : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition build_hasher (H : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self H in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
             M.get_trait_method (| "core::default::Default", H, [], "default", [] |),
             []
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -829,23 +852,24 @@ Module hash.
   End Impl_core_hash_BuildHasher_where_core_default_Default_H_where_core_hash_Hasher_H_for_core_hash_BuildHasherDefault_H.
   
   Module Impl_core_clone_Clone_for_core_hash_BuildHasherDefault_H.
-    Definition Self (H : Ty.t) : Ty.t := Ty.apply (Ty.path "core::hash::BuildHasherDefault") [ H ].
+    Definition Self (H : Ty.t) : Ty.t :=
+      Ty.apply (Ty.path "core::hash::BuildHasherDefault") [] [ H ].
     
     (*
         fn clone(&self) -> BuildHasherDefault<H> {
             BuildHasherDefault(marker::PhantomData)
         }
     *)
-    Definition clone (H : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition clone (H : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self H in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           Value.StructTuple
             "core::hash::BuildHasherDefault"
             [ Value.StructTuple "core::marker::PhantomData" [] ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -858,22 +882,23 @@ Module hash.
   End Impl_core_clone_Clone_for_core_hash_BuildHasherDefault_H.
   
   Module Impl_core_default_Default_for_core_hash_BuildHasherDefault_H.
-    Definition Self (H : Ty.t) : Ty.t := Ty.apply (Ty.path "core::hash::BuildHasherDefault") [ H ].
+    Definition Self (H : Ty.t) : Ty.t :=
+      Ty.apply (Ty.path "core::hash::BuildHasherDefault") [] [ H ].
     
     (*
         fn default() -> BuildHasherDefault<H> {
             BuildHasherDefault(marker::PhantomData)
         }
     *)
-    Definition default (H : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition default (H : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self H in
-      match τ, α with
-      | [], [] =>
+      match ε, τ, α with
+      | [], [], [] =>
         ltac:(M.monadic
           (Value.StructTuple
             "core::hash::BuildHasherDefault"
             [ Value.StructTuple "core::marker::PhantomData" [] ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -886,22 +911,23 @@ Module hash.
   End Impl_core_default_Default_for_core_hash_BuildHasherDefault_H.
   
   Module Impl_core_cmp_PartialEq_for_core_hash_BuildHasherDefault_H.
-    Definition Self (H : Ty.t) : Ty.t := Ty.apply (Ty.path "core::hash::BuildHasherDefault") [ H ].
+    Definition Self (H : Ty.t) : Ty.t :=
+      Ty.apply (Ty.path "core::hash::BuildHasherDefault") [] [ H ].
     
     (*
         fn eq(&self, _other: &BuildHasherDefault<H>) -> bool {
             true
         }
     *)
-    Definition eq (H : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition eq (H : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self H in
-      match τ, α with
-      | [], [ self; _other ] =>
+      match ε, τ, α with
+      | [], [], [ self; _other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let _other := M.alloc (| _other |) in
           Value.Bool true))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -914,7 +940,8 @@ Module hash.
   End Impl_core_cmp_PartialEq_for_core_hash_BuildHasherDefault_H.
   
   Module Impl_core_cmp_Eq_for_core_hash_BuildHasherDefault_H.
-    Definition Self (H : Ty.t) : Ty.t := Ty.apply (Ty.path "core::hash::BuildHasherDefault") [ H ].
+    Definition Self (H : Ty.t) : Ty.t :=
+      Ty.apply (Ty.path "core::hash::BuildHasherDefault") [] [ H ].
     
     Axiom Implements :
       forall (H : Ty.t),
@@ -930,9 +957,9 @@ Module hash.
                           state.$meth( *self)
                       }
       *)
-      Definition hash (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ H ], [ self; state ] =>
+      Definition hash (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ H ], [ self; state ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
@@ -940,7 +967,7 @@ Module hash.
               M.get_trait_method (| "core::hash::Hasher", H, [], "write_u8", [] |),
               [ M.read (| state |); M.read (| M.read (| self |) |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -954,9 +981,9 @@ Module hash.
                           state.write(unsafe { slice::from_raw_parts(ptr, newlen) })
                       }
       *)
-      Definition hash_slice (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ H ], [ data; state ] =>
+      Definition hash_slice (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ H ], [ data; state ] =>
           ltac:(M.monadic
             (let data := M.alloc (| data |) in
             let state := M.alloc (| state |) in
@@ -966,7 +993,7 @@ Module hash.
                   M.call_closure (|
                     M.get_function (|
                       "core::mem::size_of_val",
-                      [ Ty.apply (Ty.path "slice") [ Ty.path "u8" ] ]
+                      [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
                     |),
                     [ M.read (| data |) ]
                   |)
@@ -976,7 +1003,7 @@ Module hash.
                   M.rust_cast
                     (M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                        Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                         "as_ptr",
                         []
                       |),
@@ -996,7 +1023,7 @@ Module hash.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1016,9 +1043,9 @@ Module hash.
                           state.$meth( *self)
                       }
       *)
-      Definition hash (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ H ], [ self; state ] =>
+      Definition hash (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ H ], [ self; state ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
@@ -1026,7 +1053,7 @@ Module hash.
               M.get_trait_method (| "core::hash::Hasher", H, [], "write_u16", [] |),
               [ M.read (| state |); M.read (| M.read (| self |) |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -1040,9 +1067,9 @@ Module hash.
                           state.write(unsafe { slice::from_raw_parts(ptr, newlen) })
                       }
       *)
-      Definition hash_slice (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ H ], [ data; state ] =>
+      Definition hash_slice (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ H ], [ data; state ] =>
           ltac:(M.monadic
             (let data := M.alloc (| data |) in
             let state := M.alloc (| state |) in
@@ -1052,7 +1079,7 @@ Module hash.
                   M.call_closure (|
                     M.get_function (|
                       "core::mem::size_of_val",
-                      [ Ty.apply (Ty.path "slice") [ Ty.path "u16" ] ]
+                      [ Ty.apply (Ty.path "slice") [] [ Ty.path "u16" ] ]
                     |),
                     [ M.read (| data |) ]
                   |)
@@ -1062,7 +1089,7 @@ Module hash.
                   M.rust_cast
                     (M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "slice") [ Ty.path "u16" ],
+                        Ty.apply (Ty.path "slice") [] [ Ty.path "u16" ],
                         "as_ptr",
                         []
                       |),
@@ -1082,7 +1109,7 @@ Module hash.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1102,9 +1129,9 @@ Module hash.
                           state.$meth( *self)
                       }
       *)
-      Definition hash (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ H ], [ self; state ] =>
+      Definition hash (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ H ], [ self; state ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
@@ -1112,7 +1139,7 @@ Module hash.
               M.get_trait_method (| "core::hash::Hasher", H, [], "write_u32", [] |),
               [ M.read (| state |); M.read (| M.read (| self |) |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -1126,9 +1153,9 @@ Module hash.
                           state.write(unsafe { slice::from_raw_parts(ptr, newlen) })
                       }
       *)
-      Definition hash_slice (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ H ], [ data; state ] =>
+      Definition hash_slice (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ H ], [ data; state ] =>
           ltac:(M.monadic
             (let data := M.alloc (| data |) in
             let state := M.alloc (| state |) in
@@ -1138,7 +1165,7 @@ Module hash.
                   M.call_closure (|
                     M.get_function (|
                       "core::mem::size_of_val",
-                      [ Ty.apply (Ty.path "slice") [ Ty.path "u32" ] ]
+                      [ Ty.apply (Ty.path "slice") [] [ Ty.path "u32" ] ]
                     |),
                     [ M.read (| data |) ]
                   |)
@@ -1148,7 +1175,7 @@ Module hash.
                   M.rust_cast
                     (M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "slice") [ Ty.path "u32" ],
+                        Ty.apply (Ty.path "slice") [] [ Ty.path "u32" ],
                         "as_ptr",
                         []
                       |),
@@ -1168,7 +1195,7 @@ Module hash.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1188,9 +1215,9 @@ Module hash.
                           state.$meth( *self)
                       }
       *)
-      Definition hash (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ H ], [ self; state ] =>
+      Definition hash (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ H ], [ self; state ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
@@ -1198,7 +1225,7 @@ Module hash.
               M.get_trait_method (| "core::hash::Hasher", H, [], "write_u64", [] |),
               [ M.read (| state |); M.read (| M.read (| self |) |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -1212,9 +1239,9 @@ Module hash.
                           state.write(unsafe { slice::from_raw_parts(ptr, newlen) })
                       }
       *)
-      Definition hash_slice (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ H ], [ data; state ] =>
+      Definition hash_slice (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ H ], [ data; state ] =>
           ltac:(M.monadic
             (let data := M.alloc (| data |) in
             let state := M.alloc (| state |) in
@@ -1224,7 +1251,7 @@ Module hash.
                   M.call_closure (|
                     M.get_function (|
                       "core::mem::size_of_val",
-                      [ Ty.apply (Ty.path "slice") [ Ty.path "u64" ] ]
+                      [ Ty.apply (Ty.path "slice") [] [ Ty.path "u64" ] ]
                     |),
                     [ M.read (| data |) ]
                   |)
@@ -1234,7 +1261,7 @@ Module hash.
                   M.rust_cast
                     (M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "slice") [ Ty.path "u64" ],
+                        Ty.apply (Ty.path "slice") [] [ Ty.path "u64" ],
                         "as_ptr",
                         []
                       |),
@@ -1254,7 +1281,7 @@ Module hash.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1274,9 +1301,9 @@ Module hash.
                           state.$meth( *self)
                       }
       *)
-      Definition hash (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ H ], [ self; state ] =>
+      Definition hash (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ H ], [ self; state ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
@@ -1284,7 +1311,7 @@ Module hash.
               M.get_trait_method (| "core::hash::Hasher", H, [], "write_usize", [] |),
               [ M.read (| state |); M.read (| M.read (| self |) |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -1298,9 +1325,9 @@ Module hash.
                           state.write(unsafe { slice::from_raw_parts(ptr, newlen) })
                       }
       *)
-      Definition hash_slice (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ H ], [ data; state ] =>
+      Definition hash_slice (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ H ], [ data; state ] =>
           ltac:(M.monadic
             (let data := M.alloc (| data |) in
             let state := M.alloc (| state |) in
@@ -1310,7 +1337,7 @@ Module hash.
                   M.call_closure (|
                     M.get_function (|
                       "core::mem::size_of_val",
-                      [ Ty.apply (Ty.path "slice") [ Ty.path "usize" ] ]
+                      [ Ty.apply (Ty.path "slice") [] [ Ty.path "usize" ] ]
                     |),
                     [ M.read (| data |) ]
                   |)
@@ -1320,7 +1347,7 @@ Module hash.
                   M.rust_cast
                     (M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "slice") [ Ty.path "usize" ],
+                        Ty.apply (Ty.path "slice") [] [ Ty.path "usize" ],
                         "as_ptr",
                         []
                       |),
@@ -1340,7 +1367,7 @@ Module hash.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1360,9 +1387,9 @@ Module hash.
                           state.$meth( *self)
                       }
       *)
-      Definition hash (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ H ], [ self; state ] =>
+      Definition hash (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ H ], [ self; state ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
@@ -1370,7 +1397,7 @@ Module hash.
               M.get_trait_method (| "core::hash::Hasher", H, [], "write_i8", [] |),
               [ M.read (| state |); M.read (| M.read (| self |) |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -1384,9 +1411,9 @@ Module hash.
                           state.write(unsafe { slice::from_raw_parts(ptr, newlen) })
                       }
       *)
-      Definition hash_slice (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ H ], [ data; state ] =>
+      Definition hash_slice (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ H ], [ data; state ] =>
           ltac:(M.monadic
             (let data := M.alloc (| data |) in
             let state := M.alloc (| state |) in
@@ -1396,7 +1423,7 @@ Module hash.
                   M.call_closure (|
                     M.get_function (|
                       "core::mem::size_of_val",
-                      [ Ty.apply (Ty.path "slice") [ Ty.path "i8" ] ]
+                      [ Ty.apply (Ty.path "slice") [] [ Ty.path "i8" ] ]
                     |),
                     [ M.read (| data |) ]
                   |)
@@ -1406,7 +1433,7 @@ Module hash.
                   M.rust_cast
                     (M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "slice") [ Ty.path "i8" ],
+                        Ty.apply (Ty.path "slice") [] [ Ty.path "i8" ],
                         "as_ptr",
                         []
                       |),
@@ -1426,7 +1453,7 @@ Module hash.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1446,9 +1473,9 @@ Module hash.
                           state.$meth( *self)
                       }
       *)
-      Definition hash (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ H ], [ self; state ] =>
+      Definition hash (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ H ], [ self; state ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
@@ -1456,7 +1483,7 @@ Module hash.
               M.get_trait_method (| "core::hash::Hasher", H, [], "write_i16", [] |),
               [ M.read (| state |); M.read (| M.read (| self |) |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -1470,9 +1497,9 @@ Module hash.
                           state.write(unsafe { slice::from_raw_parts(ptr, newlen) })
                       }
       *)
-      Definition hash_slice (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ H ], [ data; state ] =>
+      Definition hash_slice (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ H ], [ data; state ] =>
           ltac:(M.monadic
             (let data := M.alloc (| data |) in
             let state := M.alloc (| state |) in
@@ -1482,7 +1509,7 @@ Module hash.
                   M.call_closure (|
                     M.get_function (|
                       "core::mem::size_of_val",
-                      [ Ty.apply (Ty.path "slice") [ Ty.path "i16" ] ]
+                      [ Ty.apply (Ty.path "slice") [] [ Ty.path "i16" ] ]
                     |),
                     [ M.read (| data |) ]
                   |)
@@ -1492,7 +1519,7 @@ Module hash.
                   M.rust_cast
                     (M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "slice") [ Ty.path "i16" ],
+                        Ty.apply (Ty.path "slice") [] [ Ty.path "i16" ],
                         "as_ptr",
                         []
                       |),
@@ -1512,7 +1539,7 @@ Module hash.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1532,9 +1559,9 @@ Module hash.
                           state.$meth( *self)
                       }
       *)
-      Definition hash (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ H ], [ self; state ] =>
+      Definition hash (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ H ], [ self; state ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
@@ -1542,7 +1569,7 @@ Module hash.
               M.get_trait_method (| "core::hash::Hasher", H, [], "write_i32", [] |),
               [ M.read (| state |); M.read (| M.read (| self |) |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -1556,9 +1583,9 @@ Module hash.
                           state.write(unsafe { slice::from_raw_parts(ptr, newlen) })
                       }
       *)
-      Definition hash_slice (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ H ], [ data; state ] =>
+      Definition hash_slice (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ H ], [ data; state ] =>
           ltac:(M.monadic
             (let data := M.alloc (| data |) in
             let state := M.alloc (| state |) in
@@ -1568,7 +1595,7 @@ Module hash.
                   M.call_closure (|
                     M.get_function (|
                       "core::mem::size_of_val",
-                      [ Ty.apply (Ty.path "slice") [ Ty.path "i32" ] ]
+                      [ Ty.apply (Ty.path "slice") [] [ Ty.path "i32" ] ]
                     |),
                     [ M.read (| data |) ]
                   |)
@@ -1578,7 +1605,7 @@ Module hash.
                   M.rust_cast
                     (M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "slice") [ Ty.path "i32" ],
+                        Ty.apply (Ty.path "slice") [] [ Ty.path "i32" ],
                         "as_ptr",
                         []
                       |),
@@ -1598,7 +1625,7 @@ Module hash.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1618,9 +1645,9 @@ Module hash.
                           state.$meth( *self)
                       }
       *)
-      Definition hash (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ H ], [ self; state ] =>
+      Definition hash (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ H ], [ self; state ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
@@ -1628,7 +1655,7 @@ Module hash.
               M.get_trait_method (| "core::hash::Hasher", H, [], "write_i64", [] |),
               [ M.read (| state |); M.read (| M.read (| self |) |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -1642,9 +1669,9 @@ Module hash.
                           state.write(unsafe { slice::from_raw_parts(ptr, newlen) })
                       }
       *)
-      Definition hash_slice (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ H ], [ data; state ] =>
+      Definition hash_slice (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ H ], [ data; state ] =>
           ltac:(M.monadic
             (let data := M.alloc (| data |) in
             let state := M.alloc (| state |) in
@@ -1654,7 +1681,7 @@ Module hash.
                   M.call_closure (|
                     M.get_function (|
                       "core::mem::size_of_val",
-                      [ Ty.apply (Ty.path "slice") [ Ty.path "i64" ] ]
+                      [ Ty.apply (Ty.path "slice") [] [ Ty.path "i64" ] ]
                     |),
                     [ M.read (| data |) ]
                   |)
@@ -1664,7 +1691,7 @@ Module hash.
                   M.rust_cast
                     (M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "slice") [ Ty.path "i64" ],
+                        Ty.apply (Ty.path "slice") [] [ Ty.path "i64" ],
                         "as_ptr",
                         []
                       |),
@@ -1684,7 +1711,7 @@ Module hash.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1704,9 +1731,9 @@ Module hash.
                           state.$meth( *self)
                       }
       *)
-      Definition hash (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ H ], [ self; state ] =>
+      Definition hash (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ H ], [ self; state ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
@@ -1714,7 +1741,7 @@ Module hash.
               M.get_trait_method (| "core::hash::Hasher", H, [], "write_isize", [] |),
               [ M.read (| state |); M.read (| M.read (| self |) |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -1728,9 +1755,9 @@ Module hash.
                           state.write(unsafe { slice::from_raw_parts(ptr, newlen) })
                       }
       *)
-      Definition hash_slice (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ H ], [ data; state ] =>
+      Definition hash_slice (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ H ], [ data; state ] =>
           ltac:(M.monadic
             (let data := M.alloc (| data |) in
             let state := M.alloc (| state |) in
@@ -1740,7 +1767,7 @@ Module hash.
                   M.call_closure (|
                     M.get_function (|
                       "core::mem::size_of_val",
-                      [ Ty.apply (Ty.path "slice") [ Ty.path "isize" ] ]
+                      [ Ty.apply (Ty.path "slice") [] [ Ty.path "isize" ] ]
                     |),
                     [ M.read (| data |) ]
                   |)
@@ -1750,7 +1777,7 @@ Module hash.
                   M.rust_cast
                     (M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "slice") [ Ty.path "isize" ],
+                        Ty.apply (Ty.path "slice") [] [ Ty.path "isize" ],
                         "as_ptr",
                         []
                       |),
@@ -1770,7 +1797,7 @@ Module hash.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1790,9 +1817,9 @@ Module hash.
                           state.$meth( *self)
                       }
       *)
-      Definition hash (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ H ], [ self; state ] =>
+      Definition hash (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ H ], [ self; state ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
@@ -1800,7 +1827,7 @@ Module hash.
               M.get_trait_method (| "core::hash::Hasher", H, [], "write_u128", [] |),
               [ M.read (| state |); M.read (| M.read (| self |) |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -1814,9 +1841,9 @@ Module hash.
                           state.write(unsafe { slice::from_raw_parts(ptr, newlen) })
                       }
       *)
-      Definition hash_slice (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ H ], [ data; state ] =>
+      Definition hash_slice (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ H ], [ data; state ] =>
           ltac:(M.monadic
             (let data := M.alloc (| data |) in
             let state := M.alloc (| state |) in
@@ -1826,7 +1853,7 @@ Module hash.
                   M.call_closure (|
                     M.get_function (|
                       "core::mem::size_of_val",
-                      [ Ty.apply (Ty.path "slice") [ Ty.path "u128" ] ]
+                      [ Ty.apply (Ty.path "slice") [] [ Ty.path "u128" ] ]
                     |),
                     [ M.read (| data |) ]
                   |)
@@ -1836,7 +1863,7 @@ Module hash.
                   M.rust_cast
                     (M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "slice") [ Ty.path "u128" ],
+                        Ty.apply (Ty.path "slice") [] [ Ty.path "u128" ],
                         "as_ptr",
                         []
                       |),
@@ -1856,7 +1883,7 @@ Module hash.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1876,9 +1903,9 @@ Module hash.
                           state.$meth( *self)
                       }
       *)
-      Definition hash (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ H ], [ self; state ] =>
+      Definition hash (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ H ], [ self; state ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
@@ -1886,7 +1913,7 @@ Module hash.
               M.get_trait_method (| "core::hash::Hasher", H, [], "write_i128", [] |),
               [ M.read (| state |); M.read (| M.read (| self |) |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -1900,9 +1927,9 @@ Module hash.
                           state.write(unsafe { slice::from_raw_parts(ptr, newlen) })
                       }
       *)
-      Definition hash_slice (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ H ], [ data; state ] =>
+      Definition hash_slice (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ H ], [ data; state ] =>
           ltac:(M.monadic
             (let data := M.alloc (| data |) in
             let state := M.alloc (| state |) in
@@ -1912,7 +1939,7 @@ Module hash.
                   M.call_closure (|
                     M.get_function (|
                       "core::mem::size_of_val",
-                      [ Ty.apply (Ty.path "slice") [ Ty.path "i128" ] ]
+                      [ Ty.apply (Ty.path "slice") [] [ Ty.path "i128" ] ]
                     |),
                     [ M.read (| data |) ]
                   |)
@@ -1922,7 +1949,7 @@ Module hash.
                   M.rust_cast
                     (M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "slice") [ Ty.path "i128" ],
+                        Ty.apply (Ty.path "slice") [] [ Ty.path "i128" ],
                         "as_ptr",
                         []
                       |),
@@ -1942,7 +1969,7 @@ Module hash.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1962,9 +1989,9 @@ Module hash.
                   state.write_u8( *self as u8)
               }
       *)
-      Definition hash (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ H ], [ self; state ] =>
+      Definition hash (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ H ], [ self; state ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
@@ -1972,7 +1999,7 @@ Module hash.
               M.get_trait_method (| "core::hash::Hasher", H, [], "write_u8", [] |),
               [ M.read (| state |); M.rust_cast (M.read (| M.read (| self |) |)) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1991,9 +2018,9 @@ Module hash.
                   state.write_u32( *self as u32)
               }
       *)
-      Definition hash (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ H ], [ self; state ] =>
+      Definition hash (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ H ], [ self; state ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
@@ -2001,7 +2028,7 @@ Module hash.
               M.get_trait_method (| "core::hash::Hasher", H, [], "write_u32", [] |),
               [ M.read (| state |); M.rust_cast (M.read (| M.read (| self |) |)) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -2020,9 +2047,9 @@ Module hash.
                   state.write_str(self);
               }
       *)
-      Definition hash (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ H ], [ self; state ] =>
+      Definition hash (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ H ], [ self; state ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
@@ -2036,7 +2063,7 @@ Module hash.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -2055,9 +2082,9 @@ Module hash.
                   *self
               }
       *)
-      Definition hash (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ H ], [ self; β1 ] =>
+      Definition hash (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ H ], [ self; β1 ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let β1 := M.alloc (| β1 |) in
@@ -2065,7 +2092,7 @@ Module hash.
               β1,
               [ fun γ => ltac:(M.monadic (M.never_to_any (| M.read (| M.read (| self |) |) |))) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -2080,14 +2107,14 @@ Module hash.
       Definition Self : Ty.t := Ty.tuple [].
       
       (*                 fn hash<H: Hasher>(&self, _state: &mut H) {} *)
-      Definition hash (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ H ], [ self; _state ] =>
+      Definition hash (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ H ], [ self; _state ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let _state := M.alloc (| _state |) in
             Value.Tuple []))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -2107,10 +2134,10 @@ Module hash.
                               $($name.hash(state);)+
                           }
       *)
-      Definition hash (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition hash (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [ _ as S ], [ self; state ] =>
+        match ε, τ, α with
+        | [], [ _ as S ], [ self; state ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
@@ -2133,7 +2160,7 @@ Module hash.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -2154,10 +2181,10 @@ Module hash.
                               $($name.hash(state);)+
                           }
       *)
-      Definition hash (T B : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition hash (T B : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T B in
-        match τ, α with
-        | [ _ as S ], [ self; state ] =>
+        match ε, τ, α with
+        | [], [ _ as S ], [ self; state ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
@@ -2189,7 +2216,7 @@ Module hash.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -2210,10 +2237,10 @@ Module hash.
                               $($name.hash(state);)+
                           }
       *)
-      Definition hash (T B C : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition hash (T B C : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T B C in
-        match τ, α with
-        | [ _ as S ], [ self; state ] =>
+        match ε, τ, α with
+        | [], [ _ as S ], [ self; state ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
@@ -2254,7 +2281,7 @@ Module hash.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -2275,10 +2302,10 @@ Module hash.
                               $($name.hash(state);)+
                           }
       *)
-      Definition hash (T B C D : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition hash (T B C D : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T B C D in
-        match τ, α with
-        | [ _ as S ], [ self; state ] =>
+        match ε, τ, α with
+        | [], [ _ as S ], [ self; state ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
@@ -2328,7 +2355,7 @@ Module hash.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -2349,10 +2376,15 @@ Module hash.
                               $($name.hash(state);)+
                           }
       *)
-      Definition hash (T B C D E : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition hash
+          (T B C D E : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T B C D E in
-        match τ, α with
-        | [ _ as S ], [ self; state ] =>
+        match ε, τ, α with
+        | [], [ _ as S ], [ self; state ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
@@ -2411,7 +2443,7 @@ Module hash.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -2432,10 +2464,15 @@ Module hash.
                               $($name.hash(state);)+
                           }
       *)
-      Definition hash (T B C D E F : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition hash
+          (T B C D E F : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T B C D E F in
-        match τ, α with
-        | [ _ as S ], [ self; state ] =>
+        match ε, τ, α with
+        | [], [ _ as S ], [ self; state ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
@@ -2503,7 +2540,7 @@ Module hash.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -2524,10 +2561,15 @@ Module hash.
                               $($name.hash(state);)+
                           }
       *)
-      Definition hash (T B C D E F G : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition hash
+          (T B C D E F G : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T B C D E F G in
-        match τ, α with
-        | [ _ as S ], [ self; state ] =>
+        match ε, τ, α with
+        | [], [ _ as S ], [ self; state ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
@@ -2604,7 +2646,7 @@ Module hash.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -2625,10 +2667,15 @@ Module hash.
                               $($name.hash(state);)+
                           }
       *)
-      Definition hash (T B C D E F G H : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition hash
+          (T B C D E F G H : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T B C D E F G H in
-        match τ, α with
-        | [ _ as S ], [ self; state ] =>
+        match ε, τ, α with
+        | [], [ _ as S ], [ self; state ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
@@ -2714,7 +2761,7 @@ Module hash.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -2735,10 +2782,15 @@ Module hash.
                               $($name.hash(state);)+
                           }
       *)
-      Definition hash (T B C D E F G H I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition hash
+          (T B C D E F G H I : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T B C D E F G H I in
-        match τ, α with
-        | [ _ as S ], [ self; state ] =>
+        match ε, τ, α with
+        | [], [ _ as S ], [ self; state ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
@@ -2833,7 +2885,7 @@ Module hash.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -2855,10 +2907,15 @@ Module hash.
                               $($name.hash(state);)+
                           }
       *)
-      Definition hash (T B C D E F G H I J : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition hash
+          (T B C D E F G H I J : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T B C D E F G H I J in
-        match τ, α with
-        | [ _ as S ], [ self; state ] =>
+        match ε, τ, α with
+        | [], [ _ as S ], [ self; state ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
@@ -2962,7 +3019,7 @@ Module hash.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -2984,10 +3041,15 @@ Module hash.
                               $($name.hash(state);)+
                           }
       *)
-      Definition hash (T B C D E F G H I J K : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition hash
+          (T B C D E F G H I J K : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T B C D E F G H I J K in
-        match τ, α with
-        | [ _ as S ], [ self; state ] =>
+        match ε, τ, α with
+        | [], [ _ as S ], [ self; state ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
@@ -3100,7 +3162,7 @@ Module hash.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -3122,10 +3184,15 @@ Module hash.
                               $($name.hash(state);)+
                           }
       *)
-      Definition hash (T B C D E F G H I J K L : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition hash
+          (T B C D E F G H I J K L : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T B C D E F G H I J K L in
-        match τ, α with
-        | [ _ as S ], [ self; state ] =>
+        match ε, τ, α with
+        | [], [ _ as S ], [ self; state ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
@@ -3247,7 +3314,7 @@ Module hash.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -3260,7 +3327,7 @@ Module hash.
     End Impl_core_hash_Hash_where_core_hash_Hash_T_where_core_hash_Hash_B_where_core_hash_Hash_C_where_core_hash_Hash_D_where_core_hash_Hash_E_where_core_hash_Hash_F_where_core_hash_Hash_G_where_core_hash_Hash_H_where_core_hash_Hash_I_where_core_hash_Hash_J_where_core_hash_Hash_K_where_core_hash_Hash_L_where_core_marker_Sized_L_for_Tuple_T_B_C_D_E_F_G_H_I_J_K_L_.
     
     Module Impl_core_hash_Hash_where_core_hash_Hash_T_for_slice_T.
-      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "slice") [ T ].
+      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "slice") [] [ T ].
       
       (*
               fn hash<H: Hasher>(&self, state: &mut H) {
@@ -3268,10 +3335,10 @@ Module hash.
                   Hash::hash_slice(self, state)
               }
       *)
-      Definition hash (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition hash (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [ H ], [ self; state ] =>
+        match ε, τ, α with
+        | [], [ H ], [ self; state ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
@@ -3283,7 +3350,11 @@ Module hash.
                     [
                       M.read (| state |);
                       M.call_closure (|
-                        M.get_associated_function (| Ty.apply (Ty.path "slice") [ T ], "len", [] |),
+                        M.get_associated_function (|
+                          Ty.apply (Ty.path "slice") [] [ T ],
+                          "len",
+                          []
+                        |),
                         [ M.read (| self |) ]
                       |)
                     ]
@@ -3296,7 +3367,7 @@ Module hash.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -3309,17 +3380,17 @@ Module hash.
     End Impl_core_hash_Hash_where_core_hash_Hash_T_for_slice_T.
     
     Module Impl_core_hash_Hash_where_core_marker_Sized_T_where_core_hash_Hash_T_for_ref__T.
-      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "&") [ T ].
+      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "&") [] [ T ].
       
       (*
               fn hash<H: Hasher>(&self, state: &mut H) {
                   ( **self).hash(state);
               }
       *)
-      Definition hash (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition hash (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [ H ], [ self; state ] =>
+        match ε, τ, α with
+        | [], [ H ], [ self; state ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
@@ -3333,7 +3404,7 @@ Module hash.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -3346,17 +3417,17 @@ Module hash.
     End Impl_core_hash_Hash_where_core_marker_Sized_T_where_core_hash_Hash_T_for_ref__T.
     
     Module Impl_core_hash_Hash_where_core_marker_Sized_T_where_core_hash_Hash_T_for_ref_mut_T.
-      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "&mut") [ T ].
+      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "&mut") [] [ T ].
       
       (*
               fn hash<H: Hasher>(&self, state: &mut H) {
                   ( **self).hash(state);
               }
       *)
-      Definition hash (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition hash (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [ H ], [ self; state ] =>
+        match ε, τ, α with
+        | [], [ H ], [ self; state ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
@@ -3370,7 +3441,7 @@ Module hash.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -3383,7 +3454,7 @@ Module hash.
     End Impl_core_hash_Hash_where_core_marker_Sized_T_where_core_hash_Hash_T_for_ref_mut_T.
     
     Module Impl_core_hash_Hash_where_core_marker_Sized_T_for_pointer_const_T.
-      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "*const") [ T ].
+      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "*const") [] [ T ].
       
       (*
               fn hash<H: Hasher>(&self, state: &mut H) {
@@ -3392,10 +3463,10 @@ Module hash.
                   metadata.hash(state);
               }
       *)
-      Definition hash (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition hash (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [ H ], [ self; state ] =>
+        match ε, τ, α with
+        | [], [ H ], [ self; state ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
@@ -3404,7 +3475,7 @@ Module hash.
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "*const") [ T ],
+                      Ty.apply (Ty.path "*const") [] [ T ],
                       "to_raw_parts",
                       []
                     |),
@@ -3426,7 +3497,7 @@ Module hash.
                               M.read (| state |);
                               M.call_closure (|
                                 M.get_associated_function (|
-                                  Ty.apply (Ty.path "*const") [ Ty.tuple [] ],
+                                  Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ],
                                   "addr",
                                   []
                                 |),
@@ -3452,7 +3523,7 @@ Module hash.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -3465,7 +3536,7 @@ Module hash.
     End Impl_core_hash_Hash_where_core_marker_Sized_T_for_pointer_const_T.
     
     Module Impl_core_hash_Hash_where_core_marker_Sized_T_for_pointer_mut_T.
-      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "*mut") [ T ].
+      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "*mut") [] [ T ].
       
       (*
               fn hash<H: Hasher>(&self, state: &mut H) {
@@ -3474,10 +3545,10 @@ Module hash.
                   metadata.hash(state);
               }
       *)
-      Definition hash (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition hash (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [ H ], [ self; state ] =>
+        match ε, τ, α with
+        | [], [ H ], [ self; state ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
@@ -3486,7 +3557,7 @@ Module hash.
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "*mut") [ T ],
+                      Ty.apply (Ty.path "*mut") [] [ T ],
                       "to_raw_parts",
                       []
                     |),
@@ -3508,7 +3579,7 @@ Module hash.
                               M.read (| state |);
                               M.call_closure (|
                                 M.get_associated_function (|
-                                  Ty.apply (Ty.path "*mut") [ Ty.tuple [] ],
+                                  Ty.apply (Ty.path "*mut") [] [ Ty.tuple [] ],
                                   "addr",
                                   []
                                 |),
@@ -3534,7 +3605,7 @@ Module hash.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :

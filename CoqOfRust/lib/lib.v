@@ -309,5 +309,8 @@ Fixpoint repeat_nat {A : Set} (times : nat) (v : A) : list A :=
   end.
 
 (** The repeat operator to create new arrays, like in `[0; 32]`. *)
-Definition repeat (v : Value.t) (times : Z) : Value.t :=
-  Value.Array (repeat_nat (Z.to_nat times) v).
+Definition repeat (v times : Value.t) : M :=
+  match times with
+  | Value.Integer times => M.pure (Value.Array (repeat_nat (Z.to_nat times) v))
+  | _ => M.impossible
+  end.

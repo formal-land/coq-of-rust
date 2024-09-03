@@ -20,9 +20,9 @@ fn main() {
     println!("shadowed in outer block: {}", shadowed_binding);
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [] =>
+Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
         let~ shadowed_binding := M.alloc (| Value.Integer 1 |) in
@@ -96,7 +96,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                   M.get_associated_function (|
                                     Ty.path "core::fmt::rt::Argument",
                                     "new_display",
-                                    [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                                   |),
                                   [ shadowed_binding ]
                                 |)
@@ -192,7 +192,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (| Value.Tuple [] |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_main : M.IsFunction "variable_shadowing::main" main.

@@ -7,21 +7,25 @@ Module db.
       (Ty.path "revm::db::in_memory_db::InMemoryDB") =
         (Ty.apply
           (Ty.path "revm::db::in_memory_db::CacheDB")
+          []
           [
             Ty.apply
               (Ty.path "revm::db::emptydb::EmptyDBTyped")
+              []
               [ Ty.path "core::convert::Infallible" ]
           ]).
     
     (* StructRecord
       {
         name := "CacheDB";
+        const_params := [];
         ty_params := [ "ExtDB" ];
         fields :=
           [
             ("accounts",
               Ty.apply
                 (Ty.path "std::collections::hash::map::HashMap")
+                []
                 [
                   Ty.path "alloy_primitives::bits::address::Address";
                   Ty.path "revm::db::in_memory_db::DbAccount";
@@ -30,26 +34,36 @@ Module db.
             ("contracts",
               Ty.apply
                 (Ty.path "std::collections::hash::map::HashMap")
+                []
                 [
-                  Ty.path "alloy_primitives::bits::fixed::FixedBytes";
+                  Ty.apply
+                    (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                    [ Value.Integer 32 ]
+                    [];
                   Ty.path "revm_primitives::bytecode::Bytecode";
                   Ty.path "std::hash::random::RandomState"
                 ]);
             ("logs",
               Ty.apply
                 (Ty.path "alloc::vec::Vec")
+                []
                 [
                   Ty.apply
                     (Ty.path "alloy_primitives::log::Log")
+                    []
                     [ Ty.path "alloy_primitives::log::LogData" ];
                   Ty.path "alloc::alloc::Global"
                 ]);
             ("block_hashes",
               Ty.apply
                 (Ty.path "std::collections::hash::map::HashMap")
+                []
                 [
-                  Ty.path "ruint::Uint";
-                  Ty.path "alloy_primitives::bits::fixed::FixedBytes";
+                  Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [];
+                  Ty.apply
+                    (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                    [ Value.Integer 32 ]
+                    [];
                   Ty.path "std::hash::random::RandomState"
                 ]);
             ("db", ExtDB)
@@ -58,13 +72,13 @@ Module db.
     
     Module Impl_core_fmt_Debug_where_core_fmt_Debug_ExtDB_for_revm_db_in_memory_db_CacheDB_ExtDB.
       Definition Self (ExtDB : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "revm::db::in_memory_db::CacheDB") [ ExtDB ].
+        Ty.apply (Ty.path "revm::db::in_memory_db::CacheDB") [] [ ExtDB ].
       
       (* Debug *)
-      Definition fmt (ExtDB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (ExtDB : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self ExtDB in
-        match τ, α with
-        | [], [ self; f ] =>
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -121,7 +135,7 @@ Module db.
                   |))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -135,13 +149,13 @@ Module db.
     
     Module Impl_core_clone_Clone_where_core_clone_Clone_ExtDB_for_revm_db_in_memory_db_CacheDB_ExtDB.
       Definition Self (ExtDB : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "revm::db::in_memory_db::CacheDB") [ ExtDB ].
+        Ty.apply (Ty.path "revm::db::in_memory_db::CacheDB") [] [ ExtDB ].
       
       (* Clone *)
-      Definition clone (ExtDB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition clone (ExtDB : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self ExtDB in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructRecord
@@ -153,6 +167,7 @@ Module db.
                       "core::clone::Clone",
                       Ty.apply
                         (Ty.path "std::collections::hash::map::HashMap")
+                        []
                         [
                           Ty.path "alloy_primitives::bits::address::Address";
                           Ty.path "revm::db::in_memory_db::DbAccount";
@@ -176,8 +191,12 @@ Module db.
                       "core::clone::Clone",
                       Ty.apply
                         (Ty.path "std::collections::hash::map::HashMap")
+                        []
                         [
-                          Ty.path "alloy_primitives::bits::fixed::FixedBytes";
+                          Ty.apply
+                            (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                            [ Value.Integer 32 ]
+                            [];
                           Ty.path "revm_primitives::bytecode::Bytecode";
                           Ty.path "std::hash::random::RandomState"
                         ],
@@ -199,9 +218,11 @@ Module db.
                       "core::clone::Clone",
                       Ty.apply
                         (Ty.path "alloc::vec::Vec")
+                        []
                         [
                           Ty.apply
                             (Ty.path "alloy_primitives::log::Log")
+                            []
                             [ Ty.path "alloy_primitives::log::LogData" ];
                           Ty.path "alloc::alloc::Global"
                         ],
@@ -223,9 +244,16 @@ Module db.
                       "core::clone::Clone",
                       Ty.apply
                         (Ty.path "std::collections::hash::map::HashMap")
+                        []
                         [
-                          Ty.path "ruint::Uint";
-                          Ty.path "alloy_primitives::bits::fixed::FixedBytes";
+                          Ty.apply
+                            (Ty.path "ruint::Uint")
+                            [ Value.Integer 256; Value.Integer 4 ]
+                            [];
+                          Ty.apply
+                            (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                            [ Value.Integer 32 ]
+                            [];
                           Ty.path "std::hash::random::RandomState"
                         ],
                       [],
@@ -252,7 +280,7 @@ Module db.
                     ]
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -266,21 +294,21 @@ Module db.
     
     Module Impl_core_default_Default_where_core_default_Default_ExtDB_for_revm_db_in_memory_db_CacheDB_ExtDB.
       Definition Self (ExtDB : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "revm::db::in_memory_db::CacheDB") [ ExtDB ].
+        Ty.apply (Ty.path "revm::db::in_memory_db::CacheDB") [] [ ExtDB ].
       
       (*
           fn default() -> Self {
               Self::new(ExtDB::default())
           }
       *)
-      Definition default (ExtDB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition default (ExtDB : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self ExtDB in
-        match τ, α with
-        | [], [] =>
+        match ε, τ, α with
+        | [], [], [] =>
           ltac:(M.monadic
             (M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "revm::db::in_memory_db::CacheDB") [ ExtDB ],
+                Ty.apply (Ty.path "revm::db::in_memory_db::CacheDB") [] [ ExtDB ],
                 "new",
                 []
               |),
@@ -291,7 +319,7 @@ Module db.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -305,7 +333,7 @@ Module db.
     
     Module Impl_revm_db_in_memory_db_CacheDB_ExtDB.
       Definition Self (ExtDB : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "revm::db::in_memory_db::CacheDB") [ ExtDB ].
+        Ty.apply (Ty.path "revm::db::in_memory_db::CacheDB") [] [ ExtDB ].
       
       (*
           pub fn new(db: ExtDB) -> Self {
@@ -321,10 +349,10 @@ Module db.
               }
           }
       *)
-      Definition new (ExtDB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition new (ExtDB : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self ExtDB in
-        match τ, α with
-        | [], [ db ] =>
+        match ε, τ, α with
+        | [], [], [ db ] =>
           ltac:(M.monadic
             (let db := M.alloc (| db |) in
             M.read (|
@@ -334,8 +362,12 @@ Module db.
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "std::collections::hash::map::HashMap")
+                        []
                         [
-                          Ty.path "alloy_primitives::bits::fixed::FixedBytes";
+                          Ty.apply
+                            (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                            [ Value.Integer 32 ]
+                            [];
                           Ty.path "revm_primitives::bytecode::Bytecode";
                           Ty.path "std::hash::random::RandomState"
                         ],
@@ -351,8 +383,12 @@ Module db.
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "std::collections::hash::map::HashMap")
+                        []
                         [
-                          Ty.path "alloy_primitives::bits::fixed::FixedBytes";
+                          Ty.apply
+                            (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                            [ Value.Integer 32 ]
+                            [];
                           Ty.path "revm_primitives::bytecode::Bytecode";
                           Ty.path "std::hash::random::RandomState"
                         ],
@@ -381,8 +417,12 @@ Module db.
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "std::collections::hash::map::HashMap")
+                        []
                         [
-                          Ty.path "alloy_primitives::bits::fixed::FixedBytes";
+                          Ty.apply
+                            (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                            [ Value.Integer 32 ]
+                            [];
                           Ty.path "revm_primitives::bytecode::Bytecode";
                           Ty.path "std::hash::random::RandomState"
                         ],
@@ -414,6 +454,7 @@ Module db.
                         M.get_associated_function (|
                           Ty.apply
                             (Ty.path "std::collections::hash::map::HashMap")
+                            []
                             [
                               Ty.path "alloy_primitives::bits::address::Address";
                               Ty.path "revm::db::in_memory_db::DbAccount";
@@ -431,9 +472,11 @@ Module db.
                           "core::default::Default",
                           Ty.apply
                             (Ty.path "alloc::vec::Vec")
+                            []
                             [
                               Ty.apply
                                 (Ty.path "alloy_primitives::log::Log")
+                                []
                                 [ Ty.path "alloy_primitives::log::LogData" ];
                               Ty.path "alloc::alloc::Global"
                             ],
@@ -448,9 +491,16 @@ Module db.
                         M.get_associated_function (|
                           Ty.apply
                             (Ty.path "std::collections::hash::map::HashMap")
+                            []
                             [
-                              Ty.path "ruint::Uint";
-                              Ty.path "alloy_primitives::bits::fixed::FixedBytes";
+                              Ty.apply
+                                (Ty.path "ruint::Uint")
+                                [ Value.Integer 256; Value.Integer 4 ]
+                                [];
+                              Ty.apply
+                                (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                                [ Value.Integer 32 ]
+                                [];
                               Ty.path "std::hash::random::RandomState"
                             ],
                           "new",
@@ -462,7 +512,7 @@ Module db.
                   ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_new :
@@ -486,10 +536,15 @@ Module db.
               }
           }
       *)
-      Definition insert_contract (ExtDB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition insert_contract
+          (ExtDB : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self ExtDB in
-        match τ, α with
-        | [], [ self; account ] =>
+        match ε, τ, α with
+        | [], [], [ self; account ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let account := M.alloc (| account |) in
@@ -551,11 +606,17 @@ Module db.
                                                 M.call_closure (|
                                                   M.get_trait_method (|
                                                     "core::cmp::PartialEq",
-                                                    Ty.path
-                                                      "alloy_primitives::bits::fixed::FixedBytes",
+                                                    Ty.apply
+                                                      (Ty.path
+                                                        "alloy_primitives::bits::fixed::FixedBytes")
+                                                      [ Value.Integer 32 ]
+                                                      [],
                                                     [
-                                                      Ty.path
-                                                        "alloy_primitives::bits::fixed::FixedBytes"
+                                                      Ty.apply
+                                                        (Ty.path
+                                                          "alloy_primitives::bits::fixed::FixedBytes")
+                                                        [ Value.Integer 32 ]
+                                                        []
                                                     ],
                                                     "eq",
                                                     []
@@ -603,8 +664,12 @@ Module db.
                                       M.get_associated_function (|
                                         Ty.apply
                                           (Ty.path "std::collections::hash::map::Entry")
+                                          []
                                           [
-                                            Ty.path "alloy_primitives::bits::fixed::FixedBytes";
+                                            Ty.apply
+                                              (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                                              [ Value.Integer 32 ]
+                                              [];
                                             Ty.path "revm_primitives::bytecode::Bytecode"
                                           ],
                                         "or_insert_with",
@@ -619,8 +684,13 @@ Module db.
                                           M.get_associated_function (|
                                             Ty.apply
                                               (Ty.path "std::collections::hash::map::HashMap")
+                                              []
                                               [
-                                                Ty.path "alloy_primitives::bits::fixed::FixedBytes";
+                                                Ty.apply
+                                                  (Ty.path
+                                                    "alloy_primitives::bits::fixed::FixedBytes")
+                                                  [ Value.Integer 32 ]
+                                                  [];
                                                 Ty.path "revm_primitives::bytecode::Bytecode";
                                                 Ty.path "std::hash::random::RandomState"
                                               ],
@@ -688,8 +758,16 @@ Module db.
                             M.call_closure (|
                               M.get_trait_method (|
                                 "core::cmp::PartialEq",
-                                Ty.path "alloy_primitives::bits::fixed::FixedBytes",
-                                [ Ty.path "alloy_primitives::bits::fixed::FixedBytes" ],
+                                Ty.apply
+                                  (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                                  [ Value.Integer 32 ]
+                                  [],
+                                [
+                                  Ty.apply
+                                    (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                                    [ Value.Integer 32 ]
+                                    []
+                                ],
                                 "eq",
                                 []
                               |),
@@ -720,7 +798,7 @@ Module db.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_insert_contract :
@@ -733,10 +811,15 @@ Module db.
               self.accounts.entry(address).or_default().info = info;
           }
       *)
-      Definition insert_account_info (ExtDB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition insert_account_info
+          (ExtDB : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self ExtDB in
-        match τ, α with
-        | [], [ self; address; info ] =>
+        match ε, τ, α with
+        | [], [], [ self; address; info ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let address := M.alloc (| address |) in
@@ -746,7 +829,7 @@ Module db.
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "revm::db::in_memory_db::CacheDB") [ ExtDB ],
+                      Ty.apply (Ty.path "revm::db::in_memory_db::CacheDB") [] [ ExtDB ],
                       "insert_contract",
                       []
                     |),
@@ -760,6 +843,7 @@ Module db.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "std::collections::hash::map::Entry")
+                          []
                           [
                             Ty.path "alloy_primitives::bits::address::Address";
                             Ty.path "revm::db::in_memory_db::DbAccount"
@@ -772,6 +856,7 @@ Module db.
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "std::collections::hash::map::HashMap")
+                              []
                               [
                                 Ty.path "alloy_primitives::bits::address::Address";
                                 Ty.path "revm::db::in_memory_db::DbAccount";
@@ -798,7 +883,7 @@ Module db.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_insert_account_info :
@@ -820,10 +905,15 @@ Module db.
               }
           }
       *)
-      Definition load_account (ExtDB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition load_account
+          (ExtDB : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self ExtDB in
-        match τ, α with
-        | [], [ self; address ] =>
+        match ε, τ, α with
+        | [], [], [ self; address ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let address := M.alloc (| address |) in
@@ -844,6 +934,7 @@ Module db.
                         M.get_associated_function (|
                           Ty.apply
                             (Ty.path "std::collections::hash::map::HashMap")
+                            []
                             [
                               Ty.path "alloy_primitives::bits::address::Address";
                               Ty.path "revm::db::in_memory_db::DbAccount";
@@ -880,6 +971,7 @@ Module db.
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "std::collections::hash::map::OccupiedEntry")
+                                      []
                                       [
                                         Ty.path "alloy_primitives::bits::address::Address";
                                         Ty.path "revm::db::in_memory_db::DbAccount"
@@ -908,6 +1000,7 @@ Module db.
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "std::collections::hash::map::VacantEntry")
+                                      []
                                       [
                                         Ty.path "alloy_primitives::bits::address::Address";
                                         Ty.path "revm::db::in_memory_db::DbAccount"
@@ -921,6 +1014,7 @@ Module db.
                                       M.get_associated_function (|
                                         Ty.apply
                                           (Ty.path "core::option::Option")
+                                          []
                                           [ Ty.path "revm::db::in_memory_db::DbAccount" ],
                                         "unwrap_or_else",
                                         [
@@ -934,6 +1028,7 @@ Module db.
                                           M.get_associated_function (|
                                             Ty.apply
                                               (Ty.path "core::option::Option")
+                                              []
                                               [ Ty.path "revm_primitives::state::AccountInfo" ],
                                             "map",
                                             [
@@ -956,9 +1051,11 @@ Module db.
                                                       "core::ops::try_trait::Try",
                                                       Ty.apply
                                                         (Ty.path "core::result::Result")
+                                                        []
                                                         [
                                                           Ty.apply
                                                             (Ty.path "core::option::Option")
+                                                            []
                                                             [
                                                               Ty.path
                                                                 "revm_primitives::state::AccountInfo"
@@ -1002,9 +1099,11 @@ Module db.
                                                                   "core::ops::try_trait::FromResidual",
                                                                   Ty.apply
                                                                     (Ty.path "core::result::Result")
+                                                                    []
                                                                     [
                                                                       Ty.apply
                                                                         (Ty.path "&mut")
+                                                                        []
                                                                         [
                                                                           Ty.path
                                                                             "revm::db::in_memory_db::DbAccount"
@@ -1015,6 +1114,7 @@ Module db.
                                                                     Ty.apply
                                                                       (Ty.path
                                                                         "core::result::Result")
+                                                                      []
                                                                       [
                                                                         Ty.path
                                                                           "core::convert::Infallible";
@@ -1088,7 +1188,7 @@ Module db.
                   |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_load_account :
@@ -1107,10 +1207,15 @@ Module db.
               Ok(())
           }
       *)
-      Definition insert_account_storage (ExtDB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition insert_account_storage
+          (ExtDB : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self ExtDB in
-        match τ, α with
-        | [], [ self; address; slot; value ] =>
+        match ε, τ, α with
+        | [], [], [ self; address; slot; value ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let address := M.alloc (| address |) in
@@ -1128,9 +1233,11 @@ Module db.
                               "core::ops::try_trait::Try",
                               Ty.apply
                                 (Ty.path "core::result::Result")
+                                []
                                 [
                                   Ty.apply
                                     (Ty.path "&mut")
+                                    []
                                     [ Ty.path "revm::db::in_memory_db::DbAccount" ];
                                   Ty.associated
                                 ],
@@ -1141,7 +1248,7 @@ Module db.
                             [
                               M.call_closure (|
                                 M.get_associated_function (|
-                                  Ty.apply (Ty.path "revm::db::in_memory_db::CacheDB") [ ExtDB ],
+                                  Ty.apply (Ty.path "revm::db::in_memory_db::CacheDB") [] [ ExtDB ],
                                   "load_account",
                                   []
                                 |),
@@ -1169,10 +1276,12 @@ Module db.
                                           "core::ops::try_trait::FromResidual",
                                           Ty.apply
                                             (Ty.path "core::result::Result")
+                                            []
                                             [ Ty.tuple []; Ty.associated ],
                                           [
                                             Ty.apply
                                               (Ty.path "core::result::Result")
+                                              []
                                               [ Ty.path "core::convert::Infallible"; Ty.associated ]
                                           ],
                                           "from_residual",
@@ -1203,9 +1312,16 @@ Module db.
                         M.get_associated_function (|
                           Ty.apply
                             (Ty.path "std::collections::hash::map::HashMap")
+                            []
                             [
-                              Ty.path "ruint::Uint";
-                              Ty.path "ruint::Uint";
+                              Ty.apply
+                                (Ty.path "ruint::Uint")
+                                [ Value.Integer 256; Value.Integer 4 ]
+                                [];
+                              Ty.apply
+                                (Ty.path "ruint::Uint")
+                                [ Value.Integer 256; Value.Integer 4 ]
+                                [];
                               Ty.path "std::hash::random::RandomState"
                             ],
                           "insert",
@@ -1225,7 +1341,7 @@ Module db.
                   M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_insert_account_storage :
@@ -1244,10 +1360,15 @@ Module db.
               Ok(())
           }
       *)
-      Definition replace_account_storage (ExtDB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition replace_account_storage
+          (ExtDB : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self ExtDB in
-        match τ, α with
-        | [], [ self; address; storage ] =>
+        match ε, τ, α with
+        | [], [], [ self; address; storage ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let address := M.alloc (| address |) in
@@ -1264,9 +1385,11 @@ Module db.
                               "core::ops::try_trait::Try",
                               Ty.apply
                                 (Ty.path "core::result::Result")
+                                []
                                 [
                                   Ty.apply
                                     (Ty.path "&mut")
+                                    []
                                     [ Ty.path "revm::db::in_memory_db::DbAccount" ];
                                   Ty.associated
                                 ],
@@ -1277,7 +1400,7 @@ Module db.
                             [
                               M.call_closure (|
                                 M.get_associated_function (|
-                                  Ty.apply (Ty.path "revm::db::in_memory_db::CacheDB") [ ExtDB ],
+                                  Ty.apply (Ty.path "revm::db::in_memory_db::CacheDB") [] [ ExtDB ],
                                   "load_account",
                                   []
                                 |),
@@ -1305,10 +1428,12 @@ Module db.
                                           "core::ops::try_trait::FromResidual",
                                           Ty.apply
                                             (Ty.path "core::result::Result")
+                                            []
                                             [ Ty.tuple []; Ty.associated ],
                                           [
                                             Ty.apply
                                               (Ty.path "core::result::Result")
+                                              []
                                               [ Ty.path "core::convert::Infallible"; Ty.associated ]
                                           ],
                                           "from_residual",
@@ -1354,15 +1479,32 @@ Module db.
                           "core::iter::traits::iterator::Iterator",
                           Ty.apply
                             (Ty.path "std::collections::hash::map::IntoIter")
-                            [ Ty.path "ruint::Uint"; Ty.path "ruint::Uint" ],
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "ruint::Uint")
+                                [ Value.Integer 256; Value.Integer 4 ]
+                                [];
+                              Ty.apply
+                                (Ty.path "ruint::Uint")
+                                [ Value.Integer 256; Value.Integer 4 ]
+                                []
+                            ],
                           [],
                           "collect",
                           [
                             Ty.apply
                               (Ty.path "std::collections::hash::map::HashMap")
+                              []
                               [
-                                Ty.path "ruint::Uint";
-                                Ty.path "ruint::Uint";
+                                Ty.apply
+                                  (Ty.path "ruint::Uint")
+                                  [ Value.Integer 256; Value.Integer 4 ]
+                                  [];
+                                Ty.apply
+                                  (Ty.path "ruint::Uint")
+                                  [ Value.Integer 256; Value.Integer 4 ]
+                                  [];
                                 Ty.path "std::hash::random::RandomState"
                               ]
                           ]
@@ -1373,9 +1515,16 @@ Module db.
                               "core::iter::traits::collect::IntoIterator",
                               Ty.apply
                                 (Ty.path "std::collections::hash::map::HashMap")
+                                []
                                 [
-                                  Ty.path "ruint::Uint";
-                                  Ty.path "ruint::Uint";
+                                  Ty.apply
+                                    (Ty.path "ruint::Uint")
+                                    [ Value.Integer 256; Value.Integer 4 ]
+                                    [];
+                                  Ty.apply
+                                    (Ty.path "ruint::Uint")
+                                    [ Value.Integer 256; Value.Integer 4 ]
+                                    [];
                                   Ty.path "std::hash::random::RandomState"
                                 ],
                               [],
@@ -1390,7 +1539,7 @@ Module db.
                   M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_replace_account_storage :
@@ -1404,7 +1553,7 @@ Module db.
     
     Module Impl_revm_primitives_db_DatabaseCommit_for_revm_db_in_memory_db_CacheDB_ExtDB.
       Definition Self (ExtDB : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "revm::db::in_memory_db::CacheDB") [ ExtDB ].
+        Ty.apply (Ty.path "revm::db::in_memory_db::CacheDB") [] [ ExtDB ].
       
       (*
           fn commit(&mut self, changes: HashMap<Address, Account>) {
@@ -1443,10 +1592,10 @@ Module db.
               }
           }
       *)
-      Definition commit (ExtDB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition commit (ExtDB : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self ExtDB in
-        match τ, α with
-        | [], [ self; changes ] =>
+        match ε, τ, α with
+        | [], [], [ self; changes ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let changes := M.alloc (| changes |) in
@@ -1459,6 +1608,7 @@ Module db.
                         "core::iter::traits::collect::IntoIterator",
                         Ty.apply
                           (Ty.path "std::collections::hash::map::HashMap")
+                          []
                           [
                             Ty.path "alloy_primitives::bits::address::Address";
                             Ty.path "revm_primitives::state::Account";
@@ -1485,6 +1635,7 @@ Module db.
                                       "core::iter::traits::iterator::Iterator",
                                       Ty.apply
                                         (Ty.path "std::collections::hash::map::IntoIter")
+                                        []
                                         [
                                           Ty.path "alloy_primitives::bits::address::Address";
                                           Ty.path "revm_primitives::state::Account"
@@ -1580,6 +1731,7 @@ Module db.
                                                               Ty.apply
                                                                 (Ty.path
                                                                   "std::collections::hash::map::Entry")
+                                                                []
                                                                 [
                                                                   Ty.path
                                                                     "alloy_primitives::bits::address::Address";
@@ -1595,6 +1747,7 @@ Module db.
                                                                   Ty.apply
                                                                     (Ty.path
                                                                       "std::collections::hash::map::HashMap")
+                                                                    []
                                                                     [
                                                                       Ty.path
                                                                         "alloy_primitives::bits::address::Address";
@@ -1625,9 +1778,22 @@ Module db.
                                                               Ty.apply
                                                                 (Ty.path
                                                                   "std::collections::hash::map::HashMap")
+                                                                []
                                                                 [
-                                                                  Ty.path "ruint::Uint";
-                                                                  Ty.path "ruint::Uint";
+                                                                  Ty.apply
+                                                                    (Ty.path "ruint::Uint")
+                                                                    [
+                                                                      Value.Integer 256;
+                                                                      Value.Integer 4
+                                                                    ]
+                                                                    [];
+                                                                  Ty.apply
+                                                                    (Ty.path "ruint::Uint")
+                                                                    [
+                                                                      Value.Integer 256;
+                                                                      Value.Integer 4
+                                                                    ]
+                                                                    [];
                                                                   Ty.path
                                                                     "std::hash::random::RandomState"
                                                                 ],
@@ -1697,6 +1863,7 @@ Module db.
                                             M.get_associated_function (|
                                               Ty.apply
                                                 (Ty.path "revm::db::in_memory_db::CacheDB")
+                                                []
                                                 [ ExtDB ],
                                               "insert_contract",
                                               []
@@ -1717,6 +1884,7 @@ Module db.
                                             M.get_associated_function (|
                                               Ty.apply
                                                 (Ty.path "std::collections::hash::map::Entry")
+                                                []
                                                 [
                                                   Ty.path
                                                     "alloy_primitives::bits::address::Address";
@@ -1730,6 +1898,7 @@ Module db.
                                                 M.get_associated_function (|
                                                   Ty.apply
                                                     (Ty.path "std::collections::hash::map::HashMap")
+                                                    []
                                                     [
                                                       Ty.path
                                                         "alloy_primitives::bits::address::Address";
@@ -1792,9 +1961,22 @@ Module db.
                                                             Ty.apply
                                                               (Ty.path
                                                                 "std::collections::hash::map::HashMap")
+                                                              []
                                                               [
-                                                                Ty.path "ruint::Uint";
-                                                                Ty.path "ruint::Uint";
+                                                                Ty.apply
+                                                                  (Ty.path "ruint::Uint")
+                                                                  [
+                                                                    Value.Integer 256;
+                                                                    Value.Integer 4
+                                                                  ]
+                                                                  [];
+                                                                Ty.apply
+                                                                  (Ty.path "ruint::Uint")
+                                                                  [
+                                                                    Value.Integer 256;
+                                                                    Value.Integer 4
+                                                                  ]
+                                                                  [];
                                                                 Ty.path
                                                                   "std::hash::random::RandomState"
                                                               ],
@@ -1871,25 +2053,46 @@ Module db.
                                               "core::iter::traits::collect::Extend",
                                               Ty.apply
                                                 (Ty.path "std::collections::hash::map::HashMap")
+                                                []
                                                 [
-                                                  Ty.path "ruint::Uint";
-                                                  Ty.path "ruint::Uint";
+                                                  Ty.apply
+                                                    (Ty.path "ruint::Uint")
+                                                    [ Value.Integer 256; Value.Integer 4 ]
+                                                    [];
+                                                  Ty.apply
+                                                    (Ty.path "ruint::Uint")
+                                                    [ Value.Integer 256; Value.Integer 4 ]
+                                                    [];
                                                   Ty.path "std::hash::random::RandomState"
                                                 ],
                                               [
                                                 Ty.tuple
-                                                  [ Ty.path "ruint::Uint"; Ty.path "ruint::Uint" ]
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "ruint::Uint")
+                                                      [ Value.Integer 256; Value.Integer 4 ]
+                                                      [];
+                                                    Ty.apply
+                                                      (Ty.path "ruint::Uint")
+                                                      [ Value.Integer 256; Value.Integer 4 ]
+                                                      []
+                                                  ]
                                               ],
                                               "extend",
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::iter::adapters::map::Map")
+                                                  []
                                                   [
                                                     Ty.apply
                                                       (Ty.path
                                                         "std::collections::hash::map::IntoIter")
+                                                      []
                                                       [
-                                                        Ty.path "ruint::Uint";
+                                                        Ty.apply
+                                                          (Ty.path "ruint::Uint")
+                                                          [ Value.Integer 256; Value.Integer 4 ]
+                                                          [];
                                                         Ty.path
                                                           "revm_primitives::state::StorageSlot"
                                                       ];
@@ -1899,7 +2102,13 @@ Module db.
                                                           [
                                                             Ty.tuple
                                                               [
-                                                                Ty.path "ruint::Uint";
+                                                                Ty.apply
+                                                                  (Ty.path "ruint::Uint")
+                                                                  [
+                                                                    Value.Integer 256;
+                                                                    Value.Integer 4
+                                                                  ]
+                                                                  [];
                                                                 Ty.path
                                                                   "revm_primitives::state::StorageSlot"
                                                               ]
@@ -1907,8 +2116,14 @@ Module db.
                                                       ]
                                                       (Ty.tuple
                                                         [
-                                                          Ty.path "ruint::Uint";
-                                                          Ty.path "ruint::Uint"
+                                                          Ty.apply
+                                                            (Ty.path "ruint::Uint")
+                                                            [ Value.Integer 256; Value.Integer 4 ]
+                                                            [];
+                                                          Ty.apply
+                                                            (Ty.path "ruint::Uint")
+                                                            [ Value.Integer 256; Value.Integer 4 ]
+                                                            []
                                                         ])
                                                   ]
                                               ]
@@ -1925,15 +2140,27 @@ Module db.
                                                   Ty.apply
                                                     (Ty.path
                                                       "std::collections::hash::map::IntoIter")
+                                                    []
                                                     [
-                                                      Ty.path "ruint::Uint";
+                                                      Ty.apply
+                                                        (Ty.path "ruint::Uint")
+                                                        [ Value.Integer 256; Value.Integer 4 ]
+                                                        [];
                                                       Ty.path "revm_primitives::state::StorageSlot"
                                                     ],
                                                   [],
                                                   "map",
                                                   [
                                                     Ty.tuple
-                                                      [ Ty.path "ruint::Uint"; Ty.path "ruint::Uint"
+                                                      [
+                                                        Ty.apply
+                                                          (Ty.path "ruint::Uint")
+                                                          [ Value.Integer 256; Value.Integer 4 ]
+                                                          [];
+                                                        Ty.apply
+                                                          (Ty.path "ruint::Uint")
+                                                          [ Value.Integer 256; Value.Integer 4 ]
+                                                          []
                                                       ];
                                                     Ty.function
                                                       [
@@ -1941,7 +2168,13 @@ Module db.
                                                           [
                                                             Ty.tuple
                                                               [
-                                                                Ty.path "ruint::Uint";
+                                                                Ty.apply
+                                                                  (Ty.path "ruint::Uint")
+                                                                  [
+                                                                    Value.Integer 256;
+                                                                    Value.Integer 4
+                                                                  ]
+                                                                  [];
                                                                 Ty.path
                                                                   "revm_primitives::state::StorageSlot"
                                                               ]
@@ -1949,8 +2182,14 @@ Module db.
                                                       ]
                                                       (Ty.tuple
                                                         [
-                                                          Ty.path "ruint::Uint";
-                                                          Ty.path "ruint::Uint"
+                                                          Ty.apply
+                                                            (Ty.path "ruint::Uint")
+                                                            [ Value.Integer 256; Value.Integer 4 ]
+                                                            [];
+                                                          Ty.apply
+                                                            (Ty.path "ruint::Uint")
+                                                            [ Value.Integer 256; Value.Integer 4 ]
+                                                            []
                                                         ])
                                                   ]
                                                 |),
@@ -1961,8 +2200,12 @@ Module db.
                                                       Ty.apply
                                                         (Ty.path
                                                           "std::collections::hash::map::HashMap")
+                                                        []
                                                         [
-                                                          Ty.path "ruint::Uint";
+                                                          Ty.apply
+                                                            (Ty.path "ruint::Uint")
+                                                            [ Value.Integer 256; Value.Integer 4 ]
+                                                            [];
                                                           Ty.path
                                                             "revm_primitives::state::StorageSlot";
                                                           Ty.path "std::hash::random::RandomState"
@@ -2033,7 +2276,7 @@ Module db.
                   ]
                 |))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -2047,7 +2290,7 @@ Module db.
     
     Module Impl_revm_primitives_db_Database_where_revm_primitives_db_DatabaseRef_ExtDB_for_revm_db_in_memory_db_CacheDB_ExtDB.
       Definition Self (ExtDB : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "revm::db::in_memory_db::CacheDB") [ ExtDB ].
+        Ty.apply (Ty.path "revm::db::in_memory_db::CacheDB") [] [ ExtDB ].
       
       (*     type Error = ExtDB::Error; *)
       Definition _Error (ExtDB : Ty.t) : Ty.t := Ty.associated.
@@ -2069,10 +2312,10 @@ Module db.
               Ok(basic.info())
           }
       *)
-      Definition basic (ExtDB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition basic (ExtDB : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self ExtDB in
-        match τ, α with
-        | [], [ self; address ] =>
+        match ε, τ, α with
+        | [], [], [ self; address ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let address := M.alloc (| address |) in
@@ -2087,6 +2330,7 @@ Module db.
                             M.get_associated_function (|
                               Ty.apply
                                 (Ty.path "std::collections::hash::map::HashMap")
+                                []
                                 [
                                   Ty.path "alloy_primitives::bits::address::Address";
                                   Ty.path "revm::db::in_memory_db::DbAccount";
@@ -2120,6 +2364,7 @@ Module db.
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "std::collections::hash::map::OccupiedEntry")
+                                      []
                                       [
                                         Ty.path "alloy_primitives::bits::address::Address";
                                         Ty.path "revm::db::in_memory_db::DbAccount"
@@ -2144,6 +2389,7 @@ Module db.
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "std::collections::hash::map::VacantEntry")
+                                      []
                                       [
                                         Ty.path "alloy_primitives::bits::address::Address";
                                         Ty.path "revm::db::in_memory_db::DbAccount"
@@ -2157,6 +2403,7 @@ Module db.
                                       M.get_associated_function (|
                                         Ty.apply
                                           (Ty.path "core::option::Option")
+                                          []
                                           [ Ty.path "revm::db::in_memory_db::DbAccount" ],
                                         "unwrap_or_else",
                                         [
@@ -2170,6 +2417,7 @@ Module db.
                                           M.get_associated_function (|
                                             Ty.apply
                                               (Ty.path "core::option::Option")
+                                              []
                                               [ Ty.path "revm_primitives::state::AccountInfo" ],
                                             "map",
                                             [
@@ -2192,9 +2440,11 @@ Module db.
                                                       "core::ops::try_trait::Try",
                                                       Ty.apply
                                                         (Ty.path "core::result::Result")
+                                                        []
                                                         [
                                                           Ty.apply
                                                             (Ty.path "core::option::Option")
+                                                            []
                                                             [
                                                               Ty.path
                                                                 "revm_primitives::state::AccountInfo"
@@ -2245,10 +2495,12 @@ Module db.
                                                                   "core::ops::try_trait::FromResidual",
                                                                   Ty.apply
                                                                     (Ty.path "core::result::Result")
+                                                                    []
                                                                     [
                                                                       Ty.apply
                                                                         (Ty.path
                                                                           "core::option::Option")
+                                                                        []
                                                                         [
                                                                           Ty.path
                                                                             "revm_primitives::state::AccountInfo"
@@ -2259,6 +2511,7 @@ Module db.
                                                                     Ty.apply
                                                                       (Ty.path
                                                                         "core::result::Result")
+                                                                      []
                                                                       [
                                                                         Ty.path
                                                                           "core::convert::Infallible";
@@ -2346,7 +2599,7 @@ Module db.
                   |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -2360,10 +2613,15 @@ Module db.
               }
           }
       *)
-      Definition code_by_hash (ExtDB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition code_by_hash
+          (ExtDB : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self ExtDB in
-        match τ, α with
-        | [], [ self; code_hash ] =>
+        match ε, τ, α with
+        | [], [], [ self; code_hash ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let code_hash := M.alloc (| code_hash |) in
@@ -2376,8 +2634,12 @@ Module db.
                         M.get_associated_function (|
                           Ty.apply
                             (Ty.path "std::collections::hash::map::HashMap")
+                            []
                             [
-                              Ty.path "alloy_primitives::bits::fixed::FixedBytes";
+                              Ty.apply
+                                (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                                [ Value.Integer 32 ]
+                                [];
                               Ty.path "revm_primitives::bytecode::Bytecode";
                               Ty.path "std::hash::random::RandomState"
                             ],
@@ -2421,8 +2683,12 @@ Module db.
                                       M.get_associated_function (|
                                         Ty.apply
                                           (Ty.path "std::collections::hash::map::OccupiedEntry")
+                                          []
                                           [
-                                            Ty.path "alloy_primitives::bits::fixed::FixedBytes";
+                                            Ty.apply
+                                              (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                                              [ Value.Integer 32 ]
+                                              [];
                                             Ty.path "revm_primitives::bytecode::Bytecode"
                                           ],
                                         "get",
@@ -2460,8 +2726,12 @@ Module db.
                                       M.get_associated_function (|
                                         Ty.apply
                                           (Ty.path "std::collections::hash::map::VacantEntry")
+                                          []
                                           [
-                                            Ty.path "alloy_primitives::bits::fixed::FixedBytes";
+                                            Ty.apply
+                                              (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                                              [ Value.Integer 32 ]
+                                              [];
                                             Ty.path "revm_primitives::bytecode::Bytecode"
                                           ],
                                         "insert",
@@ -2477,6 +2747,7 @@ Module db.
                                                   "core::ops::try_trait::Try",
                                                   Ty.apply
                                                     (Ty.path "core::result::Result")
+                                                    []
                                                     [
                                                       Ty.path "revm_primitives::bytecode::Bytecode";
                                                       Ty.associated
@@ -2525,6 +2796,7 @@ Module db.
                                                               "core::ops::try_trait::FromResidual",
                                                               Ty.apply
                                                                 (Ty.path "core::result::Result")
+                                                                []
                                                                 [
                                                                   Ty.path
                                                                     "revm_primitives::bytecode::Bytecode";
@@ -2533,6 +2805,7 @@ Module db.
                                                               [
                                                                 Ty.apply
                                                                   (Ty.path "core::result::Result")
+                                                                  []
                                                                   [
                                                                     Ty.path
                                                                       "core::convert::Infallible";
@@ -2571,7 +2844,7 @@ Module db.
                   |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -2612,10 +2885,10 @@ Module db.
               }
           }
       *)
-      Definition storage (ExtDB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition storage (ExtDB : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self ExtDB in
-        match τ, α with
-        | [], [ self; address; index ] =>
+        match ε, τ, α with
+        | [], [], [ self; address; index ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let address := M.alloc (| address |) in
@@ -2629,6 +2902,7 @@ Module db.
                         M.get_associated_function (|
                           Ty.apply
                             (Ty.path "std::collections::hash::map::HashMap")
+                            []
                             [
                               Ty.path "alloy_primitives::bits::address::Address";
                               Ty.path "revm::db::in_memory_db::DbAccount";
@@ -2663,6 +2937,7 @@ Module db.
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "std::collections::hash::map::OccupiedEntry")
+                                    []
                                     [
                                       Ty.path "alloy_primitives::bits::address::Address";
                                       Ty.path "revm::db::in_memory_db::DbAccount"
@@ -2679,9 +2954,16 @@ Module db.
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "std::collections::hash::map::HashMap")
+                                    []
                                     [
-                                      Ty.path "ruint::Uint";
-                                      Ty.path "ruint::Uint";
+                                      Ty.apply
+                                        (Ty.path "ruint::Uint")
+                                        [ Value.Integer 256; Value.Integer 4 ]
+                                        [];
+                                      Ty.apply
+                                        (Ty.path "ruint::Uint")
+                                        [ Value.Integer 256; Value.Integer 4 ]
+                                        [];
                                       Ty.path "std::hash::random::RandomState"
                                     ],
                                   "entry",
@@ -2717,7 +2999,17 @@ Module db.
                                               Ty.apply
                                                 (Ty.path
                                                   "std::collections::hash::map::OccupiedEntry")
-                                                [ Ty.path "ruint::Uint"; Ty.path "ruint::Uint" ],
+                                                []
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "ruint::Uint")
+                                                    [ Value.Integer 256; Value.Integer 4 ]
+                                                    [];
+                                                  Ty.apply
+                                                    (Ty.path "ruint::Uint")
+                                                    [ Value.Integer 256; Value.Integer 4 ]
+                                                    []
+                                                ],
                                               "get",
                                               []
                                             |),
@@ -2805,7 +3097,14 @@ Module db.
                                                       "core::ops::try_trait::Try",
                                                       Ty.apply
                                                         (Ty.path "core::result::Result")
-                                                        [ Ty.path "ruint::Uint"; Ty.associated ],
+                                                        []
+                                                        [
+                                                          Ty.apply
+                                                            (Ty.path "ruint::Uint")
+                                                            [ Value.Integer 256; Value.Integer 4 ]
+                                                            [];
+                                                          Ty.associated
+                                                        ],
                                                       [],
                                                       "branch",
                                                       []
@@ -2851,14 +3150,22 @@ Module db.
                                                                   "core::ops::try_trait::FromResidual",
                                                                   Ty.apply
                                                                     (Ty.path "core::result::Result")
+                                                                    []
                                                                     [
-                                                                      Ty.path "ruint::Uint";
+                                                                      Ty.apply
+                                                                        (Ty.path "ruint::Uint")
+                                                                        [
+                                                                          Value.Integer 256;
+                                                                          Value.Integer 4
+                                                                        ]
+                                                                        [];
                                                                       Ty.associated
                                                                     ],
                                                                   [
                                                                     Ty.apply
                                                                       (Ty.path
                                                                         "core::result::Result")
+                                                                      []
                                                                       [
                                                                         Ty.path
                                                                           "core::convert::Infallible";
@@ -2894,7 +3201,16 @@ Module db.
                                                   Ty.apply
                                                     (Ty.path
                                                       "std::collections::hash::map::VacantEntry")
-                                                    [ Ty.path "ruint::Uint"; Ty.path "ruint::Uint"
+                                                    []
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "ruint::Uint")
+                                                        [ Value.Integer 256; Value.Integer 4 ]
+                                                        [];
+                                                      Ty.apply
+                                                        (Ty.path "ruint::Uint")
+                                                        [ Value.Integer 256; Value.Integer 4 ]
+                                                        []
                                                     ],
                                                   "insert",
                                                   []
@@ -2929,9 +3245,11 @@ Module db.
                                       "core::ops::try_trait::Try",
                                       Ty.apply
                                         (Ty.path "core::result::Result")
+                                        []
                                         [
                                           Ty.apply
                                             (Ty.path "core::option::Option")
+                                            []
                                             [ Ty.path "revm_primitives::state::AccountInfo" ];
                                           Ty.associated
                                         ],
@@ -2979,10 +3297,18 @@ Module db.
                                                   "core::ops::try_trait::FromResidual",
                                                   Ty.apply
                                                     (Ty.path "core::result::Result")
-                                                    [ Ty.path "ruint::Uint"; Ty.associated ],
+                                                    []
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "ruint::Uint")
+                                                        [ Value.Integer 256; Value.Integer 4 ]
+                                                        [];
+                                                      Ty.associated
+                                                    ],
                                                   [
                                                     Ty.apply
                                                       (Ty.path "core::result::Result")
+                                                      []
                                                       [
                                                         Ty.path "core::convert::Infallible";
                                                         Ty.associated
@@ -3023,6 +3349,7 @@ Module db.
                                             M.get_associated_function (|
                                               Ty.apply
                                                 (Ty.path "core::option::Option")
+                                                []
                                                 [ Ty.path "revm_primitives::state::AccountInfo" ],
                                               "is_some",
                                               []
@@ -3044,7 +3371,14 @@ Module db.
                                                 "core::ops::try_trait::Try",
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
-                                                  [ Ty.path "ruint::Uint"; Ty.associated ],
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "ruint::Uint")
+                                                      [ Value.Integer 256; Value.Integer 4 ]
+                                                      [];
+                                                    Ty.associated
+                                                  ],
                                                 [],
                                                 "branch",
                                                 []
@@ -3090,11 +3424,21 @@ Module db.
                                                             "core::ops::try_trait::FromResidual",
                                                             Ty.apply
                                                               (Ty.path "core::result::Result")
-                                                              [ Ty.path "ruint::Uint"; Ty.associated
+                                                              []
+                                                              [
+                                                                Ty.apply
+                                                                  (Ty.path "ruint::Uint")
+                                                                  [
+                                                                    Value.Integer 256;
+                                                                    Value.Integer 4
+                                                                  ]
+                                                                  [];
+                                                                Ty.associated
                                                               ],
                                                             [
                                                               Ty.apply
                                                                 (Ty.path "core::result::Result")
+                                                                []
                                                                 [
                                                                   Ty.path
                                                                     "core::convert::Infallible";
@@ -3130,6 +3474,7 @@ Module db.
                                             "core::convert::Into",
                                             Ty.apply
                                               (Ty.path "core::option::Option")
+                                              []
                                               [ Ty.path "revm_primitives::state::AccountInfo" ],
                                             [ Ty.path "revm::db::in_memory_db::DbAccount" ],
                                             "into",
@@ -3144,9 +3489,16 @@ Module db.
                                           M.get_associated_function (|
                                             Ty.apply
                                               (Ty.path "std::collections::hash::map::HashMap")
+                                              []
                                               [
-                                                Ty.path "ruint::Uint";
-                                                Ty.path "ruint::Uint";
+                                                Ty.apply
+                                                  (Ty.path "ruint::Uint")
+                                                  [ Value.Integer 256; Value.Integer 4 ]
+                                                  [];
+                                                Ty.apply
+                                                  (Ty.path "ruint::Uint")
+                                                  [ Value.Integer 256; Value.Integer 4 ]
+                                                  [];
                                                 Ty.path "std::hash::random::RandomState"
                                               ],
                                             "insert",
@@ -3176,6 +3528,7 @@ Module db.
                                               "core::convert::Into",
                                               Ty.apply
                                                 (Ty.path "core::option::Option")
+                                                []
                                                 [ Ty.path "revm_primitives::state::AccountInfo" ],
                                               [ Ty.path "revm::db::in_memory_db::DbAccount" ],
                                               "into",
@@ -3201,6 +3554,7 @@ Module db.
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "std::collections::hash::map::VacantEntry")
+                                            []
                                             [
                                               Ty.path "alloy_primitives::bits::address::Address";
                                               Ty.path "revm::db::in_memory_db::DbAccount"
@@ -3222,7 +3576,7 @@ Module db.
                   |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -3237,10 +3591,15 @@ Module db.
               }
           }
       *)
-      Definition block_hash (ExtDB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition block_hash
+          (ExtDB : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self ExtDB in
-        match τ, α with
-        | [], [ self; number ] =>
+        match ε, τ, α with
+        | [], [], [ self; number ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let number := M.alloc (| number |) in
@@ -3253,9 +3612,16 @@ Module db.
                         M.get_associated_function (|
                           Ty.apply
                             (Ty.path "std::collections::hash::map::HashMap")
+                            []
                             [
-                              Ty.path "ruint::Uint";
-                              Ty.path "alloy_primitives::bits::fixed::FixedBytes";
+                              Ty.apply
+                                (Ty.path "ruint::Uint")
+                                [ Value.Integer 256; Value.Integer 4 ]
+                                [];
+                              Ty.apply
+                                (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                                [ Value.Integer 32 ]
+                                [];
                               Ty.path "std::hash::random::RandomState"
                             ],
                           "entry",
@@ -3290,9 +3656,16 @@ Module db.
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "std::collections::hash::map::OccupiedEntry")
+                                        []
                                         [
-                                          Ty.path "ruint::Uint";
-                                          Ty.path "alloy_primitives::bits::fixed::FixedBytes"
+                                          Ty.apply
+                                            (Ty.path "ruint::Uint")
+                                            [ Value.Integer 256; Value.Integer 4 ]
+                                            [];
+                                          Ty.apply
+                                            (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                                            [ Value.Integer 32 ]
+                                            []
                                         ],
                                       "get",
                                       []
@@ -3320,8 +3693,12 @@ Module db.
                                       "core::ops::try_trait::Try",
                                       Ty.apply
                                         (Ty.path "core::result::Result")
+                                        []
                                         [
-                                          Ty.path "alloy_primitives::bits::fixed::FixedBytes";
+                                          Ty.apply
+                                            (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                                            [ Value.Integer 32 ]
+                                            [];
                                           Ty.associated
                                         ],
                                       [],
@@ -3368,14 +3745,19 @@ Module db.
                                                   "core::ops::try_trait::FromResidual",
                                                   Ty.apply
                                                     (Ty.path "core::result::Result")
+                                                    []
                                                     [
-                                                      Ty.path
-                                                        "alloy_primitives::bits::fixed::FixedBytes";
+                                                      Ty.apply
+                                                        (Ty.path
+                                                          "alloy_primitives::bits::fixed::FixedBytes")
+                                                        [ Value.Integer 32 ]
+                                                        [];
                                                       Ty.associated
                                                     ],
                                                   [
                                                     Ty.apply
                                                       (Ty.path "core::result::Result")
+                                                      []
                                                       [
                                                         Ty.path "core::convert::Infallible";
                                                         Ty.associated
@@ -3409,9 +3791,16 @@ Module db.
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "std::collections::hash::map::VacantEntry")
+                                    []
                                     [
-                                      Ty.path "ruint::Uint";
-                                      Ty.path "alloy_primitives::bits::fixed::FixedBytes"
+                                      Ty.apply
+                                        (Ty.path "ruint::Uint")
+                                        [ Value.Integer 256; Value.Integer 4 ]
+                                        [];
+                                      Ty.apply
+                                        (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                                        [ Value.Integer 32 ]
+                                        []
                                     ],
                                   "insert",
                                   []
@@ -3426,7 +3815,7 @@ Module db.
                   |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -3447,7 +3836,7 @@ Module db.
     
     Module Impl_revm_primitives_db_DatabaseRef_where_revm_primitives_db_DatabaseRef_ExtDB_for_revm_db_in_memory_db_CacheDB_ExtDB.
       Definition Self (ExtDB : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "revm::db::in_memory_db::CacheDB") [ ExtDB ].
+        Ty.apply (Ty.path "revm::db::in_memory_db::CacheDB") [] [ ExtDB ].
       
       (*     type Error = ExtDB::Error; *)
       Definition _Error (ExtDB : Ty.t) : Ty.t := Ty.associated.
@@ -3460,10 +3849,15 @@ Module db.
               }
           }
       *)
-      Definition basic_ref (ExtDB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition basic_ref
+          (ExtDB : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self ExtDB in
-        match τ, α with
-        | [], [ self; address ] =>
+        match ε, τ, α with
+        | [], [], [ self; address ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let address := M.alloc (| address |) in
@@ -3474,6 +3868,7 @@ Module db.
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "std::collections::hash::map::HashMap")
+                        []
                         [
                           Ty.path "alloy_primitives::bits::address::Address";
                           Ty.path "revm::db::in_memory_db::DbAccount";
@@ -3541,7 +3936,7 @@ Module db.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -3552,10 +3947,15 @@ Module db.
               }
           }
       *)
-      Definition code_by_hash_ref (ExtDB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition code_by_hash_ref
+          (ExtDB : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self ExtDB in
-        match τ, α with
-        | [], [ self; code_hash ] =>
+        match ε, τ, α with
+        | [], [], [ self; code_hash ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let code_hash := M.alloc (| code_hash |) in
@@ -3566,13 +3966,22 @@ Module db.
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "std::collections::hash::map::HashMap")
+                        []
                         [
-                          Ty.path "alloy_primitives::bits::fixed::FixedBytes";
+                          Ty.apply
+                            (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                            [ Value.Integer 32 ]
+                            [];
                           Ty.path "revm_primitives::bytecode::Bytecode";
                           Ty.path "std::hash::random::RandomState"
                         ],
                       "get",
-                      [ Ty.path "alloy_primitives::bits::fixed::FixedBytes" ]
+                      [
+                        Ty.apply
+                          (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                          [ Value.Integer 32 ]
+                          []
+                      ]
                     |),
                     [
                       M.SubPointer.get_struct_record_field (|
@@ -3635,7 +4044,7 @@ Module db.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -3658,10 +4067,15 @@ Module db.
               }
           }
       *)
-      Definition storage_ref (ExtDB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition storage_ref
+          (ExtDB : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self ExtDB in
-        match τ, α with
-        | [], [ self; address; index ] =>
+        match ε, τ, α with
+        | [], [], [ self; address; index ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let address := M.alloc (| address |) in
@@ -3673,6 +4087,7 @@ Module db.
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "std::collections::hash::map::HashMap")
+                        []
                         [
                           Ty.path "alloy_primitives::bits::address::Address";
                           Ty.path "revm::db::in_memory_db::DbAccount";
@@ -3707,13 +4122,25 @@ Module db.
                             M.get_associated_function (|
                               Ty.apply
                                 (Ty.path "std::collections::hash::map::HashMap")
+                                []
                                 [
-                                  Ty.path "ruint::Uint";
-                                  Ty.path "ruint::Uint";
+                                  Ty.apply
+                                    (Ty.path "ruint::Uint")
+                                    [ Value.Integer 256; Value.Integer 4 ]
+                                    [];
+                                  Ty.apply
+                                    (Ty.path "ruint::Uint")
+                                    [ Value.Integer 256; Value.Integer 4 ]
+                                    [];
                                   Ty.path "std::hash::random::RandomState"
                                 ],
                               "get",
-                              [ Ty.path "ruint::Uint" ]
+                              [
+                                Ty.apply
+                                  (Ty.path "ruint::Uint")
+                                  [ Value.Integer 256; Value.Integer 4 ]
+                                  []
+                              ]
                             |),
                             [
                               M.SubPointer.get_struct_record_field (|
@@ -3853,7 +4280,7 @@ Module db.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -3864,10 +4291,15 @@ Module db.
               }
           }
       *)
-      Definition block_hash_ref (ExtDB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition block_hash_ref
+          (ExtDB : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self ExtDB in
-        match τ, α with
-        | [], [ self; number ] =>
+        match ε, τ, α with
+        | [], [], [ self; number ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let number := M.alloc (| number |) in
@@ -3878,13 +4310,20 @@ Module db.
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "std::collections::hash::map::HashMap")
+                        []
                         [
-                          Ty.path "ruint::Uint";
-                          Ty.path "alloy_primitives::bits::fixed::FixedBytes";
+                          Ty.apply
+                            (Ty.path "ruint::Uint")
+                            [ Value.Integer 256; Value.Integer 4 ]
+                            [];
+                          Ty.apply
+                            (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                            [ Value.Integer 32 ]
+                            [];
                           Ty.path "std::hash::random::RandomState"
                         ],
                       "get",
-                      [ Ty.path "ruint::Uint" ]
+                      [ Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [] ]
                     |),
                     [
                       M.SubPointer.get_struct_record_field (|
@@ -3936,7 +4375,7 @@ Module db.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -3958,6 +4397,7 @@ Module db.
     (* StructRecord
       {
         name := "DbAccount";
+        const_params := [];
         ty_params := [];
         fields :=
           [
@@ -3966,9 +4406,10 @@ Module db.
             ("storage",
               Ty.apply
                 (Ty.path "std::collections::hash::map::HashMap")
+                []
                 [
-                  Ty.path "ruint::Uint";
-                  Ty.path "ruint::Uint";
+                  Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [];
+                  Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [];
                   Ty.path "std::hash::random::RandomState"
                 ])
           ];
@@ -3978,9 +4419,9 @@ Module db.
       Definition Self : Ty.t := Ty.path "revm::db::in_memory_db::DbAccount".
       
       (* Debug *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -4021,7 +4462,7 @@ Module db.
                   |))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -4036,9 +4477,9 @@ Module db.
       Definition Self : Ty.t := Ty.path "revm::db::in_memory_db::DbAccount".
       
       (* Clone *)
-      Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructRecord
@@ -4084,9 +4525,16 @@ Module db.
                       "core::clone::Clone",
                       Ty.apply
                         (Ty.path "std::collections::hash::map::HashMap")
+                        []
                         [
-                          Ty.path "ruint::Uint";
-                          Ty.path "ruint::Uint";
+                          Ty.apply
+                            (Ty.path "ruint::Uint")
+                            [ Value.Integer 256; Value.Integer 4 ]
+                            [];
+                          Ty.apply
+                            (Ty.path "ruint::Uint")
+                            [ Value.Integer 256; Value.Integer 4 ]
+                            [];
                           Ty.path "std::hash::random::RandomState"
                         ],
                       [],
@@ -4102,7 +4550,7 @@ Module db.
                     ]
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -4117,9 +4565,9 @@ Module db.
       Definition Self : Ty.t := Ty.path "revm::db::in_memory_db::DbAccount".
       
       (* Default *)
-      Definition default (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [] =>
+      Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [] =>
           ltac:(M.monadic
             (Value.StructRecord
               "revm::db::in_memory_db::DbAccount"
@@ -4152,9 +4600,16 @@ Module db.
                       "core::default::Default",
                       Ty.apply
                         (Ty.path "std::collections::hash::map::HashMap")
+                        []
                         [
-                          Ty.path "ruint::Uint";
-                          Ty.path "ruint::Uint";
+                          Ty.apply
+                            (Ty.path "ruint::Uint")
+                            [ Value.Integer 256; Value.Integer 4 ]
+                            [];
+                          Ty.apply
+                            (Ty.path "ruint::Uint")
+                            [ Value.Integer 256; Value.Integer 4 ]
+                            [];
                           Ty.path "std::hash::random::RandomState"
                         ],
                       [],
@@ -4164,7 +4619,7 @@ Module db.
                     []
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -4186,9 +4641,9 @@ Module db.
               }
           }
       *)
-      Definition new_not_existing (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [] =>
+      Definition new_not_existing (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [] =>
           ltac:(M.monadic
             (M.struct_record_update
               (M.call_closure (|
@@ -4205,7 +4660,7 @@ Module db.
                 ("account_state",
                   Value.StructTuple "revm::db::in_memory_db::AccountState::NotExisting" [])
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_new_not_existing :
@@ -4220,9 +4675,9 @@ Module db.
               }
           }
       *)
-      Definition info (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition info (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -4280,7 +4735,7 @@ Module db.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_info : M.IsAssociatedFunction Self "info" info.
@@ -4294,15 +4749,16 @@ Module db.
               from.map(Self::from).unwrap_or_else(Self::new_not_existing)
           }
       *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ from ] =>
+      Definition from (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ from ] =>
           ltac:(M.monadic
             (let from := M.alloc (| from |) in
             M.call_closure (|
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "core::option::Option")
+                  []
                   [ Ty.path "revm::db::in_memory_db::DbAccount" ],
                 "unwrap_or_else",
                 [ Ty.function [] (Ty.path "revm::db::in_memory_db::DbAccount") ]
@@ -4312,6 +4768,7 @@ Module db.
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "core::option::Option")
+                      []
                       [ Ty.path "revm_primitives::state::AccountInfo" ],
                     "map",
                     [
@@ -4339,7 +4796,7 @@ Module db.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -4351,6 +4808,7 @@ Module db.
             (* T *)
             Ty.apply
               (Ty.path "core::option::Option")
+              []
               [ Ty.path "revm_primitives::state::AccountInfo" ]
           ]
           (* Instance *) [ ("from", InstanceField.Method from) ].
@@ -4368,9 +4826,9 @@ Module db.
               }
           }
       *)
-      Definition from (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ info ] =>
+      Definition from (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ info ] =>
           ltac:(M.monadic
             (let info := M.alloc (| info |) in
             M.struct_record_update
@@ -4388,7 +4846,7 @@ Module db.
                 ("info", M.read (| info |));
                 ("account_state", Value.StructTuple "revm::db::in_memory_db::AccountState::None" [])
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -4402,6 +4860,7 @@ Module db.
     (*
     Enum AccountState
     {
+      const_params := [];
       ty_params := [];
       variants :=
         [
@@ -4433,9 +4892,9 @@ Module db.
       Definition Self : Ty.t := Ty.path "revm::db::in_memory_db::AccountState".
       
       (* Debug *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -4488,7 +4947,7 @@ Module db.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -4503,9 +4962,9 @@ Module db.
       Definition Self : Ty.t := Ty.path "revm::db::in_memory_db::AccountState".
       
       (* Clone *)
-      Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -4556,7 +5015,7 @@ Module db.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -4571,11 +5030,11 @@ Module db.
       Definition Self : Ty.t := Ty.path "revm::db::in_memory_db::AccountState".
       
       (* Default *)
-      Definition default (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [] =>
+      Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [] =>
           ltac:(M.monadic (Value.StructTuple "revm::db::in_memory_db::AccountState::None" []))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -4601,9 +5060,9 @@ Module db.
       Definition Self : Ty.t := Ty.path "revm::db::in_memory_db::AccountState".
       
       (* PartialEq *)
-      Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -4630,7 +5089,7 @@ Module db.
                 |) in
               M.alloc (| BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)) |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -4656,13 +5115,17 @@ Module db.
       Definition Self : Ty.t := Ty.path "revm::db::in_memory_db::AccountState".
       
       (* Eq *)
-      Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition assert_receiver_is_total_eq
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.Tuple []))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -4678,9 +5141,9 @@ Module db.
       Definition Self : Ty.t := Ty.path "revm::db::in_memory_db::AccountState".
       
       (* Hash *)
-      Definition hash (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ __H ], [ self; state ] =>
+      Definition hash (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ __H ], [ self; state ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
@@ -4702,7 +5165,7 @@ Module db.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -4721,9 +5184,9 @@ Module db.
               matches!(self, AccountState::StorageCleared)
           }
       *)
-      Definition is_storage_cleared (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition is_storage_cleared (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -4743,7 +5206,7 @@ Module db.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_is_storage_cleared :
@@ -4753,11 +5216,12 @@ Module db.
     (* StructTuple
       {
         name := "BenchmarkDB";
+        const_params := [];
         ty_params := [];
         fields :=
           [
             Ty.path "revm_primitives::bytecode::Bytecode";
-            Ty.path "alloy_primitives::bits::fixed::FixedBytes"
+            Ty.apply (Ty.path "alloy_primitives::bits::fixed::FixedBytes") [ Value.Integer 32 ] []
           ];
       } *)
     
@@ -4765,9 +5229,9 @@ Module db.
       Definition Self : Ty.t := Ty.path "revm::db::in_memory_db::BenchmarkDB".
       
       (* Debug *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -4798,7 +5262,7 @@ Module db.
                   |))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -4813,9 +5277,9 @@ Module db.
       Definition Self : Ty.t := Ty.path "revm::db::in_memory_db::BenchmarkDB".
       
       (* Default *)
-      Definition default (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [] =>
+      Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [] =>
           ltac:(M.monadic
             (Value.StructTuple
               "revm::db::in_memory_db::BenchmarkDB"
@@ -4833,7 +5297,10 @@ Module db.
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::default::Default",
-                    Ty.path "alloy_primitives::bits::fixed::FixedBytes",
+                    Ty.apply
+                      (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                      [ Value.Integer 32 ]
+                      [],
                     [],
                     "default",
                     []
@@ -4841,7 +5308,7 @@ Module db.
                   []
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -4856,9 +5323,9 @@ Module db.
       Definition Self : Ty.t := Ty.path "revm::db::in_memory_db::BenchmarkDB".
       
       (* Clone *)
-      Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -4883,7 +5350,10 @@ Module db.
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::clone::Clone",
-                    Ty.path "alloy_primitives::bits::fixed::FixedBytes",
+                    Ty.apply
+                      (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                      [ Value.Integer 32 ]
+                      [],
                     [],
                     "clone",
                     []
@@ -4897,7 +5367,7 @@ Module db.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -4917,9 +5387,9 @@ Module db.
               Self(bytecode, hash)
           }
       *)
-      Definition new_bytecode (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ bytecode ] =>
+      Definition new_bytecode (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ bytecode ] =>
           ltac:(M.monadic
             (let bytecode := M.alloc (| bytecode |) in
             M.read (|
@@ -4940,7 +5410,7 @@ Module db.
                   [ M.read (| bytecode |); M.read (| hash |) ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_new_bytecode :
@@ -4974,9 +5444,9 @@ Module db.
               Ok(None)
           }
       *)
-      Definition basic (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; address ] =>
+      Definition basic (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; address ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let address := M.alloc (| address |) in
@@ -5025,7 +5495,10 @@ Module db.
                                                 ("balance",
                                                   M.call_closure (|
                                                     M.get_associated_function (|
-                                                      Ty.path "ruint::Uint",
+                                                      Ty.apply
+                                                        (Ty.path "ruint::Uint")
+                                                        [ Value.Integer 256; Value.Integer 4 ]
+                                                        [],
                                                       "from",
                                                       [ Ty.path "i32" ]
                                                     |),
@@ -5122,7 +5595,10 @@ Module db.
                                                 ("balance",
                                                   M.call_closure (|
                                                     M.get_associated_function (|
-                                                      Ty.path "ruint::Uint",
+                                                      Ty.apply
+                                                        (Ty.path "ruint::Uint")
+                                                        [ Value.Integer 256; Value.Integer 4 ]
+                                                        [],
                                                       "from",
                                                       [ Ty.path "i32" ]
                                                     |),
@@ -5155,7 +5631,7 @@ Module db.
                   |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -5163,9 +5639,9 @@ Module db.
               Ok(Bytecode::default())
           }
       *)
-      Definition code_by_hash (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; _code_hash ] =>
+      Definition code_by_hash (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; _code_hash ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let _code_hash := M.alloc (| _code_hash |) in
@@ -5183,7 +5659,7 @@ Module db.
                   []
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -5191,9 +5667,9 @@ Module db.
               Ok(U256::default())
           }
       *)
-      Definition storage (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; _address; _index ] =>
+      Definition storage (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; _address; _index ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let _address := M.alloc (| _address |) in
@@ -5204,7 +5680,7 @@ Module db.
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::default::Default",
-                    Ty.path "ruint::Uint",
+                    Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [],
                     [],
                     "default",
                     []
@@ -5212,7 +5688,7 @@ Module db.
                   []
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -5220,9 +5696,9 @@ Module db.
               Ok(B256::default())
           }
       *)
-      Definition block_hash (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; _number ] =>
+      Definition block_hash (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; _number ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let _number := M.alloc (| _number |) in
@@ -5232,7 +5708,10 @@ Module db.
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::default::Default",
-                    Ty.path "alloy_primitives::bits::fixed::FixedBytes",
+                    Ty.apply
+                      (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                      [ Value.Integer 32 ]
+                      [],
                     [],
                     "default",
                     []
@@ -5240,7 +5719,7 @@ Module db.
                   []
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :

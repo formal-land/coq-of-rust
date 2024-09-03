@@ -36,12 +36,12 @@ fn main() {
     println!("CPU Manufacturer ID: {}", name);
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [] =>
+Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ name_buf := M.alloc (| repeat (Value.Integer 0) 12 |) in
+        let~ name_buf := M.alloc (| repeat (| Value.Integer 0, Value.Integer 12 |) |) in
         let~ _ :=
           let~ _ := InlineAssembly in
           M.alloc (| Value.Tuple [] |) in
@@ -51,7 +51,10 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "core::result::Result")
-                  [ Ty.apply (Ty.path "&") [ Ty.path "str" ]; Ty.path "core::str::error::Utf8Error"
+                  []
+                  [
+                    Ty.apply (Ty.path "&") [] [ Ty.path "str" ];
+                    Ty.path "core::str::error::Utf8Error"
                   ],
                 "unwrap",
                 []
@@ -92,7 +95,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::rt::Argument",
                                   "new_display",
-                                  [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                                 |),
                                 [ name ]
                               |)
@@ -106,7 +109,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (| Value.Tuple [] |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_main : M.IsFunction "inline_assembly_clobbered_registers::main" main.

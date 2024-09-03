@@ -6,9 +6,10 @@ Module future.
     (* StructRecord
       {
         name := "Pending";
+        const_params := [];
         ty_params := [ "T" ];
         fields :=
-          [ ("_data", Ty.apply (Ty.path "core::marker::PhantomData") [ Ty.function [] T ]) ];
+          [ ("_data", Ty.apply (Ty.path "core::marker::PhantomData") [] [ Ty.function [] T ]) ];
       } *)
     
     (*
@@ -16,21 +17,21 @@ Module future.
         Pending { _data: marker::PhantomData }
     }
     *)
-    Definition pending (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ T ], [] =>
+    Definition pending (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ T ], [] =>
         ltac:(M.monadic
           (Value.StructRecord
             "core::future::pending::Pending"
             [ ("_data", Value.StructTuple "core::marker::PhantomData" []) ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_pending : M.IsFunction "core::future::pending::pending" pending.
     
     Module Impl_core_future_future_Future_for_core_future_pending_Pending_T.
       Definition Self (T : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::future::pending::Pending") [ T ].
+        Ty.apply (Ty.path "core::future::pending::Pending") [] [ T ].
       
       (*     type Output = T; *)
       Definition _Output (T : Ty.t) : Ty.t := T.
@@ -40,10 +41,10 @@ Module future.
               Poll::Pending
           }
       *)
-      Definition poll (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition poll (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self; β1 ] =>
+        match ε, τ, α with
+        | [], [], [ self; β1 ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let β1 := M.alloc (| β1 |) in
@@ -51,7 +52,7 @@ Module future.
               β1,
               [ fun γ => ltac:(M.monadic (Value.StructTuple "core::task::poll::Poll::Pending" [])) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -66,17 +67,17 @@ Module future.
     
     Module Impl_core_fmt_Debug_for_core_future_pending_Pending_T.
       Definition Self (T : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::future::pending::Pending") [ T ].
+        Ty.apply (Ty.path "core::future::pending::Pending") [] [ T ].
       
       (*
           fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
               f.debug_struct("Pending").finish()
           }
       *)
-      Definition fmt (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self; f ] =>
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -99,7 +100,7 @@ Module future.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -113,21 +114,21 @@ Module future.
     
     Module Impl_core_clone_Clone_for_core_future_pending_Pending_T.
       Definition Self (T : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::future::pending::Pending") [ T ].
+        Ty.apply (Ty.path "core::future::pending::Pending") [] [ T ].
       
       (*
           fn clone(&self) -> Self {
               pending()
           }
       *)
-      Definition clone (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition clone (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (| M.get_function (| "core::future::pending::pending", [ T ] |), [] |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :

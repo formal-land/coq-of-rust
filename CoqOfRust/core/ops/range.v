@@ -6,6 +6,7 @@ Module ops.
     (* StructTuple
       {
         name := "RangeFull";
+        const_params := [];
         ty_params := [];
         fields := [];
       } *)
@@ -25,13 +26,13 @@ Module ops.
       Definition Self : Ty.t := Ty.path "core::ops::range::RangeFull".
       
       (* Clone *)
-      Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (| M.read (| self |) |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -46,10 +47,10 @@ Module ops.
       Definition Self : Ty.t := Ty.path "core::ops::range::RangeFull".
       
       (* Default *)
-      Definition default (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [] => ltac:(M.monadic (Value.StructTuple "core::ops::range::RangeFull" []))
-        | _, _ => M.impossible
+      Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [] => ltac:(M.monadic (Value.StructTuple "core::ops::range::RangeFull" []))
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -75,14 +76,14 @@ Module ops.
       Definition Self : Ty.t := Ty.path "core::ops::range::RangeFull".
       
       (* PartialEq *)
-      Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             Value.Bool true))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -108,13 +109,17 @@ Module ops.
       Definition Self : Ty.t := Ty.path "core::ops::range::RangeFull".
       
       (* Eq *)
-      Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition assert_receiver_is_total_eq
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.Tuple []))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -130,14 +135,14 @@ Module ops.
       Definition Self : Ty.t := Ty.path "core::ops::range::RangeFull".
       
       (* Hash *)
-      Definition hash (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ __H ], [ self; state ] =>
+      Definition hash (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ __H ], [ self; state ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
             Value.Tuple []))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -156,9 +161,9 @@ Module ops.
               write!(fmt, "..")
           }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; fmt ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; fmt ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let fmt := M.alloc (| fmt |) in
@@ -176,7 +181,7 @@ Module ops.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -190,18 +195,20 @@ Module ops.
     (* StructRecord
       {
         name := "Range";
+        const_params := [];
         ty_params := [ "Idx" ];
         fields := [ ("start", Idx); ("end_", Idx) ];
       } *)
     
     Module Impl_core_clone_Clone_where_core_clone_Clone_Idx_for_core_ops_range_Range_Idx.
-      Definition Self (Idx : Ty.t) : Ty.t := Ty.apply (Ty.path "core::ops::range::Range") [ Idx ].
+      Definition Self (Idx : Ty.t) : Ty.t :=
+        Ty.apply (Ty.path "core::ops::range::Range") [] [ Idx ].
       
       (* Clone *)
-      Definition clone (Idx : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition clone (Idx : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self Idx in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructRecord
@@ -230,7 +237,7 @@ Module ops.
                     ]
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -243,13 +250,14 @@ Module ops.
     End Impl_core_clone_Clone_where_core_clone_Clone_Idx_for_core_ops_range_Range_Idx.
     
     Module Impl_core_default_Default_where_core_default_Default_Idx_for_core_ops_range_Range_Idx.
-      Definition Self (Idx : Ty.t) : Ty.t := Ty.apply (Ty.path "core::ops::range::Range") [ Idx ].
+      Definition Self (Idx : Ty.t) : Ty.t :=
+        Ty.apply (Ty.path "core::ops::range::Range") [] [ Idx ].
       
       (* Default *)
-      Definition default (Idx : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition default (Idx : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self Idx in
-        match τ, α with
-        | [], [] =>
+        match ε, τ, α with
+        | [], [], [] =>
           ltac:(M.monadic
             (Value.StructRecord
               "core::ops::range::Range"
@@ -265,7 +273,7 @@ Module ops.
                     []
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -278,7 +286,8 @@ Module ops.
     End Impl_core_default_Default_where_core_default_Default_Idx_for_core_ops_range_Range_Idx.
     
     Module Impl_core_marker_StructuralPartialEq_for_core_ops_range_Range_Idx.
-      Definition Self (Idx : Ty.t) : Ty.t := Ty.apply (Ty.path "core::ops::range::Range") [ Idx ].
+      Definition Self (Idx : Ty.t) : Ty.t :=
+        Ty.apply (Ty.path "core::ops::range::Range") [] [ Idx ].
       
       Axiom Implements :
         forall (Idx : Ty.t),
@@ -290,13 +299,14 @@ Module ops.
     End Impl_core_marker_StructuralPartialEq_for_core_ops_range_Range_Idx.
     
     Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_Idx_for_core_ops_range_Range_Idx.
-      Definition Self (Idx : Ty.t) : Ty.t := Ty.apply (Ty.path "core::ops::range::Range") [ Idx ].
+      Definition Self (Idx : Ty.t) : Ty.t :=
+        Ty.apply (Ty.path "core::ops::range::Range") [] [ Idx ].
       
       (* PartialEq *)
-      Definition eq (Idx : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition eq (Idx : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self Idx in
-        match τ, α with
-        | [], [ self; other ] =>
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -333,7 +343,7 @@ Module ops.
                   ]
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -346,7 +356,8 @@ Module ops.
     End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_Idx_for_core_ops_range_Range_Idx.
     
     Module Impl_core_marker_StructuralEq_for_core_ops_range_Range_Idx.
-      Definition Self (Idx : Ty.t) : Ty.t := Ty.apply (Ty.path "core::ops::range::Range") [ Idx ].
+      Definition Self (Idx : Ty.t) : Ty.t :=
+        Ty.apply (Ty.path "core::ops::range::Range") [] [ Idx ].
       
       Axiom Implements :
         forall (Idx : Ty.t),
@@ -358,13 +369,19 @@ Module ops.
     End Impl_core_marker_StructuralEq_for_core_ops_range_Range_Idx.
     
     Module Impl_core_cmp_Eq_where_core_cmp_Eq_Idx_for_core_ops_range_Range_Idx.
-      Definition Self (Idx : Ty.t) : Ty.t := Ty.apply (Ty.path "core::ops::range::Range") [ Idx ].
+      Definition Self (Idx : Ty.t) : Ty.t :=
+        Ty.apply (Ty.path "core::ops::range::Range") [] [ Idx ].
       
       (* Eq *)
-      Definition assert_receiver_is_total_eq (Idx : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition assert_receiver_is_total_eq
+          (Idx : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self Idx in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -373,7 +390,7 @@ Module ops.
                 [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -388,13 +405,14 @@ Module ops.
     End Impl_core_cmp_Eq_where_core_cmp_Eq_Idx_for_core_ops_range_Range_Idx.
     
     Module Impl_core_hash_Hash_where_core_hash_Hash_Idx_for_core_ops_range_Range_Idx.
-      Definition Self (Idx : Ty.t) : Ty.t := Ty.apply (Ty.path "core::ops::range::Range") [ Idx ].
+      Definition Self (Idx : Ty.t) : Ty.t :=
+        Ty.apply (Ty.path "core::ops::range::Range") [] [ Idx ].
       
       (* Hash *)
-      Definition hash (Idx : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition hash (Idx : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self Idx in
-        match τ, α with
-        | [ __H ], [ self; state ] =>
+        match ε, τ, α with
+        | [], [ __H ], [ self; state ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
@@ -427,7 +445,7 @@ Module ops.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -440,7 +458,8 @@ Module ops.
     End Impl_core_hash_Hash_where_core_hash_Hash_Idx_for_core_ops_range_Range_Idx.
     
     Module Impl_core_fmt_Debug_where_core_fmt_Debug_Idx_for_core_ops_range_Range_Idx.
-      Definition Self (Idx : Ty.t) : Ty.t := Ty.apply (Ty.path "core::ops::range::Range") [ Idx ].
+      Definition Self (Idx : Ty.t) : Ty.t :=
+        Ty.apply (Ty.path "core::ops::range::Range") [] [ Idx ].
       
       (*
           fn fmt(&self, fmt: &mut fmt::Formatter<'_>) -> fmt::Result {
@@ -450,10 +469,10 @@ Module ops.
               Ok(())
           }
       *)
-      Definition fmt (Idx : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (Idx : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self Idx in
-        match τ, α with
-        | [], [ self; fmt ] =>
+        match ε, τ, α with
+        | [], [], [ self; fmt ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let fmt := M.alloc (| fmt |) in
@@ -468,6 +487,7 @@ Module ops.
                             "core::ops::try_trait::Try",
                             Ty.apply
                               (Ty.path "core::result::Result")
+                              []
                               [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                             [],
                             "branch",
@@ -507,10 +527,12 @@ Module ops.
                                         "core::ops::try_trait::FromResidual",
                                         Ty.apply
                                           (Ty.path "core::result::Result")
+                                          []
                                           [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                         [
                                           Ty.apply
                                             (Ty.path "core::result::Result")
+                                            []
                                             [
                                               Ty.path "core::convert::Infallible";
                                               Ty.path "core::fmt::Error"
@@ -545,6 +567,7 @@ Module ops.
                             "core::ops::try_trait::Try",
                             Ty.apply
                               (Ty.path "core::result::Result")
+                              []
                               [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                             [],
                             "branch",
@@ -595,10 +618,12 @@ Module ops.
                                         "core::ops::try_trait::FromResidual",
                                         Ty.apply
                                           (Ty.path "core::result::Result")
+                                          []
                                           [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                         [
                                           Ty.apply
                                             (Ty.path "core::result::Result")
+                                            []
                                             [
                                               Ty.path "core::convert::Infallible";
                                               Ty.path "core::fmt::Error"
@@ -633,6 +658,7 @@ Module ops.
                             "core::ops::try_trait::Try",
                             Ty.apply
                               (Ty.path "core::result::Result")
+                              []
                               [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                             [],
                             "branch",
@@ -672,10 +698,12 @@ Module ops.
                                         "core::ops::try_trait::FromResidual",
                                         Ty.apply
                                           (Ty.path "core::result::Result")
+                                          []
                                           [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                         [
                                           Ty.apply
                                             (Ty.path "core::result::Result")
+                                            []
                                             [
                                               Ty.path "core::convert::Infallible";
                                               Ty.path "core::fmt::Error"
@@ -705,7 +733,7 @@ Module ops.
                   M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -718,7 +746,8 @@ Module ops.
     End Impl_core_fmt_Debug_where_core_fmt_Debug_Idx_for_core_ops_range_Range_Idx.
     
     Module Impl_core_ops_range_Range_Idx.
-      Definition Self (Idx : Ty.t) : Ty.t := Ty.apply (Ty.path "core::ops::range::Range") [ Idx ].
+      Definition Self (Idx : Ty.t) : Ty.t :=
+        Ty.apply (Ty.path "core::ops::range::Range") [] [ Idx ].
       
       (*
           pub fn contains<U>(&self, item: &U) -> bool
@@ -729,24 +758,24 @@ Module ops.
               <Self as RangeBounds<Idx>>::contains(self, item)
           }
       *)
-      Definition contains (Idx : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition contains (Idx : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self Idx in
-        match τ, α with
-        | [ U ], [ self; item ] =>
+        match ε, τ, α with
+        | [], [ U ], [ self; item ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let item := M.alloc (| item |) in
             M.call_closure (|
               M.get_trait_method (|
                 "core::ops::range::RangeBounds",
-                Ty.apply (Ty.path "core::ops::range::Range") [ Idx ],
+                Ty.apply (Ty.path "core::ops::range::Range") [] [ Idx ],
                 [ Idx ],
                 "contains",
                 [ U ]
               |),
               [ M.read (| self |); M.read (| item |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_contains :
@@ -758,10 +787,10 @@ Module ops.
               !(self.start < self.end)
           }
       *)
-      Definition is_empty (Idx : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_empty (Idx : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self Idx in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             UnOp.Pure.not
@@ -780,7 +809,7 @@ Module ops.
                   |)
                 ]
               |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_is_empty :
@@ -791,19 +820,20 @@ Module ops.
     (* StructRecord
       {
         name := "RangeFrom";
+        const_params := [];
         ty_params := [ "Idx" ];
         fields := [ ("start", Idx) ];
       } *)
     
     Module Impl_core_clone_Clone_where_core_clone_Clone_Idx_for_core_ops_range_RangeFrom_Idx.
       Definition Self (Idx : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::ops::range::RangeFrom") [ Idx ].
+        Ty.apply (Ty.path "core::ops::range::RangeFrom") [] [ Idx ].
       
       (* Clone *)
-      Definition clone (Idx : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition clone (Idx : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self Idx in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructRecord
@@ -821,7 +851,7 @@ Module ops.
                     ]
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -835,7 +865,7 @@ Module ops.
     
     Module Impl_core_marker_StructuralPartialEq_for_core_ops_range_RangeFrom_Idx.
       Definition Self (Idx : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::ops::range::RangeFrom") [ Idx ].
+        Ty.apply (Ty.path "core::ops::range::RangeFrom") [] [ Idx ].
       
       Axiom Implements :
         forall (Idx : Ty.t),
@@ -848,13 +878,13 @@ Module ops.
     
     Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_Idx_for_core_ops_range_RangeFrom_Idx.
       Definition Self (Idx : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::ops::range::RangeFrom") [ Idx ].
+        Ty.apply (Ty.path "core::ops::range::RangeFrom") [] [ Idx ].
       
       (* PartialEq *)
-      Definition eq (Idx : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition eq (Idx : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self Idx in
-        match τ, α with
-        | [], [ self; other ] =>
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -873,7 +903,7 @@ Module ops.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -887,7 +917,7 @@ Module ops.
     
     Module Impl_core_marker_StructuralEq_for_core_ops_range_RangeFrom_Idx.
       Definition Self (Idx : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::ops::range::RangeFrom") [ Idx ].
+        Ty.apply (Ty.path "core::ops::range::RangeFrom") [] [ Idx ].
       
       Axiom Implements :
         forall (Idx : Ty.t),
@@ -900,13 +930,18 @@ Module ops.
     
     Module Impl_core_cmp_Eq_where_core_cmp_Eq_Idx_for_core_ops_range_RangeFrom_Idx.
       Definition Self (Idx : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::ops::range::RangeFrom") [ Idx ].
+        Ty.apply (Ty.path "core::ops::range::RangeFrom") [] [ Idx ].
       
       (* Eq *)
-      Definition assert_receiver_is_total_eq (Idx : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition assert_receiver_is_total_eq
+          (Idx : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self Idx in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -915,7 +950,7 @@ Module ops.
                 [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -931,13 +966,13 @@ Module ops.
     
     Module Impl_core_hash_Hash_where_core_hash_Hash_Idx_for_core_ops_range_RangeFrom_Idx.
       Definition Self (Idx : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::ops::range::RangeFrom") [ Idx ].
+        Ty.apply (Ty.path "core::ops::range::RangeFrom") [] [ Idx ].
       
       (* Hash *)
-      Definition hash (Idx : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition hash (Idx : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self Idx in
-        match τ, α with
-        | [ __H ], [ self; state ] =>
+        match ε, τ, α with
+        | [], [ __H ], [ self; state ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
@@ -952,7 +987,7 @@ Module ops.
                 M.read (| state |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -966,7 +1001,7 @@ Module ops.
     
     Module Impl_core_fmt_Debug_where_core_fmt_Debug_Idx_for_core_ops_range_RangeFrom_Idx.
       Definition Self (Idx : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::ops::range::RangeFrom") [ Idx ].
+        Ty.apply (Ty.path "core::ops::range::RangeFrom") [] [ Idx ].
       
       (*
           fn fmt(&self, fmt: &mut fmt::Formatter<'_>) -> fmt::Result {
@@ -975,10 +1010,10 @@ Module ops.
               Ok(())
           }
       *)
-      Definition fmt (Idx : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (Idx : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self Idx in
-        match τ, α with
-        | [], [ self; fmt ] =>
+        match ε, τ, α with
+        | [], [], [ self; fmt ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let fmt := M.alloc (| fmt |) in
@@ -993,6 +1028,7 @@ Module ops.
                             "core::ops::try_trait::Try",
                             Ty.apply
                               (Ty.path "core::result::Result")
+                              []
                               [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                             [],
                             "branch",
@@ -1032,10 +1068,12 @@ Module ops.
                                         "core::ops::try_trait::FromResidual",
                                         Ty.apply
                                           (Ty.path "core::result::Result")
+                                          []
                                           [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                         [
                                           Ty.apply
                                             (Ty.path "core::result::Result")
+                                            []
                                             [
                                               Ty.path "core::convert::Infallible";
                                               Ty.path "core::fmt::Error"
@@ -1070,6 +1108,7 @@ Module ops.
                             "core::ops::try_trait::Try",
                             Ty.apply
                               (Ty.path "core::result::Result")
+                              []
                               [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                             [],
                             "branch",
@@ -1120,10 +1159,12 @@ Module ops.
                                         "core::ops::try_trait::FromResidual",
                                         Ty.apply
                                           (Ty.path "core::result::Result")
+                                          []
                                           [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                         [
                                           Ty.apply
                                             (Ty.path "core::result::Result")
+                                            []
                                             [
                                               Ty.path "core::convert::Infallible";
                                               Ty.path "core::fmt::Error"
@@ -1153,7 +1194,7 @@ Module ops.
                   M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1167,7 +1208,7 @@ Module ops.
     
     Module Impl_core_ops_range_RangeFrom_Idx.
       Definition Self (Idx : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::ops::range::RangeFrom") [ Idx ].
+        Ty.apply (Ty.path "core::ops::range::RangeFrom") [] [ Idx ].
       
       (*
           pub fn contains<U>(&self, item: &U) -> bool
@@ -1178,24 +1219,24 @@ Module ops.
               <Self as RangeBounds<Idx>>::contains(self, item)
           }
       *)
-      Definition contains (Idx : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition contains (Idx : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self Idx in
-        match τ, α with
-        | [ U ], [ self; item ] =>
+        match ε, τ, α with
+        | [], [ U ], [ self; item ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let item := M.alloc (| item |) in
             M.call_closure (|
               M.get_trait_method (|
                 "core::ops::range::RangeBounds",
-                Ty.apply (Ty.path "core::ops::range::RangeFrom") [ Idx ],
+                Ty.apply (Ty.path "core::ops::range::RangeFrom") [] [ Idx ],
                 [ Idx ],
                 "contains",
                 [ U ]
               |),
               [ M.read (| self |); M.read (| item |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_contains :
@@ -1206,12 +1247,14 @@ Module ops.
     (* StructRecord
       {
         name := "RangeTo";
+        const_params := [];
         ty_params := [ "Idx" ];
         fields := [ ("end_", Idx) ];
       } *)
     
     Module Impl_core_marker_Copy_where_core_marker_Copy_Idx_for_core_ops_range_RangeTo_Idx.
-      Definition Self (Idx : Ty.t) : Ty.t := Ty.apply (Ty.path "core::ops::range::RangeTo") [ Idx ].
+      Definition Self (Idx : Ty.t) : Ty.t :=
+        Ty.apply (Ty.path "core::ops::range::RangeTo") [] [ Idx ].
       
       Axiom Implements :
         forall (Idx : Ty.t),
@@ -1223,13 +1266,14 @@ Module ops.
     End Impl_core_marker_Copy_where_core_marker_Copy_Idx_for_core_ops_range_RangeTo_Idx.
     
     Module Impl_core_clone_Clone_where_core_clone_Clone_Idx_for_core_ops_range_RangeTo_Idx.
-      Definition Self (Idx : Ty.t) : Ty.t := Ty.apply (Ty.path "core::ops::range::RangeTo") [ Idx ].
+      Definition Self (Idx : Ty.t) : Ty.t :=
+        Ty.apply (Ty.path "core::ops::range::RangeTo") [] [ Idx ].
       
       (* Clone *)
-      Definition clone (Idx : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition clone (Idx : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self Idx in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructRecord
@@ -1247,7 +1291,7 @@ Module ops.
                     ]
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1260,7 +1304,8 @@ Module ops.
     End Impl_core_clone_Clone_where_core_clone_Clone_Idx_for_core_ops_range_RangeTo_Idx.
     
     Module Impl_core_marker_StructuralPartialEq_for_core_ops_range_RangeTo_Idx.
-      Definition Self (Idx : Ty.t) : Ty.t := Ty.apply (Ty.path "core::ops::range::RangeTo") [ Idx ].
+      Definition Self (Idx : Ty.t) : Ty.t :=
+        Ty.apply (Ty.path "core::ops::range::RangeTo") [] [ Idx ].
       
       Axiom Implements :
         forall (Idx : Ty.t),
@@ -1272,13 +1317,14 @@ Module ops.
     End Impl_core_marker_StructuralPartialEq_for_core_ops_range_RangeTo_Idx.
     
     Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_Idx_for_core_ops_range_RangeTo_Idx.
-      Definition Self (Idx : Ty.t) : Ty.t := Ty.apply (Ty.path "core::ops::range::RangeTo") [ Idx ].
+      Definition Self (Idx : Ty.t) : Ty.t :=
+        Ty.apply (Ty.path "core::ops::range::RangeTo") [] [ Idx ].
       
       (* PartialEq *)
-      Definition eq (Idx : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition eq (Idx : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self Idx in
-        match τ, α with
-        | [], [ self; other ] =>
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -1297,7 +1343,7 @@ Module ops.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1310,7 +1356,8 @@ Module ops.
     End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_Idx_for_core_ops_range_RangeTo_Idx.
     
     Module Impl_core_marker_StructuralEq_for_core_ops_range_RangeTo_Idx.
-      Definition Self (Idx : Ty.t) : Ty.t := Ty.apply (Ty.path "core::ops::range::RangeTo") [ Idx ].
+      Definition Self (Idx : Ty.t) : Ty.t :=
+        Ty.apply (Ty.path "core::ops::range::RangeTo") [] [ Idx ].
       
       Axiom Implements :
         forall (Idx : Ty.t),
@@ -1322,13 +1369,19 @@ Module ops.
     End Impl_core_marker_StructuralEq_for_core_ops_range_RangeTo_Idx.
     
     Module Impl_core_cmp_Eq_where_core_cmp_Eq_Idx_for_core_ops_range_RangeTo_Idx.
-      Definition Self (Idx : Ty.t) : Ty.t := Ty.apply (Ty.path "core::ops::range::RangeTo") [ Idx ].
+      Definition Self (Idx : Ty.t) : Ty.t :=
+        Ty.apply (Ty.path "core::ops::range::RangeTo") [] [ Idx ].
       
       (* Eq *)
-      Definition assert_receiver_is_total_eq (Idx : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition assert_receiver_is_total_eq
+          (Idx : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self Idx in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -1337,7 +1390,7 @@ Module ops.
                 [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1352,13 +1405,14 @@ Module ops.
     End Impl_core_cmp_Eq_where_core_cmp_Eq_Idx_for_core_ops_range_RangeTo_Idx.
     
     Module Impl_core_hash_Hash_where_core_hash_Hash_Idx_for_core_ops_range_RangeTo_Idx.
-      Definition Self (Idx : Ty.t) : Ty.t := Ty.apply (Ty.path "core::ops::range::RangeTo") [ Idx ].
+      Definition Self (Idx : Ty.t) : Ty.t :=
+        Ty.apply (Ty.path "core::ops::range::RangeTo") [] [ Idx ].
       
       (* Hash *)
-      Definition hash (Idx : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition hash (Idx : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self Idx in
-        match τ, α with
-        | [ __H ], [ self; state ] =>
+        match ε, τ, α with
+        | [], [ __H ], [ self; state ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
@@ -1373,7 +1427,7 @@ Module ops.
                 M.read (| state |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1386,7 +1440,8 @@ Module ops.
     End Impl_core_hash_Hash_where_core_hash_Hash_Idx_for_core_ops_range_RangeTo_Idx.
     
     Module Impl_core_fmt_Debug_where_core_fmt_Debug_Idx_for_core_ops_range_RangeTo_Idx.
-      Definition Self (Idx : Ty.t) : Ty.t := Ty.apply (Ty.path "core::ops::range::RangeTo") [ Idx ].
+      Definition Self (Idx : Ty.t) : Ty.t :=
+        Ty.apply (Ty.path "core::ops::range::RangeTo") [] [ Idx ].
       
       (*
           fn fmt(&self, fmt: &mut fmt::Formatter<'_>) -> fmt::Result {
@@ -1395,10 +1450,10 @@ Module ops.
               Ok(())
           }
       *)
-      Definition fmt (Idx : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (Idx : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self Idx in
-        match τ, α with
-        | [], [ self; fmt ] =>
+        match ε, τ, α with
+        | [], [], [ self; fmt ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let fmt := M.alloc (| fmt |) in
@@ -1413,6 +1468,7 @@ Module ops.
                             "core::ops::try_trait::Try",
                             Ty.apply
                               (Ty.path "core::result::Result")
+                              []
                               [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                             [],
                             "branch",
@@ -1463,10 +1519,12 @@ Module ops.
                                         "core::ops::try_trait::FromResidual",
                                         Ty.apply
                                           (Ty.path "core::result::Result")
+                                          []
                                           [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                         [
                                           Ty.apply
                                             (Ty.path "core::result::Result")
+                                            []
                                             [
                                               Ty.path "core::convert::Infallible";
                                               Ty.path "core::fmt::Error"
@@ -1501,6 +1559,7 @@ Module ops.
                             "core::ops::try_trait::Try",
                             Ty.apply
                               (Ty.path "core::result::Result")
+                              []
                               [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                             [],
                             "branch",
@@ -1540,10 +1599,12 @@ Module ops.
                                         "core::ops::try_trait::FromResidual",
                                         Ty.apply
                                           (Ty.path "core::result::Result")
+                                          []
                                           [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                         [
                                           Ty.apply
                                             (Ty.path "core::result::Result")
+                                            []
                                             [
                                               Ty.path "core::convert::Infallible";
                                               Ty.path "core::fmt::Error"
@@ -1573,7 +1634,7 @@ Module ops.
                   M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1586,7 +1647,8 @@ Module ops.
     End Impl_core_fmt_Debug_where_core_fmt_Debug_Idx_for_core_ops_range_RangeTo_Idx.
     
     Module Impl_core_ops_range_RangeTo_Idx.
-      Definition Self (Idx : Ty.t) : Ty.t := Ty.apply (Ty.path "core::ops::range::RangeTo") [ Idx ].
+      Definition Self (Idx : Ty.t) : Ty.t :=
+        Ty.apply (Ty.path "core::ops::range::RangeTo") [] [ Idx ].
       
       (*
           pub fn contains<U>(&self, item: &U) -> bool
@@ -1597,24 +1659,24 @@ Module ops.
               <Self as RangeBounds<Idx>>::contains(self, item)
           }
       *)
-      Definition contains (Idx : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition contains (Idx : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self Idx in
-        match τ, α with
-        | [ U ], [ self; item ] =>
+        match ε, τ, α with
+        | [], [ U ], [ self; item ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let item := M.alloc (| item |) in
             M.call_closure (|
               M.get_trait_method (|
                 "core::ops::range::RangeBounds",
-                Ty.apply (Ty.path "core::ops::range::RangeTo") [ Idx ],
+                Ty.apply (Ty.path "core::ops::range::RangeTo") [] [ Idx ],
                 [ Idx ],
                 "contains",
                 [ U ]
               |),
               [ M.read (| self |); M.read (| item |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_contains :
@@ -1625,19 +1687,20 @@ Module ops.
     (* StructRecord
       {
         name := "RangeInclusive";
+        const_params := [];
         ty_params := [ "Idx" ];
         fields := [ ("start", Idx); ("end_", Idx); ("exhausted", Ty.path "bool") ];
       } *)
     
     Module Impl_core_clone_Clone_where_core_clone_Clone_Idx_for_core_ops_range_RangeInclusive_Idx.
       Definition Self (Idx : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::ops::range::RangeInclusive") [ Idx ].
+        Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ Idx ].
       
       (* Clone *)
-      Definition clone (Idx : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition clone (Idx : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self Idx in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructRecord
@@ -1677,7 +1740,7 @@ Module ops.
                     ]
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1691,7 +1754,7 @@ Module ops.
     
     Module Impl_core_marker_StructuralPartialEq_for_core_ops_range_RangeInclusive_Idx.
       Definition Self (Idx : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::ops::range::RangeInclusive") [ Idx ].
+        Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ Idx ].
       
       Axiom Implements :
         forall (Idx : Ty.t),
@@ -1704,13 +1767,13 @@ Module ops.
     
     Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_Idx_for_core_ops_range_RangeInclusive_Idx.
       Definition Self (Idx : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::ops::range::RangeInclusive") [ Idx ].
+        Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ Idx ].
       
       (* PartialEq *)
-      Definition eq (Idx : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition eq (Idx : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self Idx in
-        match τ, α with
-        | [], [ self; other ] =>
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -1765,7 +1828,7 @@ Module ops.
                     |)
                   |))))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1779,7 +1842,7 @@ Module ops.
     
     Module Impl_core_marker_StructuralEq_for_core_ops_range_RangeInclusive_Idx.
       Definition Self (Idx : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::ops::range::RangeInclusive") [ Idx ].
+        Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ Idx ].
       
       Axiom Implements :
         forall (Idx : Ty.t),
@@ -1792,13 +1855,18 @@ Module ops.
     
     Module Impl_core_cmp_Eq_where_core_cmp_Eq_Idx_for_core_ops_range_RangeInclusive_Idx.
       Definition Self (Idx : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::ops::range::RangeInclusive") [ Idx ].
+        Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ Idx ].
       
       (* Eq *)
-      Definition assert_receiver_is_total_eq (Idx : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition assert_receiver_is_total_eq
+          (Idx : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self Idx in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -1814,7 +1882,7 @@ Module ops.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1830,13 +1898,13 @@ Module ops.
     
     Module Impl_core_hash_Hash_where_core_hash_Hash_Idx_for_core_ops_range_RangeInclusive_Idx.
       Definition Self (Idx : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::ops::range::RangeInclusive") [ Idx ].
+        Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ Idx ].
       
       (* Hash *)
-      Definition hash (Idx : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition hash (Idx : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self Idx in
-        match τ, α with
-        | [ __H ], [ self; state ] =>
+        match ε, τ, α with
+        | [], [ __H ], [ self; state ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
@@ -1883,7 +1951,7 @@ Module ops.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1897,17 +1965,17 @@ Module ops.
     
     Module Impl_core_ops_range_RangeInclusive_Idx.
       Definition Self (Idx : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::ops::range::RangeInclusive") [ Idx ].
+        Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ Idx ].
       
       (*
           pub const fn new(start: Idx, end: Idx) -> Self {
               Self { start, end, exhausted: false }
           }
       *)
-      Definition new (Idx : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition new (Idx : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self Idx in
-        match τ, α with
-        | [], [ start; end_ ] =>
+        match ε, τ, α with
+        | [ host ], [], [ start; end_ ] =>
           ltac:(M.monadic
             (let start := M.alloc (| start |) in
             let end_ := M.alloc (| end_ |) in
@@ -1918,7 +1986,7 @@ Module ops.
                 ("end_", M.read (| end_ |));
                 ("exhausted", Value.Bool false)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_new :
@@ -1930,10 +1998,10 @@ Module ops.
               &self.start
           }
       *)
-      Definition start (Idx : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition start (Idx : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self Idx in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.SubPointer.get_struct_record_field (|
@@ -1941,7 +2009,7 @@ Module ops.
               "core::ops::range::RangeInclusive",
               "start"
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_start :
@@ -1953,10 +2021,10 @@ Module ops.
               &self.end
           }
       *)
-      Definition end_ (Idx : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition end_ (Idx : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self Idx in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.SubPointer.get_struct_record_field (|
@@ -1964,7 +2032,7 @@ Module ops.
               "core::ops::range::RangeInclusive",
               "end"
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_end_ :
@@ -1976,10 +2044,15 @@ Module ops.
               (self.start, self.end)
           }
       *)
-      Definition into_inner (Idx : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition into_inner
+          (Idx : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self Idx in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.Tuple
@@ -1999,7 +2072,7 @@ Module ops.
                   |)
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_into_inner :
@@ -2014,24 +2087,24 @@ Module ops.
               <Self as RangeBounds<Idx>>::contains(self, item)
           }
       *)
-      Definition contains (Idx : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition contains (Idx : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self Idx in
-        match τ, α with
-        | [ U ], [ self; item ] =>
+        match ε, τ, α with
+        | [], [ U ], [ self; item ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let item := M.alloc (| item |) in
             M.call_closure (|
               M.get_trait_method (|
                 "core::ops::range::RangeBounds",
-                Ty.apply (Ty.path "core::ops::range::RangeInclusive") [ Idx ],
+                Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ Idx ],
                 [ Idx ],
                 "contains",
                 [ U ]
               |),
               [ M.read (| self |); M.read (| item |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_contains :
@@ -2043,10 +2116,10 @@ Module ops.
               self.exhausted || !(self.start <= self.end)
           }
       *)
-      Definition is_empty (Idx : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_empty (Idx : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self Idx in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             LogicalOp.or (|
@@ -2075,7 +2148,7 @@ Module ops.
                     ]
                   |))))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_is_empty :
@@ -2085,7 +2158,7 @@ Module ops.
     
     Module Impl_core_ops_range_RangeInclusive_usize.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::ops::range::RangeInclusive") [ Ty.path "usize" ].
+        Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ Ty.path "usize" ].
       
       (*
           pub(crate) const fn into_slice_range(self) -> Range<usize> {
@@ -2097,9 +2170,9 @@ Module ops.
               start..exclusive_end
           }
       *)
-      Definition into_slice_range (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition into_slice_range (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -2149,7 +2222,7 @@ Module ops.
                   [ ("start", M.read (| start |)); ("end_", M.read (| exclusive_end |)) ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_into_slice_range :
@@ -2158,7 +2231,7 @@ Module ops.
     
     Module Impl_core_fmt_Debug_where_core_fmt_Debug_Idx_for_core_ops_range_RangeInclusive_Idx.
       Definition Self (Idx : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::ops::range::RangeInclusive") [ Idx ].
+        Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ Idx ].
       
       (*
           fn fmt(&self, fmt: &mut fmt::Formatter<'_>) -> fmt::Result {
@@ -2171,10 +2244,10 @@ Module ops.
               Ok(())
           }
       *)
-      Definition fmt (Idx : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (Idx : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self Idx in
-        match τ, α with
-        | [], [ self; fmt ] =>
+        match ε, τ, α with
+        | [], [], [ self; fmt ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let fmt := M.alloc (| fmt |) in
@@ -2189,6 +2262,7 @@ Module ops.
                             "core::ops::try_trait::Try",
                             Ty.apply
                               (Ty.path "core::result::Result")
+                              []
                               [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                             [],
                             "branch",
@@ -2228,10 +2302,12 @@ Module ops.
                                         "core::ops::try_trait::FromResidual",
                                         Ty.apply
                                           (Ty.path "core::result::Result")
+                                          []
                                           [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                         [
                                           Ty.apply
                                             (Ty.path "core::result::Result")
+                                            []
                                             [
                                               Ty.path "core::convert::Infallible";
                                               Ty.path "core::fmt::Error"
@@ -2266,6 +2342,7 @@ Module ops.
                             "core::ops::try_trait::Try",
                             Ty.apply
                               (Ty.path "core::result::Result")
+                              []
                               [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                             [],
                             "branch",
@@ -2318,10 +2395,12 @@ Module ops.
                                         "core::ops::try_trait::FromResidual",
                                         Ty.apply
                                           (Ty.path "core::result::Result")
+                                          []
                                           [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                         [
                                           Ty.apply
                                             (Ty.path "core::result::Result")
+                                            []
                                             [
                                               Ty.path "core::convert::Infallible";
                                               Ty.path "core::fmt::Error"
@@ -2356,6 +2435,7 @@ Module ops.
                             "core::ops::try_trait::Try",
                             Ty.apply
                               (Ty.path "core::result::Result")
+                              []
                               [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                             [],
                             "branch",
@@ -2395,10 +2475,12 @@ Module ops.
                                         "core::ops::try_trait::FromResidual",
                                         Ty.apply
                                           (Ty.path "core::result::Result")
+                                          []
                                           [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                         [
                                           Ty.apply
                                             (Ty.path "core::result::Result")
+                                            []
                                             [
                                               Ty.path "core::convert::Infallible";
                                               Ty.path "core::fmt::Error"
@@ -2448,6 +2530,7 @@ Module ops.
                                       "core::ops::try_trait::Try",
                                       Ty.apply
                                         (Ty.path "core::result::Result")
+                                        []
                                         [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                       [],
                                       "branch",
@@ -2501,10 +2584,12 @@ Module ops.
                                                   "core::ops::try_trait::FromResidual",
                                                   Ty.apply
                                                     (Ty.path "core::result::Result")
+                                                    []
                                                     [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                                   [
                                                     Ty.apply
                                                       (Ty.path "core::result::Result")
+                                                      []
                                                       [
                                                         Ty.path "core::convert::Infallible";
                                                         Ty.path "core::fmt::Error"
@@ -2538,7 +2623,7 @@ Module ops.
                   M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -2554,13 +2639,14 @@ Module ops.
     (* StructRecord
       {
         name := "RangeToInclusive";
+        const_params := [];
         ty_params := [ "Idx" ];
         fields := [ ("end_", Idx) ];
       } *)
     
     Module Impl_core_marker_Copy_where_core_marker_Copy_Idx_for_core_ops_range_RangeToInclusive_Idx.
       Definition Self (Idx : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::ops::range::RangeToInclusive") [ Idx ].
+        Ty.apply (Ty.path "core::ops::range::RangeToInclusive") [] [ Idx ].
       
       Axiom Implements :
         forall (Idx : Ty.t),
@@ -2573,13 +2659,13 @@ Module ops.
     
     Module Impl_core_clone_Clone_where_core_clone_Clone_Idx_for_core_ops_range_RangeToInclusive_Idx.
       Definition Self (Idx : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::ops::range::RangeToInclusive") [ Idx ].
+        Ty.apply (Ty.path "core::ops::range::RangeToInclusive") [] [ Idx ].
       
       (* Clone *)
-      Definition clone (Idx : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition clone (Idx : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self Idx in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructRecord
@@ -2597,7 +2683,7 @@ Module ops.
                     ]
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -2611,7 +2697,7 @@ Module ops.
     
     Module Impl_core_marker_StructuralPartialEq_for_core_ops_range_RangeToInclusive_Idx.
       Definition Self (Idx : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::ops::range::RangeToInclusive") [ Idx ].
+        Ty.apply (Ty.path "core::ops::range::RangeToInclusive") [] [ Idx ].
       
       Axiom Implements :
         forall (Idx : Ty.t),
@@ -2624,13 +2710,13 @@ Module ops.
     
     Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_Idx_for_core_ops_range_RangeToInclusive_Idx.
       Definition Self (Idx : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::ops::range::RangeToInclusive") [ Idx ].
+        Ty.apply (Ty.path "core::ops::range::RangeToInclusive") [] [ Idx ].
       
       (* PartialEq *)
-      Definition eq (Idx : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition eq (Idx : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self Idx in
-        match τ, α with
-        | [], [ self; other ] =>
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -2649,7 +2735,7 @@ Module ops.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -2663,7 +2749,7 @@ Module ops.
     
     Module Impl_core_marker_StructuralEq_for_core_ops_range_RangeToInclusive_Idx.
       Definition Self (Idx : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::ops::range::RangeToInclusive") [ Idx ].
+        Ty.apply (Ty.path "core::ops::range::RangeToInclusive") [] [ Idx ].
       
       Axiom Implements :
         forall (Idx : Ty.t),
@@ -2676,13 +2762,18 @@ Module ops.
     
     Module Impl_core_cmp_Eq_where_core_cmp_Eq_Idx_for_core_ops_range_RangeToInclusive_Idx.
       Definition Self (Idx : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::ops::range::RangeToInclusive") [ Idx ].
+        Ty.apply (Ty.path "core::ops::range::RangeToInclusive") [] [ Idx ].
       
       (* Eq *)
-      Definition assert_receiver_is_total_eq (Idx : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition assert_receiver_is_total_eq
+          (Idx : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self Idx in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -2691,7 +2782,7 @@ Module ops.
                 [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -2707,13 +2798,13 @@ Module ops.
     
     Module Impl_core_hash_Hash_where_core_hash_Hash_Idx_for_core_ops_range_RangeToInclusive_Idx.
       Definition Self (Idx : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::ops::range::RangeToInclusive") [ Idx ].
+        Ty.apply (Ty.path "core::ops::range::RangeToInclusive") [] [ Idx ].
       
       (* Hash *)
-      Definition hash (Idx : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition hash (Idx : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self Idx in
-        match τ, α with
-        | [ __H ], [ self; state ] =>
+        match ε, τ, α with
+        | [], [ __H ], [ self; state ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
@@ -2728,7 +2819,7 @@ Module ops.
                 M.read (| state |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -2742,7 +2833,7 @@ Module ops.
     
     Module Impl_core_fmt_Debug_where_core_fmt_Debug_Idx_for_core_ops_range_RangeToInclusive_Idx.
       Definition Self (Idx : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::ops::range::RangeToInclusive") [ Idx ].
+        Ty.apply (Ty.path "core::ops::range::RangeToInclusive") [] [ Idx ].
       
       (*
           fn fmt(&self, fmt: &mut fmt::Formatter<'_>) -> fmt::Result {
@@ -2751,10 +2842,10 @@ Module ops.
               Ok(())
           }
       *)
-      Definition fmt (Idx : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (Idx : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self Idx in
-        match τ, α with
-        | [], [ self; fmt ] =>
+        match ε, τ, α with
+        | [], [], [ self; fmt ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let fmt := M.alloc (| fmt |) in
@@ -2769,6 +2860,7 @@ Module ops.
                             "core::ops::try_trait::Try",
                             Ty.apply
                               (Ty.path "core::result::Result")
+                              []
                               [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                             [],
                             "branch",
@@ -2821,10 +2913,12 @@ Module ops.
                                         "core::ops::try_trait::FromResidual",
                                         Ty.apply
                                           (Ty.path "core::result::Result")
+                                          []
                                           [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                         [
                                           Ty.apply
                                             (Ty.path "core::result::Result")
+                                            []
                                             [
                                               Ty.path "core::convert::Infallible";
                                               Ty.path "core::fmt::Error"
@@ -2859,6 +2953,7 @@ Module ops.
                             "core::ops::try_trait::Try",
                             Ty.apply
                               (Ty.path "core::result::Result")
+                              []
                               [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                             [],
                             "branch",
@@ -2898,10 +2993,12 @@ Module ops.
                                         "core::ops::try_trait::FromResidual",
                                         Ty.apply
                                           (Ty.path "core::result::Result")
+                                          []
                                           [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                         [
                                           Ty.apply
                                             (Ty.path "core::result::Result")
+                                            []
                                             [
                                               Ty.path "core::convert::Infallible";
                                               Ty.path "core::fmt::Error"
@@ -2931,7 +3028,7 @@ Module ops.
                   M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -2945,7 +3042,7 @@ Module ops.
     
     Module Impl_core_ops_range_RangeToInclusive_Idx.
       Definition Self (Idx : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::ops::range::RangeToInclusive") [ Idx ].
+        Ty.apply (Ty.path "core::ops::range::RangeToInclusive") [] [ Idx ].
       
       (*
           pub fn contains<U>(&self, item: &U) -> bool
@@ -2956,24 +3053,24 @@ Module ops.
               <Self as RangeBounds<Idx>>::contains(self, item)
           }
       *)
-      Definition contains (Idx : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition contains (Idx : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self Idx in
-        match τ, α with
-        | [ U ], [ self; item ] =>
+        match ε, τ, α with
+        | [], [ U ], [ self; item ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let item := M.alloc (| item |) in
             M.call_closure (|
               M.get_trait_method (|
                 "core::ops::range::RangeBounds",
-                Ty.apply (Ty.path "core::ops::range::RangeToInclusive") [ Idx ],
+                Ty.apply (Ty.path "core::ops::range::RangeToInclusive") [] [ Idx ],
                 [ Idx ],
                 "contains",
                 [ U ]
               |),
               [ M.read (| self |); M.read (| item |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_contains :
@@ -2984,6 +3081,7 @@ Module ops.
     (*
     Enum Bound
     {
+      const_params := [];
       ty_params := [ "T" ];
       variants :=
         [
@@ -3007,13 +3105,13 @@ Module ops.
     *)
     
     Module Impl_core_clone_Clone_where_core_clone_Clone_T_for_core_ops_range_Bound_T.
-      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::ops::range::Bound") [ T ].
+      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::ops::range::Bound") [] [ T ].
       
       (* Clone *)
-      Definition clone (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition clone (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -3068,7 +3166,7 @@ Module ops.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -3081,7 +3179,7 @@ Module ops.
     End Impl_core_clone_Clone_where_core_clone_Clone_T_for_core_ops_range_Bound_T.
     
     Module Impl_core_marker_Copy_where_core_marker_Copy_T_for_core_ops_range_Bound_T.
-      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::ops::range::Bound") [ T ].
+      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::ops::range::Bound") [] [ T ].
       
       Axiom Implements :
         forall (T : Ty.t),
@@ -3093,13 +3191,13 @@ Module ops.
     End Impl_core_marker_Copy_where_core_marker_Copy_T_for_core_ops_range_Bound_T.
     
     Module Impl_core_fmt_Debug_where_core_fmt_Debug_T_for_core_ops_range_Bound_T.
-      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::ops::range::Bound") [ T ].
+      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::ops::range::Bound") [] [ T ].
       
       (* Debug *)
-      Definition fmt (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self; f ] =>
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -3172,7 +3270,7 @@ Module ops.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -3185,13 +3283,13 @@ Module ops.
     End Impl_core_fmt_Debug_where_core_fmt_Debug_T_for_core_ops_range_Bound_T.
     
     Module Impl_core_hash_Hash_where_core_hash_Hash_T_for_core_ops_range_Bound_T.
-      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::ops::range::Bound") [ T ].
+      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::ops::range::Bound") [] [ T ].
       
       (* Hash *)
-      Definition hash (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition hash (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [ __H ], [ self; state ] =>
+        match ε, τ, α with
+        | [], [ __H ], [ self; state ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
@@ -3201,7 +3299,7 @@ Module ops.
                   M.call_closure (|
                     M.get_function (|
                       "core::intrinsics::discriminant_value",
-                      [ Ty.apply (Ty.path "core::ops::range::Bound") [ T ] ]
+                      [ Ty.apply (Ty.path "core::ops::range::Bound") [] [ T ] ]
                     |),
                     [ M.read (| self |) ]
                   |)
@@ -3258,7 +3356,7 @@ Module ops.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -3271,7 +3369,7 @@ Module ops.
     End Impl_core_hash_Hash_where_core_hash_Hash_T_for_core_ops_range_Bound_T.
     
     Module Impl_core_marker_StructuralPartialEq_for_core_ops_range_Bound_T.
-      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::ops::range::Bound") [ T ].
+      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::ops::range::Bound") [] [ T ].
       
       Axiom Implements :
         forall (T : Ty.t),
@@ -3283,13 +3381,13 @@ Module ops.
     End Impl_core_marker_StructuralPartialEq_for_core_ops_range_Bound_T.
     
     Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_T_for_core_ops_range_Bound_T.
-      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::ops::range::Bound") [ T ].
+      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::ops::range::Bound") [] [ T ].
       
       (* PartialEq *)
-      Definition eq (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition eq (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self; other ] =>
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -3299,7 +3397,7 @@ Module ops.
                   M.call_closure (|
                     M.get_function (|
                       "core::intrinsics::discriminant_value",
-                      [ Ty.apply (Ty.path "core::ops::range::Bound") [ T ] ]
+                      [ Ty.apply (Ty.path "core::ops::range::Bound") [] [ T ] ]
                     |),
                     [ M.read (| self |) ]
                   |)
@@ -3309,7 +3407,7 @@ Module ops.
                   M.call_closure (|
                     M.get_function (|
                       "core::intrinsics::discriminant_value",
-                      [ Ty.apply (Ty.path "core::ops::range::Bound") [ T ] ]
+                      [ Ty.apply (Ty.path "core::ops::range::Bound") [] [ T ] ]
                     |),
                     [ M.read (| other |) ]
                   |)
@@ -3393,7 +3491,7 @@ Module ops.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -3406,7 +3504,7 @@ Module ops.
     End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_T_for_core_ops_range_Bound_T.
     
     Module Impl_core_marker_StructuralEq_for_core_ops_range_Bound_T.
-      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::ops::range::Bound") [ T ].
+      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::ops::range::Bound") [] [ T ].
       
       Axiom Implements :
         forall (T : Ty.t),
@@ -3418,13 +3516,18 @@ Module ops.
     End Impl_core_marker_StructuralEq_for_core_ops_range_Bound_T.
     
     Module Impl_core_cmp_Eq_where_core_cmp_Eq_T_for_core_ops_range_Bound_T.
-      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::ops::range::Bound") [ T ].
+      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::ops::range::Bound") [] [ T ].
       
       (* Eq *)
-      Definition assert_receiver_is_total_eq (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition assert_receiver_is_total_eq
+          (T : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -3433,7 +3536,7 @@ Module ops.
                 [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -3447,7 +3550,7 @@ Module ops.
     End Impl_core_cmp_Eq_where_core_cmp_Eq_T_for_core_ops_range_Bound_T.
     
     Module Impl_core_ops_range_Bound_T.
-      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::ops::range::Bound") [ T ].
+      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::ops::range::Bound") [] [ T ].
       
       (*
           pub fn as_ref(&self) -> Bound<&T> {
@@ -3458,10 +3561,10 @@ Module ops.
               }
           }
       *)
-      Definition as_ref (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition as_ref (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -3499,7 +3602,7 @@ Module ops.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_as_ref :
@@ -3515,10 +3618,10 @@ Module ops.
               }
           }
       *)
-      Definition as_mut (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition as_mut (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -3556,7 +3659,7 @@ Module ops.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_as_mut :
@@ -3572,10 +3675,10 @@ Module ops.
               }
           }
       *)
-      Definition map (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition map (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [ U; F ], [ self; f ] =>
+        match ε, τ, α with
+        | [], [ U; F ], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -3640,7 +3743,7 @@ Module ops.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_map :
@@ -3650,7 +3753,7 @@ Module ops.
     
     Module Impl_core_ops_range_Bound_ref__T.
       Definition Self (T : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::ops::range::Bound") [ Ty.apply (Ty.path "&") [ T ] ].
+        Ty.apply (Ty.path "core::ops::range::Bound") [] [ Ty.apply (Ty.path "&") [] [ T ] ].
       
       (*
           pub fn cloned(self) -> Bound<T> {
@@ -3661,10 +3764,10 @@ Module ops.
               }
           }
       *)
-      Definition cloned (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition cloned (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -3716,7 +3819,7 @@ Module ops.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_cloned :
@@ -3726,9 +3829,14 @@ Module ops.
     
     (* Trait *)
     Module RangeBounds.
-      Definition contains (T Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ U ], [ self; item ] =>
+      Definition contains
+          (T Self : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        match ε, τ, α with
+        | [], [ U ], [ self; item ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let item := M.alloc (| item |) in
@@ -3761,8 +3869,8 @@ Module ops.
                           M.call_closure (|
                             M.get_trait_method (|
                               "core::cmp::PartialOrd",
-                              Ty.apply (Ty.path "&") [ T ],
-                              [ Ty.apply (Ty.path "&") [ U ] ],
+                              Ty.apply (Ty.path "&") [] [ T ],
+                              [ Ty.apply (Ty.path "&") [] [ U ] ],
                               "le",
                               []
                             |),
@@ -3782,8 +3890,8 @@ Module ops.
                           M.call_closure (|
                             M.get_trait_method (|
                               "core::cmp::PartialOrd",
-                              Ty.apply (Ty.path "&") [ T ],
-                              [ Ty.apply (Ty.path "&") [ U ] ],
+                              Ty.apply (Ty.path "&") [] [ T ],
+                              [ Ty.apply (Ty.path "&") [] [ U ] ],
                               "lt",
                               []
                             |),
@@ -3826,8 +3934,8 @@ Module ops.
                             M.call_closure (|
                               M.get_trait_method (|
                                 "core::cmp::PartialOrd",
-                                Ty.apply (Ty.path "&") [ U ],
-                                [ Ty.apply (Ty.path "&") [ T ] ],
+                                Ty.apply (Ty.path "&") [] [ U ],
+                                [ Ty.apply (Ty.path "&") [] [ T ] ],
                                 "le",
                                 []
                               |),
@@ -3847,8 +3955,8 @@ Module ops.
                             M.call_closure (|
                               M.get_trait_method (|
                                 "core::cmp::PartialOrd",
-                                Ty.apply (Ty.path "&") [ U ],
-                                [ Ty.apply (Ty.path "&") [ T ] ],
+                                Ty.apply (Ty.path "&") [] [ U ],
+                                [ Ty.apply (Ty.path "&") [] [ T ] ],
                                 "lt",
                                 []
                               |),
@@ -3864,7 +3972,7 @@ Module ops.
                   |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom ProvidedMethod_contains :
@@ -3880,14 +3988,14 @@ Module ops.
               Unbounded
           }
       *)
-      Definition start_bound (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition start_bound (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple "core::ops::range::Bound::Unbounded" []))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -3895,14 +4003,14 @@ Module ops.
               Unbounded
           }
       *)
-      Definition end_bound (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition end_bound (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple "core::ops::range::Bound::Unbounded" []))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -3919,17 +4027,18 @@ Module ops.
     End Impl_core_ops_range_RangeBounds_where_core_marker_Sized_T_T_for_core_ops_range_RangeFull.
     
     Module Impl_core_ops_range_RangeBounds_T_for_core_ops_range_RangeFrom_T.
-      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::ops::range::RangeFrom") [ T ].
+      Definition Self (T : Ty.t) : Ty.t :=
+        Ty.apply (Ty.path "core::ops::range::RangeFrom") [] [ T ].
       
       (*
           fn start_bound(&self) -> Bound<&T> {
               Included(&self.start)
           }
       *)
-      Definition start_bound (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition start_bound (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -3941,7 +4050,7 @@ Module ops.
                   "start"
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -3949,14 +4058,14 @@ Module ops.
               Unbounded
           }
       *)
-      Definition end_bound (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition end_bound (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple "core::ops::range::Bound::Unbounded" []))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -3973,21 +4082,21 @@ Module ops.
     End Impl_core_ops_range_RangeBounds_T_for_core_ops_range_RangeFrom_T.
     
     Module Impl_core_ops_range_RangeBounds_T_for_core_ops_range_RangeTo_T.
-      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::ops::range::RangeTo") [ T ].
+      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::ops::range::RangeTo") [] [ T ].
       
       (*
           fn start_bound(&self) -> Bound<&T> {
               Unbounded
           }
       *)
-      Definition start_bound (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition start_bound (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple "core::ops::range::Bound::Unbounded" []))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -3995,10 +4104,10 @@ Module ops.
               Excluded(&self.end)
           }
       *)
-      Definition end_bound (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition end_bound (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -4010,7 +4119,7 @@ Module ops.
                   "end"
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -4027,17 +4136,17 @@ Module ops.
     End Impl_core_ops_range_RangeBounds_T_for_core_ops_range_RangeTo_T.
     
     Module Impl_core_ops_range_RangeBounds_T_for_core_ops_range_Range_T.
-      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::ops::range::Range") [ T ].
+      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::ops::range::Range") [] [ T ].
       
       (*
           fn start_bound(&self) -> Bound<&T> {
               Included(&self.start)
           }
       *)
-      Definition start_bound (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition start_bound (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -4049,7 +4158,7 @@ Module ops.
                   "start"
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -4057,10 +4166,10 @@ Module ops.
               Excluded(&self.end)
           }
       *)
-      Definition end_bound (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition end_bound (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -4072,7 +4181,7 @@ Module ops.
                   "end"
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -4090,17 +4199,17 @@ Module ops.
     
     Module Impl_core_ops_range_RangeBounds_T_for_core_ops_range_RangeInclusive_T.
       Definition Self (T : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::ops::range::RangeInclusive") [ T ].
+        Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ T ].
       
       (*
           fn start_bound(&self) -> Bound<&T> {
               Included(&self.start)
           }
       *)
-      Definition start_bound (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition start_bound (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -4112,7 +4221,7 @@ Module ops.
                   "start"
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -4126,10 +4235,10 @@ Module ops.
               }
           }
       *)
-      Definition end_bound (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition end_bound (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -4173,7 +4282,7 @@ Module ops.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -4191,21 +4300,21 @@ Module ops.
     
     Module Impl_core_ops_range_RangeBounds_T_for_core_ops_range_RangeToInclusive_T.
       Definition Self (T : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::ops::range::RangeToInclusive") [ T ].
+        Ty.apply (Ty.path "core::ops::range::RangeToInclusive") [] [ T ].
       
       (*
           fn start_bound(&self) -> Bound<&T> {
               Unbounded
           }
       *)
-      Definition start_bound (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition start_bound (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple "core::ops::range::Bound::Unbounded" []))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -4213,10 +4322,10 @@ Module ops.
               Included(&self.end)
           }
       *)
-      Definition end_bound (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition end_bound (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -4228,7 +4337,7 @@ Module ops.
                   "end"
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -4248,8 +4357,8 @@ Module ops.
       Definition Self (T : Ty.t) : Ty.t :=
         Ty.tuple
           [
-            Ty.apply (Ty.path "core::ops::range::Bound") [ T ];
-            Ty.apply (Ty.path "core::ops::range::Bound") [ T ]
+            Ty.apply (Ty.path "core::ops::range::Bound") [] [ T ];
+            Ty.apply (Ty.path "core::ops::range::Bound") [] [ T ]
           ].
       
       (*
@@ -4261,10 +4370,10 @@ Module ops.
               }
           }
       *)
-      Definition start_bound (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition start_bound (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -4308,7 +4417,7 @@ Module ops.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -4320,10 +4429,10 @@ Module ops.
               }
           }
       *)
-      Definition end_bound (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition end_bound (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -4367,7 +4476,7 @@ Module ops.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -4387,8 +4496,8 @@ Module ops.
       Definition Self (T : Ty.t) : Ty.t :=
         Ty.tuple
           [
-            Ty.apply (Ty.path "core::ops::range::Bound") [ Ty.apply (Ty.path "&") [ T ] ];
-            Ty.apply (Ty.path "core::ops::range::Bound") [ Ty.apply (Ty.path "&") [ T ] ]
+            Ty.apply (Ty.path "core::ops::range::Bound") [] [ Ty.apply (Ty.path "&") [] [ T ] ];
+            Ty.apply (Ty.path "core::ops::range::Bound") [] [ Ty.apply (Ty.path "&") [] [ T ] ]
           ].
       
       (*
@@ -4396,14 +4505,14 @@ Module ops.
               self.0
           }
       *)
-      Definition start_bound (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition start_bound (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (| M.SubPointer.get_tuple_field (| M.read (| self |), 0 |) |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -4411,14 +4520,14 @@ Module ops.
               self.1
           }
       *)
-      Definition end_bound (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition end_bound (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (| M.SubPointer.get_tuple_field (| M.read (| self |), 1 |) |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -4436,17 +4545,17 @@ Module ops.
     
     Module Impl_core_ops_range_RangeBounds_T_for_core_ops_range_RangeFrom_ref__T.
       Definition Self (T : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::ops::range::RangeFrom") [ Ty.apply (Ty.path "&") [ T ] ].
+        Ty.apply (Ty.path "core::ops::range::RangeFrom") [] [ Ty.apply (Ty.path "&") [] [ T ] ].
       
       (*
           fn start_bound(&self) -> Bound<&T> {
               Included(self.start)
           }
       *)
-      Definition start_bound (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition start_bound (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -4460,7 +4569,7 @@ Module ops.
                   |)
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -4468,14 +4577,14 @@ Module ops.
               Unbounded
           }
       *)
-      Definition end_bound (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition end_bound (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple "core::ops::range::Bound::Unbounded" []))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -4493,21 +4602,21 @@ Module ops.
     
     Module Impl_core_ops_range_RangeBounds_T_for_core_ops_range_RangeTo_ref__T.
       Definition Self (T : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::ops::range::RangeTo") [ Ty.apply (Ty.path "&") [ T ] ].
+        Ty.apply (Ty.path "core::ops::range::RangeTo") [] [ Ty.apply (Ty.path "&") [] [ T ] ].
       
       (*
           fn start_bound(&self) -> Bound<&T> {
               Unbounded
           }
       *)
-      Definition start_bound (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition start_bound (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple "core::ops::range::Bound::Unbounded" []))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -4515,10 +4624,10 @@ Module ops.
               Excluded(self.end)
           }
       *)
-      Definition end_bound (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition end_bound (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -4532,7 +4641,7 @@ Module ops.
                   |)
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -4550,17 +4659,17 @@ Module ops.
     
     Module Impl_core_ops_range_RangeBounds_T_for_core_ops_range_Range_ref__T.
       Definition Self (T : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::ops::range::Range") [ Ty.apply (Ty.path "&") [ T ] ].
+        Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.apply (Ty.path "&") [] [ T ] ].
       
       (*
           fn start_bound(&self) -> Bound<&T> {
               Included(self.start)
           }
       *)
-      Definition start_bound (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition start_bound (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -4574,7 +4683,7 @@ Module ops.
                   |)
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -4582,10 +4691,10 @@ Module ops.
               Excluded(self.end)
           }
       *)
-      Definition end_bound (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition end_bound (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -4599,7 +4708,7 @@ Module ops.
                   |)
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -4617,17 +4726,20 @@ Module ops.
     
     Module Impl_core_ops_range_RangeBounds_T_for_core_ops_range_RangeInclusive_ref__T.
       Definition Self (T : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::ops::range::RangeInclusive") [ Ty.apply (Ty.path "&") [ T ] ].
+        Ty.apply
+          (Ty.path "core::ops::range::RangeInclusive")
+          []
+          [ Ty.apply (Ty.path "&") [] [ T ] ].
       
       (*
           fn start_bound(&self) -> Bound<&T> {
               Included(self.start)
           }
       *)
-      Definition start_bound (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition start_bound (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -4641,7 +4753,7 @@ Module ops.
                   |)
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -4649,10 +4761,10 @@ Module ops.
               Included(self.end)
           }
       *)
-      Definition end_bound (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition end_bound (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -4666,7 +4778,7 @@ Module ops.
                   |)
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -4684,21 +4796,24 @@ Module ops.
     
     Module Impl_core_ops_range_RangeBounds_T_for_core_ops_range_RangeToInclusive_ref__T.
       Definition Self (T : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::ops::range::RangeToInclusive") [ Ty.apply (Ty.path "&") [ T ] ].
+        Ty.apply
+          (Ty.path "core::ops::range::RangeToInclusive")
+          []
+          [ Ty.apply (Ty.path "&") [] [ T ] ].
       
       (*
           fn start_bound(&self) -> Bound<&T> {
               Unbounded
           }
       *)
-      Definition start_bound (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition start_bound (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple "core::ops::range::Bound::Unbounded" []))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -4706,10 +4821,10 @@ Module ops.
               Included(self.end)
           }
       *)
-      Definition end_bound (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition end_bound (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -4723,7 +4838,7 @@ Module ops.
                   |)
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -4743,7 +4858,7 @@ Module ops.
     (* Empty module 'OneSidedRange' *)
     
     Module Impl_core_ops_range_OneSidedRange_where_core_ops_range_RangeBounds_core_ops_range_RangeTo_T_T_T_for_core_ops_range_RangeTo_T.
-      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::ops::range::RangeTo") [ T ].
+      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::ops::range::RangeTo") [] [ T ].
       
       Axiom Implements :
         forall (T : Ty.t),
@@ -4755,7 +4870,8 @@ Module ops.
     End Impl_core_ops_range_OneSidedRange_where_core_ops_range_RangeBounds_core_ops_range_RangeTo_T_T_T_for_core_ops_range_RangeTo_T.
     
     Module Impl_core_ops_range_OneSidedRange_where_core_ops_range_RangeBounds_core_ops_range_RangeFrom_T_T_T_for_core_ops_range_RangeFrom_T.
-      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::ops::range::RangeFrom") [ T ].
+      Definition Self (T : Ty.t) : Ty.t :=
+        Ty.apply (Ty.path "core::ops::range::RangeFrom") [] [ T ].
       
       Axiom Implements :
         forall (T : Ty.t),
@@ -4768,7 +4884,7 @@ Module ops.
     
     Module Impl_core_ops_range_OneSidedRange_where_core_ops_range_RangeBounds_core_ops_range_RangeToInclusive_T_T_T_for_core_ops_range_RangeToInclusive_T.
       Definition Self (T : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::ops::range::RangeToInclusive") [ T ].
+        Ty.apply (Ty.path "core::ops::range::RangeToInclusive") [] [ T ].
       
       Axiom Implements :
         forall (T : Ty.t),

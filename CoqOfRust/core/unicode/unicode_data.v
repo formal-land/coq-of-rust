@@ -52,9 +52,11 @@ Module unicode.
         (word & (1 << (needle % 64) as u64)) != 0
     }
     *)
-    Definition bitset_search (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ needle; chunk_idx_map; bitset_chunk_idx; bitset_canonical; bitset_canonicalized ] =>
+    Definition bitset_search (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [ N; CHUNK_SIZE; N1; CANONICAL; CANONICALIZED; host ],
+          [],
+          [ needle; chunk_idx_map; bitset_chunk_idx; bitset_canonical; bitset_canonicalized ] =>
         ltac:(M.monadic
           (let needle := M.alloc (| needle |) in
           let chunk_idx_map := M.alloc (| chunk_idx_map |) in
@@ -105,7 +107,7 @@ Module unicode.
                                     (M.read (| chunk_map_idx |))
                                     (M.call_closure (|
                                       M.get_associated_function (|
-                                        Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                        Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                         "len",
                                         []
                                       |),
@@ -154,7 +156,7 @@ Module unicode.
                                     (M.read (| idx |))
                                     (M.call_closure (|
                                       M.get_associated_function (|
-                                        Ty.apply (Ty.path "slice") [ Ty.path "u64" ],
+                                        Ty.apply (Ty.path "slice") [] [ Ty.path "u64" ],
                                         "len",
                                         []
                                       |),
@@ -178,7 +180,7 @@ Module unicode.
                                     (M.read (| idx |))
                                     (M.call_closure (|
                                       M.get_associated_function (|
-                                        Ty.apply (Ty.path "slice") [ Ty.path "u64" ],
+                                        Ty.apply (Ty.path "slice") [] [ Ty.path "u64" ],
                                         "len",
                                         []
                                       |),
@@ -310,7 +312,7 @@ Module unicode.
                 |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_bitset_search :
@@ -321,9 +323,9 @@ Module unicode.
         short_offset_run_header & ((1 << 21) - 1)
     }
     *)
-    Definition decode_prefix_sum (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ short_offset_run_header ] =>
+    Definition decode_prefix_sum (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ short_offset_run_header ] =>
         ltac:(M.monadic
           (let short_offset_run_header := M.alloc (| short_offset_run_header |) in
           BinOp.Pure.bit_and
@@ -332,7 +334,7 @@ Module unicode.
               Integer.U32
               (BinOp.Wrap.shl (Value.Integer 1) (Value.Integer 21))
               (Value.Integer 1))))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_decode_prefix_sum :
@@ -343,13 +345,13 @@ Module unicode.
         (short_offset_run_header >> 21) as usize
     }
     *)
-    Definition decode_length (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ short_offset_run_header ] =>
+    Definition decode_length (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ short_offset_run_header ] =>
         ltac:(M.monadic
           (let short_offset_run_header := M.alloc (| short_offset_run_header |) in
           M.rust_cast (BinOp.Wrap.shr (M.read (| short_offset_run_header |)) (Value.Integer 21))))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_decode_length :
@@ -396,9 +398,9 @@ Module unicode.
         offset_idx % 2 == 1
     }
     *)
-    Definition skip_search (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ needle; short_offset_runs; offsets ] =>
+    Definition skip_search (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [ SOR; OFFSETS ], [], [ needle; short_offset_runs; offsets ] =>
         ltac:(M.monadic
           (let needle := M.alloc (| needle |) in
           let short_offset_runs := M.alloc (| short_offset_runs |) in
@@ -410,12 +412,12 @@ Module unicode.
                   M.alloc (|
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "slice") [ Ty.path "u32" ],
+                        Ty.apply (Ty.path "slice") [] [ Ty.path "u32" ],
                         "binary_search_by_key",
                         [
                           Ty.path "u32";
                           Ty.function
-                            [ Ty.tuple [ Ty.apply (Ty.path "&") [ Ty.path "u32" ] ] ]
+                            [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "u32" ] ] ]
                             (Ty.path "u32")
                         ]
                       |),
@@ -436,7 +438,7 @@ Module unicode.
                                         M.call_closure (|
                                           M.get_trait_method (|
                                             "core::ops::bit::Shl",
-                                            Ty.apply (Ty.path "&") [ Ty.path "u32" ],
+                                            Ty.apply (Ty.path "&") [] [ Ty.path "u32" ],
                                             [ Ty.path "i32" ],
                                             "shl",
                                             []
@@ -498,7 +500,7 @@ Module unicode.
                           M.alloc (|
                             M.call_closure (|
                               M.get_associated_function (|
-                                Ty.apply (Ty.path "slice") [ Ty.path "u32" ],
+                                Ty.apply (Ty.path "slice") [] [ Ty.path "u32" ],
                                 "get",
                                 [ Ty.path "usize" ]
                               |),
@@ -534,7 +536,7 @@ Module unicode.
                             Integer.Usize
                             (M.call_closure (|
                               M.get_associated_function (|
-                                Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                 "len",
                                 []
                               |),
@@ -549,14 +551,14 @@ Module unicode.
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::option::Option") [ Ty.path "u32" ],
+                    Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u32" ],
                     "unwrap_or",
                     []
                   |),
                   [
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "core::option::Option") [ Ty.path "usize" ],
+                        Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
                         "map",
                         [
                           Ty.path "u32";
@@ -613,7 +615,7 @@ Module unicode.
                     M.call_closure (|
                       M.get_trait_method (|
                         "core::iter::traits::collect::IntoIterator",
-                        Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "usize" ],
+                        Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
                         [],
                         "into_iter",
                         []
@@ -643,6 +645,7 @@ Module unicode.
                                       "core::iter::traits::iterator::Iterator",
                                       Ty.apply
                                         (Ty.path "core::ops::range::Range")
+                                        []
                                         [ Ty.path "usize" ],
                                       [],
                                       "next",
@@ -729,7 +732,7 @@ Module unicode.
                 (Value.Integer 1)
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_skip_search :
@@ -2290,9 +2293,9 @@ Module unicode.
               )
           }
       *)
-      Definition lookup (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ c ] =>
+      Definition lookup (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ c ] =>
           ltac:(M.monadic
             (let c := M.alloc (| c |) in
             M.call_closure (|
@@ -2305,7 +2308,7 @@ Module unicode.
                 M.read (| M.get_constant (| "core::unicode::unicode_data::alphabetic::OFFSETS" |) |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Function_lookup : M.IsFunction "core::unicode::unicode_data::alphabetic::lookup" lookup.
@@ -3253,9 +3256,9 @@ Module unicode.
               )
           }
       *)
-      Definition lookup (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ c ] =>
+      Definition lookup (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ c ] =>
           ltac:(M.monadic
             (let c := M.alloc (| c |) in
             M.call_closure (|
@@ -3272,7 +3275,7 @@ Module unicode.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Function_lookup :
@@ -3648,9 +3651,9 @@ Module unicode.
               )
           }
       *)
-      Definition lookup (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ c ] =>
+      Definition lookup (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ c ] =>
           ltac:(M.monadic
             (let c := M.alloc (| c |) in
             M.call_closure (|
@@ -3663,7 +3666,7 @@ Module unicode.
                 M.read (| M.get_constant (| "core::unicode::unicode_data::cased::OFFSETS" |) |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Function_lookup : M.IsFunction "core::unicode::unicode_data::cased::lookup" lookup.
@@ -3698,9 +3701,9 @@ Module unicode.
               )
           }
       *)
-      Definition lookup (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ c ] =>
+      Definition lookup (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ c ] =>
           ltac:(M.monadic
             (let c := M.alloc (| c |) in
             M.call_closure (|
@@ -3713,7 +3716,7 @@ Module unicode.
                 M.read (| M.get_constant (| "core::unicode::unicode_data::cc::OFFSETS" |) |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Function_lookup : M.IsFunction "core::unicode::unicode_data::cc::lookup" lookup.
@@ -4511,9 +4514,9 @@ Module unicode.
               )
           }
       *)
-      Definition lookup (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ c ] =>
+      Definition lookup (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ c ] =>
           ltac:(M.monadic
             (let c := M.alloc (| c |) in
             M.call_closure (|
@@ -4530,7 +4533,7 @@ Module unicode.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Function_lookup :
@@ -5172,9 +5175,9 @@ Module unicode.
               )
           }
       *)
-      Definition lookup (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ c ] =>
+      Definition lookup (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ c ] =>
           ltac:(M.monadic
             (let c := M.alloc (| c |) in
             M.call_closure (|
@@ -5195,7 +5198,7 @@ Module unicode.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Function_lookup : M.IsFunction "core::unicode::unicode_data::lowercase::lookup" lookup.
@@ -5547,9 +5550,9 @@ Module unicode.
               )
           }
       *)
-      Definition lookup (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ c ] =>
+      Definition lookup (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ c ] =>
           ltac:(M.monadic
             (let c := M.alloc (| c |) in
             M.call_closure (|
@@ -5562,7 +5565,7 @@ Module unicode.
                 M.read (| M.get_constant (| "core::unicode::unicode_data::n::OFFSETS" |) |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Function_lookup : M.IsFunction "core::unicode::unicode_data::n::lookup" lookup.
@@ -6140,9 +6143,9 @@ Module unicode.
               )
           }
       *)
-      Definition lookup (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ c ] =>
+      Definition lookup (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ c ] =>
           ltac:(M.monadic
             (let c := M.alloc (| c |) in
             M.call_closure (|
@@ -6163,7 +6166,7 @@ Module unicode.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Function_lookup : M.IsFunction "core::unicode::unicode_data::uppercase::lookup" lookup.
@@ -6448,9 +6451,9 @@ Module unicode.
               }
           }
       *)
-      Definition lookup (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ c ] =>
+      Definition lookup (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ c ] =>
           ltac:(M.monadic
             (let c := M.alloc (| c |) in
             M.read (|
@@ -6523,7 +6526,7 @@ Module unicode.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Function_lookup :
@@ -6552,9 +6555,9 @@ Module unicode.
               }
           }
       *)
-      Definition to_lower (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ c ] =>
+      Definition to_lower (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ c ] =>
           ltac:(M.monadic
             (let c := M.alloc (| c |) in
             M.read (|
@@ -6595,7 +6598,11 @@ Module unicode.
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "core::result::Result")
-                              [ Ty.apply (Ty.path "array") [ Ty.path "char" ]; Ty.path "usize" ],
+                              []
+                              [
+                                Ty.apply (Ty.path "array") [ Value.Integer 3 ] [ Ty.path "char" ];
+                                Ty.path "usize"
+                              ],
                             "unwrap_or",
                             []
                           |),
@@ -6604,13 +6611,17 @@ Module unicode.
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "core::result::Result")
+                                  []
                                   [ Ty.path "usize"; Ty.path "usize" ],
                                 "map",
                                 [
-                                  Ty.apply (Ty.path "array") [ Ty.path "char" ];
+                                  Ty.apply (Ty.path "array") [ Value.Integer 3 ] [ Ty.path "char" ];
                                   Ty.function
                                     [ Ty.tuple [ Ty.path "usize" ] ]
-                                    (Ty.apply (Ty.path "array") [ Ty.path "char" ])
+                                    (Ty.apply
+                                      (Ty.path "array")
+                                      [ Value.Integer 3 ]
+                                      [ Ty.path "char" ])
                                 ]
                               |),
                               [
@@ -6618,6 +6629,7 @@ Module unicode.
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "slice")
+                                      []
                                       [ Ty.tuple [ Ty.path "char"; Ty.path "u32" ] ],
                                     "binary_search_by",
                                     [
@@ -6627,6 +6639,7 @@ Module unicode.
                                             [
                                               Ty.apply
                                                 (Ty.path "&")
+                                                []
                                                 [ Ty.tuple [ Ty.path "char"; Ty.path "u32" ] ]
                                             ]
                                         ]
@@ -6706,9 +6719,11 @@ Module unicode.
                                                       M.get_associated_function (|
                                                         Ty.apply
                                                           (Ty.path "core::option::Option")
+                                                          []
                                                           [
                                                             Ty.apply
                                                               (Ty.path "array")
+                                                              [ Value.Integer 3 ]
                                                               [ Ty.path "char" ]
                                                           ],
                                                         "unwrap_or_else",
@@ -6717,6 +6732,7 @@ Module unicode.
                                                             [ Ty.tuple [] ]
                                                             (Ty.apply
                                                               (Ty.path "array")
+                                                              [ Value.Integer 3 ]
                                                               [ Ty.path "char" ])
                                                         ]
                                                       |),
@@ -6725,16 +6741,19 @@ Module unicode.
                                                           M.get_associated_function (|
                                                             Ty.apply
                                                               (Ty.path "core::option::Option")
+                                                              []
                                                               [ Ty.path "char" ],
                                                             "map",
                                                             [
                                                               Ty.apply
                                                                 (Ty.path "array")
+                                                                [ Value.Integer 3 ]
                                                                 [ Ty.path "char" ];
                                                               Ty.function
                                                                 [ Ty.tuple [ Ty.path "char" ] ]
                                                                 (Ty.apply
                                                                   (Ty.path "array")
+                                                                  [ Value.Integer 3 ]
                                                                   [ Ty.path "char" ])
                                                             ]
                                                           |),
@@ -6786,10 +6805,15 @@ Module unicode.
                                                                             M.get_associated_function (|
                                                                               Ty.apply
                                                                                 (Ty.path "slice")
+                                                                                []
                                                                                 [
                                                                                   Ty.apply
                                                                                     (Ty.path
                                                                                       "array")
+                                                                                    [
+                                                                                      Value.Integer
+                                                                                        3
+                                                                                    ]
                                                                                     [ Ty.path "char"
                                                                                     ]
                                                                                 ],
@@ -6840,7 +6864,7 @@ Module unicode.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Function_to_lower :
@@ -6864,9 +6888,9 @@ Module unicode.
               }
           }
       *)
-      Definition to_upper (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ c ] =>
+      Definition to_upper (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ c ] =>
           ltac:(M.monadic
             (let c := M.alloc (| c |) in
             M.read (|
@@ -6907,7 +6931,11 @@ Module unicode.
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "core::result::Result")
-                              [ Ty.apply (Ty.path "array") [ Ty.path "char" ]; Ty.path "usize" ],
+                              []
+                              [
+                                Ty.apply (Ty.path "array") [ Value.Integer 3 ] [ Ty.path "char" ];
+                                Ty.path "usize"
+                              ],
                             "unwrap_or",
                             []
                           |),
@@ -6916,13 +6944,17 @@ Module unicode.
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "core::result::Result")
+                                  []
                                   [ Ty.path "usize"; Ty.path "usize" ],
                                 "map",
                                 [
-                                  Ty.apply (Ty.path "array") [ Ty.path "char" ];
+                                  Ty.apply (Ty.path "array") [ Value.Integer 3 ] [ Ty.path "char" ];
                                   Ty.function
                                     [ Ty.tuple [ Ty.path "usize" ] ]
-                                    (Ty.apply (Ty.path "array") [ Ty.path "char" ])
+                                    (Ty.apply
+                                      (Ty.path "array")
+                                      [ Value.Integer 3 ]
+                                      [ Ty.path "char" ])
                                 ]
                               |),
                               [
@@ -6930,6 +6962,7 @@ Module unicode.
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "slice")
+                                      []
                                       [ Ty.tuple [ Ty.path "char"; Ty.path "u32" ] ],
                                     "binary_search_by",
                                     [
@@ -6939,6 +6972,7 @@ Module unicode.
                                             [
                                               Ty.apply
                                                 (Ty.path "&")
+                                                []
                                                 [ Ty.tuple [ Ty.path "char"; Ty.path "u32" ] ]
                                             ]
                                         ]
@@ -7018,9 +7052,11 @@ Module unicode.
                                                       M.get_associated_function (|
                                                         Ty.apply
                                                           (Ty.path "core::option::Option")
+                                                          []
                                                           [
                                                             Ty.apply
                                                               (Ty.path "array")
+                                                              [ Value.Integer 3 ]
                                                               [ Ty.path "char" ]
                                                           ],
                                                         "unwrap_or_else",
@@ -7029,6 +7065,7 @@ Module unicode.
                                                             [ Ty.tuple [] ]
                                                             (Ty.apply
                                                               (Ty.path "array")
+                                                              [ Value.Integer 3 ]
                                                               [ Ty.path "char" ])
                                                         ]
                                                       |),
@@ -7037,16 +7074,19 @@ Module unicode.
                                                           M.get_associated_function (|
                                                             Ty.apply
                                                               (Ty.path "core::option::Option")
+                                                              []
                                                               [ Ty.path "char" ],
                                                             "map",
                                                             [
                                                               Ty.apply
                                                                 (Ty.path "array")
+                                                                [ Value.Integer 3 ]
                                                                 [ Ty.path "char" ];
                                                               Ty.function
                                                                 [ Ty.tuple [ Ty.path "char" ] ]
                                                                 (Ty.apply
                                                                   (Ty.path "array")
+                                                                  [ Value.Integer 3 ]
                                                                   [ Ty.path "char" ])
                                                             ]
                                                           |),
@@ -7098,10 +7138,15 @@ Module unicode.
                                                                             M.get_associated_function (|
                                                                               Ty.apply
                                                                                 (Ty.path "slice")
+                                                                                []
                                                                                 [
                                                                                   Ty.apply
                                                                                     (Ty.path
                                                                                       "array")
+                                                                                    [
+                                                                                      Value.Integer
+                                                                                        3
+                                                                                    ]
                                                                                     [ Ty.path "char"
                                                                                     ]
                                                                                 ],
@@ -7152,7 +7197,7 @@ Module unicode.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Function_to_upper :

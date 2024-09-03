@@ -24,8 +24,11 @@ fn main() {
     }
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with | [], [] => ltac:(M.monadic (Value.Tuple [])) | _, _ => M.impossible end.
+Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [] => ltac:(M.monadic (Value.Tuple []))
+  | _, _, _ => M.impossible
+  end.
 
 Axiom Function_main : M.IsFunction "inline_assembly_inlateout_mul::main" main.
 
@@ -49,9 +52,9 @@ Module main.
           ((hi as u128) << 64) + lo as u128
       }
   *)
-  Definition mul (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ a; b ] =>
+  Definition mul (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ a; b ] =>
       ltac:(M.monadic
         (let a := M.alloc (| a |) in
         let b := M.alloc (| b |) in
@@ -68,7 +71,7 @@ Module main.
               (M.rust_cast (M.read (| lo |)))
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Function_mul : M.IsFunction "inline_assembly_inlateout_mul::main::mul" mul.

@@ -5,11 +5,12 @@ Module rc.
   (* StructRecord
     {
       name := "RcBox";
+      const_params := [];
       ty_params := [ "T" ];
       fields :=
         [
-          ("strong", Ty.apply (Ty.path "core::cell::Cell") [ Ty.path "usize" ]);
-          ("weak", Ty.apply (Ty.path "core::cell::Cell") [ Ty.path "usize" ]);
+          ("strong", Ty.apply (Ty.path "core::cell::Cell") [] [ Ty.path "usize" ]);
+          ("weak", Ty.apply (Ty.path "core::cell::Cell") [] [ Ty.path "usize" ]);
           ("value", T)
         ];
     } *)
@@ -23,9 +24,13 @@ Module rc.
       Layout::new::<RcBox<()>>().extend(layout).unwrap().0.pad_to_align()
   }
   *)
-  Definition rcbox_layout_for_value_layout (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ layout ] =>
+  Definition rcbox_layout_for_value_layout
+      (ε : list Value.t)
+      (τ : list Ty.t)
+      (α : list Value.t)
+      : M :=
+    match ε, τ, α with
+    | [], [], [ layout ] =>
       ltac:(M.monadic
         (let layout := M.alloc (| layout |) in
         M.call_closure (|
@@ -37,6 +42,7 @@ Module rc.
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "core::result::Result")
+                      []
                       [
                         Ty.tuple [ Ty.path "core::alloc::layout::Layout"; Ty.path "usize" ];
                         Ty.path "core::alloc::layout::LayoutError"
@@ -57,7 +63,7 @@ Module rc.
                             M.get_associated_function (|
                               Ty.path "core::alloc::layout::Layout",
                               "new",
-                              [ Ty.apply (Ty.path "alloc::rc::RcBox") [ Ty.tuple [] ] ]
+                              [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ Ty.tuple [] ] ]
                             |),
                             []
                           |)
@@ -72,7 +78,7 @@ Module rc.
             |)
           ]
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Function_rcbox_layout_for_value_layout :
@@ -81,23 +87,26 @@ Module rc.
   (* StructRecord
     {
       name := "Rc";
+      const_params := [];
       ty_params := [ "T"; "A" ];
       fields :=
         [
           ("ptr",
             Ty.apply
               (Ty.path "core::ptr::non_null::NonNull")
-              [ Ty.apply (Ty.path "alloc::rc::RcBox") [ T ] ]);
+              []
+              [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ]);
           ("phantom",
             Ty.apply
               (Ty.path "core::marker::PhantomData")
-              [ Ty.apply (Ty.path "alloc::rc::RcBox") [ T ] ]);
+              []
+              [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ]);
           ("alloc", A)
         ];
     } *)
   
   Module Impl_core_marker_Send_where_core_marker_Sized_T_where_core_alloc_Allocator_A_for_alloc_rc_Rc_T_A.
-    Definition Self (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::rc::Rc") [ T; A ].
+    Definition Self (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ].
     
     Axiom Implements :
       forall (T A : Ty.t),
@@ -109,7 +118,7 @@ Module rc.
   End Impl_core_marker_Send_where_core_marker_Sized_T_where_core_alloc_Allocator_A_for_alloc_rc_Rc_T_A.
   
   Module Impl_core_marker_Sync_where_core_marker_Sized_T_where_core_alloc_Allocator_A_for_alloc_rc_Rc_T_A.
-    Definition Self (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::rc::Rc") [ T; A ].
+    Definition Self (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ].
     
     Axiom Implements :
       forall (T A : Ty.t),
@@ -121,7 +130,7 @@ Module rc.
   End Impl_core_marker_Sync_where_core_marker_Sized_T_where_core_alloc_Allocator_A_for_alloc_rc_Rc_T_A.
   
   Module Impl_core_panic_unwind_safe_UnwindSafe_where_core_panic_unwind_safe_RefUnwindSafe_T_where_core_marker_Sized_T_where_core_alloc_Allocator_A_where_core_panic_unwind_safe_UnwindSafe_A_for_alloc_rc_Rc_T_A.
-    Definition Self (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::rc::Rc") [ T; A ].
+    Definition Self (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ].
     
     Axiom Implements :
       forall (T A : Ty.t),
@@ -133,7 +142,7 @@ Module rc.
   End Impl_core_panic_unwind_safe_UnwindSafe_where_core_panic_unwind_safe_RefUnwindSafe_T_where_core_marker_Sized_T_where_core_alloc_Allocator_A_where_core_panic_unwind_safe_UnwindSafe_A_for_alloc_rc_Rc_T_A.
   
   Module Impl_core_panic_unwind_safe_RefUnwindSafe_where_core_panic_unwind_safe_RefUnwindSafe_T_where_core_marker_Sized_T_where_core_alloc_Allocator_A_where_core_panic_unwind_safe_UnwindSafe_A_for_alloc_rc_Rc_T_A.
-    Definition Self (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::rc::Rc") [ T; A ].
+    Definition Self (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ].
     
     Axiom Implements :
       forall (T A : Ty.t),
@@ -145,20 +154,20 @@ Module rc.
   End Impl_core_panic_unwind_safe_RefUnwindSafe_where_core_panic_unwind_safe_RefUnwindSafe_T_where_core_marker_Sized_T_where_core_alloc_Allocator_A_where_core_panic_unwind_safe_UnwindSafe_A_for_alloc_rc_Rc_T_A.
   
   Module Impl_core_ops_unsize_CoerceUnsized_where_core_marker_Sized_T_where_core_marker_Unsize_T_U_where_core_marker_Sized_U_where_core_alloc_Allocator_A_alloc_rc_Rc_U_A_for_alloc_rc_Rc_T_A.
-    Definition Self (T U A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::rc::Rc") [ T; A ].
+    Definition Self (T U A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ].
     
     Axiom Implements :
       forall (T U A : Ty.t),
       M.IsTraitInstance
         "core::ops::unsize::CoerceUnsized"
         (Self T U A)
-        (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "alloc::rc::Rc") [ U; A ] ]
+        (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "alloc::rc::Rc") [] [ U; A ] ]
         (* Instance *) [].
   End Impl_core_ops_unsize_CoerceUnsized_where_core_marker_Sized_T_where_core_marker_Unsize_T_U_where_core_marker_Sized_U_where_core_alloc_Allocator_A_alloc_rc_Rc_U_A_for_alloc_rc_Rc_T_A.
   
   Module Impl_core_ops_unsize_DispatchFromDyn_where_core_marker_Sized_T_where_core_marker_Unsize_T_U_where_core_marker_Sized_U_alloc_rc_Rc_U_alloc_alloc_Global_for_alloc_rc_Rc_T_alloc_alloc_Global.
     Definition Self (T U : Ty.t) : Ty.t :=
-      Ty.apply (Ty.path "alloc::rc::Rc") [ T; Ty.path "alloc::alloc::Global" ].
+      Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; Ty.path "alloc::alloc::Global" ].
     
     Axiom Implements :
       forall (T U : Ty.t),
@@ -166,34 +175,34 @@ Module rc.
         "core::ops::unsize::DispatchFromDyn"
         (Self T U)
         (* Trait polymorphic types *)
-        [ (* T *) Ty.apply (Ty.path "alloc::rc::Rc") [ U; Ty.path "alloc::alloc::Global" ] ]
+        [ (* T *) Ty.apply (Ty.path "alloc::rc::Rc") [] [ U; Ty.path "alloc::alloc::Global" ] ]
         (* Instance *) [].
   End Impl_core_ops_unsize_DispatchFromDyn_where_core_marker_Sized_T_where_core_marker_Unsize_T_U_where_core_marker_Sized_U_alloc_rc_Rc_U_alloc_alloc_Global_for_alloc_rc_Rc_T_alloc_alloc_Global.
   
   Module Impl_alloc_rc_Rc_T_alloc_alloc_Global.
     Definition Self (T : Ty.t) : Ty.t :=
-      Ty.apply (Ty.path "alloc::rc::Rc") [ T; Ty.path "alloc::alloc::Global" ].
+      Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; Ty.path "alloc::alloc::Global" ].
     
     (*
         unsafe fn from_inner(ptr: NonNull<RcBox<T>>) -> Self {
             unsafe { Self::from_inner_in(ptr, Global) }
         }
     *)
-    Definition from_inner (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition from_inner (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [ ptr ] =>
+      match ε, τ, α with
+      | [], [], [ ptr ] =>
         ltac:(M.monadic
           (let ptr := M.alloc (| ptr |) in
           M.call_closure (|
             M.get_associated_function (|
-              Ty.apply (Ty.path "alloc::rc::Rc") [ T; Ty.path "alloc::alloc::Global" ],
+              Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; Ty.path "alloc::alloc::Global" ],
               "from_inner_in",
               []
             |),
             [ M.read (| ptr |); Value.StructTuple "alloc::alloc::Global" [] ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_from_inner :
@@ -205,15 +214,15 @@ Module rc.
             unsafe { Self::from_inner(NonNull::new_unchecked(ptr)) }
         }
     *)
-    Definition from_ptr (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition from_ptr (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [ ptr ] =>
+      match ε, τ, α with
+      | [], [], [ ptr ] =>
         ltac:(M.monadic
           (let ptr := M.alloc (| ptr |) in
           M.call_closure (|
             M.get_associated_function (|
-              Ty.apply (Ty.path "alloc::rc::Rc") [ T; Ty.path "alloc::alloc::Global" ],
+              Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; Ty.path "alloc::alloc::Global" ],
               "from_inner",
               []
             |),
@@ -222,7 +231,8 @@ Module rc.
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "core::ptr::non_null::NonNull")
-                    [ Ty.apply (Ty.path "alloc::rc::RcBox") [ T ] ],
+                    []
+                    [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ],
                   "new_unchecked",
                   []
                 |),
@@ -230,7 +240,7 @@ Module rc.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_from_ptr :
@@ -250,15 +260,15 @@ Module rc.
             }
         }
     *)
-    Definition new (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition new (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [ value ] =>
+      match ε, τ, α with
+      | [], [], [ value ] =>
         ltac:(M.monadic
           (let value := M.alloc (| value |) in
           M.call_closure (|
             M.get_associated_function (|
-              Ty.apply (Ty.path "alloc::rc::Rc") [ T; Ty.path "alloc::alloc::Global" ],
+              Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; Ty.path "alloc::alloc::Global" ],
               "from_inner",
               []
             |),
@@ -266,11 +276,12 @@ Module rc.
               M.call_closure (|
                 M.get_trait_method (|
                   "core::convert::Into",
-                  Ty.apply (Ty.path "&mut") [ Ty.apply (Ty.path "alloc::rc::RcBox") [ T ] ],
+                  Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ],
                   [
                     Ty.apply
                       (Ty.path "core::ptr::non_null::NonNull")
-                      [ Ty.apply (Ty.path "alloc::rc::RcBox") [ T ] ]
+                      []
+                      [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ]
                   ],
                   "into",
                   []
@@ -280,8 +291,9 @@ Module rc.
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "alloc::boxed::Box")
+                        []
                         [
-                          Ty.apply (Ty.path "alloc::rc::RcBox") [ T ];
+                          Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ];
                           Ty.path "alloc::alloc::Global"
                         ],
                       "leak",
@@ -292,8 +304,9 @@ Module rc.
                         M.get_associated_function (|
                           Ty.apply
                             (Ty.path "alloc::boxed::Box")
+                            []
                             [
-                              Ty.apply (Ty.path "alloc::rc::RcBox") [ T ];
+                              Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ];
                               Ty.path "alloc::alloc::Global"
                             ],
                           "new",
@@ -306,7 +319,7 @@ Module rc.
                               ("strong",
                                 M.call_closure (|
                                   M.get_associated_function (|
-                                    Ty.apply (Ty.path "core::cell::Cell") [ Ty.path "usize" ],
+                                    Ty.apply (Ty.path "core::cell::Cell") [] [ Ty.path "usize" ],
                                     "new",
                                     []
                                   |),
@@ -315,7 +328,7 @@ Module rc.
                               ("weak",
                                 M.call_closure (|
                                   M.get_associated_function (|
-                                    Ty.apply (Ty.path "core::cell::Cell") [ Ty.path "usize" ],
+                                    Ty.apply (Ty.path "core::cell::Cell") [] [ Ty.path "usize" ],
                                     "new",
                                     []
                                   |),
@@ -331,7 +344,7 @@ Module rc.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_new : forall (T : Ty.t), M.IsAssociatedFunction (Self T) "new" (new T).
@@ -379,10 +392,10 @@ Module rc.
             strong
         }
     *)
-    Definition new_cyclic (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition new_cyclic (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [ F ], [ data_fn ] =>
+      match ε, τ, α with
+      | [], [ F ], [ data_fn ] =>
         ltac:(M.monadic
           (let data_fn := M.alloc (| data_fn |) in
           M.read (|
@@ -393,18 +406,22 @@ Module rc.
                     "core::convert::Into",
                     Ty.apply
                       (Ty.path "&mut")
+                      []
                       [
                         Ty.apply
                           (Ty.path "alloc::rc::RcBox")
-                          [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ] ]
+                          []
+                          [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ]
                       ],
                     [
                       Ty.apply
                         (Ty.path "core::ptr::non_null::NonNull")
+                        []
                         [
                           Ty.apply
                             (Ty.path "alloc::rc::RcBox")
-                            [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ] ]
+                            []
+                            [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ]
                         ]
                     ],
                     "into",
@@ -415,10 +432,13 @@ Module rc.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "alloc::boxed::Box")
+                          []
                           [
                             Ty.apply
                               (Ty.path "alloc::rc::RcBox")
-                              [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ] ];
+                              []
+                              [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]
+                              ];
                             Ty.path "alloc::alloc::Global"
                           ],
                         "leak",
@@ -429,10 +449,16 @@ Module rc.
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "alloc::boxed::Box")
+                              []
                               [
                                 Ty.apply
                                   (Ty.path "alloc::rc::RcBox")
-                                  [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ]
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                      []
+                                      [ T ]
                                   ];
                                 Ty.path "alloc::alloc::Global"
                               ],
@@ -446,7 +472,7 @@ Module rc.
                                 ("strong",
                                   M.call_closure (|
                                     M.get_associated_function (|
-                                      Ty.apply (Ty.path "core::cell::Cell") [ Ty.path "usize" ],
+                                      Ty.apply (Ty.path "core::cell::Cell") [] [ Ty.path "usize" ],
                                       "new",
                                       []
                                     |),
@@ -455,7 +481,7 @@ Module rc.
                                 ("weak",
                                   M.call_closure (|
                                     M.get_associated_function (|
-                                      Ty.apply (Ty.path "core::cell::Cell") [ Ty.path "usize" ],
+                                      Ty.apply (Ty.path "core::cell::Cell") [] [ Ty.path "usize" ],
                                       "new",
                                       []
                                     |),
@@ -466,6 +492,7 @@ Module rc.
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                        []
                                         [ T ],
                                       "uninit",
                                       []
@@ -486,13 +513,15 @@ Module rc.
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "core::ptr::non_null::NonNull")
+                      []
                       [
                         Ty.apply
                           (Ty.path "alloc::rc::RcBox")
-                          [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ] ]
+                          []
+                          [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ]
                       ],
                     "cast",
-                    [ Ty.apply (Ty.path "alloc::rc::RcBox") [ T ] ]
+                    [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ]
                   |),
                   [ M.read (| uninit_ptr |) ]
                 |)
@@ -517,9 +546,11 @@ Module rc.
                         [
                           Ty.apply
                             (Ty.path "&")
+                            []
                             [
                               Ty.apply
                                 (Ty.path "alloc::rc::Weak")
+                                []
                                 [ T; Ty.path "alloc::alloc::Global" ]
                             ]
                         ]
@@ -538,7 +569,8 @@ Module rc.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "core::ptr::non_null::NonNull")
-                          [ Ty.apply (Ty.path "alloc::rc::RcBox") [ T ] ],
+                          []
+                          [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ],
                         "as_ptr",
                         []
                       |),
@@ -563,7 +595,7 @@ Module rc.
                   M.alloc (|
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "core::cell::Cell") [ Ty.path "usize" ],
+                        Ty.apply (Ty.path "core::cell::Cell") [] [ Ty.path "usize" ],
                         "get",
                         []
                       |),
@@ -677,7 +709,7 @@ Module rc.
                   M.alloc (|
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "core::cell::Cell") [ Ty.path "usize" ],
+                        Ty.apply (Ty.path "core::cell::Cell") [] [ Ty.path "usize" ],
                         "set",
                         []
                       |),
@@ -694,7 +726,7 @@ Module rc.
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "alloc::rc::Rc") [ T; Ty.path "alloc::alloc::Global" ],
+                      Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; Ty.path "alloc::alloc::Global" ],
                       "from_inner",
                       []
                     |),
@@ -707,14 +739,15 @@ Module rc.
                 M.call_closure (|
                   M.get_function (|
                     "core::mem::forget",
-                    [ Ty.apply (Ty.path "alloc::rc::Weak") [ T; Ty.path "alloc::alloc::Global" ] ]
+                    [ Ty.apply (Ty.path "alloc::rc::Weak") [] [ T; Ty.path "alloc::alloc::Global" ]
+                    ]
                   |),
                   [ M.read (| weak |) ]
                 |)
               |) in
             strong
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_new_cyclic :
@@ -732,17 +765,18 @@ Module rc.
             }
         }
     *)
-    Definition new_uninit (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition new_uninit (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [] =>
+      match ε, τ, α with
+      | [], [], [] =>
         ltac:(M.monadic
           (M.call_closure (|
             M.get_associated_function (|
               Ty.apply
                 (Ty.path "alloc::rc::Rc")
+                []
                 [
-                  Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ];
+                  Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ];
                   Ty.path "alloc::alloc::Global"
                 ],
               "from_ptr",
@@ -753,8 +787,9 @@ Module rc.
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "alloc::rc::Rc")
+                    []
                     [
-                      Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ];
+                      Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ];
                       Ty.path "alloc::alloc::Global"
                     ],
                   "allocate_for_layout",
@@ -763,20 +798,24 @@ Module rc.
                       [ Ty.tuple [ Ty.path "core::alloc::layout::Layout" ] ]
                       (Ty.apply
                         (Ty.path "core::result::Result")
+                        []
                         [
                           Ty.apply
                             (Ty.path "core::ptr::non_null::NonNull")
-                            [ Ty.apply (Ty.path "slice") [ Ty.path "u8" ] ];
+                            []
+                            [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ];
                           Ty.path "core::alloc::AllocError"
                         ]);
                     Ty.function
-                      [ Ty.apply (Ty.path "*mut") [ Ty.path "u8" ] ]
+                      [ Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ] ]
                       (Ty.apply
                         (Ty.path "*mut")
+                        []
                         [
                           Ty.apply
                             (Ty.path "alloc::rc::RcBox")
-                            [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ] ]
+                            []
+                            [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ]
                         ])
                   ]
                 |),
@@ -818,19 +857,20 @@ Module rc.
                         | _ => M.impossible (||)
                         end));
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "*mut") [ Ty.path "u8" ],
+                    Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
                     "cast",
                     [
                       Ty.apply
                         (Ty.path "alloc::rc::RcBox")
-                        [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ] ]
+                        []
+                        [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ]
                     ]
                   |)
                 ]
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_new_uninit :
@@ -848,17 +888,18 @@ Module rc.
             }
         }
     *)
-    Definition new_zeroed (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition new_zeroed (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [] =>
+      match ε, τ, α with
+      | [], [], [] =>
         ltac:(M.monadic
           (M.call_closure (|
             M.get_associated_function (|
               Ty.apply
                 (Ty.path "alloc::rc::Rc")
+                []
                 [
-                  Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ];
+                  Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ];
                   Ty.path "alloc::alloc::Global"
                 ],
               "from_ptr",
@@ -869,8 +910,9 @@ Module rc.
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "alloc::rc::Rc")
+                    []
                     [
-                      Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ];
+                      Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ];
                       Ty.path "alloc::alloc::Global"
                     ],
                   "allocate_for_layout",
@@ -879,20 +921,24 @@ Module rc.
                       [ Ty.tuple [ Ty.path "core::alloc::layout::Layout" ] ]
                       (Ty.apply
                         (Ty.path "core::result::Result")
+                        []
                         [
                           Ty.apply
                             (Ty.path "core::ptr::non_null::NonNull")
-                            [ Ty.apply (Ty.path "slice") [ Ty.path "u8" ] ];
+                            []
+                            [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ];
                           Ty.path "core::alloc::AllocError"
                         ]);
                     Ty.function
-                      [ Ty.apply (Ty.path "*mut") [ Ty.path "u8" ] ]
+                      [ Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ] ]
                       (Ty.apply
                         (Ty.path "*mut")
+                        []
                         [
                           Ty.apply
                             (Ty.path "alloc::rc::RcBox")
-                            [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ] ]
+                            []
+                            [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ]
                         ])
                   ]
                 |),
@@ -934,19 +980,20 @@ Module rc.
                         | _ => M.impossible (||)
                         end));
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "*mut") [ Ty.path "u8" ],
+                    Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
                     "cast",
                     [
                       Ty.apply
                         (Ty.path "alloc::rc::RcBox")
-                        [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ] ]
+                        []
+                        [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ]
                     ]
                   |)
                 ]
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_new_zeroed :
@@ -967,10 +1014,10 @@ Module rc.
             }
         }
     *)
-    Definition try_new (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition try_new (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [ value ] =>
+      match ε, τ, α with
+      | [], [], [ value ] =>
         ltac:(M.monadic
           (let value := M.alloc (| value |) in
           M.catch_return (|
@@ -980,7 +1027,7 @@ Module rc.
                 [
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "alloc::rc::Rc") [ T; Ty.path "alloc::alloc::Global" ],
+                      Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; Ty.path "alloc::alloc::Global" ],
                       "from_inner",
                       []
                     |),
@@ -988,11 +1035,15 @@ Module rc.
                       M.call_closure (|
                         M.get_trait_method (|
                           "core::convert::Into",
-                          Ty.apply (Ty.path "&mut") [ Ty.apply (Ty.path "alloc::rc::RcBox") [ T ] ],
+                          Ty.apply
+                            (Ty.path "&mut")
+                            []
+                            [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ],
                           [
                             Ty.apply
                               (Ty.path "core::ptr::non_null::NonNull")
-                              [ Ty.apply (Ty.path "alloc::rc::RcBox") [ T ] ]
+                              []
+                              [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ]
                           ],
                           "into",
                           []
@@ -1002,8 +1053,9 @@ Module rc.
                             M.get_associated_function (|
                               Ty.apply
                                 (Ty.path "alloc::boxed::Box")
+                                []
                                 [
-                                  Ty.apply (Ty.path "alloc::rc::RcBox") [ T ];
+                                  Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ];
                                   Ty.path "alloc::alloc::Global"
                                 ],
                               "leak",
@@ -1018,11 +1070,13 @@ Module rc.
                                         "core::ops::try_trait::Try",
                                         Ty.apply
                                           (Ty.path "core::result::Result")
+                                          []
                                           [
                                             Ty.apply
                                               (Ty.path "alloc::boxed::Box")
+                                              []
                                               [
-                                                Ty.apply (Ty.path "alloc::rc::RcBox") [ T ];
+                                                Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ];
                                                 Ty.path "alloc::alloc::Global"
                                               ];
                                             Ty.path "core::alloc::AllocError"
@@ -1036,8 +1090,9 @@ Module rc.
                                           M.get_associated_function (|
                                             Ty.apply
                                               (Ty.path "alloc::boxed::Box")
+                                              []
                                               [
-                                                Ty.apply (Ty.path "alloc::rc::RcBox") [ T ];
+                                                Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ];
                                                 Ty.path "alloc::alloc::Global"
                                               ],
                                             "try_new",
@@ -1052,6 +1107,7 @@ Module rc.
                                                     M.get_associated_function (|
                                                       Ty.apply
                                                         (Ty.path "core::cell::Cell")
+                                                        []
                                                         [ Ty.path "usize" ],
                                                       "new",
                                                       []
@@ -1063,6 +1119,7 @@ Module rc.
                                                     M.get_associated_function (|
                                                       Ty.apply
                                                         (Ty.path "core::cell::Cell")
+                                                        []
                                                         [ Ty.path "usize" ],
                                                       "new",
                                                       []
@@ -1095,15 +1152,18 @@ Module rc.
                                                     "core::ops::try_trait::FromResidual",
                                                     Ty.apply
                                                       (Ty.path "core::result::Result")
+                                                      []
                                                       [
                                                         Ty.apply
                                                           (Ty.path "alloc::rc::Rc")
+                                                          []
                                                           [ T; Ty.path "alloc::alloc::Global" ];
                                                         Ty.path "core::alloc::AllocError"
                                                       ],
                                                     [
                                                       Ty.apply
                                                         (Ty.path "core::result::Result")
+                                                        []
                                                         [
                                                           Ty.path "core::convert::Infallible";
                                                           Ty.path "core::alloc::AllocError"
@@ -1139,7 +1199,7 @@ Module rc.
                   |)
                 ]))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_try_new :
@@ -1157,10 +1217,15 @@ Module rc.
             }
         }
     *)
-    Definition try_new_uninit (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition try_new_uninit
+        (T : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [] =>
+      match ε, τ, α with
+      | [], [], [] =>
         ltac:(M.monadic
           (M.catch_return (|
             ltac:(M.monadic
@@ -1171,8 +1236,9 @@ Module rc.
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "alloc::rc::Rc")
+                        []
                         [
-                          Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ];
+                          Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ];
                           Ty.path "alloc::alloc::Global"
                         ],
                       "from_ptr",
@@ -1187,15 +1253,19 @@ Module rc.
                                 "core::ops::try_trait::Try",
                                 Ty.apply
                                   (Ty.path "core::result::Result")
+                                  []
                                   [
                                     Ty.apply
                                       (Ty.path "*mut")
+                                      []
                                       [
                                         Ty.apply
                                           (Ty.path "alloc::rc::RcBox")
+                                          []
                                           [
                                             Ty.apply
                                               (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                              []
                                               [ T ]
                                           ]
                                       ];
@@ -1210,9 +1280,11 @@ Module rc.
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "alloc::rc::Rc")
+                                      []
                                       [
                                         Ty.apply
                                           (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                          []
                                           [ T ];
                                         Ty.path "alloc::alloc::Global"
                                       ],
@@ -1222,22 +1294,27 @@ Module rc.
                                         [ Ty.tuple [ Ty.path "core::alloc::layout::Layout" ] ]
                                         (Ty.apply
                                           (Ty.path "core::result::Result")
+                                          []
                                           [
                                             Ty.apply
                                               (Ty.path "core::ptr::non_null::NonNull")
-                                              [ Ty.apply (Ty.path "slice") [ Ty.path "u8" ] ];
+                                              []
+                                              [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ];
                                             Ty.path "core::alloc::AllocError"
                                           ]);
                                       Ty.function
-                                        [ Ty.apply (Ty.path "*mut") [ Ty.path "u8" ] ]
+                                        [ Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ] ]
                                         (Ty.apply
                                           (Ty.path "*mut")
+                                          []
                                           [
                                             Ty.apply
                                               (Ty.path "alloc::rc::RcBox")
+                                              []
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                                  []
                                                   [ T ]
                                               ]
                                           ])
@@ -1285,14 +1362,16 @@ Module rc.
                                           | _ => M.impossible (||)
                                           end));
                                     M.get_associated_function (|
-                                      Ty.apply (Ty.path "*mut") [ Ty.path "u8" ],
+                                      Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
                                       "cast",
                                       [
                                         Ty.apply
                                           (Ty.path "alloc::rc::RcBox")
+                                          []
                                           [
                                             Ty.apply
                                               (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                              []
                                               [ T ]
                                           ]
                                       ]
@@ -1321,13 +1400,16 @@ Module rc.
                                             "core::ops::try_trait::FromResidual",
                                             Ty.apply
                                               (Ty.path "core::result::Result")
+                                              []
                                               [
                                                 Ty.apply
                                                   (Ty.path "alloc::rc::Rc")
+                                                  []
                                                   [
                                                     Ty.apply
                                                       (Ty.path
                                                         "core::mem::maybe_uninit::MaybeUninit")
+                                                      []
                                                       [ T ];
                                                     Ty.path "alloc::alloc::Global"
                                                   ];
@@ -1336,6 +1418,7 @@ Module rc.
                                             [
                                               Ty.apply
                                                 (Ty.path "core::result::Result")
+                                                []
                                                 [
                                                   Ty.path "core::convert::Infallible";
                                                   Ty.path "core::alloc::AllocError"
@@ -1367,7 +1450,7 @@ Module rc.
                   |)
                 ]))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_try_new_uninit :
@@ -1385,10 +1468,15 @@ Module rc.
             }
         }
     *)
-    Definition try_new_zeroed (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition try_new_zeroed
+        (T : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [] =>
+      match ε, τ, α with
+      | [], [], [] =>
         ltac:(M.monadic
           (M.catch_return (|
             ltac:(M.monadic
@@ -1399,8 +1487,9 @@ Module rc.
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "alloc::rc::Rc")
+                        []
                         [
-                          Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ];
+                          Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ];
                           Ty.path "alloc::alloc::Global"
                         ],
                       "from_ptr",
@@ -1415,15 +1504,19 @@ Module rc.
                                 "core::ops::try_trait::Try",
                                 Ty.apply
                                   (Ty.path "core::result::Result")
+                                  []
                                   [
                                     Ty.apply
                                       (Ty.path "*mut")
+                                      []
                                       [
                                         Ty.apply
                                           (Ty.path "alloc::rc::RcBox")
+                                          []
                                           [
                                             Ty.apply
                                               (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                              []
                                               [ T ]
                                           ]
                                       ];
@@ -1438,9 +1531,11 @@ Module rc.
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "alloc::rc::Rc")
+                                      []
                                       [
                                         Ty.apply
                                           (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                          []
                                           [ T ];
                                         Ty.path "alloc::alloc::Global"
                                       ],
@@ -1450,22 +1545,27 @@ Module rc.
                                         [ Ty.tuple [ Ty.path "core::alloc::layout::Layout" ] ]
                                         (Ty.apply
                                           (Ty.path "core::result::Result")
+                                          []
                                           [
                                             Ty.apply
                                               (Ty.path "core::ptr::non_null::NonNull")
-                                              [ Ty.apply (Ty.path "slice") [ Ty.path "u8" ] ];
+                                              []
+                                              [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ];
                                             Ty.path "core::alloc::AllocError"
                                           ]);
                                       Ty.function
-                                        [ Ty.apply (Ty.path "*mut") [ Ty.path "u8" ] ]
+                                        [ Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ] ]
                                         (Ty.apply
                                           (Ty.path "*mut")
+                                          []
                                           [
                                             Ty.apply
                                               (Ty.path "alloc::rc::RcBox")
+                                              []
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                                  []
                                                   [ T ]
                                               ]
                                           ])
@@ -1513,14 +1613,16 @@ Module rc.
                                           | _ => M.impossible (||)
                                           end));
                                     M.get_associated_function (|
-                                      Ty.apply (Ty.path "*mut") [ Ty.path "u8" ],
+                                      Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
                                       "cast",
                                       [
                                         Ty.apply
                                           (Ty.path "alloc::rc::RcBox")
+                                          []
                                           [
                                             Ty.apply
                                               (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                              []
                                               [ T ]
                                           ]
                                       ]
@@ -1549,13 +1651,16 @@ Module rc.
                                             "core::ops::try_trait::FromResidual",
                                             Ty.apply
                                               (Ty.path "core::result::Result")
+                                              []
                                               [
                                                 Ty.apply
                                                   (Ty.path "alloc::rc::Rc")
+                                                  []
                                                   [
                                                     Ty.apply
                                                       (Ty.path
                                                         "core::mem::maybe_uninit::MaybeUninit")
+                                                      []
                                                       [ T ];
                                                     Ty.path "alloc::alloc::Global"
                                                   ];
@@ -1564,6 +1669,7 @@ Module rc.
                                             [
                                               Ty.apply
                                                 (Ty.path "core::result::Result")
+                                                []
                                                 [
                                                   Ty.path "core::convert::Infallible";
                                                   Ty.path "core::alloc::AllocError"
@@ -1595,7 +1701,7 @@ Module rc.
                   |)
                 ]))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_try_new_zeroed :
@@ -1607,24 +1713,25 @@ Module rc.
             unsafe { Pin::new_unchecked(Rc::new(value)) }
         }
     *)
-    Definition pin (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition pin (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [ value ] =>
+      match ε, τ, α with
+      | [], [], [ value ] =>
         ltac:(M.monadic
           (let value := M.alloc (| value |) in
           M.call_closure (|
             M.get_associated_function (|
               Ty.apply
                 (Ty.path "core::pin::Pin")
-                [ Ty.apply (Ty.path "alloc::rc::Rc") [ T; Ty.path "alloc::alloc::Global" ] ],
+                []
+                [ Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; Ty.path "alloc::alloc::Global" ] ],
               "new_unchecked",
               []
             |),
             [
               M.call_closure (|
                 M.get_associated_function (|
-                  Ty.apply (Ty.path "alloc::rc::Rc") [ T; Ty.path "alloc::alloc::Global" ],
+                  Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; Ty.path "alloc::alloc::Global" ],
                   "new",
                   []
                 |),
@@ -1632,7 +1739,7 @@ Module rc.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_pin : forall (T : Ty.t), M.IsAssociatedFunction (Self T) "pin" (pin T).
@@ -1641,21 +1748,21 @@ Module rc.
             unsafe { Self::from_raw_in(ptr, Global) }
         }
     *)
-    Definition from_raw (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition from_raw (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [ ptr ] =>
+      match ε, τ, α with
+      | [], [], [ ptr ] =>
         ltac:(M.monadic
           (let ptr := M.alloc (| ptr |) in
           M.call_closure (|
             M.get_associated_function (|
-              Ty.apply (Ty.path "alloc::rc::Rc") [ T; Ty.path "alloc::alloc::Global" ],
+              Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; Ty.path "alloc::alloc::Global" ],
               "from_raw_in",
               []
             |),
             [ M.read (| ptr |); Value.StructTuple "alloc::alloc::Global" [] ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_from_raw :
@@ -1667,21 +1774,26 @@ Module rc.
             unsafe { Self::increment_strong_count_in(ptr, Global) }
         }
     *)
-    Definition increment_strong_count (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition increment_strong_count
+        (T : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [ ptr ] =>
+      match ε, τ, α with
+      | [], [], [ ptr ] =>
         ltac:(M.monadic
           (let ptr := M.alloc (| ptr |) in
           M.call_closure (|
             M.get_associated_function (|
-              Ty.apply (Ty.path "alloc::rc::Rc") [ T; Ty.path "alloc::alloc::Global" ],
+              Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; Ty.path "alloc::alloc::Global" ],
               "increment_strong_count_in",
               []
             |),
             [ M.read (| ptr |); Value.StructTuple "alloc::alloc::Global" [] ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_increment_strong_count :
@@ -1693,21 +1805,26 @@ Module rc.
             unsafe { Self::decrement_strong_count_in(ptr, Global) }
         }
     *)
-    Definition decrement_strong_count (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition decrement_strong_count
+        (T : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [ ptr ] =>
+      match ε, τ, α with
+      | [], [], [ ptr ] =>
         ltac:(M.monadic
           (let ptr := M.alloc (| ptr |) in
           M.call_closure (|
             M.get_associated_function (|
-              Ty.apply (Ty.path "alloc::rc::Rc") [ T; Ty.path "alloc::alloc::Global" ],
+              Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; Ty.path "alloc::alloc::Global" ],
               "decrement_strong_count_in",
               []
             |),
             [ M.read (| ptr |); Value.StructTuple "alloc::alloc::Global" [] ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_decrement_strong_count :
@@ -1726,10 +1843,16 @@ Module rc.
             }
         }
     *)
-    Definition allocate_for_layout (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition allocate_for_layout
+        (T : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [
+      match ε, τ, α with
+      | [],
+          [
             impl_FnOnce_Layout__arrow_Result_NonNull__u8____AllocError_;
             impl_FnOnce__mut_u8__arrow__mut_RcBox_T_
           ],
@@ -1751,21 +1874,28 @@ Module rc.
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "core::result::Result")
+                    []
                     [
-                      Ty.apply (Ty.path "*mut") [ Ty.apply (Ty.path "alloc::rc::RcBox") [ T ] ];
+                      Ty.apply
+                        (Ty.path "*mut")
+                        []
+                        [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ];
                       Ty.path "core::alloc::AllocError"
                     ],
                   "unwrap_or_else",
                   [
                     Ty.function
                       [ Ty.tuple [ Ty.path "core::alloc::AllocError" ] ]
-                      (Ty.apply (Ty.path "*mut") [ Ty.apply (Ty.path "alloc::rc::RcBox") [ T ] ])
+                      (Ty.apply
+                        (Ty.path "*mut")
+                        []
+                        [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ])
                   ]
                 |),
                 [
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "alloc::rc::Rc") [ T; Ty.path "alloc::alloc::Global" ],
+                      Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; Ty.path "alloc::alloc::Global" ],
                       "try_allocate_for_layout",
                       [
                         impl_FnOnce_Layout__arrow_Result_NonNull__u8____AllocError_;
@@ -1798,7 +1928,7 @@ Module rc.
               |)
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_allocate_for_layout :
@@ -1828,10 +1958,16 @@ Module rc.
             Ok(inner)
         }
     *)
-    Definition try_allocate_for_layout (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition try_allocate_for_layout
+        (T : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [
+      match ε, τ, α with
+      | [],
+          [
             impl_FnOnce_Layout__arrow_Result_NonNull__u8____AllocError_;
             impl_FnOnce__mut_u8__arrow__mut_RcBox_T_
           ],
@@ -1859,10 +1995,12 @@ Module rc.
                             "core::ops::try_trait::Try",
                             Ty.apply
                               (Ty.path "core::result::Result")
+                              []
                               [
                                 Ty.apply
                                   (Ty.path "core::ptr::non_null::NonNull")
-                                  [ Ty.apply (Ty.path "slice") [ Ty.path "u8" ] ];
+                                  []
+                                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ];
                                 Ty.path "core::alloc::AllocError"
                               ],
                             [],
@@ -1902,15 +2040,18 @@ Module rc.
                                         "core::ops::try_trait::FromResidual",
                                         Ty.apply
                                           (Ty.path "core::result::Result")
+                                          []
                                           [
                                             Ty.apply
                                               (Ty.path "*mut")
-                                              [ Ty.apply (Ty.path "alloc::rc::RcBox") [ T ] ];
+                                              []
+                                              [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ];
                                             Ty.path "core::alloc::AllocError"
                                           ],
                                         [
                                           Ty.apply
                                             (Ty.path "core::result::Result")
+                                            []
                                             [
                                               Ty.path "core::convert::Infallible";
                                               Ty.path "core::alloc::AllocError"
@@ -1944,7 +2085,7 @@ Module rc.
                       M.get_trait_method (|
                         "core::ops::function::FnOnce",
                         impl_FnOnce__mut_u8__arrow__mut_RcBox_T_,
-                        [ Ty.tuple [ Ty.apply (Ty.path "*mut") [ Ty.path "u8" ] ] ],
+                        [ Ty.tuple [ Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ] ] ],
                         "call_once",
                         []
                       |),
@@ -1954,7 +2095,10 @@ Module rc.
                           [
                             M.call_closure (|
                               M.get_associated_function (|
-                                Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ Ty.path "u8" ],
+                                Ty.apply
+                                  (Ty.path "core::ptr::non_null::NonNull")
+                                  []
+                                  [ Ty.path "u8" ],
                                 "as_ptr",
                                 []
                               |),
@@ -1963,7 +2107,8 @@ Module rc.
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "core::ptr::non_null::NonNull")
-                                      [ Ty.apply (Ty.path "slice") [ Ty.path "u8" ] ],
+                                      []
+                                      [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                                     "as_non_null_ptr",
                                     []
                                   |),
@@ -1995,7 +2140,7 @@ Module rc.
                                           M.get_associated_function (|
                                             Ty.path "core::alloc::layout::Layout",
                                             "for_value",
-                                            [ Ty.apply (Ty.path "alloc::rc::RcBox") [ T ] ]
+                                            [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ]
                                           |),
                                           [ M.read (| inner |) ]
                                         |)
@@ -2083,7 +2228,7 @@ Module rc.
                       M.call_closure (|
                         M.get_function (|
                           "core::ptr::write",
-                          [ Ty.apply (Ty.path "core::cell::Cell") [ Ty.path "usize" ] ]
+                          [ Ty.apply (Ty.path "core::cell::Cell") [] [ Ty.path "usize" ] ]
                         |),
                         [
                           M.SubPointer.get_struct_record_field (|
@@ -2093,7 +2238,7 @@ Module rc.
                           |);
                           M.call_closure (|
                             M.get_associated_function (|
-                              Ty.apply (Ty.path "core::cell::Cell") [ Ty.path "usize" ],
+                              Ty.apply (Ty.path "core::cell::Cell") [] [ Ty.path "usize" ],
                               "new",
                               []
                             |),
@@ -2107,7 +2252,7 @@ Module rc.
                       M.call_closure (|
                         M.get_function (|
                           "core::ptr::write",
-                          [ Ty.apply (Ty.path "core::cell::Cell") [ Ty.path "usize" ] ]
+                          [ Ty.apply (Ty.path "core::cell::Cell") [] [ Ty.path "usize" ] ]
                         |),
                         [
                           M.SubPointer.get_struct_record_field (|
@@ -2117,7 +2262,7 @@ Module rc.
                           |);
                           M.call_closure (|
                             M.get_associated_function (|
-                              Ty.apply (Ty.path "core::cell::Cell") [ Ty.path "usize" ],
+                              Ty.apply (Ty.path "core::cell::Cell") [] [ Ty.path "usize" ],
                               "new",
                               []
                             |),
@@ -2130,7 +2275,7 @@ Module rc.
                 M.alloc (| Value.StructTuple "core::result::Result::Ok" [ M.read (| inner |) ] |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_try_allocate_for_layout :
@@ -2139,7 +2284,7 @@ Module rc.
   End Impl_alloc_rc_Rc_T_alloc_alloc_Global.
   
   Module Impl_alloc_rc_Rc_T_A.
-    Definition Self (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::rc::Rc") [ T; A ].
+    Definition Self (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ].
     
     (*
         fn inner(&self) -> &RcBox<T> {
@@ -2148,23 +2293,24 @@ Module rc.
             unsafe { self.ptr.as_ref() }
         }
     *)
-    Definition inner (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition inner (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
             M.get_associated_function (|
               Ty.apply
                 (Ty.path "core::ptr::non_null::NonNull")
-                [ Ty.apply (Ty.path "alloc::rc::RcBox") [ T ] ],
+                []
+                [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ],
               "as_ref",
               []
             |),
             [ M.SubPointer.get_struct_record_field (| M.read (| self |), "alloc::rc::Rc", "ptr" |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_inner :
@@ -2176,10 +2322,15 @@ Module rc.
             Self { ptr, phantom: PhantomData, alloc }
         }
     *)
-    Definition from_inner_in (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition from_inner_in
+        (T A : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ ptr; alloc ] =>
+      match ε, τ, α with
+      | [], [], [ ptr; alloc ] =>
         ltac:(M.monadic
           (let ptr := M.alloc (| ptr |) in
           let alloc := M.alloc (| alloc |) in
@@ -2190,7 +2341,7 @@ Module rc.
               ("phantom", Value.StructTuple "core::marker::PhantomData" []);
               ("alloc", M.read (| alloc |))
             ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_from_inner_in :
@@ -2202,16 +2353,16 @@ Module rc.
             unsafe { Self::from_inner_in(NonNull::new_unchecked(ptr), alloc) }
         }
     *)
-    Definition from_ptr_in (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition from_ptr_in (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ ptr; alloc ] =>
+      match ε, τ, α with
+      | [], [], [ ptr; alloc ] =>
         ltac:(M.monadic
           (let ptr := M.alloc (| ptr |) in
           let alloc := M.alloc (| alloc |) in
           M.call_closure (|
             M.get_associated_function (|
-              Ty.apply (Ty.path "alloc::rc::Rc") [ T; A ],
+              Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
               "from_inner_in",
               []
             |),
@@ -2220,7 +2371,8 @@ Module rc.
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "core::ptr::non_null::NonNull")
-                    [ Ty.apply (Ty.path "alloc::rc::RcBox") [ T ] ],
+                    []
+                    [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ],
                   "new_unchecked",
                   []
                 |),
@@ -2229,7 +2381,7 @@ Module rc.
               M.read (| alloc |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_from_ptr_in :
@@ -2240,14 +2392,14 @@ Module rc.
             &this.alloc
         }
     *)
-    Definition allocator (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition allocator (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ this ] =>
+      match ε, τ, α with
+      | [], [], [ this ] =>
         ltac:(M.monadic
           (let this := M.alloc (| this |) in
           M.SubPointer.get_struct_record_field (| M.read (| this |), "alloc::rc::Rc", "alloc" |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_allocator :
@@ -2264,10 +2416,10 @@ Module rc.
             }
         }
     *)
-    Definition new_in (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition new_in (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ value; alloc ] =>
+      match ε, τ, α with
+      | [], [], [ value; alloc ] =>
         ltac:(M.monadic
           (let value := M.alloc (| value |) in
           let alloc := M.alloc (| alloc |) in
@@ -2276,7 +2428,7 @@ Module rc.
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "alloc::rc::Rc") [ T; A ],
+                    Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
                     "try_new_in",
                     []
                   |),
@@ -2303,7 +2455,7 @@ Module rc.
                               M.get_associated_function (|
                                 Ty.path "core::alloc::layout::Layout",
                                 "new",
-                                [ Ty.apply (Ty.path "alloc::rc::RcBox") [ T ] ]
+                                [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ]
                               |),
                               []
                             |)
@@ -2314,7 +2466,7 @@ Module rc.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_new_in :
@@ -2335,17 +2487,23 @@ Module rc.
             }
         }
     *)
-    Definition new_uninit_in (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition new_uninit_in
+        (T A : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ alloc ] =>
+      match ε, τ, α with
+      | [], [], [ alloc ] =>
         ltac:(M.monadic
           (let alloc := M.alloc (| alloc |) in
           M.call_closure (|
             M.get_associated_function (|
               Ty.apply
                 (Ty.path "alloc::rc::Rc")
-                [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ]; A ],
+                []
+                [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]; A ],
               "from_ptr_in",
               []
             |),
@@ -2354,8 +2512,9 @@ Module rc.
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "alloc::rc::Rc")
+                    []
                     [
-                      Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ];
+                      Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ];
                       Ty.path "alloc::alloc::Global"
                     ],
                   "allocate_for_layout",
@@ -2364,20 +2523,24 @@ Module rc.
                       [ Ty.tuple [ Ty.path "core::alloc::layout::Layout" ] ]
                       (Ty.apply
                         (Ty.path "core::result::Result")
+                        []
                         [
                           Ty.apply
                             (Ty.path "core::ptr::non_null::NonNull")
-                            [ Ty.apply (Ty.path "slice") [ Ty.path "u8" ] ];
+                            []
+                            [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ];
                           Ty.path "core::alloc::AllocError"
                         ]);
                     Ty.function
-                      [ Ty.apply (Ty.path "*mut") [ Ty.path "u8" ] ]
+                      [ Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ] ]
                       (Ty.apply
                         (Ty.path "*mut")
+                        []
                         [
                           Ty.apply
                             (Ty.path "alloc::rc::RcBox")
-                            [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ] ]
+                            []
+                            [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ]
                         ])
                   ]
                 |),
@@ -2416,12 +2579,13 @@ Module rc.
                         | _ => M.impossible (||)
                         end));
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "*mut") [ Ty.path "u8" ],
+                    Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
                     "cast",
                     [
                       Ty.apply
                         (Ty.path "alloc::rc::RcBox")
-                        [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ] ]
+                        []
+                        [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ]
                     ]
                   |)
                 ]
@@ -2429,7 +2593,7 @@ Module rc.
               M.read (| alloc |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_new_uninit_in :
@@ -2450,17 +2614,23 @@ Module rc.
             }
         }
     *)
-    Definition new_zeroed_in (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition new_zeroed_in
+        (T A : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ alloc ] =>
+      match ε, τ, α with
+      | [], [], [ alloc ] =>
         ltac:(M.monadic
           (let alloc := M.alloc (| alloc |) in
           M.call_closure (|
             M.get_associated_function (|
               Ty.apply
                 (Ty.path "alloc::rc::Rc")
-                [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ]; A ],
+                []
+                [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]; A ],
               "from_ptr_in",
               []
             |),
@@ -2469,8 +2639,9 @@ Module rc.
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "alloc::rc::Rc")
+                    []
                     [
-                      Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ];
+                      Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ];
                       Ty.path "alloc::alloc::Global"
                     ],
                   "allocate_for_layout",
@@ -2479,20 +2650,24 @@ Module rc.
                       [ Ty.tuple [ Ty.path "core::alloc::layout::Layout" ] ]
                       (Ty.apply
                         (Ty.path "core::result::Result")
+                        []
                         [
                           Ty.apply
                             (Ty.path "core::ptr::non_null::NonNull")
-                            [ Ty.apply (Ty.path "slice") [ Ty.path "u8" ] ];
+                            []
+                            [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ];
                           Ty.path "core::alloc::AllocError"
                         ]);
                     Ty.function
-                      [ Ty.apply (Ty.path "*mut") [ Ty.path "u8" ] ]
+                      [ Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ] ]
                       (Ty.apply
                         (Ty.path "*mut")
+                        []
                         [
                           Ty.apply
                             (Ty.path "alloc::rc::RcBox")
-                            [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ] ]
+                            []
+                            [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ]
                         ])
                   ]
                 |),
@@ -2531,12 +2706,13 @@ Module rc.
                         | _ => M.impossible (||)
                         end));
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "*mut") [ Ty.path "u8" ],
+                    Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
                     "cast",
                     [
                       Ty.apply
                         (Ty.path "alloc::rc::RcBox")
-                        [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ] ]
+                        []
+                        [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ]
                     ]
                   |)
                 ]
@@ -2544,7 +2720,7 @@ Module rc.
               M.read (| alloc |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_new_zeroed_in :
@@ -2564,10 +2740,10 @@ Module rc.
             Ok(unsafe { Self::from_inner_in(ptr.into(), alloc) })
         }
     *)
-    Definition try_new_in (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition try_new_in (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ value; alloc ] =>
+      match ε, τ, α with
+      | [], [], [ value; alloc ] =>
         ltac:(M.monadic
           (let value := M.alloc (| value |) in
           let alloc := M.alloc (| alloc |) in
@@ -2580,7 +2756,8 @@ Module rc.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "alloc::boxed::Box")
-                          [ Ty.apply (Ty.path "alloc::rc::RcBox") [ T ]; A ],
+                          []
+                          [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ]; A ],
                         "into_unique",
                         []
                       |),
@@ -2593,10 +2770,12 @@ Module rc.
                                   "core::ops::try_trait::Try",
                                   Ty.apply
                                     (Ty.path "core::result::Result")
+                                    []
                                     [
                                       Ty.apply
                                         (Ty.path "alloc::boxed::Box")
-                                        [ Ty.apply (Ty.path "alloc::rc::RcBox") [ T ]; A ];
+                                        []
+                                        [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ]; A ];
                                       Ty.path "core::alloc::AllocError"
                                     ],
                                   [],
@@ -2608,7 +2787,8 @@ Module rc.
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "alloc::boxed::Box")
-                                        [ Ty.apply (Ty.path "alloc::rc::RcBox") [ T ]; A ],
+                                        []
+                                        [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ]; A ],
                                       "try_new_in",
                                       []
                                     |),
@@ -2621,6 +2801,7 @@ Module rc.
                                               M.get_associated_function (|
                                                 Ty.apply
                                                   (Ty.path "core::cell::Cell")
+                                                  []
                                                   [ Ty.path "usize" ],
                                                 "new",
                                                 []
@@ -2632,6 +2813,7 @@ Module rc.
                                               M.get_associated_function (|
                                                 Ty.apply
                                                   (Ty.path "core::cell::Cell")
+                                                  []
                                                   [ Ty.path "usize" ],
                                                 "new",
                                                 []
@@ -2665,13 +2847,15 @@ Module rc.
                                               "core::ops::try_trait::FromResidual",
                                               Ty.apply
                                                 (Ty.path "core::result::Result")
+                                                []
                                                 [
-                                                  Ty.apply (Ty.path "alloc::rc::Rc") [ T; A ];
+                                                  Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ];
                                                   Ty.path "core::alloc::AllocError"
                                                 ],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
+                                                  []
                                                   [
                                                     Ty.path "core::convert::Infallible";
                                                     Ty.path "core::alloc::AllocError"
@@ -2715,7 +2899,7 @@ Module rc.
                             [
                               M.call_closure (|
                                 M.get_associated_function (|
-                                  Ty.apply (Ty.path "alloc::rc::Rc") [ T; A ],
+                                  Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
                                   "from_inner_in",
                                   []
                                 |),
@@ -2725,11 +2909,13 @@ Module rc.
                                       "core::convert::Into",
                                       Ty.apply
                                         (Ty.path "core::ptr::unique::Unique")
-                                        [ Ty.apply (Ty.path "alloc::rc::RcBox") [ T ] ],
+                                        []
+                                        [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ],
                                       [
                                         Ty.apply
                                           (Ty.path "core::ptr::non_null::NonNull")
-                                          [ Ty.apply (Ty.path "alloc::rc::RcBox") [ T ] ]
+                                          []
+                                          [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ]
                                       ],
                                       "into",
                                       []
@@ -2745,7 +2931,7 @@ Module rc.
                 |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_try_new_in :
@@ -2766,10 +2952,15 @@ Module rc.
             }
         }
     *)
-    Definition try_new_uninit_in (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition try_new_uninit_in
+        (T A : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ alloc ] =>
+      match ε, τ, α with
+      | [], [], [ alloc ] =>
         ltac:(M.monadic
           (let alloc := M.alloc (| alloc |) in
           M.catch_return (|
@@ -2781,7 +2972,8 @@ Module rc.
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "alloc::rc::Rc")
-                        [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ]; A ],
+                        []
+                        [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]; A ],
                       "from_ptr_in",
                       []
                     |),
@@ -2794,15 +2986,19 @@ Module rc.
                                 "core::ops::try_trait::Try",
                                 Ty.apply
                                   (Ty.path "core::result::Result")
+                                  []
                                   [
                                     Ty.apply
                                       (Ty.path "*mut")
+                                      []
                                       [
                                         Ty.apply
                                           (Ty.path "alloc::rc::RcBox")
+                                          []
                                           [
                                             Ty.apply
                                               (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                              []
                                               [ T ]
                                           ]
                                       ];
@@ -2817,9 +3013,11 @@ Module rc.
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "alloc::rc::Rc")
+                                      []
                                       [
                                         Ty.apply
                                           (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                          []
                                           [ T ];
                                         Ty.path "alloc::alloc::Global"
                                       ],
@@ -2829,22 +3027,27 @@ Module rc.
                                         [ Ty.tuple [ Ty.path "core::alloc::layout::Layout" ] ]
                                         (Ty.apply
                                           (Ty.path "core::result::Result")
+                                          []
                                           [
                                             Ty.apply
                                               (Ty.path "core::ptr::non_null::NonNull")
-                                              [ Ty.apply (Ty.path "slice") [ Ty.path "u8" ] ];
+                                              []
+                                              [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ];
                                             Ty.path "core::alloc::AllocError"
                                           ]);
                                       Ty.function
-                                        [ Ty.apply (Ty.path "*mut") [ Ty.path "u8" ] ]
+                                        [ Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ] ]
                                         (Ty.apply
                                           (Ty.path "*mut")
+                                          []
                                           [
                                             Ty.apply
                                               (Ty.path "alloc::rc::RcBox")
+                                              []
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                                  []
                                                   [ T ]
                                               ]
                                           ])
@@ -2885,14 +3088,16 @@ Module rc.
                                           | _ => M.impossible (||)
                                           end));
                                     M.get_associated_function (|
-                                      Ty.apply (Ty.path "*mut") [ Ty.path "u8" ],
+                                      Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
                                       "cast",
                                       [
                                         Ty.apply
                                           (Ty.path "alloc::rc::RcBox")
+                                          []
                                           [
                                             Ty.apply
                                               (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                              []
                                               [ T ]
                                           ]
                                       ]
@@ -2921,13 +3126,16 @@ Module rc.
                                             "core::ops::try_trait::FromResidual",
                                             Ty.apply
                                               (Ty.path "core::result::Result")
+                                              []
                                               [
                                                 Ty.apply
                                                   (Ty.path "alloc::rc::Rc")
+                                                  []
                                                   [
                                                     Ty.apply
                                                       (Ty.path
                                                         "core::mem::maybe_uninit::MaybeUninit")
+                                                      []
                                                       [ T ];
                                                     A
                                                   ];
@@ -2936,6 +3144,7 @@ Module rc.
                                             [
                                               Ty.apply
                                                 (Ty.path "core::result::Result")
+                                                []
                                                 [
                                                   Ty.path "core::convert::Infallible";
                                                   Ty.path "core::alloc::AllocError"
@@ -2968,7 +3177,7 @@ Module rc.
                   |)
                 ]))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_try_new_uninit_in :
@@ -2989,10 +3198,15 @@ Module rc.
             }
         }
     *)
-    Definition try_new_zeroed_in (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition try_new_zeroed_in
+        (T A : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ alloc ] =>
+      match ε, τ, α with
+      | [], [], [ alloc ] =>
         ltac:(M.monadic
           (let alloc := M.alloc (| alloc |) in
           M.catch_return (|
@@ -3004,7 +3218,8 @@ Module rc.
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "alloc::rc::Rc")
-                        [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ]; A ],
+                        []
+                        [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]; A ],
                       "from_ptr_in",
                       []
                     |),
@@ -3017,15 +3232,19 @@ Module rc.
                                 "core::ops::try_trait::Try",
                                 Ty.apply
                                   (Ty.path "core::result::Result")
+                                  []
                                   [
                                     Ty.apply
                                       (Ty.path "*mut")
+                                      []
                                       [
                                         Ty.apply
                                           (Ty.path "alloc::rc::RcBox")
+                                          []
                                           [
                                             Ty.apply
                                               (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                              []
                                               [ T ]
                                           ]
                                       ];
@@ -3040,9 +3259,11 @@ Module rc.
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "alloc::rc::Rc")
+                                      []
                                       [
                                         Ty.apply
                                           (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                          []
                                           [ T ];
                                         Ty.path "alloc::alloc::Global"
                                       ],
@@ -3052,22 +3273,27 @@ Module rc.
                                         [ Ty.tuple [ Ty.path "core::alloc::layout::Layout" ] ]
                                         (Ty.apply
                                           (Ty.path "core::result::Result")
+                                          []
                                           [
                                             Ty.apply
                                               (Ty.path "core::ptr::non_null::NonNull")
-                                              [ Ty.apply (Ty.path "slice") [ Ty.path "u8" ] ];
+                                              []
+                                              [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ];
                                             Ty.path "core::alloc::AllocError"
                                           ]);
                                       Ty.function
-                                        [ Ty.apply (Ty.path "*mut") [ Ty.path "u8" ] ]
+                                        [ Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ] ]
                                         (Ty.apply
                                           (Ty.path "*mut")
+                                          []
                                           [
                                             Ty.apply
                                               (Ty.path "alloc::rc::RcBox")
+                                              []
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                                  []
                                                   [ T ]
                                               ]
                                           ])
@@ -3108,14 +3334,16 @@ Module rc.
                                           | _ => M.impossible (||)
                                           end));
                                     M.get_associated_function (|
-                                      Ty.apply (Ty.path "*mut") [ Ty.path "u8" ],
+                                      Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
                                       "cast",
                                       [
                                         Ty.apply
                                           (Ty.path "alloc::rc::RcBox")
+                                          []
                                           [
                                             Ty.apply
                                               (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                              []
                                               [ T ]
                                           ]
                                       ]
@@ -3144,13 +3372,16 @@ Module rc.
                                             "core::ops::try_trait::FromResidual",
                                             Ty.apply
                                               (Ty.path "core::result::Result")
+                                              []
                                               [
                                                 Ty.apply
                                                   (Ty.path "alloc::rc::Rc")
+                                                  []
                                                   [
                                                     Ty.apply
                                                       (Ty.path
                                                         "core::mem::maybe_uninit::MaybeUninit")
+                                                      []
                                                       [ T ];
                                                     A
                                                   ];
@@ -3159,6 +3390,7 @@ Module rc.
                                             [
                                               Ty.apply
                                                 (Ty.path "core::result::Result")
+                                                []
                                                 [
                                                   Ty.path "core::convert::Infallible";
                                                   Ty.path "core::alloc::AllocError"
@@ -3191,7 +3423,7 @@ Module rc.
                   |)
                 ]))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_try_new_zeroed_in :
@@ -3203,23 +3435,26 @@ Module rc.
             unsafe { Pin::new_unchecked(Rc::new_in(value, alloc)) }
         }
     *)
-    Definition pin_in (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition pin_in (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ value; alloc ] =>
+      match ε, τ, α with
+      | [], [], [ value; alloc ] =>
         ltac:(M.monadic
           (let value := M.alloc (| value |) in
           let alloc := M.alloc (| alloc |) in
           M.call_closure (|
             M.get_associated_function (|
-              Ty.apply (Ty.path "core::pin::Pin") [ Ty.apply (Ty.path "alloc::rc::Rc") [ T; A ] ],
+              Ty.apply
+                (Ty.path "core::pin::Pin")
+                []
+                [ Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ] ],
               "new_unchecked",
               []
             |),
             [
               M.call_closure (|
                 M.get_associated_function (|
-                  Ty.apply (Ty.path "alloc::rc::Rc") [ T; A ],
+                  Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
                   "new_in",
                   []
                 |),
@@ -3227,7 +3462,7 @@ Module rc.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_pin_in :
@@ -3255,10 +3490,10 @@ Module rc.
             }
         }
     *)
-    Definition try_unwrap (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition try_unwrap (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ this ] =>
+      match ε, τ, α with
+      | [], [], [ this ] =>
         ltac:(M.monadic
           (let this := M.alloc (| this |) in
           M.read (|
@@ -3273,7 +3508,7 @@ Module rc.
                           BinOp.Pure.eq
                             (M.call_closure (|
                               M.get_associated_function (|
-                                Ty.apply (Ty.path "alloc::rc::Rc") [ T; A ],
+                                Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
                                 "strong_count",
                                 []
                               |),
@@ -3290,7 +3525,7 @@ Module rc.
                             M.call_closure (|
                               M.get_trait_method (|
                                 "core::ops::deref::Deref",
-                                Ty.apply (Ty.path "alloc::rc::Rc") [ T; A ],
+                                Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
                                 [],
                                 "deref",
                                 []
@@ -3318,7 +3553,7 @@ Module rc.
                         M.call_closure (|
                           M.get_trait_method (|
                             "alloc::rc::RcInnerPtr",
-                            Ty.apply (Ty.path "alloc::rc::RcBox") [ T ],
+                            Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ],
                             [],
                             "dec_strong",
                             []
@@ -3326,7 +3561,7 @@ Module rc.
                           [
                             M.call_closure (|
                               M.get_associated_function (|
-                                Ty.apply (Ty.path "alloc::rc::Rc") [ T; A ],
+                                Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
                                 "inner",
                                 []
                               |),
@@ -3356,7 +3591,7 @@ Module rc.
                         M.call_closure (|
                           M.get_function (|
                             "core::mem::forget",
-                            [ Ty.apply (Ty.path "alloc::rc::Rc") [ T; A ] ]
+                            [ Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ] ]
                           |),
                           [ M.read (| this |) ]
                         |)
@@ -3372,7 +3607,7 @@ Module rc.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_try_unwrap :
@@ -3384,24 +3619,25 @@ Module rc.
             Rc::try_unwrap(this).ok()
         }
     *)
-    Definition into_inner (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition into_inner (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ this ] =>
+      match ε, τ, α with
+      | [], [], [ this ] =>
         ltac:(M.monadic
           (let this := M.alloc (| this |) in
           M.call_closure (|
             M.get_associated_function (|
               Ty.apply
                 (Ty.path "core::result::Result")
-                [ T; Ty.apply (Ty.path "alloc::rc::Rc") [ T; A ] ],
+                []
+                [ T; Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ] ],
               "ok",
               []
             |),
             [
               M.call_closure (|
                 M.get_associated_function (|
-                  Ty.apply (Ty.path "alloc::rc::Rc") [ T; A ],
+                  Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
                   "try_unwrap",
                   []
                 |),
@@ -3409,7 +3645,7 @@ Module rc.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_into_inner :
@@ -3422,10 +3658,10 @@ Module rc.
             ptr
         }
     *)
-    Definition into_raw (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition into_raw (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ this ] =>
+      match ε, τ, α with
+      | [], [], [ this ] =>
         ltac:(M.monadic
           (let this := M.alloc (| this |) in
           M.read (|
@@ -3433,7 +3669,7 @@ Module rc.
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "alloc::rc::Rc") [ T; A ],
+                    Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
                     "as_ptr",
                     []
                   |),
@@ -3445,14 +3681,14 @@ Module rc.
                 M.call_closure (|
                   M.get_function (|
                     "core::mem::forget",
-                    [ Ty.apply (Ty.path "alloc::rc::Rc") [ T; A ] ]
+                    [ Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ] ]
                   |),
                   [ M.read (| this |) ]
                 |)
               |) in
             ptr
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_into_raw :
@@ -3469,10 +3705,10 @@ Module rc.
             unsafe { ptr::addr_of_mut!(( *ptr).value) }
         }
     *)
-    Definition as_ptr (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition as_ptr (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ this ] =>
+      match ε, τ, α with
+      | [], [], [ this ] =>
         ltac:(M.monadic
           (let this := M.alloc (| this |) in
           M.read (|
@@ -3482,7 +3718,8 @@ Module rc.
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "core::ptr::non_null::NonNull")
-                      [ Ty.apply (Ty.path "alloc::rc::RcBox") [ T ] ],
+                      []
+                      [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ],
                     "as_ptr",
                     []
                   |),
@@ -3507,7 +3744,7 @@ Module rc.
                 |))
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_as_ptr :
@@ -3524,10 +3761,10 @@ Module rc.
             unsafe { Self::from_ptr_in(rc_ptr, alloc) }
         }
     *)
-    Definition from_raw_in (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition from_raw_in (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ ptr; alloc ] =>
+      match ε, τ, α with
+      | [], [], [ ptr; alloc ] =>
         ltac:(M.monadic
           (let ptr := M.alloc (| ptr |) in
           let alloc := M.alloc (| alloc |) in
@@ -3544,7 +3781,7 @@ Module rc.
                 M.rust_cast
                   (M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "*const") [ T ],
+                      Ty.apply (Ty.path "*const") [] [ T ],
                       "byte_sub",
                       []
                     |),
@@ -3554,7 +3791,7 @@ Module rc.
             M.alloc (|
               M.call_closure (|
                 M.get_associated_function (|
-                  Ty.apply (Ty.path "alloc::rc::Rc") [ T; A ],
+                  Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
                   "from_ptr_in",
                   []
                 |),
@@ -3562,7 +3799,7 @@ Module rc.
               |)
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_from_raw_in :
@@ -3580,10 +3817,10 @@ Module rc.
             Weak { ptr: this.ptr, alloc: this.alloc.clone() }
         }
     *)
-    Definition downgrade (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition downgrade (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ this ] =>
+      match ε, τ, α with
+      | [], [], [ this ] =>
         ltac:(M.monadic
           (let this := M.alloc (| this |) in
           M.read (|
@@ -3592,7 +3829,7 @@ Module rc.
                 M.call_closure (|
                   M.get_trait_method (|
                     "alloc::rc::RcInnerPtr",
-                    Ty.apply (Ty.path "alloc::rc::RcBox") [ T ],
+                    Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ],
                     [],
                     "inc_weak",
                     []
@@ -3600,7 +3837,7 @@ Module rc.
                   [
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "alloc::rc::Rc") [ T; A ],
+                        Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
                         "inner",
                         []
                       |),
@@ -3631,14 +3868,16 @@ Module rc.
                                           (M.call_closure (|
                                             M.get_function (|
                                               "alloc::rc::is_dangling",
-                                              [ Ty.apply (Ty.path "alloc::rc::RcBox") [ T ] ]
+                                              [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ]
                                             |),
                                             [
                                               M.call_closure (|
                                                 M.get_associated_function (|
                                                   Ty.apply
                                                     (Ty.path "core::ptr::non_null::NonNull")
-                                                    [ Ty.apply (Ty.path "alloc::rc::RcBox") [ T ] ],
+                                                    []
+                                                    [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ]
+                                                    ],
                                                   "as_ptr",
                                                   []
                                                 |),
@@ -3706,7 +3945,7 @@ Module rc.
                 ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_downgrade :
@@ -3718,10 +3957,10 @@ Module rc.
             this.inner().weak() - 1
         }
     *)
-    Definition weak_count (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition weak_count (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ this ] =>
+      match ε, τ, α with
+      | [], [], [ this ] =>
         ltac:(M.monadic
           (let this := M.alloc (| this |) in
           BinOp.Wrap.sub
@@ -3729,7 +3968,7 @@ Module rc.
             (M.call_closure (|
               M.get_trait_method (|
                 "alloc::rc::RcInnerPtr",
-                Ty.apply (Ty.path "alloc::rc::RcBox") [ T ],
+                Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ],
                 [],
                 "weak",
                 []
@@ -3737,7 +3976,7 @@ Module rc.
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "alloc::rc::Rc") [ T; A ],
+                    Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
                     "inner",
                     []
                   |),
@@ -3746,7 +3985,7 @@ Module rc.
               ]
             |))
             (Value.Integer 1)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_weak_count :
@@ -3758,16 +3997,21 @@ Module rc.
             this.inner().strong()
         }
     *)
-    Definition strong_count (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition strong_count
+        (T A : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ this ] =>
+      match ε, τ, α with
+      | [], [], [ this ] =>
         ltac:(M.monadic
           (let this := M.alloc (| this |) in
           M.call_closure (|
             M.get_trait_method (|
               "alloc::rc::RcInnerPtr",
-              Ty.apply (Ty.path "alloc::rc::RcBox") [ T ],
+              Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ],
               [],
               "strong",
               []
@@ -3775,7 +4019,7 @@ Module rc.
             [
               M.call_closure (|
                 M.get_associated_function (|
-                  Ty.apply (Ty.path "alloc::rc::Rc") [ T; A ],
+                  Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
                   "inner",
                   []
                 |),
@@ -3783,7 +4027,7 @@ Module rc.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_strong_count :
@@ -3801,10 +4045,15 @@ Module rc.
             let _rc_clone: mem::ManuallyDrop<_> = rc.clone();
         }
     *)
-    Definition increment_strong_count_in (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition increment_strong_count_in
+        (T A : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ ptr; alloc ] =>
+      match ε, τ, α with
+      | [], [], [ ptr; alloc ] =>
         ltac:(M.monadic
           (let ptr := M.alloc (| ptr |) in
           let alloc := M.alloc (| alloc |) in
@@ -3815,14 +4064,15 @@ Module rc.
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "core::mem::manually_drop::ManuallyDrop")
-                      [ Ty.apply (Ty.path "alloc::rc::Rc") [ T; A ] ],
+                      []
+                      [ Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ] ],
                     "new",
                     []
                   |),
                   [
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "alloc::rc::Rc") [ T; A ],
+                        Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
                         "from_raw_in",
                         []
                       |),
@@ -3838,7 +4088,8 @@ Module rc.
                     "core::clone::Clone",
                     Ty.apply
                       (Ty.path "core::mem::manually_drop::ManuallyDrop")
-                      [ Ty.apply (Ty.path "alloc::rc::Rc") [ T; A ] ],
+                      []
+                      [ Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ] ],
                     [],
                     "clone",
                     []
@@ -3848,7 +4099,7 @@ Module rc.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_increment_strong_count_in :
@@ -3860,10 +4111,15 @@ Module rc.
             unsafe { drop(Rc::from_raw_in(ptr, alloc)) };
         }
     *)
-    Definition decrement_strong_count_in (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition decrement_strong_count_in
+        (T A : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ ptr; alloc ] =>
+      match ε, τ, α with
+      | [], [], [ ptr; alloc ] =>
         ltac:(M.monadic
           (let ptr := M.alloc (| ptr |) in
           let alloc := M.alloc (| alloc |) in
@@ -3873,12 +4129,12 @@ Module rc.
                 M.call_closure (|
                   M.get_function (|
                     "core::mem::drop",
-                    [ Ty.apply (Ty.path "alloc::rc::Rc") [ T; A ] ]
+                    [ Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ] ]
                   |),
                   [
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "alloc::rc::Rc") [ T; A ],
+                        Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
                         "from_raw_in",
                         []
                       |),
@@ -3889,7 +4145,7 @@ Module rc.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_decrement_strong_count_in :
@@ -3901,17 +4157,17 @@ Module rc.
             Rc::weak_count(this) == 0 && Rc::strong_count(this) == 1
         }
     *)
-    Definition is_unique (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition is_unique (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ this ] =>
+      match ε, τ, α with
+      | [], [], [ this ] =>
         ltac:(M.monadic
           (let this := M.alloc (| this |) in
           LogicalOp.and (|
             BinOp.Pure.eq
               (M.call_closure (|
                 M.get_associated_function (|
-                  Ty.apply (Ty.path "alloc::rc::Rc") [ T; A ],
+                  Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
                   "weak_count",
                   []
                 |),
@@ -3922,7 +4178,7 @@ Module rc.
               (BinOp.Pure.eq
                 (M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "alloc::rc::Rc") [ T; A ],
+                    Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
                     "strong_count",
                     []
                   |),
@@ -3930,7 +4186,7 @@ Module rc.
                 |))
                 (Value.Integer 1)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_is_unique :
@@ -3942,10 +4198,10 @@ Module rc.
             if Rc::is_unique(this) { unsafe { Some(Rc::get_mut_unchecked(this)) } } else { None }
         }
     *)
-    Definition get_mut (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition get_mut (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ this ] =>
+      match ε, τ, α with
+      | [], [], [ this ] =>
         ltac:(M.monadic
           (let this := M.alloc (| this |) in
           M.read (|
@@ -3959,7 +4215,7 @@ Module rc.
                         (M.alloc (|
                           M.call_closure (|
                             M.get_associated_function (|
-                              Ty.apply (Ty.path "alloc::rc::Rc") [ T; A ],
+                              Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
                               "is_unique",
                               []
                             |),
@@ -3973,7 +4229,7 @@ Module rc.
                         [
                           M.call_closure (|
                             M.get_associated_function (|
-                              Ty.apply (Ty.path "alloc::rc::Rc") [ T; A ],
+                              Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
                               "get_mut_unchecked",
                               []
                             |),
@@ -3986,7 +4242,7 @@ Module rc.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_get_mut :
@@ -4000,10 +4256,15 @@ Module rc.
             unsafe { &mut ( *this.ptr.as_ptr()).value }
         }
     *)
-    Definition get_mut_unchecked (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition get_mut_unchecked
+        (T A : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ this ] =>
+      match ε, τ, α with
+      | [], [], [ this ] =>
         ltac:(M.monadic
           (let this := M.alloc (| this |) in
           M.SubPointer.get_struct_record_field (|
@@ -4011,7 +4272,8 @@ Module rc.
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "core::ptr::non_null::NonNull")
-                  [ Ty.apply (Ty.path "alloc::rc::RcBox") [ T ] ],
+                  []
+                  [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ],
                 "as_ptr",
                 []
               |),
@@ -4028,7 +4290,7 @@ Module rc.
             "alloc::rc::RcBox",
             "value"
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_get_mut_unchecked :
@@ -4040,10 +4302,10 @@ Module rc.
             ptr::addr_eq(this.ptr.as_ptr(), other.ptr.as_ptr())
         }
     *)
-    Definition ptr_eq (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition ptr_eq (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ this; other ] =>
+      match ε, τ, α with
+      | [], [], [ this; other ] =>
         ltac:(M.monadic
           (let this := M.alloc (| this |) in
           let other := M.alloc (| other |) in
@@ -4051,8 +4313,8 @@ Module rc.
             M.get_function (|
               "core::ptr::addr_eq",
               [
-                Ty.apply (Ty.path "alloc::rc::RcBox") [ T ];
-                Ty.apply (Ty.path "alloc::rc::RcBox") [ T ]
+                Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ];
+                Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ]
               ]
             |),
             [
@@ -4062,7 +4324,8 @@ Module rc.
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "core::ptr::non_null::NonNull")
-                      [ Ty.apply (Ty.path "alloc::rc::RcBox") [ T ] ],
+                      []
+                      [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ],
                     "as_ptr",
                     []
                   |),
@@ -4082,7 +4345,8 @@ Module rc.
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "core::ptr::non_null::NonNull")
-                      [ Ty.apply (Ty.path "alloc::rc::RcBox") [ T ] ],
+                      []
+                      [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ],
                     "as_ptr",
                     []
                   |),
@@ -4098,7 +4362,7 @@ Module rc.
                 |))
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_ptr_eq :
@@ -4137,10 +4401,10 @@ Module rc.
             unsafe { &mut this.ptr.as_mut().value }
         }
     *)
-    Definition make_mut (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition make_mut (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ this ] =>
+      match ε, τ, α with
+      | [], [], [ this ] =>
         ltac:(M.monadic
           (let this := M.alloc (| this |) in
           M.read (|
@@ -4156,7 +4420,7 @@ Module rc.
                             BinOp.Pure.ne
                               (M.call_closure (|
                                 M.get_associated_function (|
-                                  Ty.apply (Ty.path "alloc::rc::Rc") [ T; A ],
+                                  Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
                                   "strong_count",
                                   []
                                 |),
@@ -4169,7 +4433,7 @@ Module rc.
                         M.alloc (|
                           M.call_closure (|
                             M.get_associated_function (|
-                              Ty.apply (Ty.path "alloc::rc::Rc") [ T; A ],
+                              Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
                               "new_uninit_in",
                               []
                             |),
@@ -4193,7 +4457,13 @@ Module rc.
                             M.get_associated_function (|
                               Ty.apply
                                 (Ty.path "alloc::rc::Rc")
-                                [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ]; A
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                    []
+                                    [ T ];
+                                  A
                                 ],
                               "get_mut_unchecked",
                               []
@@ -4215,7 +4485,7 @@ Module rc.
                               M.call_closure (|
                                 M.get_trait_method (|
                                   "core::ops::deref::Deref",
-                                  Ty.apply (Ty.path "alloc::rc::Rc") [ T; A ],
+                                  Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
                                   [],
                                   "deref",
                                   []
@@ -4224,7 +4494,10 @@ Module rc.
                               |);
                               M.call_closure (|
                                 M.get_associated_function (|
-                                  Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ],
+                                  Ty.apply
+                                    (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                    []
+                                    [ T ],
                                   "as_mut_ptr",
                                   []
                                 |),
@@ -4240,7 +4513,13 @@ Module rc.
                             M.get_associated_function (|
                               Ty.apply
                                 (Ty.path "alloc::rc::Rc")
-                                [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ]; A
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                    []
+                                    [ T ];
+                                  A
                                 ],
                               "assume_init",
                               []
@@ -4262,7 +4541,7 @@ Module rc.
                                     BinOp.Pure.ne
                                       (M.call_closure (|
                                         M.get_associated_function (|
-                                          Ty.apply (Ty.path "alloc::rc::Rc") [ T; A ],
+                                          Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
                                           "weak_count",
                                           []
                                         |),
@@ -4279,7 +4558,7 @@ Module rc.
                                 M.alloc (|
                                   M.call_closure (|
                                     M.get_associated_function (|
-                                      Ty.apply (Ty.path "alloc::rc::Rc") [ T; A ],
+                                      Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
                                       "new_uninit_in",
                                       []
                                     |),
@@ -4309,9 +4588,11 @@ Module rc.
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "alloc::rc::Rc")
+                                        []
                                         [
                                           Ty.apply
                                             (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                            []
                                             [ T ];
                                           A
                                         ],
@@ -4325,7 +4606,7 @@ Module rc.
                                 M.alloc (|
                                   M.call_closure (|
                                     M.get_associated_function (|
-                                      Ty.apply (Ty.path "*mut") [ T ],
+                                      Ty.apply (Ty.path "*mut") [] [ T ],
                                       "copy_from_nonoverlapping",
                                       []
                                     |),
@@ -4334,6 +4615,7 @@ Module rc.
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                            []
                                             [ T ],
                                           "as_mut_ptr",
                                           []
@@ -4343,7 +4625,7 @@ Module rc.
                                       M.call_closure (|
                                         M.get_trait_method (|
                                           "core::ops::deref::Deref",
-                                          Ty.apply (Ty.path "alloc::rc::Rc") [ T; A ],
+                                          Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
                                           [],
                                           "deref",
                                           []
@@ -4359,7 +4641,7 @@ Module rc.
                                   M.call_closure (|
                                     M.get_trait_method (|
                                       "alloc::rc::RcInnerPtr",
-                                      Ty.apply (Ty.path "alloc::rc::RcBox") [ T ],
+                                      Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ],
                                       [],
                                       "dec_strong",
                                       []
@@ -4367,7 +4649,7 @@ Module rc.
                                     [
                                       M.call_closure (|
                                         M.get_associated_function (|
-                                          Ty.apply (Ty.path "alloc::rc::Rc") [ T; A ],
+                                          Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
                                           "inner",
                                           []
                                         |),
@@ -4381,7 +4663,7 @@ Module rc.
                                   M.call_closure (|
                                     M.get_trait_method (|
                                       "alloc::rc::RcInnerPtr",
-                                      Ty.apply (Ty.path "alloc::rc::RcBox") [ T ],
+                                      Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ],
                                       [],
                                       "dec_weak",
                                       []
@@ -4389,7 +4671,7 @@ Module rc.
                                     [
                                       M.call_closure (|
                                         M.get_associated_function (|
-                                          Ty.apply (Ty.path "alloc::rc::Rc") [ T; A ],
+                                          Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
                                           "inner",
                                           []
                                         |),
@@ -4403,7 +4685,7 @@ Module rc.
                                   M.call_closure (|
                                     M.get_function (|
                                       "core::ptr::write",
-                                      [ Ty.apply (Ty.path "alloc::rc::Rc") [ T; A ] ]
+                                      [ Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ] ]
                                     |),
                                     [
                                       M.read (| this |);
@@ -4411,9 +4693,11 @@ Module rc.
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "alloc::rc::Rc")
+                                            []
                                             [
                                               Ty.apply
                                                 (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                                []
                                                 [ T ];
                                               A
                                             ],
@@ -4437,7 +4721,8 @@ Module rc.
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "core::ptr::non_null::NonNull")
-                      [ Ty.apply (Ty.path "alloc::rc::RcBox") [ T ] ],
+                      []
+                      [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ],
                     "as_mut",
                     []
                   |),
@@ -4454,7 +4739,7 @@ Module rc.
               |)
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_make_mut :
@@ -4466,24 +4751,30 @@ Module rc.
             Rc::try_unwrap(this).unwrap_or_else(|rc| ( *rc).clone())
         }
     *)
-    Definition unwrap_or_clone (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition unwrap_or_clone
+        (T A : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ this ] =>
+      match ε, τ, α with
+      | [], [], [ this ] =>
         ltac:(M.monadic
           (let this := M.alloc (| this |) in
           M.call_closure (|
             M.get_associated_function (|
               Ty.apply
                 (Ty.path "core::result::Result")
-                [ T; Ty.apply (Ty.path "alloc::rc::Rc") [ T; A ] ],
+                []
+                [ T; Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ] ],
               "unwrap_or_else",
-              [ Ty.function [ Ty.tuple [ Ty.apply (Ty.path "alloc::rc::Rc") [ T; A ] ] ] T ]
+              [ Ty.function [ Ty.tuple [ Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ] ] ] T ]
             |),
             [
               M.call_closure (|
                 M.get_associated_function (|
-                  Ty.apply (Ty.path "alloc::rc::Rc") [ T; A ],
+                  Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
                   "try_unwrap",
                   []
                 |),
@@ -4506,7 +4797,7 @@ Module rc.
                                   M.call_closure (|
                                     M.get_trait_method (|
                                       "core::ops::deref::Deref",
-                                      Ty.apply (Ty.path "alloc::rc::Rc") [ T; A ],
+                                      Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
                                       [],
                                       "deref",
                                       []
@@ -4521,7 +4812,7 @@ Module rc.
                     end))
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_unwrap_or_clone :
@@ -4539,31 +4830,38 @@ Module rc.
             }
         }
     *)
-    Definition allocate_for_ptr_in (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition allocate_for_ptr_in
+        (T A : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ ptr; alloc ] =>
+      match ε, τ, α with
+      | [], [], [ ptr; alloc ] =>
         ltac:(M.monadic
           (let ptr := M.alloc (| ptr |) in
           let alloc := M.alloc (| alloc |) in
           M.call_closure (|
             M.get_associated_function (|
-              Ty.apply (Ty.path "alloc::rc::Rc") [ T; Ty.path "alloc::alloc::Global" ],
+              Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; Ty.path "alloc::alloc::Global" ],
               "allocate_for_layout",
               [
                 Ty.function
                   [ Ty.tuple [ Ty.path "core::alloc::layout::Layout" ] ]
                   (Ty.apply
                     (Ty.path "core::result::Result")
+                    []
                     [
                       Ty.apply
                         (Ty.path "core::ptr::non_null::NonNull")
-                        [ Ty.apply (Ty.path "slice") [ Ty.path "u8" ] ];
+                        []
+                        [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ];
                       Ty.path "core::alloc::AllocError"
                     ]);
                 Ty.function
-                  [ Ty.tuple [ Ty.apply (Ty.path "*mut") [ Ty.path "u8" ] ] ]
-                  (Ty.apply (Ty.path "*mut") [ Ty.apply (Ty.path "alloc::rc::RcBox") [ T ] ])
+                  [ Ty.tuple [ Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ] ] ]
+                  (Ty.apply (Ty.path "*mut") [] [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ])
               ]
             |),
             [
@@ -4613,9 +4911,9 @@ Module rc.
                               (let mem := M.copy (| γ |) in
                               M.call_closure (|
                                 M.get_associated_function (|
-                                  Ty.apply (Ty.path "*mut") [ Ty.path "u8" ],
+                                  Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
                                   "with_metadata_of",
-                                  [ Ty.apply (Ty.path "alloc::rc::RcBox") [ T ] ]
+                                  [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ]
                                 |),
                                 [ M.read (| mem |); M.rust_cast (M.read (| ptr |)) ]
                               |)))
@@ -4625,7 +4923,7 @@ Module rc.
                     end))
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_allocate_for_ptr_in :
@@ -4654,10 +4952,10 @@ Module rc.
             }
         }
     *)
-    Definition from_box_in (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition from_box_in (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ src ] =>
+      match ε, τ, α with
+      | [], [], [ src ] =>
         ltac:(M.monadic
           (let src := M.alloc (| src |) in
           M.read (|
@@ -4672,7 +4970,7 @@ Module rc.
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "alloc::rc::Rc") [ T; A ],
+                    Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
                     "allocate_for_ptr_in",
                     []
                   |),
@@ -4680,7 +4978,7 @@ Module rc.
                     M.read (| src |);
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "alloc::boxed::Box") [ T; A ],
+                        Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ],
                         "allocator",
                         []
                       |),
@@ -4714,7 +5012,7 @@ Module rc.
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "alloc::boxed::Box") [ T; A ],
+                    Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ],
                     "into_raw_with_allocator",
                     []
                   |),
@@ -4734,8 +5032,12 @@ Module rc.
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "alloc::boxed::Box")
+                              []
                               [
-                                Ty.apply (Ty.path "core::mem::manually_drop::ManuallyDrop") [ T ];
+                                Ty.apply
+                                  (Ty.path "core::mem::manually_drop::ManuallyDrop")
+                                  []
+                                  [ T ];
                                 Ty.path "alloc::alloc::Global"
                               ],
                             "from_raw",
@@ -4752,8 +5054,12 @@ Module rc.
                             [
                               Ty.apply
                                 (Ty.path "alloc::boxed::Box")
+                                []
                                 [
-                                  Ty.apply (Ty.path "core::mem::manually_drop::ManuallyDrop") [ T ];
+                                  Ty.apply
+                                    (Ty.path "core::mem::manually_drop::ManuallyDrop")
+                                    []
+                                    [ T ];
                                   Ty.path "alloc::alloc::Global"
                                 ]
                             ]
@@ -4764,7 +5070,7 @@ Module rc.
                     M.alloc (|
                       M.call_closure (|
                         M.get_associated_function (|
-                          Ty.apply (Ty.path "alloc::rc::Rc") [ T; A ],
+                          Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
                           "from_ptr_in",
                           []
                         |),
@@ -4774,7 +5080,7 @@ Module rc.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_from_box_in :
@@ -4788,27 +5094,35 @@ Module rc.
     Definition Self (T : Ty.t) : Ty.t :=
       Ty.apply
         (Ty.path "alloc::rc::Rc")
-        [ Ty.apply (Ty.path "slice") [ T ]; Ty.path "alloc::alloc::Global" ].
+        []
+        [ Ty.apply (Ty.path "slice") [] [ T ]; Ty.path "alloc::alloc::Global" ].
     
     (*
         pub fn new_uninit_slice(len: usize) -> Rc<[mem::MaybeUninit<T>]> {
             unsafe { Rc::from_ptr(Rc::allocate_for_slice(len)) }
         }
     *)
-    Definition new_uninit_slice (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition new_uninit_slice
+        (T : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [ len ] =>
+      match ε, τ, α with
+      | [], [], [ len ] =>
         ltac:(M.monadic
           (let len := M.alloc (| len |) in
           M.call_closure (|
             M.get_associated_function (|
               Ty.apply
                 (Ty.path "alloc::rc::Rc")
+                []
                 [
                   Ty.apply
                     (Ty.path "slice")
-                    [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ] ];
+                    []
+                    [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ];
                   Ty.path "alloc::alloc::Global"
                 ],
               "from_ptr",
@@ -4819,10 +5133,12 @@ Module rc.
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "alloc::rc::Rc")
+                    []
                     [
                       Ty.apply
                         (Ty.path "slice")
-                        [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ] ];
+                        []
+                        [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ];
                       Ty.path "alloc::alloc::Global"
                     ],
                   "allocate_for_slice",
@@ -4832,7 +5148,7 @@ Module rc.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_new_uninit_slice :
@@ -4853,20 +5169,27 @@ Module rc.
             }
         }
     *)
-    Definition new_zeroed_slice (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition new_zeroed_slice
+        (T : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [ len ] =>
+      match ε, τ, α with
+      | [], [], [ len ] =>
         ltac:(M.monadic
           (let len := M.alloc (| len |) in
           M.call_closure (|
             M.get_associated_function (|
               Ty.apply
                 (Ty.path "alloc::rc::Rc")
+                []
                 [
                   Ty.apply
                     (Ty.path "slice")
-                    [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ] ];
+                    []
+                    [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ];
                   Ty.path "alloc::alloc::Global"
                 ],
               "from_ptr",
@@ -4877,10 +5200,12 @@ Module rc.
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "alloc::rc::Rc")
+                    []
                     [
                       Ty.apply
                         (Ty.path "slice")
-                        [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ] ];
+                        []
+                        [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ];
                       Ty.path "alloc::alloc::Global"
                     ],
                   "allocate_for_layout",
@@ -4889,23 +5214,29 @@ Module rc.
                       [ Ty.tuple [ Ty.path "core::alloc::layout::Layout" ] ]
                       (Ty.apply
                         (Ty.path "core::result::Result")
+                        []
                         [
                           Ty.apply
                             (Ty.path "core::ptr::non_null::NonNull")
-                            [ Ty.apply (Ty.path "slice") [ Ty.path "u8" ] ];
+                            []
+                            [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ];
                           Ty.path "core::alloc::AllocError"
                         ]);
                     Ty.function
-                      [ Ty.tuple [ Ty.apply (Ty.path "*mut") [ Ty.path "u8" ] ] ]
+                      [ Ty.tuple [ Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ] ] ]
                       (Ty.apply
                         (Ty.path "*mut")
+                        []
                         [
                           Ty.apply
                             (Ty.path "alloc::rc::RcBox")
+                            []
                             [
                               Ty.apply
                                 (Ty.path "slice")
-                                [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ] ]
+                                []
+                                [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]
+                                ]
                             ]
                         ])
                   ]
@@ -4915,6 +5246,7 @@ Module rc.
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "core::result::Result")
+                        []
                         [
                           Ty.path "core::alloc::layout::Layout";
                           Ty.path "core::alloc::layout::LayoutError"
@@ -4981,7 +5313,7 @@ Module rc.
                                       [
                                         M.call_closure (|
                                           M.get_associated_function (|
-                                            Ty.apply (Ty.path "*mut") [ Ty.path "u8" ],
+                                            Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
                                             "cast",
                                             [ T ]
                                           |),
@@ -4998,7 +5330,7 @@ Module rc.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_new_zeroed_slice :
@@ -5015,34 +5347,48 @@ Module rc.
             }
         }
     *)
-    Definition allocate_for_slice (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition allocate_for_slice
+        (T : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [ len ] =>
+      match ε, τ, α with
+      | [], [], [ len ] =>
         ltac:(M.monadic
           (let len := M.alloc (| len |) in
           M.call_closure (|
             M.get_associated_function (|
               Ty.apply
                 (Ty.path "alloc::rc::Rc")
-                [ Ty.apply (Ty.path "slice") [ T ]; Ty.path "alloc::alloc::Global" ],
+                []
+                [ Ty.apply (Ty.path "slice") [] [ T ]; Ty.path "alloc::alloc::Global" ],
               "allocate_for_layout",
               [
                 Ty.function
                   [ Ty.tuple [ Ty.path "core::alloc::layout::Layout" ] ]
                   (Ty.apply
                     (Ty.path "core::result::Result")
+                    []
                     [
                       Ty.apply
                         (Ty.path "core::ptr::non_null::NonNull")
-                        [ Ty.apply (Ty.path "slice") [ Ty.path "u8" ] ];
+                        []
+                        [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ];
                       Ty.path "core::alloc::AllocError"
                     ]);
                 Ty.function
-                  [ Ty.tuple [ Ty.apply (Ty.path "*mut") [ Ty.path "u8" ] ] ]
+                  [ Ty.tuple [ Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ] ] ]
                   (Ty.apply
                     (Ty.path "*mut")
-                    [ Ty.apply (Ty.path "alloc::rc::RcBox") [ Ty.apply (Ty.path "slice") [ T ] ] ])
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "alloc::rc::RcBox")
+                        []
+                        [ Ty.apply (Ty.path "slice") [] [ T ] ]
+                    ])
               ]
             |),
             [
@@ -5050,6 +5396,7 @@ Module rc.
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "core::result::Result")
+                    []
                     [
                       Ty.path "core::alloc::layout::Layout";
                       Ty.path "core::alloc::layout::LayoutError"
@@ -5113,7 +5460,7 @@ Module rc.
                                   [
                                     M.call_closure (|
                                       M.get_associated_function (|
-                                        Ty.apply (Ty.path "*mut") [ Ty.path "u8" ],
+                                        Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
                                         "cast",
                                         [ T ]
                                       |),
@@ -5128,7 +5475,7 @@ Module rc.
                     end))
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_allocate_for_slice :
@@ -5144,10 +5491,15 @@ Module rc.
             }
         }
     *)
-    Definition copy_from_slice (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition copy_from_slice
+        (T : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [ v ] =>
+      match ε, τ, α with
+      | [], [], [ v ] =>
         ltac:(M.monadic
           (let v := M.alloc (| v |) in
           M.read (|
@@ -5157,13 +5509,18 @@ Module rc.
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "alloc::rc::Rc")
-                      [ Ty.apply (Ty.path "slice") [ T ]; Ty.path "alloc::alloc::Global" ],
+                      []
+                      [ Ty.apply (Ty.path "slice") [] [ T ]; Ty.path "alloc::alloc::Global" ],
                     "allocate_for_slice",
                     []
                   |),
                   [
                     M.call_closure (|
-                      M.get_associated_function (| Ty.apply (Ty.path "slice") [ T ], "len", [] |),
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "slice") [] [ T ],
+                        "len",
+                        []
+                      |),
                       [ M.read (| v |) ]
                     |)
                   ]
@@ -5176,7 +5533,7 @@ Module rc.
                   [
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "slice") [ T ],
+                        Ty.apply (Ty.path "slice") [] [ T ],
                         "as_ptr",
                         []
                       |),
@@ -5194,7 +5551,11 @@ Module rc.
                           |))
                       |));
                     M.call_closure (|
-                      M.get_associated_function (| Ty.apply (Ty.path "slice") [ T ], "len", [] |),
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "slice") [] [ T ],
+                        "len",
+                        []
+                      |),
                       [ M.read (| v |) ]
                     |)
                   ]
@@ -5205,7 +5566,8 @@ Module rc.
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "alloc::rc::Rc")
-                    [ Ty.apply (Ty.path "slice") [ T ]; Ty.path "alloc::alloc::Global" ],
+                    []
+                    [ Ty.apply (Ty.path "slice") [] [ T ]; Ty.path "alloc::alloc::Global" ],
                   "from_ptr",
                   []
                 |),
@@ -5213,7 +5575,7 @@ Module rc.
               |)
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_copy_from_slice :
@@ -5266,10 +5628,15 @@ Module rc.
             }
         }
     *)
-    Definition from_iter_exact (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition from_iter_exact
+        (T : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [ impl_Iterator_Item___T_ ], [ iter; len ] =>
+      match ε, τ, α with
+      | [], [ impl_Iterator_Item___T_ ], [ iter; len ] =>
         ltac:(M.monadic
           (let iter := M.alloc (| iter |) in
           let len := M.alloc (| len |) in
@@ -5280,7 +5647,8 @@ Module rc.
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "alloc::rc::Rc")
-                      [ Ty.apply (Ty.path "slice") [ T ]; Ty.path "alloc::alloc::Global" ],
+                      []
+                      [ Ty.apply (Ty.path "slice") [] [ T ]; Ty.path "alloc::alloc::Global" ],
                     "allocate_for_slice",
                     []
                   |),
@@ -5294,7 +5662,12 @@ Module rc.
                   M.get_associated_function (|
                     Ty.path "core::alloc::layout::Layout",
                     "for_value",
-                    [ Ty.apply (Ty.path "alloc::rc::RcBox") [ Ty.apply (Ty.path "slice") [ T ] ] ]
+                    [
+                      Ty.apply
+                        (Ty.path "alloc::rc::RcBox")
+                        []
+                        [ Ty.apply (Ty.path "slice") [] [ T ] ]
+                    ]
                   |),
                   [ M.read (| ptr |) ]
                 |)
@@ -5321,7 +5694,7 @@ Module rc.
                     ("mem",
                       M.call_closure (|
                         M.get_associated_function (|
-                          Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ Ty.path "u8" ],
+                          Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ Ty.path "u8" ],
                           "new_unchecked",
                           []
                         |),
@@ -5341,6 +5714,7 @@ Module rc.
                         "core::iter::traits::collect::IntoIterator",
                         Ty.apply
                           (Ty.path "core::iter::adapters::enumerate::Enumerate")
+                          []
                           [ impl_Iterator_Item___T_ ],
                         [],
                         "into_iter",
@@ -5374,6 +5748,7 @@ Module rc.
                                       "core::iter::traits::iterator::Iterator",
                                       Ty.apply
                                         (Ty.path "core::iter::adapters::enumerate::Enumerate")
+                                        []
                                         [ impl_Iterator_Item___T_ ],
                                       [],
                                       "next",
@@ -5409,7 +5784,7 @@ Module rc.
                                             [
                                               M.call_closure (|
                                                 M.get_associated_function (|
-                                                  Ty.apply (Ty.path "*mut") [ T ],
+                                                  Ty.apply (Ty.path "*mut") [] [ T ],
                                                   "add",
                                                   []
                                                 |),
@@ -5445,7 +5820,7 @@ Module rc.
                 M.call_closure (|
                   M.get_function (|
                     "core::mem::forget",
-                    [ Ty.apply (Ty.path "alloc::rc::from_iter_exact::Guard") [ T ] ]
+                    [ Ty.apply (Ty.path "alloc::rc::from_iter_exact::Guard") [] [ T ] ]
                   |),
                   [ M.read (| guard |) ]
                 |)
@@ -5455,7 +5830,8 @@ Module rc.
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "alloc::rc::Rc")
-                    [ Ty.apply (Ty.path "slice") [ T ]; Ty.path "alloc::alloc::Global" ],
+                    []
+                    [ Ty.apply (Ty.path "slice") [] [ T ]; Ty.path "alloc::alloc::Global" ],
                   "from_ptr",
                   []
                 |),
@@ -5463,7 +5839,7 @@ Module rc.
               |)
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_from_iter_exact :
@@ -5473,17 +5849,22 @@ Module rc.
   
   Module Impl_alloc_rc_Rc_slice_T_A.
     Definition Self (T A : Ty.t) : Ty.t :=
-      Ty.apply (Ty.path "alloc::rc::Rc") [ Ty.apply (Ty.path "slice") [ T ]; A ].
+      Ty.apply (Ty.path "alloc::rc::Rc") [] [ Ty.apply (Ty.path "slice") [] [ T ]; A ].
     
     (*
         pub fn new_uninit_slice_in(len: usize, alloc: A) -> Rc<[mem::MaybeUninit<T>], A> {
             unsafe { Rc::from_ptr_in(Rc::allocate_for_slice_in(len, &alloc), alloc) }
         }
     *)
-    Definition new_uninit_slice_in (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition new_uninit_slice_in
+        (T A : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ len; alloc ] =>
+      match ε, τ, α with
+      | [], [], [ len; alloc ] =>
         ltac:(M.monadic
           (let len := M.alloc (| len |) in
           let alloc := M.alloc (| alloc |) in
@@ -5491,10 +5872,12 @@ Module rc.
             M.get_associated_function (|
               Ty.apply
                 (Ty.path "alloc::rc::Rc")
+                []
                 [
                   Ty.apply
                     (Ty.path "slice")
-                    [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ] ];
+                    []
+                    [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ];
                   A
                 ],
               "from_ptr_in",
@@ -5505,10 +5888,12 @@ Module rc.
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "alloc::rc::Rc")
+                    []
                     [
                       Ty.apply
                         (Ty.path "slice")
-                        [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ] ];
+                        []
+                        [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ];
                       A
                     ],
                   "allocate_for_slice_in",
@@ -5519,7 +5904,7 @@ Module rc.
               M.read (| alloc |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_new_uninit_slice_in :
@@ -5543,10 +5928,15 @@ Module rc.
             }
         }
     *)
-    Definition new_zeroed_slice_in (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition new_zeroed_slice_in
+        (T A : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ len; alloc ] =>
+      match ε, τ, α with
+      | [], [], [ len; alloc ] =>
         ltac:(M.monadic
           (let len := M.alloc (| len |) in
           let alloc := M.alloc (| alloc |) in
@@ -5554,10 +5944,12 @@ Module rc.
             M.get_associated_function (|
               Ty.apply
                 (Ty.path "alloc::rc::Rc")
+                []
                 [
                   Ty.apply
                     (Ty.path "slice")
-                    [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ] ];
+                    []
+                    [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ];
                   A
                 ],
               "from_ptr_in",
@@ -5568,10 +5960,12 @@ Module rc.
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "alloc::rc::Rc")
+                    []
                     [
                       Ty.apply
                         (Ty.path "slice")
-                        [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ] ];
+                        []
+                        [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ];
                       Ty.path "alloc::alloc::Global"
                     ],
                   "allocate_for_layout",
@@ -5580,23 +5974,29 @@ Module rc.
                       [ Ty.tuple [ Ty.path "core::alloc::layout::Layout" ] ]
                       (Ty.apply
                         (Ty.path "core::result::Result")
+                        []
                         [
                           Ty.apply
                             (Ty.path "core::ptr::non_null::NonNull")
-                            [ Ty.apply (Ty.path "slice") [ Ty.path "u8" ] ];
+                            []
+                            [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ];
                           Ty.path "core::alloc::AllocError"
                         ]);
                     Ty.function
-                      [ Ty.tuple [ Ty.apply (Ty.path "*mut") [ Ty.path "u8" ] ] ]
+                      [ Ty.tuple [ Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ] ] ]
                       (Ty.apply
                         (Ty.path "*mut")
+                        []
                         [
                           Ty.apply
                             (Ty.path "alloc::rc::RcBox")
+                            []
                             [
                               Ty.apply
                                 (Ty.path "slice")
-                                [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ] ]
+                                []
+                                [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]
+                                ]
                             ]
                         ])
                   ]
@@ -5606,6 +6006,7 @@ Module rc.
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "core::result::Result")
+                        []
                         [
                           Ty.path "core::alloc::layout::Layout";
                           Ty.path "core::alloc::layout::LayoutError"
@@ -5669,7 +6070,7 @@ Module rc.
                                       [
                                         M.call_closure (|
                                           M.get_associated_function (|
-                                            Ty.apply (Ty.path "*mut") [ Ty.path "u8" ],
+                                            Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
                                             "cast",
                                             [ T ]
                                           |),
@@ -5687,7 +6088,7 @@ Module rc.
               M.read (| alloc |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_new_zeroed_slice_in :
@@ -5704,10 +6105,15 @@ Module rc.
             }
         }
     *)
-    Definition allocate_for_slice_in (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition allocate_for_slice_in
+        (T A : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ len; alloc ] =>
+      match ε, τ, α with
+      | [], [], [ len; alloc ] =>
         ltac:(M.monadic
           (let len := M.alloc (| len |) in
           let alloc := M.alloc (| alloc |) in
@@ -5715,24 +6121,33 @@ Module rc.
             M.get_associated_function (|
               Ty.apply
                 (Ty.path "alloc::rc::Rc")
-                [ Ty.apply (Ty.path "slice") [ T ]; Ty.path "alloc::alloc::Global" ],
+                []
+                [ Ty.apply (Ty.path "slice") [] [ T ]; Ty.path "alloc::alloc::Global" ],
               "allocate_for_layout",
               [
                 Ty.function
                   [ Ty.tuple [ Ty.path "core::alloc::layout::Layout" ] ]
                   (Ty.apply
                     (Ty.path "core::result::Result")
+                    []
                     [
                       Ty.apply
                         (Ty.path "core::ptr::non_null::NonNull")
-                        [ Ty.apply (Ty.path "slice") [ Ty.path "u8" ] ];
+                        []
+                        [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ];
                       Ty.path "core::alloc::AllocError"
                     ]);
                 Ty.function
-                  [ Ty.tuple [ Ty.apply (Ty.path "*mut") [ Ty.path "u8" ] ] ]
+                  [ Ty.tuple [ Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ] ] ]
                   (Ty.apply
                     (Ty.path "*mut")
-                    [ Ty.apply (Ty.path "alloc::rc::RcBox") [ Ty.apply (Ty.path "slice") [ T ] ] ])
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "alloc::rc::RcBox")
+                        []
+                        [ Ty.apply (Ty.path "slice") [] [ T ] ]
+                    ])
               ]
             |),
             [
@@ -5740,6 +6155,7 @@ Module rc.
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "core::result::Result")
+                    []
                     [
                       Ty.path "core::alloc::layout::Layout";
                       Ty.path "core::alloc::layout::LayoutError"
@@ -5800,7 +6216,7 @@ Module rc.
                                   [
                                     M.call_closure (|
                                       M.get_associated_function (|
-                                        Ty.apply (Ty.path "*mut") [ Ty.path "u8" ],
+                                        Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
                                         "cast",
                                         [ T ]
                                       |),
@@ -5815,7 +6231,7 @@ Module rc.
                     end))
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_allocate_for_slice_in :
@@ -5827,7 +6243,8 @@ Module rc.
     Definition Self (T A : Ty.t) : Ty.t :=
       Ty.apply
         (Ty.path "alloc::rc::Rc")
-        [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ]; A ].
+        []
+        [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]; A ].
     
     (*
         pub unsafe fn assume_init(self) -> Rc<T, A>
@@ -5838,10 +6255,10 @@ Module rc.
             unsafe { Rc::from_inner_in(md_self.ptr.cast(), md_self.alloc.clone()) }
         }
     *)
-    Definition assume_init (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition assume_init (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -5851,10 +6268,12 @@ Module rc.
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "core::mem::manually_drop::ManuallyDrop")
+                      []
                       [
                         Ty.apply
                           (Ty.path "alloc::rc::Rc")
-                          [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ]; A ]
+                          []
+                          [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]; A ]
                       ],
                     "new",
                     []
@@ -5865,7 +6284,7 @@ Module rc.
             M.alloc (|
               M.call_closure (|
                 M.get_associated_function (|
-                  Ty.apply (Ty.path "alloc::rc::Rc") [ T; A ],
+                  Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
                   "from_inner_in",
                   []
                 |),
@@ -5874,13 +6293,15 @@ Module rc.
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "core::ptr::non_null::NonNull")
+                        []
                         [
                           Ty.apply
                             (Ty.path "alloc::rc::RcBox")
-                            [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ] ]
+                            []
+                            [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ]
                         ],
                       "cast",
-                      [ Ty.apply (Ty.path "alloc::rc::RcBox") [ T ] ]
+                      [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ]
                     |),
                     [
                       M.read (|
@@ -5890,12 +6311,15 @@ Module rc.
                               "core::ops::deref::Deref",
                               Ty.apply
                                 (Ty.path "core::mem::manually_drop::ManuallyDrop")
+                                []
                                 [
                                   Ty.apply
                                     (Ty.path "alloc::rc::Rc")
+                                    []
                                     [
                                       Ty.apply
                                         (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                        []
                                         [ T ];
                                       A
                                     ]
@@ -5921,11 +6345,16 @@ Module rc.
                             "core::ops::deref::Deref",
                             Ty.apply
                               (Ty.path "core::mem::manually_drop::ManuallyDrop")
+                              []
                               [
                                 Ty.apply
                                   (Ty.path "alloc::rc::Rc")
+                                  []
                                   [
-                                    Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ];
+                                    Ty.apply
+                                      (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                      []
+                                      [ T ];
                                     A
                                   ]
                               ],
@@ -5944,7 +6373,7 @@ Module rc.
               |)
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_assume_init :
@@ -5956,10 +6385,12 @@ Module rc.
     Definition Self (T A : Ty.t) : Ty.t :=
       Ty.apply
         (Ty.path "alloc::rc::Rc")
+        []
         [
           Ty.apply
             (Ty.path "slice")
-            [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ] ];
+            []
+            [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ];
           A
         ].
     
@@ -5972,10 +6403,10 @@ Module rc.
             unsafe { Rc::from_ptr_in(md_self.ptr.as_ptr() as _, md_self.alloc.clone()) }
         }
     *)
-    Definition assume_init (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition assume_init (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -5985,13 +6416,17 @@ Module rc.
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "core::mem::manually_drop::ManuallyDrop")
+                      []
                       [
                         Ty.apply
                           (Ty.path "alloc::rc::Rc")
+                          []
                           [
                             Ty.apply
                               (Ty.path "slice")
-                              [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ] ];
+                              []
+                              [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]
+                              ];
                             A
                           ]
                       ],
@@ -6004,7 +6439,7 @@ Module rc.
             M.alloc (|
               M.call_closure (|
                 M.get_associated_function (|
-                  Ty.apply (Ty.path "alloc::rc::Rc") [ Ty.apply (Ty.path "slice") [ T ]; A ],
+                  Ty.apply (Ty.path "alloc::rc::Rc") [] [ Ty.apply (Ty.path "slice") [] [ T ]; A ],
                   "from_ptr_in",
                   []
                 |),
@@ -6014,13 +6449,20 @@ Module rc.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "core::ptr::non_null::NonNull")
+                          []
                           [
                             Ty.apply
                               (Ty.path "alloc::rc::RcBox")
+                              []
                               [
                                 Ty.apply
                                   (Ty.path "slice")
-                                  [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ]
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                      []
+                                      [ T ]
                                   ]
                               ]
                           ],
@@ -6035,15 +6477,19 @@ Module rc.
                                 "core::ops::deref::Deref",
                                 Ty.apply
                                   (Ty.path "core::mem::manually_drop::ManuallyDrop")
+                                  []
                                   [
                                     Ty.apply
                                       (Ty.path "alloc::rc::Rc")
+                                      []
                                       [
                                         Ty.apply
                                           (Ty.path "slice")
+                                          []
                                           [
                                             Ty.apply
                                               (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                              []
                                               [ T ]
                                           ];
                                         A
@@ -6070,15 +6516,19 @@ Module rc.
                             "core::ops::deref::Deref",
                             Ty.apply
                               (Ty.path "core::mem::manually_drop::ManuallyDrop")
+                              []
                               [
                                 Ty.apply
                                   (Ty.path "alloc::rc::Rc")
+                                  []
                                   [
                                     Ty.apply
                                       (Ty.path "slice")
+                                      []
                                       [
                                         Ty.apply
                                           (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                          []
                                           [ T ]
                                       ];
                                     A
@@ -6099,7 +6549,7 @@ Module rc.
               |)
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_assume_init :
@@ -6112,7 +6562,7 @@ Module rc.
   
   Module Impl_alloc_rc_Rc_Dyn_core_any_Any_Trait_A.
     Definition Self (A : Ty.t) : Ty.t :=
-      Ty.apply (Ty.path "alloc::rc::Rc") [ Ty.dyn [ ("core::any::Any::Trait", []) ]; A ].
+      Ty.apply (Ty.path "alloc::rc::Rc") [] [ Ty.dyn [ ("core::any::Any::Trait", []) ]; A ].
     
     (*
         pub fn downcast<T: Any>(self) -> Result<Rc<T, A>, Self> {
@@ -6128,10 +6578,10 @@ Module rc.
             }
         }
     *)
-    Definition downcast (A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition downcast (A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self A in
-      match τ, α with
-      | [ T ], [ self ] =>
+      match ε, τ, α with
+      | [], [ T ], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -6155,6 +6605,7 @@ Module rc.
                                   "core::ops::deref::Deref",
                                   Ty.apply
                                     (Ty.path "alloc::rc::Rc")
+                                    []
                                     [ Ty.dyn [ ("core::any::Any::Trait", []) ]; A ],
                                   [],
                                   "deref",
@@ -6172,13 +6623,15 @@ Module rc.
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "core::ptr::non_null::NonNull")
+                              []
                               [
                                 Ty.apply
                                   (Ty.path "alloc::rc::RcBox")
+                                  []
                                   [ Ty.dyn [ ("core::any::Any::Trait", []) ] ]
                               ],
                             "cast",
-                            [ Ty.apply (Ty.path "alloc::rc::RcBox") [ T ] ]
+                            [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ]
                           |),
                           [
                             M.read (|
@@ -6212,6 +6665,7 @@ Module rc.
                             [
                               Ty.apply
                                 (Ty.path "alloc::rc::Rc")
+                                []
                                 [ Ty.dyn [ ("core::any::Any::Trait", []) ]; A ]
                             ]
                           |),
@@ -6224,7 +6678,7 @@ Module rc.
                         [
                           M.call_closure (|
                             M.get_associated_function (|
-                              Ty.apply (Ty.path "alloc::rc::Rc") [ T; A ],
+                              Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
                               "from_inner_in",
                               []
                             |),
@@ -6242,7 +6696,7 @@ Module rc.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_downcast :
@@ -6259,10 +6713,15 @@ Module rc.
             }
         }
     *)
-    Definition downcast_unchecked (A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition downcast_unchecked
+        (A : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
       let Self : Ty.t := Self A in
-      match τ, α with
-      | [ T ], [ self ] =>
+      match ε, τ, α with
+      | [], [ T ], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -6272,13 +6731,15 @@ Module rc.
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "core::ptr::non_null::NonNull")
+                      []
                       [
                         Ty.apply
                           (Ty.path "alloc::rc::RcBox")
+                          []
                           [ Ty.dyn [ ("core::any::Any::Trait", []) ] ]
                       ],
                     "cast",
-                    [ Ty.apply (Ty.path "alloc::rc::RcBox") [ T ] ]
+                    [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ]
                   |),
                   [
                     M.read (|
@@ -6302,6 +6763,7 @@ Module rc.
                     [
                       Ty.apply
                         (Ty.path "alloc::rc::Rc")
+                        []
                         [ Ty.dyn [ ("core::any::Any::Trait", []) ]; A ]
                     ]
                   |),
@@ -6311,7 +6773,7 @@ Module rc.
             M.alloc (|
               M.call_closure (|
                 M.get_associated_function (|
-                  Ty.apply (Ty.path "alloc::rc::Rc") [ T; A ],
+                  Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
                   "from_inner_in",
                   []
                 |),
@@ -6319,7 +6781,7 @@ Module rc.
               |)
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_downcast_unchecked :
@@ -6338,54 +6800,57 @@ Module rc.
     Definition Self (T : Ty.t) : Ty.t :=
       Ty.apply
         (Ty.path "alloc::rc::Rc")
-        [ Ty.apply (Ty.path "slice") [ T ]; Ty.path "alloc::alloc::Global" ].
+        []
+        [ Ty.apply (Ty.path "slice") [] [ T ]; Ty.path "alloc::alloc::Global" ].
     
     (*
         default fn from_slice(v: &[T]) -> Self {
             unsafe { Self::from_iter_exact(v.iter().cloned(), v.len()) }
         }
     *)
-    Definition from_slice (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition from_slice (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [ v ] =>
+      match ε, τ, α with
+      | [], [], [ v ] =>
         ltac:(M.monadic
           (let v := M.alloc (| v |) in
           M.call_closure (|
             M.get_associated_function (|
               Ty.apply
                 (Ty.path "alloc::rc::Rc")
-                [ Ty.apply (Ty.path "slice") [ T ]; Ty.path "alloc::alloc::Global" ],
+                []
+                [ Ty.apply (Ty.path "slice") [] [ T ]; Ty.path "alloc::alloc::Global" ],
               "from_iter_exact",
               [
                 Ty.apply
                   (Ty.path "core::iter::adapters::cloned::Cloned")
-                  [ Ty.apply (Ty.path "core::slice::iter::Iter") [ T ] ]
+                  []
+                  [ Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ] ]
               ]
             |),
             [
               M.call_closure (|
                 M.get_trait_method (|
                   "core::iter::traits::iterator::Iterator",
-                  Ty.apply (Ty.path "core::slice::iter::Iter") [ T ],
+                  Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ],
                   [],
                   "cloned",
                   [ T ]
                 |),
                 [
                   M.call_closure (|
-                    M.get_associated_function (| Ty.apply (Ty.path "slice") [ T ], "iter", [] |),
+                    M.get_associated_function (| Ty.apply (Ty.path "slice") [] [ T ], "iter", [] |),
                     [ M.read (| v |) ]
                   |)
                 ]
               |);
               M.call_closure (|
-                M.get_associated_function (| Ty.apply (Ty.path "slice") [ T ], "len", [] |),
+                M.get_associated_function (| Ty.apply (Ty.path "slice") [] [ T ], "len", [] |),
                 [ M.read (| v |) ]
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -6401,30 +6866,32 @@ Module rc.
     Definition Self (T : Ty.t) : Ty.t :=
       Ty.apply
         (Ty.path "alloc::rc::Rc")
-        [ Ty.apply (Ty.path "slice") [ T ]; Ty.path "alloc::alloc::Global" ].
+        []
+        [ Ty.apply (Ty.path "slice") [] [ T ]; Ty.path "alloc::alloc::Global" ].
     
     (*
         fn from_slice(v: &[T]) -> Self {
             unsafe { Rc::copy_from_slice(v) }
         }
     *)
-    Definition from_slice (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition from_slice (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [ v ] =>
+      match ε, τ, α with
+      | [], [], [ v ] =>
         ltac:(M.monadic
           (let v := M.alloc (| v |) in
           M.call_closure (|
             M.get_associated_function (|
               Ty.apply
                 (Ty.path "alloc::rc::Rc")
-                [ Ty.apply (Ty.path "slice") [ T ]; Ty.path "alloc::alloc::Global" ],
+                []
+                [ Ty.apply (Ty.path "slice") [] [ T ]; Ty.path "alloc::alloc::Global" ],
               "copy_from_slice",
               []
             |),
             [ M.read (| v |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -6437,7 +6904,7 @@ Module rc.
   End Impl_alloc_rc_RcFromSlice_where_core_marker_Copy_T_T_for_alloc_rc_Rc_slice_T_alloc_alloc_Global.
   
   Module Impl_core_ops_deref_Deref_where_core_marker_Sized_T_where_core_alloc_Allocator_A_for_alloc_rc_Rc_T_A.
-    Definition Self (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::rc::Rc") [ T; A ].
+    Definition Self (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ].
     
     (*     type Target = T; *)
     Definition _Target (T A : Ty.t) : Ty.t := T.
@@ -6447,16 +6914,16 @@ Module rc.
             &self.inner().value
         }
     *)
-    Definition deref (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition deref (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.SubPointer.get_struct_record_field (|
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "alloc::rc::Rc") [ T; A ],
+                Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
                 "inner",
                 []
               |),
@@ -6465,7 +6932,7 @@ Module rc.
             "alloc::rc::RcBox",
             "value"
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -6480,7 +6947,7 @@ Module rc.
   
   Module Impl_core_ops_deref_Receiver_where_core_marker_Sized_T_for_alloc_rc_Rc_T_alloc_alloc_Global.
     Definition Self (T : Ty.t) : Ty.t :=
-      Ty.apply (Ty.path "alloc::rc::Rc") [ T; Ty.path "alloc::alloc::Global" ].
+      Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; Ty.path "alloc::alloc::Global" ].
     
     Axiom Implements :
       forall (T : Ty.t),
@@ -6492,7 +6959,7 @@ Module rc.
   End Impl_core_ops_deref_Receiver_where_core_marker_Sized_T_for_alloc_rc_Rc_T_alloc_alloc_Global.
   
   Module Impl_core_ops_drop_Drop_where_core_marker_Sized_T_where_core_alloc_Allocator_A_for_alloc_rc_Rc_T_A.
-    Definition Self (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::rc::Rc") [ T; A ].
+    Definition Self (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ].
     
     (*
         fn drop(&mut self) {
@@ -6513,10 +6980,10 @@ Module rc.
             }
         }
     *)
-    Definition drop (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition drop (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -6525,7 +6992,7 @@ Module rc.
                 M.call_closure (|
                   M.get_trait_method (|
                     "alloc::rc::RcInnerPtr",
-                    Ty.apply (Ty.path "alloc::rc::RcBox") [ T ],
+                    Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ],
                     [],
                     "dec_strong",
                     []
@@ -6533,7 +7000,7 @@ Module rc.
                   [
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "alloc::rc::Rc") [ T; A ],
+                        Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
                         "inner",
                         []
                       |),
@@ -6554,7 +7021,7 @@ Module rc.
                             (M.call_closure (|
                               M.get_trait_method (|
                                 "alloc::rc::RcInnerPtr",
-                                Ty.apply (Ty.path "alloc::rc::RcBox") [ T ],
+                                Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ],
                                 [],
                                 "strong",
                                 []
@@ -6562,7 +7029,7 @@ Module rc.
                               [
                                 M.call_closure (|
                                   M.get_associated_function (|
-                                    Ty.apply (Ty.path "alloc::rc::Rc") [ T; A ],
+                                    Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
                                     "inner",
                                     []
                                   |),
@@ -6580,7 +7047,7 @@ Module rc.
                           [
                             M.call_closure (|
                               M.get_associated_function (|
-                                Ty.apply (Ty.path "alloc::rc::Rc") [ T; A ],
+                                Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
                                 "get_mut_unchecked",
                                 []
                               |),
@@ -6594,7 +7061,7 @@ Module rc.
                         M.call_closure (|
                           M.get_trait_method (|
                             "alloc::rc::RcInnerPtr",
-                            Ty.apply (Ty.path "alloc::rc::RcBox") [ T ],
+                            Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ],
                             [],
                             "dec_weak",
                             []
@@ -6602,7 +7069,7 @@ Module rc.
                           [
                             M.call_closure (|
                               M.get_associated_function (|
-                                Ty.apply (Ty.path "alloc::rc::Rc") [ T; A ],
+                                Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
                                 "inner",
                                 []
                               |),
@@ -6623,7 +7090,7 @@ Module rc.
                                     (M.call_closure (|
                                       M.get_trait_method (|
                                         "alloc::rc::RcInnerPtr",
-                                        Ty.apply (Ty.path "alloc::rc::RcBox") [ T ],
+                                        Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ],
                                         [],
                                         "weak",
                                         []
@@ -6631,7 +7098,7 @@ Module rc.
                                       [
                                         M.call_closure (|
                                           M.get_associated_function (|
-                                            Ty.apply (Ty.path "alloc::rc::Rc") [ T; A ],
+                                            Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
                                             "inner",
                                             []
                                           |),
@@ -6663,7 +7130,8 @@ Module rc.
                                       M.get_associated_function (|
                                         Ty.apply
                                           (Ty.path "core::ptr::non_null::NonNull")
-                                          [ Ty.apply (Ty.path "alloc::rc::RcBox") [ T ] ],
+                                          []
+                                          [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ],
                                         "cast",
                                         [ Ty.path "u8" ]
                                       |),
@@ -6681,14 +7149,15 @@ Module rc.
                                       M.get_associated_function (|
                                         Ty.path "core::alloc::layout::Layout",
                                         "for_value",
-                                        [ Ty.apply (Ty.path "alloc::rc::RcBox") [ T ] ]
+                                        [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ]
                                       |),
                                       [
                                         M.call_closure (|
                                           M.get_associated_function (|
                                             Ty.apply
                                               (Ty.path "core::ptr::non_null::NonNull")
-                                              [ Ty.apply (Ty.path "alloc::rc::RcBox") [ T ] ],
+                                              []
+                                              [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ],
                                             "as_ref",
                                             []
                                           |),
@@ -6713,7 +7182,7 @@ Module rc.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -6726,7 +7195,7 @@ Module rc.
   End Impl_core_ops_drop_Drop_where_core_marker_Sized_T_where_core_alloc_Allocator_A_for_alloc_rc_Rc_T_A.
   
   Module Impl_core_clone_Clone_where_core_marker_Sized_T_where_core_alloc_Allocator_A_where_core_clone_Clone_A_for_alloc_rc_Rc_T_A.
-    Definition Self (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::rc::Rc") [ T; A ].
+    Definition Self (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ].
     
     (*
         fn clone(&self) -> Self {
@@ -6736,10 +7205,10 @@ Module rc.
             }
         }
     *)
-    Definition clone (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition clone (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -6748,7 +7217,7 @@ Module rc.
                 M.call_closure (|
                   M.get_trait_method (|
                     "alloc::rc::RcInnerPtr",
-                    Ty.apply (Ty.path "alloc::rc::RcBox") [ T ],
+                    Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ],
                     [],
                     "inc_strong",
                     []
@@ -6756,7 +7225,7 @@ Module rc.
                   [
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "alloc::rc::Rc") [ T; A ],
+                        Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
                         "inner",
                         []
                       |),
@@ -6768,7 +7237,7 @@ Module rc.
             M.alloc (|
               M.call_closure (|
                 M.get_associated_function (|
-                  Ty.apply (Ty.path "alloc::rc::Rc") [ T; A ],
+                  Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
                   "from_inner_in",
                   []
                 |),
@@ -6794,7 +7263,7 @@ Module rc.
               |)
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -6808,21 +7277,21 @@ Module rc.
   
   Module Impl_core_default_Default_where_core_default_Default_T_for_alloc_rc_Rc_T_alloc_alloc_Global.
     Definition Self (T : Ty.t) : Ty.t :=
-      Ty.apply (Ty.path "alloc::rc::Rc") [ T; Ty.path "alloc::alloc::Global" ].
+      Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; Ty.path "alloc::alloc::Global" ].
     
     (*
         fn default() -> Rc<T> {
             Rc::new(Default::default())
         }
     *)
-    Definition default (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition default (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [] =>
+      match ε, τ, α with
+      | [], [], [] =>
         ltac:(M.monadic
           (M.call_closure (|
             M.get_associated_function (|
-              Ty.apply (Ty.path "alloc::rc::Rc") [ T; Ty.path "alloc::alloc::Global" ],
+              Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; Ty.path "alloc::alloc::Global" ],
               "new",
               []
             |),
@@ -6833,7 +7302,7 @@ Module rc.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -6849,17 +7318,17 @@ Module rc.
   (* Empty module 'RcEqIdent' *)
   
   Module Impl_alloc_rc_RcEqIdent_where_core_marker_Sized_T_where_core_cmp_PartialEq_T_where_core_alloc_Allocator_A_T_A_for_alloc_rc_Rc_T_A.
-    Definition Self (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::rc::Rc") [ T; A ].
+    Definition Self (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ].
     
     (*
         default fn eq(&self, other: &Rc<T, A>) -> bool {
             **self == **other
         }
     *)
-    Definition eq (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition eq (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ self; other ] =>
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
@@ -6869,7 +7338,7 @@ Module rc.
               M.call_closure (|
                 M.get_trait_method (|
                   "core::ops::deref::Deref",
-                  Ty.apply (Ty.path "alloc::rc::Rc") [ T; A ],
+                  Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
                   [],
                   "deref",
                   []
@@ -6879,7 +7348,7 @@ Module rc.
               M.call_closure (|
                 M.get_trait_method (|
                   "core::ops::deref::Deref",
-                  Ty.apply (Ty.path "alloc::rc::Rc") [ T; A ],
+                  Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
                   [],
                   "deref",
                   []
@@ -6888,7 +7357,7 @@ Module rc.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     (*
@@ -6896,10 +7365,10 @@ Module rc.
             **self != **other
         }
     *)
-    Definition ne (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition ne (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ self; other ] =>
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
@@ -6909,7 +7378,7 @@ Module rc.
               M.call_closure (|
                 M.get_trait_method (|
                   "core::ops::deref::Deref",
-                  Ty.apply (Ty.path "alloc::rc::Rc") [ T; A ],
+                  Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
                   [],
                   "deref",
                   []
@@ -6919,7 +7388,7 @@ Module rc.
               M.call_closure (|
                 M.get_trait_method (|
                   "core::ops::deref::Deref",
-                  Ty.apply (Ty.path "alloc::rc::Rc") [ T; A ],
+                  Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
                   [],
                   "deref",
                   []
@@ -6928,7 +7397,7 @@ Module rc.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -6957,24 +7426,24 @@ Module rc.
   End Impl_alloc_rc_MarkerEq_where_core_cmp_Eq_T_for_T.
   
   Module Impl_alloc_rc_RcEqIdent_where_core_marker_Sized_T_where_alloc_rc_MarkerEq_T_where_core_alloc_Allocator_A_T_A_for_alloc_rc_Rc_T_A.
-    Definition Self (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::rc::Rc") [ T; A ].
+    Definition Self (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ].
     
     (*
         fn eq(&self, other: &Rc<T, A>) -> bool {
             Rc::ptr_eq(self, other) || **self == **other
         }
     *)
-    Definition eq (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition eq (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ self; other ] =>
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           LogicalOp.or (|
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "alloc::rc::Rc") [ T; A ],
+                Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
                 "ptr_eq",
                 []
               |),
@@ -6987,7 +7456,7 @@ Module rc.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::deref::Deref",
-                      Ty.apply (Ty.path "alloc::rc::Rc") [ T; A ],
+                      Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
                       [],
                       "deref",
                       []
@@ -6997,7 +7466,7 @@ Module rc.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::deref::Deref",
-                      Ty.apply (Ty.path "alloc::rc::Rc") [ T; A ],
+                      Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
                       [],
                       "deref",
                       []
@@ -7007,7 +7476,7 @@ Module rc.
                 ]
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     (*
@@ -7015,10 +7484,10 @@ Module rc.
             !Rc::ptr_eq(self, other) && **self != **other
         }
     *)
-    Definition ne (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition ne (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ self; other ] =>
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
@@ -7026,7 +7495,7 @@ Module rc.
             UnOp.Pure.not
               (M.call_closure (|
                 M.get_associated_function (|
-                  Ty.apply (Ty.path "alloc::rc::Rc") [ T; A ],
+                  Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
                   "ptr_eq",
                   []
                 |),
@@ -7039,7 +7508,7 @@ Module rc.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::deref::Deref",
-                      Ty.apply (Ty.path "alloc::rc::Rc") [ T; A ],
+                      Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
                       [],
                       "deref",
                       []
@@ -7049,7 +7518,7 @@ Module rc.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::deref::Deref",
-                      Ty.apply (Ty.path "alloc::rc::Rc") [ T; A ],
+                      Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
                       [],
                       "deref",
                       []
@@ -7059,7 +7528,7 @@ Module rc.
                 ]
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -7073,31 +7542,31 @@ Module rc.
   End Impl_alloc_rc_RcEqIdent_where_core_marker_Sized_T_where_alloc_rc_MarkerEq_T_where_core_alloc_Allocator_A_T_A_for_alloc_rc_Rc_T_A.
   
   Module Impl_core_cmp_PartialEq_where_core_marker_Sized_T_where_core_cmp_PartialEq_T_where_core_alloc_Allocator_A_for_alloc_rc_Rc_T_A.
-    Definition Self (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::rc::Rc") [ T; A ].
+    Definition Self (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ].
     
     (*
         fn eq(&self, other: &Rc<T, A>) -> bool {
             RcEqIdent::eq(self, other)
         }
     *)
-    Definition eq (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition eq (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ self; other ] =>
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.call_closure (|
             M.get_trait_method (|
               "alloc::rc::RcEqIdent",
-              Ty.apply (Ty.path "alloc::rc::Rc") [ T; A ],
+              Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
               [ T; A ],
               "eq",
               []
             |),
             [ M.read (| self |); M.read (| other |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     (*
@@ -7105,24 +7574,24 @@ Module rc.
             RcEqIdent::ne(self, other)
         }
     *)
-    Definition ne (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition ne (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ self; other ] =>
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.call_closure (|
             M.get_trait_method (|
               "alloc::rc::RcEqIdent",
-              Ty.apply (Ty.path "alloc::rc::Rc") [ T; A ],
+              Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
               [ T; A ],
               "ne",
               []
             |),
             [ M.read (| self |); M.read (| other |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -7136,7 +7605,7 @@ Module rc.
   End Impl_core_cmp_PartialEq_where_core_marker_Sized_T_where_core_cmp_PartialEq_T_where_core_alloc_Allocator_A_for_alloc_rc_Rc_T_A.
   
   Module Impl_core_cmp_Eq_where_core_marker_Sized_T_where_core_cmp_Eq_T_where_core_alloc_Allocator_A_for_alloc_rc_Rc_T_A.
-    Definition Self (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::rc::Rc") [ T; A ].
+    Definition Self (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ].
     
     Axiom Implements :
       forall (T A : Ty.t),
@@ -7148,17 +7617,17 @@ Module rc.
   End Impl_core_cmp_Eq_where_core_marker_Sized_T_where_core_cmp_Eq_T_where_core_alloc_Allocator_A_for_alloc_rc_Rc_T_A.
   
   Module Impl_core_cmp_PartialOrd_where_core_marker_Sized_T_where_core_cmp_PartialOrd_T_where_core_alloc_Allocator_A_for_alloc_rc_Rc_T_A.
-    Definition Self (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::rc::Rc") [ T; A ].
+    Definition Self (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ].
     
     (*
         fn partial_cmp(&self, other: &Rc<T, A>) -> Option<Ordering> {
             ( **self).partial_cmp(&**other)
         }
     *)
-    Definition partial_cmp (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition partial_cmp (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ self; other ] =>
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
@@ -7168,7 +7637,7 @@ Module rc.
               M.call_closure (|
                 M.get_trait_method (|
                   "core::ops::deref::Deref",
-                  Ty.apply (Ty.path "alloc::rc::Rc") [ T; A ],
+                  Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
                   [],
                   "deref",
                   []
@@ -7178,7 +7647,7 @@ Module rc.
               M.call_closure (|
                 M.get_trait_method (|
                   "core::ops::deref::Deref",
-                  Ty.apply (Ty.path "alloc::rc::Rc") [ T; A ],
+                  Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
                   [],
                   "deref",
                   []
@@ -7187,7 +7656,7 @@ Module rc.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     (*
@@ -7195,10 +7664,10 @@ Module rc.
             **self < **other
         }
     *)
-    Definition lt (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition lt (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ self; other ] =>
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
@@ -7208,7 +7677,7 @@ Module rc.
               M.call_closure (|
                 M.get_trait_method (|
                   "core::ops::deref::Deref",
-                  Ty.apply (Ty.path "alloc::rc::Rc") [ T; A ],
+                  Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
                   [],
                   "deref",
                   []
@@ -7218,7 +7687,7 @@ Module rc.
               M.call_closure (|
                 M.get_trait_method (|
                   "core::ops::deref::Deref",
-                  Ty.apply (Ty.path "alloc::rc::Rc") [ T; A ],
+                  Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
                   [],
                   "deref",
                   []
@@ -7227,7 +7696,7 @@ Module rc.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     (*
@@ -7235,10 +7704,10 @@ Module rc.
             **self <= **other
         }
     *)
-    Definition le (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition le (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ self; other ] =>
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
@@ -7248,7 +7717,7 @@ Module rc.
               M.call_closure (|
                 M.get_trait_method (|
                   "core::ops::deref::Deref",
-                  Ty.apply (Ty.path "alloc::rc::Rc") [ T; A ],
+                  Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
                   [],
                   "deref",
                   []
@@ -7258,7 +7727,7 @@ Module rc.
               M.call_closure (|
                 M.get_trait_method (|
                   "core::ops::deref::Deref",
-                  Ty.apply (Ty.path "alloc::rc::Rc") [ T; A ],
+                  Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
                   [],
                   "deref",
                   []
@@ -7267,7 +7736,7 @@ Module rc.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     (*
@@ -7275,10 +7744,10 @@ Module rc.
             **self > **other
         }
     *)
-    Definition gt (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition gt (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ self; other ] =>
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
@@ -7288,7 +7757,7 @@ Module rc.
               M.call_closure (|
                 M.get_trait_method (|
                   "core::ops::deref::Deref",
-                  Ty.apply (Ty.path "alloc::rc::Rc") [ T; A ],
+                  Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
                   [],
                   "deref",
                   []
@@ -7298,7 +7767,7 @@ Module rc.
               M.call_closure (|
                 M.get_trait_method (|
                   "core::ops::deref::Deref",
-                  Ty.apply (Ty.path "alloc::rc::Rc") [ T; A ],
+                  Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
                   [],
                   "deref",
                   []
@@ -7307,7 +7776,7 @@ Module rc.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     (*
@@ -7315,10 +7784,10 @@ Module rc.
             **self >= **other
         }
     *)
-    Definition ge (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition ge (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ self; other ] =>
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
@@ -7328,7 +7797,7 @@ Module rc.
               M.call_closure (|
                 M.get_trait_method (|
                   "core::ops::deref::Deref",
-                  Ty.apply (Ty.path "alloc::rc::Rc") [ T; A ],
+                  Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
                   [],
                   "deref",
                   []
@@ -7338,7 +7807,7 @@ Module rc.
               M.call_closure (|
                 M.get_trait_method (|
                   "core::ops::deref::Deref",
-                  Ty.apply (Ty.path "alloc::rc::Rc") [ T; A ],
+                  Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
                   [],
                   "deref",
                   []
@@ -7347,7 +7816,7 @@ Module rc.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -7367,17 +7836,17 @@ Module rc.
   End Impl_core_cmp_PartialOrd_where_core_marker_Sized_T_where_core_cmp_PartialOrd_T_where_core_alloc_Allocator_A_for_alloc_rc_Rc_T_A.
   
   Module Impl_core_cmp_Ord_where_core_marker_Sized_T_where_core_cmp_Ord_T_where_core_alloc_Allocator_A_for_alloc_rc_Rc_T_A.
-    Definition Self (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::rc::Rc") [ T; A ].
+    Definition Self (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ].
     
     (*
         fn cmp(&self, other: &Rc<T, A>) -> Ordering {
             ( **self).cmp(&**other)
         }
     *)
-    Definition cmp (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition cmp (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ self; other ] =>
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
@@ -7387,7 +7856,7 @@ Module rc.
               M.call_closure (|
                 M.get_trait_method (|
                   "core::ops::deref::Deref",
-                  Ty.apply (Ty.path "alloc::rc::Rc") [ T; A ],
+                  Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
                   [],
                   "deref",
                   []
@@ -7397,7 +7866,7 @@ Module rc.
               M.call_closure (|
                 M.get_trait_method (|
                   "core::ops::deref::Deref",
-                  Ty.apply (Ty.path "alloc::rc::Rc") [ T; A ],
+                  Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
                   [],
                   "deref",
                   []
@@ -7406,7 +7875,7 @@ Module rc.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -7419,17 +7888,17 @@ Module rc.
   End Impl_core_cmp_Ord_where_core_marker_Sized_T_where_core_cmp_Ord_T_where_core_alloc_Allocator_A_for_alloc_rc_Rc_T_A.
   
   Module Impl_core_hash_Hash_where_core_marker_Sized_T_where_core_hash_Hash_T_where_core_alloc_Allocator_A_for_alloc_rc_Rc_T_A.
-    Definition Self (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::rc::Rc") [ T; A ].
+    Definition Self (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ].
     
     (*
         fn hash<H: Hasher>(&self, state: &mut H) {
             ( **self).hash(state);
         }
     *)
-    Definition hash (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition hash (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [ H ], [ self; state ] =>
+      match ε, τ, α with
+      | [], [ H ], [ self; state ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
@@ -7442,7 +7911,7 @@ Module rc.
                     M.call_closure (|
                       M.get_trait_method (|
                         "core::ops::deref::Deref",
-                        Ty.apply (Ty.path "alloc::rc::Rc") [ T; A ],
+                        Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
                         [],
                         "deref",
                         []
@@ -7455,7 +7924,7 @@ Module rc.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -7468,17 +7937,17 @@ Module rc.
   End Impl_core_hash_Hash_where_core_marker_Sized_T_where_core_hash_Hash_T_where_core_alloc_Allocator_A_for_alloc_rc_Rc_T_A.
   
   Module Impl_core_fmt_Display_where_core_marker_Sized_T_where_core_fmt_Display_T_where_core_alloc_Allocator_A_for_alloc_rc_Rc_T_A.
-    Definition Self (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::rc::Rc") [ T; A ].
+    Definition Self (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ].
     
     (*
         fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
             fmt::Display::fmt(&**self, f)
         }
     *)
-    Definition fmt (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition fmt (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ self; f ] =>
+      match ε, τ, α with
+      | [], [], [ self; f ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
@@ -7488,7 +7957,7 @@ Module rc.
               M.call_closure (|
                 M.get_trait_method (|
                   "core::ops::deref::Deref",
-                  Ty.apply (Ty.path "alloc::rc::Rc") [ T; A ],
+                  Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
                   [],
                   "deref",
                   []
@@ -7498,7 +7967,7 @@ Module rc.
               M.read (| f |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -7511,17 +7980,17 @@ Module rc.
   End Impl_core_fmt_Display_where_core_marker_Sized_T_where_core_fmt_Display_T_where_core_alloc_Allocator_A_for_alloc_rc_Rc_T_A.
   
   Module Impl_core_fmt_Debug_where_core_marker_Sized_T_where_core_fmt_Debug_T_where_core_alloc_Allocator_A_for_alloc_rc_Rc_T_A.
-    Definition Self (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::rc::Rc") [ T; A ].
+    Definition Self (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ].
     
     (*
         fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
             fmt::Debug::fmt(&**self, f)
         }
     *)
-    Definition fmt (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition fmt (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ self; f ] =>
+      match ε, τ, α with
+      | [], [], [ self; f ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
@@ -7531,7 +8000,7 @@ Module rc.
               M.call_closure (|
                 M.get_trait_method (|
                   "core::ops::deref::Deref",
-                  Ty.apply (Ty.path "alloc::rc::Rc") [ T; A ],
+                  Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
                   [],
                   "deref",
                   []
@@ -7541,7 +8010,7 @@ Module rc.
               M.read (| f |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -7554,24 +8023,24 @@ Module rc.
   End Impl_core_fmt_Debug_where_core_marker_Sized_T_where_core_fmt_Debug_T_where_core_alloc_Allocator_A_for_alloc_rc_Rc_T_A.
   
   Module Impl_core_fmt_Pointer_where_core_marker_Sized_T_where_core_alloc_Allocator_A_for_alloc_rc_Rc_T_A.
-    Definition Self (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::rc::Rc") [ T; A ].
+    Definition Self (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ].
     
     (*
         fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
             fmt::Pointer::fmt(&(&**self as *const T), f)
         }
     *)
-    Definition fmt (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition fmt (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ self; f ] =>
+      match ε, τ, α with
+      | [], [], [ self; f ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
             M.get_trait_method (|
               "core::fmt::Pointer",
-              Ty.apply (Ty.path "*const") [ T ],
+              Ty.apply (Ty.path "*const") [] [ T ],
               [],
               "fmt",
               []
@@ -7582,7 +8051,7 @@ Module rc.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::deref::Deref",
-                      Ty.apply (Ty.path "alloc::rc::Rc") [ T; A ],
+                      Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
                       [],
                       "deref",
                       []
@@ -7593,7 +8062,7 @@ Module rc.
               M.read (| f |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -7607,28 +8076,28 @@ Module rc.
   
   Module Impl_core_convert_From_T_for_alloc_rc_Rc_T_alloc_alloc_Global.
     Definition Self (T : Ty.t) : Ty.t :=
-      Ty.apply (Ty.path "alloc::rc::Rc") [ T; Ty.path "alloc::alloc::Global" ].
+      Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; Ty.path "alloc::alloc::Global" ].
     
     (*
         fn from(t: T) -> Self {
             Rc::new(t)
         }
     *)
-    Definition from (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition from (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [ t ] =>
+      match ε, τ, α with
+      | [], [], [ t ] =>
         ltac:(M.monadic
           (let t := M.alloc (| t |) in
           M.call_closure (|
             M.get_associated_function (|
-              Ty.apply (Ty.path "alloc::rc::Rc") [ T; Ty.path "alloc::alloc::Global" ],
+              Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; Ty.path "alloc::alloc::Global" ],
               "new",
               []
             |),
             [ M.read (| t |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -7640,21 +8109,28 @@ Module rc.
         (* Instance *) [ ("from", InstanceField.Method (from T)) ].
   End Impl_core_convert_From_T_for_alloc_rc_Rc_T_alloc_alloc_Global.
   
-  Module Impl_core_convert_From_array_T_for_alloc_rc_Rc_slice_T_alloc_alloc_Global.
-    Definition Self (T : Ty.t) : Ty.t :=
+  Module Impl_core_convert_From_array_N_T_for_alloc_rc_Rc_slice_T_alloc_alloc_Global.
+    Definition Self (N : Value.t) (T : Ty.t) : Ty.t :=
       Ty.apply
         (Ty.path "alloc::rc::Rc")
-        [ Ty.apply (Ty.path "slice") [ T ]; Ty.path "alloc::alloc::Global" ].
+        []
+        [ Ty.apply (Ty.path "slice") [] [ T ]; Ty.path "alloc::alloc::Global" ].
     
     (*
         fn from(v: [T; N]) -> Rc<[T]> {
             Rc::<[T; N]>::from(v)
         }
     *)
-    Definition from (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [ v ] =>
+    Definition from
+        (N : Value.t)
+        (T : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      let Self : Ty.t := Self N T in
+      match ε, τ, α with
+      | [], [], [ v ] =>
         ltac:(M.monadic
           (let v := M.alloc (| v |) in
           (* Unsize *)
@@ -7664,40 +8140,42 @@ Module rc.
                 "core::convert::From",
                 Ty.apply
                   (Ty.path "alloc::rc::Rc")
-                  [ Ty.apply (Ty.path "array") [ T ]; Ty.path "alloc::alloc::Global" ],
-                [ Ty.apply (Ty.path "array") [ T ] ],
+                  []
+                  [ Ty.apply (Ty.path "array") [ N ] [ T ]; Ty.path "alloc::alloc::Global" ],
+                [ Ty.apply (Ty.path "array") [ N ] [ T ] ],
                 "from",
                 []
               |),
               [ M.read (| v |) ]
             |))))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
-      forall (T : Ty.t),
+      forall (N : Value.t) (T : Ty.t),
       M.IsTraitInstance
         "core::convert::From"
-        (Self T)
-        (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "array") [ T ] ]
-        (* Instance *) [ ("from", InstanceField.Method (from T)) ].
-  End Impl_core_convert_From_array_T_for_alloc_rc_Rc_slice_T_alloc_alloc_Global.
+        (Self N T)
+        (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "array") [ N ] [ T ] ]
+        (* Instance *) [ ("from", InstanceField.Method (from N T)) ].
+  End Impl_core_convert_From_array_N_T_for_alloc_rc_Rc_slice_T_alloc_alloc_Global.
   
   Module Impl_core_convert_From_where_core_clone_Clone_T_ref__slice_T_for_alloc_rc_Rc_slice_T_alloc_alloc_Global.
     Definition Self (T : Ty.t) : Ty.t :=
       Ty.apply
         (Ty.path "alloc::rc::Rc")
-        [ Ty.apply (Ty.path "slice") [ T ]; Ty.path "alloc::alloc::Global" ].
+        []
+        [ Ty.apply (Ty.path "slice") [] [ T ]; Ty.path "alloc::alloc::Global" ].
     
     (*
         fn from(v: &[T]) -> Rc<[T]> {
             <Self as RcFromSlice<T>>::from_slice(v)
         }
     *)
-    Definition from (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition from (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [ v ] =>
+      match ε, τ, α with
+      | [], [], [ v ] =>
         ltac:(M.monadic
           (let v := M.alloc (| v |) in
           M.call_closure (|
@@ -7705,14 +8183,15 @@ Module rc.
               "alloc::rc::RcFromSlice",
               Ty.apply
                 (Ty.path "alloc::rc::Rc")
-                [ Ty.apply (Ty.path "slice") [ T ]; Ty.path "alloc::alloc::Global" ],
+                []
+                [ Ty.apply (Ty.path "slice") [] [ T ]; Ty.path "alloc::alloc::Global" ],
               [ T ],
               "from_slice",
               []
             |),
             [ M.read (| v |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -7721,13 +8200,13 @@ Module rc.
         "core::convert::From"
         (Self T)
         (* Trait polymorphic types *)
-        [ (* T *) Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "slice") [ T ] ] ]
+        [ (* T *) Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ] ]
         (* Instance *) [ ("from", InstanceField.Method (from T)) ].
   End Impl_core_convert_From_where_core_clone_Clone_T_ref__slice_T_for_alloc_rc_Rc_slice_T_alloc_alloc_Global.
   
   Module Impl_core_convert_From_ref__str_for_alloc_rc_Rc_str_alloc_alloc_Global.
     Definition Self : Ty.t :=
-      Ty.apply (Ty.path "alloc::rc::Rc") [ Ty.path "str"; Ty.path "alloc::alloc::Global" ].
+      Ty.apply (Ty.path "alloc::rc::Rc") [] [ Ty.path "str"; Ty.path "alloc::alloc::Global" ].
     
     (*
         fn from(v: &str) -> Rc<str> {
@@ -7735,9 +8214,9 @@ Module rc.
             unsafe { Rc::from_raw(Rc::into_raw(rc) as *const str) }
         }
     *)
-    Definition from (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ v ] =>
+    Definition from (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ v ] =>
         ltac:(M.monadic
           (let v := M.alloc (| v |) in
           M.read (|
@@ -7748,9 +8227,13 @@ Module rc.
                     "core::convert::From",
                     Ty.apply
                       (Ty.path "alloc::rc::Rc")
-                      [ Ty.apply (Ty.path "slice") [ Ty.path "u8" ]; Ty.path "alloc::alloc::Global"
+                      []
+                      [
+                        Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ];
+                        Ty.path "alloc::alloc::Global"
                       ],
-                    [ Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "slice") [ Ty.path "u8" ] ] ],
+                    [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
+                    ],
                     "from",
                     []
                   |),
@@ -7767,6 +8250,7 @@ Module rc.
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "alloc::rc::Rc")
+                    []
                     [ Ty.path "str"; Ty.path "alloc::alloc::Global" ],
                   "from_raw",
                   []
@@ -7777,8 +8261,9 @@ Module rc.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "alloc::rc::Rc")
+                          []
                           [
-                            Ty.apply (Ty.path "slice") [ Ty.path "u8" ];
+                            Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ];
                             Ty.path "alloc::alloc::Global"
                           ],
                         "into_raw",
@@ -7790,36 +8275,39 @@ Module rc.
               |)
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
       M.IsTraitInstance
         "core::convert::From"
         Self
-        (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+        (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
         (* Instance *) [ ("from", InstanceField.Method from) ].
   End Impl_core_convert_From_ref__str_for_alloc_rc_Rc_str_alloc_alloc_Global.
   
   Module Impl_core_convert_From_alloc_string_String_for_alloc_rc_Rc_str_alloc_alloc_Global.
     Definition Self : Ty.t :=
-      Ty.apply (Ty.path "alloc::rc::Rc") [ Ty.path "str"; Ty.path "alloc::alloc::Global" ].
+      Ty.apply (Ty.path "alloc::rc::Rc") [] [ Ty.path "str"; Ty.path "alloc::alloc::Global" ].
     
     (*
         fn from(v: String) -> Rc<str> {
             Rc::from(&v[..])
         }
     *)
-    Definition from (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ v ] =>
+    Definition from (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ v ] =>
         ltac:(M.monadic
           (let v := M.alloc (| v |) in
           M.call_closure (|
             M.get_trait_method (|
               "core::convert::From",
-              Ty.apply (Ty.path "alloc::rc::Rc") [ Ty.path "str"; Ty.path "alloc::alloc::Global" ],
-              [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ],
+              Ty.apply
+                (Ty.path "alloc::rc::Rc")
+                []
+                [ Ty.path "str"; Ty.path "alloc::alloc::Global" ],
+              [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
               "from",
               []
             |),
@@ -7836,7 +8324,7 @@ Module rc.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -7848,28 +8336,28 @@ Module rc.
   End Impl_core_convert_From_alloc_string_String_for_alloc_rc_Rc_str_alloc_alloc_Global.
   
   Module Impl_core_convert_From_where_core_marker_Sized_T_where_core_alloc_Allocator_A_alloc_boxed_Box_T_A_for_alloc_rc_Rc_T_A.
-    Definition Self (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::rc::Rc") [ T; A ].
+    Definition Self (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ].
     
     (*
         fn from(v: Box<T, A>) -> Rc<T, A> {
             Rc::from_box_in(v)
         }
     *)
-    Definition from (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition from (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ v ] =>
+      match ε, τ, α with
+      | [], [], [ v ] =>
         ltac:(M.monadic
           (let v := M.alloc (| v |) in
           M.call_closure (|
             M.get_associated_function (|
-              Ty.apply (Ty.path "alloc::rc::Rc") [ T; A ],
+              Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
               "from_box_in",
               []
             |),
             [ M.read (| v |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -7877,13 +8365,13 @@ Module rc.
       M.IsTraitInstance
         "core::convert::From"
         (Self T A)
-        (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "alloc::boxed::Box") [ T; A ] ]
+        (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ] ]
         (* Instance *) [ ("from", InstanceField.Method (from T A)) ].
   End Impl_core_convert_From_where_core_marker_Sized_T_where_core_alloc_Allocator_A_alloc_boxed_Box_T_A_for_alloc_rc_Rc_T_A.
   
   Module Impl_core_convert_From_where_core_alloc_Allocator_A_alloc_vec_Vec_T_A_for_alloc_rc_Rc_slice_T_A.
     Definition Self (T A : Ty.t) : Ty.t :=
-      Ty.apply (Ty.path "alloc::rc::Rc") [ Ty.apply (Ty.path "slice") [ T ]; A ].
+      Ty.apply (Ty.path "alloc::rc::Rc") [] [ Ty.apply (Ty.path "slice") [] [ T ]; A ].
     
     (*
         fn from(v: Vec<T, A>) -> Rc<[T], A> {
@@ -7901,10 +8389,10 @@ Module rc.
             }
         }
     *)
-    Definition from (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition from (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ v ] =>
+      match ε, τ, α with
+      | [], [], [ v ] =>
         ltac:(M.monadic
           (let v := M.alloc (| v |) in
           M.read (|
@@ -7912,7 +8400,7 @@ Module rc.
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                    Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                     "into_raw_parts_with_alloc",
                     []
                   |),
@@ -7936,7 +8424,8 @@ Module rc.
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "alloc::rc::Rc")
-                              [ Ty.apply (Ty.path "slice") [ T ]; A ],
+                              []
+                              [ Ty.apply (Ty.path "slice") [] [ T ]; A ],
                             "allocate_for_slice_in",
                             []
                           |),
@@ -7970,7 +8459,8 @@ Module rc.
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "alloc::vec::Vec")
-                              [ T; Ty.apply (Ty.path "&") [ A ] ],
+                              []
+                              [ T; Ty.apply (Ty.path "&") [] [ A ] ],
                             "from_raw_parts_in",
                             []
                           |),
@@ -7985,7 +8475,8 @@ Module rc.
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "alloc::rc::Rc")
-                                    [ Ty.apply (Ty.path "slice") [ T ]; A ],
+                                    []
+                                    [ Ty.apply (Ty.path "slice") [] [ T ]; A ],
                                   "from_ptr_in",
                                   []
                                 |),
@@ -7997,7 +8488,7 @@ Module rc.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -8005,13 +8496,13 @@ Module rc.
       M.IsTraitInstance
         "core::convert::From"
         (Self T A)
-        (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ] ]
+        (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ] ]
         (* Instance *) [ ("from", InstanceField.Method (from T A)) ].
   End Impl_core_convert_From_where_core_alloc_Allocator_A_alloc_vec_Vec_T_A_for_alloc_rc_Rc_slice_T_A.
   
   Module Impl_core_convert_From_where_alloc_borrow_ToOwned_B_where_core_marker_Sized_B_where_core_convert_From_alloc_rc_Rc_B_alloc_alloc_Global_ref__B_where_core_convert_From_alloc_rc_Rc_B_alloc_alloc_Global_associated_type_alloc_borrow_Cow_B_for_alloc_rc_Rc_B_alloc_alloc_Global.
     Definition Self (B : Ty.t) : Ty.t :=
-      Ty.apply (Ty.path "alloc::rc::Rc") [ B; Ty.path "alloc::alloc::Global" ].
+      Ty.apply (Ty.path "alloc::rc::Rc") [] [ B; Ty.path "alloc::alloc::Global" ].
     
     (*
         fn from(cow: Cow<'a, B>) -> Rc<B> {
@@ -8021,10 +8512,10 @@ Module rc.
             }
         }
     *)
-    Definition from (B : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition from (B : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self B in
-      match τ, α with
-      | [], [ cow ] =>
+      match ε, τ, α with
+      | [], [], [ cow ] =>
         ltac:(M.monadic
           (let cow := M.alloc (| cow |) in
           M.read (|
@@ -8044,8 +8535,11 @@ Module rc.
                       M.call_closure (|
                         M.get_trait_method (|
                           "core::convert::From",
-                          Ty.apply (Ty.path "alloc::rc::Rc") [ B; Ty.path "alloc::alloc::Global" ],
-                          [ Ty.apply (Ty.path "&") [ B ] ],
+                          Ty.apply
+                            (Ty.path "alloc::rc::Rc")
+                            []
+                            [ B; Ty.path "alloc::alloc::Global" ],
+                          [ Ty.apply (Ty.path "&") [] [ B ] ],
                           "from",
                           []
                         |),
@@ -8061,7 +8555,10 @@ Module rc.
                       M.call_closure (|
                         M.get_trait_method (|
                           "core::convert::From",
-                          Ty.apply (Ty.path "alloc::rc::Rc") [ B; Ty.path "alloc::alloc::Global" ],
+                          Ty.apply
+                            (Ty.path "alloc::rc::Rc")
+                            []
+                            [ B; Ty.path "alloc::alloc::Global" ],
                           [ Ty.associated ],
                           "from",
                           []
@@ -8072,7 +8569,7 @@ Module rc.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -8080,7 +8577,7 @@ Module rc.
       M.IsTraitInstance
         "core::convert::From"
         (Self B)
-        (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "alloc::borrow::Cow") [ B ] ]
+        (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "alloc::borrow::Cow") [] [ B ] ]
         (* Instance *) [ ("from", InstanceField.Method (from B)) ].
   End Impl_core_convert_From_where_alloc_borrow_ToOwned_B_where_core_marker_Sized_B_where_core_convert_From_alloc_rc_Rc_B_alloc_alloc_Global_ref__B_where_core_convert_From_alloc_rc_Rc_B_alloc_alloc_Global_associated_type_alloc_borrow_Cow_B_for_alloc_rc_Rc_B_alloc_alloc_Global.
   
@@ -8088,7 +8585,8 @@ Module rc.
     Definition Self : Ty.t :=
       Ty.apply
         (Ty.path "alloc::rc::Rc")
-        [ Ty.apply (Ty.path "slice") [ Ty.path "u8" ]; Ty.path "alloc::alloc::Global" ].
+        []
+        [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]; Ty.path "alloc::alloc::Global" ].
     
     (*
         fn from(rc: Rc<str>) -> Self {
@@ -8096,16 +8594,17 @@ Module rc.
             unsafe { Rc::from_raw(Rc::into_raw(rc) as *const [u8]) }
         }
     *)
-    Definition from (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ rc ] =>
+    Definition from (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ rc ] =>
         ltac:(M.monadic
           (let rc := M.alloc (| rc |) in
           M.call_closure (|
             M.get_associated_function (|
               Ty.apply
                 (Ty.path "alloc::rc::Rc")
-                [ Ty.apply (Ty.path "slice") [ Ty.path "u8" ]; Ty.path "alloc::alloc::Global" ],
+                []
+                [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]; Ty.path "alloc::alloc::Global" ],
               "from_raw",
               []
             |),
@@ -8115,6 +8614,7 @@ Module rc.
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "alloc::rc::Rc")
+                      []
                       [ Ty.path "str"; Ty.path "alloc::alloc::Global" ],
                     "into_raw",
                     []
@@ -8123,7 +8623,7 @@ Module rc.
                 |))
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -8133,22 +8633,24 @@ Module rc.
         (* Trait polymorphic types *)
         [
           (* T *)
-          Ty.apply (Ty.path "alloc::rc::Rc") [ Ty.path "str"; Ty.path "alloc::alloc::Global" ]
+          Ty.apply (Ty.path "alloc::rc::Rc") [] [ Ty.path "str"; Ty.path "alloc::alloc::Global" ]
         ]
         (* Instance *) [ ("from", InstanceField.Method from) ].
   End Impl_core_convert_From_alloc_rc_Rc_str_alloc_alloc_Global_for_alloc_rc_Rc_slice_u8_alloc_alloc_Global.
   
-  Module Impl_core_convert_TryFrom_alloc_rc_Rc_slice_T_alloc_alloc_Global_for_alloc_rc_Rc_array_T_alloc_alloc_Global.
-    Definition Self (T : Ty.t) : Ty.t :=
+  Module Impl_core_convert_TryFrom_alloc_rc_Rc_slice_T_alloc_alloc_Global_for_alloc_rc_Rc_array_N_T_alloc_alloc_Global.
+    Definition Self (N : Value.t) (T : Ty.t) : Ty.t :=
       Ty.apply
         (Ty.path "alloc::rc::Rc")
-        [ Ty.apply (Ty.path "array") [ T ]; Ty.path "alloc::alloc::Global" ].
+        []
+        [ Ty.apply (Ty.path "array") [ N ] [ T ]; Ty.path "alloc::alloc::Global" ].
     
     (*     type Error = Rc<[T]>; *)
-    Definition _Error (T : Ty.t) : Ty.t :=
+    Definition _Error (N : Value.t) (T : Ty.t) : Ty.t :=
       Ty.apply
         (Ty.path "alloc::rc::Rc")
-        [ Ty.apply (Ty.path "slice") [ T ]; Ty.path "alloc::alloc::Global" ].
+        []
+        [ Ty.apply (Ty.path "slice") [] [ T ]; Ty.path "alloc::alloc::Global" ].
     
     (*
         fn try_from(boxed_slice: Rc<[T]>) -> Result<Self, Self::Error> {
@@ -8159,10 +8661,16 @@ Module rc.
             }
         }
     *)
-    Definition try_from (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [ boxed_slice ] =>
+    Definition try_from
+        (N : Value.t)
+        (T : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      let Self : Ty.t := Self N T in
+      match ε, τ, α with
+      | [], [], [ boxed_slice ] =>
         ltac:(M.monadic
           (let boxed_slice := M.alloc (| boxed_slice |) in
           M.read (|
@@ -8177,7 +8685,7 @@ Module rc.
                           BinOp.Pure.eq
                             (M.call_closure (|
                               M.get_associated_function (|
-                                Ty.apply (Ty.path "slice") [ T ],
+                                Ty.apply (Ty.path "slice") [] [ T ],
                                 "len",
                                 []
                               |),
@@ -8187,8 +8695,9 @@ Module rc.
                                     "core::ops::deref::Deref",
                                     Ty.apply
                                       (Ty.path "alloc::rc::Rc")
+                                      []
                                       [
-                                        Ty.apply (Ty.path "slice") [ T ];
+                                        Ty.apply (Ty.path "slice") [] [ T ];
                                         Ty.path "alloc::alloc::Global"
                                       ],
                                     [],
@@ -8210,7 +8719,10 @@ Module rc.
                             M.get_associated_function (|
                               Ty.apply
                                 (Ty.path "alloc::rc::Rc")
-                                [ Ty.apply (Ty.path "array") [ T ]; Ty.path "alloc::alloc::Global"
+                                []
+                                [
+                                  Ty.apply (Ty.path "array") [ N ] [ T ];
+                                  Ty.path "alloc::alloc::Global"
                                 ],
                               "from_raw",
                               []
@@ -8223,8 +8735,9 @@ Module rc.
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "alloc::rc::Rc")
+                                        []
                                         [
-                                          Ty.apply (Ty.path "slice") [ T ];
+                                          Ty.apply (Ty.path "slice") [] [ T ];
                                           Ty.path "alloc::alloc::Global"
                                         ],
                                       "into_raw",
@@ -8244,40 +8757,45 @@ Module rc.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
-      forall (T : Ty.t),
+      forall (N : Value.t) (T : Ty.t),
       M.IsTraitInstance
         "core::convert::TryFrom"
-        (Self T)
+        (Self N T)
         (* Trait polymorphic types *)
         [
           (* T *)
           Ty.apply
             (Ty.path "alloc::rc::Rc")
-            [ Ty.apply (Ty.path "slice") [ T ]; Ty.path "alloc::alloc::Global" ]
+            []
+            [ Ty.apply (Ty.path "slice") [] [ T ]; Ty.path "alloc::alloc::Global" ]
         ]
         (* Instance *)
-        [ ("Error", InstanceField.Ty (_Error T)); ("try_from", InstanceField.Method (try_from T)) ].
-  End Impl_core_convert_TryFrom_alloc_rc_Rc_slice_T_alloc_alloc_Global_for_alloc_rc_Rc_array_T_alloc_alloc_Global.
+        [
+          ("Error", InstanceField.Ty (_Error N T));
+          ("try_from", InstanceField.Method (try_from N T))
+        ].
+  End Impl_core_convert_TryFrom_alloc_rc_Rc_slice_T_alloc_alloc_Global_for_alloc_rc_Rc_array_N_T_alloc_alloc_Global.
   
   Module Impl_core_iter_traits_collect_FromIterator_T_for_alloc_rc_Rc_slice_T_alloc_alloc_Global.
     Definition Self (T : Ty.t) : Ty.t :=
       Ty.apply
         (Ty.path "alloc::rc::Rc")
-        [ Ty.apply (Ty.path "slice") [ T ]; Ty.path "alloc::alloc::Global" ].
+        []
+        [ Ty.apply (Ty.path "slice") [] [ T ]; Ty.path "alloc::alloc::Global" ].
     
     (*
         fn from_iter<I: IntoIterator<Item = T>>(iter: I) -> Self {
             ToRcSlice::to_rc_slice(iter.into_iter())
         }
     *)
-    Definition from_iter (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition from_iter (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [ _ as I ], [ iter ] =>
+      match ε, τ, α with
+      | [], [ _ as I ], [ iter ] =>
         ltac:(M.monadic
           (let iter := M.alloc (| iter |) in
           M.call_closure (|
@@ -8301,7 +8819,7 @@ Module rc.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -8324,20 +8842,21 @@ Module rc.
             self.collect::<Vec<T>>().into()
         }
     *)
-    Definition to_rc_slice (T I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition to_rc_slice (T I : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T I in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
             M.get_trait_method (|
               "core::convert::Into",
-              Ty.apply (Ty.path "alloc::vec::Vec") [ T; Ty.path "alloc::alloc::Global" ],
+              Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; Ty.path "alloc::alloc::Global" ],
               [
                 Ty.apply
                   (Ty.path "alloc::rc::Rc")
-                  [ Ty.apply (Ty.path "slice") [ T ]; Ty.path "alloc::alloc::Global" ]
+                  []
+                  [ Ty.apply (Ty.path "slice") [] [ T ]; Ty.path "alloc::alloc::Global" ]
               ],
               "into",
               []
@@ -8349,13 +8868,13 @@ Module rc.
                   I,
                   [],
                   "collect",
-                  [ Ty.apply (Ty.path "alloc::vec::Vec") [ T; Ty.path "alloc::alloc::Global" ] ]
+                  [ Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; Ty.path "alloc::alloc::Global" ] ]
                 |),
                 [ M.read (| self |) ]
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -8395,10 +8914,10 @@ Module rc.
             }
         }
     *)
-    Definition to_rc_slice (T I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition to_rc_slice (T I : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T I in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -8586,8 +9105,9 @@ Module rc.
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "alloc::rc::Rc")
+                                    []
                                     [
-                                      Ty.apply (Ty.path "slice") [ T ];
+                                      Ty.apply (Ty.path "slice") [] [ T ];
                                       Ty.path "alloc::alloc::Global"
                                     ],
                                   "from_iter_exact",
@@ -8627,7 +9147,7 @@ Module rc.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -8642,19 +9162,21 @@ Module rc.
   (* StructRecord
     {
       name := "Weak";
+      const_params := [];
       ty_params := [ "T"; "A" ];
       fields :=
         [
           ("ptr",
             Ty.apply
               (Ty.path "core::ptr::non_null::NonNull")
-              [ Ty.apply (Ty.path "alloc::rc::RcBox") [ T ] ]);
+              []
+              [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ]);
           ("alloc", A)
         ];
     } *)
   
   Module Impl_core_marker_Send_where_core_marker_Sized_T_where_core_alloc_Allocator_A_for_alloc_rc_Weak_T_A.
-    Definition Self (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::rc::Weak") [ T; A ].
+    Definition Self (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::rc::Weak") [] [ T; A ].
     
     Axiom Implements :
       forall (T A : Ty.t),
@@ -8666,7 +9188,7 @@ Module rc.
   End Impl_core_marker_Send_where_core_marker_Sized_T_where_core_alloc_Allocator_A_for_alloc_rc_Weak_T_A.
   
   Module Impl_core_marker_Sync_where_core_marker_Sized_T_where_core_alloc_Allocator_A_for_alloc_rc_Weak_T_A.
-    Definition Self (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::rc::Weak") [ T; A ].
+    Definition Self (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::rc::Weak") [] [ T; A ].
     
     Axiom Implements :
       forall (T A : Ty.t),
@@ -8678,20 +9200,20 @@ Module rc.
   End Impl_core_marker_Sync_where_core_marker_Sized_T_where_core_alloc_Allocator_A_for_alloc_rc_Weak_T_A.
   
   Module Impl_core_ops_unsize_CoerceUnsized_where_core_marker_Sized_T_where_core_marker_Unsize_T_U_where_core_marker_Sized_U_where_core_alloc_Allocator_A_alloc_rc_Weak_U_A_for_alloc_rc_Weak_T_A.
-    Definition Self (T U A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::rc::Weak") [ T; A ].
+    Definition Self (T U A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::rc::Weak") [] [ T; A ].
     
     Axiom Implements :
       forall (T U A : Ty.t),
       M.IsTraitInstance
         "core::ops::unsize::CoerceUnsized"
         (Self T U A)
-        (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "alloc::rc::Weak") [ U; A ] ]
+        (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "alloc::rc::Weak") [] [ U; A ] ]
         (* Instance *) [].
   End Impl_core_ops_unsize_CoerceUnsized_where_core_marker_Sized_T_where_core_marker_Unsize_T_U_where_core_marker_Sized_U_where_core_alloc_Allocator_A_alloc_rc_Weak_U_A_for_alloc_rc_Weak_T_A.
   
   Module Impl_core_ops_unsize_DispatchFromDyn_where_core_marker_Sized_T_where_core_marker_Unsize_T_U_where_core_marker_Sized_U_alloc_rc_Weak_U_alloc_alloc_Global_for_alloc_rc_Weak_T_alloc_alloc_Global.
     Definition Self (T U : Ty.t) : Ty.t :=
-      Ty.apply (Ty.path "alloc::rc::Weak") [ T; Ty.path "alloc::alloc::Global" ].
+      Ty.apply (Ty.path "alloc::rc::Weak") [] [ T; Ty.path "alloc::alloc::Global" ].
     
     Axiom Implements :
       forall (T U : Ty.t),
@@ -8699,13 +9221,13 @@ Module rc.
         "core::ops::unsize::DispatchFromDyn"
         (Self T U)
         (* Trait polymorphic types *)
-        [ (* T *) Ty.apply (Ty.path "alloc::rc::Weak") [ U; Ty.path "alloc::alloc::Global" ] ]
+        [ (* T *) Ty.apply (Ty.path "alloc::rc::Weak") [] [ U; Ty.path "alloc::alloc::Global" ] ]
         (* Instance *) [].
   End Impl_core_ops_unsize_DispatchFromDyn_where_core_marker_Sized_T_where_core_marker_Unsize_T_U_where_core_marker_Sized_U_alloc_rc_Weak_U_alloc_alloc_Global_for_alloc_rc_Weak_T_alloc_alloc_Global.
   
   Module Impl_alloc_rc_Weak_T_alloc_alloc_Global.
     Definition Self (T : Ty.t) : Ty.t :=
-      Ty.apply (Ty.path "alloc::rc::Weak") [ T; Ty.path "alloc::alloc::Global" ].
+      Ty.apply (Ty.path "alloc::rc::Weak") [] [ T; Ty.path "alloc::alloc::Global" ].
     
     (*
         pub const fn new() -> Weak<T> {
@@ -8715,10 +9237,10 @@ Module rc.
             }
         }
     *)
-    Definition new (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition new (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [] =>
+      match ε, τ, α with
+      | [], [], [] =>
         ltac:(M.monadic
           (Value.StructRecord
             "alloc::rc::Weak"
@@ -8728,7 +9250,8 @@ Module rc.
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "core::ptr::non_null::NonNull")
-                      [ Ty.apply (Ty.path "alloc::rc::RcBox") [ T ] ],
+                      []
+                      [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ],
                     "new_unchecked",
                     []
                   |),
@@ -8736,7 +9259,7 @@ Module rc.
                     M.call_closure (|
                       M.get_function (|
                         "core::ptr::invalid_mut",
-                        [ Ty.apply (Ty.path "alloc::rc::RcBox") [ T ] ]
+                        [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ]
                       |),
                       [ M.read (| M.get_constant (| "core::num::MAX" |) |) ]
                     |)
@@ -8744,7 +9267,7 @@ Module rc.
                 |));
               ("alloc", Value.StructTuple "alloc::alloc::Global" [])
             ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_new : forall (T : Ty.t), M.IsAssociatedFunction (Self T) "new" (new T).
@@ -8753,21 +9276,21 @@ Module rc.
             unsafe { Self::from_raw_in(ptr, Global) }
         }
     *)
-    Definition from_raw (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition from_raw (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [ ptr ] =>
+      match ε, τ, α with
+      | [], [], [ ptr ] =>
         ltac:(M.monadic
           (let ptr := M.alloc (| ptr |) in
           M.call_closure (|
             M.get_associated_function (|
-              Ty.apply (Ty.path "alloc::rc::Weak") [ T; Ty.path "alloc::alloc::Global" ],
+              Ty.apply (Ty.path "alloc::rc::Weak") [] [ T; Ty.path "alloc::alloc::Global" ],
               "from_raw_in",
               []
             |),
             [ M.read (| ptr |); Value.StructTuple "alloc::alloc::Global" [] ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_from_raw :
@@ -8776,7 +9299,7 @@ Module rc.
   End Impl_alloc_rc_Weak_T_alloc_alloc_Global.
   
   Module Impl_alloc_rc_Weak_T_A.
-    Definition Self (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::rc::Weak") [ T; A ].
+    Definition Self (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::rc::Weak") [] [ T; A ].
     
     (*
         pub fn new_in(alloc: A) -> Weak<T, A> {
@@ -8786,10 +9309,10 @@ Module rc.
             }
         }
     *)
-    Definition new_in (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition new_in (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ alloc ] =>
+      match ε, τ, α with
+      | [], [], [ alloc ] =>
         ltac:(M.monadic
           (let alloc := M.alloc (| alloc |) in
           Value.StructRecord
@@ -8800,7 +9323,8 @@ Module rc.
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "core::ptr::non_null::NonNull")
-                      [ Ty.apply (Ty.path "alloc::rc::RcBox") [ T ] ],
+                      []
+                      [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ],
                     "new_unchecked",
                     []
                   |),
@@ -8808,7 +9332,7 @@ Module rc.
                     M.call_closure (|
                       M.get_function (|
                         "core::ptr::invalid_mut",
-                        [ Ty.apply (Ty.path "alloc::rc::RcBox") [ T ] ]
+                        [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ]
                       |),
                       [ M.read (| M.get_constant (| "core::num::MAX" |) |) ]
                     |)
@@ -8816,7 +9340,7 @@ Module rc.
                 |));
               ("alloc", M.read (| alloc |))
             ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_new_in :
@@ -8838,10 +9362,10 @@ Module rc.
             }
         }
     *)
-    Definition as_ptr (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition as_ptr (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -8851,7 +9375,8 @@ Module rc.
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "core::ptr::non_null::NonNull")
-                      [ Ty.apply (Ty.path "alloc::rc::RcBox") [ T ] ],
+                      []
+                      [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ],
                     "as_ptr",
                     []
                   |),
@@ -8877,7 +9402,7 @@ Module rc.
                           M.call_closure (|
                             M.get_function (|
                               "alloc::rc::is_dangling",
-                              [ Ty.apply (Ty.path "alloc::rc::RcBox") [ T ] ]
+                              [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ]
                             |),
                             [ M.read (| ptr |) ]
                           |)
@@ -8898,7 +9423,7 @@ Module rc.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_as_ptr :
@@ -8912,10 +9437,10 @@ Module rc.
             result
         }
     *)
-    Definition into_raw (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition into_raw (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -8923,7 +9448,7 @@ Module rc.
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "alloc::rc::Weak") [ T; A ],
+                    Ty.apply (Ty.path "alloc::rc::Weak") [] [ T; A ],
                     "as_ptr",
                     []
                   |),
@@ -8935,14 +9460,14 @@ Module rc.
                 M.call_closure (|
                   M.get_function (|
                     "core::mem::forget",
-                    [ Ty.apply (Ty.path "alloc::rc::Weak") [ T; A ] ]
+                    [ Ty.apply (Ty.path "alloc::rc::Weak") [] [ T; A ] ]
                   |),
                   [ M.read (| self |) ]
                 |)
               |) in
             result
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_into_raw :
@@ -8960,10 +9485,15 @@ Module rc.
             (result, alloc)
         }
     *)
-    Definition into_raw_and_alloc (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition into_raw_and_alloc
+        (T A : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -8971,7 +9501,7 @@ Module rc.
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "alloc::rc::Weak") [ T; A ],
+                    Ty.apply (Ty.path "alloc::rc::Weak") [] [ T; A ],
                     "as_ptr",
                     []
                   |),
@@ -8990,14 +9520,14 @@ Module rc.
                 M.call_closure (|
                   M.get_function (|
                     "core::mem::forget",
-                    [ Ty.apply (Ty.path "alloc::rc::Weak") [ T; A ] ]
+                    [ Ty.apply (Ty.path "alloc::rc::Weak") [] [ T; A ] ]
                   |),
                   [ M.read (| self |) ]
                 |)
               |) in
             M.alloc (| Value.Tuple [ M.read (| result |); M.read (| alloc |) ] |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_into_raw_and_alloc :
@@ -9024,10 +9554,10 @@ Module rc.
             Weak { ptr: unsafe { NonNull::new_unchecked(ptr) }, alloc }
         }
     *)
-    Definition from_raw_in (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition from_raw_in (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ ptr; alloc ] =>
+      match ε, τ, α with
+      | [], [], [ ptr; alloc ] =>
         ltac:(M.monadic
           (let ptr := M.alloc (| ptr |) in
           let alloc := M.alloc (| alloc |) in
@@ -9063,7 +9593,7 @@ Module rc.
                           M.rust_cast
                             (M.call_closure (|
                               M.get_associated_function (|
-                                Ty.apply (Ty.path "*const") [ T ],
+                                Ty.apply (Ty.path "*const") [] [ T ],
                                 "byte_sub",
                                 []
                               |),
@@ -9082,7 +9612,8 @@ Module rc.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "core::ptr::non_null::NonNull")
-                          [ Ty.apply (Ty.path "alloc::rc::RcBox") [ T ] ],
+                          []
+                          [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ],
                         "new_unchecked",
                         []
                       |),
@@ -9092,7 +9623,7 @@ Module rc.
                 ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_from_raw_in :
@@ -9116,10 +9647,10 @@ Module rc.
             }
         }
     *)
-    Definition upgrade (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition upgrade (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.catch_return (|
@@ -9134,6 +9665,7 @@ Module rc.
                             "core::ops::try_trait::Try",
                             Ty.apply
                               (Ty.path "core::option::Option")
+                              []
                               [ Ty.path "alloc::rc::WeakInner" ],
                             [],
                             "branch",
@@ -9142,7 +9674,7 @@ Module rc.
                           [
                             M.call_closure (|
                               M.get_associated_function (|
-                                Ty.apply (Ty.path "alloc::rc::Weak") [ T; A ],
+                                Ty.apply (Ty.path "alloc::rc::Weak") [] [ T; A ],
                                 "inner",
                                 []
                               |),
@@ -9170,10 +9702,12 @@ Module rc.
                                         "core::ops::try_trait::FromResidual",
                                         Ty.apply
                                           (Ty.path "core::option::Option")
-                                          [ Ty.apply (Ty.path "alloc::rc::Rc") [ T; A ] ],
+                                          []
+                                          [ Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ] ],
                                         [
                                           Ty.apply
                                             (Ty.path "core::option::Option")
+                                            []
                                             [ Ty.path "core::convert::Infallible" ]
                                         ],
                                         "from_residual",
@@ -9243,7 +9777,7 @@ Module rc.
                             [
                               M.call_closure (|
                                 M.get_associated_function (|
-                                  Ty.apply (Ty.path "alloc::rc::Rc") [ T; A ],
+                                  Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
                                   "from_inner_in",
                                   []
                                 |),
@@ -9279,7 +9813,7 @@ Module rc.
                 |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_upgrade :
@@ -9291,10 +9825,15 @@ Module rc.
             if let Some(inner) = self.inner() { inner.strong() } else { 0 }
         }
     *)
-    Definition strong_count (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition strong_count
+        (T A : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -9307,7 +9846,7 @@ Module rc.
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
-                            Ty.apply (Ty.path "alloc::rc::Weak") [ T; A ],
+                            Ty.apply (Ty.path "alloc::rc::Weak") [] [ T; A ],
                             "inner",
                             []
                           |),
@@ -9337,7 +9876,7 @@ Module rc.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_strong_count :
@@ -9357,10 +9896,10 @@ Module rc.
             }
         }
     *)
-    Definition weak_count (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition weak_count (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -9373,7 +9912,7 @@ Module rc.
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
-                            Ty.apply (Ty.path "alloc::rc::Weak") [ T; A ],
+                            Ty.apply (Ty.path "alloc::rc::Weak") [] [ T; A ],
                             "inner",
                             []
                           |),
@@ -9432,7 +9971,7 @@ Module rc.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_weak_count :
@@ -9454,10 +9993,10 @@ Module rc.
             }
         }
     *)
-    Definition inner (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition inner (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -9472,14 +10011,15 @@ Module rc.
                           M.call_closure (|
                             M.get_function (|
                               "alloc::rc::is_dangling",
-                              [ Ty.apply (Ty.path "alloc::rc::RcBox") [ T ] ]
+                              [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ]
                             |),
                             [
                               M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "core::ptr::non_null::NonNull")
-                                    [ Ty.apply (Ty.path "alloc::rc::RcBox") [ T ] ],
+                                    []
+                                    [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ],
                                   "as_ptr",
                                   []
                                 |),
@@ -9511,7 +10051,8 @@ Module rc.
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "core::ptr::non_null::NonNull")
-                                      [ Ty.apply (Ty.path "alloc::rc::RcBox") [ T ] ],
+                                      []
+                                      [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ],
                                     "as_ptr",
                                     []
                                   |),
@@ -9550,7 +10091,7 @@ Module rc.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_inner :
@@ -9562,10 +10103,10 @@ Module rc.
             ptr::addr_eq(self.ptr.as_ptr(), other.ptr.as_ptr())
         }
     *)
-    Definition ptr_eq (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition ptr_eq (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ self; other ] =>
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
@@ -9573,8 +10114,8 @@ Module rc.
             M.get_function (|
               "core::ptr::addr_eq",
               [
-                Ty.apply (Ty.path "alloc::rc::RcBox") [ T ];
-                Ty.apply (Ty.path "alloc::rc::RcBox") [ T ]
+                Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ];
+                Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ]
               ]
             |),
             [
@@ -9584,7 +10125,8 @@ Module rc.
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "core::ptr::non_null::NonNull")
-                      [ Ty.apply (Ty.path "alloc::rc::RcBox") [ T ] ],
+                      []
+                      [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ],
                     "as_ptr",
                     []
                   |),
@@ -9604,7 +10146,8 @@ Module rc.
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "core::ptr::non_null::NonNull")
-                      [ Ty.apply (Ty.path "alloc::rc::RcBox") [ T ] ],
+                      []
+                      [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ],
                     "as_ptr",
                     []
                   |),
@@ -9620,7 +10163,7 @@ Module rc.
                 |))
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_ptr_eq :
@@ -9633,18 +10176,22 @@ Module rc.
       (ptr.cast::<()>()).addr() == usize::MAX
   }
   *)
-  Definition is_dangling (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [ T ], [ ptr ] =>
+  Definition is_dangling (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [ T ], [ ptr ] =>
       ltac:(M.monadic
         (let ptr := M.alloc (| ptr |) in
         BinOp.Pure.eq
           (M.call_closure (|
-            M.get_associated_function (| Ty.apply (Ty.path "*mut") [ Ty.tuple [] ], "addr", [] |),
+            M.get_associated_function (|
+              Ty.apply (Ty.path "*mut") [] [ Ty.tuple [] ],
+              "addr",
+              []
+            |),
             [
               M.call_closure (|
                 M.get_associated_function (|
-                  Ty.apply (Ty.path "*mut") [ T ],
+                  Ty.apply (Ty.path "*mut") [] [ T ],
                   "cast",
                   [ Ty.tuple [] ]
                 |),
@@ -9653,7 +10200,7 @@ Module rc.
             ]
           |))
           (M.read (| M.get_constant (| "core::num::MAX" |) |))))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Function_is_dangling : M.IsFunction "alloc::rc::is_dangling" is_dangling.
@@ -9661,20 +10208,27 @@ Module rc.
   (* StructRecord
     {
       name := "WeakInner";
+      const_params := [];
       ty_params := [];
       fields :=
         [
           ("weak",
-            Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "core::cell::Cell") [ Ty.path "usize" ] ]);
+            Ty.apply
+              (Ty.path "&")
+              []
+              [ Ty.apply (Ty.path "core::cell::Cell") [] [ Ty.path "usize" ] ]);
           ("strong",
-            Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "core::cell::Cell") [ Ty.path "usize" ] ])
+            Ty.apply
+              (Ty.path "&")
+              []
+              [ Ty.apply (Ty.path "core::cell::Cell") [] [ Ty.path "usize" ] ])
         ];
     } *)
   
   
   
   Module Impl_core_ops_drop_Drop_where_core_marker_Sized_T_where_core_alloc_Allocator_A_for_alloc_rc_Weak_T_A.
-    Definition Self (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::rc::Weak") [ T; A ].
+    Definition Self (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::rc::Weak") [] [ T; A ].
     
     (*
         fn drop(&mut self) {
@@ -9690,10 +10244,10 @@ Module rc.
             }
         }
     *)
-    Definition drop (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition drop (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.catch_return (|
@@ -9710,7 +10264,7 @@ Module rc.
                               M.alloc (|
                                 M.call_closure (|
                                   M.get_associated_function (|
-                                    Ty.apply (Ty.path "alloc::rc::Weak") [ T; A ],
+                                    Ty.apply (Ty.path "alloc::rc::Weak") [] [ T; A ],
                                     "inner",
                                     []
                                   |),
@@ -9789,7 +10343,8 @@ Module rc.
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "core::ptr::non_null::NonNull")
-                                      [ Ty.apply (Ty.path "alloc::rc::RcBox") [ T ] ],
+                                      []
+                                      [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ],
                                     "cast",
                                     [ Ty.path "u8" ]
                                   |),
@@ -9807,7 +10362,7 @@ Module rc.
                                   M.get_associated_function (|
                                     Ty.path "core::alloc::layout::Layout",
                                     "for_value_raw",
-                                    [ Ty.apply (Ty.path "alloc::rc::RcBox") [ T ] ]
+                                    [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ]
                                   |),
                                   [
                                     (* MutToConstPointer *)
@@ -9816,7 +10371,8 @@ Module rc.
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "core::ptr::non_null::NonNull")
-                                            [ Ty.apply (Ty.path "alloc::rc::RcBox") [ T ] ],
+                                            []
+                                            [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ],
                                           "as_ptr",
                                           []
                                         |),
@@ -9841,7 +10397,7 @@ Module rc.
                 |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -9854,7 +10410,7 @@ Module rc.
   End Impl_core_ops_drop_Drop_where_core_marker_Sized_T_where_core_alloc_Allocator_A_for_alloc_rc_Weak_T_A.
   
   Module Impl_core_clone_Clone_where_core_marker_Sized_T_where_core_alloc_Allocator_A_where_core_clone_Clone_A_for_alloc_rc_Weak_T_A.
-    Definition Self (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::rc::Weak") [ T; A ].
+    Definition Self (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::rc::Weak") [] [ T; A ].
     
     (*
         fn clone(&self) -> Weak<T, A> {
@@ -9864,10 +10420,10 @@ Module rc.
             Weak { ptr: self.ptr, alloc: self.alloc.clone() }
         }
     *)
-    Definition clone (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition clone (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -9881,7 +10437,7 @@ Module rc.
                         M.alloc (|
                           M.call_closure (|
                             M.get_associated_function (|
-                              Ty.apply (Ty.path "alloc::rc::Weak") [ T; A ],
+                              Ty.apply (Ty.path "alloc::rc::Weak") [] [ T; A ],
                               "inner",
                               []
                             |),
@@ -9936,7 +10492,7 @@ Module rc.
                 ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -9949,17 +10505,17 @@ Module rc.
   End Impl_core_clone_Clone_where_core_marker_Sized_T_where_core_alloc_Allocator_A_where_core_clone_Clone_A_for_alloc_rc_Weak_T_A.
   
   Module Impl_core_fmt_Debug_where_core_marker_Sized_T_where_core_alloc_Allocator_A_for_alloc_rc_Weak_T_A.
-    Definition Self (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::rc::Weak") [ T; A ].
+    Definition Self (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::rc::Weak") [] [ T; A ].
     
     (*
         fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
             write!(f, "(Weak)")
         }
     *)
-    Definition fmt (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition fmt (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ self; f ] =>
+      match ε, τ, α with
+      | [], [], [ self; f ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
@@ -9977,7 +10533,7 @@ Module rc.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -9991,27 +10547,27 @@ Module rc.
   
   Module Impl_core_default_Default_for_alloc_rc_Weak_T_alloc_alloc_Global.
     Definition Self (T : Ty.t) : Ty.t :=
-      Ty.apply (Ty.path "alloc::rc::Weak") [ T; Ty.path "alloc::alloc::Global" ].
+      Ty.apply (Ty.path "alloc::rc::Weak") [] [ T; Ty.path "alloc::alloc::Global" ].
     
     (*
         fn default() -> Weak<T> {
             Weak::new()
         }
     *)
-    Definition default (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition default (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [] =>
+      match ε, τ, α with
+      | [], [], [] =>
         ltac:(M.monadic
           (M.call_closure (|
             M.get_associated_function (|
-              Ty.apply (Ty.path "alloc::rc::Weak") [ T; Ty.path "alloc::alloc::Global" ],
+              Ty.apply (Ty.path "alloc::rc::Weak") [] [ T; Ty.path "alloc::alloc::Global" ],
               "new",
               []
             |),
             []
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -10025,14 +10581,14 @@ Module rc.
   
   (* Trait *)
   Module RcInnerPtr.
-    Definition strong (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition strong (Self : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
             M.get_associated_function (|
-              Ty.apply (Ty.path "core::cell::Cell") [ Ty.path "usize" ],
+              Ty.apply (Ty.path "core::cell::Cell") [] [ Ty.path "usize" ],
               "get",
               []
             |),
@@ -10043,13 +10599,13 @@ Module rc.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom ProvidedMethod_strong : M.IsProvidedMethod "alloc::rc::RcInnerPtr" "strong" strong.
-    Definition inc_strong (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition inc_strong (Self : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -10080,7 +10636,7 @@ Module rc.
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::cell::Cell") [ Ty.path "usize" ],
+                    Ty.apply (Ty.path "core::cell::Cell") [] [ Ty.path "usize" ],
                     "set",
                     []
                   |),
@@ -10116,14 +10672,14 @@ Module rc.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom ProvidedMethod_inc_strong :
       M.IsProvidedMethod "alloc::rc::RcInnerPtr" "inc_strong" inc_strong.
-    Definition dec_strong (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition dec_strong (Self : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -10131,7 +10687,7 @@ Module rc.
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::cell::Cell") [ Ty.path "usize" ],
+                    Ty.apply (Ty.path "core::cell::Cell") [] [ Ty.path "usize" ],
                     "set",
                     []
                   |),
@@ -10152,19 +10708,19 @@ Module rc.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom ProvidedMethod_dec_strong :
       M.IsProvidedMethod "alloc::rc::RcInnerPtr" "dec_strong" dec_strong.
-    Definition weak (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition weak (Self : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
             M.get_associated_function (|
-              Ty.apply (Ty.path "core::cell::Cell") [ Ty.path "usize" ],
+              Ty.apply (Ty.path "core::cell::Cell") [] [ Ty.path "usize" ],
               "get",
               []
             |),
@@ -10175,13 +10731,13 @@ Module rc.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom ProvidedMethod_weak : M.IsProvidedMethod "alloc::rc::RcInnerPtr" "weak" weak.
-    Definition inc_weak (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition inc_weak (Self : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -10212,7 +10768,7 @@ Module rc.
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::cell::Cell") [ Ty.path "usize" ],
+                    Ty.apply (Ty.path "core::cell::Cell") [] [ Ty.path "usize" ],
                     "set",
                     []
                   |),
@@ -10248,13 +10804,13 @@ Module rc.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom ProvidedMethod_inc_weak : M.IsProvidedMethod "alloc::rc::RcInnerPtr" "inc_weak" inc_weak.
-    Definition dec_weak (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition dec_weak (Self : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -10262,7 +10818,7 @@ Module rc.
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::cell::Cell") [ Ty.path "usize" ],
+                    Ty.apply (Ty.path "core::cell::Cell") [] [ Ty.path "usize" ],
                     "set",
                     []
                   |),
@@ -10283,28 +10839,28 @@ Module rc.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom ProvidedMethod_dec_weak : M.IsProvidedMethod "alloc::rc::RcInnerPtr" "dec_weak" dec_weak.
   End RcInnerPtr.
   
   Module Impl_alloc_rc_RcInnerPtr_where_core_marker_Sized_T_for_alloc_rc_RcBox_T.
-    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::rc::RcBox") [ T ].
+    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ].
     
     (*
         fn weak_ref(&self) -> &Cell<usize> {
             &self.weak
         }
     *)
-    Definition weak_ref (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition weak_ref (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.SubPointer.get_struct_record_field (| M.read (| self |), "alloc::rc::RcBox", "weak" |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     (*
@@ -10312,10 +10868,10 @@ Module rc.
             &self.strong
         }
     *)
-    Definition strong_ref (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition strong_ref (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.SubPointer.get_struct_record_field (|
@@ -10323,7 +10879,7 @@ Module rc.
             "alloc::rc::RcBox",
             "strong"
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -10347,9 +10903,9 @@ Module rc.
             self.weak
         }
     *)
-    Definition weak_ref (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition weak_ref (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -10359,7 +10915,7 @@ Module rc.
               "weak"
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     (*
@@ -10367,9 +10923,9 @@ Module rc.
             self.strong
         }
     *)
-    Definition strong_ref (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition strong_ref (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -10379,7 +10935,7 @@ Module rc.
               "strong"
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -10395,30 +10951,30 @@ Module rc.
   End Impl_alloc_rc_RcInnerPtr_for_alloc_rc_WeakInner.
   
   Module Impl_core_borrow_Borrow_where_core_marker_Sized_T_where_core_alloc_Allocator_A_T_for_alloc_rc_Rc_T_A.
-    Definition Self (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::rc::Rc") [ T; A ].
+    Definition Self (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ].
     
     (*
         fn borrow(&self) -> &T {
             &**self
         }
     *)
-    Definition borrow (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition borrow (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
             M.get_trait_method (|
               "core::ops::deref::Deref",
-              Ty.apply (Ty.path "alloc::rc::Rc") [ T; A ],
+              Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
               [],
               "deref",
               []
             |),
             [ M.read (| self |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -10431,30 +10987,30 @@ Module rc.
   End Impl_core_borrow_Borrow_where_core_marker_Sized_T_where_core_alloc_Allocator_A_T_for_alloc_rc_Rc_T_A.
   
   Module Impl_core_convert_AsRef_where_core_marker_Sized_T_where_core_alloc_Allocator_A_T_for_alloc_rc_Rc_T_A.
-    Definition Self (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::rc::Rc") [ T; A ].
+    Definition Self (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ].
     
     (*
         fn as_ref(&self) -> &T {
             &**self
         }
     *)
-    Definition as_ref (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition as_ref (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T A in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
             M.get_trait_method (|
               "core::ops::deref::Deref",
-              Ty.apply (Ty.path "alloc::rc::Rc") [ T; A ],
+              Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
               [],
               "deref",
               []
             |),
             [ M.read (| self |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -10467,7 +11023,7 @@ Module rc.
   End Impl_core_convert_AsRef_where_core_marker_Sized_T_where_core_alloc_Allocator_A_T_for_alloc_rc_Rc_T_A.
   
   Module Impl_core_marker_Unpin_where_core_marker_Sized_T_where_core_alloc_Allocator_A_for_alloc_rc_Rc_T_A.
-    Definition Self (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::rc::Rc") [ T; A ].
+    Definition Self (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ].
     
     Axiom Implements :
       forall (T A : Ty.t),
@@ -10489,9 +11045,9 @@ Module rc.
       unsafe { data_offset_align(align_of_val_raw(ptr)) }
   }
   *)
-  Definition data_offset (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [ T ], [ ptr ] =>
+  Definition data_offset (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [ T ], [ ptr ] =>
       ltac:(M.monadic
         (let ptr := M.alloc (| ptr |) in
         M.call_closure (|
@@ -10503,7 +11059,7 @@ Module rc.
             |)
           ]
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Function_data_offset : M.IsFunction "alloc::rc::data_offset" data_offset.
@@ -10514,9 +11070,9 @@ Module rc.
       layout.size() + layout.padding_needed_for(align)
   }
   *)
-  Definition data_offset_align (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ align ] =>
+  Definition data_offset_align (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ align ] =>
       ltac:(M.monadic
         (let align := M.alloc (| align |) in
         M.read (|
@@ -10526,7 +11082,7 @@ Module rc.
                 M.get_associated_function (|
                   Ty.path "core::alloc::layout::Layout",
                   "new",
-                  [ Ty.apply (Ty.path "alloc::rc::RcBox") [ Ty.tuple [] ] ]
+                  [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ Ty.tuple [] ] ]
                 |),
                 []
               |)
@@ -10548,7 +11104,7 @@ Module rc.
               |))
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Function_data_offset_align : M.IsFunction "alloc::rc::data_offset_align" data_offset_align.
@@ -10556,28 +11112,31 @@ Module rc.
   (* StructRecord
     {
       name := "UniqueRc";
+      const_params := [];
       ty_params := [ "T" ];
       fields :=
         [
           ("ptr",
             Ty.apply
               (Ty.path "core::ptr::non_null::NonNull")
-              [ Ty.apply (Ty.path "alloc::rc::RcBox") [ T ] ]);
+              []
+              [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ]);
           ("phantom",
             Ty.apply
               (Ty.path "core::marker::PhantomData")
-              [ Ty.apply (Ty.path "alloc::rc::RcBox") [ T ] ])
+              []
+              [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ])
         ];
     } *)
   
   Module Impl_core_fmt_Debug_where_core_fmt_Debug_T_for_alloc_rc_UniqueRc_T.
-    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::rc::UniqueRc") [ T ].
+    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::rc::UniqueRc") [] [ T ].
     
     (* Debug *)
-    Definition fmt (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition fmt (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [ self; f ] =>
+      match ε, τ, α with
+      | [], [], [ self; f ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
@@ -10610,7 +11169,7 @@ Module rc.
                 |))
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -10623,7 +11182,7 @@ Module rc.
   End Impl_core_fmt_Debug_where_core_fmt_Debug_T_for_alloc_rc_UniqueRc_T.
   
   Module Impl_alloc_rc_UniqueRc_T.
-    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::rc::UniqueRc") [ T ].
+    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::rc::UniqueRc") [] [ T ].
     
     (*
         pub fn new(value: T) -> Self {
@@ -10640,10 +11199,10 @@ Module rc.
             }
         }
     *)
-    Definition new (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition new (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [ value ] =>
+      match ε, τ, α with
+      | [], [], [ value ] =>
         ltac:(M.monadic
           (let value := M.alloc (| value |) in
           Value.StructRecord
@@ -10653,11 +11212,12 @@ Module rc.
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::convert::Into",
-                    Ty.apply (Ty.path "&mut") [ Ty.apply (Ty.path "alloc::rc::RcBox") [ T ] ],
+                    Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ],
                     [
                       Ty.apply
                         (Ty.path "core::ptr::non_null::NonNull")
-                        [ Ty.apply (Ty.path "alloc::rc::RcBox") [ T ] ]
+                        []
+                        [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ]
                     ],
                     "into",
                     []
@@ -10667,8 +11227,9 @@ Module rc.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "alloc::boxed::Box")
+                          []
                           [
-                            Ty.apply (Ty.path "alloc::rc::RcBox") [ T ];
+                            Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ];
                             Ty.path "alloc::alloc::Global"
                           ],
                         "leak",
@@ -10679,8 +11240,9 @@ Module rc.
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "alloc::boxed::Box")
+                              []
                               [
-                                Ty.apply (Ty.path "alloc::rc::RcBox") [ T ];
+                                Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ];
                                 Ty.path "alloc::alloc::Global"
                               ],
                             "new",
@@ -10693,7 +11255,7 @@ Module rc.
                                 ("strong",
                                   M.call_closure (|
                                     M.get_associated_function (|
-                                      Ty.apply (Ty.path "core::cell::Cell") [ Ty.path "usize" ],
+                                      Ty.apply (Ty.path "core::cell::Cell") [] [ Ty.path "usize" ],
                                       "new",
                                       []
                                     |),
@@ -10702,7 +11264,7 @@ Module rc.
                                 ("weak",
                                   M.call_closure (|
                                     M.get_associated_function (|
-                                      Ty.apply (Ty.path "core::cell::Cell") [ Ty.path "usize" ],
+                                      Ty.apply (Ty.path "core::cell::Cell") [] [ Ty.path "usize" ],
                                       "new",
                                       []
                                     |),
@@ -10718,7 +11280,7 @@ Module rc.
                 |));
               ("phantom", Value.StructTuple "core::marker::PhantomData" [])
             ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_new : forall (T : Ty.t), M.IsAssociatedFunction (Self T) "new" (new T).
@@ -10733,10 +11295,10 @@ Module rc.
             Weak { ptr: this.ptr, alloc: Global }
         }
     *)
-    Definition downgrade (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition downgrade (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [ this ] =>
+      match ε, τ, α with
+      | [], [], [ this ] =>
         ltac:(M.monadic
           (let this := M.alloc (| this |) in
           M.read (|
@@ -10746,7 +11308,7 @@ Module rc.
                   M.call_closure (|
                     M.get_trait_method (|
                       "alloc::rc::RcInnerPtr",
-                      Ty.apply (Ty.path "alloc::rc::RcBox") [ T ],
+                      Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ],
                       [],
                       "inc_weak",
                       []
@@ -10756,7 +11318,8 @@ Module rc.
                         M.get_associated_function (|
                           Ty.apply
                             (Ty.path "core::ptr::non_null::NonNull")
-                            [ Ty.apply (Ty.path "alloc::rc::RcBox") [ T ] ],
+                            []
+                            [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ],
                           "as_ref",
                           []
                         |),
@@ -10788,7 +11351,7 @@ Module rc.
                 ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_downgrade :
@@ -10806,10 +11369,10 @@ Module rc.
             }
         }
     *)
-    Definition into_rc (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition into_rc (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [ this ] =>
+      match ε, τ, α with
+      | [], [], [ this ] =>
         ltac:(M.monadic
           (let this := M.alloc (| this |) in
           M.read (|
@@ -10819,7 +11382,8 @@ Module rc.
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "core::mem::manually_drop::ManuallyDrop")
-                      [ Ty.apply (Ty.path "alloc::rc::UniqueRc") [ T ] ],
+                      []
+                      [ Ty.apply (Ty.path "alloc::rc::UniqueRc") [] [ T ] ],
                     "new",
                     []
                   |),
@@ -10830,7 +11394,7 @@ Module rc.
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::cell::Cell") [ Ty.path "usize" ],
+                    Ty.apply (Ty.path "core::cell::Cell") [] [ Ty.path "usize" ],
                     "set",
                     []
                   |),
@@ -10840,7 +11404,8 @@ Module rc.
                         M.get_associated_function (|
                           Ty.apply
                             (Ty.path "core::ptr::non_null::NonNull")
-                            [ Ty.apply (Ty.path "alloc::rc::RcBox") [ T ] ],
+                            []
+                            [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ],
                           "as_mut",
                           []
                         |),
@@ -10851,7 +11416,8 @@ Module rc.
                                 "core::ops::deref::DerefMut",
                                 Ty.apply
                                   (Ty.path "core::mem::manually_drop::ManuallyDrop")
-                                  [ Ty.apply (Ty.path "alloc::rc::UniqueRc") [ T ] ],
+                                  []
+                                  [ Ty.apply (Ty.path "alloc::rc::UniqueRc") [] [ T ] ],
                                 [],
                                 "deref_mut",
                                 []
@@ -10873,7 +11439,7 @@ Module rc.
             M.alloc (|
               M.call_closure (|
                 M.get_associated_function (|
-                  Ty.apply (Ty.path "alloc::rc::Rc") [ T; Ty.path "alloc::alloc::Global" ],
+                  Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; Ty.path "alloc::alloc::Global" ],
                   "from_inner",
                   []
                 |),
@@ -10885,7 +11451,8 @@ Module rc.
                           "core::ops::deref::Deref",
                           Ty.apply
                             (Ty.path "core::mem::manually_drop::ManuallyDrop")
-                            [ Ty.apply (Ty.path "alloc::rc::UniqueRc") [ T ] ],
+                            []
+                            [ Ty.apply (Ty.path "alloc::rc::UniqueRc") [] [ T ] ],
                           [],
                           "deref",
                           []
@@ -10900,7 +11467,7 @@ Module rc.
               |)
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_into_rc :
@@ -10909,7 +11476,7 @@ Module rc.
   End Impl_alloc_rc_UniqueRc_T.
   
   Module Impl_core_ops_deref_Deref_for_alloc_rc_UniqueRc_T.
-    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::rc::UniqueRc") [ T ].
+    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::rc::UniqueRc") [] [ T ].
     
     (*     type Target = T; *)
     Definition _Target (T : Ty.t) : Ty.t := T.
@@ -10920,10 +11487,10 @@ Module rc.
             unsafe { &self.ptr.as_ref().value }
         }
     *)
-    Definition deref (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition deref (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.SubPointer.get_struct_record_field (|
@@ -10931,7 +11498,8 @@ Module rc.
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "core::ptr::non_null::NonNull")
-                  [ Ty.apply (Ty.path "alloc::rc::RcBox") [ T ] ],
+                  []
+                  [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ],
                 "as_ref",
                 []
               |),
@@ -10946,7 +11514,7 @@ Module rc.
             "alloc::rc::RcBox",
             "value"
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -10960,7 +11528,7 @@ Module rc.
   End Impl_core_ops_deref_Deref_for_alloc_rc_UniqueRc_T.
   
   Module Impl_core_ops_deref_DerefMut_for_alloc_rc_UniqueRc_T.
-    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::rc::UniqueRc") [ T ].
+    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::rc::UniqueRc") [] [ T ].
     
     (*
         fn deref_mut(&mut self) -> &mut T {
@@ -10970,10 +11538,10 @@ Module rc.
             unsafe { &mut ( *self.ptr.as_ptr()).value }
         }
     *)
-    Definition deref_mut (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition deref_mut (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.SubPointer.get_struct_record_field (|
@@ -10981,7 +11549,8 @@ Module rc.
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "core::ptr::non_null::NonNull")
-                  [ Ty.apply (Ty.path "alloc::rc::RcBox") [ T ] ],
+                  []
+                  [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ],
                 "as_ptr",
                 []
               |),
@@ -10998,7 +11567,7 @@ Module rc.
             "alloc::rc::RcBox",
             "value"
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -11011,7 +11580,7 @@ Module rc.
   End Impl_core_ops_deref_DerefMut_for_alloc_rc_UniqueRc_T.
   
   Module Impl_core_ops_drop_Drop_for_alloc_rc_UniqueRc_T.
-    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::rc::UniqueRc") [ T ].
+    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::rc::UniqueRc") [] [ T ].
     
     (*
         fn drop(&mut self) {
@@ -11028,10 +11597,10 @@ Module rc.
             }
         }
     *)
-    Definition drop (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition drop (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -11043,7 +11612,7 @@ Module rc.
                     M.call_closure (|
                       M.get_trait_method (|
                         "core::ops::deref::DerefMut",
-                        Ty.apply (Ty.path "alloc::rc::UniqueRc") [ T ],
+                        Ty.apply (Ty.path "alloc::rc::UniqueRc") [] [ T ],
                         [],
                         "deref_mut",
                         []
@@ -11058,7 +11627,7 @@ Module rc.
                 M.call_closure (|
                   M.get_trait_method (|
                     "alloc::rc::RcInnerPtr",
-                    Ty.apply (Ty.path "alloc::rc::RcBox") [ T ],
+                    Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ],
                     [],
                     "dec_weak",
                     []
@@ -11068,7 +11637,8 @@ Module rc.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "core::ptr::non_null::NonNull")
-                          [ Ty.apply (Ty.path "alloc::rc::RcBox") [ T ] ],
+                          []
+                          [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ],
                         "as_ref",
                         []
                       |),
@@ -11095,7 +11665,7 @@ Module rc.
                             (M.call_closure (|
                               M.get_trait_method (|
                                 "alloc::rc::RcInnerPtr",
-                                Ty.apply (Ty.path "alloc::rc::RcBox") [ T ],
+                                Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ],
                                 [],
                                 "weak",
                                 []
@@ -11105,7 +11675,8 @@ Module rc.
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "core::ptr::non_null::NonNull")
-                                      [ Ty.apply (Ty.path "alloc::rc::RcBox") [ T ] ],
+                                      []
+                                      [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ],
                                     "as_ref",
                                     []
                                   |),
@@ -11138,7 +11709,8 @@ Module rc.
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "core::ptr::non_null::NonNull")
-                                  [ Ty.apply (Ty.path "alloc::rc::RcBox") [ T ] ],
+                                  []
+                                  [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ],
                                 "cast",
                                 [ Ty.path "u8" ]
                               |),
@@ -11156,14 +11728,15 @@ Module rc.
                               M.get_associated_function (|
                                 Ty.path "core::alloc::layout::Layout",
                                 "for_value",
-                                [ Ty.apply (Ty.path "alloc::rc::RcBox") [ T ] ]
+                                [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ]
                               |),
                               [
                                 M.call_closure (|
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "core::ptr::non_null::NonNull")
-                                      [ Ty.apply (Ty.path "alloc::rc::RcBox") [ T ] ],
+                                      []
+                                      [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ],
                                     "as_ref",
                                     []
                                   |),
@@ -11185,7 +11758,7 @@ Module rc.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :

@@ -4,6 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 (*
 Enum VeryVerboseEnumOfThingsToDoWithNumbers
 {
+  const_params := [];
   ty_params := [];
   variants :=
     [
@@ -24,7 +25,7 @@ Enum VeryVerboseEnumOfThingsToDoWithNumbers
 Module Impl_enums_type_aliases_v2_VeryVerboseEnumOfThingsToDoWithNumbers.
   Definition Self : Ty.t := Ty.path "enums_type_aliases_v2::VeryVerboseEnumOfThingsToDoWithNumbers".
   
-  Parameter run : (list Ty.t) -> (list Value.t) -> M.
+  Parameter run : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_run : M.IsAssociatedFunction Self "run" run.
 End Impl_enums_type_aliases_v2_VeryVerboseEnumOfThingsToDoWithNumbers.

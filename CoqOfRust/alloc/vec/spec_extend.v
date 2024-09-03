@@ -7,29 +7,34 @@ Module vec.
     (* Empty module 'SpecExtend' *)
     
     Module Impl_alloc_vec_spec_extend_SpecExtend_where_core_alloc_Allocator_A_where_core_iter_traits_iterator_Iterator_I_T_I_for_alloc_vec_Vec_T_A.
-      Definition Self (T I A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ].
+      Definition Self (T I A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ].
       
       (*
           default fn spec_extend(&mut self, iter: I) {
               self.extend_desugared(iter)
           }
       *)
-      Definition spec_extend (T I A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition spec_extend
+          (T I A : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T I A in
-        match τ, α with
-        | [], [ self; iter ] =>
+        match ε, τ, α with
+        | [], [], [ self; iter ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let iter := M.alloc (| iter |) in
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                 "extend_desugared",
                 [ I ]
               |),
               [ M.read (| self |); M.read (| iter |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -42,29 +47,34 @@ Module vec.
     End Impl_alloc_vec_spec_extend_SpecExtend_where_core_alloc_Allocator_A_where_core_iter_traits_iterator_Iterator_I_T_I_for_alloc_vec_Vec_T_A.
     
     Module Impl_alloc_vec_spec_extend_SpecExtend_where_core_alloc_Allocator_A_where_core_iter_traits_marker_TrustedLen_I_T_I_for_alloc_vec_Vec_T_A.
-      Definition Self (T I A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ].
+      Definition Self (T I A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ].
       
       (*
           default fn spec_extend(&mut self, iterator: I) {
               self.extend_trusted(iterator)
           }
       *)
-      Definition spec_extend (T I A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition spec_extend
+          (T I A : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T I A in
-        match τ, α with
-        | [], [ self; iterator ] =>
+        match ε, τ, α with
+        | [], [], [ self; iterator ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let iterator := M.alloc (| iterator |) in
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                 "extend_trusted",
                 [ I ]
               |),
               [ M.read (| self |); M.read (| iterator |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -77,7 +87,7 @@ Module vec.
     End Impl_alloc_vec_spec_extend_SpecExtend_where_core_alloc_Allocator_A_where_core_iter_traits_marker_TrustedLen_I_T_I_for_alloc_vec_Vec_T_A.
     
     Module Impl_alloc_vec_spec_extend_SpecExtend_where_core_alloc_Allocator_A_T_alloc_vec_into_iter_IntoIter_T_alloc_alloc_Global_for_alloc_vec_Vec_T_A.
-      Definition Self (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ].
+      Definition Self (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ].
       
       (*
           fn spec_extend(&mut self, mut iterator: IntoIter<T>) {
@@ -87,10 +97,15 @@ Module vec.
               iterator.forget_remaining_elements();
           }
       *)
-      Definition spec_extend (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition spec_extend
+          (T A : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [], [ self; iterator ] =>
+        match ε, τ, α with
+        | [], [], [ self; iterator ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let iterator := M.alloc (| iterator |) in
@@ -100,7 +115,7 @@ Module vec.
                   M.alloc (|
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                        Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                         "append_elements",
                         []
                       |),
@@ -113,6 +128,7 @@ Module vec.
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "alloc::vec::into_iter::IntoIter")
+                                    []
                                     [ T; Ty.path "alloc::alloc::Global" ],
                                   "as_slice",
                                   []
@@ -131,6 +147,7 @@ Module vec.
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "alloc::vec::into_iter::IntoIter")
+                        []
                         [ T; Ty.path "alloc::alloc::Global" ],
                       "forget_remaining_elements",
                       []
@@ -140,7 +157,7 @@ Module vec.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -154,31 +171,37 @@ Module vec.
             (* I *)
             Ty.apply
               (Ty.path "alloc::vec::into_iter::IntoIter")
+              []
               [ T; Ty.path "alloc::alloc::Global" ]
           ]
           (* Instance *) [ ("spec_extend", InstanceField.Method (spec_extend T A)) ].
     End Impl_alloc_vec_spec_extend_SpecExtend_where_core_alloc_Allocator_A_T_alloc_vec_into_iter_IntoIter_T_alloc_alloc_Global_for_alloc_vec_Vec_T_A.
     
     Module Impl_alloc_vec_spec_extend_SpecExtend_where_core_alloc_Allocator_A_where_core_iter_traits_iterator_Iterator_I_where_core_clone_Clone_T_ref__T_I_for_alloc_vec_Vec_T_A.
-      Definition Self (T I A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ].
+      Definition Self (T I A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ].
       
       (*
           default fn spec_extend(&mut self, iterator: I) {
               self.spec_extend(iterator.cloned())
           }
       *)
-      Definition spec_extend (T I A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition spec_extend
+          (T I A : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T I A in
-        match τ, α with
-        | [], [ self; iterator ] =>
+        match ε, τ, α with
+        | [], [], [ self; iterator ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let iterator := M.alloc (| iterator |) in
             M.call_closure (|
               M.get_trait_method (|
                 "alloc::vec::spec_extend::SpecExtend",
-                Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
-                [ T; Ty.apply (Ty.path "core::iter::adapters::cloned::Cloned") [ I ] ],
+                Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
+                [ T; Ty.apply (Ty.path "core::iter::adapters::cloned::Cloned") [] [ I ] ],
                 "spec_extend",
                 []
               |),
@@ -196,7 +219,7 @@ Module vec.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -204,12 +227,12 @@ Module vec.
         M.IsTraitInstance
           "alloc::vec::spec_extend::SpecExtend"
           (Self T I A)
-          (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "&") [ T ]; (* I *) I ]
+          (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "&") [] [ T ]; (* I *) I ]
           (* Instance *) [ ("spec_extend", InstanceField.Method (spec_extend T I A)) ].
     End Impl_alloc_vec_spec_extend_SpecExtend_where_core_alloc_Allocator_A_where_core_iter_traits_iterator_Iterator_I_where_core_clone_Clone_T_ref__T_I_for_alloc_vec_Vec_T_A.
     
     Module Impl_alloc_vec_spec_extend_SpecExtend_where_core_alloc_Allocator_A_where_core_marker_Copy_T_ref__T_core_slice_iter_Iter_T_for_alloc_vec_Vec_T_A.
-      Definition Self (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ].
+      Definition Self (T A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ].
       
       (*
           fn spec_extend(&mut self, iterator: slice::Iter<'a, T>) {
@@ -217,10 +240,15 @@ Module vec.
               unsafe { self.append_elements(slice) };
           }
       *)
-      Definition spec_extend (T A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition spec_extend
+          (T A : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T A in
-        match τ, α with
-        | [], [ self; iterator ] =>
+        match ε, τ, α with
+        | [], [], [ self; iterator ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let iterator := M.alloc (| iterator |) in
@@ -229,7 +257,7 @@ Module vec.
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "core::slice::iter::Iter") [ T ],
+                      Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ],
                       "as_slice",
                       []
                     |),
@@ -240,7 +268,7 @@ Module vec.
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "alloc::vec::Vec") [ T; A ],
+                      Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                       "append_elements",
                       []
                     |),
@@ -249,7 +277,7 @@ Module vec.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -259,8 +287,8 @@ Module vec.
           (Self T A)
           (* Trait polymorphic types *)
           [
-            (* T *) Ty.apply (Ty.path "&") [ T ];
-            (* I *) Ty.apply (Ty.path "core::slice::iter::Iter") [ T ]
+            (* T *) Ty.apply (Ty.path "&") [] [ T ];
+            (* I *) Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ]
           ]
           (* Instance *) [ ("spec_extend", InstanceField.Method (spec_extend T A)) ].
     End Impl_alloc_vec_spec_extend_SpecExtend_where_core_alloc_Allocator_A_where_core_marker_Copy_T_ref__T_core_slice_iter_Iter_T_for_alloc_vec_Vec_T_A.

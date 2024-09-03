@@ -10,9 +10,9 @@ where
     Ok(io::BufReader::new(file).lines())
 }
 *)
-Definition read_lines (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [ P ], [ filename ] =>
+Definition read_lines (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [ P ], [ filename ] =>
     ltac:(M.monadic
       (let filename := M.alloc (| filename |) in
       M.catch_return (|
@@ -27,6 +27,7 @@ Definition read_lines (τ : list Ty.t) (α : list Value.t) : M :=
                         "core::ops::try_trait::Try",
                         Ty.apply
                           (Ty.path "core::result::Result")
+                          []
                           [ Ty.path "std::fs::File"; Ty.path "std::io::error::Error" ],
                         [],
                         "branch",
@@ -59,12 +60,15 @@ Definition read_lines (τ : list Ty.t) (α : list Value.t) : M :=
                                     "core::ops::try_trait::FromResidual",
                                     Ty.apply
                                       (Ty.path "core::result::Result")
+                                      []
                                       [
                                         Ty.apply
                                           (Ty.path "std::io::Lines")
+                                          []
                                           [
                                             Ty.apply
                                               (Ty.path "std::io::buffered::bufreader::BufReader")
+                                              []
                                               [ Ty.path "std::fs::File" ]
                                           ];
                                         Ty.path "std::io::error::Error"
@@ -72,6 +76,7 @@ Definition read_lines (τ : list Ty.t) (α : list Value.t) : M :=
                                     [
                                       Ty.apply
                                         (Ty.path "core::result::Result")
+                                        []
                                         [
                                           Ty.path "core::convert::Infallible";
                                           Ty.path "std::io::error::Error"
@@ -108,6 +113,7 @@ Definition read_lines (τ : list Ty.t) (α : list Value.t) : M :=
                       "std::io::BufRead",
                       Ty.apply
                         (Ty.path "std::io::buffered::bufreader::BufReader")
+                        []
                         [ Ty.path "std::fs::File" ],
                       [],
                       "lines",
@@ -118,6 +124,7 @@ Definition read_lines (τ : list Ty.t) (α : list Value.t) : M :=
                         M.get_associated_function (|
                           Ty.apply
                             (Ty.path "std::io::buffered::bufreader::BufReader")
+                            []
                             [ Ty.path "std::fs::File" ],
                           "new",
                           []
@@ -130,7 +137,7 @@ Definition read_lines (τ : list Ty.t) (α : list Value.t) : M :=
             |)
           |)))
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_read_lines :
@@ -149,9 +156,9 @@ fn main() {
     }
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [] =>
+Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
         M.match_operator (|
@@ -164,7 +171,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     M.call_closure (|
                       M.get_function (|
                         "file_io_read_lines_efficient_method::read_lines",
-                        [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                        [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                       |),
                       [ M.read (| Value.String "./hosts" |) ]
                     |)
@@ -180,9 +187,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                           "core::iter::traits::collect::IntoIterator",
                           Ty.apply
                             (Ty.path "std::io::Lines")
+                            []
                             [
                               Ty.apply
                                 (Ty.path "std::io::buffered::bufreader::BufReader")
+                                []
                                 [ Ty.path "std::fs::File" ]
                             ],
                           [],
@@ -206,9 +215,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                         "core::iter::traits::iterator::Iterator",
                                         Ty.apply
                                           (Ty.path "std::io::Lines")
+                                          []
                                           [
                                             Ty.apply
                                               (Ty.path "std::io::buffered::bufreader::BufReader")
+                                              []
                                               [ Ty.path "std::fs::File" ]
                                           ],
                                         [],
@@ -313,7 +324,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           ]
         |)
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_main : M.IsFunction "file_io_read_lines_efficient_method::main" main.

@@ -6,6 +6,7 @@ Module context.
     (*
     Enum ContextPrecompile
     {
+      const_params := [];
       ty_params := [ "DB" ];
       variants :=
         [
@@ -21,6 +22,7 @@ Module context.
                 [
                   Ty.apply
                     (Ty.path "alloc::sync::Arc")
+                    []
                     [
                       Ty.dyn
                         [
@@ -39,6 +41,7 @@ Module context.
                 [
                   Ty.apply
                     (Ty.path "alloc::boxed::Box")
+                    []
                     [
                       Ty.dyn
                         [
@@ -56,7 +59,7 @@ Module context.
     
     Module Impl_core_clone_Clone_where_revm_primitives_db_Database_DB_for_revm_context_context_precompiles_ContextPrecompile_DB.
       Definition Self (DB : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "revm::context::context_precompiles::ContextPrecompile") [ DB ].
+        Ty.apply (Ty.path "revm::context::context_precompiles::ContextPrecompile") [] [ DB ].
       
       (*
           fn clone(&self) -> Self {
@@ -67,10 +70,10 @@ Module context.
               }
           }
       *)
-      Definition clone (DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition clone (DB : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self DB in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -124,6 +127,7 @@ Module context.
                                   "core::clone::Clone",
                                   Ty.apply
                                     (Ty.path "alloc::sync::Arc")
+                                    []
                                     [
                                       Ty.dyn
                                         [
@@ -161,6 +165,7 @@ Module context.
                                   "core::clone::Clone",
                                   Ty.apply
                                     (Ty.path "alloc::boxed::Box")
+                                    []
                                     [
                                       Ty.dyn
                                         [
@@ -180,7 +185,7 @@ Module context.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -195,15 +200,20 @@ Module context.
     (* StructRecord
       {
         name := "ContextPrecompiles";
+        const_params := [];
         ty_params := [ "DB" ];
         fields :=
           [
             ("inner",
               Ty.apply
                 (Ty.path "std::collections::hash::map::HashMap")
+                []
                 [
                   Ty.path "alloy_primitives::bits::address::Address";
-                  Ty.apply (Ty.path "revm::context::context_precompiles::ContextPrecompile") [ DB ];
+                  Ty.apply
+                    (Ty.path "revm::context::context_precompiles::ContextPrecompile")
+                    []
+                    [ DB ];
                   Ty.path "std::hash::random::RandomState"
                 ])
           ];
@@ -211,13 +221,13 @@ Module context.
     
     Module Impl_core_clone_Clone_where_core_clone_Clone_DB_where_revm_primitives_db_Database_DB_for_revm_context_context_precompiles_ContextPrecompiles_DB.
       Definition Self (DB : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "revm::context::context_precompiles::ContextPrecompiles") [ DB ].
+        Ty.apply (Ty.path "revm::context::context_precompiles::ContextPrecompiles") [] [ DB ].
       
       (* Clone *)
-      Definition clone (DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition clone (DB : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self DB in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructRecord
@@ -229,10 +239,12 @@ Module context.
                       "core::clone::Clone",
                       Ty.apply
                         (Ty.path "std::collections::hash::map::HashMap")
+                        []
                         [
                           Ty.path "alloy_primitives::bits::address::Address";
                           Ty.apply
                             (Ty.path "revm::context::context_precompiles::ContextPrecompile")
+                            []
                             [ DB ];
                           Ty.path "std::hash::random::RandomState"
                         ],
@@ -249,7 +261,7 @@ Module context.
                     ]
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -263,27 +275,29 @@ Module context.
     
     Module Impl_revm_context_context_precompiles_ContextPrecompiles_DB.
       Definition Self (DB : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "revm::context::context_precompiles::ContextPrecompiles") [ DB ].
+        Ty.apply (Ty.path "revm::context::context_precompiles::ContextPrecompiles") [] [ DB ].
       
       (*
           pub fn addresses(&self) -> impl Iterator<Item = &Address> {
               self.inner.keys()
           }
       *)
-      Definition addresses (DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition addresses (DB : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self DB in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "std::collections::hash::map::HashMap")
+                  []
                   [
                     Ty.path "alloy_primitives::bits::address::Address";
                     Ty.apply
                       (Ty.path "revm::context::context_precompiles::ContextPrecompile")
+                      []
                       [ DB ];
                     Ty.path "std::hash::random::RandomState"
                   ],
@@ -298,7 +312,7 @@ Module context.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_addresses :
@@ -313,10 +327,11 @@ Module context.
               self.inner.extend(other.into_iter().map(Into::into));
           }
       *)
-      Definition extend (DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition extend (DB : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self DB in
-        match τ, α with
-        | [
+        match ε, τ, α with
+        | [],
+            [
               impl_Into__Address__ContextPrecompile_DB___;
               impl_IntoIterator_Item___impl_Into__Address__ContextPrecompile_DB____
             ],
@@ -332,10 +347,12 @@ Module context.
                       "core::iter::traits::collect::Extend",
                       Ty.apply
                         (Ty.path "std::collections::hash::map::HashMap")
+                        []
                         [
                           Ty.path "alloy_primitives::bits::address::Address";
                           Ty.apply
                             (Ty.path "revm::context::context_precompiles::ContextPrecompile")
+                            []
                             [ DB ];
                           Ty.path "std::hash::random::RandomState"
                         ],
@@ -345,6 +362,7 @@ Module context.
                             Ty.path "alloy_primitives::bits::address::Address";
                             Ty.apply
                               (Ty.path "revm::context::context_precompiles::ContextPrecompile")
+                              []
                               [ DB ]
                           ]
                       ],
@@ -352,6 +370,7 @@ Module context.
                       [
                         Ty.apply
                           (Ty.path "core::iter::adapters::map::Map")
+                          []
                           [
                             Ty.associated;
                             Ty.function
@@ -362,6 +381,7 @@ Module context.
                                   Ty.apply
                                     (Ty.path
                                       "revm::context::context_precompiles::ContextPrecompile")
+                                    []
                                     [ DB ]
                                 ])
                           ]
@@ -385,6 +405,7 @@ Module context.
                                 Ty.path "alloy_primitives::bits::address::Address";
                                 Ty.apply
                                   (Ty.path "revm::context::context_precompiles::ContextPrecompile")
+                                  []
                                   [ DB ]
                               ];
                             Ty.function
@@ -395,6 +416,7 @@ Module context.
                                   Ty.apply
                                     (Ty.path
                                       "revm::context::context_precompiles::ContextPrecompile")
+                                    []
                                     [ DB ]
                                 ])
                           ]
@@ -420,6 +442,7 @@ Module context.
                                   Ty.apply
                                     (Ty.path
                                       "revm::context::context_precompiles::ContextPrecompile")
+                                    []
                                     [ DB ]
                                 ]
                             ],
@@ -433,7 +456,7 @@ Module context.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_extend :
@@ -457,10 +480,10 @@ Module context.
               }
           }
       *)
-      Definition call (DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition call (DB : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self DB in
-        match τ, α with
-        | [], [ self; addess; bytes; gas_price; evmctx ] =>
+        match ε, τ, α with
+        | [], [], [ self; addess; bytes; gas_price; evmctx ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let addess := M.alloc (| addess |) in
@@ -479,13 +502,16 @@ Module context.
                               "core::ops::try_trait::Try",
                               Ty.apply
                                 (Ty.path "core::option::Option")
+                                []
                                 [
                                   Ty.apply
                                     (Ty.path "&mut")
+                                    []
                                     [
                                       Ty.apply
                                         (Ty.path
                                           "revm::context::context_precompiles::ContextPrecompile")
+                                        []
                                         [ DB ]
                                     ]
                                 ],
@@ -498,11 +524,13 @@ Module context.
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "std::collections::hash::map::HashMap")
+                                    []
                                     [
                                       Ty.path "alloy_primitives::bits::address::Address";
                                       Ty.apply
                                         (Ty.path
                                           "revm::context::context_precompiles::ContextPrecompile")
+                                        []
                                         [ DB ];
                                       Ty.path "std::hash::random::RandomState"
                                     ],
@@ -540,9 +568,11 @@ Module context.
                                           "core::ops::try_trait::FromResidual",
                                           Ty.apply
                                             (Ty.path "core::option::Option")
+                                            []
                                             [
                                               Ty.apply
                                                 (Ty.path "core::result::Result")
+                                                []
                                                 [
                                                   Ty.tuple
                                                     [
@@ -556,6 +586,7 @@ Module context.
                                           [
                                             Ty.apply
                                               (Ty.path "core::option::Option")
+                                              []
                                               [ Ty.path "core::convert::Infallible" ]
                                           ],
                                           "from_residual",
@@ -685,6 +716,7 @@ Module context.
                                         "core::ops::deref::Deref",
                                         Ty.apply
                                           (Ty.path "alloc::sync::Arc")
+                                          []
                                           [
                                             Ty.dyn
                                               [
@@ -710,7 +742,7 @@ Module context.
                   |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_call :
@@ -720,7 +752,7 @@ Module context.
     
     Module Impl_core_default_Default_where_revm_primitives_db_Database_DB_for_revm_context_context_precompiles_ContextPrecompiles_DB.
       Definition Self (DB : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "revm::context::context_precompiles::ContextPrecompiles") [ DB ].
+        Ty.apply (Ty.path "revm::context::context_precompiles::ContextPrecompiles") [] [ DB ].
       
       (*
           fn default() -> Self {
@@ -729,10 +761,10 @@ Module context.
               }
           }
       *)
-      Definition default (DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition default (DB : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self DB in
-        match τ, α with
-        | [], [] =>
+        match ε, τ, α with
+        | [], [], [] =>
           ltac:(M.monadic
             (Value.StructRecord
               "revm::context::context_precompiles::ContextPrecompiles"
@@ -743,10 +775,12 @@ Module context.
                       "core::default::Default",
                       Ty.apply
                         (Ty.path "std::collections::hash::map::HashMap")
+                        []
                         [
                           Ty.path "alloy_primitives::bits::address::Address";
                           Ty.apply
                             (Ty.path "revm::context::context_precompiles::ContextPrecompile")
+                            []
                             [ DB ];
                           Ty.path "std::hash::random::RandomState"
                         ],
@@ -757,7 +791,7 @@ Module context.
                     []
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -771,15 +805,16 @@ Module context.
     
     Module Impl_core_ops_deref_Deref_where_revm_primitives_db_Database_DB_for_revm_context_context_precompiles_ContextPrecompiles_DB.
       Definition Self (DB : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "revm::context::context_precompiles::ContextPrecompiles") [ DB ].
+        Ty.apply (Ty.path "revm::context::context_precompiles::ContextPrecompiles") [] [ DB ].
       
       (*     type Target = HashMap<Address, ContextPrecompile<DB>>; *)
       Definition _Target (DB : Ty.t) : Ty.t :=
         Ty.apply
           (Ty.path "std::collections::hash::map::HashMap")
+          []
           [
             Ty.path "alloy_primitives::bits::address::Address";
-            Ty.apply (Ty.path "revm::context::context_precompiles::ContextPrecompile") [ DB ];
+            Ty.apply (Ty.path "revm::context::context_precompiles::ContextPrecompile") [] [ DB ];
             Ty.path "std::hash::random::RandomState"
           ].
       
@@ -788,10 +823,10 @@ Module context.
               &self.inner
           }
       *)
-      Definition deref (DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition deref (DB : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self DB in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.SubPointer.get_struct_record_field (|
@@ -799,7 +834,7 @@ Module context.
               "revm::context::context_precompiles::ContextPrecompiles",
               "inner"
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -814,17 +849,17 @@ Module context.
     
     Module Impl_core_ops_deref_DerefMut_where_revm_primitives_db_Database_DB_for_revm_context_context_precompiles_ContextPrecompiles_DB.
       Definition Self (DB : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "revm::context::context_precompiles::ContextPrecompiles") [ DB ].
+        Ty.apply (Ty.path "revm::context::context_precompiles::ContextPrecompiles") [] [ DB ].
       
       (*
           fn deref_mut(&mut self) -> &mut Self::Target {
               &mut self.inner
           }
       *)
-      Definition deref_mut (DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition deref_mut (DB : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self DB in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.SubPointer.get_struct_record_field (|
@@ -832,7 +867,7 @@ Module context.
               "revm::context::context_precompiles::ContextPrecompiles",
               "inner"
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -854,9 +889,11 @@ Module context.
       forall (DB : Ty.t),
       (Ty.apply
           (Ty.path "revm::context::context_precompiles::ContextStatefulPrecompileArc")
+          []
           [ DB ]) =
         (Ty.apply
           (Ty.path "alloc::sync::Arc")
+          []
           [
             Ty.dyn [ ("revm::context::context_precompiles::ContextStatefulPrecompile::Trait", []) ];
             Ty.path "alloc::alloc::Global"
@@ -866,9 +903,11 @@ Module context.
       forall (DB : Ty.t),
       (Ty.apply
           (Ty.path "revm::context::context_precompiles::ContextStatefulPrecompileBox")
+          []
           [ DB ]) =
         (Ty.apply
           (Ty.path "alloc::boxed::Box")
+          []
           [
             Ty.dyn
               [ ("revm::context::context_precompiles::ContextStatefulPrecompileMut::Trait", []) ];
@@ -877,23 +916,23 @@ Module context.
     
     Module Impl_core_convert_From_where_revm_primitives_db_Database_DB_revm_primitives_precompile_Precompile_for_revm_context_context_precompiles_ContextPrecompile_DB.
       Definition Self (DB : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "revm::context::context_precompiles::ContextPrecompile") [ DB ].
+        Ty.apply (Ty.path "revm::context::context_precompiles::ContextPrecompile") [] [ DB ].
       
       (*
           fn from(p: Precompile) -> Self {
               ContextPrecompile::Ordinary(p)
           }
       *)
-      Definition from (DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from (DB : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self DB in
-        match τ, α with
-        | [], [ p ] =>
+        match ε, τ, α with
+        | [], [], [ p ] =>
           ltac:(M.monadic
             (let p := M.alloc (| p |) in
             Value.StructTuple
               "revm::context::context_precompiles::ContextPrecompile::Ordinary"
               [ M.read (| p |) ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -908,7 +947,7 @@ Module context.
     
     Module Impl_core_convert_From_where_revm_primitives_db_Database_DB_revm_precompile_Precompiles_for_revm_context_context_precompiles_ContextPrecompiles_DB.
       Definition Self (DB : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "revm::context::context_precompiles::ContextPrecompiles") [ DB ].
+        Ty.apply (Ty.path "revm::context::context_precompiles::ContextPrecompiles") [] [ DB ].
       
       (*
           fn from(p: Precompiles) -> Self {
@@ -917,10 +956,10 @@ Module context.
               }
           }
       *)
-      Definition from (DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from (DB : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self DB in
-        match τ, α with
-        | [], [ p ] =>
+        match ε, τ, α with
+        | [], [], [ p ] =>
           ltac:(M.monadic
             (let p := M.alloc (| p |) in
             Value.StructRecord
@@ -932,9 +971,11 @@ Module context.
                       "core::iter::traits::iterator::Iterator",
                       Ty.apply
                         (Ty.path "core::iter::adapters::map::Map")
+                        []
                         [
                           Ty.apply
                             (Ty.path "std::collections::hash::map::IntoIter")
+                            []
                             [
                               Ty.path "alloy_primitives::bits::address::Address";
                               Ty.path "revm_primitives::precompile::Precompile"
@@ -955,6 +996,7 @@ Module context.
                                 Ty.path "alloy_primitives::bits::address::Address";
                                 Ty.apply
                                   (Ty.path "revm::context::context_precompiles::ContextPrecompile")
+                                  []
                                   [ DB ]
                               ])
                         ],
@@ -963,10 +1005,12 @@ Module context.
                       [
                         Ty.apply
                           (Ty.path "std::collections::hash::map::HashMap")
+                          []
                           [
                             Ty.path "alloy_primitives::bits::address::Address";
                             Ty.apply
                               (Ty.path "revm::context::context_precompiles::ContextPrecompile")
+                              []
                               [ DB ];
                             Ty.path "std::hash::random::RandomState"
                           ]
@@ -978,6 +1022,7 @@ Module context.
                           "core::iter::traits::iterator::Iterator",
                           Ty.apply
                             (Ty.path "std::collections::hash::map::IntoIter")
+                            []
                             [
                               Ty.path "alloy_primitives::bits::address::Address";
                               Ty.path "revm_primitives::precompile::Precompile"
@@ -990,6 +1035,7 @@ Module context.
                                 Ty.path "alloy_primitives::bits::address::Address";
                                 Ty.apply
                                   (Ty.path "revm::context::context_precompiles::ContextPrecompile")
+                                  []
                                   [ DB ]
                               ];
                             Ty.function
@@ -1009,6 +1055,7 @@ Module context.
                                   Ty.apply
                                     (Ty.path
                                       "revm::context::context_precompiles::ContextPrecompile")
+                                    []
                                     [ DB ]
                                 ])
                           ]
@@ -1019,6 +1066,7 @@ Module context.
                               "core::iter::traits::collect::IntoIterator",
                               Ty.apply
                                 (Ty.path "std::collections::hash::map::HashMap")
+                                []
                                 [
                                   Ty.path "alloy_primitives::bits::address::Address";
                                   Ty.path "revm_primitives::precompile::Precompile";
@@ -1063,6 +1111,7 @@ Module context.
                                                     Ty.apply
                                                       (Ty.path
                                                         "revm::context::context_precompiles::ContextPrecompile")
+                                                      []
                                                       [ DB ]
                                                   ],
                                                   "into",
@@ -1080,7 +1129,7 @@ Module context.
                     ]
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1094,7 +1143,7 @@ Module context.
     
     Module Impl_core_convert_From_where_revm_primitives_db_Database_DB_ref__revm_precompile_Precompiles_for_revm_context_context_precompiles_ContextPrecompiles_DB.
       Definition Self (DB : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "revm::context::context_precompiles::ContextPrecompiles") [ DB ].
+        Ty.apply (Ty.path "revm::context::context_precompiles::ContextPrecompiles") [] [ DB ].
       
       (*
           fn from(p: &Precompiles) -> Self {
@@ -1107,10 +1156,10 @@ Module context.
               }
           }
       *)
-      Definition from (DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from (DB : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self DB in
-        match τ, α with
-        | [], [ p ] =>
+        match ε, τ, α with
+        | [], [], [ p ] =>
           ltac:(M.monadic
             (let p := M.alloc (| p |) in
             Value.StructRecord
@@ -1122,9 +1171,11 @@ Module context.
                       "core::iter::traits::iterator::Iterator",
                       Ty.apply
                         (Ty.path "core::iter::adapters::map::Map")
+                        []
                         [
                           Ty.apply
                             (Ty.path "std::collections::hash::map::Iter")
+                            []
                             [
                               Ty.path "alloy_primitives::bits::address::Address";
                               Ty.path "revm_primitives::precompile::Precompile"
@@ -1137,9 +1188,11 @@ Module context.
                                     [
                                       Ty.apply
                                         (Ty.path "&")
+                                        []
                                         [ Ty.path "alloy_primitives::bits::address::Address" ];
                                       Ty.apply
                                         (Ty.path "&")
+                                        []
                                         [ Ty.path "revm_primitives::precompile::Precompile" ]
                                     ]
                                 ]
@@ -1149,6 +1202,7 @@ Module context.
                                 Ty.path "alloy_primitives::bits::address::Address";
                                 Ty.apply
                                   (Ty.path "revm::context::context_precompiles::ContextPrecompile")
+                                  []
                                   [ DB ]
                               ])
                         ],
@@ -1157,10 +1211,12 @@ Module context.
                       [
                         Ty.apply
                           (Ty.path "std::collections::hash::map::HashMap")
+                          []
                           [
                             Ty.path "alloy_primitives::bits::address::Address";
                             Ty.apply
                               (Ty.path "revm::context::context_precompiles::ContextPrecompile")
+                              []
                               [ DB ];
                             Ty.path "std::hash::random::RandomState"
                           ]
@@ -1172,6 +1228,7 @@ Module context.
                           "core::iter::traits::iterator::Iterator",
                           Ty.apply
                             (Ty.path "std::collections::hash::map::Iter")
+                            []
                             [
                               Ty.path "alloy_primitives::bits::address::Address";
                               Ty.path "revm_primitives::precompile::Precompile"
@@ -1184,6 +1241,7 @@ Module context.
                                 Ty.path "alloy_primitives::bits::address::Address";
                                 Ty.apply
                                   (Ty.path "revm::context::context_precompiles::ContextPrecompile")
+                                  []
                                   [ DB ]
                               ];
                             Ty.function
@@ -1194,9 +1252,11 @@ Module context.
                                       [
                                         Ty.apply
                                           (Ty.path "&")
+                                          []
                                           [ Ty.path "alloy_primitives::bits::address::Address" ];
                                         Ty.apply
                                           (Ty.path "&")
+                                          []
                                           [ Ty.path "revm_primitives::precompile::Precompile" ]
                                       ]
                                   ]
@@ -1207,6 +1267,7 @@ Module context.
                                   Ty.apply
                                     (Ty.path
                                       "revm::context::context_precompiles::ContextPrecompile")
+                                    []
                                     [ DB ]
                                 ])
                           ]
@@ -1216,6 +1277,7 @@ Module context.
                             M.get_associated_function (|
                               Ty.apply
                                 (Ty.path "std::collections::hash::map::HashMap")
+                                []
                                 [
                                   Ty.path "alloy_primitives::bits::address::Address";
                                   Ty.path "revm_primitives::precompile::Precompile";
@@ -1258,6 +1320,7 @@ Module context.
                                                     Ty.apply
                                                       (Ty.path
                                                         "revm::context::context_precompiles::ContextPrecompile")
+                                                      []
                                                       [ DB ]
                                                   ],
                                                   "into",
@@ -1287,7 +1350,7 @@ Module context.
                     ]
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1296,7 +1359,7 @@ Module context.
           "core::convert::From"
           (Self DB)
           (* Trait polymorphic types *)
-          [ (* T *) Ty.apply (Ty.path "&") [ Ty.path "revm_precompile::Precompiles" ] ]
+          [ (* T *) Ty.apply (Ty.path "&") [] [ Ty.path "revm_precompile::Precompiles" ] ]
           (* Instance *) [ ("from", InstanceField.Method (from DB)) ].
     End Impl_core_convert_From_where_revm_primitives_db_Database_DB_ref__revm_precompile_Precompiles_for_revm_context_context_precompiles_ContextPrecompiles_DB.
   End context_precompiles.

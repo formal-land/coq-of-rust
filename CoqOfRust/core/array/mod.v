@@ -10,9 +10,9 @@ Module array.
       try_from_fn(NeverShortCircuit::wrap_mut_1(cb)).0
   }
   *)
-  Definition from_fn (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [ T; F ], [ cb ] =>
+  Definition from_fn (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [ N ], [ T; F ], [ cb ] =>
       ltac:(M.monadic
         (let cb := M.alloc (| cb |) in
         M.read (|
@@ -22,14 +22,14 @@ Module array.
                 M.get_function (|
                   "core::array::try_from_fn",
                   [
-                    Ty.apply (Ty.path "core::ops::try_trait::NeverShortCircuit") [ T ];
+                    Ty.apply (Ty.path "core::ops::try_trait::NeverShortCircuit") [] [ T ];
                     Ty.associated
                   ]
                 |),
                 [
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "core::ops::try_trait::NeverShortCircuit") [ T ],
+                      Ty.apply (Ty.path "core::ops::try_trait::NeverShortCircuit") [] [ T ],
                       "wrap_mut_1",
                       [ Ty.path "usize"; F ]
                     |),
@@ -42,7 +42,7 @@ Module array.
             0
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Function_from_fn : M.IsFunction "core::array::from_fn" from_fn.
@@ -64,9 +64,9 @@ Module array.
       }
   }
   *)
-  Definition try_from_fn (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [ R; F ], [ cb ] =>
+  Definition try_from_fn (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [ N ], [ R; F ], [ cb ] =>
       ltac:(M.monadic
         (let cb := M.alloc (| cb |) in
         M.read (|
@@ -74,7 +74,7 @@ Module array.
             M.alloc (|
               M.call_closure (|
                 M.get_associated_function (|
-                  Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ Ty.associated ],
+                  Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ Ty.associated ],
                   "uninit_array",
                   []
                 |),
@@ -132,6 +132,7 @@ Module array.
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                              []
                               [ Ty.associated ],
                             "array_assume_init",
                             []
@@ -144,7 +145,7 @@ Module array.
             ]
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Function_try_from_fn : M.IsFunction "core::array::try_from_fn" try_from_fn.
@@ -155,20 +156,20 @@ Module array.
       unsafe { &*(s as *const T).cast::<[T; 1]>() }
   }
   *)
-  Definition from_ref (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [ T ], [ s ] =>
+  Definition from_ref (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [ host ], [ T ], [ s ] =>
       ltac:(M.monadic
         (let s := M.alloc (| s |) in
         M.call_closure (|
           M.get_associated_function (|
-            Ty.apply (Ty.path "*const") [ T ],
+            Ty.apply (Ty.path "*const") [] [ T ],
             "cast",
-            [ Ty.apply (Ty.path "array") [ T ] ]
+            [ Ty.apply (Ty.path "array") [ Value.Integer 1 ] [ T ] ]
           |),
           [ M.read (| M.use (M.alloc (| M.read (| s |) |)) |) ]
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Function_from_ref : M.IsFunction "core::array::from_ref" from_ref.
@@ -179,20 +180,20 @@ Module array.
       unsafe { &mut *(s as *mut T).cast::<[T; 1]>() }
   }
   *)
-  Definition from_mut (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [ T ], [ s ] =>
+  Definition from_mut (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [ host ], [ T ], [ s ] =>
       ltac:(M.monadic
         (let s := M.alloc (| s |) in
         M.call_closure (|
           M.get_associated_function (|
-            Ty.apply (Ty.path "*mut") [ T ],
+            Ty.apply (Ty.path "*mut") [] [ T ],
             "cast",
-            [ Ty.apply (Ty.path "array") [ T ] ]
+            [ Ty.apply (Ty.path "array") [ Value.Integer 1 ] [ T ] ]
           |),
           [ M.read (| M.use (M.alloc (| M.read (| s |) |)) |) ]
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Function_from_mut : M.IsFunction "core::array::from_mut" from_mut.
@@ -200,6 +201,7 @@ Module array.
   (* StructTuple
     {
       name := "TryFromSliceError";
+      const_params := [];
       ty_params := [];
       fields := [ Ty.tuple [] ];
     } *)
@@ -208,9 +210,9 @@ Module array.
     Definition Self : Ty.t := Ty.path "core::array::TryFromSliceError".
     
     (* Debug *)
-    Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; f ] =>
+    Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; f ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
@@ -234,7 +236,7 @@ Module array.
                 |))
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -260,9 +262,9 @@ Module array.
     Definition Self : Ty.t := Ty.path "core::array::TryFromSliceError".
     
     (* Clone *)
-    Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -271,7 +273,7 @@ Module array.
               [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -291,9 +293,9 @@ Module array.
             self.description().fmt(f)
         }
     *)
-    Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; f ] =>
+    Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; f ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
@@ -313,7 +315,7 @@ Module array.
               M.read (| f |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -332,13 +334,13 @@ Module array.
             "could not convert slice to array"
         }
     *)
-    Definition description (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition description (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (| Value.String "could not convert slice to array" |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -357,13 +359,13 @@ Module array.
             match x {}
         }
     *)
-    Definition from (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ x ] =>
+    Definition from (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ x ] =>
         ltac:(M.monadic
           (let x := M.alloc (| x |) in
           M.never_to_any (| M.read (| M.match_operator (| x, [] |) |) |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -374,155 +376,186 @@ Module array.
         (* Instance *) [ ("from", InstanceField.Method from) ].
   End Impl_core_convert_From_core_convert_Infallible_for_core_array_TryFromSliceError.
   
-  Module Impl_core_convert_AsRef_slice_T_for_array_T.
-    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "array") [ T ].
+  Module Impl_core_convert_AsRef_slice_T_for_array_N_T.
+    Definition Self (N : Value.t) (T : Ty.t) : Ty.t := Ty.apply (Ty.path "array") [ N ] [ T ].
     
     (*
         fn as_ref(&self) -> &[T] {
             &self[..]
         }
     *)
-    Definition as_ref (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [ self ] =>
+    Definition as_ref
+        (N : Value.t)
+        (T : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      let Self : Ty.t := Self N T in
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
             M.get_trait_method (|
               "core::ops::index::Index",
-              Ty.apply (Ty.path "array") [ T ],
+              Ty.apply (Ty.path "array") [ N ] [ T ],
               [ Ty.path "core::ops::range::RangeFull" ],
               "index",
               []
             |),
             [ M.read (| self |); Value.StructTuple "core::ops::range::RangeFull" [] ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
-      forall (T : Ty.t),
+      forall (N : Value.t) (T : Ty.t),
       M.IsTraitInstance
         "core::convert::AsRef"
-        (Self T)
-        (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "slice") [ T ] ]
-        (* Instance *) [ ("as_ref", InstanceField.Method (as_ref T)) ].
-  End Impl_core_convert_AsRef_slice_T_for_array_T.
+        (Self N T)
+        (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "slice") [] [ T ] ]
+        (* Instance *) [ ("as_ref", InstanceField.Method (as_ref N T)) ].
+  End Impl_core_convert_AsRef_slice_T_for_array_N_T.
   
-  Module Impl_core_convert_AsMut_slice_T_for_array_T.
-    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "array") [ T ].
+  Module Impl_core_convert_AsMut_slice_T_for_array_N_T.
+    Definition Self (N : Value.t) (T : Ty.t) : Ty.t := Ty.apply (Ty.path "array") [ N ] [ T ].
     
     (*
         fn as_mut(&mut self) -> &mut [T] {
             &mut self[..]
         }
     *)
-    Definition as_mut (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [ self ] =>
+    Definition as_mut
+        (N : Value.t)
+        (T : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      let Self : Ty.t := Self N T in
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
             M.get_trait_method (|
               "core::ops::index::IndexMut",
-              Ty.apply (Ty.path "array") [ T ],
+              Ty.apply (Ty.path "array") [ N ] [ T ],
               [ Ty.path "core::ops::range::RangeFull" ],
               "index_mut",
               []
             |),
             [ M.read (| self |); Value.StructTuple "core::ops::range::RangeFull" [] ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
-      forall (T : Ty.t),
+      forall (N : Value.t) (T : Ty.t),
       M.IsTraitInstance
         "core::convert::AsMut"
-        (Self T)
-        (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "slice") [ T ] ]
-        (* Instance *) [ ("as_mut", InstanceField.Method (as_mut T)) ].
-  End Impl_core_convert_AsMut_slice_T_for_array_T.
+        (Self N T)
+        (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "slice") [] [ T ] ]
+        (* Instance *) [ ("as_mut", InstanceField.Method (as_mut N T)) ].
+  End Impl_core_convert_AsMut_slice_T_for_array_N_T.
   
-  Module Impl_core_borrow_Borrow_slice_T_for_array_T.
-    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "array") [ T ].
+  Module Impl_core_borrow_Borrow_slice_T_for_array_N_T.
+    Definition Self (N : Value.t) (T : Ty.t) : Ty.t := Ty.apply (Ty.path "array") [ N ] [ T ].
     
     (*
         fn borrow(&self) -> &[T] {
             self
         }
     *)
-    Definition borrow (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [ self ] =>
+    Definition borrow
+        (N : Value.t)
+        (T : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      let Self : Ty.t := Self N T in
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           (* Unsize *) M.pointer_coercion (M.read (| self |))))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
-      forall (T : Ty.t),
+      forall (N : Value.t) (T : Ty.t),
       M.IsTraitInstance
         "core::borrow::Borrow"
-        (Self T)
-        (* Trait polymorphic types *) [ (* Borrowed *) Ty.apply (Ty.path "slice") [ T ] ]
-        (* Instance *) [ ("borrow", InstanceField.Method (borrow T)) ].
-  End Impl_core_borrow_Borrow_slice_T_for_array_T.
+        (Self N T)
+        (* Trait polymorphic types *) [ (* Borrowed *) Ty.apply (Ty.path "slice") [] [ T ] ]
+        (* Instance *) [ ("borrow", InstanceField.Method (borrow N T)) ].
+  End Impl_core_borrow_Borrow_slice_T_for_array_N_T.
   
-  Module Impl_core_borrow_BorrowMut_slice_T_for_array_T.
-    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "array") [ T ].
+  Module Impl_core_borrow_BorrowMut_slice_T_for_array_N_T.
+    Definition Self (N : Value.t) (T : Ty.t) : Ty.t := Ty.apply (Ty.path "array") [ N ] [ T ].
     
     (*
         fn borrow_mut(&mut self) -> &mut [T] {
             self
         }
     *)
-    Definition borrow_mut (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [ self ] =>
+    Definition borrow_mut
+        (N : Value.t)
+        (T : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      let Self : Ty.t := Self N T in
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           (* Unsize *) M.pointer_coercion (M.read (| self |))))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
-      forall (T : Ty.t),
+      forall (N : Value.t) (T : Ty.t),
       M.IsTraitInstance
         "core::borrow::BorrowMut"
-        (Self T)
-        (* Trait polymorphic types *) [ (* Borrowed *) Ty.apply (Ty.path "slice") [ T ] ]
-        (* Instance *) [ ("borrow_mut", InstanceField.Method (borrow_mut T)) ].
-  End Impl_core_borrow_BorrowMut_slice_T_for_array_T.
+        (Self N T)
+        (* Trait polymorphic types *) [ (* Borrowed *) Ty.apply (Ty.path "slice") [] [ T ] ]
+        (* Instance *) [ ("borrow_mut", InstanceField.Method (borrow_mut N T)) ].
+  End Impl_core_borrow_BorrowMut_slice_T_for_array_N_T.
   
-  Module Impl_core_convert_TryFrom_where_core_marker_Copy_T_ref__slice_T_for_array_T.
-    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "array") [ T ].
+  Module Impl_core_convert_TryFrom_where_core_marker_Copy_T_ref__slice_T_for_array_N_T.
+    Definition Self (N : Value.t) (T : Ty.t) : Ty.t := Ty.apply (Ty.path "array") [ N ] [ T ].
     
     (*     type Error = TryFromSliceError; *)
-    Definition _Error (T : Ty.t) : Ty.t := Ty.path "core::array::TryFromSliceError".
+    Definition _Error (N : Value.t) (T : Ty.t) : Ty.t := Ty.path "core::array::TryFromSliceError".
     
     (*
         fn try_from(slice: &[T]) -> Result<[T; N], TryFromSliceError> {
             <&Self>::try_from(slice).copied()
         }
     *)
-    Definition try_from (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [ slice ] =>
+    Definition try_from
+        (N : Value.t)
+        (T : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      let Self : Ty.t := Self N T in
+      match ε, τ, α with
+      | [], [], [ slice ] =>
         ltac:(M.monadic
           (let slice := M.alloc (| slice |) in
           M.call_closure (|
             M.get_associated_function (|
               Ty.apply
                 (Ty.path "core::result::Result")
+                []
                 [
-                  Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "array") [ T ] ];
+                  Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "array") [ N ] [ T ] ];
                   Ty.path "core::array::TryFromSliceError"
                 ],
               "copied",
@@ -532,8 +565,8 @@ Module array.
               M.call_closure (|
                 M.get_trait_method (|
                   "core::convert::TryFrom",
-                  Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "array") [ T ] ],
-                  [ Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "slice") [ T ] ] ],
+                  Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "array") [ N ] [ T ] ],
+                  [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ] ],
                   "try_from",
                   []
                 |),
@@ -541,67 +574,79 @@ Module array.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
-      forall (T : Ty.t),
+      forall (N : Value.t) (T : Ty.t),
       M.IsTraitInstance
         "core::convert::TryFrom"
-        (Self T)
+        (Self N T)
         (* Trait polymorphic types *)
-        [ (* T *) Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "slice") [ T ] ] ]
+        [ (* T *) Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ] ]
         (* Instance *)
-        [ ("Error", InstanceField.Ty (_Error T)); ("try_from", InstanceField.Method (try_from T)) ].
-  End Impl_core_convert_TryFrom_where_core_marker_Copy_T_ref__slice_T_for_array_T.
+        [
+          ("Error", InstanceField.Ty (_Error N T));
+          ("try_from", InstanceField.Method (try_from N T))
+        ].
+  End Impl_core_convert_TryFrom_where_core_marker_Copy_T_ref__slice_T_for_array_N_T.
   
-  Module Impl_core_convert_TryFrom_where_core_marker_Copy_T_ref_mut_slice_T_for_array_T.
-    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "array") [ T ].
+  Module Impl_core_convert_TryFrom_where_core_marker_Copy_T_ref_mut_slice_T_for_array_N_T.
+    Definition Self (N : Value.t) (T : Ty.t) : Ty.t := Ty.apply (Ty.path "array") [ N ] [ T ].
     
     (*     type Error = TryFromSliceError; *)
-    Definition _Error (T : Ty.t) : Ty.t := Ty.path "core::array::TryFromSliceError".
+    Definition _Error (N : Value.t) (T : Ty.t) : Ty.t := Ty.path "core::array::TryFromSliceError".
     
     (*
         fn try_from(slice: &mut [T]) -> Result<[T; N], TryFromSliceError> {
             <Self>::try_from(&*slice)
         }
     *)
-    Definition try_from (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [ slice ] =>
+    Definition try_from
+        (N : Value.t)
+        (T : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      let Self : Ty.t := Self N T in
+      match ε, τ, α with
+      | [], [], [ slice ] =>
         ltac:(M.monadic
           (let slice := M.alloc (| slice |) in
           M.call_closure (|
             M.get_trait_method (|
               "core::convert::TryFrom",
-              Ty.apply (Ty.path "array") [ T ],
-              [ Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "slice") [ T ] ] ],
+              Ty.apply (Ty.path "array") [ N ] [ T ],
+              [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ] ],
               "try_from",
               []
             |),
             [ M.read (| slice |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
-      forall (T : Ty.t),
+      forall (N : Value.t) (T : Ty.t),
       M.IsTraitInstance
         "core::convert::TryFrom"
-        (Self T)
+        (Self N T)
         (* Trait polymorphic types *)
-        [ (* T *) Ty.apply (Ty.path "&mut") [ Ty.apply (Ty.path "slice") [ T ] ] ]
+        [ (* T *) Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ] ]
         (* Instance *)
-        [ ("Error", InstanceField.Ty (_Error T)); ("try_from", InstanceField.Method (try_from T)) ].
-  End Impl_core_convert_TryFrom_where_core_marker_Copy_T_ref_mut_slice_T_for_array_T.
+        [
+          ("Error", InstanceField.Ty (_Error N T));
+          ("try_from", InstanceField.Method (try_from N T))
+        ].
+  End Impl_core_convert_TryFrom_where_core_marker_Copy_T_ref_mut_slice_T_for_array_N_T.
   
-  Module Impl_core_convert_TryFrom_ref__slice_T_for_ref__array_T.
-    Definition Self (T : Ty.t) : Ty.t :=
-      Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "array") [ T ] ].
+  Module Impl_core_convert_TryFrom_ref__slice_T_for_ref__array_N_T.
+    Definition Self (N : Value.t) (T : Ty.t) : Ty.t :=
+      Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "array") [ N ] [ T ] ].
     
     (*     type Error = TryFromSliceError; *)
-    Definition _Error (T : Ty.t) : Ty.t := Ty.path "core::array::TryFromSliceError".
+    Definition _Error (N : Value.t) (T : Ty.t) : Ty.t := Ty.path "core::array::TryFromSliceError".
     
     (*
         fn try_from(slice: &'a [T]) -> Result<&'a [T; N], TryFromSliceError> {
@@ -614,10 +659,16 @@ Module array.
             }
         }
     *)
-    Definition try_from (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [ slice ] =>
+    Definition try_from
+        (N : Value.t)
+        (T : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      let Self : Ty.t := Self N T in
+      match ε, τ, α with
+      | [], [], [ slice ] =>
         ltac:(M.monadic
           (let slice := M.alloc (| slice |) in
           M.read (|
@@ -632,7 +683,7 @@ Module array.
                           BinOp.Pure.eq
                             (M.call_closure (|
                               M.get_associated_function (|
-                                Ty.apply (Ty.path "slice") [ T ],
+                                Ty.apply (Ty.path "slice") [] [ T ],
                                 "len",
                                 []
                               |),
@@ -646,7 +697,7 @@ Module array.
                         M.rust_cast
                           (M.call_closure (|
                             M.get_associated_function (|
-                              Ty.apply (Ty.path "slice") [ T ],
+                              Ty.apply (Ty.path "slice") [] [ T ],
                               "as_ptr",
                               []
                             |),
@@ -666,26 +717,29 @@ Module array.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
-      forall (T : Ty.t),
+      forall (N : Value.t) (T : Ty.t),
       M.IsTraitInstance
         "core::convert::TryFrom"
-        (Self T)
+        (Self N T)
         (* Trait polymorphic types *)
-        [ (* T *) Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "slice") [ T ] ] ]
+        [ (* T *) Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ] ]
         (* Instance *)
-        [ ("Error", InstanceField.Ty (_Error T)); ("try_from", InstanceField.Method (try_from T)) ].
-  End Impl_core_convert_TryFrom_ref__slice_T_for_ref__array_T.
+        [
+          ("Error", InstanceField.Ty (_Error N T));
+          ("try_from", InstanceField.Method (try_from N T))
+        ].
+  End Impl_core_convert_TryFrom_ref__slice_T_for_ref__array_N_T.
   
-  Module Impl_core_convert_TryFrom_ref_mut_slice_T_for_ref_mut_array_T.
-    Definition Self (T : Ty.t) : Ty.t :=
-      Ty.apply (Ty.path "&mut") [ Ty.apply (Ty.path "array") [ T ] ].
+  Module Impl_core_convert_TryFrom_ref_mut_slice_T_for_ref_mut_array_N_T.
+    Definition Self (N : Value.t) (T : Ty.t) : Ty.t :=
+      Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "array") [ N ] [ T ] ].
     
     (*     type Error = TryFromSliceError; *)
-    Definition _Error (T : Ty.t) : Ty.t := Ty.path "core::array::TryFromSliceError".
+    Definition _Error (N : Value.t) (T : Ty.t) : Ty.t := Ty.path "core::array::TryFromSliceError".
     
     (*
         fn try_from(slice: &'a mut [T]) -> Result<&'a mut [T; N], TryFromSliceError> {
@@ -698,10 +752,16 @@ Module array.
             }
         }
     *)
-    Definition try_from (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [ slice ] =>
+    Definition try_from
+        (N : Value.t)
+        (T : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      let Self : Ty.t := Self N T in
+      match ε, τ, α with
+      | [], [], [ slice ] =>
         ltac:(M.monadic
           (let slice := M.alloc (| slice |) in
           M.read (|
@@ -716,7 +776,7 @@ Module array.
                           BinOp.Pure.eq
                             (M.call_closure (|
                               M.get_associated_function (|
-                                Ty.apply (Ty.path "slice") [ T ],
+                                Ty.apply (Ty.path "slice") [] [ T ],
                                 "len",
                                 []
                               |),
@@ -730,7 +790,7 @@ Module array.
                         M.rust_cast
                           (M.call_closure (|
                             M.get_associated_function (|
-                              Ty.apply (Ty.path "slice") [ T ],
+                              Ty.apply (Ty.path "slice") [] [ T ],
                               "as_mut_ptr",
                               []
                             |),
@@ -750,39 +810,48 @@ Module array.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
-      forall (T : Ty.t),
+      forall (N : Value.t) (T : Ty.t),
       M.IsTraitInstance
         "core::convert::TryFrom"
-        (Self T)
+        (Self N T)
         (* Trait polymorphic types *)
-        [ (* T *) Ty.apply (Ty.path "&mut") [ Ty.apply (Ty.path "slice") [ T ] ] ]
+        [ (* T *) Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ] ]
         (* Instance *)
-        [ ("Error", InstanceField.Ty (_Error T)); ("try_from", InstanceField.Method (try_from T)) ].
-  End Impl_core_convert_TryFrom_ref_mut_slice_T_for_ref_mut_array_T.
+        [
+          ("Error", InstanceField.Ty (_Error N T));
+          ("try_from", InstanceField.Method (try_from N T))
+        ].
+  End Impl_core_convert_TryFrom_ref_mut_slice_T_for_ref_mut_array_N_T.
   
-  Module Impl_core_hash_Hash_where_core_hash_Hash_T_for_array_T.
-    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "array") [ T ].
+  Module Impl_core_hash_Hash_where_core_hash_Hash_T_for_array_N_T.
+    Definition Self (N : Value.t) (T : Ty.t) : Ty.t := Ty.apply (Ty.path "array") [ N ] [ T ].
     
     (*
         fn hash<H: hash::Hasher>(&self, state: &mut H) {
             Hash::hash(&self[..], state)
         }
     *)
-    Definition hash (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      let Self : Ty.t := Self T in
-      match τ, α with
-      | [ H ], [ self; state ] =>
+    Definition hash
+        (N : Value.t)
+        (T : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      let Self : Ty.t := Self N T in
+      match ε, τ, α with
+      | [], [ H ], [ self; state ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
           M.call_closure (|
             M.get_trait_method (|
               "core::hash::Hash",
-              Ty.apply (Ty.path "slice") [ T ],
+              Ty.apply (Ty.path "slice") [] [ T ],
               [],
               "hash",
               [ H ]
@@ -791,7 +860,7 @@ Module array.
               M.call_closure (|
                 M.get_trait_method (|
                   "core::ops::index::Index",
-                  Ty.apply (Ty.path "array") [ T ],
+                  Ty.apply (Ty.path "array") [ N ] [ T ],
                   [ Ty.path "core::ops::range::RangeFull" ],
                   "index",
                   []
@@ -801,37 +870,43 @@ Module array.
               M.read (| state |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
-      forall (T : Ty.t),
+      forall (N : Value.t) (T : Ty.t),
       M.IsTraitInstance
         "core::hash::Hash"
-        (Self T)
+        (Self N T)
         (* Trait polymorphic types *) []
-        (* Instance *) [ ("hash", InstanceField.Method (hash T)) ].
-  End Impl_core_hash_Hash_where_core_hash_Hash_T_for_array_T.
+        (* Instance *) [ ("hash", InstanceField.Method (hash N T)) ].
+  End Impl_core_hash_Hash_where_core_hash_Hash_T_for_array_N_T.
   
-  Module Impl_core_fmt_Debug_where_core_fmt_Debug_T_for_array_T.
-    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "array") [ T ].
+  Module Impl_core_fmt_Debug_where_core_fmt_Debug_T_for_array_N_T.
+    Definition Self (N : Value.t) (T : Ty.t) : Ty.t := Ty.apply (Ty.path "array") [ N ] [ T ].
     
     (*
         fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
             fmt::Debug::fmt(&&self[..], f)
         }
     *)
-    Definition fmt (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [ self; f ] =>
+    Definition fmt
+        (N : Value.t)
+        (T : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      let Self : Ty.t := Self N T in
+      match ε, τ, α with
+      | [], [], [ self; f ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
             M.get_trait_method (|
               "core::fmt::Debug",
-              Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "slice") [ T ] ],
+              Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
               [],
               "fmt",
               []
@@ -841,7 +916,7 @@ Module array.
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::ops::index::Index",
-                    Ty.apply (Ty.path "array") [ T ],
+                    Ty.apply (Ty.path "array") [ N ] [ T ],
                     [ Ty.path "core::ops::range::RangeFull" ],
                     "index",
                     []
@@ -852,124 +927,144 @@ Module array.
               M.read (| f |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
-      forall (T : Ty.t),
+      forall (N : Value.t) (T : Ty.t),
       M.IsTraitInstance
         "core::fmt::Debug"
-        (Self T)
+        (Self N T)
         (* Trait polymorphic types *) []
-        (* Instance *) [ ("fmt", InstanceField.Method (fmt T)) ].
-  End Impl_core_fmt_Debug_where_core_fmt_Debug_T_for_array_T.
+        (* Instance *) [ ("fmt", InstanceField.Method (fmt N T)) ].
+  End Impl_core_fmt_Debug_where_core_fmt_Debug_T_for_array_N_T.
   
-  Module Impl_core_iter_traits_collect_IntoIterator_for_ref__array_T.
-    Definition Self (T : Ty.t) : Ty.t :=
-      Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "array") [ T ] ].
+  Module Impl_core_iter_traits_collect_IntoIterator_for_ref__array_N_T.
+    Definition Self (N : Value.t) (T : Ty.t) : Ty.t :=
+      Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "array") [ N ] [ T ] ].
     
     (*     type Item = &'a T; *)
-    Definition _Item (T : Ty.t) : Ty.t := Ty.apply (Ty.path "&") [ T ].
+    Definition _Item (N : Value.t) (T : Ty.t) : Ty.t := Ty.apply (Ty.path "&") [] [ T ].
     
     (*     type IntoIter = Iter<'a, T>; *)
-    Definition _IntoIter (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::slice::iter::Iter") [ T ].
+    Definition _IntoIter (N : Value.t) (T : Ty.t) : Ty.t :=
+      Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ].
     
     (*
         fn into_iter(self) -> Iter<'a, T> {
             self.iter()
         }
     *)
-    Definition into_iter (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [ self ] =>
+    Definition into_iter
+        (N : Value.t)
+        (T : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      let Self : Ty.t := Self N T in
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.apply (Ty.path "slice") [ T ], "iter", [] |),
+            M.get_associated_function (| Ty.apply (Ty.path "slice") [] [ T ], "iter", [] |),
             [ (* Unsize *) M.pointer_coercion (M.read (| self |)) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
-      forall (T : Ty.t),
+      forall (N : Value.t) (T : Ty.t),
       M.IsTraitInstance
         "core::iter::traits::collect::IntoIterator"
-        (Self T)
+        (Self N T)
         (* Trait polymorphic types *) []
         (* Instance *)
         [
-          ("Item", InstanceField.Ty (_Item T));
-          ("IntoIter", InstanceField.Ty (_IntoIter T));
-          ("into_iter", InstanceField.Method (into_iter T))
+          ("Item", InstanceField.Ty (_Item N T));
+          ("IntoIter", InstanceField.Ty (_IntoIter N T));
+          ("into_iter", InstanceField.Method (into_iter N T))
         ].
-  End Impl_core_iter_traits_collect_IntoIterator_for_ref__array_T.
+  End Impl_core_iter_traits_collect_IntoIterator_for_ref__array_N_T.
   
-  Module Impl_core_iter_traits_collect_IntoIterator_for_ref_mut_array_T.
-    Definition Self (T : Ty.t) : Ty.t :=
-      Ty.apply (Ty.path "&mut") [ Ty.apply (Ty.path "array") [ T ] ].
+  Module Impl_core_iter_traits_collect_IntoIterator_for_ref_mut_array_N_T.
+    Definition Self (N : Value.t) (T : Ty.t) : Ty.t :=
+      Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "array") [ N ] [ T ] ].
     
     (*     type Item = &'a mut T; *)
-    Definition _Item (T : Ty.t) : Ty.t := Ty.apply (Ty.path "&mut") [ T ].
+    Definition _Item (N : Value.t) (T : Ty.t) : Ty.t := Ty.apply (Ty.path "&mut") [] [ T ].
     
     (*     type IntoIter = IterMut<'a, T>; *)
-    Definition _IntoIter (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::slice::iter::IterMut") [ T ].
+    Definition _IntoIter (N : Value.t) (T : Ty.t) : Ty.t :=
+      Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ].
     
     (*
         fn into_iter(self) -> IterMut<'a, T> {
             self.iter_mut()
         }
     *)
-    Definition into_iter (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [ self ] =>
+    Definition into_iter
+        (N : Value.t)
+        (T : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      let Self : Ty.t := Self N T in
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.apply (Ty.path "slice") [ T ], "iter_mut", [] |),
+            M.get_associated_function (| Ty.apply (Ty.path "slice") [] [ T ], "iter_mut", [] |),
             [ (* Unsize *) M.pointer_coercion (M.read (| self |)) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
-      forall (T : Ty.t),
+      forall (N : Value.t) (T : Ty.t),
       M.IsTraitInstance
         "core::iter::traits::collect::IntoIterator"
-        (Self T)
+        (Self N T)
         (* Trait polymorphic types *) []
         (* Instance *)
         [
-          ("Item", InstanceField.Ty (_Item T));
-          ("IntoIter", InstanceField.Ty (_IntoIter T));
-          ("into_iter", InstanceField.Method (into_iter T))
+          ("Item", InstanceField.Ty (_Item N T));
+          ("IntoIter", InstanceField.Ty (_IntoIter N T));
+          ("into_iter", InstanceField.Method (into_iter N T))
         ].
-  End Impl_core_iter_traits_collect_IntoIterator_for_ref_mut_array_T.
+  End Impl_core_iter_traits_collect_IntoIterator_for_ref_mut_array_N_T.
   
-  Module Impl_core_ops_index_Index_where_core_ops_index_Index_slice_T_I_I_for_array_T.
-    Definition Self (T I : Ty.t) : Ty.t := Ty.apply (Ty.path "array") [ T ].
+  Module Impl_core_ops_index_Index_where_core_ops_index_Index_slice_T_I_I_for_array_N_T.
+    Definition Self (N : Value.t) (T I : Ty.t) : Ty.t := Ty.apply (Ty.path "array") [ N ] [ T ].
     
     (*     type Output = <[T] as Index<I>>::Output; *)
-    Definition _Output (T I : Ty.t) : Ty.t := Ty.associated.
+    Definition _Output (N : Value.t) (T I : Ty.t) : Ty.t := Ty.associated.
     
     (*
         fn index(&self, index: I) -> &Self::Output {
             Index::index(self as &[T], index)
         }
     *)
-    Definition index (T I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      let Self : Ty.t := Self T I in
-      match τ, α with
-      | [], [ self; index ] =>
+    Definition index
+        (N : Value.t)
+        (T I : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      let Self : Ty.t := Self N T I in
+      match ε, τ, α with
+      | [], [], [ self; index ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let index := M.alloc (| index |) in
           M.call_closure (|
             M.get_trait_method (|
               "core::ops::index::Index",
-              Ty.apply (Ty.path "slice") [ T ],
+              Ty.apply (Ty.path "slice") [] [ T ],
               [ I ],
               "index",
               []
@@ -981,38 +1076,47 @@ Module array.
               M.read (| index |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
-      forall (T I : Ty.t),
+      forall (N : Value.t) (T I : Ty.t),
       M.IsTraitInstance
         "core::ops::index::Index"
-        (Self T I)
+        (Self N T I)
         (* Trait polymorphic types *) [ (* Idx *) I ]
         (* Instance *)
-        [ ("Output", InstanceField.Ty (_Output T I)); ("index", InstanceField.Method (index T I)) ].
-  End Impl_core_ops_index_Index_where_core_ops_index_Index_slice_T_I_I_for_array_T.
+        [
+          ("Output", InstanceField.Ty (_Output N T I));
+          ("index", InstanceField.Method (index N T I))
+        ].
+  End Impl_core_ops_index_Index_where_core_ops_index_Index_slice_T_I_I_for_array_N_T.
   
-  Module Impl_core_ops_index_IndexMut_where_core_ops_index_IndexMut_slice_T_I_I_for_array_T.
-    Definition Self (T I : Ty.t) : Ty.t := Ty.apply (Ty.path "array") [ T ].
+  Module Impl_core_ops_index_IndexMut_where_core_ops_index_IndexMut_slice_T_I_I_for_array_N_T.
+    Definition Self (N : Value.t) (T I : Ty.t) : Ty.t := Ty.apply (Ty.path "array") [ N ] [ T ].
     
     (*
         fn index_mut(&mut self, index: I) -> &mut Self::Output {
             IndexMut::index_mut(self as &mut [T], index)
         }
     *)
-    Definition index_mut (T I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      let Self : Ty.t := Self T I in
-      match τ, α with
-      | [], [ self; index ] =>
+    Definition index_mut
+        (N : Value.t)
+        (T I : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      let Self : Ty.t := Self N T I in
+      match ε, τ, α with
+      | [], [], [ self; index ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let index := M.alloc (| index |) in
           M.call_closure (|
             M.get_trait_method (|
               "core::ops::index::IndexMut",
-              Ty.apply (Ty.path "slice") [ T ],
+              Ty.apply (Ty.path "slice") [] [ T ],
               [ I ],
               "index_mut",
               []
@@ -1024,38 +1128,44 @@ Module array.
               M.read (| index |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
-      forall (T I : Ty.t),
+      forall (N : Value.t) (T I : Ty.t),
       M.IsTraitInstance
         "core::ops::index::IndexMut"
-        (Self T I)
+        (Self N T I)
         (* Trait polymorphic types *) [ (* Idx *) I ]
-        (* Instance *) [ ("index_mut", InstanceField.Method (index_mut T I)) ].
-  End Impl_core_ops_index_IndexMut_where_core_ops_index_IndexMut_slice_T_I_I_for_array_T.
+        (* Instance *) [ ("index_mut", InstanceField.Method (index_mut N T I)) ].
+  End Impl_core_ops_index_IndexMut_where_core_ops_index_IndexMut_slice_T_I_I_for_array_N_T.
   
-  Module Impl_core_cmp_PartialOrd_where_core_cmp_PartialOrd_T_for_array_T.
-    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "array") [ T ].
+  Module Impl_core_cmp_PartialOrd_where_core_cmp_PartialOrd_T_for_array_N_T.
+    Definition Self (N : Value.t) (T : Ty.t) : Ty.t := Ty.apply (Ty.path "array") [ N ] [ T ].
     
     (*
         fn partial_cmp(&self, other: &[T; N]) -> Option<Ordering> {
             PartialOrd::partial_cmp(&&self[..], &&other[..])
         }
     *)
-    Definition partial_cmp (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [ self; other ] =>
+    Definition partial_cmp
+        (N : Value.t)
+        (T : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      let Self : Ty.t := Self N T in
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.call_closure (|
             M.get_trait_method (|
               "core::cmp::PartialOrd",
-              Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "slice") [ T ] ],
-              [ Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "slice") [ T ] ] ],
+              Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
+              [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ] ],
               "partial_cmp",
               []
             |),
@@ -1064,7 +1174,7 @@ Module array.
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::ops::index::Index",
-                    Ty.apply (Ty.path "array") [ T ],
+                    Ty.apply (Ty.path "array") [ N ] [ T ],
                     [ Ty.path "core::ops::range::RangeFull" ],
                     "index",
                     []
@@ -1076,7 +1186,7 @@ Module array.
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::ops::index::Index",
-                    Ty.apply (Ty.path "array") [ T ],
+                    Ty.apply (Ty.path "array") [ N ] [ T ],
                     [ Ty.path "core::ops::range::RangeFull" ],
                     "index",
                     []
@@ -1086,7 +1196,7 @@ Module array.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     (*
@@ -1094,18 +1204,24 @@ Module array.
             PartialOrd::lt(&&self[..], &&other[..])
         }
     *)
-    Definition lt (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [ self; other ] =>
+    Definition lt
+        (N : Value.t)
+        (T : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      let Self : Ty.t := Self N T in
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.call_closure (|
             M.get_trait_method (|
               "core::cmp::PartialOrd",
-              Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "slice") [ T ] ],
-              [ Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "slice") [ T ] ] ],
+              Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
+              [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ] ],
               "lt",
               []
             |),
@@ -1114,7 +1230,7 @@ Module array.
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::ops::index::Index",
-                    Ty.apply (Ty.path "array") [ T ],
+                    Ty.apply (Ty.path "array") [ N ] [ T ],
                     [ Ty.path "core::ops::range::RangeFull" ],
                     "index",
                     []
@@ -1126,7 +1242,7 @@ Module array.
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::ops::index::Index",
-                    Ty.apply (Ty.path "array") [ T ],
+                    Ty.apply (Ty.path "array") [ N ] [ T ],
                     [ Ty.path "core::ops::range::RangeFull" ],
                     "index",
                     []
@@ -1136,7 +1252,7 @@ Module array.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     (*
@@ -1144,18 +1260,24 @@ Module array.
             PartialOrd::le(&&self[..], &&other[..])
         }
     *)
-    Definition le (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [ self; other ] =>
+    Definition le
+        (N : Value.t)
+        (T : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      let Self : Ty.t := Self N T in
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.call_closure (|
             M.get_trait_method (|
               "core::cmp::PartialOrd",
-              Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "slice") [ T ] ],
-              [ Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "slice") [ T ] ] ],
+              Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
+              [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ] ],
               "le",
               []
             |),
@@ -1164,7 +1286,7 @@ Module array.
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::ops::index::Index",
-                    Ty.apply (Ty.path "array") [ T ],
+                    Ty.apply (Ty.path "array") [ N ] [ T ],
                     [ Ty.path "core::ops::range::RangeFull" ],
                     "index",
                     []
@@ -1176,7 +1298,7 @@ Module array.
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::ops::index::Index",
-                    Ty.apply (Ty.path "array") [ T ],
+                    Ty.apply (Ty.path "array") [ N ] [ T ],
                     [ Ty.path "core::ops::range::RangeFull" ],
                     "index",
                     []
@@ -1186,7 +1308,7 @@ Module array.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     (*
@@ -1194,18 +1316,24 @@ Module array.
             PartialOrd::ge(&&self[..], &&other[..])
         }
     *)
-    Definition ge (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [ self; other ] =>
+    Definition ge
+        (N : Value.t)
+        (T : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      let Self : Ty.t := Self N T in
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.call_closure (|
             M.get_trait_method (|
               "core::cmp::PartialOrd",
-              Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "slice") [ T ] ],
-              [ Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "slice") [ T ] ] ],
+              Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
+              [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ] ],
               "ge",
               []
             |),
@@ -1214,7 +1342,7 @@ Module array.
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::ops::index::Index",
-                    Ty.apply (Ty.path "array") [ T ],
+                    Ty.apply (Ty.path "array") [ N ] [ T ],
                     [ Ty.path "core::ops::range::RangeFull" ],
                     "index",
                     []
@@ -1226,7 +1354,7 @@ Module array.
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::ops::index::Index",
-                    Ty.apply (Ty.path "array") [ T ],
+                    Ty.apply (Ty.path "array") [ N ] [ T ],
                     [ Ty.path "core::ops::range::RangeFull" ],
                     "index",
                     []
@@ -1236,7 +1364,7 @@ Module array.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     (*
@@ -1244,18 +1372,24 @@ Module array.
             PartialOrd::gt(&&self[..], &&other[..])
         }
     *)
-    Definition gt (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [ self; other ] =>
+    Definition gt
+        (N : Value.t)
+        (T : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      let Self : Ty.t := Self N T in
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.call_closure (|
             M.get_trait_method (|
               "core::cmp::PartialOrd",
-              Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "slice") [ T ] ],
-              [ Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "slice") [ T ] ] ],
+              Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
+              [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ] ],
               "gt",
               []
             |),
@@ -1264,7 +1398,7 @@ Module array.
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::ops::index::Index",
-                    Ty.apply (Ty.path "array") [ T ],
+                    Ty.apply (Ty.path "array") [ N ] [ T ],
                     [ Ty.path "core::ops::range::RangeFull" ],
                     "index",
                     []
@@ -1276,7 +1410,7 @@ Module array.
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::ops::index::Index",
-                    Ty.apply (Ty.path "array") [ T ],
+                    Ty.apply (Ty.path "array") [ N ] [ T ],
                     [ Ty.path "core::ops::range::RangeFull" ],
                     "index",
                     []
@@ -1286,44 +1420,50 @@ Module array.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
-      forall (T : Ty.t),
+      forall (N : Value.t) (T : Ty.t),
       M.IsTraitInstance
         "core::cmp::PartialOrd"
-        (Self T)
+        (Self N T)
         (* Trait polymorphic types *) []
         (* Instance *)
         [
-          ("partial_cmp", InstanceField.Method (partial_cmp T));
-          ("lt", InstanceField.Method (lt T));
-          ("le", InstanceField.Method (le T));
-          ("ge", InstanceField.Method (ge T));
-          ("gt", InstanceField.Method (gt T))
+          ("partial_cmp", InstanceField.Method (partial_cmp N T));
+          ("lt", InstanceField.Method (lt N T));
+          ("le", InstanceField.Method (le N T));
+          ("ge", InstanceField.Method (ge N T));
+          ("gt", InstanceField.Method (gt N T))
         ].
-  End Impl_core_cmp_PartialOrd_where_core_cmp_PartialOrd_T_for_array_T.
+  End Impl_core_cmp_PartialOrd_where_core_cmp_PartialOrd_T_for_array_N_T.
   
-  Module Impl_core_cmp_Ord_where_core_cmp_Ord_T_for_array_T.
-    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "array") [ T ].
+  Module Impl_core_cmp_Ord_where_core_cmp_Ord_T_for_array_N_T.
+    Definition Self (N : Value.t) (T : Ty.t) : Ty.t := Ty.apply (Ty.path "array") [ N ] [ T ].
     
     (*
         fn cmp(&self, other: &[T; N]) -> Ordering {
             Ord::cmp(&&self[..], &&other[..])
         }
     *)
-    Definition cmp (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [ self; other ] =>
+    Definition cmp
+        (N : Value.t)
+        (T : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      let Self : Ty.t := Self N T in
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.call_closure (|
             M.get_trait_method (|
               "core::cmp::Ord",
-              Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "slice") [ T ] ],
+              Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
               [],
               "cmp",
               []
@@ -1333,7 +1473,7 @@ Module array.
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::ops::index::Index",
-                    Ty.apply (Ty.path "array") [ T ],
+                    Ty.apply (Ty.path "array") [ N ] [ T ],
                     [ Ty.path "core::ops::range::RangeFull" ],
                     "index",
                     []
@@ -1345,7 +1485,7 @@ Module array.
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::ops::index::Index",
-                    Ty.apply (Ty.path "array") [ T ],
+                    Ty.apply (Ty.path "array") [ N ] [ T ],
                     [ Ty.path "core::ops::range::RangeFull" ],
                     "index",
                     []
@@ -1355,49 +1495,55 @@ Module array.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
-      forall (T : Ty.t),
+      forall (N : Value.t) (T : Ty.t),
       M.IsTraitInstance
         "core::cmp::Ord"
-        (Self T)
+        (Self N T)
         (* Trait polymorphic types *) []
-        (* Instance *) [ ("cmp", InstanceField.Method (cmp T)) ].
-  End Impl_core_cmp_Ord_where_core_cmp_Ord_T_for_array_T.
+        (* Instance *) [ ("cmp", InstanceField.Method (cmp N T)) ].
+  End Impl_core_cmp_Ord_where_core_cmp_Ord_T_for_array_N_T.
   
-  Module Impl_core_marker_Copy_where_core_marker_Copy_T_for_array_T.
-    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "array") [ T ].
+  Module Impl_core_marker_Copy_where_core_marker_Copy_T_for_array_N_T.
+    Definition Self (N : Value.t) (T : Ty.t) : Ty.t := Ty.apply (Ty.path "array") [ N ] [ T ].
     
     Axiom Implements :
-      forall (T : Ty.t),
+      forall (N : Value.t) (T : Ty.t),
       M.IsTraitInstance
         "core::marker::Copy"
-        (Self T)
+        (Self N T)
         (* Trait polymorphic types *) []
         (* Instance *) [].
-  End Impl_core_marker_Copy_where_core_marker_Copy_T_for_array_T.
+  End Impl_core_marker_Copy_where_core_marker_Copy_T_for_array_N_T.
   
-  Module Impl_core_clone_Clone_where_core_clone_Clone_T_for_array_T.
-    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "array") [ T ].
+  Module Impl_core_clone_Clone_where_core_clone_Clone_T_for_array_N_T.
+    Definition Self (N : Value.t) (T : Ty.t) : Ty.t := Ty.apply (Ty.path "array") [ N ] [ T ].
     
     (*
         fn clone(&self) -> Self {
             SpecArrayClone::clone(self)
         }
     *)
-    Definition clone (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [ self ] =>
+    Definition clone
+        (N : Value.t)
+        (T : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      let Self : Ty.t := Self N T in
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
             M.get_trait_method (| "core::array::SpecArrayClone", T, [], "clone", [] |),
             [ M.read (| self |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     (*
@@ -1405,10 +1551,16 @@ Module array.
             self.clone_from_slice(other);
         }
     *)
-    Definition clone_from (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [ self; other ] =>
+    Definition clone_from
+        (N : Value.t)
+        (T : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      let Self : Ty.t := Self N T in
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
@@ -1417,7 +1569,7 @@ Module array.
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "slice") [ T ],
+                    Ty.apply (Ty.path "slice") [] [ T ],
                     "clone_from_slice",
                     []
                   |),
@@ -1429,21 +1581,21 @@ Module array.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
-      forall (T : Ty.t),
+      forall (N : Value.t) (T : Ty.t),
       M.IsTraitInstance
         "core::clone::Clone"
-        (Self T)
+        (Self N T)
         (* Trait polymorphic types *) []
         (* Instance *)
         [
-          ("clone", InstanceField.Method (clone T));
-          ("clone_from", InstanceField.Method (clone_from T))
+          ("clone", InstanceField.Method (clone N T));
+          ("clone_from", InstanceField.Method (clone_from N T))
         ].
-  End Impl_core_clone_Clone_where_core_clone_Clone_T_for_array_T.
+  End Impl_core_clone_Clone_where_core_clone_Clone_T_for_array_N_T.
   
   (* Trait *)
   (* Empty module 'SpecArrayClone' *)
@@ -1456,10 +1608,10 @@ Module array.
             from_trusted_iterator(array.iter().cloned())
         }
     *)
-    Definition clone (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition clone (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [ array ] =>
+      match ε, τ, α with
+      | [ N ], [], [ array ] =>
         ltac:(M.monadic
           (let array := M.alloc (| array |) in
           M.call_closure (|
@@ -1469,28 +1621,29 @@ Module array.
                 T;
                 Ty.apply
                   (Ty.path "core::iter::adapters::cloned::Cloned")
-                  [ Ty.apply (Ty.path "core::slice::iter::Iter") [ T ] ]
+                  []
+                  [ Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ] ]
               ]
             |),
             [
               M.call_closure (|
                 M.get_trait_method (|
                   "core::iter::traits::iterator::Iterator",
-                  Ty.apply (Ty.path "core::slice::iter::Iter") [ T ],
+                  Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ],
                   [],
                   "cloned",
                   [ T ]
                 |),
                 [
                   M.call_closure (|
-                    M.get_associated_function (| Ty.apply (Ty.path "slice") [ T ], "iter", [] |),
+                    M.get_associated_function (| Ty.apply (Ty.path "slice") [] [ T ], "iter", [] |),
                     [ (* Unsize *) M.pointer_coercion (M.read (| array |)) ]
                   |)
                 ]
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -1510,14 +1663,14 @@ Module array.
             *array
         }
     *)
-    Definition clone (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition clone (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [ array ] =>
+      match ε, τ, α with
+      | [ N ], [], [ array ] =>
         ltac:(M.monadic
           (let array := M.alloc (| array |) in
           M.read (| M.read (| array |) |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -1529,18 +1682,18 @@ Module array.
         (* Instance *) [ ("clone", InstanceField.Method (clone T)) ].
   End Impl_core_array_SpecArrayClone_where_core_marker_Copy_T_for_T.
   
-  Module Impl_core_default_Default_where_core_default_Default_T_for_array_T.
-    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "array") [ T ].
+  Module Impl_core_default_Default_where_core_default_Default_T_for_array_32_T.
+    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "array") [ Value.Integer 32 ] [ T ].
     
     (*
                 fn default() -> [T; $n] {
                     [$t::default(), $($ts::default()),*]
                 }
     *)
-    Definition default (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition default (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [] =>
+      match ε, τ, α with
+      | [], [], [] =>
         ltac:(M.monadic
           (Value.Array
             [
@@ -1673,7 +1826,7 @@ Module array.
                 []
               |)
             ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -1683,15 +1836,24 @@ Module array.
         (Self T)
         (* Trait polymorphic types *) []
         (* Instance *) [ ("default", InstanceField.Method (default T)) ].
+  End Impl_core_default_Default_where_core_default_Default_T_for_array_32_T.
+  
+  Module Impl_core_default_Default_where_core_default_Default_T_for_array_expr_T.
+    Definition Self (T : Ty.t) : Ty.t :=
+      Ty.apply
+        (Ty.path "array")
+        [ M.unevaluated_const (M.get_constant (| "core::array_discriminant" |)) ]
+        [ T ].
+    
     (*
                 fn default() -> [T; $n] {
                     [$t::default(), $($ts::default()),*]
                 }
     *)
-    Definition default (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition default (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [] =>
+      match ε, τ, α with
+      | [], [], [] =>
         ltac:(M.monadic
           (Value.Array
             [
@@ -1820,7 +1982,7 @@ Module array.
                 []
               |)
             ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -1835,10 +1997,10 @@ Module array.
                     [$t::default(), $($ts::default()),*]
                 }
     *)
-    Definition default (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition default (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [] =>
+      match ε, τ, α with
+      | [], [], [] =>
         ltac:(M.monadic
           (Value.Array
             [
@@ -1963,7 +2125,7 @@ Module array.
                 []
               |)
             ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -1978,10 +2140,10 @@ Module array.
                     [$t::default(), $($ts::default()),*]
                 }
     *)
-    Definition default (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition default (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [] =>
+      match ε, τ, α with
+      | [], [], [] =>
         ltac:(M.monadic
           (Value.Array
             [
@@ -2102,7 +2264,7 @@ Module array.
                 []
               |)
             ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -2117,10 +2279,10 @@ Module array.
                     [$t::default(), $($ts::default()),*]
                 }
     *)
-    Definition default (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition default (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [] =>
+      match ε, τ, α with
+      | [], [], [] =>
         ltac:(M.monadic
           (Value.Array
             [
@@ -2237,7 +2399,7 @@ Module array.
                 []
               |)
             ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -2252,10 +2414,10 @@ Module array.
                     [$t::default(), $($ts::default()),*]
                 }
     *)
-    Definition default (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition default (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [] =>
+      match ε, τ, α with
+      | [], [], [] =>
         ltac:(M.monadic
           (Value.Array
             [
@@ -2368,7 +2530,7 @@ Module array.
                 []
               |)
             ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -2383,10 +2545,10 @@ Module array.
                     [$t::default(), $($ts::default()),*]
                 }
     *)
-    Definition default (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition default (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [] =>
+      match ε, τ, α with
+      | [], [], [] =>
         ltac:(M.monadic
           (Value.Array
             [
@@ -2495,7 +2657,7 @@ Module array.
                 []
               |)
             ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -2510,10 +2672,10 @@ Module array.
                     [$t::default(), $($ts::default()),*]
                 }
     *)
-    Definition default (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition default (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [] =>
+      match ε, τ, α with
+      | [], [], [] =>
         ltac:(M.monadic
           (Value.Array
             [
@@ -2618,7 +2780,7 @@ Module array.
                 []
               |)
             ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -2633,10 +2795,10 @@ Module array.
                     [$t::default(), $($ts::default()),*]
                 }
     *)
-    Definition default (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition default (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [] =>
+      match ε, τ, α with
+      | [], [], [] =>
         ltac:(M.monadic
           (Value.Array
             [
@@ -2737,7 +2899,7 @@ Module array.
                 []
               |)
             ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -2752,10 +2914,10 @@ Module array.
                     [$t::default(), $($ts::default()),*]
                 }
     *)
-    Definition default (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition default (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [] =>
+      match ε, τ, α with
+      | [], [], [] =>
         ltac:(M.monadic
           (Value.Array
             [
@@ -2852,7 +3014,7 @@ Module array.
                 []
               |)
             ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -2867,10 +3029,10 @@ Module array.
                     [$t::default(), $($ts::default()),*]
                 }
     *)
-    Definition default (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition default (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [] =>
+      match ε, τ, α with
+      | [], [], [] =>
         ltac:(M.monadic
           (Value.Array
             [
@@ -2963,7 +3125,7 @@ Module array.
                 []
               |)
             ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -2978,10 +3140,10 @@ Module array.
                     [$t::default(), $($ts::default()),*]
                 }
     *)
-    Definition default (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition default (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [] =>
+      match ε, τ, α with
+      | [], [], [] =>
         ltac:(M.monadic
           (Value.Array
             [
@@ -3070,7 +3232,7 @@ Module array.
                 []
               |)
             ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -3085,10 +3247,10 @@ Module array.
                     [$t::default(), $($ts::default()),*]
                 }
     *)
-    Definition default (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition default (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [] =>
+      match ε, τ, α with
+      | [], [], [] =>
         ltac:(M.monadic
           (Value.Array
             [
@@ -3173,7 +3335,7 @@ Module array.
                 []
               |)
             ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -3188,10 +3350,10 @@ Module array.
                     [$t::default(), $($ts::default()),*]
                 }
     *)
-    Definition default (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition default (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [] =>
+      match ε, τ, α with
+      | [], [], [] =>
         ltac:(M.monadic
           (Value.Array
             [
@@ -3272,7 +3434,7 @@ Module array.
                 []
               |)
             ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -3287,10 +3449,10 @@ Module array.
                     [$t::default(), $($ts::default()),*]
                 }
     *)
-    Definition default (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition default (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [] =>
+      match ε, τ, α with
+      | [], [], [] =>
         ltac:(M.monadic
           (Value.Array
             [
@@ -3367,7 +3529,7 @@ Module array.
                 []
               |)
             ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -3382,10 +3544,10 @@ Module array.
                     [$t::default(), $($ts::default()),*]
                 }
     *)
-    Definition default (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition default (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [] =>
+      match ε, τ, α with
+      | [], [], [] =>
         ltac:(M.monadic
           (Value.Array
             [
@@ -3458,7 +3620,7 @@ Module array.
                 []
               |)
             ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -3473,10 +3635,10 @@ Module array.
                     [$t::default(), $($ts::default()),*]
                 }
     *)
-    Definition default (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition default (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [] =>
+      match ε, τ, α with
+      | [], [], [] =>
         ltac:(M.monadic
           (Value.Array
             [
@@ -3545,7 +3707,7 @@ Module array.
                 []
               |)
             ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -3560,10 +3722,10 @@ Module array.
                     [$t::default(), $($ts::default()),*]
                 }
     *)
-    Definition default (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition default (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [] =>
+      match ε, τ, α with
+      | [], [], [] =>
         ltac:(M.monadic
           (Value.Array
             [
@@ -3628,7 +3790,7 @@ Module array.
                 []
               |)
             ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -3643,10 +3805,10 @@ Module array.
                     [$t::default(), $($ts::default()),*]
                 }
     *)
-    Definition default (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition default (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [] =>
+      match ε, τ, α with
+      | [], [], [] =>
         ltac:(M.monadic
           (Value.Array
             [
@@ -3707,7 +3869,7 @@ Module array.
                 []
               |)
             ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -3722,10 +3884,10 @@ Module array.
                     [$t::default(), $($ts::default()),*]
                 }
     *)
-    Definition default (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition default (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [] =>
+      match ε, τ, α with
+      | [], [], [] =>
         ltac:(M.monadic
           (Value.Array
             [
@@ -3782,7 +3944,7 @@ Module array.
                 []
               |)
             ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -3797,10 +3959,10 @@ Module array.
                     [$t::default(), $($ts::default()),*]
                 }
     *)
-    Definition default (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition default (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [] =>
+      match ε, τ, α with
+      | [], [], [] =>
         ltac:(M.monadic
           (Value.Array
             [
@@ -3853,7 +4015,7 @@ Module array.
                 []
               |)
             ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -3868,10 +4030,10 @@ Module array.
                     [$t::default(), $($ts::default()),*]
                 }
     *)
-    Definition default (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition default (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [] =>
+      match ε, τ, α with
+      | [], [], [] =>
         ltac:(M.monadic
           (Value.Array
             [
@@ -3920,7 +4082,7 @@ Module array.
                 []
               |)
             ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -3935,10 +4097,10 @@ Module array.
                     [$t::default(), $($ts::default()),*]
                 }
     *)
-    Definition default (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition default (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [] =>
+      match ε, τ, α with
+      | [], [], [] =>
         ltac:(M.monadic
           (Value.Array
             [
@@ -3983,7 +4145,7 @@ Module array.
                 []
               |)
             ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -3998,10 +4160,10 @@ Module array.
                     [$t::default(), $($ts::default()),*]
                 }
     *)
-    Definition default (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition default (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [] =>
+      match ε, τ, α with
+      | [], [], [] =>
         ltac:(M.monadic
           (Value.Array
             [
@@ -4042,7 +4204,7 @@ Module array.
                 []
               |)
             ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -4057,10 +4219,10 @@ Module array.
                     [$t::default(), $($ts::default()),*]
                 }
     *)
-    Definition default (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition default (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [] =>
+      match ε, τ, α with
+      | [], [], [] =>
         ltac:(M.monadic
           (Value.Array
             [
@@ -4097,7 +4259,7 @@ Module array.
                 []
               |)
             ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -4112,10 +4274,10 @@ Module array.
                     [$t::default(), $($ts::default()),*]
                 }
     *)
-    Definition default (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition default (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [] =>
+      match ε, τ, α with
+      | [], [], [] =>
         ltac:(M.monadic
           (Value.Array
             [
@@ -4148,7 +4310,7 @@ Module array.
                 []
               |)
             ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -4163,10 +4325,10 @@ Module array.
                     [$t::default(), $($ts::default()),*]
                 }
     *)
-    Definition default (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition default (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [] =>
+      match ε, τ, α with
+      | [], [], [] =>
         ltac:(M.monadic
           (Value.Array
             [
@@ -4195,7 +4357,7 @@ Module array.
                 []
               |)
             ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -4210,10 +4372,10 @@ Module array.
                     [$t::default(), $($ts::default()),*]
                 }
     *)
-    Definition default (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition default (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [] =>
+      match ε, τ, α with
+      | [], [], [] =>
         ltac:(M.monadic
           (Value.Array
             [
@@ -4238,7 +4400,7 @@ Module array.
                 []
               |)
             ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -4253,10 +4415,10 @@ Module array.
                     [$t::default(), $($ts::default()),*]
                 }
     *)
-    Definition default (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition default (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [] =>
+      match ε, τ, α with
+      | [], [], [] =>
         ltac:(M.monadic
           (Value.Array
             [
@@ -4277,7 +4439,7 @@ Module array.
                 []
               |)
             ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -4292,10 +4454,10 @@ Module array.
                     [$t::default(), $($ts::default()),*]
                 }
     *)
-    Definition default (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition default (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [] =>
+      match ε, τ, α with
+      | [], [], [] =>
         ltac:(M.monadic
           (Value.Array
             [
@@ -4312,7 +4474,7 @@ Module array.
                 []
               |)
             ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -4327,10 +4489,10 @@ Module array.
                     [$t::default(), $($ts::default()),*]
                 }
     *)
-    Definition default (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition default (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [] =>
+      match ε, τ, α with
+      | [], [], [] =>
         ltac:(M.monadic
           (Value.Array
             [
@@ -4343,7 +4505,7 @@ Module array.
                 []
               |)
             ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -4358,10 +4520,10 @@ Module array.
                     [$t::default(), $($ts::default()),*]
                 }
     *)
-    Definition default (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition default (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [] =>
+      match ε, τ, α with
+      | [], [], [] =>
         ltac:(M.monadic
           (Value.Array
             [
@@ -4370,7 +4532,7 @@ Module array.
                 []
               |)
             ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -4380,7 +4542,7 @@ Module array.
         (Self T)
         (* Trait polymorphic types *) []
         (* Instance *) [ ("default", InstanceField.Method (default T)) ].
-  End Impl_core_default_Default_where_core_default_Default_T_for_array_T.
+  End Impl_core_default_Default_where_core_default_Default_T_for_array_expr_T.
   
   
   
@@ -4412,14 +4574,20 @@ Module array.
   
   
   
-  
-  Module Impl_core_default_Default_for_array_T.
-    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "array") [ T ].
+  Module Impl_core_default_Default_for_array_expr_T.
+    Definition Self (T : Ty.t) : Ty.t :=
+      Ty.apply
+        (Ty.path "array")
+        [ M.unevaluated_const (M.get_constant (| "core::array_discriminant" |)) ]
+        [ T ].
     
     (*             fn default() -> [T; $n] { [] } *)
-    Definition default (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition default (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
-      match τ, α with | [], [] => ltac:(M.monadic (Value.Array [])) | _, _ => M.impossible end.
+      match ε, τ, α with
+      | [], [], [] => ltac:(M.monadic (Value.Array []))
+      | _, _, _ => M.impossible
+      end.
     
     Axiom Implements :
       forall (T : Ty.t),
@@ -4428,10 +4596,10 @@ Module array.
         (Self T)
         (* Trait polymorphic types *) []
         (* Instance *) [ ("default", InstanceField.Method (default T)) ].
-  End Impl_core_default_Default_for_array_T.
+  End Impl_core_default_Default_for_array_expr_T.
   
-  Module Impl_array_T.
-    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "array") [ T ].
+  Module Impl_array_N_T.
+    Definition Self (N : Value.t) (T : Ty.t) : Ty.t := Ty.apply (Ty.path "array") [ N ] [ T ].
     
     (*
         pub fn map<F, U>(self, f: F) -> [U; N]
@@ -4441,10 +4609,16 @@ Module array.
             self.try_map(NeverShortCircuit::wrap_mut_1(f)).0
         }
     *)
-    Definition map (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      let Self : Ty.t := Self T in
-      match τ, α with
-      | [ F; U ], [ self; f ] =>
+    Definition map
+        (N : Value.t)
+        (T : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      let Self : Ty.t := Self N T in
+      match ε, τ, α with
+      | [], [ F; U ], [ self; f ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
@@ -4453,18 +4627,18 @@ Module array.
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "array") [ T ],
+                    Ty.apply (Ty.path "array") [ N ] [ T ],
                     "try_map",
                     [
                       Ty.associated;
-                      Ty.apply (Ty.path "core::ops::try_trait::NeverShortCircuit") [ U ]
+                      Ty.apply (Ty.path "core::ops::try_trait::NeverShortCircuit") [] [ U ]
                     ]
                   |),
                   [
                     M.read (| self |);
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "core::ops::try_trait::NeverShortCircuit") [ U ],
+                        Ty.apply (Ty.path "core::ops::try_trait::NeverShortCircuit") [] [ U ],
                         "wrap_mut_1",
                         [ T; F ]
                       |),
@@ -4477,10 +4651,12 @@ Module array.
               0
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
-    Axiom AssociatedFunction_map : forall (T : Ty.t), M.IsAssociatedFunction (Self T) "map" (map T).
+    Axiom AssociatedFunction_map :
+      forall (N : Value.t) (T : Ty.t),
+      M.IsAssociatedFunction (Self N T) "map" (map N T).
     
     (*
         pub fn try_map<F, R>(self, f: F) -> ChangeOutputType<R, [R::Output; N]>
@@ -4492,10 +4668,16 @@ Module array.
             drain_array_with(self, |iter| try_from_trusted_iterator(iter.map(f)))
         }
     *)
-    Definition try_map (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      let Self : Ty.t := Self T in
-      match τ, α with
-      | [ F; R ], [ self; f ] =>
+    Definition try_map
+        (N : Value.t)
+        (T : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      let Self : Ty.t := Self N T in
+      match ε, τ, α with
+      | [], [ F; R ], [ self; f ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
@@ -4506,7 +4688,7 @@ Module array.
                 T;
                 Ty.associated;
                 Ty.function
-                  [ Ty.tuple [ Ty.apply (Ty.path "core::array::drain::Drain") [ T ] ] ]
+                  [ Ty.tuple [ Ty.apply (Ty.path "core::array::drain::Drain") [] [ T ] ] ]
                   Ty.associated
               ]
             |),
@@ -4531,14 +4713,15 @@ Module array.
                                     R;
                                     Ty.apply
                                       (Ty.path "core::iter::adapters::map::Map")
-                                      [ Ty.apply (Ty.path "core::array::drain::Drain") [ T ]; F ]
+                                      []
+                                      [ Ty.apply (Ty.path "core::array::drain::Drain") [] [ T ]; F ]
                                   ]
                                 |),
                                 [
                                   M.call_closure (|
                                     M.get_trait_method (|
                                       "core::iter::traits::iterator::Iterator",
-                                      Ty.apply (Ty.path "core::array::drain::Drain") [ T ],
+                                      Ty.apply (Ty.path "core::array::drain::Drain") [] [ T ],
                                       [],
                                       "map",
                                       [ R; F ]
@@ -4553,132 +4736,169 @@ Module array.
                     end))
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_try_map :
-      forall (T : Ty.t),
-      M.IsAssociatedFunction (Self T) "try_map" (try_map T).
+      forall (N : Value.t) (T : Ty.t),
+      M.IsAssociatedFunction (Self N T) "try_map" (try_map N T).
     
     (*
         pub const fn as_slice(&self) -> &[T] {
             self
         }
     *)
-    Definition as_slice (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [ self ] =>
+    Definition as_slice
+        (N : Value.t)
+        (T : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      let Self : Ty.t := Self N T in
+      match ε, τ, α with
+      | [ host ], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           (* Unsize *) M.pointer_coercion (M.read (| self |))))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_as_slice :
-      forall (T : Ty.t),
-      M.IsAssociatedFunction (Self T) "as_slice" (as_slice T).
+      forall (N : Value.t) (T : Ty.t),
+      M.IsAssociatedFunction (Self N T) "as_slice" (as_slice N T).
     
     (*
         pub fn as_mut_slice(&mut self) -> &mut [T] {
             self
         }
     *)
-    Definition as_mut_slice (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [ self ] =>
+    Definition as_mut_slice
+        (N : Value.t)
+        (T : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      let Self : Ty.t := Self N T in
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           (* Unsize *) M.pointer_coercion (M.read (| self |))))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_as_mut_slice :
-      forall (T : Ty.t),
-      M.IsAssociatedFunction (Self T) "as_mut_slice" (as_mut_slice T).
+      forall (N : Value.t) (T : Ty.t),
+      M.IsAssociatedFunction (Self N T) "as_mut_slice" (as_mut_slice N T).
     
     (*
         pub fn each_ref(&self) -> [&T; N] {
             from_trusted_iterator(self.iter())
         }
     *)
-    Definition each_ref (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [ self ] =>
-        ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          M.call_closure (|
-            M.get_function (|
-              "core::array::from_trusted_iterator",
-              [ Ty.apply (Ty.path "&") [ T ]; Ty.apply (Ty.path "core::slice::iter::Iter") [ T ] ]
-            |),
-            [
-              M.call_closure (|
-                M.get_associated_function (| Ty.apply (Ty.path "slice") [ T ], "iter", [] |),
-                [ (* Unsize *) M.pointer_coercion (M.read (| self |)) ]
-              |)
-            ]
-          |)))
-      | _, _ => M.impossible
-      end.
-    
-    Axiom AssociatedFunction_each_ref :
-      forall (T : Ty.t),
-      M.IsAssociatedFunction (Self T) "each_ref" (each_ref T).
-    
-    (*
-        pub fn each_mut(&mut self) -> [&mut T; N] {
-            from_trusted_iterator(self.iter_mut())
-        }
-    *)
-    Definition each_mut (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [ self ] =>
+    Definition each_ref
+        (N : Value.t)
+        (T : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      let Self : Ty.t := Self N T in
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
             M.get_function (|
               "core::array::from_trusted_iterator",
               [
-                Ty.apply (Ty.path "&mut") [ T ];
-                Ty.apply (Ty.path "core::slice::iter::IterMut") [ T ]
+                Ty.apply (Ty.path "&") [] [ T ];
+                Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ]
               ]
             |),
             [
               M.call_closure (|
-                M.get_associated_function (| Ty.apply (Ty.path "slice") [ T ], "iter_mut", [] |),
+                M.get_associated_function (| Ty.apply (Ty.path "slice") [] [ T ], "iter", [] |),
                 [ (* Unsize *) M.pointer_coercion (M.read (| self |)) ]
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
+      end.
+    
+    Axiom AssociatedFunction_each_ref :
+      forall (N : Value.t) (T : Ty.t),
+      M.IsAssociatedFunction (Self N T) "each_ref" (each_ref N T).
+    
+    (*
+        pub fn each_mut(&mut self) -> [&mut T; N] {
+            from_trusted_iterator(self.iter_mut())
+        }
+    *)
+    Definition each_mut
+        (N : Value.t)
+        (T : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      let Self : Ty.t := Self N T in
+      match ε, τ, α with
+      | [], [], [ self ] =>
+        ltac:(M.monadic
+          (let self := M.alloc (| self |) in
+          M.call_closure (|
+            M.get_function (|
+              "core::array::from_trusted_iterator",
+              [
+                Ty.apply (Ty.path "&mut") [] [ T ];
+                Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ]
+              ]
+            |),
+            [
+              M.call_closure (|
+                M.get_associated_function (| Ty.apply (Ty.path "slice") [] [ T ], "iter_mut", [] |),
+                [ (* Unsize *) M.pointer_coercion (M.read (| self |)) ]
+              |)
+            ]
+          |)))
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_each_mut :
-      forall (T : Ty.t),
-      M.IsAssociatedFunction (Self T) "each_mut" (each_mut T).
+      forall (N : Value.t) (T : Ty.t),
+      M.IsAssociatedFunction (Self N T) "each_mut" (each_mut N T).
     
     (*
         pub fn split_array_ref<const M: usize>(&self) -> (&[T; M], &[T]) {
             (&self[..]).split_array_ref::<M>()
         }
     *)
-    Definition split_array_ref (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [ self ] =>
+    Definition split_array_ref
+        (N : Value.t)
+        (T : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      let Self : Ty.t := Self N T in
+      match ε, τ, α with
+      | [ M_ ], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.apply (Ty.path "slice") [ T ], "split_array_ref", [] |),
+            M.get_associated_function (|
+              Ty.apply (Ty.path "slice") [] [ T ],
+              "split_array_ref",
+              []
+            |),
             [
               M.call_closure (|
                 M.get_trait_method (|
                   "core::ops::index::Index",
-                  Ty.apply (Ty.path "array") [ T ],
+                  Ty.apply (Ty.path "array") [ N ] [ T ],
                   [ Ty.path "core::ops::range::RangeFull" ],
                   "index",
                   []
@@ -4687,31 +4907,41 @@ Module array.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_split_array_ref :
-      forall (T : Ty.t),
-      M.IsAssociatedFunction (Self T) "split_array_ref" (split_array_ref T).
+      forall (N : Value.t) (T : Ty.t),
+      M.IsAssociatedFunction (Self N T) "split_array_ref" (split_array_ref N T).
     
     (*
         pub fn split_array_mut<const M: usize>(&mut self) -> (&mut [T; M], &mut [T]) {
             (&mut self[..]).split_array_mut::<M>()
         }
     *)
-    Definition split_array_mut (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [ self ] =>
+    Definition split_array_mut
+        (N : Value.t)
+        (T : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      let Self : Ty.t := Self N T in
+      match ε, τ, α with
+      | [ M_ ], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_associated_function (| Ty.apply (Ty.path "slice") [ T ], "split_array_mut", [] |),
+            M.get_associated_function (|
+              Ty.apply (Ty.path "slice") [] [ T ],
+              "split_array_mut",
+              []
+            |),
             [
               M.call_closure (|
                 M.get_trait_method (|
                   "core::ops::index::IndexMut",
-                  Ty.apply (Ty.path "array") [ T ],
+                  Ty.apply (Ty.path "array") [ N ] [ T ],
                   [ Ty.path "core::ops::range::RangeFull" ],
                   "index_mut",
                   []
@@ -4720,27 +4950,33 @@ Module array.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_split_array_mut :
-      forall (T : Ty.t),
-      M.IsAssociatedFunction (Self T) "split_array_mut" (split_array_mut T).
+      forall (N : Value.t) (T : Ty.t),
+      M.IsAssociatedFunction (Self N T) "split_array_mut" (split_array_mut N T).
     
     (*
         pub fn rsplit_array_ref<const M: usize>(&self) -> (&[T], &[T; M]) {
             (&self[..]).rsplit_array_ref::<M>()
         }
     *)
-    Definition rsplit_array_ref (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [ self ] =>
+    Definition rsplit_array_ref
+        (N : Value.t)
+        (T : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      let Self : Ty.t := Self N T in
+      match ε, τ, α with
+      | [ M_ ], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
             M.get_associated_function (|
-              Ty.apply (Ty.path "slice") [ T ],
+              Ty.apply (Ty.path "slice") [] [ T ],
               "rsplit_array_ref",
               []
             |),
@@ -4748,7 +4984,7 @@ Module array.
               M.call_closure (|
                 M.get_trait_method (|
                   "core::ops::index::Index",
-                  Ty.apply (Ty.path "array") [ T ],
+                  Ty.apply (Ty.path "array") [ N ] [ T ],
                   [ Ty.path "core::ops::range::RangeFull" ],
                   "index",
                   []
@@ -4757,27 +4993,33 @@ Module array.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_rsplit_array_ref :
-      forall (T : Ty.t),
-      M.IsAssociatedFunction (Self T) "rsplit_array_ref" (rsplit_array_ref T).
+      forall (N : Value.t) (T : Ty.t),
+      M.IsAssociatedFunction (Self N T) "rsplit_array_ref" (rsplit_array_ref N T).
     
     (*
         pub fn rsplit_array_mut<const M: usize>(&mut self) -> (&mut [T], &mut [T; M]) {
             (&mut self[..]).rsplit_array_mut::<M>()
         }
     *)
-    Definition rsplit_array_mut (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [ self ] =>
+    Definition rsplit_array_mut
+        (N : Value.t)
+        (T : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      let Self : Ty.t := Self N T in
+      match ε, τ, α with
+      | [ M_ ], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
             M.get_associated_function (|
-              Ty.apply (Ty.path "slice") [ T ],
+              Ty.apply (Ty.path "slice") [] [ T ],
               "rsplit_array_mut",
               []
             |),
@@ -4785,7 +5027,7 @@ Module array.
               M.call_closure (|
                 M.get_trait_method (|
                   "core::ops::index::IndexMut",
-                  Ty.apply (Ty.path "array") [ T ],
+                  Ty.apply (Ty.path "array") [ N ] [ T ],
                   [ Ty.path "core::ops::range::RangeFull" ],
                   "index_mut",
                   []
@@ -4794,22 +5036,22 @@ Module array.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_rsplit_array_mut :
-      forall (T : Ty.t),
-      M.IsAssociatedFunction (Self T) "rsplit_array_mut" (rsplit_array_mut T).
-  End Impl_array_T.
+      forall (N : Value.t) (T : Ty.t),
+      M.IsAssociatedFunction (Self N T) "rsplit_array_mut" (rsplit_array_mut N T).
+  End Impl_array_N_T.
   
   (*
   fn from_trusted_iterator<T, const N: usize>(iter: impl UncheckedIterator<Item = T>) -> [T; N] {
       try_from_trusted_iterator(iter.map(NeverShortCircuit)).0
   }
   *)
-  Definition from_trusted_iterator (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [ T; impl_UncheckedIterator_Item___T_ ], [ iter ] =>
+  Definition from_trusted_iterator (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [ N ], [ T; impl_UncheckedIterator_Item___T_ ], [ iter ] =>
       ltac:(M.monadic
         (let iter := M.alloc (| iter |) in
         M.read (|
@@ -4820,14 +5062,15 @@ Module array.
                   "core::array::try_from_trusted_iterator",
                   [
                     T;
-                    Ty.apply (Ty.path "core::ops::try_trait::NeverShortCircuit") [ T ];
+                    Ty.apply (Ty.path "core::ops::try_trait::NeverShortCircuit") [] [ T ];
                     Ty.apply
                       (Ty.path "core::iter::adapters::map::Map")
+                      []
                       [
                         impl_UncheckedIterator_Item___T_;
                         Ty.function
                           [ T ]
-                          (Ty.apply (Ty.path "core::ops::try_trait::NeverShortCircuit") [ T ])
+                          (Ty.apply (Ty.path "core::ops::try_trait::NeverShortCircuit") [] [ T ])
                       ]
                   ]
                 |),
@@ -4839,10 +5082,10 @@ Module array.
                       [],
                       "map",
                       [
-                        Ty.apply (Ty.path "core::ops::try_trait::NeverShortCircuit") [ T ];
+                        Ty.apply (Ty.path "core::ops::try_trait::NeverShortCircuit") [] [ T ];
                         Ty.function
                           [ T ]
-                          (Ty.apply (Ty.path "core::ops::try_trait::NeverShortCircuit") [ T ])
+                          (Ty.apply (Ty.path "core::ops::try_trait::NeverShortCircuit") [] [ T ])
                       ]
                     |),
                     [
@@ -4857,7 +5100,7 @@ Module array.
             0
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Function_from_trusted_iterator :
@@ -4883,9 +5126,9 @@ Module array.
       try_from_fn(next(iter))
   }
   *)
-  Definition try_from_trusted_iterator (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [ T; R; impl_UncheckedIterator_Item___R_ ], [ iter ] =>
+  Definition try_from_trusted_iterator (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [ N ], [ T; R; impl_UncheckedIterator_Item___R_ ], [ iter ] =>
       ltac:(M.monadic
         (let iter := M.alloc (| iter |) in
         M.read (|
@@ -4945,7 +5188,7 @@ Module array.
             |)
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Function_try_from_trusted_iterator :
@@ -4961,9 +5204,9 @@ Module array.
             }
         }
     *)
-    Definition next (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ T; impl_UncheckedIterator_Item___T_ ], [ iter ] =>
+    Definition next (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ T; impl_UncheckedIterator_Item___T_ ], [ iter ] =>
         ltac:(M.monadic
           (let iter := M.alloc (| iter |) in
           M.closure
@@ -4990,7 +5233,7 @@ Module array.
                   |)
                 | _ => M.impossible (||)
                 end))))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_next : M.IsFunction "core::array::try_from_trusted_iterator::next" next.
@@ -5021,9 +5264,9 @@ Module array.
       ControlFlow::Continue(())
   }
   *)
-  Definition try_from_fn_erased (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [ T; R; impl_FnMut_usize__arrow_R ], [ buffer; generator ] =>
+  Definition try_from_fn_erased (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [ T; R; impl_FnMut_usize__arrow_R ], [ buffer; generator ] =>
       ltac:(M.monadic
         (let buffer := M.alloc (| buffer |) in
         let generator := M.alloc (| generator |) in
@@ -5059,9 +5302,11 @@ Module array.
                                       M.get_associated_function (|
                                         Ty.apply
                                           (Ty.path "slice")
+                                          []
                                           [
                                             Ty.apply
                                               (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                              []
                                               [ T ]
                                           ],
                                         "len",
@@ -5089,6 +5334,7 @@ Module array.
                                         "core::ops::try_trait::Try",
                                         Ty.apply
                                           (Ty.path "core::ops::control_flow::ControlFlow")
+                                          []
                                           [ Ty.associated; T ],
                                         [],
                                         "branch",
@@ -5151,11 +5397,13 @@ Module array.
                                                     Ty.apply
                                                       (Ty.path
                                                         "core::ops::control_flow::ControlFlow")
+                                                      []
                                                       [ Ty.associated; Ty.tuple [] ],
                                                     [
                                                       Ty.apply
                                                         (Ty.path
                                                           "core::ops::control_flow::ControlFlow")
+                                                        []
                                                         [
                                                           Ty.associated;
                                                           Ty.path "core::convert::Infallible"
@@ -5187,7 +5435,7 @@ Module array.
                               M.alloc (|
                                 M.call_closure (|
                                   M.get_associated_function (|
-                                    Ty.apply (Ty.path "core::array::Guard") [ T ],
+                                    Ty.apply (Ty.path "core::array::Guard") [] [ T ],
                                     "push_unchecked",
                                     []
                                   |),
@@ -5214,7 +5462,7 @@ Module array.
                   M.call_closure (|
                     M.get_function (|
                       "core::mem::forget",
-                      [ Ty.apply (Ty.path "core::array::Guard") [ T ] ]
+                      [ Ty.apply (Ty.path "core::array::Guard") [] [ T ] ]
                     |),
                     [ M.read (| guard |) ]
                   |)
@@ -5226,7 +5474,7 @@ Module array.
               |)
             |)))
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Function_try_from_fn_erased :
@@ -5235,23 +5483,26 @@ Module array.
   (* StructRecord
     {
       name := "Guard";
+      const_params := [];
       ty_params := [ "T" ];
       fields :=
         [
           ("array_mut",
             Ty.apply
               (Ty.path "&mut")
+              []
               [
                 Ty.apply
                   (Ty.path "slice")
-                  [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ] ]
+                  []
+                  [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ]
               ]);
           ("initialized", Ty.path "usize")
         ];
     } *)
   
   Module Impl_core_array_Guard_T.
-    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::array::Guard") [ T ].
+    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::array::Guard") [] [ T ].
     
     (*
         pub unsafe fn push_unchecked(&mut self, item: T) {
@@ -5264,10 +5515,15 @@ Module array.
             }
         }
     *)
-    Definition push_unchecked (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition push_unchecked
+        (T : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [ self; item ] =>
+      match ε, τ, α with
+      | [], [], [ self; item ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let item := M.alloc (| item |) in
@@ -5276,7 +5532,7 @@ Module array.
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ],
+                    Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ],
                     "write",
                     []
                   |),
@@ -5285,7 +5541,8 @@ Module array.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "slice")
-                          [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ] ],
+                          []
+                          [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ],
                         "get_unchecked_mut",
                         [ Ty.path "usize" ]
                       |),
@@ -5333,7 +5590,7 @@ Module array.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_push_unchecked :
@@ -5342,7 +5599,7 @@ Module array.
   End Impl_core_array_Guard_T.
   
   Module Impl_core_ops_drop_Drop_for_core_array_Guard_T.
-    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::array::Guard") [ T ].
+    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::array::Guard") [] [ T ].
     
     (*
         fn drop(&mut self) {
@@ -5356,10 +5613,10 @@ Module array.
             }
         }
     *)
-    Definition drop (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition drop (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
-      match τ, α with
-      | [], [ self ] =>
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -5393,9 +5650,11 @@ Module array.
                                             M.get_associated_function (|
                                               Ty.apply
                                                 (Ty.path "slice")
+                                                []
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                                    []
                                                     [ T ]
                                                 ],
                                               "len",
@@ -5442,12 +5701,12 @@ Module array.
                 M.call_closure (|
                   M.get_function (|
                     "core::ptr::drop_in_place",
-                    [ Ty.apply (Ty.path "slice") [ T ] ]
+                    [ Ty.apply (Ty.path "slice") [] [ T ] ]
                   |),
                   [
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ],
+                        Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ],
                         "slice_assume_init_mut",
                         []
                       |),
@@ -5456,9 +5715,12 @@ Module array.
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "slice")
-                              [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ] ],
+                              []
+                              [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]
+                              ],
                             "get_unchecked_mut",
-                            [ Ty.apply (Ty.path "core::ops::range::RangeTo") [ Ty.path "usize" ] ]
+                            [ Ty.apply (Ty.path "core::ops::range::RangeTo") [] [ Ty.path "usize" ]
+                            ]
                           |),
                           [
                             M.read (|
@@ -5489,7 +5751,7 @@ Module array.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Implements :
@@ -5519,9 +5781,9 @@ Module array.
       }
   }
   *)
-  Definition iter_next_chunk (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [ T; impl_Iterator_Item___T_ ], [ iter ] =>
+  Definition iter_next_chunk (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [ N ], [ T; impl_Iterator_Item___T_ ], [ iter ] =>
       ltac:(M.monadic
         (let iter := M.alloc (| iter |) in
         M.read (|
@@ -5529,7 +5791,7 @@ Module array.
             M.alloc (|
               M.call_closure (|
                 M.get_associated_function (|
-                  Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ],
+                  Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ],
                   "uninit_array",
                   []
                 |),
@@ -5559,7 +5821,7 @@ Module array.
                       [
                         M.call_closure (|
                           M.get_associated_function (|
-                            Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ],
+                            Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ],
                             "array_assume_init",
                             []
                           |),
@@ -5578,7 +5840,7 @@ Module array.
                       [
                         M.call_closure (|
                           M.get_associated_function (|
-                            Ty.apply (Ty.path "core::array::iter::IntoIter") [ T ],
+                            Ty.apply (Ty.path "core::array::iter::IntoIter") [ N ] [ T ],
                             "new_unchecked",
                             []
                           |),
@@ -5594,7 +5856,7 @@ Module array.
             ]
           |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Function_iter_next_chunk : M.IsFunction "core::array::iter_next_chunk" iter_next_chunk.
@@ -5622,9 +5884,9 @@ Module array.
       Ok(())
   }
   *)
-  Definition iter_next_chunk_erased (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [ T; impl_Iterator_Item___T_ ], [ buffer; iter ] =>
+  Definition iter_next_chunk_erased (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [ T; impl_Iterator_Item___T_ ], [ buffer; iter ] =>
       ltac:(M.monadic
         (let buffer := M.alloc (| buffer |) in
         let iter := M.alloc (| iter |) in
@@ -5658,9 +5920,11 @@ Module array.
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "slice")
+                                      []
                                       [
                                         Ty.apply
                                           (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                          []
                                           [ T ]
                                       ],
                                     "len",
@@ -5706,7 +5970,7 @@ Module array.
                                   M.alloc (|
                                     M.call_closure (|
                                       M.get_associated_function (|
-                                        Ty.apply (Ty.path "core::array::Guard") [ T ],
+                                        Ty.apply (Ty.path "core::array::Guard") [] [ T ],
                                         "push_unchecked",
                                         []
                                       |),
@@ -5735,14 +5999,14 @@ Module array.
               M.call_closure (|
                 M.get_function (|
                   "core::mem::forget",
-                  [ Ty.apply (Ty.path "core::array::Guard") [ T ] ]
+                  [ Ty.apply (Ty.path "core::array::Guard") [] [ T ] ]
                 |),
                 [ M.read (| guard |) ]
               |)
             |) in
           M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Function_iter_next_chunk_erased :

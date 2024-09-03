@@ -6,9 +6,14 @@ Module iter.
     Module unchecked_iterator.
       (* Trait *)
       Module UncheckedIterator.
-        Definition next_unchecked (Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self ] =>
+        Definition next_unchecked
+            (Self : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
@@ -28,7 +33,7 @@ Module iter.
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "core::option::Option") [ Ty.associated ],
+                      Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ],
                       "unwrap_unchecked",
                       []
                     |),
@@ -36,7 +41,7 @@ Module iter.
                   |)
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom ProvidedMethod_next_unchecked :

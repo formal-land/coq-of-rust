@@ -588,7 +588,12 @@ impl<'a> Expression {
                         nest([
                             text("forall"),
                             line(),
-                            intersperse(args.iter().map(|arg| arg.to_doc()), [line()]),
+                            intersperse(
+                                args.iter()
+                                    .filter(|arg| !arg.is_empty())
+                                    .map(|arg| arg.to_doc()),
+                                [line()],
+                            ),
                             text(","),
                         ]),
                         line(),
@@ -908,13 +913,26 @@ impl<'a> ArgDecl {
         }
     }
 
-    pub(crate) fn of_ty_params(ty_params: &[String], kind: ArgSpecKind) -> Self {
-        ArgDecl {
-            decl: ArgDeclVar::Simple {
-                idents: ty_params.to_owned(),
-                ty: Some(Expression::just_name("Ty.t")),
+    pub(crate) fn of_const_ty_params(
+        const_params: &[String],
+        ty_params: &[String],
+        kind: ArgSpecKind,
+    ) -> Vec<Self> {
+        vec![
+            ArgDecl {
+                decl: ArgDeclVar::Simple {
+                    idents: const_params.to_owned(),
+                    ty: Some(Expression::just_name("Value.t")),
+                },
+                kind: kind.clone(),
             },
-            kind,
-        }
+            ArgDecl {
+                decl: ArgDeclVar::Simple {
+                    idents: ty_params.to_owned(),
+                    ty: Some(Expression::just_name("Ty.t")),
+                },
+                kind,
+            },
+        ]
     }
 }

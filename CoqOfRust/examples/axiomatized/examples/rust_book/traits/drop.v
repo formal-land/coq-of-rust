@@ -4,14 +4,15 @@ Require Import CoqOfRust.CoqOfRust.
 (* StructRecord
   {
     name := "Droppable";
+    const_params := [];
     ty_params := [];
-    fields := [ ("name", Ty.apply (Ty.path "&") [ Ty.path "str" ]) ];
+    fields := [ ("name", Ty.apply (Ty.path "&") [] [ Ty.path "str" ]) ];
   } *)
 
 Module Impl_core_ops_drop_Drop_for_drop_Droppable.
   Definition Self : Ty.t := Ty.path "drop::Droppable".
   
-  Parameter drop : (list Ty.t) -> (list Value.t) -> M.
+  Parameter drop : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -21,6 +22,6 @@ Module Impl_core_ops_drop_Drop_for_drop_Droppable.
       (* Instance *) [ ("drop", InstanceField.Method drop) ].
 End Impl_core_ops_drop_Drop_for_drop_Droppable.
 
-Parameter main : (list Ty.t) -> (list Value.t) -> M.
+Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_main : M.IsFunction "drop::main" main.

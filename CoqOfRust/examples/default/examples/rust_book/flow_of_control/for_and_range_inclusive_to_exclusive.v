@@ -17,9 +17,9 @@ fn main() {
     }
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [] =>
+Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
         M.use
@@ -28,7 +28,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               M.call_closure (|
                 M.get_trait_method (|
                   "core::iter::traits::collect::IntoIterator",
-                  Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "i32" ],
+                  Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "i32" ],
                   [],
                   "into_iter",
                   []
@@ -52,7 +52,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                             M.call_closure (|
                               M.get_trait_method (|
                                 "core::iter::traits::iterator::Iterator",
-                                Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "i32" ],
+                                Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "i32" ],
                                 [],
                                 "next",
                                 []
@@ -304,7 +304,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             ]
           |))
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_main : M.IsFunction "for_and_range_inclusive_to_exclusive::main" main.

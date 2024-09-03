@@ -9,9 +9,9 @@ fn foo<A>(o: Option<A>) {
     }
 }
 *)
-Definition foo (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [ A ], [ o ] =>
+Definition foo (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [ A ], [ o ] =>
     ltac:(M.monadic
       (let o := M.alloc (| o |) in
       M.read (|
@@ -73,7 +73,7 @@ Definition foo (τ : list Ty.t) (α : list Value.t) : M :=
           ]
         |)
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_foo : M.IsFunction "concurrent_tests::foo" foo.
@@ -95,9 +95,9 @@ Module tests.
           }
       }
   *)
-  Definition test_file (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [] =>
+  Definition test_file (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [] =>
       ltac:(M.monadic
         (M.read (|
           let~ file :=
@@ -106,6 +106,7 @@ Module tests.
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "core::result::Result")
+                    []
                     [ Ty.path "std::fs::File"; Ty.path "std::io::error::Error" ],
                   "expect",
                   []
@@ -115,7 +116,7 @@ Module tests.
                     M.get_associated_function (|
                       Ty.path "std::fs::OpenOptions",
                       "open",
-                      [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                      [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                     |),
                     [
                       M.call_closure (|
@@ -161,7 +162,7 @@ Module tests.
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::iter::traits::collect::IntoIterator",
-                    Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "i32" ],
+                    Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "i32" ],
                     [],
                     "into_iter",
                     []
@@ -185,7 +186,7 @@ Module tests.
                               M.call_closure (|
                                 M.get_trait_method (|
                                   "core::iter::traits::iterator::Iterator",
-                                  Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "i32" ],
+                                  Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "i32" ],
                                   [],
                                   "next",
                                   []
@@ -213,6 +214,7 @@ Module tests.
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "core::result::Result")
+                                            []
                                             [ Ty.tuple []; Ty.path "std::io::error::Error" ],
                                           "expect",
                                           []
@@ -251,7 +253,7 @@ Module tests.
               ]
             |))
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Function_test_file : M.IsFunction "concurrent_tests::tests::test_file'1" test_file.
@@ -272,9 +274,9 @@ Module tests.
           }
       }
   *)
-  Definition test_file_also (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [] =>
+  Definition test_file_also (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [] =>
       ltac:(M.monadic
         (M.read (|
           let~ file :=
@@ -283,6 +285,7 @@ Module tests.
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "core::result::Result")
+                    []
                     [ Ty.path "std::fs::File"; Ty.path "std::io::error::Error" ],
                   "expect",
                   []
@@ -292,7 +295,7 @@ Module tests.
                     M.get_associated_function (|
                       Ty.path "std::fs::OpenOptions",
                       "open",
-                      [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                      [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                     |),
                     [
                       M.call_closure (|
@@ -338,7 +341,7 @@ Module tests.
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::iter::traits::collect::IntoIterator",
-                    Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "i32" ],
+                    Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "i32" ],
                     [],
                     "into_iter",
                     []
@@ -362,7 +365,7 @@ Module tests.
                               M.call_closure (|
                                 M.get_trait_method (|
                                   "core::iter::traits::iterator::Iterator",
-                                  Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "i32" ],
+                                  Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "i32" ],
                                   [],
                                   "next",
                                   []
@@ -390,6 +393,7 @@ Module tests.
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "core::result::Result")
+                                            []
                                             [ Ty.tuple []; Ty.path "std::io::error::Error" ],
                                           "expect",
                                           []
@@ -428,7 +432,7 @@ Module tests.
               ]
             |))
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Function_test_file_also :

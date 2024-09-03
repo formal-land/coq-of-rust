@@ -14,9 +14,9 @@ Module array.
         func(drain)
     }
     *)
-    Definition drain_array_with (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ T; R; impl_for_'a__FnOnce_Drain_'a__T___arrow_R ], [ array; func ] =>
+    Definition drain_array_with (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [ N ], [ T; R; impl_for_'a__FnOnce_Drain_'a__T___arrow_R ], [ array; func ] =>
         ltac:(M.monadic
           (let array := M.alloc (| array |) in
           let func := M.alloc (| func |) in
@@ -27,7 +27,8 @@ Module array.
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "core::mem::manually_drop::ManuallyDrop")
-                      [ Ty.apply (Ty.path "array") [ T ] ],
+                      []
+                      [ Ty.apply (Ty.path "array") [ N ] [ T ] ],
                     "new",
                     []
                   |),
@@ -41,7 +42,7 @@ Module array.
                   [
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "slice") [ T ],
+                        Ty.apply (Ty.path "slice") [] [ T ],
                         "iter_mut",
                         []
                       |),
@@ -53,7 +54,8 @@ Module array.
                               "core::ops::deref::DerefMut",
                               Ty.apply
                                 (Ty.path "core::mem::manually_drop::ManuallyDrop")
-                                [ Ty.apply (Ty.path "array") [ T ] ],
+                                []
+                                [ Ty.apply (Ty.path "array") [ N ] [ T ] ],
                               [],
                               "deref_mut",
                               []
@@ -69,7 +71,7 @@ Module array.
                 M.get_trait_method (|
                   "core::ops::function::FnOnce",
                   impl_for_'a__FnOnce_Drain_'a__T___arrow_R,
-                  [ Ty.tuple [ Ty.apply (Ty.path "core::array::drain::Drain") [ T ] ] ],
+                  [ Ty.tuple [ Ty.apply (Ty.path "core::array::drain::Drain") [] [ T ] ] ],
                   "call_once",
                   []
                 |),
@@ -77,7 +79,7 @@ Module array.
               |)
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_drain_array_with :
@@ -86,12 +88,13 @@ Module array.
     (* StructTuple
       {
         name := "Drain";
+        const_params := [];
         ty_params := [ "T" ];
-        fields := [ Ty.apply (Ty.path "core::slice::iter::IterMut") [ T ] ];
+        fields := [ Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ] ];
       } *)
     
     Module Impl_core_ops_drop_Drop_for_core_array_drain_Drain_T.
-      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::array::drain::Drain") [ T ].
+      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::array::drain::Drain") [] [ T ].
       
       (*
           fn drop(&mut self) {
@@ -99,18 +102,21 @@ Module array.
               unsafe { drop_in_place(self.0.as_mut_slice()) }
           }
       *)
-      Definition drop (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition drop (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
-              M.get_function (| "core::ptr::drop_in_place", [ Ty.apply (Ty.path "slice") [ T ] ] |),
+              M.get_function (|
+                "core::ptr::drop_in_place",
+                [ Ty.apply (Ty.path "slice") [] [ T ] ]
+              |),
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::slice::iter::IterMut") [ T ],
+                    Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
                     "as_mut_slice",
                     []
                   |),
@@ -124,7 +130,7 @@ Module array.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -137,7 +143,7 @@ Module array.
     End Impl_core_ops_drop_Drop_for_core_array_drain_Drain_T.
     
     Module Impl_core_iter_traits_iterator_Iterator_for_core_array_drain_Drain_T.
-      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::array::drain::Drain") [ T ].
+      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::array::drain::Drain") [] [ T ].
       
       (*     type Item = T; *)
       Definition _Item (T : Ty.t) : Ty.t := T.
@@ -149,10 +155,10 @@ Module array.
               Some(unsafe { p.read() })
           }
       *)
-      Definition next (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition next (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.catch_return (|
@@ -167,7 +173,8 @@ Module array.
                               "core::ops::try_trait::Try",
                               Ty.apply
                                 (Ty.path "core::option::Option")
-                                [ Ty.apply (Ty.path "&mut") [ T ] ],
+                                []
+                                [ Ty.apply (Ty.path "&mut") [] [ T ] ],
                               [],
                               "branch",
                               []
@@ -176,7 +183,7 @@ Module array.
                               M.call_closure (|
                                 M.get_trait_method (|
                                   "core::iter::traits::iterator::Iterator",
-                                  Ty.apply (Ty.path "core::slice::iter::IterMut") [ T ],
+                                  Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
                                   [],
                                   "next",
                                   []
@@ -209,10 +216,11 @@ Module array.
                                       M.call_closure (|
                                         M.get_trait_method (|
                                           "core::ops::try_trait::FromResidual",
-                                          Ty.apply (Ty.path "core::option::Option") [ T ],
+                                          Ty.apply (Ty.path "core::option::Option") [] [ T ],
                                           [
                                             Ty.apply
                                               (Ty.path "core::option::Option")
+                                              []
                                               [ Ty.path "core::convert::Infallible" ]
                                           ],
                                           "from_residual",
@@ -243,7 +251,7 @@ Module array.
                       [
                         M.call_closure (|
                           M.get_associated_function (|
-                            Ty.apply (Ty.path "*const") [ T ],
+                            Ty.apply (Ty.path "*const") [] [ T ],
                             "read",
                             []
                           |),
@@ -253,7 +261,7 @@ Module array.
                   |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -262,10 +270,10 @@ Module array.
               (n, Some(n))
           }
       *)
-      Definition size_hint (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition size_hint (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -274,7 +282,7 @@ Module array.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::iter::traits::exact_size::ExactSizeIterator",
-                      Ty.apply (Ty.path "core::array::drain::Drain") [ T ],
+                      Ty.apply (Ty.path "core::array::drain::Drain") [] [ T ],
                       [],
                       "len",
                       []
@@ -290,7 +298,7 @@ Module array.
                   ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -308,23 +316,23 @@ Module array.
     End Impl_core_iter_traits_iterator_Iterator_for_core_array_drain_Drain_T.
     
     Module Impl_core_iter_traits_exact_size_ExactSizeIterator_for_core_array_drain_Drain_T.
-      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::array::drain::Drain") [ T ].
+      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::array::drain::Drain") [] [ T ].
       
       (*
           fn len(&self) -> usize {
               self.0.len()
           }
       *)
-      Definition len (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition len (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_trait_method (|
                 "core::iter::traits::exact_size::ExactSizeIterator",
-                Ty.apply (Ty.path "core::slice::iter::IterMut") [ T ],
+                Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
                 [],
                 "len",
                 []
@@ -337,7 +345,7 @@ Module array.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -350,7 +358,7 @@ Module array.
     End Impl_core_iter_traits_exact_size_ExactSizeIterator_for_core_array_drain_Drain_T.
     
     Module Impl_core_iter_traits_marker_TrustedLen_for_core_array_drain_Drain_T.
-      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::array::drain::Drain") [ T ].
+      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::array::drain::Drain") [] [ T ].
       
       Axiom Implements :
         forall (T : Ty.t),
@@ -362,7 +370,7 @@ Module array.
     End Impl_core_iter_traits_marker_TrustedLen_for_core_array_drain_Drain_T.
     
     Module Impl_core_iter_traits_unchecked_iterator_UncheckedIterator_for_core_array_drain_Drain_T.
-      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::array::drain::Drain") [ T ].
+      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::array::drain::Drain") [] [ T ].
       
       (*
           unsafe fn next_unchecked(&mut self) -> T {
@@ -373,10 +381,15 @@ Module array.
               unsafe { p.read() }
           }
       *)
-      Definition next_unchecked (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition next_unchecked
+          (T : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -385,7 +398,7 @@ Module array.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::iter::traits::unchecked_iterator::UncheckedIterator",
-                      Ty.apply (Ty.path "core::slice::iter::IterMut") [ T ],
+                      Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
                       [],
                       "next_unchecked",
                       []
@@ -401,12 +414,12 @@ Module array.
                 |) in
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.apply (Ty.path "*const") [ T ], "read", [] |),
+                  M.get_associated_function (| Ty.apply (Ty.path "*const") [] [ T ], "read", [] |),
                   [ M.read (| p |) ]
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :

@@ -4,17 +4,18 @@ Require Import CoqOfRust.CoqOfRust.
 (* StructRecord
   {
     name := "Borrowed";
+    const_params := [];
     ty_params := [];
-    fields := [ ("x", Ty.apply (Ty.path "&") [ Ty.path "i32" ]) ];
+    fields := [ ("x", Ty.apply (Ty.path "&") [] [ Ty.path "i32" ]) ];
   } *)
 
 Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_traits_Borrowed.
   Definition Self : Ty.t := Ty.path "scoping_rules_lifetimes_traits::Borrowed".
   
   (* Debug *)
-  Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [ self; f ] =>
+  Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; f ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let f := M.alloc (| f |) in
@@ -39,7 +40,7 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_traits_Borrowed.
               |))
           ]
         |)))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -58,14 +59,14 @@ Module Impl_core_default_Default_for_scoping_rules_lifetimes_traits_Borrowed.
           Self { x: &10 }
       }
   *)
-  Definition default (τ : list Ty.t) (α : list Value.t) : M :=
-    match τ, α with
-    | [], [] =>
+  Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [] =>
       ltac:(M.monadic
         (Value.StructRecord
           "scoping_rules_lifetimes_traits::Borrowed"
           [ ("x", M.alloc (| Value.Integer 10 |)) ]))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom Implements :
@@ -82,9 +83,9 @@ fn main() {
     println!("b is {:?}", b);
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [] =>
+Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
         let~ b :=
@@ -139,7 +140,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (| Value.Tuple [] |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_main : M.IsFunction "scoping_rules_lifetimes_traits::main" main.

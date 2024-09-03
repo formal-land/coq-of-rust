@@ -8,7 +8,7 @@ Module num.
       (* Empty module 'ByteSlice' *)
       
       Module Impl_core_num_dec2flt_common_ByteSlice_for_slice_u8.
-        Definition Self : Ty.t := Ty.apply (Ty.path "slice") [ Ty.path "u8" ].
+        Definition Self : Ty.t := Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ].
         
         (*
             fn read_u64(&self) -> u64 {
@@ -17,18 +17,18 @@ Module num.
                 u64::from_le_bytes(tmp)
             }
         *)
-        Definition read_u64 (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self ] =>
+        Definition read_u64 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
-                let~ tmp := M.alloc (| repeat (Value.Integer 0) 8 |) in
+                let~ tmp := M.alloc (| repeat (| Value.Integer 0, Value.Integer 8 |) |) in
                 let~ _ :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                        Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                         "copy_from_slice",
                         []
                       |),
@@ -37,8 +37,9 @@ Module num.
                         M.call_closure (|
                           M.get_trait_method (|
                             "core::ops::index::Index",
-                            Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
-                            [ Ty.apply (Ty.path "core::ops::range::RangeTo") [ Ty.path "usize" ] ],
+                            Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+                            [ Ty.apply (Ty.path "core::ops::range::RangeTo") [] [ Ty.path "usize" ]
+                            ],
                             "index",
                             []
                           |),
@@ -59,7 +60,7 @@ Module num.
                   |)
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         (*
@@ -67,15 +68,15 @@ Module num.
                 self[..8].copy_from_slice(&value.to_le_bytes())
             }
         *)
-        Definition write_u64 (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self; value ] =>
+        Definition write_u64 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self; value ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let value := M.alloc (| value |) in
               M.call_closure (|
                 M.get_associated_function (|
-                  Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                  Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                   "copy_from_slice",
                   []
                 |),
@@ -83,8 +84,8 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::index::IndexMut",
-                      Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
-                      [ Ty.apply (Ty.path "core::ops::range::RangeTo") [ Ty.path "usize" ] ],
+                      Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+                      [ Ty.apply (Ty.path "core::ops::range::RangeTo") [] [ Ty.path "usize" ] ],
                       "index_mut",
                       []
                     |),
@@ -103,7 +104,7 @@ Module num.
                     |))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         (*
@@ -111,9 +112,9 @@ Module num.
                 other.len() as isize - self.len() as isize
             }
         *)
-        Definition offset_from (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self; other ] =>
+        Definition offset_from (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self; other ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let other := M.alloc (| other |) in
@@ -122,7 +123,7 @@ Module num.
                 (M.rust_cast
                   (M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                      Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                       "len",
                       []
                     |),
@@ -131,13 +132,13 @@ Module num.
                 (M.rust_cast
                   (M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                      Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                       "len",
                       []
                     |),
                     [ M.read (| self |) ]
                   |)))))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         (*
@@ -159,9 +160,9 @@ Module num.
                 s
             }
         *)
-        Definition parse_digits (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ impl_FnMut_u8_ ], [ self; func ] =>
+        Definition parse_digits (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [ impl_FnMut_u8_ ], [ self; func ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let func := M.alloc (| func |) in
@@ -247,7 +248,7 @@ Module num.
                   |) in
                 M.alloc (| M.read (| s |) |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -271,9 +272,9 @@ Module num.
           (a | b) & 0x8080_8080_8080_8080 == 0
       }
       *)
-      Definition is_8digits (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ v ] =>
+      Definition is_8digits (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ v ] =>
           ltac:(M.monadic
             (let v := M.alloc (| v |) in
             M.read (|
@@ -299,7 +300,7 @@ Module num.
                   (Value.Integer 0)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Function_is_8digits : M.IsFunction "core::num::dec2flt::common::is_8digits" is_8digits.
@@ -307,6 +308,7 @@ Module num.
       (* StructRecord
         {
           name := "BiasedFp";
+          const_params := [];
           ty_params := [];
           fields := [ ("f", Ty.path "u64"); ("e", Ty.path "i32") ];
         } *)
@@ -315,9 +317,9 @@ Module num.
         Definition Self : Ty.t := Ty.path "core::num::dec2flt::common::BiasedFp".
         
         (* Debug *)
-        Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self; f ] =>
+        Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self; f ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let f := M.alloc (| f |) in
@@ -350,7 +352,7 @@ Module num.
                     |))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -376,9 +378,9 @@ Module num.
         Definition Self : Ty.t := Ty.path "core::num::dec2flt::common::BiasedFp".
         
         (* Clone *)
-        Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self ] =>
+        Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
@@ -394,7 +396,7 @@ Module num.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -420,9 +422,9 @@ Module num.
         Definition Self : Ty.t := Ty.path "core::num::dec2flt::common::BiasedFp".
         
         (* PartialEq *)
-        Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self; other ] =>
+        Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self; other ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let other := M.alloc (| other |) in
@@ -459,7 +461,7 @@ Module num.
                       |)
                     |))))
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -485,9 +487,13 @@ Module num.
         Definition Self : Ty.t := Ty.path "core::num::dec2flt::common::BiasedFp".
         
         (* Eq *)
-        Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self ] =>
+        Definition assert_receiver_is_total_eq
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
@@ -503,7 +509,7 @@ Module num.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -519,9 +525,9 @@ Module num.
         Definition Self : Ty.t := Ty.path "core::num::dec2flt::common::BiasedFp".
         
         (* Default *)
-        Definition default (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [] =>
+        Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [] =>
             ltac:(M.monadic
               (Value.StructRecord
                 "core::num::dec2flt::common::BiasedFp"
@@ -549,7 +555,7 @@ Module num.
                       []
                     |))
                 ]))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -568,15 +574,15 @@ Module num.
                 Self { f: 0, e }
             }
         *)
-        Definition zero_pow2 (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ e ] =>
+        Definition zero_pow2 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [ host ], [], [ e ] =>
             ltac:(M.monadic
               (let e := M.alloc (| e |) in
               Value.StructRecord
                 "core::num::dec2flt::common::BiasedFp"
                 [ ("f", Value.Integer 0); ("e", M.read (| e |)) ]))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_zero_pow2 : M.IsAssociatedFunction Self "zero_pow2" zero_pow2.

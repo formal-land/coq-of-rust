@@ -220,13 +220,13 @@ Module f32.
             self != self
         }
     *)
-    Definition is_nan (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition is_nan (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [ host ], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           BinOp.Pure.ne (M.read (| self |)) (M.read (| self |))))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_is_nan : M.IsAssociatedFunction Self "is_nan" is_nan.
@@ -237,9 +237,9 @@ Module f32.
             unsafe { mem::transmute::<u32, f32>(mem::transmute::<f32, u32>(self) & 0x7fff_ffff) }
         }
     *)
-    Definition abs_private (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition abs_private (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [ host ], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
@@ -256,7 +256,7 @@ Module f32.
                 (Value.Integer 2147483647)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_abs_private : M.IsAssociatedFunction Self "abs_private" abs_private.
@@ -269,9 +269,9 @@ Module f32.
             (self == f32::INFINITY) | (self == f32::NEG_INFINITY)
         }
     *)
-    Definition is_infinite (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition is_infinite (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [ host ], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           BinOp.Pure.bit_or
@@ -281,7 +281,7 @@ Module f32.
             (BinOp.Pure.eq
               (M.read (| self |))
               (M.read (| M.get_constant (| "core::f32::NEG_INFINITY" |) |)))))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_is_infinite : M.IsAssociatedFunction Self "is_infinite" is_infinite.
@@ -293,9 +293,9 @@ Module f32.
             self.abs_private() < Self::INFINITY
         }
     *)
-    Definition is_finite (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition is_finite (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [ host ], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           BinOp.Pure.lt
@@ -304,7 +304,7 @@ Module f32.
               [ M.read (| self |) ]
             |))
             (M.read (| M.get_constant (| "core::f32::INFINITY" |) |))))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_is_finite : M.IsAssociatedFunction Self "is_finite" is_finite.
@@ -314,9 +314,9 @@ Module f32.
             matches!(self.classify(), FpCategory::Subnormal)
         }
     *)
-    Definition is_subnormal (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition is_subnormal (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [ host ], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -336,7 +336,7 @@ Module f32.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_is_subnormal : M.IsAssociatedFunction Self "is_subnormal" is_subnormal.
@@ -346,9 +346,9 @@ Module f32.
             matches!(self.classify(), FpCategory::Normal)
         }
     *)
-    Definition is_normal (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition is_normal (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [ host ], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -368,7 +368,7 @@ Module f32.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_is_normal : M.IsAssociatedFunction Self "is_normal" is_normal.
@@ -406,9 +406,9 @@ Module f32.
             }
         }
     *)
-    Definition classify (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition classify (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [ host ], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -462,7 +462,7 @@ Module f32.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_classify : M.IsAssociatedFunction Self "classify" classify.
@@ -481,9 +481,9 @@ Module f32.
             }
         }
     *)
-    Definition partial_classify (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition partial_classify (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [ host ], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -532,7 +532,7 @@ Module f32.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_partial_classify :
@@ -552,9 +552,9 @@ Module f32.
             }
         }
     *)
-    Definition classify_bits (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ b ] =>
+    Definition classify_bits (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [ host ], [], [ b ] =>
         ltac:(M.monadic
           (let b := M.alloc (| b |) in
           M.read (|
@@ -615,7 +615,7 @@ Module f32.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_classify_bits :
@@ -626,9 +626,9 @@ Module f32.
             !self.is_sign_negative()
         }
     *)
-    Definition is_sign_positive (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition is_sign_positive (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [ host ], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           UnOp.Pure.not
@@ -636,7 +636,7 @@ Module f32.
               M.get_associated_function (| Ty.path "f32", "is_sign_negative", [] |),
               [ M.read (| self |) ]
             |))))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_is_sign_positive :
@@ -650,9 +650,9 @@ Module f32.
             unsafe { mem::transmute::<f32, u32>(self) & 0x8000_0000 != 0 }
         }
     *)
-    Definition is_sign_negative (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition is_sign_negative (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [ host ], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           BinOp.Pure.ne
@@ -666,7 +666,7 @@ Module f32.
               |))
               (Value.Integer 2147483648))
             (Value.Integer 0)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_is_sign_negative :
@@ -695,9 +695,9 @@ Module f32.
             Self::from_bits(next_bits)
         }
     *)
-    Definition next_up (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition next_up (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [ host ], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.catch_return (|
@@ -810,7 +810,7 @@ Module f32.
                 |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_next_up : M.IsAssociatedFunction Self "next_up" next_up.
@@ -838,9 +838,9 @@ Module f32.
             Self::from_bits(next_bits)
         }
     *)
-    Definition next_down (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition next_down (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [ host ], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.catch_return (|
@@ -957,7 +957,7 @@ Module f32.
                 |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_next_down : M.IsAssociatedFunction Self "next_down" next_down.
@@ -967,13 +967,13 @@ Module f32.
             1.0 / self
         }
     *)
-    Definition recip (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition recip (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           BinOp.Wrap.div Integer.Usize (M.read (| UnsupportedLiteral |)) (M.read (| self |))))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_recip : M.IsAssociatedFunction Self "recip" recip.
@@ -985,16 +985,16 @@ Module f32.
             self * PIS_IN_180
         }
     *)
-    Definition to_degrees (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition to_degrees (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           BinOp.Wrap.mul
             Integer.Usize
             (M.read (| self |))
             (M.read (| M.get_constant (| "core::f32::to_degrees::PIS_IN_180" |) |))))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_to_degrees : M.IsAssociatedFunction Self "to_degrees" to_degrees.
@@ -1005,9 +1005,9 @@ Module f32.
             self * (value / 180.0f32)
         }
     *)
-    Definition to_radians (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition to_radians (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -1022,7 +1022,7 @@ Module f32.
                   (M.read (| UnsupportedLiteral |)))
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_to_radians : M.IsAssociatedFunction Self "to_radians" to_radians.
@@ -1032,9 +1032,9 @@ Module f32.
             intrinsics::maxnumf32(self, other)
         }
     *)
-    Definition max (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; other ] =>
+    Definition max (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
@@ -1042,7 +1042,7 @@ Module f32.
             M.get_function (| "core::intrinsics::maxnumf32", [] |),
             [ M.read (| self |); M.read (| other |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_max : M.IsAssociatedFunction Self "max" max.
@@ -1052,9 +1052,9 @@ Module f32.
             intrinsics::minnumf32(self, other)
         }
     *)
-    Definition min (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; other ] =>
+    Definition min (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
@@ -1062,7 +1062,7 @@ Module f32.
             M.get_function (| "core::intrinsics::minnumf32", [] |),
             [ M.read (| self |); M.read (| other |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_min : M.IsAssociatedFunction Self "min" min.
@@ -1080,9 +1080,9 @@ Module f32.
             }
         }
     *)
-    Definition maximum (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; other ] =>
+    Definition maximum (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
@@ -1181,7 +1181,7 @@ Module f32.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_maximum : M.IsAssociatedFunction Self "maximum" maximum.
@@ -1200,9 +1200,9 @@ Module f32.
             }
         }
     *)
-    Definition minimum (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; other ] =>
+    Definition minimum (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
@@ -1301,7 +1301,7 @@ Module f32.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_minimum : M.IsAssociatedFunction Self "minimum" minimum.
@@ -1330,9 +1330,9 @@ Module f32.
             }
         }
     *)
-    Definition midpoint (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; other ] =>
+    Definition midpoint (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
@@ -1471,7 +1471,7 @@ Module f32.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_midpoint : M.IsAssociatedFunction Self "midpoint" midpoint.
@@ -1486,9 +1486,9 @@ Module f32.
             unsafe { FloatToInt::<Int>::to_int_unchecked(self) }
         }
     *)
-    Definition to_int_unchecked (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ Int ], [ self ] =>
+    Definition to_int_unchecked (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ Int ], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
@@ -1501,7 +1501,7 @@ Module f32.
             |),
             [ M.read (| self |) ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_to_int_unchecked :
@@ -1558,9 +1558,9 @@ Module f32.
             unsafe { intrinsics::const_eval_select((self,), ct_f32_to_u32, rt_f32_to_u32) }
         }
     *)
-    Definition to_bits (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition to_bits (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [ host ], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
@@ -1579,7 +1579,7 @@ Module f32.
               M.get_associated_function (| Self, "rt_f32_to_u32.to_bits", [] |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_to_bits : M.IsAssociatedFunction Self "to_bits" to_bits.
@@ -1637,9 +1637,9 @@ Module f32.
             unsafe { intrinsics::const_eval_select((v,), ct_u32_to_f32, rt_u32_to_f32) }
         }
     *)
-    Definition from_bits (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ v ] =>
+    Definition from_bits (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [ host ], [], [ v ] =>
         ltac:(M.monadic
           (let v := M.alloc (| v |) in
           M.call_closure (|
@@ -1658,7 +1658,7 @@ Module f32.
               M.get_associated_function (| Self, "rt_u32_to_f32.from_bits", [] |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_from_bits : M.IsAssociatedFunction Self "from_bits" from_bits.
@@ -1668,9 +1668,9 @@ Module f32.
             self.to_bits().to_be_bytes()
         }
     *)
-    Definition to_be_bytes (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition to_be_bytes (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [ host ], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
@@ -1682,7 +1682,7 @@ Module f32.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_to_be_bytes : M.IsAssociatedFunction Self "to_be_bytes" to_be_bytes.
@@ -1692,9 +1692,9 @@ Module f32.
             self.to_bits().to_le_bytes()
         }
     *)
-    Definition to_le_bytes (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition to_le_bytes (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [ host ], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
@@ -1706,7 +1706,7 @@ Module f32.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_to_le_bytes : M.IsAssociatedFunction Self "to_le_bytes" to_le_bytes.
@@ -1716,9 +1716,9 @@ Module f32.
             self.to_bits().to_ne_bytes()
         }
     *)
-    Definition to_ne_bytes (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self ] =>
+    Definition to_ne_bytes (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [ host ], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
@@ -1730,7 +1730,7 @@ Module f32.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_to_ne_bytes : M.IsAssociatedFunction Self "to_ne_bytes" to_ne_bytes.
@@ -1740,9 +1740,9 @@ Module f32.
             Self::from_bits(u32::from_be_bytes(bytes))
         }
     *)
-    Definition from_be_bytes (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ bytes ] =>
+    Definition from_be_bytes (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [ host ], [], [ bytes ] =>
         ltac:(M.monadic
           (let bytes := M.alloc (| bytes |) in
           M.call_closure (|
@@ -1754,7 +1754,7 @@ Module f32.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_from_be_bytes :
@@ -1765,9 +1765,9 @@ Module f32.
             Self::from_bits(u32::from_le_bytes(bytes))
         }
     *)
-    Definition from_le_bytes (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ bytes ] =>
+    Definition from_le_bytes (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [ host ], [], [ bytes ] =>
         ltac:(M.monadic
           (let bytes := M.alloc (| bytes |) in
           M.call_closure (|
@@ -1779,7 +1779,7 @@ Module f32.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_from_le_bytes :
@@ -1790,9 +1790,9 @@ Module f32.
             Self::from_bits(u32::from_ne_bytes(bytes))
         }
     *)
-    Definition from_ne_bytes (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ bytes ] =>
+    Definition from_ne_bytes (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [ host ], [], [ bytes ] =>
         ltac:(M.monadic
           (let bytes := M.alloc (| bytes |) in
           M.call_closure (|
@@ -1804,7 +1804,7 @@ Module f32.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_from_ne_bytes :
@@ -1843,9 +1843,9 @@ Module f32.
             left.cmp(&right)
         }
     *)
-    Definition total_cmp (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; other ] =>
+    Definition total_cmp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
@@ -1895,7 +1895,7 @@ Module f32.
               |)
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_total_cmp : M.IsAssociatedFunction Self "total_cmp" total_cmp.
@@ -1912,9 +1912,9 @@ Module f32.
             self
         }
     *)
-    Definition clamp (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; min; max ] =>
+    Definition clamp (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; min; max ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let min := M.alloc (| min |) in
@@ -2019,7 +2019,7 @@ Module f32.
               |) in
             self
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom AssociatedFunction_clamp : M.IsAssociatedFunction Self "clamp" clamp.

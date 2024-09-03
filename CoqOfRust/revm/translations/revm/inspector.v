@@ -4,9 +4,14 @@ Require Import CoqOfRust.CoqOfRust.
 Module inspector.
   (* Trait *)
   Module Inspector.
-    Definition initialize_interp (DB Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; interp; context ] =>
+    Definition initialize_interp
+        (DB Self : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      match ε, τ, α with
+      | [], [], [ self; interp; context ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let interp := M.alloc (| interp |) in
@@ -24,15 +29,15 @@ Module inspector.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom ProvidedMethod_initialize_interp :
       forall (DB : Ty.t),
       M.IsProvidedMethod "revm::inspector::Inspector" "initialize_interp" (initialize_interp DB).
-    Definition step (DB Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; interp; context ] =>
+    Definition step (DB Self : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; interp; context ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let interp := M.alloc (| interp |) in
@@ -50,15 +55,20 @@ Module inspector.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom ProvidedMethod_step :
       forall (DB : Ty.t),
       M.IsProvidedMethod "revm::inspector::Inspector" "step" (step DB).
-    Definition step_end (DB Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; interp; context ] =>
+    Definition step_end
+        (DB Self : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      match ε, τ, α with
+      | [], [], [ self; interp; context ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let interp := M.alloc (| interp |) in
@@ -76,15 +86,15 @@ Module inspector.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom ProvidedMethod_step_end :
       forall (DB : Ty.t),
       M.IsProvidedMethod "revm::inspector::Inspector" "step_end" (step_end DB).
-    Definition log (DB Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; context; log ] =>
+    Definition log (DB Self : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; context; log ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let context := M.alloc (| context |) in
@@ -102,15 +112,15 @@ Module inspector.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom ProvidedMethod_log :
       forall (DB : Ty.t),
       M.IsProvidedMethod "revm::inspector::Inspector" "log" (log DB).
-    Definition call (DB Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; context; inputs ] =>
+    Definition call (DB Self : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; context; inputs ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let context := M.alloc (| context |) in
@@ -132,15 +142,20 @@ Module inspector.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom ProvidedMethod_call :
       forall (DB : Ty.t),
       M.IsProvidedMethod "revm::inspector::Inspector" "call" (call DB).
-    Definition call_end (DB Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; context; inputs; outcome ] =>
+    Definition call_end
+        (DB Self : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      match ε, τ, α with
+      | [], [], [ self; context; inputs; outcome ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let context := M.alloc (| context |) in
@@ -156,15 +171,15 @@ Module inspector.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom ProvidedMethod_call_end :
       forall (DB : Ty.t),
       M.IsProvidedMethod "revm::inspector::Inspector" "call_end" (call_end DB).
-    Definition create (DB Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; context; inputs ] =>
+    Definition create (DB Self : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; context; inputs ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let context := M.alloc (| context |) in
@@ -186,15 +201,20 @@ Module inspector.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom ProvidedMethod_create :
       forall (DB : Ty.t),
       M.IsProvidedMethod "revm::inspector::Inspector" "create" (create DB).
-    Definition create_end (DB Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; context; inputs; outcome ] =>
+    Definition create_end
+        (DB Self : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      match ε, τ, α with
+      | [], [], [ self; context; inputs; outcome ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let context := M.alloc (| context |) in
@@ -210,15 +230,20 @@ Module inspector.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom ProvidedMethod_create_end :
       forall (DB : Ty.t),
       M.IsProvidedMethod "revm::inspector::Inspector" "create_end" (create_end DB).
-    Definition eofcreate (DB Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; context; inputs ] =>
+    Definition eofcreate
+        (DB Self : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      match ε, τ, α with
+      | [], [], [ self; context; inputs ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let context := M.alloc (| context |) in
@@ -240,15 +265,20 @@ Module inspector.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom ProvidedMethod_eofcreate :
       forall (DB : Ty.t),
       M.IsProvidedMethod "revm::inspector::Inspector" "eofcreate" (eofcreate DB).
-    Definition eofcreate_end (DB Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; context; inputs; outcome ] =>
+    Definition eofcreate_end
+        (DB Self : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      match ε, τ, α with
+      | [], [], [ self; context; inputs; outcome ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let context := M.alloc (| context |) in
@@ -264,15 +294,20 @@ Module inspector.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom ProvidedMethod_eofcreate_end :
       forall (DB : Ty.t),
       M.IsProvidedMethod "revm::inspector::Inspector" "eofcreate_end" (eofcreate_end DB).
-    Definition selfdestruct (DB Self : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ self; contract; target; value ] =>
+    Definition selfdestruct
+        (DB Self : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      match ε, τ, α with
+      | [], [], [ self; contract; target; value ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let contract := M.alloc (| contract |) in
@@ -298,7 +333,7 @@ Module inspector.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom ProvidedMethod_selfdestruct :
@@ -308,13 +343,18 @@ Module inspector.
   
   Module underscore.
     Module Impl_revm_inspector_Inspector_where_revm_primitives_db_Database_DB_where_revm_inspector_Inspector_T_DB_where_core_marker_Sized_T_DB_for_ref_mut_T.
-      Definition Self (DB T : Ty.t) : Ty.t := Ty.apply (Ty.path "&mut") [ T ].
+      Definition Self (DB T : Ty.t) : Ty.t := Ty.apply (Ty.path "&mut") [] [ T ].
       
       (* #[auto_impl(&mut, Box)] *)
-      Definition initialize_interp (DB T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition initialize_interp
+          (DB T : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self DB T in
-        match τ, α with
-        | [], [ self; interp; context ] =>
+        match ε, τ, α with
+        | [], [], [ self; interp; context ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let interp := M.alloc (| interp |) in
@@ -329,14 +369,14 @@ Module inspector.
               |),
               [ M.read (| M.read (| self |) |); M.read (| interp |); M.read (| context |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (* #[auto_impl(&mut, Box)] *)
-      Definition step (DB T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition step (DB T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self DB T in
-        match τ, α with
-        | [], [ self; interp; context ] =>
+        match ε, τ, α with
+        | [], [], [ self; interp; context ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let interp := M.alloc (| interp |) in
@@ -345,14 +385,14 @@ Module inspector.
               M.get_trait_method (| "revm::inspector::Inspector", T, [ DB ], "step", [] |),
               [ M.read (| M.read (| self |) |); M.read (| interp |); M.read (| context |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (* #[auto_impl(&mut, Box)] *)
-      Definition step_end (DB T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition step_end (DB T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self DB T in
-        match τ, α with
-        | [], [ self; interp; context ] =>
+        match ε, τ, α with
+        | [], [], [ self; interp; context ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let interp := M.alloc (| interp |) in
@@ -361,14 +401,14 @@ Module inspector.
               M.get_trait_method (| "revm::inspector::Inspector", T, [ DB ], "step_end", [] |),
               [ M.read (| M.read (| self |) |); M.read (| interp |); M.read (| context |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (* #[auto_impl(&mut, Box)] *)
-      Definition log (DB T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition log (DB T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self DB T in
-        match τ, α with
-        | [], [ self; context; log ] =>
+        match ε, τ, α with
+        | [], [], [ self; context; log ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let context := M.alloc (| context |) in
@@ -377,14 +417,14 @@ Module inspector.
               M.get_trait_method (| "revm::inspector::Inspector", T, [ DB ], "log", [] |),
               [ M.read (| M.read (| self |) |); M.read (| context |); M.read (| log |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (* #[auto_impl(&mut, Box)] *)
-      Definition call (DB T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition call (DB T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self DB T in
-        match τ, α with
-        | [], [ self; context; inputs ] =>
+        match ε, τ, α with
+        | [], [], [ self; context; inputs ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let context := M.alloc (| context |) in
@@ -393,14 +433,14 @@ Module inspector.
               M.get_trait_method (| "revm::inspector::Inspector", T, [ DB ], "call", [] |),
               [ M.read (| M.read (| self |) |); M.read (| context |); M.read (| inputs |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (* #[auto_impl(&mut, Box)] *)
-      Definition call_end (DB T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition call_end (DB T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self DB T in
-        match τ, α with
-        | [], [ self; context; inputs; outcome ] =>
+        match ε, τ, α with
+        | [], [], [ self; context; inputs; outcome ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let context := M.alloc (| context |) in
@@ -415,14 +455,14 @@ Module inspector.
                 M.read (| outcome |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (* #[auto_impl(&mut, Box)] *)
-      Definition create (DB T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition create (DB T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self DB T in
-        match τ, α with
-        | [], [ self; context; inputs ] =>
+        match ε, τ, α with
+        | [], [], [ self; context; inputs ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let context := M.alloc (| context |) in
@@ -431,14 +471,19 @@ Module inspector.
               M.get_trait_method (| "revm::inspector::Inspector", T, [ DB ], "create", [] |),
               [ M.read (| M.read (| self |) |); M.read (| context |); M.read (| inputs |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (* #[auto_impl(&mut, Box)] *)
-      Definition create_end (DB T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition create_end
+          (DB T : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self DB T in
-        match τ, α with
-        | [], [ self; context; inputs; outcome ] =>
+        match ε, τ, α with
+        | [], [], [ self; context; inputs; outcome ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let context := M.alloc (| context |) in
@@ -453,14 +498,19 @@ Module inspector.
                 M.read (| outcome |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (* #[auto_impl(&mut, Box)] *)
-      Definition eofcreate (DB T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition eofcreate
+          (DB T : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self DB T in
-        match τ, α with
-        | [], [ self; context; inputs ] =>
+        match ε, τ, α with
+        | [], [], [ self; context; inputs ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let context := M.alloc (| context |) in
@@ -469,14 +519,19 @@ Module inspector.
               M.get_trait_method (| "revm::inspector::Inspector", T, [ DB ], "eofcreate", [] |),
               [ M.read (| M.read (| self |) |); M.read (| context |); M.read (| inputs |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (* #[auto_impl(&mut, Box)] *)
-      Definition eofcreate_end (DB T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition eofcreate_end
+          (DB T : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self DB T in
-        match τ, α with
-        | [], [ self; context; inputs; outcome ] =>
+        match ε, τ, α with
+        | [], [], [ self; context; inputs; outcome ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let context := M.alloc (| context |) in
@@ -491,14 +546,19 @@ Module inspector.
                 M.read (| outcome |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (* #[auto_impl(&mut, Box)] *)
-      Definition selfdestruct (DB T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition selfdestruct
+          (DB T : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self DB T in
-        match τ, α with
-        | [], [ self; contract; target; value ] =>
+        match ε, τ, α with
+        | [], [], [ self; contract; target; value ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let contract := M.alloc (| contract |) in
@@ -513,7 +573,7 @@ Module inspector.
                 M.read (| value |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -539,13 +599,18 @@ Module inspector.
     End Impl_revm_inspector_Inspector_where_revm_primitives_db_Database_DB_where_revm_inspector_Inspector_T_DB_where_core_marker_Sized_T_DB_for_ref_mut_T.
     Module Impl_revm_inspector_Inspector_where_revm_primitives_db_Database_DB_where_revm_inspector_Inspector_T_DB_where_core_marker_Sized_T_DB_for_alloc_boxed_Box_T_alloc_alloc_Global.
       Definition Self (DB T : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "alloc::boxed::Box") [ T; Ty.path "alloc::alloc::Global" ].
+        Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; Ty.path "alloc::alloc::Global" ].
       
       (* #[auto_impl(&mut, Box)] *)
-      Definition initialize_interp (DB T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition initialize_interp
+          (DB T : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self DB T in
-        match τ, α with
-        | [], [ self; interp; context ] =>
+        match ε, τ, α with
+        | [], [], [ self; interp; context ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let interp := M.alloc (| interp |) in
@@ -560,14 +625,14 @@ Module inspector.
               |),
               [ M.read (| M.read (| self |) |); M.read (| interp |); M.read (| context |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (* #[auto_impl(&mut, Box)] *)
-      Definition step (DB T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition step (DB T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self DB T in
-        match τ, α with
-        | [], [ self; interp; context ] =>
+        match ε, τ, α with
+        | [], [], [ self; interp; context ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let interp := M.alloc (| interp |) in
@@ -576,14 +641,14 @@ Module inspector.
               M.get_trait_method (| "revm::inspector::Inspector", T, [ DB ], "step", [] |),
               [ M.read (| M.read (| self |) |); M.read (| interp |); M.read (| context |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (* #[auto_impl(&mut, Box)] *)
-      Definition step_end (DB T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition step_end (DB T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self DB T in
-        match τ, α with
-        | [], [ self; interp; context ] =>
+        match ε, τ, α with
+        | [], [], [ self; interp; context ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let interp := M.alloc (| interp |) in
@@ -592,14 +657,14 @@ Module inspector.
               M.get_trait_method (| "revm::inspector::Inspector", T, [ DB ], "step_end", [] |),
               [ M.read (| M.read (| self |) |); M.read (| interp |); M.read (| context |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (* #[auto_impl(&mut, Box)] *)
-      Definition log (DB T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition log (DB T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self DB T in
-        match τ, α with
-        | [], [ self; context; log ] =>
+        match ε, τ, α with
+        | [], [], [ self; context; log ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let context := M.alloc (| context |) in
@@ -608,14 +673,14 @@ Module inspector.
               M.get_trait_method (| "revm::inspector::Inspector", T, [ DB ], "log", [] |),
               [ M.read (| M.read (| self |) |); M.read (| context |); M.read (| log |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (* #[auto_impl(&mut, Box)] *)
-      Definition call (DB T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition call (DB T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self DB T in
-        match τ, α with
-        | [], [ self; context; inputs ] =>
+        match ε, τ, α with
+        | [], [], [ self; context; inputs ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let context := M.alloc (| context |) in
@@ -624,14 +689,14 @@ Module inspector.
               M.get_trait_method (| "revm::inspector::Inspector", T, [ DB ], "call", [] |),
               [ M.read (| M.read (| self |) |); M.read (| context |); M.read (| inputs |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (* #[auto_impl(&mut, Box)] *)
-      Definition call_end (DB T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition call_end (DB T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self DB T in
-        match τ, α with
-        | [], [ self; context; inputs; outcome ] =>
+        match ε, τ, α with
+        | [], [], [ self; context; inputs; outcome ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let context := M.alloc (| context |) in
@@ -646,14 +711,14 @@ Module inspector.
                 M.read (| outcome |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (* #[auto_impl(&mut, Box)] *)
-      Definition create (DB T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition create (DB T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self DB T in
-        match τ, α with
-        | [], [ self; context; inputs ] =>
+        match ε, τ, α with
+        | [], [], [ self; context; inputs ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let context := M.alloc (| context |) in
@@ -662,14 +727,19 @@ Module inspector.
               M.get_trait_method (| "revm::inspector::Inspector", T, [ DB ], "create", [] |),
               [ M.read (| M.read (| self |) |); M.read (| context |); M.read (| inputs |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (* #[auto_impl(&mut, Box)] *)
-      Definition create_end (DB T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition create_end
+          (DB T : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self DB T in
-        match τ, α with
-        | [], [ self; context; inputs; outcome ] =>
+        match ε, τ, α with
+        | [], [], [ self; context; inputs; outcome ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let context := M.alloc (| context |) in
@@ -684,14 +754,19 @@ Module inspector.
                 M.read (| outcome |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (* #[auto_impl(&mut, Box)] *)
-      Definition eofcreate (DB T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition eofcreate
+          (DB T : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self DB T in
-        match τ, α with
-        | [], [ self; context; inputs ] =>
+        match ε, τ, α with
+        | [], [], [ self; context; inputs ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let context := M.alloc (| context |) in
@@ -700,14 +775,19 @@ Module inspector.
               M.get_trait_method (| "revm::inspector::Inspector", T, [ DB ], "eofcreate", [] |),
               [ M.read (| M.read (| self |) |); M.read (| context |); M.read (| inputs |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (* #[auto_impl(&mut, Box)] *)
-      Definition eofcreate_end (DB T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition eofcreate_end
+          (DB T : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self DB T in
-        match τ, α with
-        | [], [ self; context; inputs; outcome ] =>
+        match ε, τ, α with
+        | [], [], [ self; context; inputs; outcome ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let context := M.alloc (| context |) in
@@ -722,14 +802,19 @@ Module inspector.
                 M.read (| outcome |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (* #[auto_impl(&mut, Box)] *)
-      Definition selfdestruct (DB T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition selfdestruct
+          (DB T : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self DB T in
-        match τ, α with
-        | [], [ self; contract; target; value ] =>
+        match ε, τ, α with
+        | [], [], [ self; contract; target; value ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let contract := M.alloc (| contract |) in
@@ -744,7 +829,7 @@ Module inspector.
                 M.read (| value |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :

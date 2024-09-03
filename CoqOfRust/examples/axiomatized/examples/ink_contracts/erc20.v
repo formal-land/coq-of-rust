@@ -4,18 +4,19 @@ Require Import CoqOfRust.CoqOfRust.
 (* StructRecord
   {
     name := "Mapping";
+    const_params := [];
     ty_params := [ "K"; "V" ];
     fields :=
       [
-        ("_key", Ty.apply (Ty.path "core::marker::PhantomData") [ K ]);
-        ("_value", Ty.apply (Ty.path "core::marker::PhantomData") [ V ])
+        ("_key", Ty.apply (Ty.path "core::marker::PhantomData") [] [ K ]);
+        ("_value", Ty.apply (Ty.path "core::marker::PhantomData") [] [ V ])
       ];
   } *)
 
 Module Impl_core_default_Default_where_core_default_Default_K_where_core_default_Default_V_for_erc20_Mapping_K_V.
-  Definition Self (K V : Ty.t) : Ty.t := Ty.apply (Ty.path "erc20::Mapping") [ K; V ].
+  Definition Self (K V : Ty.t) : Ty.t := Ty.apply (Ty.path "erc20::Mapping") [] [ K; V ].
   
-  Parameter default : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
+  Parameter default : forall (K V : Ty.t), (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
     forall (K V : Ty.t),
@@ -27,15 +28,15 @@ Module Impl_core_default_Default_where_core_default_Default_K_where_core_default
 End Impl_core_default_Default_where_core_default_Default_K_where_core_default_Default_V_for_erc20_Mapping_K_V.
 
 Module Impl_erc20_Mapping_K_V.
-  Definition Self (K V : Ty.t) : Ty.t := Ty.apply (Ty.path "erc20::Mapping") [ K; V ].
+  Definition Self (K V : Ty.t) : Ty.t := Ty.apply (Ty.path "erc20::Mapping") [] [ K; V ].
   
-  Parameter get : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
+  Parameter get : forall (K V : Ty.t), (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_get :
     forall (K V : Ty.t),
     M.IsAssociatedFunction (Self K V) "get" (get K V).
   
-  Parameter insert : forall (K V : Ty.t), (list Ty.t) -> (list Value.t) -> M.
+  Parameter insert : forall (K V : Ty.t), (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_insert :
     forall (K V : Ty.t),
@@ -45,6 +46,7 @@ End Impl_erc20_Mapping_K_V.
 (* StructTuple
   {
     name := "AccountId";
+    const_params := [];
     ty_params := [];
     fields := [ Ty.path "u128" ];
   } *)
@@ -52,7 +54,7 @@ End Impl_erc20_Mapping_K_V.
 Module Impl_core_default_Default_for_erc20_AccountId.
   Definition Self : Ty.t := Ty.path "erc20::AccountId".
   
-  Parameter default : (list Ty.t) -> (list Value.t) -> M.
+  Parameter default : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -65,7 +67,7 @@ End Impl_core_default_Default_for_erc20_AccountId.
 Module Impl_core_clone_Clone_for_erc20_AccountId.
   Definition Self : Ty.t := Ty.path "erc20::AccountId".
   
-  Parameter clone : (list Ty.t) -> (list Value.t) -> M.
+  Parameter clone : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -87,6 +89,7 @@ Axiom Balance : (Ty.path "erc20::Balance") = (Ty.path "u128").
 (* StructRecord
   {
     name := "Env";
+    const_params := [];
     ty_params := [];
     fields := [ ("caller", Ty.path "erc20::AccountId") ];
   } *)
@@ -94,15 +97,17 @@ Axiom Balance : (Ty.path "erc20::Balance") = (Ty.path "u128").
 (* StructRecord
   {
     name := "Erc20";
+    const_params := [];
     ty_params := [];
     fields :=
       [
         ("total_supply", Ty.path "u128");
         ("balances",
-          Ty.apply (Ty.path "erc20::Mapping") [ Ty.path "erc20::AccountId"; Ty.path "u128" ]);
+          Ty.apply (Ty.path "erc20::Mapping") [] [ Ty.path "erc20::AccountId"; Ty.path "u128" ]);
         ("allowances",
           Ty.apply
             (Ty.path "erc20::Mapping")
+            []
             [ Ty.tuple [ Ty.path "erc20::AccountId"; Ty.path "erc20::AccountId" ]; Ty.path "u128" ])
       ];
   } *)
@@ -110,7 +115,7 @@ Axiom Balance : (Ty.path "erc20::Balance") = (Ty.path "u128").
 Module Impl_core_default_Default_for_erc20_Erc20.
   Definition Self : Ty.t := Ty.path "erc20::Erc20".
   
-  Parameter default : (list Ty.t) -> (list Value.t) -> M.
+  Parameter default : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -123,11 +128,12 @@ End Impl_core_default_Default_for_erc20_Erc20.
 (* StructRecord
   {
     name := "Transfer";
+    const_params := [];
     ty_params := [];
     fields :=
       [
-        ("from", Ty.apply (Ty.path "core::option::Option") [ Ty.path "erc20::AccountId" ]);
-        ("to", Ty.apply (Ty.path "core::option::Option") [ Ty.path "erc20::AccountId" ]);
+        ("from", Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "erc20::AccountId" ]);
+        ("to", Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "erc20::AccountId" ]);
         ("value", Ty.path "u128")
       ];
   } *)
@@ -135,6 +141,7 @@ End Impl_core_default_Default_for_erc20_Erc20.
 (* StructRecord
   {
     name := "Approval";
+    const_params := [];
     ty_params := [];
     fields :=
       [
@@ -147,6 +154,7 @@ End Impl_core_default_Default_for_erc20_Erc20.
 (*
 Enum Event
 {
+  const_params := [];
   ty_params := [];
   variants :=
     [
@@ -167,6 +175,7 @@ Enum Event
 (*
 Enum Error
 {
+  const_params := [];
   ty_params := [];
   variants :=
     [
@@ -186,17 +195,17 @@ Enum Error
 
 Axiom Result :
   forall (T : Ty.t),
-  (Ty.apply (Ty.path "erc20::Result") [ T ]) =
-    (Ty.apply (Ty.path "core::result::Result") [ T; Ty.path "erc20::Error" ]).
+  (Ty.apply (Ty.path "erc20::Result") [] [ T ]) =
+    (Ty.apply (Ty.path "core::result::Result") [] [ T; Ty.path "erc20::Error" ]).
 
 Module Impl_erc20_Env.
   Definition Self : Ty.t := Ty.path "erc20::Env".
   
-  Parameter caller : (list Ty.t) -> (list Value.t) -> M.
+  Parameter caller : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_caller : M.IsAssociatedFunction Self "caller" caller.
   
-  Parameter emit_event : (list Ty.t) -> (list Value.t) -> M.
+  Parameter emit_event : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_emit_event : M.IsAssociatedFunction Self "emit_event" emit_event.
 End Impl_erc20_Env.
@@ -204,53 +213,53 @@ End Impl_erc20_Env.
 Module Impl_erc20_Erc20.
   Definition Self : Ty.t := Ty.path "erc20::Erc20".
   
-  Parameter init_env : (list Ty.t) -> (list Value.t) -> M.
+  Parameter init_env : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_init_env : M.IsAssociatedFunction Self "init_env" init_env.
   
-  Parameter env : (list Ty.t) -> (list Value.t) -> M.
+  Parameter env : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_env : M.IsAssociatedFunction Self "env" env.
-  Parameter new : (list Ty.t) -> (list Value.t) -> M.
+  Parameter new : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
   
-  Parameter total_supply : (list Ty.t) -> (list Value.t) -> M.
+  Parameter total_supply : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_total_supply : M.IsAssociatedFunction Self "total_supply" total_supply.
   
-  Parameter balance_of_impl : (list Ty.t) -> (list Value.t) -> M.
+  Parameter balance_of_impl : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_balance_of_impl :
     M.IsAssociatedFunction Self "balance_of_impl" balance_of_impl.
   
-  Parameter balance_of : (list Ty.t) -> (list Value.t) -> M.
+  Parameter balance_of : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_balance_of : M.IsAssociatedFunction Self "balance_of" balance_of.
   
-  Parameter allowance_impl : (list Ty.t) -> (list Value.t) -> M.
+  Parameter allowance_impl : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_allowance_impl :
     M.IsAssociatedFunction Self "allowance_impl" allowance_impl.
   
-  Parameter allowance : (list Ty.t) -> (list Value.t) -> M.
+  Parameter allowance : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_allowance : M.IsAssociatedFunction Self "allowance" allowance.
   
-  Parameter transfer_from_to : (list Ty.t) -> (list Value.t) -> M.
+  Parameter transfer_from_to : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_transfer_from_to :
     M.IsAssociatedFunction Self "transfer_from_to" transfer_from_to.
   
-  Parameter transfer : (list Ty.t) -> (list Value.t) -> M.
+  Parameter transfer : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_transfer : M.IsAssociatedFunction Self "transfer" transfer.
   
-  Parameter approve : (list Ty.t) -> (list Value.t) -> M.
+  Parameter approve : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_approve : M.IsAssociatedFunction Self "approve" approve.
   
-  Parameter transfer_from : (list Ty.t) -> (list Value.t) -> M.
+  Parameter transfer_from : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_transfer_from :
     M.IsAssociatedFunction Self "transfer_from" transfer_from.

@@ -41,9 +41,9 @@ fn main() {
     );
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [] =>
+Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
         let~ a :=
@@ -53,12 +53,14 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 "core::iter::traits::iterator::Iterator",
                 Ty.apply
                   (Ty.path "alloc::vec::into_iter::IntoIter")
+                  []
                   [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
                 [],
                 "collect",
                 [
                   Ty.apply
                     (Ty.path "std::collections::hash::set::HashSet")
+                    []
                     [ Ty.path "i32"; Ty.path "std::hash::random::RandomState" ]
                 ]
               |),
@@ -68,6 +70,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     "core::iter::traits::collect::IntoIterator",
                     Ty.apply
                       (Ty.path "alloc::vec::Vec")
+                      []
                       [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
                     [],
                     "into_iter",
@@ -76,7 +79,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                   [
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "slice") [ Ty.path "i32" ],
+                        Ty.apply (Ty.path "slice") [] [ Ty.path "i32" ],
                         "into_vec",
                         [ Ty.path "alloc::alloc::Global" ]
                       |),
@@ -88,8 +91,12 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "alloc::boxed::Box")
+                                  []
                                   [
-                                    Ty.apply (Ty.path "array") [ Ty.path "i32" ];
+                                    Ty.apply
+                                      (Ty.path "array")
+                                      [ Value.Integer 3 ]
+                                      [ Ty.path "i32" ];
                                     Ty.path "alloc::alloc::Global"
                                   ],
                                 "new",
@@ -116,12 +123,14 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 "core::iter::traits::iterator::Iterator",
                 Ty.apply
                   (Ty.path "alloc::vec::into_iter::IntoIter")
+                  []
                   [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
                 [],
                 "collect",
                 [
                   Ty.apply
                     (Ty.path "std::collections::hash::set::HashSet")
+                    []
                     [ Ty.path "i32"; Ty.path "std::hash::random::RandomState" ]
                 ]
               |),
@@ -131,6 +140,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     "core::iter::traits::collect::IntoIterator",
                     Ty.apply
                       (Ty.path "alloc::vec::Vec")
+                      []
                       [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
                     [],
                     "into_iter",
@@ -139,7 +149,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                   [
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "slice") [ Ty.path "i32" ],
+                        Ty.apply (Ty.path "slice") [] [ Ty.path "i32" ],
                         "into_vec",
                         [ Ty.path "alloc::alloc::Global" ]
                       |),
@@ -151,8 +161,12 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "alloc::boxed::Box")
+                                  []
                                   [
-                                    Ty.apply (Ty.path "array") [ Ty.path "i32" ];
+                                    Ty.apply
+                                      (Ty.path "array")
+                                      [ Value.Integer 3 ]
+                                      [ Ty.path "i32" ];
                                     Ty.path "alloc::alloc::Global"
                                   ],
                                 "new",
@@ -186,6 +200,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                             M.get_associated_function (|
                               Ty.apply
                                 (Ty.path "std::collections::hash::set::HashSet")
+                                []
                                 [ Ty.path "i32"; Ty.path "std::hash::random::RandomState" ],
                               "insert",
                               []
@@ -219,6 +234,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                             M.get_associated_function (|
                               Ty.apply
                                 (Ty.path "std::collections::hash::set::HashSet")
+                                []
                                 [ Ty.path "i32"; Ty.path "std::hash::random::RandomState" ],
                               "contains",
                               [ Ty.path "i32" ]
@@ -244,6 +260,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "std::collections::hash::set::HashSet")
+                  []
                   [ Ty.path "i32"; Ty.path "std::hash::random::RandomState" ],
                 "insert",
                 []
@@ -279,6 +296,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                   [
                                     Ty.apply
                                       (Ty.path "std::collections::hash::set::HashSet")
+                                      []
                                       [ Ty.path "i32"; Ty.path "std::hash::random::RandomState" ]
                                   ]
                                 |),
@@ -320,6 +338,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                   [
                                     Ty.apply
                                       (Ty.path "std::collections::hash::set::HashSet")
+                                      []
                                       [ Ty.path "i32"; Ty.path "std::hash::random::RandomState" ]
                                   ]
                                 |),
@@ -361,8 +380,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                   [
                                     Ty.apply
                                       (Ty.path "alloc::vec::Vec")
+                                      []
                                       [
-                                        Ty.apply (Ty.path "&") [ Ty.path "i32" ];
+                                        Ty.apply (Ty.path "&") [] [ Ty.path "i32" ];
                                         Ty.path "alloc::alloc::Global"
                                       ]
                                   ]
@@ -374,6 +394,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                         "core::iter::traits::iterator::Iterator",
                                         Ty.apply
                                           (Ty.path "std::collections::hash::set::Union")
+                                          []
                                           [ Ty.path "i32"; Ty.path "std::hash::random::RandomState"
                                           ],
                                         [],
@@ -381,8 +402,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                         [
                                           Ty.apply
                                             (Ty.path "alloc::vec::Vec")
+                                            []
                                             [
-                                              Ty.apply (Ty.path "&") [ Ty.path "i32" ];
+                                              Ty.apply (Ty.path "&") [] [ Ty.path "i32" ];
                                               Ty.path "alloc::alloc::Global"
                                             ]
                                         ]
@@ -392,6 +414,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                           M.get_associated_function (|
                                             Ty.apply
                                               (Ty.path "std::collections::hash::set::HashSet")
+                                              []
                                               [
                                                 Ty.path "i32";
                                                 Ty.path "std::hash::random::RandomState"
@@ -445,8 +468,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                   [
                                     Ty.apply
                                       (Ty.path "alloc::vec::Vec")
+                                      []
                                       [
-                                        Ty.apply (Ty.path "&") [ Ty.path "i32" ];
+                                        Ty.apply (Ty.path "&") [] [ Ty.path "i32" ];
                                         Ty.path "alloc::alloc::Global"
                                       ]
                                   ]
@@ -458,6 +482,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                         "core::iter::traits::iterator::Iterator",
                                         Ty.apply
                                           (Ty.path "std::collections::hash::set::Difference")
+                                          []
                                           [ Ty.path "i32"; Ty.path "std::hash::random::RandomState"
                                           ],
                                         [],
@@ -465,8 +490,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                         [
                                           Ty.apply
                                             (Ty.path "alloc::vec::Vec")
+                                            []
                                             [
-                                              Ty.apply (Ty.path "&") [ Ty.path "i32" ];
+                                              Ty.apply (Ty.path "&") [] [ Ty.path "i32" ];
                                               Ty.path "alloc::alloc::Global"
                                             ]
                                         ]
@@ -476,6 +502,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                           M.get_associated_function (|
                                             Ty.apply
                                               (Ty.path "std::collections::hash::set::HashSet")
+                                              []
                                               [
                                                 Ty.path "i32";
                                                 Ty.path "std::hash::random::RandomState"
@@ -529,8 +556,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                   [
                                     Ty.apply
                                       (Ty.path "alloc::vec::Vec")
+                                      []
                                       [
-                                        Ty.apply (Ty.path "&") [ Ty.path "i32" ];
+                                        Ty.apply (Ty.path "&") [] [ Ty.path "i32" ];
                                         Ty.path "alloc::alloc::Global"
                                       ]
                                   ]
@@ -542,6 +570,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                         "core::iter::traits::iterator::Iterator",
                                         Ty.apply
                                           (Ty.path "std::collections::hash::set::Intersection")
+                                          []
                                           [ Ty.path "i32"; Ty.path "std::hash::random::RandomState"
                                           ],
                                         [],
@@ -549,8 +578,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                         [
                                           Ty.apply
                                             (Ty.path "alloc::vec::Vec")
+                                            []
                                             [
-                                              Ty.apply (Ty.path "&") [ Ty.path "i32" ];
+                                              Ty.apply (Ty.path "&") [] [ Ty.path "i32" ];
                                               Ty.path "alloc::alloc::Global"
                                             ]
                                         ]
@@ -560,6 +590,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                           M.get_associated_function (|
                                             Ty.apply
                                               (Ty.path "std::collections::hash::set::HashSet")
+                                              []
                                               [
                                                 Ty.path "i32";
                                                 Ty.path "std::hash::random::RandomState"
@@ -613,8 +644,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                   [
                                     Ty.apply
                                       (Ty.path "alloc::vec::Vec")
+                                      []
                                       [
-                                        Ty.apply (Ty.path "&") [ Ty.path "i32" ];
+                                        Ty.apply (Ty.path "&") [] [ Ty.path "i32" ];
                                         Ty.path "alloc::alloc::Global"
                                       ]
                                   ]
@@ -627,6 +659,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                         Ty.apply
                                           (Ty.path
                                             "std::collections::hash::set::SymmetricDifference")
+                                          []
                                           [ Ty.path "i32"; Ty.path "std::hash::random::RandomState"
                                           ],
                                         [],
@@ -634,8 +667,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                         [
                                           Ty.apply
                                             (Ty.path "alloc::vec::Vec")
+                                            []
                                             [
-                                              Ty.apply (Ty.path "&") [ Ty.path "i32" ];
+                                              Ty.apply (Ty.path "&") [] [ Ty.path "i32" ];
                                               Ty.path "alloc::alloc::Global"
                                             ]
                                         ]
@@ -645,6 +679,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                           M.get_associated_function (|
                                             Ty.apply
                                               (Ty.path "std::collections::hash::set::HashSet")
+                                              []
                                               [
                                                 Ty.path "i32";
                                                 Ty.path "std::hash::random::RandomState"
@@ -669,7 +704,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (| Value.Tuple [] |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_main : M.IsFunction "hash_map_hash_set::main" main.

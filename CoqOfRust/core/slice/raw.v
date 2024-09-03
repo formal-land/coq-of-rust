@@ -16,9 +16,9 @@ Module slice.
         }
     }
     *)
-    Definition from_raw_parts (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ T ], [ data; len ] =>
+    Definition from_raw_parts (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [ host ], [ T ], [ data; len ] =>
         ltac:(M.monadic
           (let data := M.alloc (| data |) in
           let len := M.alloc (| len |) in
@@ -37,12 +37,12 @@ Module slice.
                             M.get_function (|
                               "core::intrinsics::const_eval_select",
                               [
-                                Ty.tuple [ Ty.apply (Ty.path "*const") [ T ]; Ty.path "usize" ];
+                                Ty.tuple [ Ty.apply (Ty.path "*const") [] [ T ]; Ty.path "usize" ];
                                 Ty.function
-                                  [ Ty.apply (Ty.path "*const") [ T ]; Ty.path "usize" ]
+                                  [ Ty.apply (Ty.path "*const") [] [ T ]; Ty.path "usize" ]
                                   (Ty.tuple []);
                                 Ty.function
-                                  [ Ty.apply (Ty.path "*const") [ T ]; Ty.path "usize" ]
+                                  [ Ty.apply (Ty.path "*const") [] [ T ]; Ty.path "usize" ]
                                   (Ty.tuple []);
                                 Ty.tuple []
                               ]
@@ -65,7 +65,7 @@ Module slice.
               |)
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_from_raw_parts : M.IsFunction "core::slice::raw::from_raw_parts" from_raw_parts.
@@ -83,9 +83,9 @@ Module slice.
         }
     }
     *)
-    Definition from_raw_parts_mut (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ T ], [ data; len ] =>
+    Definition from_raw_parts_mut (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [ host ], [ T ], [ data; len ] =>
         ltac:(M.monadic
           (let data := M.alloc (| data |) in
           let len := M.alloc (| len |) in
@@ -104,12 +104,12 @@ Module slice.
                             M.get_function (|
                               "core::intrinsics::const_eval_select",
                               [
-                                Ty.tuple [ Ty.apply (Ty.path "*mut") [ T ]; Ty.path "usize" ];
+                                Ty.tuple [ Ty.apply (Ty.path "*mut") [] [ T ]; Ty.path "usize" ];
                                 Ty.function
-                                  [ Ty.apply (Ty.path "*mut") [ T ]; Ty.path "usize" ]
+                                  [ Ty.apply (Ty.path "*mut") [] [ T ]; Ty.path "usize" ]
                                   (Ty.tuple []);
                                 Ty.function
-                                  [ Ty.apply (Ty.path "*mut") [ T ]; Ty.path "usize" ]
+                                  [ Ty.apply (Ty.path "*mut") [] [ T ]; Ty.path "usize" ]
                                   (Ty.tuple []);
                                 Ty.tuple []
                               ]
@@ -138,7 +138,7 @@ Module slice.
               |)
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_from_raw_parts_mut :
@@ -149,9 +149,9 @@ Module slice.
         array::from_ref(s)
     }
     *)
-    Definition from_ref (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ T ], [ s ] =>
+    Definition from_ref (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [ host ], [ T ], [ s ] =>
         ltac:(M.monadic
           (let s := M.alloc (| s |) in
           (* Unsize *)
@@ -160,7 +160,7 @@ Module slice.
               M.get_function (| "core::array::from_ref", [ T ] |),
               [ M.read (| s |) ]
             |))))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_from_ref : M.IsFunction "core::slice::raw::from_ref" from_ref.
@@ -170,9 +170,9 @@ Module slice.
         array::from_mut(s)
     }
     *)
-    Definition from_mut (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ T ], [ s ] =>
+    Definition from_mut (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [ host ], [ T ], [ s ] =>
         ltac:(M.monadic
           (let s := M.alloc (| s |) in
           (* Unsize *)
@@ -181,7 +181,7 @@ Module slice.
               M.get_function (| "core::array::from_mut", [ T ] |),
               [ M.read (| s |) ]
             |))))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_from_mut : M.IsFunction "core::slice::raw::from_mut" from_mut.
@@ -192,9 +192,9 @@ Module slice.
         unsafe { from_raw_parts(range.start, range.end.sub_ptr(range.start)) }
     }
     *)
-    Definition from_ptr_range (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ T ], [ range ] =>
+    Definition from_ptr_range (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [ host ], [ T ], [ range ] =>
         ltac:(M.monadic
           (let range := M.alloc (| range |) in
           M.call_closure (|
@@ -204,7 +204,7 @@ Module slice.
                 M.SubPointer.get_struct_record_field (| range, "core::ops::range::Range", "start" |)
               |);
               M.call_closure (|
-                M.get_associated_function (| Ty.apply (Ty.path "*const") [ T ], "sub_ptr", [] |),
+                M.get_associated_function (| Ty.apply (Ty.path "*const") [] [ T ], "sub_ptr", [] |),
                 [
                   M.read (|
                     M.SubPointer.get_struct_record_field (|
@@ -224,7 +224,7 @@ Module slice.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_from_ptr_range : M.IsFunction "core::slice::raw::from_ptr_range" from_ptr_range.
@@ -235,9 +235,9 @@ Module slice.
         unsafe { from_raw_parts_mut(range.start, range.end.sub_ptr(range.start)) }
     }
     *)
-    Definition from_mut_ptr_range (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ T ], [ range ] =>
+    Definition from_mut_ptr_range (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [ host ], [ T ], [ range ] =>
         ltac:(M.monadic
           (let range := M.alloc (| range |) in
           M.call_closure (|
@@ -247,7 +247,7 @@ Module slice.
                 M.SubPointer.get_struct_record_field (| range, "core::ops::range::Range", "start" |)
               |);
               M.call_closure (|
-                M.get_associated_function (| Ty.apply (Ty.path "*mut") [ T ], "sub_ptr", [] |),
+                M.get_associated_function (| Ty.apply (Ty.path "*mut") [] [ T ], "sub_ptr", [] |),
                 [
                   M.read (|
                     M.SubPointer.get_struct_record_field (|
@@ -269,7 +269,7 @@ Module slice.
               |)
             ]
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_from_mut_ptr_range :

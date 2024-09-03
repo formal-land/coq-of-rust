@@ -113,7 +113,7 @@ Module Impl_revm_interpreter_gas_Gas.
   *)
   Definition run_new (limit : Z) :
     {{
-      gas.Impl_revm_interpreter_gas_Gas.new [] [φ limit] ⇓
+      gas.Impl_revm_interpreter_gas_Gas.new [] [] [φ limit] ⇓
       fun (v : Self) => inl (φ v)
     }}.
   Proof.
@@ -132,7 +132,7 @@ Module Impl_revm_interpreter_gas_Gas.
   *)
   Definition run_new_spent (limit : Z) :
     {{
-      gas.Impl_revm_interpreter_gas_Gas.new_spent [] [φ limit] ⇓
+      gas.Impl_revm_interpreter_gas_Gas.new_spent [] [] [φ limit] ⇓
       fun (v : Self) => inl (φ v)
     }}.
   Proof.
@@ -147,7 +147,7 @@ Module Impl_revm_interpreter_gas_Gas.
   *)
   Definition run_limit (self : Ref.t Self) :
     {{
-      gas.Impl_revm_interpreter_gas_Gas.limit [] [φ self] ⇓
+      gas.Impl_revm_interpreter_gas_Gas.limit [] [] [φ self] ⇓
       fun (v : Z) => inl (φ v)
     }}.
   Proof.
@@ -163,7 +163,7 @@ Module Impl_revm_interpreter_gas_Gas.
   *)
   Definition run_memory (self : Ref.t Self) :
     {{
-      gas.Impl_revm_interpreter_gas_Gas.memory [] [φ self] ⇓
+      gas.Impl_revm_interpreter_gas_Gas.memory [] [] [φ self] ⇓
       fun (v : Z) => inl (φ v)
     }}.
   Proof.
@@ -177,7 +177,7 @@ Module Impl_revm_interpreter_gas_Gas.
   *)
   Definition run_refunded (self : Ref.t Self) :
     {{
-      gas.Impl_revm_interpreter_gas_Gas.refunded [] [φ self] ⇓
+      gas.Impl_revm_interpreter_gas_Gas.refunded [] [] [φ self] ⇓
       fun (v : Z) => inl (φ v)
     }}.
   Proof.
@@ -193,7 +193,7 @@ Module Impl_revm_interpreter_gas_Gas.
   *)
   Definition run_spent (self : Ref.t Self) :
     {{
-      gas.Impl_revm_interpreter_gas_Gas.spent [] [φ self] ⇓
+      gas.Impl_revm_interpreter_gas_Gas.spent [] [] [φ self] ⇓
       fun (v : Z) => inl (φ v)
     }}.
   Proof.
@@ -211,7 +211,7 @@ Module Impl_revm_interpreter_gas_Gas.
   *)
   Definition run_spend (self : Ref.t Self) :
     {{
-      gas.Impl_revm_interpreter_gas_Gas.spend [] [φ self] ⇓
+      gas.Impl_revm_interpreter_gas_Gas.spend [] [] [φ self] ⇓
       fun (v : Z) => inl (φ v)
     }}.
   Proof.
@@ -233,7 +233,7 @@ Module Impl_revm_interpreter_gas_Gas.
   *)
   Definition run_remaining (self : Ref.t Self) :
     {{
-      gas.Impl_revm_interpreter_gas_Gas.remaining [] [φ self] ⇓
+      gas.Impl_revm_interpreter_gas_Gas.remaining [] [] [φ self] ⇓
       fun (v : Z) => inl (φ v)
     }}.
   Proof.
@@ -249,7 +249,7 @@ Module Impl_revm_interpreter_gas_Gas.
   *)
   Definition run_erase_cost (self : Ref.t Self) (returned : Z) :
     {{
-      gas.Impl_revm_interpreter_gas_Gas.erase_cost [] [φ self; φ returned] ⇓
+      gas.Impl_revm_interpreter_gas_Gas.erase_cost [] [] [φ self; φ returned] ⇓
       fun (v : unit) => inl (φ v)
     }}.
   Proof.
@@ -269,7 +269,7 @@ Module Impl_revm_interpreter_gas_Gas.
   *)
   Definition run_spend_all (self : Ref.t Self) :
     {{
-      gas.Impl_revm_interpreter_gas_Gas.spend_all [] [φ self] ⇓
+      gas.Impl_revm_interpreter_gas_Gas.spend_all [] [] [φ self] ⇓
       fun (v : unit) => inl (φ v)
     }}.
   Proof.
@@ -289,7 +289,7 @@ Module Impl_revm_interpreter_gas_Gas.
   *)
   Definition run_record_refund (self : Ref.t Self) (refund : Z) :
     {{
-      gas.Impl_revm_interpreter_gas_Gas.record_refund [] [φ self; φ refund] ⇓
+      gas.Impl_revm_interpreter_gas_Gas.record_refund [] [] [φ self; φ refund] ⇓
       fun (v : unit) => inl (φ v)
     }}.
   Proof.

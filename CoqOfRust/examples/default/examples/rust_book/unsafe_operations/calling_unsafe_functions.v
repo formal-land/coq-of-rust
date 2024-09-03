@@ -15,16 +15,16 @@ fn main() {
     }
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [] =>
+Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
         let~ some_vector :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "slice") [ Ty.path "u32" ],
+                Ty.apply (Ty.path "slice") [] [ Ty.path "u32" ],
                 "into_vec",
                 [ Ty.path "alloc::alloc::Global" ]
               |),
@@ -36,8 +36,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "alloc::boxed::Box")
+                          []
                           [
-                            Ty.apply (Ty.path "array") [ Ty.path "u32" ];
+                            Ty.apply (Ty.path "array") [ Value.Integer 4 ] [ Ty.path "u32" ];
                             Ty.path "alloc::alloc::Global"
                           ],
                         "new",
@@ -60,6 +61,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "alloc::vec::Vec")
+                  []
                   [ Ty.path "u32"; Ty.path "alloc::alloc::Global" ],
                 "as_ptr",
                 []
@@ -73,6 +75,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "alloc::vec::Vec")
+                  []
                   [ Ty.path "u32"; Ty.path "alloc::alloc::Global" ],
                 "len",
                 []
@@ -97,6 +100,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "alloc::vec::Vec")
+                          []
                           [ Ty.path "u32"; Ty.path "alloc::alloc::Global" ],
                         "as_slice",
                         []
@@ -128,11 +132,13 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                       "core::cmp::PartialEq",
                                       Ty.apply
                                         (Ty.path "&")
-                                        [ Ty.apply (Ty.path "slice") [ Ty.path "u32" ] ],
+                                        []
+                                        [ Ty.apply (Ty.path "slice") [] [ Ty.path "u32" ] ],
                                       [
                                         Ty.apply
                                           (Ty.path "&")
-                                          [ Ty.apply (Ty.path "slice") [ Ty.path "u32" ] ]
+                                          []
+                                          [ Ty.apply (Ty.path "slice") [] [ Ty.path "u32" ] ]
                                       ],
                                       "eq",
                                       []
@@ -156,10 +162,12 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                       [
                                         Ty.apply
                                           (Ty.path "&")
-                                          [ Ty.apply (Ty.path "slice") [ Ty.path "u32" ] ];
+                                          []
+                                          [ Ty.apply (Ty.path "slice") [] [ Ty.path "u32" ] ];
                                         Ty.apply
                                           (Ty.path "&")
-                                          [ Ty.apply (Ty.path "slice") [ Ty.path "u32" ] ]
+                                          []
+                                          [ Ty.apply (Ty.path "slice") [] [ Ty.path "u32" ] ]
                                       ]
                                     |),
                                     [
@@ -180,7 +188,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_main : M.IsFunction "calling_unsafe_functions::main" main.

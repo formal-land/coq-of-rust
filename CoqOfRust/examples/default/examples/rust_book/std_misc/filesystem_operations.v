@@ -11,9 +11,9 @@ fn cat(path: &Path) -> io::Result<String> {
     }
 }
 *)
-Definition cat (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [ path ] =>
+Definition cat (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [ path ] =>
     ltac:(M.monadic
       (let path := M.alloc (| path |) in
       M.catch_return (|
@@ -28,6 +28,7 @@ Definition cat (τ : list Ty.t) (α : list Value.t) : M :=
                         "core::ops::try_trait::Try",
                         Ty.apply
                           (Ty.path "core::result::Result")
+                          []
                           [ Ty.path "std::fs::File"; Ty.path "std::io::error::Error" ],
                         [],
                         "branch",
@@ -38,7 +39,7 @@ Definition cat (τ : list Ty.t) (α : list Value.t) : M :=
                           M.get_associated_function (|
                             Ty.path "std::fs::File",
                             "open",
-                            [ Ty.apply (Ty.path "&") [ Ty.path "std::path::Path" ] ]
+                            [ Ty.apply (Ty.path "&") [] [ Ty.path "std::path::Path" ] ]
                           |),
                           [ M.read (| path |) ]
                         |)
@@ -64,6 +65,7 @@ Definition cat (τ : list Ty.t) (α : list Value.t) : M :=
                                     "core::ops::try_trait::FromResidual",
                                     Ty.apply
                                       (Ty.path "core::result::Result")
+                                      []
                                       [
                                         Ty.path "alloc::string::String";
                                         Ty.path "std::io::error::Error"
@@ -71,6 +73,7 @@ Definition cat (τ : list Ty.t) (α : list Value.t) : M :=
                                     [
                                       Ty.apply
                                         (Ty.path "core::result::Result")
+                                        []
                                         [
                                           Ty.path "core::convert::Infallible";
                                           Ty.path "std::io::error::Error"
@@ -134,7 +137,7 @@ Definition cat (τ : list Ty.t) (α : list Value.t) : M :=
             |)
           |)))
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_cat : M.IsFunction "filesystem_operations::cat" cat.
@@ -146,9 +149,9 @@ fn echo(s: &str, path: &Path) -> io::Result<()> {
     f.write_all(s.as_bytes())
 }
 *)
-Definition echo (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [ s; path ] =>
+Definition echo (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [ s; path ] =>
     ltac:(M.monadic
       (let s := M.alloc (| s |) in
       let path := M.alloc (| path |) in
@@ -164,6 +167,7 @@ Definition echo (τ : list Ty.t) (α : list Value.t) : M :=
                         "core::ops::try_trait::Try",
                         Ty.apply
                           (Ty.path "core::result::Result")
+                          []
                           [ Ty.path "std::fs::File"; Ty.path "std::io::error::Error" ],
                         [],
                         "branch",
@@ -174,7 +178,7 @@ Definition echo (τ : list Ty.t) (α : list Value.t) : M :=
                           M.get_associated_function (|
                             Ty.path "std::fs::File",
                             "create",
-                            [ Ty.apply (Ty.path "&") [ Ty.path "std::path::Path" ] ]
+                            [ Ty.apply (Ty.path "&") [] [ Ty.path "std::path::Path" ] ]
                           |),
                           [ M.read (| path |) ]
                         |)
@@ -200,10 +204,12 @@ Definition echo (τ : list Ty.t) (α : list Value.t) : M :=
                                     "core::ops::try_trait::FromResidual",
                                     Ty.apply
                                       (Ty.path "core::result::Result")
+                                      []
                                       [ Ty.tuple []; Ty.path "std::io::error::Error" ],
                                     [
                                       Ty.apply
                                         (Ty.path "core::result::Result")
+                                        []
                                         [
                                           Ty.path "core::convert::Infallible";
                                           Ty.path "std::io::error::Error"
@@ -251,7 +257,7 @@ Definition echo (τ : list Ty.t) (α : list Value.t) : M :=
             |)
           |)))
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_echo : M.IsFunction "filesystem_operations::echo" echo.
@@ -264,9 +270,9 @@ fn touch(path: &Path) -> io::Result<()> {
     }
 }
 *)
-Definition touch (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [ path ] =>
+Definition touch (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [ path ] =>
     ltac:(M.monadic
       (let path := M.alloc (| path |) in
       M.read (|
@@ -276,7 +282,7 @@ Definition touch (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_associated_function (|
                 Ty.path "std::fs::OpenOptions",
                 "open",
-                [ Ty.apply (Ty.path "&") [ Ty.path "std::path::Path" ] ]
+                [ Ty.apply (Ty.path "&") [] [ Ty.path "std::path::Path" ] ]
               |),
               [
                 M.call_closure (|
@@ -320,7 +326,7 @@ Definition touch (τ : list Ty.t) (α : list Value.t) : M :=
           ]
         |)
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_touch : M.IsFunction "filesystem_operations::touch" touch.
@@ -389,9 +395,9 @@ fn main() {
     });
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [] =>
+Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
         let~ _ :=
@@ -419,7 +425,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               M.call_closure (|
                 M.get_function (|
                   "std::fs::create_dir",
-                  [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                  [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                 |),
                 [ M.read (| Value.String "a" |) ]
               |)
@@ -516,6 +522,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "core::result::Result")
+                  []
                   [ Ty.tuple []; Ty.path "std::io::error::Error" ],
                 "unwrap_or_else",
                 [ Ty.function [ Ty.tuple [ Ty.path "std::io::error::Error" ] ] (Ty.tuple []) ]
@@ -638,6 +645,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "core::result::Result")
+                  []
                   [ Ty.tuple []; Ty.path "std::io::error::Error" ],
                 "unwrap_or_else",
                 [ Ty.function [ Ty.tuple [ Ty.path "std::io::error::Error" ] ] (Ty.tuple []) ]
@@ -646,7 +654,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 M.call_closure (|
                   M.get_function (|
                     "std::fs::create_dir_all",
-                    [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                    [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                   |),
                   [ M.read (| Value.String "a/c/d" |) ]
                 |);
@@ -753,6 +761,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "core::result::Result")
+                  []
                   [ Ty.tuple []; Ty.path "std::io::error::Error" ],
                 "unwrap_or_else",
                 [ Ty.function [ Ty.tuple [ Ty.path "std::io::error::Error" ] ] (Ty.tuple []) ]
@@ -882,6 +891,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                         M.get_associated_function (|
                           Ty.apply
                             (Ty.path "core::result::Result")
+                            []
                             [ Ty.tuple []; Ty.path "std::io::error::Error" ],
                           "unwrap_or_else",
                           [
@@ -895,8 +905,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                             M.get_function (|
                               "std::os::unix::fs::symlink",
                               [
-                                Ty.apply (Ty.path "&") [ Ty.path "str" ];
-                                Ty.apply (Ty.path "&") [ Ty.path "str" ]
+                                Ty.apply (Ty.path "&") [] [ Ty.path "str" ];
+                                Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
                               ]
                             |),
                             [
@@ -1159,7 +1169,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               M.call_closure (|
                 M.get_function (|
                   "std::fs::read_dir",
-                  [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                  [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                 |),
                 [ M.read (| Value.String "a" |) ]
               |)
@@ -1332,6 +1342,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                                                                 Ty.apply
                                                                                   (Ty.path
                                                                                     "core::result::Result")
+                                                                                  []
                                                                                   [
                                                                                     Ty.path
                                                                                       "std::fs::DirEntry";
@@ -1391,6 +1402,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "core::result::Result")
+                  []
                   [ Ty.tuple []; Ty.path "std::io::error::Error" ],
                 "unwrap_or_else",
                 [ Ty.function [ Ty.tuple [ Ty.path "std::io::error::Error" ] ] (Ty.tuple []) ]
@@ -1399,7 +1411,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 M.call_closure (|
                   M.get_function (|
                     "std::fs::remove_file",
-                    [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                    [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                   |),
                   [ M.read (| Value.String "a/c/e.txt" |) ]
                 |);
@@ -1504,6 +1516,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "core::result::Result")
+                  []
                   [ Ty.tuple []; Ty.path "std::io::error::Error" ],
                 "unwrap_or_else",
                 [ Ty.function [ Ty.tuple [ Ty.path "std::io::error::Error" ] ] (Ty.tuple []) ]
@@ -1512,7 +1525,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 M.call_closure (|
                   M.get_function (|
                     "std::fs::remove_dir",
-                    [ Ty.apply (Ty.path "&") [ Ty.path "str" ] ]
+                    [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                   |),
                   [ M.read (| Value.String "a/c/d" |) ]
                 |);
@@ -1594,7 +1607,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_main : M.IsFunction "filesystem_operations::main" main.

@@ -8,9 +8,11 @@ Module handler.
         forall (EXT DB : Ty.t),
         (Ty.apply
             (Ty.path "revm::handler::handle_types::execution::LastFrameReturnHandle")
+            []
             [ EXT; DB ]) =
           (Ty.apply
             (Ty.path "alloc::sync::Arc")
+            []
             [
               Ty.dyn
                 [
@@ -22,9 +24,13 @@ Module handler.
       
       Axiom FrameCallHandle :
         forall (EXT DB : Ty.t),
-        (Ty.apply (Ty.path "revm::handler::handle_types::execution::FrameCallHandle") [ EXT; DB ]) =
+        (Ty.apply
+            (Ty.path "revm::handler::handle_types::execution::FrameCallHandle")
+            []
+            [ EXT; DB ]) =
           (Ty.apply
             (Ty.path "alloc::sync::Arc")
+            []
             [
               Ty.dyn
                 [
@@ -38,9 +44,11 @@ Module handler.
         forall (EXT DB : Ty.t),
         (Ty.apply
             (Ty.path "revm::handler::handle_types::execution::FrameCallReturnHandle")
+            []
             [ EXT; DB ]) =
           (Ty.apply
             (Ty.path "alloc::sync::Arc")
+            []
             [
               Ty.dyn
                 [
@@ -54,9 +62,11 @@ Module handler.
         forall (EXT DB : Ty.t),
         (Ty.apply
             (Ty.path "revm::handler::handle_types::execution::InsertCallOutcomeHandle")
+            []
             [ EXT; DB ]) =
           (Ty.apply
             (Ty.path "alloc::sync::Arc")
+            []
             [
               Ty.dyn
                 [
@@ -70,9 +80,11 @@ Module handler.
         forall (EXT DB : Ty.t),
         (Ty.apply
             (Ty.path "revm::handler::handle_types::execution::FrameCreateHandle")
+            []
             [ EXT; DB ]) =
           (Ty.apply
             (Ty.path "alloc::sync::Arc")
+            []
             [
               Ty.dyn
                 [
@@ -86,9 +98,11 @@ Module handler.
         forall (EXT DB : Ty.t),
         (Ty.apply
             (Ty.path "revm::handler::handle_types::execution::FrameCreateReturnHandle")
+            []
             [ EXT; DB ]) =
           (Ty.apply
             (Ty.path "alloc::sync::Arc")
+            []
             [
               Ty.dyn
                 [
@@ -102,9 +116,11 @@ Module handler.
         forall (EXT DB : Ty.t),
         (Ty.apply
             (Ty.path "revm::handler::handle_types::execution::InsertCreateOutcomeHandle")
+            []
             [ EXT; DB ]) =
           (Ty.apply
             (Ty.path "alloc::sync::Arc")
+            []
             [
               Ty.dyn
                 [
@@ -118,9 +134,11 @@ Module handler.
         forall (EXT DB : Ty.t),
         (Ty.apply
             (Ty.path "revm::handler::handle_types::execution::FrameEOFCreateHandle")
+            []
             [ EXT; DB ]) =
           (Ty.apply
             (Ty.path "alloc::sync::Arc")
+            []
             [
               Ty.dyn
                 [
@@ -134,9 +152,11 @@ Module handler.
         forall (EXT DB : Ty.t),
         (Ty.apply
             (Ty.path "revm::handler::handle_types::execution::FrameEOFCreateReturnHandle")
+            []
             [ EXT; DB ]) =
           (Ty.apply
             (Ty.path "alloc::sync::Arc")
+            []
             [
               Ty.dyn
                 [
@@ -150,9 +170,11 @@ Module handler.
         forall (EXT DB : Ty.t),
         (Ty.apply
             (Ty.path "revm::handler::handle_types::execution::InsertEOFCreateOutcomeHandle")
+            []
             [ EXT; DB ]) =
           (Ty.apply
             (Ty.path "alloc::sync::Arc")
+            []
             [
               Ty.dyn
                 [
@@ -165,12 +187,14 @@ Module handler.
       (* StructRecord
         {
           name := "ExecutionHandler";
+          const_params := [];
           ty_params := [ "EXT"; "DB" ];
           fields :=
             [
               ("last_frame_return",
                 Ty.apply
                   (Ty.path "alloc::sync::Arc")
+                  []
                   [
                     Ty.dyn
                       [
@@ -182,6 +206,7 @@ Module handler.
               ("call",
                 Ty.apply
                   (Ty.path "alloc::sync::Arc")
+                  []
                   [
                     Ty.dyn
                       [
@@ -193,6 +218,7 @@ Module handler.
               ("call_return",
                 Ty.apply
                   (Ty.path "alloc::sync::Arc")
+                  []
                   [
                     Ty.dyn
                       [
@@ -204,6 +230,7 @@ Module handler.
               ("insert_call_outcome",
                 Ty.apply
                   (Ty.path "alloc::sync::Arc")
+                  []
                   [
                     Ty.dyn
                       [
@@ -215,6 +242,7 @@ Module handler.
               ("create",
                 Ty.apply
                   (Ty.path "alloc::sync::Arc")
+                  []
                   [
                     Ty.dyn
                       [
@@ -226,6 +254,7 @@ Module handler.
               ("create_return",
                 Ty.apply
                   (Ty.path "alloc::sync::Arc")
+                  []
                   [
                     Ty.dyn
                       [
@@ -237,6 +266,7 @@ Module handler.
               ("insert_create_outcome",
                 Ty.apply
                   (Ty.path "alloc::sync::Arc")
+                  []
                   [
                     Ty.dyn
                       [
@@ -248,6 +278,7 @@ Module handler.
               ("eofcreate",
                 Ty.apply
                   (Ty.path "alloc::sync::Arc")
+                  []
                   [
                     Ty.dyn
                       [
@@ -259,6 +290,7 @@ Module handler.
               ("eofcreate_return",
                 Ty.apply
                   (Ty.path "alloc::sync::Arc")
+                  []
                   [
                     Ty.dyn
                       [
@@ -270,6 +302,7 @@ Module handler.
               ("insert_eofcreate_outcome",
                 Ty.apply
                   (Ty.path "alloc::sync::Arc")
+                  []
                   [
                     Ty.dyn
                       [
@@ -283,7 +316,10 @@ Module handler.
       
       Module Impl_revm_handler_handle_types_execution_ExecutionHandler_EXT_DB.
         Definition Self (EXT DB : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "revm::handler::handle_types::execution::ExecutionHandler") [ EXT; DB ].
+          Ty.apply
+            (Ty.path "revm::handler::handle_types::execution::ExecutionHandler")
+            []
+            [ EXT; DB ].
         
         (*
             pub fn new<SPEC: Spec + 'a>() -> Self {
@@ -301,10 +337,10 @@ Module handler.
                 }
             }
         *)
-        Definition new (EXT DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition new (EXT DB : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self EXT DB in
-          match τ, α with
-          | [ SPEC ], [] =>
+          match ε, τ, α with
+          | [], [ SPEC ], [] =>
             ltac:(M.monadic
               (Value.StructRecord
                 "revm::handler::handle_types::execution::ExecutionHandler"
@@ -316,20 +352,27 @@ Module handler.
                         M.get_associated_function (|
                           Ty.apply
                             (Ty.path "alloc::sync::Arc")
+                            []
                             [
                               Ty.function
                                 [
                                   Ty.apply
                                     (Ty.path "&mut")
-                                    [ Ty.apply (Ty.path "revm::context::Context") [ EXT; DB ] ];
-                                  Ty.apply (Ty.path "&mut") [ Ty.path "revm::frame::FrameResult" ]
+                                    []
+                                    [ Ty.apply (Ty.path "revm::context::Context") [] [ EXT; DB ] ];
+                                  Ty.apply
+                                    (Ty.path "&mut")
+                                    []
+                                    [ Ty.path "revm::frame::FrameResult" ]
                                 ]
                                 (Ty.apply
                                   (Ty.path "core::result::Result")
+                                  []
                                   [
                                     Ty.tuple [];
                                     Ty.apply
                                       (Ty.path "revm_primitives::result::EVMError")
+                                      []
                                       [ Ty.associated ]
                                   ]);
                               Ty.path "alloc::alloc::Global"
@@ -351,14 +394,17 @@ Module handler.
                         M.get_associated_function (|
                           Ty.apply
                             (Ty.path "alloc::sync::Arc")
+                            []
                             [
                               Ty.function
                                 [
                                   Ty.apply
                                     (Ty.path "&mut")
-                                    [ Ty.apply (Ty.path "revm::context::Context") [ EXT; DB ] ];
+                                    []
+                                    [ Ty.apply (Ty.path "revm::context::Context") [] [ EXT; DB ] ];
                                   Ty.apply
                                     (Ty.path "alloc::boxed::Box")
+                                    []
                                     [
                                       Ty.path
                                         "revm_interpreter::interpreter_action::call_inputs::CallInputs";
@@ -367,10 +413,12 @@ Module handler.
                                 ]
                                 (Ty.apply
                                   (Ty.path "core::result::Result")
+                                  []
                                   [
                                     Ty.path "revm::frame::FrameOrResult";
                                     Ty.apply
                                       (Ty.path "revm_primitives::result::EVMError")
+                                      []
                                       [ Ty.associated ]
                                   ]);
                               Ty.path "alloc::alloc::Global"
@@ -392,14 +440,17 @@ Module handler.
                         M.get_associated_function (|
                           Ty.apply
                             (Ty.path "alloc::sync::Arc")
+                            []
                             [
                               Ty.function
                                 [
                                   Ty.apply
                                     (Ty.path "&mut")
-                                    [ Ty.apply (Ty.path "revm::context::Context") [ EXT; DB ] ];
+                                    []
+                                    [ Ty.apply (Ty.path "revm::context::Context") [] [ EXT; DB ] ];
                                   Ty.apply
                                     (Ty.path "alloc::boxed::Box")
+                                    []
                                     [
                                       Ty.path "revm::frame::CallFrame";
                                       Ty.path "alloc::alloc::Global"
@@ -408,11 +459,13 @@ Module handler.
                                 ]
                                 (Ty.apply
                                   (Ty.path "core::result::Result")
+                                  []
                                   [
                                     Ty.path
                                       "revm_interpreter::interpreter_action::call_outcome::CallOutcome";
                                     Ty.apply
                                       (Ty.path "revm_primitives::result::EVMError")
+                                      []
                                       [ Ty.associated ]
                                   ]);
                               Ty.path "alloc::alloc::Global"
@@ -434,15 +487,18 @@ Module handler.
                         M.get_associated_function (|
                           Ty.apply
                             (Ty.path "alloc::sync::Arc")
+                            []
                             [
                               Ty.function
                                 [
                                   Ty.apply
                                     (Ty.path "&mut")
-                                    [ Ty.apply (Ty.path "revm::context::Context") [ EXT; DB ] ];
-                                  Ty.apply (Ty.path "&mut") [ Ty.path "revm::frame::Frame" ];
+                                    []
+                                    [ Ty.apply (Ty.path "revm::context::Context") [] [ EXT; DB ] ];
+                                  Ty.apply (Ty.path "&mut") [] [ Ty.path "revm::frame::Frame" ];
                                   Ty.apply
                                     (Ty.path "&mut")
+                                    []
                                     [
                                       Ty.path
                                         "revm_interpreter::interpreter::shared_memory::SharedMemory"
@@ -452,10 +508,12 @@ Module handler.
                                 ]
                                 (Ty.apply
                                   (Ty.path "core::result::Result")
+                                  []
                                   [
                                     Ty.tuple [];
                                     Ty.apply
                                       (Ty.path "revm_primitives::result::EVMError")
+                                      []
                                       [ Ty.associated ]
                                   ]);
                               Ty.path "alloc::alloc::Global"
@@ -477,14 +535,17 @@ Module handler.
                         M.get_associated_function (|
                           Ty.apply
                             (Ty.path "alloc::sync::Arc")
+                            []
                             [
                               Ty.function
                                 [
                                   Ty.apply
                                     (Ty.path "&mut")
-                                    [ Ty.apply (Ty.path "revm::context::Context") [ EXT; DB ] ];
+                                    []
+                                    [ Ty.apply (Ty.path "revm::context::Context") [] [ EXT; DB ] ];
                                   Ty.apply
                                     (Ty.path "alloc::boxed::Box")
+                                    []
                                     [
                                       Ty.path
                                         "revm_interpreter::interpreter_action::create_inputs::CreateInputs";
@@ -493,10 +554,12 @@ Module handler.
                                 ]
                                 (Ty.apply
                                   (Ty.path "core::result::Result")
+                                  []
                                   [
                                     Ty.path "revm::frame::FrameOrResult";
                                     Ty.apply
                                       (Ty.path "revm_primitives::result::EVMError")
+                                      []
                                       [ Ty.associated ]
                                   ]);
                               Ty.path "alloc::alloc::Global"
@@ -518,14 +581,17 @@ Module handler.
                         M.get_associated_function (|
                           Ty.apply
                             (Ty.path "alloc::sync::Arc")
+                            []
                             [
                               Ty.function
                                 [
                                   Ty.apply
                                     (Ty.path "&mut")
-                                    [ Ty.apply (Ty.path "revm::context::Context") [ EXT; DB ] ];
+                                    []
+                                    [ Ty.apply (Ty.path "revm::context::Context") [] [ EXT; DB ] ];
                                   Ty.apply
                                     (Ty.path "alloc::boxed::Box")
+                                    []
                                     [
                                       Ty.path "revm::frame::CreateFrame";
                                       Ty.path "alloc::alloc::Global"
@@ -534,11 +600,13 @@ Module handler.
                                 ]
                                 (Ty.apply
                                   (Ty.path "core::result::Result")
+                                  []
                                   [
                                     Ty.path
                                       "revm_interpreter::interpreter_action::create_outcome::CreateOutcome";
                                     Ty.apply
                                       (Ty.path "revm_primitives::result::EVMError")
+                                      []
                                       [ Ty.associated ]
                                   ]);
                               Ty.path "alloc::alloc::Global"
@@ -560,22 +628,26 @@ Module handler.
                         M.get_associated_function (|
                           Ty.apply
                             (Ty.path "alloc::sync::Arc")
+                            []
                             [
                               Ty.function
                                 [
                                   Ty.apply
                                     (Ty.path "&mut")
-                                    [ Ty.apply (Ty.path "revm::context::Context") [ EXT; DB ] ];
-                                  Ty.apply (Ty.path "&mut") [ Ty.path "revm::frame::Frame" ];
+                                    []
+                                    [ Ty.apply (Ty.path "revm::context::Context") [] [ EXT; DB ] ];
+                                  Ty.apply (Ty.path "&mut") [] [ Ty.path "revm::frame::Frame" ];
                                   Ty.path
                                     "revm_interpreter::interpreter_action::create_outcome::CreateOutcome"
                                 ]
                                 (Ty.apply
                                   (Ty.path "core::result::Result")
+                                  []
                                   [
                                     Ty.tuple [];
                                     Ty.apply
                                       (Ty.path "revm_primitives::result::EVMError")
+                                      []
                                       [ Ty.associated ]
                                   ]);
                               Ty.path "alloc::alloc::Global"
@@ -597,14 +669,17 @@ Module handler.
                         M.get_associated_function (|
                           Ty.apply
                             (Ty.path "alloc::sync::Arc")
+                            []
                             [
                               Ty.function
                                 [
                                   Ty.apply
                                     (Ty.path "&mut")
-                                    [ Ty.apply (Ty.path "revm::context::Context") [ EXT; DB ] ];
+                                    []
+                                    [ Ty.apply (Ty.path "revm::context::Context") [] [ EXT; DB ] ];
                                   Ty.apply
                                     (Ty.path "alloc::boxed::Box")
+                                    []
                                     [
                                       Ty.path
                                         "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInput";
@@ -613,10 +688,12 @@ Module handler.
                                 ]
                                 (Ty.apply
                                   (Ty.path "core::result::Result")
+                                  []
                                   [
                                     Ty.path "revm::frame::FrameOrResult";
                                     Ty.apply
                                       (Ty.path "revm_primitives::result::EVMError")
+                                      []
                                       [ Ty.associated ]
                                   ]);
                               Ty.path "alloc::alloc::Global"
@@ -638,14 +715,17 @@ Module handler.
                         M.get_associated_function (|
                           Ty.apply
                             (Ty.path "alloc::sync::Arc")
+                            []
                             [
                               Ty.function
                                 [
                                   Ty.apply
                                     (Ty.path "&mut")
-                                    [ Ty.apply (Ty.path "revm::context::Context") [ EXT; DB ] ];
+                                    []
+                                    [ Ty.apply (Ty.path "revm::context::Context") [] [ EXT; DB ] ];
                                   Ty.apply
                                     (Ty.path "alloc::boxed::Box")
+                                    []
                                     [
                                       Ty.path "revm::frame::EOFCreateFrame";
                                       Ty.path "alloc::alloc::Global"
@@ -654,11 +734,13 @@ Module handler.
                                 ]
                                 (Ty.apply
                                   (Ty.path "core::result::Result")
+                                  []
                                   [
                                     Ty.path
                                       "revm_interpreter::interpreter_action::eof_create_outcome::EOFCreateOutcome";
                                     Ty.apply
                                       (Ty.path "revm_primitives::result::EVMError")
+                                      []
                                       [ Ty.associated ]
                                   ]);
                               Ty.path "alloc::alloc::Global"
@@ -680,22 +762,26 @@ Module handler.
                         M.get_associated_function (|
                           Ty.apply
                             (Ty.path "alloc::sync::Arc")
+                            []
                             [
                               Ty.function
                                 [
                                   Ty.apply
                                     (Ty.path "&mut")
-                                    [ Ty.apply (Ty.path "revm::context::Context") [ EXT; DB ] ];
-                                  Ty.apply (Ty.path "&mut") [ Ty.path "revm::frame::Frame" ];
+                                    []
+                                    [ Ty.apply (Ty.path "revm::context::Context") [] [ EXT; DB ] ];
+                                  Ty.apply (Ty.path "&mut") [] [ Ty.path "revm::frame::Frame" ];
                                   Ty.path
                                     "revm_interpreter::interpreter_action::eof_create_outcome::EOFCreateOutcome"
                                 ]
                                 (Ty.apply
                                   (Ty.path "core::result::Result")
+                                  []
                                   [
                                     Ty.tuple [];
                                     Ty.apply
                                       (Ty.path "revm_primitives::result::EVMError")
+                                      []
                                       [ Ty.associated ]
                                   ]);
                               Ty.path "alloc::alloc::Global"
@@ -711,7 +797,7 @@ Module handler.
                         ]
                       |)))
                 ]))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_new :
@@ -726,10 +812,15 @@ Module handler.
                 (self.last_frame_return)(context, frame_result)
             }
         *)
-        Definition last_frame_return (EXT DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition last_frame_return
+            (EXT DB : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self EXT DB in
-          match τ, α with
-          | [], [ self; context; frame_result ] =>
+          match ε, τ, α with
+          | [], [], [ self; context; frame_result ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let context := M.alloc (| context |) in
@@ -747,8 +838,9 @@ Module handler.
                       [
                         Ty.apply
                           (Ty.path "&mut")
-                          [ Ty.apply (Ty.path "revm::context::Context") [ EXT; DB ] ];
-                        Ty.apply (Ty.path "&mut") [ Ty.path "revm::frame::FrameResult" ]
+                          []
+                          [ Ty.apply (Ty.path "revm::context::Context") [] [ EXT; DB ] ];
+                        Ty.apply (Ty.path "&mut") [] [ Ty.path "revm::frame::FrameResult" ]
                       ]
                   ],
                   "call",
@@ -760,6 +852,7 @@ Module handler.
                       "core::ops::deref::Deref",
                       Ty.apply
                         (Ty.path "alloc::sync::Arc")
+                        []
                         [
                           Ty.dyn
                             [
@@ -783,7 +876,7 @@ Module handler.
                   Value.Tuple [ M.read (| context |); M.read (| frame_result |) ]
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_last_frame_return :
@@ -799,10 +892,10 @@ Module handler.
                 (self.call)(context, inputs.clone())
             }
         *)
-        Definition call (EXT DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition call (EXT DB : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self EXT DB in
-          match τ, α with
-          | [], [ self; context; inputs ] =>
+          match ε, τ, α with
+          | [], [], [ self; context; inputs ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let context := M.alloc (| context |) in
@@ -820,9 +913,11 @@ Module handler.
                       [
                         Ty.apply
                           (Ty.path "&mut")
-                          [ Ty.apply (Ty.path "revm::context::Context") [ EXT; DB ] ];
+                          []
+                          [ Ty.apply (Ty.path "revm::context::Context") [] [ EXT; DB ] ];
                         Ty.apply
                           (Ty.path "alloc::boxed::Box")
+                          []
                           [
                             Ty.path "revm_interpreter::interpreter_action::call_inputs::CallInputs";
                             Ty.path "alloc::alloc::Global"
@@ -838,6 +933,7 @@ Module handler.
                       "core::ops::deref::Deref",
                       Ty.apply
                         (Ty.path "alloc::sync::Arc")
+                        []
                         [
                           Ty.dyn
                             [
@@ -866,6 +962,7 @@ Module handler.
                           "core::clone::Clone",
                           Ty.apply
                             (Ty.path "alloc::boxed::Box")
+                            []
                             [
                               Ty.path
                                 "revm_interpreter::interpreter_action::call_inputs::CallInputs";
@@ -880,7 +977,7 @@ Module handler.
                     ]
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_call :
@@ -897,10 +994,15 @@ Module handler.
                 (self.call_return)(context, frame, interpreter_result)
             }
         *)
-        Definition call_return (EXT DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition call_return
+            (EXT DB : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self EXT DB in
-          match τ, α with
-          | [], [ self; context; frame; interpreter_result ] =>
+          match ε, τ, α with
+          | [], [], [ self; context; frame; interpreter_result ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let context := M.alloc (| context |) in
@@ -919,9 +1021,11 @@ Module handler.
                       [
                         Ty.apply
                           (Ty.path "&mut")
-                          [ Ty.apply (Ty.path "revm::context::Context") [ EXT; DB ] ];
+                          []
+                          [ Ty.apply (Ty.path "revm::context::Context") [] [ EXT; DB ] ];
                         Ty.apply
                           (Ty.path "alloc::boxed::Box")
+                          []
                           [ Ty.path "revm::frame::CallFrame"; Ty.path "alloc::alloc::Global" ];
                         Ty.path "revm_interpreter::interpreter::InterpreterResult"
                       ]
@@ -935,6 +1039,7 @@ Module handler.
                       "core::ops::deref::Deref",
                       Ty.apply
                         (Ty.path "alloc::sync::Arc")
+                        []
                         [
                           Ty.dyn
                             [
@@ -959,7 +1064,7 @@ Module handler.
                     [ M.read (| context |); M.read (| frame |); M.read (| interpreter_result |) ]
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_call_return :
@@ -977,10 +1082,15 @@ Module handler.
                 (self.insert_call_outcome)(context, frame, shared_memory, outcome)
             }
         *)
-        Definition insert_call_outcome (EXT DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition insert_call_outcome
+            (EXT DB : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self EXT DB in
-          match τ, α with
-          | [], [ self; context; frame; shared_memory; outcome ] =>
+          match ε, τ, α with
+          | [], [], [ self; context; frame; shared_memory; outcome ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let context := M.alloc (| context |) in
@@ -1000,10 +1110,12 @@ Module handler.
                       [
                         Ty.apply
                           (Ty.path "&mut")
-                          [ Ty.apply (Ty.path "revm::context::Context") [ EXT; DB ] ];
-                        Ty.apply (Ty.path "&mut") [ Ty.path "revm::frame::Frame" ];
+                          []
+                          [ Ty.apply (Ty.path "revm::context::Context") [] [ EXT; DB ] ];
+                        Ty.apply (Ty.path "&mut") [] [ Ty.path "revm::frame::Frame" ];
                         Ty.apply
                           (Ty.path "&mut")
+                          []
                           [ Ty.path "revm_interpreter::interpreter::shared_memory::SharedMemory" ];
                         Ty.path "revm_interpreter::interpreter_action::call_outcome::CallOutcome"
                       ]
@@ -1017,6 +1129,7 @@ Module handler.
                       "core::ops::deref::Deref",
                       Ty.apply
                         (Ty.path "alloc::sync::Arc")
+                        []
                         [
                           Ty.dyn
                             [
@@ -1046,7 +1159,7 @@ Module handler.
                     ]
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_insert_call_outcome :
@@ -1062,10 +1175,15 @@ Module handler.
                 (self.create)(context, inputs)
             }
         *)
-        Definition create (EXT DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition create
+            (EXT DB : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self EXT DB in
-          match τ, α with
-          | [], [ self; context; inputs ] =>
+          match ε, τ, α with
+          | [], [], [ self; context; inputs ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let context := M.alloc (| context |) in
@@ -1083,9 +1201,11 @@ Module handler.
                       [
                         Ty.apply
                           (Ty.path "&mut")
-                          [ Ty.apply (Ty.path "revm::context::Context") [ EXT; DB ] ];
+                          []
+                          [ Ty.apply (Ty.path "revm::context::Context") [] [ EXT; DB ] ];
                         Ty.apply
                           (Ty.path "alloc::boxed::Box")
+                          []
                           [
                             Ty.path
                               "revm_interpreter::interpreter_action::create_inputs::CreateInputs";
@@ -1102,6 +1222,7 @@ Module handler.
                       "core::ops::deref::Deref",
                       Ty.apply
                         (Ty.path "alloc::sync::Arc")
+                        []
                         [
                           Ty.dyn
                             [
@@ -1125,7 +1246,7 @@ Module handler.
                   Value.Tuple [ M.read (| context |); M.read (| inputs |) ]
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_create :
@@ -1142,10 +1263,15 @@ Module handler.
                 (self.create_return)(context, frame, interpreter_result)
             }
         *)
-        Definition create_return (EXT DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition create_return
+            (EXT DB : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self EXT DB in
-          match τ, α with
-          | [], [ self; context; frame; interpreter_result ] =>
+          match ε, τ, α with
+          | [], [], [ self; context; frame; interpreter_result ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let context := M.alloc (| context |) in
@@ -1164,9 +1290,11 @@ Module handler.
                       [
                         Ty.apply
                           (Ty.path "&mut")
-                          [ Ty.apply (Ty.path "revm::context::Context") [ EXT; DB ] ];
+                          []
+                          [ Ty.apply (Ty.path "revm::context::Context") [] [ EXT; DB ] ];
                         Ty.apply
                           (Ty.path "alloc::boxed::Box")
+                          []
                           [ Ty.path "revm::frame::CreateFrame"; Ty.path "alloc::alloc::Global" ];
                         Ty.path "revm_interpreter::interpreter::InterpreterResult"
                       ]
@@ -1180,6 +1308,7 @@ Module handler.
                       "core::ops::deref::Deref",
                       Ty.apply
                         (Ty.path "alloc::sync::Arc")
+                        []
                         [
                           Ty.dyn
                             [
@@ -1204,7 +1333,7 @@ Module handler.
                     [ M.read (| context |); M.read (| frame |); M.read (| interpreter_result |) ]
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_create_return :
@@ -1221,10 +1350,15 @@ Module handler.
                 (self.insert_create_outcome)(context, frame, outcome)
             }
         *)
-        Definition insert_create_outcome (EXT DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition insert_create_outcome
+            (EXT DB : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self EXT DB in
-          match τ, α with
-          | [], [ self; context; frame; outcome ] =>
+          match ε, τ, α with
+          | [], [], [ self; context; frame; outcome ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let context := M.alloc (| context |) in
@@ -1243,8 +1377,9 @@ Module handler.
                       [
                         Ty.apply
                           (Ty.path "&mut")
-                          [ Ty.apply (Ty.path "revm::context::Context") [ EXT; DB ] ];
-                        Ty.apply (Ty.path "&mut") [ Ty.path "revm::frame::Frame" ];
+                          []
+                          [ Ty.apply (Ty.path "revm::context::Context") [] [ EXT; DB ] ];
+                        Ty.apply (Ty.path "&mut") [] [ Ty.path "revm::frame::Frame" ];
                         Ty.path
                           "revm_interpreter::interpreter_action::create_outcome::CreateOutcome"
                       ]
@@ -1258,6 +1393,7 @@ Module handler.
                       "core::ops::deref::Deref",
                       Ty.apply
                         (Ty.path "alloc::sync::Arc")
+                        []
                         [
                           Ty.dyn
                             [
@@ -1281,7 +1417,7 @@ Module handler.
                   Value.Tuple [ M.read (| context |); M.read (| frame |); M.read (| outcome |) ]
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_insert_create_outcome :
@@ -1300,10 +1436,15 @@ Module handler.
                 (self.eofcreate)(context, inputs)
             }
         *)
-        Definition eofcreate (EXT DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition eofcreate
+            (EXT DB : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self EXT DB in
-          match τ, α with
-          | [], [ self; context; inputs ] =>
+          match ε, τ, α with
+          | [], [], [ self; context; inputs ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let context := M.alloc (| context |) in
@@ -1321,9 +1462,11 @@ Module handler.
                       [
                         Ty.apply
                           (Ty.path "&mut")
-                          [ Ty.apply (Ty.path "revm::context::Context") [ EXT; DB ] ];
+                          []
+                          [ Ty.apply (Ty.path "revm::context::Context") [] [ EXT; DB ] ];
                         Ty.apply
                           (Ty.path "alloc::boxed::Box")
+                          []
                           [
                             Ty.path
                               "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInput";
@@ -1340,6 +1483,7 @@ Module handler.
                       "core::ops::deref::Deref",
                       Ty.apply
                         (Ty.path "alloc::sync::Arc")
+                        []
                         [
                           Ty.dyn
                             [
@@ -1363,7 +1507,7 @@ Module handler.
                   Value.Tuple [ M.read (| context |); M.read (| inputs |) ]
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_eofcreate :
@@ -1380,10 +1524,15 @@ Module handler.
                 (self.eofcreate_return)(context, frame, interpreter_result)
             }
         *)
-        Definition eofcreate_return (EXT DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition eofcreate_return
+            (EXT DB : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self EXT DB in
-          match τ, α with
-          | [], [ self; context; frame; interpreter_result ] =>
+          match ε, τ, α with
+          | [], [], [ self; context; frame; interpreter_result ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let context := M.alloc (| context |) in
@@ -1402,9 +1551,11 @@ Module handler.
                       [
                         Ty.apply
                           (Ty.path "&mut")
-                          [ Ty.apply (Ty.path "revm::context::Context") [ EXT; DB ] ];
+                          []
+                          [ Ty.apply (Ty.path "revm::context::Context") [] [ EXT; DB ] ];
                         Ty.apply
                           (Ty.path "alloc::boxed::Box")
+                          []
                           [ Ty.path "revm::frame::EOFCreateFrame"; Ty.path "alloc::alloc::Global" ];
                         Ty.path "revm_interpreter::interpreter::InterpreterResult"
                       ]
@@ -1418,6 +1569,7 @@ Module handler.
                       "core::ops::deref::Deref",
                       Ty.apply
                         (Ty.path "alloc::sync::Arc")
+                        []
                         [
                           Ty.dyn
                             [
@@ -1442,7 +1594,7 @@ Module handler.
                     [ M.read (| context |); M.read (| frame |); M.read (| interpreter_result |) ]
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_eofcreate_return :
@@ -1461,12 +1613,13 @@ Module handler.
         *)
         Definition insert_eofcreate_outcome
             (EXT DB : Ty.t)
+            (ε : list Value.t)
             (τ : list Ty.t)
             (α : list Value.t)
             : M :=
           let Self : Ty.t := Self EXT DB in
-          match τ, α with
-          | [], [ self; context; frame; outcome ] =>
+          match ε, τ, α with
+          | [], [], [ self; context; frame; outcome ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let context := M.alloc (| context |) in
@@ -1485,8 +1638,9 @@ Module handler.
                       [
                         Ty.apply
                           (Ty.path "&mut")
-                          [ Ty.apply (Ty.path "revm::context::Context") [ EXT; DB ] ];
-                        Ty.apply (Ty.path "&mut") [ Ty.path "revm::frame::Frame" ];
+                          []
+                          [ Ty.apply (Ty.path "revm::context::Context") [] [ EXT; DB ] ];
+                        Ty.apply (Ty.path "&mut") [] [ Ty.path "revm::frame::Frame" ];
                         Ty.path
                           "revm_interpreter::interpreter_action::eof_create_outcome::EOFCreateOutcome"
                       ]
@@ -1500,6 +1654,7 @@ Module handler.
                       "core::ops::deref::Deref",
                       Ty.apply
                         (Ty.path "alloc::sync::Arc")
+                        []
                         [
                           Ty.dyn
                             [
@@ -1523,7 +1678,7 @@ Module handler.
                   Value.Tuple [ M.read (| context |); M.read (| frame |); M.read (| outcome |) ]
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_insert_eofcreate_outcome :

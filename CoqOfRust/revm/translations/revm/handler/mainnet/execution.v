@@ -39,9 +39,13 @@ Module handler.
           }
       }
       *)
-      Definition frame_return_with_refund_flag (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ SPEC ], [ env; frame_result; refund_enabled ] =>
+      Definition frame_return_with_refund_flag
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        match ε, τ, α with
+        | [], [ SPEC ], [ env; frame_result; refund_enabled ] =>
           ltac:(M.monadic
             (let env := M.alloc (| env |) in
             let frame_result := M.alloc (| frame_result |) in
@@ -295,7 +299,7 @@ Module handler.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Function_frame_return_with_refund_flag :
@@ -312,9 +316,9 @@ Module handler.
           Ok(())
       }
       *)
-      Definition last_frame_return (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ SPEC; EXT; DB ], [ context; frame_result ] =>
+      Definition last_frame_return (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ SPEC; EXT; DB ], [ context; frame_result ] =>
           ltac:(M.monadic
             (let context := M.alloc (| context |) in
             let frame_result := M.alloc (| frame_result |) in
@@ -332,7 +336,7 @@ Module handler.
                           M.call_closure (|
                             M.get_trait_method (|
                               "core::ops::deref::Deref",
-                              Ty.apply (Ty.path "revm::context::evm_context::EvmContext") [ DB ],
+                              Ty.apply (Ty.path "revm::context::evm_context::EvmContext") [] [ DB ],
                               [],
                               "deref",
                               []
@@ -356,7 +360,7 @@ Module handler.
                 |) in
               M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Function_last_frame_return :
@@ -370,15 +374,15 @@ Module handler.
           context.evm.make_call_frame(&inputs)
       }
       *)
-      Definition call (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ SPEC; EXT; DB ], [ context; inputs ] =>
+      Definition call (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ SPEC; EXT; DB ], [ context; inputs ] =>
           ltac:(M.monadic
             (let context := M.alloc (| context |) in
             let inputs := M.alloc (| inputs |) in
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "revm::context::evm_context::EvmContext") [ DB ],
+                Ty.apply (Ty.path "revm::context::evm_context::EvmContext") [] [ DB ],
                 "make_call_frame",
                 []
               |),
@@ -391,7 +395,7 @@ Module handler.
                 M.read (| inputs |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Function_call : M.IsFunction "revm::handler::mainnet::execution::call" call.
@@ -411,9 +415,9 @@ Module handler.
           ))
       }
       *)
-      Definition call_return (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ EXT; DB ], [ context; frame; interpreter_result ] =>
+      Definition call_return (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ EXT; DB ], [ context; frame; interpreter_result ] =>
           ltac:(M.monadic
             (let context := M.alloc (| context |) in
             let frame := M.alloc (| frame |) in
@@ -423,7 +427,10 @@ Module handler.
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "revm::context::inner_evm_context::InnerEvmContext") [ DB ],
+                      Ty.apply
+                        (Ty.path "revm::context::inner_evm_context::InnerEvmContext")
+                        []
+                        [ DB ],
                       "call_return",
                       []
                     |),
@@ -431,7 +438,7 @@ Module handler.
                       M.call_closure (|
                         M.get_trait_method (|
                           "core::ops::deref::DerefMut",
-                          Ty.apply (Ty.path "revm::context::evm_context::EvmContext") [ DB ],
+                          Ty.apply (Ty.path "revm::context::evm_context::EvmContext") [] [ DB ],
                           [],
                           "deref_mut",
                           []
@@ -483,7 +490,7 @@ Module handler.
                   ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Function_call_return :
@@ -504,9 +511,9 @@ Module handler.
           Ok(())
       }
       *)
-      Definition insert_call_outcome (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ EXT; DB ], [ context; frame; shared_memory; outcome ] =>
+      Definition insert_call_outcome (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ EXT; DB ], [ context; frame; shared_memory; outcome ] =>
           ltac:(M.monadic
             (let context := M.alloc (| context |) in
             let frame := M.alloc (| frame |) in
@@ -523,10 +530,12 @@ Module handler.
                             "core::ops::try_trait::Try",
                             Ty.apply
                               (Ty.path "core::result::Result")
+                              []
                               [
                                 Ty.tuple [];
                                 Ty.apply
                                   (Ty.path "revm_primitives::result::EVMError")
+                                  []
                                   [ Ty.associated ]
                               ],
                             [],
@@ -538,6 +547,7 @@ Module handler.
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "revm::context::inner_evm_context::InnerEvmContext")
+                                  []
                                   [ DB ],
                                 "take_error",
                                 []
@@ -548,6 +558,7 @@ Module handler.
                                     "core::ops::deref::DerefMut",
                                     Ty.apply
                                       (Ty.path "revm::context::evm_context::EvmContext")
+                                      []
                                       [ DB ],
                                     [],
                                     "deref_mut",
@@ -585,19 +596,23 @@ Module handler.
                                         "core::ops::try_trait::FromResidual",
                                         Ty.apply
                                           (Ty.path "core::result::Result")
+                                          []
                                           [
                                             Ty.tuple [];
                                             Ty.apply
                                               (Ty.path "revm_primitives::result::EVMError")
+                                              []
                                               [ Ty.associated ]
                                           ],
                                         [
                                           Ty.apply
                                             (Ty.path "core::result::Result")
+                                            []
                                             [
                                               Ty.path "core::convert::Infallible";
                                               Ty.apply
                                                 (Ty.path "revm_primitives::result::EVMError")
+                                                []
                                                 [ Ty.associated ]
                                             ]
                                         ],
@@ -651,7 +666,7 @@ Module handler.
                   M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Function_insert_call_outcome :
@@ -665,15 +680,15 @@ Module handler.
           context.evm.make_create_frame(SPEC::SPEC_ID, &inputs)
       }
       *)
-      Definition create (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ SPEC; EXT; DB ], [ context; inputs ] =>
+      Definition create (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ SPEC; EXT; DB ], [ context; inputs ] =>
           ltac:(M.monadic
             (let context := M.alloc (| context |) in
             let inputs := M.alloc (| inputs |) in
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "revm::context::inner_evm_context::InnerEvmContext") [ DB ],
+                Ty.apply (Ty.path "revm::context::inner_evm_context::InnerEvmContext") [] [ DB ],
                 "make_create_frame",
                 []
               |),
@@ -681,7 +696,7 @@ Module handler.
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::ops::deref::DerefMut",
-                    Ty.apply (Ty.path "revm::context::evm_context::EvmContext") [ DB ],
+                    Ty.apply (Ty.path "revm::context::evm_context::EvmContext") [] [ DB ],
                     [],
                     "deref_mut",
                     []
@@ -698,7 +713,7 @@ Module handler.
                 M.read (| inputs |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Function_create : M.IsFunction "revm::handler::mainnet::execution::create" create.
@@ -720,9 +735,9 @@ Module handler.
           ))
       }
       *)
-      Definition create_return (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ SPEC; EXT; DB ], [ context; frame; interpreter_result ] =>
+      Definition create_return (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ SPEC; EXT; DB ], [ context; frame; interpreter_result ] =>
           ltac:(M.monadic
             (let context := M.alloc (| context |) in
             let frame := M.alloc (| frame |) in
@@ -732,7 +747,10 @@ Module handler.
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "revm::context::inner_evm_context::InnerEvmContext") [ DB ],
+                      Ty.apply
+                        (Ty.path "revm::context::inner_evm_context::InnerEvmContext")
+                        []
+                        [ DB ],
                       "create_return",
                       [ SPEC ]
                     |),
@@ -740,7 +758,7 @@ Module handler.
                       M.call_closure (|
                         M.get_trait_method (|
                           "core::ops::deref::DerefMut",
-                          Ty.apply (Ty.path "revm::context::evm_context::EvmContext") [ DB ],
+                          Ty.apply (Ty.path "revm::context::evm_context::EvmContext") [] [ DB ],
                           [],
                           "deref_mut",
                           []
@@ -804,7 +822,7 @@ Module handler.
                   ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Function_create_return :
@@ -824,9 +842,9 @@ Module handler.
           Ok(())
       }
       *)
-      Definition insert_create_outcome (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ EXT; DB ], [ context; frame; outcome ] =>
+      Definition insert_create_outcome (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ EXT; DB ], [ context; frame; outcome ] =>
           ltac:(M.monadic
             (let context := M.alloc (| context |) in
             let frame := M.alloc (| frame |) in
@@ -842,10 +860,12 @@ Module handler.
                             "core::ops::try_trait::Try",
                             Ty.apply
                               (Ty.path "core::result::Result")
+                              []
                               [
                                 Ty.tuple [];
                                 Ty.apply
                                   (Ty.path "revm_primitives::result::EVMError")
+                                  []
                                   [ Ty.associated ]
                               ],
                             [],
@@ -857,6 +877,7 @@ Module handler.
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "revm::context::inner_evm_context::InnerEvmContext")
+                                  []
                                   [ DB ],
                                 "take_error",
                                 []
@@ -867,6 +888,7 @@ Module handler.
                                     "core::ops::deref::DerefMut",
                                     Ty.apply
                                       (Ty.path "revm::context::evm_context::EvmContext")
+                                      []
                                       [ DB ],
                                     [],
                                     "deref_mut",
@@ -904,19 +926,23 @@ Module handler.
                                         "core::ops::try_trait::FromResidual",
                                         Ty.apply
                                           (Ty.path "core::result::Result")
+                                          []
                                           [
                                             Ty.tuple [];
                                             Ty.apply
                                               (Ty.path "revm_primitives::result::EVMError")
+                                              []
                                               [ Ty.associated ]
                                           ],
                                         [
                                           Ty.apply
                                             (Ty.path "core::result::Result")
+                                            []
                                             [
                                               Ty.path "core::convert::Infallible";
                                               Ty.apply
                                                 (Ty.path "revm_primitives::result::EVMError")
+                                                []
                                                 [ Ty.associated ]
                                             ]
                                         ],
@@ -969,7 +995,7 @@ Module handler.
                   M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Function_insert_create_outcome :
@@ -985,15 +1011,15 @@ Module handler.
           context.evm.make_eofcreate_frame(SPEC::SPEC_ID, &inputs)
       }
       *)
-      Definition eofcreate (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ SPEC; EXT; DB ], [ context; inputs ] =>
+      Definition eofcreate (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ SPEC; EXT; DB ], [ context; inputs ] =>
           ltac:(M.monadic
             (let context := M.alloc (| context |) in
             let inputs := M.alloc (| inputs |) in
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "revm::context::inner_evm_context::InnerEvmContext") [ DB ],
+                Ty.apply (Ty.path "revm::context::inner_evm_context::InnerEvmContext") [] [ DB ],
                 "make_eofcreate_frame",
                 []
               |),
@@ -1001,7 +1027,7 @@ Module handler.
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::ops::deref::DerefMut",
-                    Ty.apply (Ty.path "revm::context::evm_context::EvmContext") [ DB ],
+                    Ty.apply (Ty.path "revm::context::evm_context::EvmContext") [] [ DB ],
                     [],
                     "deref_mut",
                     []
@@ -1018,7 +1044,7 @@ Module handler.
                 M.read (| inputs |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Function_eofcreate :
@@ -1042,9 +1068,9 @@ Module handler.
           ))
       }
       *)
-      Definition eofcreate_return (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ SPEC; EXT; DB ], [ context; frame; interpreter_result ] =>
+      Definition eofcreate_return (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ SPEC; EXT; DB ], [ context; frame; interpreter_result ] =>
           ltac:(M.monadic
             (let context := M.alloc (| context |) in
             let frame := M.alloc (| frame |) in
@@ -1054,7 +1080,10 @@ Module handler.
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "revm::context::inner_evm_context::InnerEvmContext") [ DB ],
+                      Ty.apply
+                        (Ty.path "revm::context::inner_evm_context::InnerEvmContext")
+                        []
+                        [ DB ],
                       "eofcreate_return",
                       [ SPEC ]
                     |),
@@ -1062,7 +1091,7 @@ Module handler.
                       M.call_closure (|
                         M.get_trait_method (|
                           "core::ops::deref::DerefMut",
-                          Ty.apply (Ty.path "revm::context::evm_context::EvmContext") [ DB ],
+                          Ty.apply (Ty.path "revm::context::evm_context::EvmContext") [] [ DB ],
                           [],
                           "deref_mut",
                           []
@@ -1129,7 +1158,7 @@ Module handler.
                   ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Function_eofcreate_return :
@@ -1149,9 +1178,13 @@ Module handler.
           Ok(())
       }
       *)
-      Definition insert_eofcreate_outcome (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ EXT; DB ], [ context; frame; outcome ] =>
+      Definition insert_eofcreate_outcome
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        match ε, τ, α with
+        | [], [ EXT; DB ], [ context; frame; outcome ] =>
           ltac:(M.monadic
             (let context := M.alloc (| context |) in
             let frame := M.alloc (| frame |) in
@@ -1167,10 +1200,12 @@ Module handler.
                             "core::ops::try_trait::Try",
                             Ty.apply
                               (Ty.path "core::result::Result")
+                              []
                               [
                                 Ty.tuple [];
                                 Ty.apply
                                   (Ty.path "revm_primitives::result::EVMError")
+                                  []
                                   [ Ty.associated ]
                               ],
                             [],
@@ -1184,10 +1219,12 @@ Module handler.
                                 [
                                   Ty.apply
                                     (Ty.path "core::result::Result")
+                                    []
                                     [
                                       Ty.tuple [];
                                       Ty.apply
                                         (Ty.path "revm_primitives::result::EVMError")
+                                        []
                                         [ Ty.associated ]
                                     ]
                                 ]
@@ -1199,6 +1236,7 @@ Module handler.
                                       "core::ops::deref::DerefMut",
                                       Ty.apply
                                         (Ty.path "revm::context::evm_context::EvmContext")
+                                        []
                                         [ DB ],
                                       [],
                                       "deref_mut",
@@ -1240,19 +1278,23 @@ Module handler.
                                         "core::ops::try_trait::FromResidual",
                                         Ty.apply
                                           (Ty.path "core::result::Result")
+                                          []
                                           [
                                             Ty.tuple [];
                                             Ty.apply
                                               (Ty.path "revm_primitives::result::EVMError")
+                                              []
                                               [ Ty.associated ]
                                           ],
                                         [
                                           Ty.apply
                                             (Ty.path "core::result::Result")
+                                            []
                                             [
                                               Ty.path "core::convert::Infallible";
                                               Ty.apply
                                                 (Ty.path "revm_primitives::result::EVMError")
+                                                []
                                                 [ Ty.associated ]
                                             ]
                                         ],
@@ -1305,7 +1347,7 @@ Module handler.
                   M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
                 |)))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Function_insert_eofcreate_outcome :

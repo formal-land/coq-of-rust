@@ -6,12 +6,14 @@ Module ptr.
     (* StructRecord
       {
         name := "NonNull";
+        const_params := [];
         ty_params := [ "T" ];
-        fields := [ ("pointer", Ty.apply (Ty.path "*const") [ T ]) ];
+        fields := [ ("pointer", Ty.apply (Ty.path "*const") [] [ T ]) ];
       } *)
     
     Module Impl_core_marker_Send_where_core_marker_Sized_T_for_core_ptr_non_null_NonNull_T.
-      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ].
+      Definition Self (T : Ty.t) : Ty.t :=
+        Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ].
       
       Axiom Implements :
         forall (T : Ty.t),
@@ -23,7 +25,8 @@ Module ptr.
     End Impl_core_marker_Send_where_core_marker_Sized_T_for_core_ptr_non_null_NonNull_T.
     
     Module Impl_core_marker_Sync_where_core_marker_Sized_T_for_core_ptr_non_null_NonNull_T.
-      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ].
+      Definition Self (T : Ty.t) : Ty.t :=
+        Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ].
       
       Axiom Implements :
         forall (T : Ty.t),
@@ -35,7 +38,8 @@ Module ptr.
     End Impl_core_marker_Sync_where_core_marker_Sized_T_for_core_ptr_non_null_NonNull_T.
     
     Module Impl_core_ptr_non_null_NonNull_T.
-      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ].
+      Definition Self (T : Ty.t) : Ty.t :=
+        Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ].
       
       (*
           pub const fn dangling() -> Self {
@@ -48,10 +52,10 @@ Module ptr.
               }
           }
       *)
-      Definition dangling (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition dangling (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [] =>
+        match ε, τ, α with
+        | [ host ], [], [] =>
           ltac:(M.monadic
             (M.read (|
               let~ ptr :=
@@ -64,7 +68,7 @@ Module ptr.
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ],
+                    Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                     "new_unchecked",
                     []
                   |),
@@ -72,7 +76,7 @@ Module ptr.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_dangling :
@@ -86,32 +90,38 @@ Module ptr.
               unsafe { &*self.cast().as_ptr() }
           }
       *)
-      Definition as_uninit_ref (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition as_uninit_ref
+          (T : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "core::ptr::non_null::NonNull")
-                  [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ] ],
+                  []
+                  [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ],
                 "as_ptr",
                 []
               |),
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ],
+                    Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                     "cast",
-                    [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ] ]
+                    [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ]
                   |),
                   [ M.read (| self |) ]
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_as_uninit_ref :
@@ -125,32 +135,38 @@ Module ptr.
               unsafe { &mut *self.cast().as_ptr() }
           }
       *)
-      Definition as_uninit_mut (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition as_uninit_mut
+          (T : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "core::ptr::non_null::NonNull")
-                  [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ] ],
+                  []
+                  [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ],
                 "as_ptr",
                 []
               |),
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ],
+                    Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                     "cast",
-                    [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ] ]
+                    [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ]
                   |),
                   [ M.read (| self |) ]
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_as_uninit_mut :
@@ -165,10 +181,15 @@ Module ptr.
               }
           }
       *)
-      Definition new_unchecked (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition new_unchecked
+          (T : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ ptr ] =>
+        match ε, τ, α with
+        | [ host ], [], [ ptr ] =>
           ltac:(M.monadic
             (let ptr := M.alloc (| ptr |) in
             M.read (|
@@ -187,9 +208,9 @@ Module ptr.
                               M.get_function (|
                                 "core::intrinsics::const_eval_select",
                                 [
-                                  Ty.tuple [ Ty.apply (Ty.path "*mut") [ T ] ];
-                                  Ty.function [ Ty.apply (Ty.path "*mut") [ T ] ] (Ty.tuple []);
-                                  Ty.function [ Ty.apply (Ty.path "*mut") [ T ] ] (Ty.tuple []);
+                                  Ty.tuple [ Ty.apply (Ty.path "*mut") [] [ T ] ];
+                                  Ty.function [ Ty.apply (Ty.path "*mut") [] [ T ] ] (Ty.tuple []);
+                                  Ty.function [ Ty.apply (Ty.path "*mut") [] [ T ] ] (Ty.tuple []);
                                   Ty.tuple []
                                 ]
                               |),
@@ -213,7 +234,7 @@ Module ptr.
                   ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_new_unchecked :
@@ -230,10 +251,10 @@ Module ptr.
               }
           }
       *)
-      Definition new (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition new (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ ptr ] =>
+        match ε, τ, α with
+        | [ host ], [], [ ptr ] =>
           ltac:(M.monadic
             (let ptr := M.alloc (| ptr |) in
             M.read (|
@@ -248,7 +269,7 @@ Module ptr.
                             UnOp.Pure.not
                               (M.call_closure (|
                                 M.get_associated_function (|
-                                  Ty.apply (Ty.path "*mut") [ T ],
+                                  Ty.apply (Ty.path "*mut") [] [ T ],
                                   "is_null",
                                   []
                                 |),
@@ -262,7 +283,7 @@ Module ptr.
                           [
                             M.call_closure (|
                               M.get_associated_function (|
-                                Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ],
+                                Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                                 "new_unchecked",
                                 []
                               |),
@@ -276,7 +297,7 @@ Module ptr.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_new :
@@ -294,16 +315,21 @@ Module ptr.
               }
           }
       *)
-      Definition from_raw_parts (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from_raw_parts
+          (T : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ data_address; metadata ] =>
+        match ε, τ, α with
+        | [ host ], [], [ data_address; metadata ] =>
           ltac:(M.monadic
             (let data_address := M.alloc (| data_address |) in
             let metadata := M.alloc (| metadata |) in
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ],
+                Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                 "new_unchecked",
                 []
               |),
@@ -313,7 +339,7 @@ Module ptr.
                   [
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ Ty.tuple [] ],
+                        Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ Ty.tuple [] ],
                         "as_ptr",
                         []
                       |),
@@ -324,7 +350,7 @@ Module ptr.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_from_raw_parts :
@@ -336,17 +362,22 @@ Module ptr.
               (self.cast(), super::metadata(self.as_ptr()))
           }
       *)
-      Definition to_raw_parts (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition to_raw_parts
+          (T : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.Tuple
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ],
+                    Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                     "cast",
                     [ Ty.tuple [] ]
                   |),
@@ -359,7 +390,7 @@ Module ptr.
                     M.pointer_coercion
                       (M.call_closure (|
                         M.get_associated_function (|
-                          Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ],
+                          Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                           "as_ptr",
                           []
                         |),
@@ -368,7 +399,7 @@ Module ptr.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_to_raw_parts :
@@ -382,10 +413,10 @@ Module ptr.
               unsafe { NonZeroUsize::new_unchecked(self.pointer.addr()) }
           }
       *)
-      Definition addr (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition addr (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -396,7 +427,7 @@ Module ptr.
               |),
               [
                 M.call_closure (|
-                  M.get_associated_function (| Ty.apply (Ty.path "*const") [ T ], "addr", [] |),
+                  M.get_associated_function (| Ty.apply (Ty.path "*const") [] [ T ], "addr", [] |),
                   [
                     M.read (|
                       M.SubPointer.get_struct_record_field (|
@@ -409,7 +440,7 @@ Module ptr.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_addr :
@@ -422,16 +453,16 @@ Module ptr.
               unsafe { NonNull::new_unchecked(self.pointer.with_addr(addr.get()) as *mut _) }
           }
       *)
-      Definition with_addr (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition with_addr (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self; addr ] =>
+        match ε, τ, α with
+        | [], [], [ self; addr ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let addr := M.alloc (| addr |) in
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ],
+                Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                 "new_unchecked",
                 []
               |),
@@ -439,7 +470,7 @@ Module ptr.
                 M.rust_cast
                   (M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "*const") [ T ],
+                      Ty.apply (Ty.path "*const") [] [ T ],
                       "with_addr",
                       []
                     |),
@@ -463,7 +494,7 @@ Module ptr.
                   |))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_with_addr :
@@ -475,16 +506,16 @@ Module ptr.
               self.with_addr(f(self.addr()))
           }
       *)
-      Definition map_addr (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition map_addr (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [ impl_FnOnce_NonZeroUsize__arrow_NonZeroUsize ], [ self; f ] =>
+        match ε, τ, α with
+        | [], [ impl_FnOnce_NonZeroUsize__arrow_NonZeroUsize ], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ],
+                Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                 "with_addr",
                 []
               |),
@@ -504,7 +535,7 @@ Module ptr.
                       [
                         M.call_closure (|
                           M.get_associated_function (|
-                            Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ],
+                            Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                             "addr",
                             []
                           |),
@@ -515,7 +546,7 @@ Module ptr.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_map_addr :
@@ -527,10 +558,10 @@ Module ptr.
               self.pointer as *mut T
           }
       *)
-      Definition as_ptr (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition as_ptr (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.rust_cast
@@ -541,7 +572,7 @@ Module ptr.
                   "pointer"
                 |)
               |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_as_ptr :
@@ -556,18 +587,18 @@ Module ptr.
               unsafe { &*self.as_ptr().cast_const() }
           }
       *)
-      Definition as_ref (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition as_ref (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
-              M.get_associated_function (| Ty.apply (Ty.path "*mut") [ T ], "cast_const", [] |),
+              M.get_associated_function (| Ty.apply (Ty.path "*mut") [] [ T ], "cast_const", [] |),
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ],
+                    Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                     "as_ptr",
                     []
                   |),
@@ -575,7 +606,7 @@ Module ptr.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_as_ref :
@@ -589,21 +620,21 @@ Module ptr.
               unsafe { &mut *self.as_ptr() }
           }
       *)
-      Definition as_mut (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition as_mut (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ],
+                Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                 "as_ptr",
                 []
               |),
               [ M.read (| M.read (| self |) |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_as_mut :
@@ -616,15 +647,15 @@ Module ptr.
               unsafe { NonNull::new_unchecked(self.as_ptr() as *mut U) }
           }
       *)
-      Definition cast (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition cast (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [ U ], [ self ] =>
+        match ε, τ, α with
+        | [ host ], [ U ], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ U ],
+                Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ U ],
                 "new_unchecked",
                 []
               |),
@@ -632,7 +663,7 @@ Module ptr.
                 M.rust_cast
                   (M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ],
+                      Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                       "as_ptr",
                       []
                     |),
@@ -640,7 +671,7 @@ Module ptr.
                   |))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_cast :
@@ -659,10 +690,10 @@ Module ptr.
               unsafe { NonNull { pointer: intrinsics::offset(self.pointer, count) } }
           }
       *)
-      Definition offset (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition offset (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self; count ] =>
+        match ε, τ, α with
+        | [ host ], [], [ self; count ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let count := M.alloc (| count |) in
@@ -673,7 +704,7 @@ Module ptr.
                   M.call_closure (|
                     M.get_function (|
                       "core::intrinsics::offset",
-                      [ Ty.apply (Ty.path "*const") [ T ]; Ty.path "isize" ]
+                      [ Ty.apply (Ty.path "*const") [] [ T ]; Ty.path "isize" ]
                     |),
                     [
                       M.read (|
@@ -687,7 +718,7 @@ Module ptr.
                     ]
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_offset :
@@ -704,10 +735,10 @@ Module ptr.
               unsafe { NonNull { pointer: self.pointer.byte_offset(count) } }
           }
       *)
-      Definition byte_offset (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition byte_offset (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self; count ] =>
+        match ε, τ, α with
+        | [ host ], [], [ self; count ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let count := M.alloc (| count |) in
@@ -717,7 +748,7 @@ Module ptr.
                 ("pointer",
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "*const") [ T ],
+                      Ty.apply (Ty.path "*const") [] [ T ],
                       "byte_offset",
                       []
                     |),
@@ -733,7 +764,7 @@ Module ptr.
                     ]
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_byte_offset :
@@ -752,10 +783,10 @@ Module ptr.
               unsafe { NonNull { pointer: intrinsics::offset(self.pointer, count) } }
           }
       *)
-      Definition add (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition add (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self; count ] =>
+        match ε, τ, α with
+        | [ host ], [], [ self; count ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let count := M.alloc (| count |) in
@@ -766,7 +797,7 @@ Module ptr.
                   M.call_closure (|
                     M.get_function (|
                       "core::intrinsics::offset",
-                      [ Ty.apply (Ty.path "*const") [ T ]; Ty.path "usize" ]
+                      [ Ty.apply (Ty.path "*const") [] [ T ]; Ty.path "usize" ]
                     |),
                     [
                       M.read (|
@@ -780,7 +811,7 @@ Module ptr.
                     ]
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_add :
@@ -797,10 +828,10 @@ Module ptr.
               unsafe { NonNull { pointer: self.pointer.byte_add(count) } }
           }
       *)
-      Definition byte_add (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition byte_add (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self; count ] =>
+        match ε, τ, α with
+        | [ host ], [], [ self; count ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let count := M.alloc (| count |) in
@@ -810,7 +841,7 @@ Module ptr.
                 ("pointer",
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "*const") [ T ],
+                      Ty.apply (Ty.path "*const") [] [ T ],
                       "byte_add",
                       []
                     |),
@@ -826,7 +857,7 @@ Module ptr.
                     ]
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_byte_add :
@@ -849,10 +880,10 @@ Module ptr.
               }
           }
       *)
-      Definition sub (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition sub (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self; count ] =>
+        match ε, τ, α with
+        | [ host ], [], [ self; count ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let count := M.alloc (| count |) in
@@ -871,7 +902,7 @@ Module ptr.
                       (M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
-                            Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ],
+                            Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                             "offset",
                             []
                           |),
@@ -890,7 +921,7 @@ Module ptr.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_sub :
@@ -907,10 +938,10 @@ Module ptr.
               unsafe { NonNull { pointer: self.pointer.byte_sub(count) } }
           }
       *)
-      Definition byte_sub (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition byte_sub (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self; count ] =>
+        match ε, τ, α with
+        | [ host ], [], [ self; count ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let count := M.alloc (| count |) in
@@ -920,7 +951,7 @@ Module ptr.
                 ("pointer",
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "*const") [ T ],
+                      Ty.apply (Ty.path "*const") [] [ T ],
                       "byte_sub",
                       []
                     |),
@@ -936,7 +967,7 @@ Module ptr.
                     ]
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_byte_sub :
@@ -952,15 +983,19 @@ Module ptr.
               unsafe { self.pointer.offset_from(origin.pointer) }
           }
       *)
-      Definition offset_from (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition offset_from (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self; origin ] =>
+        match ε, τ, α with
+        | [ host ], [], [ self; origin ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let origin := M.alloc (| origin |) in
             M.call_closure (|
-              M.get_associated_function (| Ty.apply (Ty.path "*const") [ T ], "offset_from", [] |),
+              M.get_associated_function (|
+                Ty.apply (Ty.path "*const") [] [ T ],
+                "offset_from",
+                []
+              |),
               [
                 M.read (|
                   M.SubPointer.get_struct_record_field (|
@@ -978,7 +1013,7 @@ Module ptr.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_offset_from :
@@ -991,16 +1026,21 @@ Module ptr.
               unsafe { self.pointer.byte_offset_from(origin.pointer) }
           }
       *)
-      Definition byte_offset_from (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition byte_offset_from
+          (T : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [ U ], [ self; origin ] =>
+        match ε, τ, α with
+        | [ host ], [ U ], [ self; origin ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let origin := M.alloc (| origin |) in
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "*const") [ T ],
+                Ty.apply (Ty.path "*const") [] [ T ],
                 "byte_offset_from",
                 [ U ]
               |),
@@ -1021,7 +1061,7 @@ Module ptr.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_byte_offset_from :
@@ -1037,15 +1077,15 @@ Module ptr.
               unsafe { self.pointer.sub_ptr(subtracted.pointer) }
           }
       *)
-      Definition sub_ptr (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition sub_ptr (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self; subtracted ] =>
+        match ε, τ, α with
+        | [ host ], [], [ self; subtracted ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let subtracted := M.alloc (| subtracted |) in
             M.call_closure (|
-              M.get_associated_function (| Ty.apply (Ty.path "*const") [ T ], "sub_ptr", [] |),
+              M.get_associated_function (| Ty.apply (Ty.path "*const") [] [ T ], "sub_ptr", [] |),
               [
                 M.read (|
                   M.SubPointer.get_struct_record_field (|
@@ -1063,7 +1103,7 @@ Module ptr.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_sub_ptr :
@@ -1079,10 +1119,10 @@ Module ptr.
               unsafe { ptr::read(self.pointer) }
           }
       *)
-      Definition read (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition read (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -1097,7 +1137,7 @@ Module ptr.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_read :
@@ -1113,10 +1153,15 @@ Module ptr.
               unsafe { ptr::read_volatile(self.pointer) }
           }
       *)
-      Definition read_volatile (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition read_volatile
+          (T : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -1131,7 +1176,7 @@ Module ptr.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_read_volatile :
@@ -1147,10 +1192,15 @@ Module ptr.
               unsafe { ptr::read_unaligned(self.pointer) }
           }
       *)
-      Definition read_unaligned (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition read_unaligned
+          (T : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -1165,7 +1215,7 @@ Module ptr.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_read_unaligned :
@@ -1181,10 +1231,10 @@ Module ptr.
               unsafe { ptr::copy(self.pointer, dest.as_ptr(), count) }
           }
       *)
-      Definition copy_to (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition copy_to (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self; dest; count ] =>
+        match ε, τ, α with
+        | [ host ], [], [ self; dest; count ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let dest := M.alloc (| dest |) in
@@ -1201,7 +1251,7 @@ Module ptr.
                 |);
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ],
+                    Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                     "as_ptr",
                     []
                   |),
@@ -1210,7 +1260,7 @@ Module ptr.
                 M.read (| count |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_copy_to :
@@ -1226,10 +1276,15 @@ Module ptr.
               unsafe { ptr::copy_nonoverlapping(self.pointer, dest.as_ptr(), count) }
           }
       *)
-      Definition copy_to_nonoverlapping (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition copy_to_nonoverlapping
+          (T : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self; dest; count ] =>
+        match ε, τ, α with
+        | [ host ], [], [ self; dest; count ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let dest := M.alloc (| dest |) in
@@ -1246,7 +1301,7 @@ Module ptr.
                 |);
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ],
+                    Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                     "as_ptr",
                     []
                   |),
@@ -1255,7 +1310,7 @@ Module ptr.
                 M.read (| count |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_copy_to_nonoverlapping :
@@ -1271,10 +1326,10 @@ Module ptr.
               unsafe { ptr::copy(src.pointer, self.as_ptr(), count) }
           }
       *)
-      Definition copy_from (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition copy_from (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self; src; count ] =>
+        match ε, τ, α with
+        | [ host ], [], [ self; src; count ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let src := M.alloc (| src |) in
@@ -1291,7 +1346,7 @@ Module ptr.
                 |);
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ],
+                    Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                     "as_ptr",
                     []
                   |),
@@ -1300,7 +1355,7 @@ Module ptr.
                 M.read (| count |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_copy_from :
@@ -1316,10 +1371,15 @@ Module ptr.
               unsafe { ptr::copy_nonoverlapping(src.pointer, self.as_ptr(), count) }
           }
       *)
-      Definition copy_from_nonoverlapping (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition copy_from_nonoverlapping
+          (T : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self; src; count ] =>
+        match ε, τ, α with
+        | [ host ], [], [ self; src; count ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let src := M.alloc (| src |) in
@@ -1336,7 +1396,7 @@ Module ptr.
                 |);
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ],
+                    Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                     "as_ptr",
                     []
                   |),
@@ -1345,7 +1405,7 @@ Module ptr.
                 M.read (| count |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_copy_from_nonoverlapping :
@@ -1358,10 +1418,15 @@ Module ptr.
               unsafe { ptr::drop_in_place(self.as_ptr()) }
           }
       *)
-      Definition drop_in_place (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition drop_in_place
+          (T : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -1369,7 +1434,7 @@ Module ptr.
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ],
+                    Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                     "as_ptr",
                     []
                   |),
@@ -1377,7 +1442,7 @@ Module ptr.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_drop_in_place :
@@ -1393,10 +1458,10 @@ Module ptr.
               unsafe { ptr::write(self.as_ptr(), val) }
           }
       *)
-      Definition write (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition write (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self; val ] =>
+        match ε, τ, α with
+        | [ host ], [], [ self; val ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let val := M.alloc (| val |) in
@@ -1405,7 +1470,7 @@ Module ptr.
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ],
+                    Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                     "as_ptr",
                     []
                   |),
@@ -1414,7 +1479,7 @@ Module ptr.
                 M.read (| val |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_write :
@@ -1430,10 +1495,10 @@ Module ptr.
               unsafe { ptr::write_bytes(self.as_ptr(), val, count) }
           }
       *)
-      Definition write_bytes (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition write_bytes (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self; val; count ] =>
+        match ε, τ, α with
+        | [ host ], [], [ self; val; count ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let val := M.alloc (| val |) in
@@ -1443,7 +1508,7 @@ Module ptr.
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ],
+                    Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                     "as_ptr",
                     []
                   |),
@@ -1453,7 +1518,7 @@ Module ptr.
                 M.read (| count |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_write_bytes :
@@ -1469,10 +1534,15 @@ Module ptr.
               unsafe { ptr::write_volatile(self.as_ptr(), val) }
           }
       *)
-      Definition write_volatile (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition write_volatile
+          (T : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self; val ] =>
+        match ε, τ, α with
+        | [], [], [ self; val ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let val := M.alloc (| val |) in
@@ -1481,7 +1551,7 @@ Module ptr.
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ],
+                    Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                     "as_ptr",
                     []
                   |),
@@ -1490,7 +1560,7 @@ Module ptr.
                 M.read (| val |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_write_volatile :
@@ -1506,10 +1576,15 @@ Module ptr.
               unsafe { ptr::write_unaligned(self.as_ptr(), val) }
           }
       *)
-      Definition write_unaligned (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition write_unaligned
+          (T : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self; val ] =>
+        match ε, τ, α with
+        | [ host ], [], [ self; val ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let val := M.alloc (| val |) in
@@ -1518,7 +1593,7 @@ Module ptr.
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ],
+                    Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                     "as_ptr",
                     []
                   |),
@@ -1527,7 +1602,7 @@ Module ptr.
                 M.read (| val |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_write_unaligned :
@@ -1543,10 +1618,10 @@ Module ptr.
               unsafe { ptr::replace(self.as_ptr(), src) }
           }
       *)
-      Definition replace (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition replace (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self; src ] =>
+        match ε, τ, α with
+        | [], [], [ self; src ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let src := M.alloc (| src |) in
@@ -1555,7 +1630,7 @@ Module ptr.
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ],
+                    Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                     "as_ptr",
                     []
                   |),
@@ -1564,7 +1639,7 @@ Module ptr.
                 M.read (| src |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_replace :
@@ -1580,10 +1655,10 @@ Module ptr.
               unsafe { ptr::swap(self.as_ptr(), with.as_ptr()) }
           }
       *)
-      Definition swap (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition swap (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self; with_ ] =>
+        match ε, τ, α with
+        | [ host ], [], [ self; with_ ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let with_ := M.alloc (| with_ |) in
@@ -1592,7 +1667,7 @@ Module ptr.
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ],
+                    Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                     "as_ptr",
                     []
                   |),
@@ -1600,7 +1675,7 @@ Module ptr.
                 |);
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ],
+                    Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                     "as_ptr",
                     []
                   |),
@@ -1608,7 +1683,7 @@ Module ptr.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_swap :
@@ -1630,10 +1705,15 @@ Module ptr.
               }
           }
       *)
-      Definition align_offset (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition align_offset
+          (T : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self; align ] =>
+        match ε, τ, α with
+        | [ host ], [], [ self; align ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let align := M.alloc (| align |) in
@@ -1707,7 +1787,7 @@ Module ptr.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_align_offset :
@@ -1722,14 +1802,18 @@ Module ptr.
               self.pointer.is_aligned()
           }
       *)
-      Definition is_aligned (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_aligned (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
-              M.get_associated_function (| Ty.apply (Ty.path "*const") [ T ], "is_aligned", [] |),
+              M.get_associated_function (|
+                Ty.apply (Ty.path "*const") [] [ T ],
+                "is_aligned",
+                []
+              |),
               [
                 M.read (|
                   M.SubPointer.get_struct_record_field (|
@@ -1740,7 +1824,7 @@ Module ptr.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_is_aligned :
@@ -1752,16 +1836,21 @@ Module ptr.
               self.pointer.is_aligned_to(align)
           }
       *)
-      Definition is_aligned_to (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition is_aligned_to
+          (T : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self; align ] =>
+        match ε, τ, α with
+        | [ host ], [], [ self; align ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let align := M.alloc (| align |) in
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "*const") [ T ],
+                Ty.apply (Ty.path "*const") [] [ T ],
                 "is_aligned_to",
                 []
               |),
@@ -1776,7 +1865,7 @@ Module ptr.
                 M.read (| align |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_is_aligned_to :
@@ -1787,7 +1876,10 @@ Module ptr.
     
     Module Impl_core_ptr_non_null_NonNull_slice_T.
       Definition Self (T : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ Ty.apply (Ty.path "slice") [ T ] ].
+        Ty.apply
+          (Ty.path "core::ptr::non_null::NonNull")
+          []
+          [ Ty.apply (Ty.path "slice") [] [ T ] ].
       
       (*
           pub const fn slice_from_raw_parts(data: NonNull<T>, len: usize) -> Self {
@@ -1795,10 +1887,15 @@ Module ptr.
               unsafe { Self::new_unchecked(super::slice_from_raw_parts_mut(data.as_ptr(), len)) }
           }
       *)
-      Definition slice_from_raw_parts (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition slice_from_raw_parts
+          (T : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ data; len ] =>
+        match ε, τ, α with
+        | [ host ], [], [ data; len ] =>
           ltac:(M.monadic
             (let data := M.alloc (| data |) in
             let len := M.alloc (| len |) in
@@ -1806,7 +1903,8 @@ Module ptr.
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "core::ptr::non_null::NonNull")
-                  [ Ty.apply (Ty.path "slice") [ T ] ],
+                  []
+                  [ Ty.apply (Ty.path "slice") [] [ T ] ],
                 "new_unchecked",
                 []
               |),
@@ -1816,7 +1914,7 @@ Module ptr.
                   [
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ],
+                        Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                         "as_ptr",
                         []
                       |),
@@ -1827,7 +1925,7 @@ Module ptr.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_slice_from_raw_parts :
@@ -1839,15 +1937,15 @@ Module ptr.
               self.as_ptr().len()
           }
       *)
-      Definition len (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition len (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "*mut") [ Ty.apply (Ty.path "slice") [ T ] ],
+                Ty.apply (Ty.path "*mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
                 "len",
                 []
               |),
@@ -1856,7 +1954,8 @@ Module ptr.
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "core::ptr::non_null::NonNull")
-                      [ Ty.apply (Ty.path "slice") [ T ] ],
+                      []
+                      [ Ty.apply (Ty.path "slice") [] [ T ] ],
                     "as_ptr",
                     []
                   |),
@@ -1864,7 +1963,7 @@ Module ptr.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_len :
@@ -1877,22 +1976,27 @@ Module ptr.
               unsafe { NonNull::new_unchecked(self.as_ptr().as_mut_ptr()) }
           }
       *)
-      Definition as_non_null_ptr (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition as_non_null_ptr
+          (T : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ],
+                Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                 "new_unchecked",
                 []
               |),
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "*mut") [ Ty.apply (Ty.path "slice") [ T ] ],
+                    Ty.apply (Ty.path "*mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
                     "as_mut_ptr",
                     []
                   |),
@@ -1901,7 +2005,8 @@ Module ptr.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "core::ptr::non_null::NonNull")
-                          [ Ty.apply (Ty.path "slice") [ T ] ],
+                          []
+                          [ Ty.apply (Ty.path "slice") [] [ T ] ],
                         "as_ptr",
                         []
                       |),
@@ -1911,7 +2016,7 @@ Module ptr.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_as_non_null_ptr :
@@ -1923,15 +2028,15 @@ Module ptr.
               self.as_non_null_ptr().as_ptr()
           }
       *)
-      Definition as_mut_ptr (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition as_mut_ptr (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ],
+                Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                 "as_ptr",
                 []
               |),
@@ -1940,7 +2045,8 @@ Module ptr.
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "core::ptr::non_null::NonNull")
-                      [ Ty.apply (Ty.path "slice") [ T ] ],
+                      []
+                      [ Ty.apply (Ty.path "slice") [] [ T ] ],
                     "as_non_null_ptr",
                     []
                   |),
@@ -1948,7 +2054,7 @@ Module ptr.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_as_mut_ptr :
@@ -1961,16 +2067,21 @@ Module ptr.
               unsafe { slice::from_raw_parts(self.cast().as_ptr(), self.len()) }
           }
       *)
-      Definition as_uninit_slice (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition as_uninit_slice
+          (T : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_function (|
                 "core::slice::raw::from_raw_parts",
-                [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ] ]
+                [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ]
               |),
               [
                 (* MutToConstPointer *)
@@ -1979,7 +2090,8 @@ Module ptr.
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "core::ptr::non_null::NonNull")
-                        [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ] ],
+                        []
+                        [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ],
                       "as_ptr",
                       []
                     |),
@@ -1988,9 +2100,10 @@ Module ptr.
                         M.get_associated_function (|
                           Ty.apply
                             (Ty.path "core::ptr::non_null::NonNull")
-                            [ Ty.apply (Ty.path "slice") [ T ] ],
+                            []
+                            [ Ty.apply (Ty.path "slice") [] [ T ] ],
                           "cast",
-                          [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ] ]
+                          [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ]
                         |),
                         [ M.read (| self |) ]
                       |)
@@ -2000,7 +2113,8 @@ Module ptr.
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "core::ptr::non_null::NonNull")
-                      [ Ty.apply (Ty.path "slice") [ T ] ],
+                      []
+                      [ Ty.apply (Ty.path "slice") [] [ T ] ],
                     "len",
                     []
                   |),
@@ -2008,7 +2122,7 @@ Module ptr.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_as_uninit_slice :
@@ -2021,23 +2135,29 @@ Module ptr.
               unsafe { slice::from_raw_parts_mut(self.cast().as_ptr(), self.len()) }
           }
       *)
-      Definition as_uninit_slice_mut (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition as_uninit_slice_mut
+          (T : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_function (|
                 "core::slice::raw::from_raw_parts_mut",
-                [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ] ]
+                [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ]
               |),
               [
                 M.call_closure (|
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "core::ptr::non_null::NonNull")
-                      [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ] ],
+                      []
+                      [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ],
                     "as_ptr",
                     []
                   |),
@@ -2046,9 +2166,10 @@ Module ptr.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "core::ptr::non_null::NonNull")
-                          [ Ty.apply (Ty.path "slice") [ T ] ],
+                          []
+                          [ Ty.apply (Ty.path "slice") [] [ T ] ],
                         "cast",
-                        [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ] ]
+                        [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ]
                       |),
                       [ M.read (| self |) ]
                     |)
@@ -2058,7 +2179,8 @@ Module ptr.
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "core::ptr::non_null::NonNull")
-                      [ Ty.apply (Ty.path "slice") [ T ] ],
+                      []
+                      [ Ty.apply (Ty.path "slice") [] [ T ] ],
                     "len",
                     []
                   |),
@@ -2066,7 +2188,7 @@ Module ptr.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_as_uninit_slice_mut :
@@ -2083,23 +2205,28 @@ Module ptr.
               unsafe { NonNull::new_unchecked(self.as_ptr().get_unchecked_mut(index)) }
           }
       *)
-      Definition get_unchecked_mut (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition get_unchecked_mut
+          (T : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [ _ as I ], [ self; index ] =>
+        match ε, τ, α with
+        | [], [ _ as I ], [ self; index ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let index := M.alloc (| index |) in
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ Ty.associated ],
+                Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ Ty.associated ],
                 "new_unchecked",
                 []
               |),
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "*mut") [ Ty.apply (Ty.path "slice") [ T ] ],
+                    Ty.apply (Ty.path "*mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
                     "get_unchecked_mut",
                     [ I ]
                   |),
@@ -2108,7 +2235,8 @@ Module ptr.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "core::ptr::non_null::NonNull")
-                          [ Ty.apply (Ty.path "slice") [ T ] ],
+                          []
+                          [ Ty.apply (Ty.path "slice") [] [ T ] ],
                         "as_ptr",
                         []
                       |),
@@ -2119,7 +2247,7 @@ Module ptr.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_get_unchecked_mut :
@@ -2128,21 +2256,22 @@ Module ptr.
     End Impl_core_ptr_non_null_NonNull_slice_T.
     
     Module Impl_core_clone_Clone_where_core_marker_Sized_T_for_core_ptr_non_null_NonNull_T.
-      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ].
+      Definition Self (T : Ty.t) : Ty.t :=
+        Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ].
       
       (*
           fn clone(&self) -> Self {
               *self
           }
       *)
-      Definition clone (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition clone (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (| M.read (| self |) |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -2155,7 +2284,8 @@ Module ptr.
     End Impl_core_clone_Clone_where_core_marker_Sized_T_for_core_ptr_non_null_NonNull_T.
     
     Module Impl_core_marker_Copy_where_core_marker_Sized_T_for_core_ptr_non_null_NonNull_T.
-      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ].
+      Definition Self (T : Ty.t) : Ty.t :=
+        Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ].
       
       Axiom Implements :
         forall (T : Ty.t),
@@ -2168,7 +2298,7 @@ Module ptr.
     
     Module Impl_core_ops_unsize_CoerceUnsized_where_core_marker_Sized_T_where_core_marker_Sized_U_where_core_marker_Unsize_T_U_core_ptr_non_null_NonNull_U_for_core_ptr_non_null_NonNull_T.
       Definition Self (T U : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ].
+        Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ].
       
       Axiom Implements :
         forall (T U : Ty.t),
@@ -2176,13 +2306,13 @@ Module ptr.
           "core::ops::unsize::CoerceUnsized"
           (Self T U)
           (* Trait polymorphic types *)
-          [ (* T *) Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ U ] ]
+          [ (* T *) Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ U ] ]
           (* Instance *) [].
     End Impl_core_ops_unsize_CoerceUnsized_where_core_marker_Sized_T_where_core_marker_Sized_U_where_core_marker_Unsize_T_U_core_ptr_non_null_NonNull_U_for_core_ptr_non_null_NonNull_T.
     
     Module Impl_core_ops_unsize_DispatchFromDyn_where_core_marker_Sized_T_where_core_marker_Sized_U_where_core_marker_Unsize_T_U_core_ptr_non_null_NonNull_U_for_core_ptr_non_null_NonNull_T.
       Definition Self (T U : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ].
+        Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ].
       
       Axiom Implements :
         forall (T U : Ty.t),
@@ -2190,29 +2320,30 @@ Module ptr.
           "core::ops::unsize::DispatchFromDyn"
           (Self T U)
           (* Trait polymorphic types *)
-          [ (* T *) Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ U ] ]
+          [ (* T *) Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ U ] ]
           (* Instance *) [].
     End Impl_core_ops_unsize_DispatchFromDyn_where_core_marker_Sized_T_where_core_marker_Sized_U_where_core_marker_Unsize_T_U_core_ptr_non_null_NonNull_U_for_core_ptr_non_null_NonNull_T.
     
     Module Impl_core_fmt_Debug_where_core_marker_Sized_T_for_core_ptr_non_null_NonNull_T.
-      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ].
+      Definition Self (T : Ty.t) : Ty.t :=
+        Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ].
       
       (*
           fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
               fmt::Pointer::fmt(&self.as_ptr(), f)
           }
       *)
-      Definition fmt (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self; f ] =>
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
             M.call_closure (|
               M.get_trait_method (|
                 "core::fmt::Pointer",
-                Ty.apply (Ty.path "*mut") [ T ],
+                Ty.apply (Ty.path "*mut") [] [ T ],
                 [],
                 "fmt",
                 []
@@ -2221,7 +2352,7 @@ Module ptr.
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ],
+                      Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                       "as_ptr",
                       []
                     |),
@@ -2231,7 +2362,7 @@ Module ptr.
                 M.read (| f |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -2244,24 +2375,25 @@ Module ptr.
     End Impl_core_fmt_Debug_where_core_marker_Sized_T_for_core_ptr_non_null_NonNull_T.
     
     Module Impl_core_fmt_Pointer_where_core_marker_Sized_T_for_core_ptr_non_null_NonNull_T.
-      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ].
+      Definition Self (T : Ty.t) : Ty.t :=
+        Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ].
       
       (*
           fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
               fmt::Pointer::fmt(&self.as_ptr(), f)
           }
       *)
-      Definition fmt (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self; f ] =>
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
             M.call_closure (|
               M.get_trait_method (|
                 "core::fmt::Pointer",
-                Ty.apply (Ty.path "*mut") [ T ],
+                Ty.apply (Ty.path "*mut") [] [ T ],
                 [],
                 "fmt",
                 []
@@ -2270,7 +2402,7 @@ Module ptr.
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ],
+                      Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                       "as_ptr",
                       []
                     |),
@@ -2280,7 +2412,7 @@ Module ptr.
                 M.read (| f |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -2293,7 +2425,8 @@ Module ptr.
     End Impl_core_fmt_Pointer_where_core_marker_Sized_T_for_core_ptr_non_null_NonNull_T.
     
     Module Impl_core_cmp_Eq_where_core_marker_Sized_T_for_core_ptr_non_null_NonNull_T.
-      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ].
+      Definition Self (T : Ty.t) : Ty.t :=
+        Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ].
       
       Axiom Implements :
         forall (T : Ty.t),
@@ -2305,24 +2438,25 @@ Module ptr.
     End Impl_core_cmp_Eq_where_core_marker_Sized_T_for_core_ptr_non_null_NonNull_T.
     
     Module Impl_core_cmp_PartialEq_where_core_marker_Sized_T_for_core_ptr_non_null_NonNull_T.
-      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ].
+      Definition Self (T : Ty.t) : Ty.t :=
+        Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ].
       
       (*
           fn eq(&self, other: &Self) -> bool {
               self.as_ptr() == other.as_ptr()
           }
       *)
-      Definition eq (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition eq (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self; other ] =>
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             BinOp.Pure.eq
               (M.call_closure (|
                 M.get_associated_function (|
-                  Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ],
+                  Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                   "as_ptr",
                   []
                 |),
@@ -2330,13 +2464,13 @@ Module ptr.
               |))
               (M.call_closure (|
                 M.get_associated_function (|
-                  Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ],
+                  Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                   "as_ptr",
                   []
                 |),
                 [ M.read (| M.read (| other |) |) ]
               |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -2349,24 +2483,25 @@ Module ptr.
     End Impl_core_cmp_PartialEq_where_core_marker_Sized_T_for_core_ptr_non_null_NonNull_T.
     
     Module Impl_core_cmp_Ord_where_core_marker_Sized_T_for_core_ptr_non_null_NonNull_T.
-      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ].
+      Definition Self (T : Ty.t) : Ty.t :=
+        Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ].
       
       (*
           fn cmp(&self, other: &Self) -> Ordering {
               self.as_ptr().cmp(&other.as_ptr())
           }
       *)
-      Definition cmp (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition cmp (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self; other ] =>
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
               M.get_trait_method (|
                 "core::cmp::Ord",
-                Ty.apply (Ty.path "*mut") [ T ],
+                Ty.apply (Ty.path "*mut") [] [ T ],
                 [],
                 "cmp",
                 []
@@ -2375,7 +2510,7 @@ Module ptr.
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ],
+                      Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                       "as_ptr",
                       []
                     |),
@@ -2385,7 +2520,7 @@ Module ptr.
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ],
+                      Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                       "as_ptr",
                       []
                     |),
@@ -2394,7 +2529,7 @@ Module ptr.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -2407,25 +2542,26 @@ Module ptr.
     End Impl_core_cmp_Ord_where_core_marker_Sized_T_for_core_ptr_non_null_NonNull_T.
     
     Module Impl_core_cmp_PartialOrd_where_core_marker_Sized_T_for_core_ptr_non_null_NonNull_T.
-      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ].
+      Definition Self (T : Ty.t) : Ty.t :=
+        Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ].
       
       (*
           fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
               self.as_ptr().partial_cmp(&other.as_ptr())
           }
       *)
-      Definition partial_cmp (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition partial_cmp (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self; other ] =>
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
               M.get_trait_method (|
                 "core::cmp::PartialOrd",
-                Ty.apply (Ty.path "*mut") [ T ],
-                [ Ty.apply (Ty.path "*mut") [ T ] ],
+                Ty.apply (Ty.path "*mut") [] [ T ],
+                [ Ty.apply (Ty.path "*mut") [] [ T ] ],
                 "partial_cmp",
                 []
               |),
@@ -2433,7 +2569,7 @@ Module ptr.
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ],
+                      Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                       "as_ptr",
                       []
                     |),
@@ -2443,7 +2579,7 @@ Module ptr.
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ],
+                      Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                       "as_ptr",
                       []
                     |),
@@ -2452,7 +2588,7 @@ Module ptr.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -2465,24 +2601,25 @@ Module ptr.
     End Impl_core_cmp_PartialOrd_where_core_marker_Sized_T_for_core_ptr_non_null_NonNull_T.
     
     Module Impl_core_hash_Hash_where_core_marker_Sized_T_for_core_ptr_non_null_NonNull_T.
-      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ].
+      Definition Self (T : Ty.t) : Ty.t :=
+        Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ].
       
       (*
           fn hash<H: hash::Hasher>(&self, state: &mut H) {
               self.as_ptr().hash(state)
           }
       *)
-      Definition hash (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition hash (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [ H ], [ self; state ] =>
+        match ε, τ, α with
+        | [], [ H ], [ self; state ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
             M.call_closure (|
               M.get_trait_method (|
                 "core::hash::Hash",
-                Ty.apply (Ty.path "*mut") [ T ],
+                Ty.apply (Ty.path "*mut") [] [ T ],
                 [],
                 "hash",
                 [ H ]
@@ -2491,7 +2628,7 @@ Module ptr.
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ],
+                      Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                       "as_ptr",
                       []
                     |),
@@ -2501,7 +2638,7 @@ Module ptr.
                 M.read (| state |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -2514,7 +2651,8 @@ Module ptr.
     End Impl_core_hash_Hash_where_core_marker_Sized_T_for_core_ptr_non_null_NonNull_T.
     
     Module Impl_core_convert_From_where_core_marker_Sized_T_core_ptr_unique_Unique_T_for_core_ptr_non_null_NonNull_T.
-      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ].
+      Definition Self (T : Ty.t) : Ty.t :=
+        Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ].
       
       (*
           fn from(unique: Unique<T>) -> Self {
@@ -2523,22 +2661,22 @@ Module ptr.
               unsafe { NonNull::new_unchecked(unique.as_ptr()) }
           }
       *)
-      Definition from (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ unique ] =>
+        match ε, τ, α with
+        | [], [], [ unique ] =>
           ltac:(M.monadic
             (let unique := M.alloc (| unique |) in
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ],
+                Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                 "new_unchecked",
                 []
               |),
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::ptr::unique::Unique") [ T ],
+                    Ty.apply (Ty.path "core::ptr::unique::Unique") [] [ T ],
                     "as_ptr",
                     []
                   |),
@@ -2546,7 +2684,7 @@ Module ptr.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -2555,12 +2693,13 @@ Module ptr.
           "core::convert::From"
           (Self T)
           (* Trait polymorphic types *)
-          [ (* T *) Ty.apply (Ty.path "core::ptr::unique::Unique") [ T ] ]
+          [ (* T *) Ty.apply (Ty.path "core::ptr::unique::Unique") [] [ T ] ]
           (* Instance *) [ ("from", InstanceField.Method (from T)) ].
     End Impl_core_convert_From_where_core_marker_Sized_T_core_ptr_unique_Unique_T_for_core_ptr_non_null_NonNull_T.
     
     Module Impl_core_convert_From_where_core_marker_Sized_T_ref_mut_T_for_core_ptr_non_null_NonNull_T.
-      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ].
+      Definition Self (T : Ty.t) : Ty.t :=
+        Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ].
       
       (*
           fn from(reference: &mut T) -> Self {
@@ -2568,10 +2707,10 @@ Module ptr.
               unsafe { NonNull { pointer: reference as *mut T } }
           }
       *)
-      Definition from (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ reference ] =>
+        match ε, τ, α with
+        | [], [], [ reference ] =>
           ltac:(M.monadic
             (let reference := M.alloc (| reference |) in
             Value.StructRecord
@@ -2581,7 +2720,7 @@ Module ptr.
                   (* MutToConstPointer *)
                   M.pointer_coercion (M.read (| M.use (M.alloc (| M.read (| reference |) |)) |)))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -2589,12 +2728,13 @@ Module ptr.
         M.IsTraitInstance
           "core::convert::From"
           (Self T)
-          (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "&mut") [ T ] ]
+          (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "&mut") [] [ T ] ]
           (* Instance *) [ ("from", InstanceField.Method (from T)) ].
     End Impl_core_convert_From_where_core_marker_Sized_T_ref_mut_T_for_core_ptr_non_null_NonNull_T.
     
     Module Impl_core_convert_From_where_core_marker_Sized_T_ref__T_for_core_ptr_non_null_NonNull_T.
-      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::ptr::non_null::NonNull") [ T ].
+      Definition Self (T : Ty.t) : Ty.t :=
+        Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ].
       
       (*
           fn from(reference: &T) -> Self {
@@ -2603,16 +2743,16 @@ Module ptr.
               unsafe { NonNull { pointer: reference as *const T } }
           }
       *)
-      Definition from (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition from (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ reference ] =>
+        match ε, τ, α with
+        | [], [], [ reference ] =>
           ltac:(M.monadic
             (let reference := M.alloc (| reference |) in
             Value.StructRecord
               "core::ptr::non_null::NonNull"
               [ ("pointer", M.read (| M.use (M.alloc (| M.read (| reference |) |)) |)) ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -2620,7 +2760,7 @@ Module ptr.
         M.IsTraitInstance
           "core::convert::From"
           (Self T)
-          (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "&") [ T ] ]
+          (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "&") [] [ T ] ]
           (* Instance *) [ ("from", InstanceField.Method (from T)) ].
     End Impl_core_convert_From_where_core_marker_Sized_T_ref__T_for_core_ptr_non_null_NonNull_T.
   End non_null.

@@ -8,9 +8,9 @@ Module str.
         (byte & (0x7F >> width)) as u32
     }
     *)
-    Definition utf8_first_byte (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ byte; width ] =>
+    Definition utf8_first_byte (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [ host ], [], [ byte; width ] =>
         ltac:(M.monadic
           (let byte := M.alloc (| byte |) in
           let width := M.alloc (| width |) in
@@ -18,7 +18,7 @@ Module str.
             (BinOp.Pure.bit_and
               (M.read (| byte |))
               (BinOp.Wrap.shr (Value.Integer 127) (M.read (| width |))))))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_utf8_first_byte :
@@ -29,9 +29,9 @@ Module str.
         (ch << 6) | (byte & CONT_MASK) as u32
     }
     *)
-    Definition utf8_acc_cont_byte (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ ch; byte ] =>
+    Definition utf8_acc_cont_byte (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [ host ], [], [ ch; byte ] =>
         ltac:(M.monadic
           (let ch := M.alloc (| ch |) in
           let byte := M.alloc (| byte |) in
@@ -41,7 +41,7 @@ Module str.
               (BinOp.Pure.bit_and
                 (M.read (| byte |))
                 (M.read (| M.get_constant (| "core::str::validations::CONT_MASK" |) |))))))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_utf8_acc_cont_byte :
@@ -52,13 +52,13 @@ Module str.
         (byte as i8) < -64
     }
     *)
-    Definition utf8_is_cont_byte (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ byte ] =>
+    Definition utf8_is_cont_byte (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [ host ], [], [ byte ] =>
         ltac:(M.monadic
           (let byte := M.alloc (| byte |) in
           BinOp.Pure.lt (M.rust_cast (M.read (| byte |))) (Value.Integer (-64))))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_utf8_is_cont_byte :
@@ -101,9 +101,9 @@ Module str.
         Some(ch)
     }
     *)
-    Definition next_code_point (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ _ as I ], [ bytes ] =>
+    Definition next_code_point (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ _ as I ], [ bytes ] =>
         ltac:(M.monadic
           (let bytes := M.alloc (| bytes |) in
           M.catch_return (|
@@ -119,7 +119,8 @@ Module str.
                               "core::ops::try_trait::Try",
                               Ty.apply
                                 (Ty.path "core::option::Option")
-                                [ Ty.apply (Ty.path "&") [ Ty.path "u8" ] ],
+                                []
+                                [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ],
                               [],
                               "branch",
                               []
@@ -157,10 +158,12 @@ Module str.
                                           "core::ops::try_trait::FromResidual",
                                           Ty.apply
                                             (Ty.path "core::option::Option")
+                                            []
                                             [ Ty.path "u32" ],
                                           [
                                             Ty.apply
                                               (Ty.path "core::option::Option")
+                                              []
                                               [ Ty.path "core::convert::Infallible" ]
                                           ],
                                           "from_residual",
@@ -224,7 +227,8 @@ Module str.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "core::option::Option")
-                          [ Ty.apply (Ty.path "&") [ Ty.path "u8" ] ],
+                          []
+                          [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ],
                         "unwrap_unchecked",
                         []
                       |),
@@ -266,7 +270,8 @@ Module str.
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "core::option::Option")
-                                    [ Ty.apply (Ty.path "&") [ Ty.path "u8" ] ],
+                                    []
+                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ],
                                   "unwrap_unchecked",
                                   []
                                 |),
@@ -330,7 +335,8 @@ Module str.
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "core::option::Option")
-                                            [ Ty.apply (Ty.path "&") [ Ty.path "u8" ] ],
+                                            []
+                                            [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ],
                                           "unwrap_unchecked",
                                           []
                                         |),
@@ -373,7 +379,7 @@ Module str.
                 M.alloc (| Value.StructTuple "core::option::Option::Some" [ M.read (| ch |) ] |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_next_code_point :
@@ -416,9 +422,9 @@ Module str.
         Some(ch)
     }
     *)
-    Definition next_code_point_reverse (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ _ as I ], [ bytes ] =>
+    Definition next_code_point_reverse (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ _ as I ], [ bytes ] =>
         ltac:(M.monadic
           (let bytes := M.alloc (| bytes |) in
           M.catch_return (|
@@ -435,7 +441,8 @@ Module str.
                                 "core::ops::try_trait::Try",
                                 Ty.apply
                                   (Ty.path "core::option::Option")
-                                  [ Ty.apply (Ty.path "&") [ Ty.path "u8" ] ],
+                                  []
+                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ],
                                 [],
                                 "branch",
                                 []
@@ -473,10 +480,12 @@ Module str.
                                             "core::ops::try_trait::FromResidual",
                                             Ty.apply
                                               (Ty.path "core::option::Option")
+                                              []
                                               [ Ty.path "u32" ],
                                             [
                                               Ty.apply
                                                 (Ty.path "core::option::Option")
+                                                []
                                                 [ Ty.path "core::convert::Infallible" ]
                                             ],
                                             "from_residual",
@@ -536,7 +545,8 @@ Module str.
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "core::option::Option")
-                          [ Ty.apply (Ty.path "&") [ Ty.path "u8" ] ],
+                          []
+                          [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ],
                         "unwrap_unchecked",
                         []
                       |),
@@ -587,7 +597,8 @@ Module str.
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "core::option::Option")
-                                    [ Ty.apply (Ty.path "&") [ Ty.path "u8" ] ],
+                                    []
+                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ],
                                   "unwrap_unchecked",
                                   []
                                 |),
@@ -641,7 +652,8 @@ Module str.
                                           M.get_associated_function (|
                                             Ty.apply
                                               (Ty.path "core::option::Option")
-                                              [ Ty.apply (Ty.path "&") [ Ty.path "u8" ] ],
+                                              []
+                                              [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ],
                                             "unwrap_unchecked",
                                             []
                                           |),
@@ -711,7 +723,7 @@ Module str.
                 M.alloc (| Value.StructTuple "core::option::Option::Some" [ M.read (| ch |) ] |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_next_code_point_reverse :
@@ -732,9 +744,9 @@ Module str.
         (x & NONASCII_MASK) != 0
     }
     *)
-    Definition contains_nonascii (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ x ] =>
+    Definition contains_nonascii (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [ host ], [], [ x ] =>
         ltac:(M.monadic
           (let x := M.alloc (| x |) in
           BinOp.Pure.ne
@@ -742,7 +754,7 @@ Module str.
               (M.read (| x |))
               (M.read (| M.get_constant (| "core::str::validations::NONASCII_MASK" |) |)))
             (Value.Integer 0)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_contains_nonascii :
@@ -866,9 +878,9 @@ Module str.
         Ok(())
     }
     *)
-    Definition run_utf8_validation (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ v ] =>
+    Definition run_utf8_validation (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [ host ], [], [ v ] =>
         ltac:(M.monadic
           (let v := M.alloc (| v |) in
           M.catch_return (|
@@ -879,7 +891,7 @@ Module str.
                   M.alloc (|
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                        Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                         "len",
                         []
                       |),
@@ -928,14 +940,14 @@ Module str.
                   M.alloc (|
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "*const") [ Ty.path "u8" ],
+                        Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
                         "align_offset",
                         []
                       |),
                       [
                         M.call_closure (|
                           M.get_associated_function (|
-                            Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                            Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                             "as_ptr",
                             []
                           |),
@@ -1900,7 +1912,10 @@ Module str.
                                                 M.alloc (|
                                                   M.call_closure (|
                                                     M.get_associated_function (|
-                                                      Ty.apply (Ty.path "slice") [ Ty.path "u8" ],
+                                                      Ty.apply
+                                                        (Ty.path "slice")
+                                                        []
+                                                        [ Ty.path "u8" ],
                                                       "as_ptr",
                                                       []
                                                     |),
@@ -1935,6 +1950,7 @@ Module str.
                                                                       M.get_associated_function (|
                                                                         Ty.apply
                                                                           (Ty.path "*const")
+                                                                          []
                                                                           [ Ty.path "u8" ],
                                                                         "add",
                                                                         []
@@ -1972,6 +1988,7 @@ Module str.
                                                                           M.get_associated_function (|
                                                                             Ty.apply
                                                                               (Ty.path "*const")
+                                                                              []
                                                                               [ Ty.path "usize" ],
                                                                             "add",
                                                                             []
@@ -2137,7 +2154,7 @@ Module str.
                 M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
               |)))
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_run_utf8_validation :
@@ -2415,9 +2432,9 @@ Module str.
         UTF8_CHAR_WIDTH[b as usize] as usize
     }
     *)
-    Definition utf8_char_width (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [], [ b ] =>
+    Definition utf8_char_width (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [ host ], [], [ b ] =>
         ltac:(M.monadic
           (let b := M.alloc (| b |) in
           M.rust_cast
@@ -2427,7 +2444,7 @@ Module str.
                 M.alloc (| M.rust_cast (M.read (| b |)) |)
               |)
             |))))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_utf8_char_width :

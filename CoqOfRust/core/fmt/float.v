@@ -16,11 +16,12 @@ Module fmt.
                   }
       *)
       Definition already_rounded_value_should_use_exponential
+          (ε : list Value.t)
           (τ : list Ty.t)
           (α : list Value.t)
           : M :=
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -43,7 +44,7 @@ Module fmt.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -68,11 +69,12 @@ Module fmt.
                   }
       *)
       Definition already_rounded_value_should_use_exponential
+          (ε : list Value.t)
           (τ : list Ty.t)
           (α : list Value.t)
           : M :=
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -95,7 +97,7 @@ Module fmt.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -134,9 +136,13 @@ Module fmt.
         unsafe { fmt.pad_formatted_parts(&formatted) }
     }
     *)
-    Definition float_to_decimal_common_exact (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ T ], [ fmt; num; sign; precision ] =>
+    Definition float_to_decimal_common_exact
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      match ε, τ, α with
+      | [], [ T ], [ fmt; num; sign; precision ] =>
         ltac:(M.monadic
           (let fmt := M.alloc (| fmt |) in
           let num := M.alloc (| num |) in
@@ -147,7 +153,7 @@ Module fmt.
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ Ty.path "u8" ],
+                    Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ Ty.path "u8" ],
                     "uninit_array",
                     []
                   |),
@@ -160,6 +166,7 @@ Module fmt.
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                      []
                       [ Ty.path "core::num::fmt::Part" ],
                     "uninit_array",
                     []
@@ -176,15 +183,21 @@ Module fmt.
                       T;
                       Ty.function
                         [
-                          Ty.apply (Ty.path "&") [ Ty.path "core::num::flt2dec::decoder::Decoded" ];
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.path "core::num::flt2dec::decoder::Decoded" ];
                           Ty.apply
                             (Ty.path "&mut")
+                            []
                             [
                               Ty.apply
                                 (Ty.path "slice")
+                                []
                                 [
                                   Ty.apply
                                     (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                    []
                                     [ Ty.path "u8" ]
                                 ]
                             ];
@@ -192,7 +205,10 @@ Module fmt.
                         ]
                         (Ty.tuple
                           [
-                            Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "slice") [ Ty.path "u8" ] ];
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ];
                             Ty.path "i16"
                           ])
                     ]
@@ -218,7 +234,7 @@ Module fmt.
               |)
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_float_to_decimal_common_exact :
@@ -249,9 +265,13 @@ Module fmt.
         unsafe { fmt.pad_formatted_parts(&formatted) }
     }
     *)
-    Definition float_to_decimal_common_shortest (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ T ], [ fmt; num; sign; precision ] =>
+    Definition float_to_decimal_common_shortest
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      match ε, τ, α with
+      | [], [ T ], [ fmt; num; sign; precision ] =>
         ltac:(M.monadic
           (let fmt := M.alloc (| fmt |) in
           let num := M.alloc (| num |) in
@@ -262,7 +282,7 @@ Module fmt.
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ Ty.path "u8" ],
+                    Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ Ty.path "u8" ],
                     "uninit_array",
                     []
                   |),
@@ -275,6 +295,7 @@ Module fmt.
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                      []
                       [ Ty.path "core::num::fmt::Part" ],
                     "uninit_array",
                     []
@@ -291,22 +312,31 @@ Module fmt.
                       T;
                       Ty.function
                         [
-                          Ty.apply (Ty.path "&") [ Ty.path "core::num::flt2dec::decoder::Decoded" ];
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.path "core::num::flt2dec::decoder::Decoded" ];
                           Ty.apply
                             (Ty.path "&mut")
+                            []
                             [
                               Ty.apply
                                 (Ty.path "slice")
+                                []
                                 [
                                   Ty.apply
                                     (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                    []
                                     [ Ty.path "u8" ]
                                 ]
                             ]
                         ]
                         (Ty.tuple
                           [
-                            Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "slice") [ Ty.path "u8" ] ];
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ];
                             Ty.path "i16"
                           ])
                     ]
@@ -332,7 +362,7 @@ Module fmt.
               |)
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_float_to_decimal_common_shortest :
@@ -359,9 +389,9 @@ Module fmt.
         }
     }
     *)
-    Definition float_to_decimal_display (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ T ], [ fmt; num ] =>
+    Definition float_to_decimal_display (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ T ], [ fmt; num ] =>
         ltac:(M.monadic
           (let fmt := M.alloc (| fmt |) in
           let num := M.alloc (| num |) in
@@ -443,7 +473,7 @@ Module fmt.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_float_to_decimal_display :
@@ -475,9 +505,13 @@ Module fmt.
         unsafe { fmt.pad_formatted_parts(&formatted) }
     }
     *)
-    Definition float_to_exponential_common_exact (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ T ], [ fmt; num; sign; precision; upper ] =>
+    Definition float_to_exponential_common_exact
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      match ε, τ, α with
+      | [], [ T ], [ fmt; num; sign; precision; upper ] =>
         ltac:(M.monadic
           (let fmt := M.alloc (| fmt |) in
           let num := M.alloc (| num |) in
@@ -489,7 +523,7 @@ Module fmt.
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ Ty.path "u8" ],
+                    Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ Ty.path "u8" ],
                     "uninit_array",
                     []
                   |),
@@ -502,6 +536,7 @@ Module fmt.
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                      []
                       [ Ty.path "core::num::fmt::Part" ],
                     "uninit_array",
                     []
@@ -518,15 +553,21 @@ Module fmt.
                       T;
                       Ty.function
                         [
-                          Ty.apply (Ty.path "&") [ Ty.path "core::num::flt2dec::decoder::Decoded" ];
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.path "core::num::flt2dec::decoder::Decoded" ];
                           Ty.apply
                             (Ty.path "&mut")
+                            []
                             [
                               Ty.apply
                                 (Ty.path "slice")
+                                []
                                 [
                                   Ty.apply
                                     (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                    []
                                     [ Ty.path "u8" ]
                                 ]
                             ];
@@ -534,7 +575,10 @@ Module fmt.
                         ]
                         (Ty.tuple
                           [
-                            Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "slice") [ Ty.path "u8" ] ];
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ];
                             Ty.path "i16"
                           ])
                     ]
@@ -561,7 +605,7 @@ Module fmt.
               |)
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_float_to_exponential_common_exact :
@@ -595,9 +639,13 @@ Module fmt.
         unsafe { fmt.pad_formatted_parts(&formatted) }
     }
     *)
-    Definition float_to_exponential_common_shortest (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ T ], [ fmt; num; sign; upper ] =>
+    Definition float_to_exponential_common_shortest
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      match ε, τ, α with
+      | [], [ T ], [ fmt; num; sign; upper ] =>
         ltac:(M.monadic
           (let fmt := M.alloc (| fmt |) in
           let num := M.alloc (| num |) in
@@ -608,7 +656,7 @@ Module fmt.
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ Ty.path "u8" ],
+                    Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ Ty.path "u8" ],
                     "uninit_array",
                     []
                   |),
@@ -621,6 +669,7 @@ Module fmt.
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                      []
                       [ Ty.path "core::num::fmt::Part" ],
                     "uninit_array",
                     []
@@ -637,22 +686,31 @@ Module fmt.
                       T;
                       Ty.function
                         [
-                          Ty.apply (Ty.path "&") [ Ty.path "core::num::flt2dec::decoder::Decoded" ];
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.path "core::num::flt2dec::decoder::Decoded" ];
                           Ty.apply
                             (Ty.path "&mut")
+                            []
                             [
                               Ty.apply
                                 (Ty.path "slice")
+                                []
                                 [
                                   Ty.apply
                                     (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                    []
                                     [ Ty.path "u8" ]
                                 ]
                             ]
                         ]
                         (Ty.tuple
                           [
-                            Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "slice") [ Ty.path "u8" ] ];
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ];
                             Ty.path "i16"
                           ])
                     ]
@@ -679,7 +737,7 @@ Module fmt.
               |)
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_float_to_exponential_common_shortest :
@@ -706,9 +764,13 @@ Module fmt.
         }
     }
     *)
-    Definition float_to_exponential_common (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ T ], [ fmt; num; upper ] =>
+    Definition float_to_exponential_common
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      match ε, τ, α with
+      | [], [ T ], [ fmt; num; upper ] =>
         ltac:(M.monadic
           (let fmt := M.alloc (| fmt |) in
           let num := M.alloc (| num |) in
@@ -787,7 +849,7 @@ Module fmt.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_float_to_exponential_common :
@@ -819,9 +881,9 @@ Module fmt.
         }
     }
     *)
-    Definition float_to_general_debug (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ T ], [ fmt; num ] =>
+    Definition float_to_general_debug (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ T ], [ fmt; num ] =>
         ltac:(M.monadic
           (let fmt := M.alloc (| fmt |) in
           let num := M.alloc (| num |) in
@@ -943,7 +1005,7 @@ Module fmt.
               ]
             |)
           |)))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_float_to_general_debug :
@@ -957,9 +1019,9 @@ Module fmt.
                       float_to_general_debug(fmt, self)
                   }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; fmt ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; fmt ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let fmt := M.alloc (| fmt |) in
@@ -967,7 +1029,7 @@ Module fmt.
               M.get_function (| "core::fmt::float::float_to_general_debug", [ Ty.path "f32" ] |),
               [ M.read (| fmt |); M.read (| self |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -986,9 +1048,9 @@ Module fmt.
                       float_to_decimal_display(fmt, self)
                   }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; fmt ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; fmt ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let fmt := M.alloc (| fmt |) in
@@ -996,7 +1058,7 @@ Module fmt.
               M.get_function (| "core::fmt::float::float_to_decimal_display", [ Ty.path "f32" ] |),
               [ M.read (| fmt |); M.read (| self |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1015,9 +1077,9 @@ Module fmt.
                       float_to_exponential_common(fmt, self, false)
                   }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; fmt ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; fmt ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let fmt := M.alloc (| fmt |) in
@@ -1028,7 +1090,7 @@ Module fmt.
               |),
               [ M.read (| fmt |); M.read (| self |); Value.Bool false ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1047,9 +1109,9 @@ Module fmt.
                       float_to_exponential_common(fmt, self, true)
                   }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; fmt ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; fmt ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let fmt := M.alloc (| fmt |) in
@@ -1060,7 +1122,7 @@ Module fmt.
               |),
               [ M.read (| fmt |); M.read (| self |); Value.Bool true ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1079,9 +1141,9 @@ Module fmt.
                       float_to_general_debug(fmt, self)
                   }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; fmt ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; fmt ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let fmt := M.alloc (| fmt |) in
@@ -1089,7 +1151,7 @@ Module fmt.
               M.get_function (| "core::fmt::float::float_to_general_debug", [ Ty.path "f64" ] |),
               [ M.read (| fmt |); M.read (| self |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1108,9 +1170,9 @@ Module fmt.
                       float_to_decimal_display(fmt, self)
                   }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; fmt ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; fmt ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let fmt := M.alloc (| fmt |) in
@@ -1118,7 +1180,7 @@ Module fmt.
               M.get_function (| "core::fmt::float::float_to_decimal_display", [ Ty.path "f64" ] |),
               [ M.read (| fmt |); M.read (| self |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1137,9 +1199,9 @@ Module fmt.
                       float_to_exponential_common(fmt, self, false)
                   }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; fmt ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; fmt ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let fmt := M.alloc (| fmt |) in
@@ -1150,7 +1212,7 @@ Module fmt.
               |),
               [ M.read (| fmt |); M.read (| self |); Value.Bool false ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1169,9 +1231,9 @@ Module fmt.
                       float_to_exponential_common(fmt, self, true)
                   }
       *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; fmt ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; fmt ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let fmt := M.alloc (| fmt |) in
@@ -1182,7 +1244,7 @@ Module fmt.
               |),
               [ M.read (| fmt |); M.read (| self |); Value.Bool true ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :

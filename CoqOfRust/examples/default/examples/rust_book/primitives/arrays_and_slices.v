@@ -7,9 +7,9 @@ fn analyze_slice(slice: &[i32]) {
     println!("the slice has {} elements", slice.len());
 }
 *)
-Definition analyze_slice (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [ slice ] =>
+Definition analyze_slice (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [ slice ] =>
     ltac:(M.monadic
       (let slice := M.alloc (| slice |) in
       M.read (|
@@ -92,7 +92,7 @@ Definition analyze_slice (τ : list Ty.t) (α : list Value.t) : M :=
                                   M.alloc (|
                                     M.call_closure (|
                                       M.get_associated_function (|
-                                        Ty.apply (Ty.path "slice") [ Ty.path "i32" ],
+                                        Ty.apply (Ty.path "slice") [] [ Ty.path "i32" ],
                                         "len",
                                         []
                                       |),
@@ -111,7 +111,7 @@ Definition analyze_slice (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (| Value.Tuple [] |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_analyze_slice : M.IsFunction "arrays_and_slices::analyze_slice" analyze_slice.
@@ -165,9 +165,9 @@ fn main() {
     //println!("{}", xs[5]);
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [] =>
+Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
         let~ xs :=
@@ -176,7 +176,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               [ Value.Integer 1; Value.Integer 2; Value.Integer 3; Value.Integer 4; Value.Integer 5
               ]
           |) in
-        let~ ys := M.alloc (| repeat (Value.Integer 0) 500 |) in
+        let~ ys := M.alloc (| repeat (| Value.Integer 0, Value.Integer 500 |) |) in
         let~ _ :=
           let~ _ :=
             M.alloc (|
@@ -301,7 +301,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                   M.alloc (|
                                     M.call_closure (|
                                       M.get_associated_function (|
-                                        Ty.apply (Ty.path "slice") [ Ty.path "i32" ],
+                                        Ty.apply (Ty.path "slice") [] [ Ty.path "i32" ],
                                         "len",
                                         []
                                       |),
@@ -353,7 +353,12 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                     M.call_closure (|
                                       M.get_function (|
                                         "core::mem::size_of_val",
-                                        [ Ty.apply (Ty.path "array") [ Ty.path "i32" ] ]
+                                        [
+                                          Ty.apply
+                                            (Ty.path "array")
+                                            [ Value.Integer 5 ]
+                                            [ Ty.path "i32" ]
+                                        ]
                                       |),
                                       [ xs ]
                                     |)
@@ -428,8 +433,8 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::ops::index::Index",
-                    Ty.apply (Ty.path "array") [ Ty.path "i32" ],
-                    [ Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "usize" ] ],
+                    Ty.apply (Ty.path "array") [ Value.Integer 500 ] [ Ty.path "i32" ],
+                    [ Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ] ],
                     "index",
                     []
                   |),
@@ -470,11 +475,23 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                       "core::cmp::PartialEq",
                                       Ty.apply
                                         (Ty.path "&")
-                                        [ Ty.apply (Ty.path "array") [ Ty.path "u32" ] ],
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "array")
+                                            [ Value.Integer 0 ]
+                                            [ Ty.path "u32" ]
+                                        ],
                                       [
                                         Ty.apply
                                           (Ty.path "&")
-                                          [ Ty.apply (Ty.path "array") [ Ty.path "u32" ] ]
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "array")
+                                              [ Value.Integer 0 ]
+                                              [ Ty.path "u32" ]
+                                          ]
                                       ],
                                       "eq",
                                       []
@@ -498,10 +515,22 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                       [
                                         Ty.apply
                                           (Ty.path "&")
-                                          [ Ty.apply (Ty.path "array") [ Ty.path "u32" ] ];
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "array")
+                                              [ Value.Integer 0 ]
+                                              [ Ty.path "u32" ]
+                                          ];
                                         Ty.apply
                                           (Ty.path "&")
-                                          [ Ty.apply (Ty.path "array") [ Ty.path "u32" ] ]
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "array")
+                                              [ Value.Integer 0 ]
+                                              [ Ty.path "u32" ]
+                                          ]
                                       ]
                                     |),
                                     [
@@ -530,7 +559,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                     M.call_closure (|
                       M.get_trait_method (|
                         "core::ops::index::Index",
-                        Ty.apply (Ty.path "array") [ Ty.path "u32" ],
+                        Ty.apply (Ty.path "array") [ Value.Integer 0 ] [ Ty.path "u32" ],
                         [ Ty.path "core::ops::range::RangeFull" ],
                         "index",
                         []
@@ -564,11 +593,18 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                       "core::cmp::PartialEq",
                                       Ty.apply
                                         (Ty.path "&")
-                                        [ Ty.apply (Ty.path "array") [ Ty.path "u32" ] ],
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "array")
+                                            [ Value.Integer 0 ]
+                                            [ Ty.path "u32" ]
+                                        ],
                                       [
                                         Ty.apply
                                           (Ty.path "&")
-                                          [ Ty.apply (Ty.path "slice") [ Ty.path "u32" ] ]
+                                          []
+                                          [ Ty.apply (Ty.path "slice") [] [ Ty.path "u32" ] ]
                                       ],
                                       "eq",
                                       []
@@ -592,10 +628,17 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                       [
                                         Ty.apply
                                           (Ty.path "&")
-                                          [ Ty.apply (Ty.path "array") [ Ty.path "u32" ] ];
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "array")
+                                              [ Value.Integer 0 ]
+                                              [ Ty.path "u32" ]
+                                          ];
                                         Ty.apply
                                           (Ty.path "&")
-                                          [ Ty.apply (Ty.path "slice") [ Ty.path "u32" ] ]
+                                          []
+                                          [ Ty.apply (Ty.path "slice") [] [ Ty.path "u32" ] ]
                                       ]
                                     |),
                                     [
@@ -620,7 +663,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
               M.call_closure (|
                 M.get_trait_method (|
                   "core::iter::traits::collect::IntoIterator",
-                  Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "usize" ],
+                  Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
                   [],
                   "into_iter",
                   []
@@ -635,7 +678,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                           Integer.Usize
                           (M.call_closure (|
                             M.get_associated_function (|
-                              Ty.apply (Ty.path "slice") [ Ty.path "i32" ],
+                              Ty.apply (Ty.path "slice") [] [ Ty.path "i32" ],
                               "len",
                               []
                             |),
@@ -658,7 +701,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                             M.call_closure (|
                               M.get_trait_method (|
                                 "core::iter::traits::iterator::Iterator",
-                                Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "usize" ],
+                                Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
                                 [],
                                 "next",
                                 []
@@ -684,7 +727,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                   M.alloc (|
                                     M.call_closure (|
                                       M.get_associated_function (|
-                                        Ty.apply (Ty.path "slice") [ Ty.path "i32" ],
+                                        Ty.apply (Ty.path "slice") [] [ Ty.path "i32" ],
                                         "get",
                                         [ Ty.path "usize" ]
                                       |),
@@ -744,6 +787,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                                                 [
                                                                   Ty.apply
                                                                     (Ty.path "&")
+                                                                    []
                                                                     [ Ty.path "i32" ]
                                                                 ]
                                                               |),
@@ -815,7 +859,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
             ]
           |))
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_main : M.IsFunction "arrays_and_slices::main" main.

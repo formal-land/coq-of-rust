@@ -6,19 +6,20 @@ Module async_iter.
     (* StructRecord
       {
         name := "FromIter";
+        const_params := [];
         ty_params := [ "I" ];
         fields := [ ("iter", I) ];
       } *)
     
     Module Impl_core_clone_Clone_where_core_clone_Clone_I_for_core_async_iter_from_iter_FromIter_I.
       Definition Self (I : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::async_iter::from_iter::FromIter") [ I ].
+        Ty.apply (Ty.path "core::async_iter::from_iter::FromIter") [] [ I ].
       
       (* Clone *)
-      Definition clone (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition clone (I : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self I in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructRecord
@@ -36,7 +37,7 @@ Module async_iter.
                     ]
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -50,13 +51,13 @@ Module async_iter.
     
     Module Impl_core_fmt_Debug_where_core_fmt_Debug_I_for_core_async_iter_from_iter_FromIter_I.
       Definition Self (I : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::async_iter::from_iter::FromIter") [ I ].
+        Ty.apply (Ty.path "core::async_iter::from_iter::FromIter") [] [ I ].
       
       (* Debug *)
-      Definition fmt (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (I : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self I in
-        match τ, α with
-        | [], [ self; f ] =>
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -81,7 +82,7 @@ Module async_iter.
                   |))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -95,7 +96,7 @@ Module async_iter.
     
     Module Impl_core_marker_Unpin_for_core_async_iter_from_iter_FromIter_I.
       Definition Self (I : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::async_iter::from_iter::FromIter") [ I ].
+        Ty.apply (Ty.path "core::async_iter::from_iter::FromIter") [] [ I ].
       
       Axiom Implements :
         forall (I : Ty.t),
@@ -111,9 +112,9 @@ Module async_iter.
         FromIter { iter: iter.into_iter() }
     }
     *)
-    Definition from_iter (τ : list Ty.t) (α : list Value.t) : M :=
-      match τ, α with
-      | [ _ as I ], [ iter ] =>
+    Definition from_iter (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ _ as I ], [ iter ] =>
         ltac:(M.monadic
           (let iter := M.alloc (| iter |) in
           Value.StructRecord
@@ -131,14 +132,14 @@ Module async_iter.
                   [ M.read (| iter |) ]
                 |))
             ]))
-      | _, _ => M.impossible
+      | _, _, _ => M.impossible
       end.
     
     Axiom Function_from_iter : M.IsFunction "core::async_iter::from_iter::from_iter" from_iter.
     
     Module Impl_core_async_iter_async_iter_AsyncIterator_where_core_iter_traits_iterator_Iterator_I_for_core_async_iter_from_iter_FromIter_I.
       Definition Self (I : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::async_iter::from_iter::FromIter") [ I ].
+        Ty.apply (Ty.path "core::async_iter::from_iter::FromIter") [] [ I ].
       
       (*     type Item = I::Item; *)
       Definition _Item (I : Ty.t) : Ty.t := Ty.associated.
@@ -148,10 +149,10 @@ Module async_iter.
               Poll::Ready(self.iter.next())
           }
       *)
-      Definition poll_next (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition poll_next (I : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self I in
-        match τ, α with
-        | [], [ self; _cx ] =>
+        match ε, τ, α with
+        | [], [], [ self; _cx ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let _cx := M.alloc (| _cx |) in
@@ -173,10 +174,17 @@ Module async_iter.
                           "core::ops::deref::DerefMut",
                           Ty.apply
                             (Ty.path "core::pin::Pin")
+                            []
                             [
                               Ty.apply
                                 (Ty.path "&mut")
-                                [ Ty.apply (Ty.path "core::async_iter::from_iter::FromIter") [ I ] ]
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::async_iter::from_iter::FromIter")
+                                    []
+                                    [ I ]
+                                ]
                             ],
                           [],
                           "deref_mut",
@@ -190,7 +198,7 @@ Module async_iter.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       (*
@@ -198,10 +206,10 @@ Module async_iter.
               self.iter.size_hint()
           }
       *)
-      Definition size_hint (I : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition size_hint (I : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self I in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -220,7 +228,7 @@ Module async_iter.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :

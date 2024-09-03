@@ -7,7 +7,7 @@ Module mem.
     
     Module Impl_core_marker_Copy_where_core_marker_Copy_T_for_core_mem_maybe_uninit_MaybeUninit_T.
       Definition Self (T : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ].
+        Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ].
       
       Axiom Implements :
         forall (T : Ty.t),
@@ -20,7 +20,7 @@ Module mem.
     
     Module Impl_core_clone_Clone_where_core_marker_Copy_T_for_core_mem_maybe_uninit_MaybeUninit_T.
       Definition Self (T : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ].
+        Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ].
       
       (*
           fn clone(&self) -> Self {
@@ -28,14 +28,14 @@ Module mem.
               *self
           }
       *)
-      Definition clone (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition clone (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (| M.read (| self |) |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -49,17 +49,17 @@ Module mem.
     
     Module Impl_core_fmt_Debug_for_core_mem_maybe_uninit_MaybeUninit_T.
       Definition Self (T : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ].
+        Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ].
       
       (*
           fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
               f.pad(type_name::<Self>())
           }
       *)
-      Definition fmt (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self; f ] =>
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -70,13 +70,13 @@ Module mem.
                 M.call_closure (|
                   M.get_function (|
                     "core::any::type_name",
-                    [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ] ]
+                    [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ]
                   |),
                   []
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -90,17 +90,17 @@ Module mem.
     
     Module Impl_core_mem_maybe_uninit_MaybeUninit_T.
       Definition Self (T : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ].
+        Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ].
       
       (*
           pub const fn new(val: T) -> MaybeUninit<T> {
               MaybeUninit { value: ManuallyDrop::new(val) }
           }
       *)
-      Definition new (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition new (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ val ] =>
+        match ε, τ, α with
+        | [ host ], [], [ val ] =>
           ltac:(M.monadic
             (let val := M.alloc (| val |) in
             Value.StructRecord
@@ -109,14 +109,14 @@ Module mem.
                 ("value",
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "core::mem::manually_drop::ManuallyDrop") [ T ],
+                      Ty.apply (Ty.path "core::mem::manually_drop::ManuallyDrop") [] [ T ],
                       "new",
                       []
                     |),
                     [ M.read (| val |) ]
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_new :
@@ -128,15 +128,15 @@ Module mem.
               MaybeUninit { uninit: () }
           }
       *)
-      Definition uninit (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition uninit (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [] =>
+        match ε, τ, α with
+        | [ host ], [], [] =>
           ltac:(M.monadic
             (Value.StructRecord
               "core::mem::maybe_uninit::MaybeUninit"
               [ ("uninit", Value.Tuple []) ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_uninit :
@@ -149,19 +149,26 @@ Module mem.
               unsafe { MaybeUninit::<[MaybeUninit<T>; N]>::uninit().assume_init() }
           }
       *)
-      Definition uninit_array (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition uninit_array
+          (T : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [] =>
+        match ε, τ, α with
+        | [ N; host ], [], [] =>
           ltac:(M.monadic
             (M.call_closure (|
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                  []
                   [
                     Ty.apply
                       (Ty.path "array")
-                      [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ] ]
+                      [ N ]
+                      [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ]
                   ],
                 "assume_init",
                 []
@@ -171,10 +178,12 @@ Module mem.
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                      []
                       [
                         Ty.apply
                           (Ty.path "array")
-                          [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ] ]
+                          [ N ]
+                          [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ]
                       ],
                     "uninit",
                     []
@@ -183,7 +192,7 @@ Module mem.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_uninit_array :
@@ -198,17 +207,17 @@ Module mem.
               u
           }
       *)
-      Definition zeroed (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition zeroed (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [] =>
+        match ε, τ, α with
+        | [ host ], [], [] =>
           ltac:(M.monadic
             (M.read (|
               let~ u :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ],
+                      Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ],
                       "uninit",
                       []
                     |),
@@ -219,14 +228,14 @@ Module mem.
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "*mut") [ T ],
+                      Ty.apply (Ty.path "*mut") [] [ T ],
                       "write_bytes",
                       []
                     |),
                     [
                       M.call_closure (|
                         M.get_associated_function (|
-                          Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ],
+                          Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ],
                           "as_mut_ptr",
                           []
                         |),
@@ -239,7 +248,7 @@ Module mem.
                 |) in
               u
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_zeroed :
@@ -253,10 +262,10 @@ Module mem.
               unsafe { self.assume_init_mut() }
           }
       *)
-      Definition write (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition write (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self; val ] =>
+        match ε, τ, α with
+        | [ host ], [], [ self; val ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let val := M.alloc (| val |) in
@@ -266,7 +275,7 @@ Module mem.
                   M.read (| self |),
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ],
+                      Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ],
                       "new",
                       []
                     |),
@@ -276,7 +285,7 @@ Module mem.
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ],
+                    Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ],
                     "assume_init_mut",
                     []
                   |),
@@ -284,7 +293,7 @@ Module mem.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_write :
@@ -297,14 +306,14 @@ Module mem.
               self as *const _ as *const T
           }
       *)
-      Definition as_ptr (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition as_ptr (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.rust_cast (M.read (| M.use (M.alloc (| M.read (| self |) |)) |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_as_ptr :
@@ -317,14 +326,14 @@ Module mem.
               self as *mut _ as *mut T
           }
       *)
-      Definition as_mut_ptr (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition as_mut_ptr (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.rust_cast (M.read (| M.use (M.alloc (| M.read (| self |) |)) |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_as_mut_ptr :
@@ -341,10 +350,10 @@ Module mem.
               }
           }
       *)
-      Definition assume_init (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition assume_init (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -358,7 +367,7 @@ Module mem.
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::mem::manually_drop::ManuallyDrop") [ T ],
+                    Ty.apply (Ty.path "core::mem::manually_drop::ManuallyDrop") [] [ T ],
                     "into_inner",
                     []
                   |),
@@ -374,7 +383,7 @@ Module mem.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_assume_init :
@@ -391,10 +400,15 @@ Module mem.
               }
           }
       *)
-      Definition assume_init_read (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition assume_init_read
+          (T : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -407,11 +421,11 @@ Module mem.
                 |) in
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.apply (Ty.path "*const") [ T ], "read", [] |),
+                  M.get_associated_function (| Ty.apply (Ty.path "*const") [] [ T ], "read", [] |),
                   [
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ],
+                        Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ],
                         "as_ptr",
                         []
                       |),
@@ -421,7 +435,7 @@ Module mem.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_assume_init_read :
@@ -436,10 +450,15 @@ Module mem.
               unsafe { ptr::drop_in_place(self.as_mut_ptr()) }
           }
       *)
-      Definition assume_init_drop (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition assume_init_drop
+          (T : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -447,7 +466,7 @@ Module mem.
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ],
+                    Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ],
                     "as_mut_ptr",
                     []
                   |),
@@ -455,7 +474,7 @@ Module mem.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_assume_init_drop :
@@ -472,10 +491,15 @@ Module mem.
               }
           }
       *)
-      Definition assume_init_ref (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition assume_init_ref
+          (T : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -489,7 +513,7 @@ Module mem.
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ],
+                    Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ],
                     "as_ptr",
                     []
                   |),
@@ -497,7 +521,7 @@ Module mem.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_assume_init_ref :
@@ -514,10 +538,15 @@ Module mem.
               }
           }
       *)
-      Definition assume_init_mut (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition assume_init_mut
+          (T : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -531,7 +560,7 @@ Module mem.
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ],
+                    Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ],
                     "as_mut_ptr",
                     []
                   |),
@@ -539,7 +568,7 @@ Module mem.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_assume_init_mut :
@@ -559,10 +588,15 @@ Module mem.
               }
           }
       *)
-      Definition array_assume_init (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition array_assume_init
+          (T : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ array ] =>
+        match ε, τ, α with
+        | [ N; host ], [], [ array ] =>
           ltac:(M.monadic
             (let array := M.alloc (| array |) in
             M.read (|
@@ -571,7 +605,7 @@ Module mem.
                   M.call_closure (|
                     M.get_function (|
                       "core::intrinsics::assert_inhabited",
-                      [ Ty.apply (Ty.path "array") [ T ] ]
+                      [ Ty.apply (Ty.path "array") [ N ] [ T ] ]
                     |),
                     []
                   |)
@@ -583,15 +617,16 @@ Module mem.
                     [
                       Ty.apply
                         (Ty.path "array")
-                        [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ] ];
-                      Ty.apply (Ty.path "array") [ T ]
+                        [ N ]
+                        [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ];
+                      Ty.apply (Ty.path "array") [ N ] [ T ]
                     ]
                   |),
                   [ M.read (| array |) ]
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_array_assume_init :
@@ -607,14 +642,19 @@ Module mem.
               unsafe { &*(slice as *const [Self] as *const [T]) }
           }
       *)
-      Definition slice_assume_init_ref (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition slice_assume_init_ref
+          (T : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ slice ] =>
+        match ε, τ, α with
+        | [ host ], [], [ slice ] =>
           ltac:(M.monadic
             (let slice := M.alloc (| slice |) in
             M.rust_cast (M.read (| M.use (M.alloc (| M.read (| slice |) |)) |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_slice_assume_init_ref :
@@ -628,14 +668,19 @@ Module mem.
               unsafe { &mut *(slice as *mut [Self] as *mut [T]) }
           }
       *)
-      Definition slice_assume_init_mut (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition slice_assume_init_mut
+          (T : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ slice ] =>
+        match ε, τ, α with
+        | [ host ], [], [ slice ] =>
           ltac:(M.monadic
             (let slice := M.alloc (| slice |) in
             M.rust_cast (M.read (| M.use (M.alloc (| M.read (| slice |) |)) |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_slice_assume_init_mut :
@@ -647,10 +692,15 @@ Module mem.
               this.as_ptr() as *const T
           }
       *)
-      Definition slice_as_ptr (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition slice_as_ptr
+          (T : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ this ] =>
+        match ε, τ, α with
+        | [ host ], [], [ this ] =>
           ltac:(M.monadic
             (let this := M.alloc (| this |) in
             M.rust_cast
@@ -658,13 +708,14 @@ Module mem.
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "slice")
-                    [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ] ],
+                    []
+                    [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ],
                   "as_ptr",
                   []
                 |),
                 [ M.read (| this |) ]
               |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_slice_as_ptr :
@@ -676,10 +727,15 @@ Module mem.
               this.as_mut_ptr() as *mut T
           }
       *)
-      Definition slice_as_mut_ptr (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition slice_as_mut_ptr
+          (T : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ this ] =>
+        match ε, τ, α with
+        | [ host ], [], [ this ] =>
           ltac:(M.monadic
             (let this := M.alloc (| this |) in
             M.rust_cast
@@ -687,13 +743,14 @@ Module mem.
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "slice")
-                    [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ] ],
+                    []
+                    [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ],
                   "as_mut_ptr",
                   []
                 |),
                 [ M.read (| this |) ]
               |))))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_slice_as_mut_ptr :
@@ -714,10 +771,10 @@ Module mem.
               unsafe { MaybeUninit::slice_assume_init_mut(this) }
           }
       *)
-      Definition write_slice (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition write_slice (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ this; src ] =>
+        match ε, τ, α with
+        | [], [], [ this; src ] =>
           ltac:(M.monadic
             (let this := M.alloc (| this |) in
             let src := M.alloc (| src |) in
@@ -728,13 +785,15 @@ Module mem.
                     M.get_function (|
                       "core::intrinsics::transmute",
                       [
-                        Ty.apply (Ty.path "&") [ Ty.apply (Ty.path "slice") [ T ] ];
+                        Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ];
                         Ty.apply
                           (Ty.path "&")
+                          []
                           [
                             Ty.apply
                               (Ty.path "slice")
-                              [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ] ]
+                              []
+                              [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ]
                           ]
                       ]
                     |),
@@ -747,7 +806,8 @@ Module mem.
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "slice")
-                        [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ] ],
+                        []
+                        [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ],
                       "copy_from_slice",
                       []
                     |),
@@ -757,7 +817,7 @@ Module mem.
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ],
+                    Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ],
                     "slice_assume_init_mut",
                     []
                   |),
@@ -765,7 +825,7 @@ Module mem.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_write_slice :
@@ -817,10 +877,15 @@ Module mem.
               unsafe { MaybeUninit::slice_assume_init_mut(this) }
           }
       *)
-      Definition write_slice_cloned (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition write_slice_cloned
+          (T : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ this; src ] =>
+        match ε, τ, α with
+        | [], [], [ this; src ] =>
           ltac:(M.monadic
             (let this := M.alloc (| this |) in
             let src := M.alloc (| src |) in
@@ -835,7 +900,9 @@ Module mem.
                             M.get_associated_function (|
                               Ty.apply
                                 (Ty.path "slice")
-                                [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ] ],
+                                []
+                                [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]
+                                ],
                               "len",
                               []
                             |),
@@ -845,7 +912,7 @@ Module mem.
                         M.alloc (|
                           M.call_closure (|
                             M.get_associated_function (|
-                              Ty.apply (Ty.path "slice") [ T ],
+                              Ty.apply (Ty.path "slice") [] [ T ],
                               "len",
                               []
                             |),
@@ -937,7 +1004,8 @@ Module mem.
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "slice")
-                        [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ] ],
+                        []
+                        [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ],
                       "len",
                       []
                     |),
@@ -949,8 +1017,8 @@ Module mem.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::index::Index",
-                      Ty.apply (Ty.path "slice") [ T ],
-                      [ Ty.apply (Ty.path "core::ops::range::RangeTo") [ Ty.path "usize" ] ],
+                      Ty.apply (Ty.path "slice") [] [ T ],
+                      [ Ty.apply (Ty.path "core::ops::range::RangeTo") [] [ Ty.path "usize" ] ],
                       "index",
                       []
                     |),
@@ -973,7 +1041,7 @@ Module mem.
                       M.call_closure (|
                         M.get_trait_method (|
                           "core::iter::traits::collect::IntoIterator",
-                          Ty.apply (Ty.path "core::ops::range::Range") [ Ty.path "usize" ],
+                          Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
                           [],
                           "into_iter",
                           []
@@ -999,6 +1067,7 @@ Module mem.
                                         "core::iter::traits::iterator::Iterator",
                                         Ty.apply
                                           (Ty.path "core::ops::range::Range")
+                                          []
                                           [ Ty.path "usize" ],
                                         [],
                                         "next",
@@ -1030,6 +1099,7 @@ Module mem.
                                               M.get_associated_function (|
                                                 Ty.apply
                                                   (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                                  []
                                                   [ T ],
                                                 "write",
                                                 []
@@ -1092,6 +1162,7 @@ Module mem.
                       [
                         Ty.apply
                           (Ty.path "core::mem::maybe_uninit::write_slice_cloned::Guard")
+                          []
                           [ T ]
                       ]
                     |),
@@ -1101,7 +1172,7 @@ Module mem.
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ],
+                    Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ],
                     "slice_assume_init_mut",
                     []
                   |),
@@ -1109,7 +1180,7 @@ Module mem.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_write_slice_cloned :
@@ -1124,22 +1195,22 @@ Module mem.
               }
           }
       *)
-      Definition as_bytes (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition as_bytes (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_function (|
                 "core::slice::raw::from_raw_parts",
-                [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ Ty.path "u8" ] ]
+                [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ Ty.path "u8" ] ]
               |),
               [
                 M.rust_cast
                   (M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ],
+                      Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ],
                       "as_ptr",
                       []
                     |),
@@ -1148,7 +1219,7 @@ Module mem.
                 M.call_closure (| M.get_function (| "core::mem::size_of", [ T ] |), [] |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_as_bytes :
@@ -1166,22 +1237,27 @@ Module mem.
               }
           }
       *)
-      Definition as_bytes_mut (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition as_bytes_mut
+          (T : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_function (|
                 "core::slice::raw::from_raw_parts_mut",
-                [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ Ty.path "u8" ] ]
+                [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ Ty.path "u8" ] ]
               |),
               [
                 M.rust_cast
                   (M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ],
+                      Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ],
                       "as_mut_ptr",
                       []
                     |),
@@ -1190,7 +1266,7 @@ Module mem.
                 M.call_closure (| M.get_function (| "core::mem::size_of", [ T ] |), [] |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_as_bytes_mut :
@@ -1204,10 +1280,15 @@ Module mem.
               unsafe { slice::from_raw_parts(this.as_ptr() as *const MaybeUninit<u8>, bytes) }
           }
       *)
-      Definition slice_as_bytes (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition slice_as_bytes
+          (T : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ this ] =>
+        match ε, τ, α with
+        | [], [], [ this ] =>
           ltac:(M.monadic
             (let this := M.alloc (| this |) in
             M.read (|
@@ -1219,7 +1300,8 @@ Module mem.
                       [
                         Ty.apply
                           (Ty.path "slice")
-                          [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ] ]
+                          []
+                          [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ]
                       ]
                     |),
                     [ M.read (| this |) ]
@@ -1229,7 +1311,8 @@ Module mem.
                 M.call_closure (|
                   M.get_function (|
                     "core::slice::raw::from_raw_parts",
-                    [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ Ty.path "u8" ] ]
+                    [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ Ty.path "u8" ]
+                    ]
                   |),
                   [
                     M.rust_cast
@@ -1237,7 +1320,8 @@ Module mem.
                         M.get_associated_function (|
                           Ty.apply
                             (Ty.path "slice")
-                            [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ] ],
+                            []
+                            [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ],
                           "as_ptr",
                           []
                         |),
@@ -1248,7 +1332,7 @@ Module mem.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_slice_as_bytes :
@@ -1262,10 +1346,15 @@ Module mem.
               unsafe { slice::from_raw_parts_mut(this.as_mut_ptr() as *mut MaybeUninit<u8>, bytes) }
           }
       *)
-      Definition slice_as_bytes_mut (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition slice_as_bytes_mut
+          (T : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ this ] =>
+        match ε, τ, α with
+        | [], [], [ this ] =>
           ltac:(M.monadic
             (let this := M.alloc (| this |) in
             M.read (|
@@ -1277,7 +1366,8 @@ Module mem.
                       [
                         Ty.apply
                           (Ty.path "slice")
-                          [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ] ]
+                          []
+                          [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ]
                       ]
                     |),
                     [ M.read (| this |) ]
@@ -1287,7 +1377,8 @@ Module mem.
                 M.call_closure (|
                   M.get_function (|
                     "core::slice::raw::from_raw_parts_mut",
-                    [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ Ty.path "u8" ] ]
+                    [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ Ty.path "u8" ]
+                    ]
                   |),
                   [
                     M.rust_cast
@@ -1295,7 +1386,8 @@ Module mem.
                         M.get_associated_function (|
                           Ty.apply
                             (Ty.path "slice")
-                            [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ] ],
+                            []
+                            [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ],
                           "as_mut_ptr",
                           []
                         |),
@@ -1306,7 +1398,7 @@ Module mem.
                 |)
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_slice_as_bytes_mut :
@@ -1314,11 +1406,12 @@ Module mem.
         M.IsAssociatedFunction (Self T) "slice_as_bytes_mut" (slice_as_bytes_mut T).
     End Impl_core_mem_maybe_uninit_MaybeUninit_T.
     
-    Module Impl_core_mem_maybe_uninit_MaybeUninit_array_T.
-      Definition Self (T : Ty.t) : Ty.t :=
+    Module Impl_core_mem_maybe_uninit_MaybeUninit_array_N_T.
+      Definition Self (N : Value.t) (T : Ty.t) : Ty.t :=
         Ty.apply
           (Ty.path "core::mem::maybe_uninit::MaybeUninit")
-          [ Ty.apply (Ty.path "array") [ T ] ].
+          []
+          [ Ty.apply (Ty.path "array") [ N ] [ T ] ].
       
       (*
           pub const fn transpose(self) -> [MaybeUninit<T>; N] {
@@ -1326,10 +1419,16 @@ Module mem.
               unsafe { intrinsics::transmute_unchecked(self) }
           }
       *)
-      Definition transpose (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self ] =>
+      Definition transpose
+          (N : Value.t)
+          (T : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        let Self : Ty.t := Self N T in
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -1338,27 +1437,30 @@ Module mem.
                 [
                   Ty.apply
                     (Ty.path "core::mem::maybe_uninit::MaybeUninit")
-                    [ Ty.apply (Ty.path "array") [ T ] ];
+                    []
+                    [ Ty.apply (Ty.path "array") [ N ] [ T ] ];
                   Ty.apply
                     (Ty.path "array")
-                    [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ] ]
+                    [ N ]
+                    [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ]
                 ]
               |),
               [ M.read (| self |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_transpose :
-        forall (T : Ty.t),
-        M.IsAssociatedFunction (Self T) "transpose" (transpose T).
-    End Impl_core_mem_maybe_uninit_MaybeUninit_array_T.
+        forall (N : Value.t) (T : Ty.t),
+        M.IsAssociatedFunction (Self N T) "transpose" (transpose N T).
+    End Impl_core_mem_maybe_uninit_MaybeUninit_array_N_T.
     
-    Module Impl_array_core_mem_maybe_uninit_MaybeUninit_T.
-      Definition Self (T : Ty.t) : Ty.t :=
+    Module Impl_array_N_core_mem_maybe_uninit_MaybeUninit_T.
+      Definition Self (N : Value.t) (T : Ty.t) : Ty.t :=
         Ty.apply
           (Ty.path "array")
-          [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ] ].
+          [ N ]
+          [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ].
       
       (*
           pub const fn transpose(self) -> MaybeUninit<[T; N]> {
@@ -1366,10 +1468,16 @@ Module mem.
               unsafe { intrinsics::transmute_unchecked(self) }
           }
       *)
-      Definition transpose (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self ] =>
+      Definition transpose
+          (N : Value.t)
+          (T : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        let Self : Ty.t := Self N T in
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -1378,20 +1486,22 @@ Module mem.
                 [
                   Ty.apply
                     (Ty.path "array")
-                    [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [ T ] ];
+                    [ N ]
+                    [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ];
                   Ty.apply
                     (Ty.path "core::mem::maybe_uninit::MaybeUninit")
-                    [ Ty.apply (Ty.path "array") [ T ] ]
+                    []
+                    [ Ty.apply (Ty.path "array") [ N ] [ T ] ]
                 ]
               |),
               [ M.read (| self |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_transpose :
-        forall (T : Ty.t),
-        M.IsAssociatedFunction (Self T) "transpose" (transpose T).
-    End Impl_array_core_mem_maybe_uninit_MaybeUninit_T.
+        forall (N : Value.t) (T : Ty.t),
+        M.IsAssociatedFunction (Self N T) "transpose" (transpose N T).
+    End Impl_array_N_core_mem_maybe_uninit_MaybeUninit_T.
   End maybe_uninit.
 End mem.

@@ -4,13 +4,14 @@ Require Import CoqOfRust.CoqOfRust.
 (* StructRecord
   {
     name := "Foo";
+    const_params := [];
     ty_params := [ "T" ];
     fields := [ ("data", T) ];
   } *)
 
 Module Impl_polymorphic_associated_function_Foo_A.
   Definition Self (A : Ty.t) : Ty.t :=
-    Ty.apply (Ty.path "polymorphic_associated_function::Foo") [ A ].
+    Ty.apply (Ty.path "polymorphic_associated_function::Foo") [] [ A ].
   
   (*
       fn convert<B: From<A>>(self) -> Foo<B> {
@@ -19,10 +20,10 @@ Module Impl_polymorphic_associated_function_Foo_A.
           }
       }
   *)
-  Definition convert (A : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition convert (A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     let Self : Ty.t := Self A in
-    match τ, α with
-    | [ B ], [ self ] =>
+    match ε, τ, α with
+    | [], [ B ], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         Value.StructRecord
@@ -42,7 +43,7 @@ Module Impl_polymorphic_associated_function_Foo_A.
                 ]
               |))
           ]))
-    | _, _ => M.impossible
+    | _, _, _ => M.impossible
     end.
   
   Axiom AssociatedFunction_convert :
@@ -58,9 +59,9 @@ fn main() {
     assert_eq!(bar.data, 42.0);
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [] =>
+Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
         let~ foo :=
@@ -71,7 +72,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "polymorphic_associated_function::Foo") [ Ty.path "i32" ],
+                Ty.apply (Ty.path "polymorphic_associated_function::Foo") [] [ Ty.path "i32" ],
                 "convert",
                 [ Ty.path "f64" ]
               |),
@@ -144,7 +145,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_main : M.IsFunction "polymorphic_associated_function::main" main.

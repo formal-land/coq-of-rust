@@ -9,9 +9,9 @@ Module iter.
           Once { inner: Some(value).into_iter() }
       }
       *)
-      Definition once (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [ T ], [ value ] =>
+      Definition once (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ T ], [ value ] =>
           ltac:(M.monadic
             (let value := M.alloc (| value |) in
             Value.StructRecord
@@ -21,7 +21,7 @@ Module iter.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::iter::traits::collect::IntoIterator",
-                      Ty.apply (Ty.path "core::option::Option") [ T ],
+                      Ty.apply (Ty.path "core::option::Option") [] [ T ],
                       [],
                       "into_iter",
                       []
@@ -29,7 +29,7 @@ Module iter.
                     [ Value.StructTuple "core::option::Option::Some" [ M.read (| value |) ] ]
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Function_once : M.IsFunction "core::iter::sources::once::once" once.
@@ -37,19 +37,20 @@ Module iter.
       (* StructRecord
         {
           name := "Once";
+          const_params := [];
           ty_params := [ "T" ];
-          fields := [ ("inner", Ty.apply (Ty.path "core::option::IntoIter") [ T ]) ];
+          fields := [ ("inner", Ty.apply (Ty.path "core::option::IntoIter") [] [ T ]) ];
         } *)
       
       Module Impl_core_clone_Clone_where_core_clone_Clone_T_for_core_iter_sources_once_Once_T.
         Definition Self (T : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "core::iter::sources::once::Once") [ T ].
+          Ty.apply (Ty.path "core::iter::sources::once::Once") [] [ T ].
         
         (* Clone *)
-        Definition clone (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition clone (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self T in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               Value.StructRecord
@@ -59,7 +60,7 @@ Module iter.
                     M.call_closure (|
                       M.get_trait_method (|
                         "core::clone::Clone",
-                        Ty.apply (Ty.path "core::option::IntoIter") [ T ],
+                        Ty.apply (Ty.path "core::option::IntoIter") [] [ T ],
                         [],
                         "clone",
                         []
@@ -73,7 +74,7 @@ Module iter.
                       ]
                     |))
                 ]))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -87,13 +88,13 @@ Module iter.
       
       Module Impl_core_fmt_Debug_where_core_fmt_Debug_T_for_core_iter_sources_once_Once_T.
         Definition Self (T : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "core::iter::sources::once::Once") [ T ].
+          Ty.apply (Ty.path "core::iter::sources::once::Once") [] [ T ].
         
         (* Debug *)
-        Definition fmt (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition fmt (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self T in
-          match τ, α with
-          | [], [ self; f ] =>
+          match ε, τ, α with
+          | [], [], [ self; f ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let f := M.alloc (| f |) in
@@ -118,7 +119,7 @@ Module iter.
                     |))
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -132,7 +133,7 @@ Module iter.
       
       Module Impl_core_iter_traits_iterator_Iterator_for_core_iter_sources_once_Once_T.
         Definition Self (T : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "core::iter::sources::once::Once") [ T ].
+          Ty.apply (Ty.path "core::iter::sources::once::Once") [] [ T ].
         
         (*     type Item = T; *)
         Definition _Item (T : Ty.t) : Ty.t := T.
@@ -142,16 +143,16 @@ Module iter.
                 self.inner.next()
             }
         *)
-        Definition next (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition next (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self T in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.call_closure (|
                 M.get_trait_method (|
                   "core::iter::traits::iterator::Iterator",
-                  Ty.apply (Ty.path "core::option::IntoIter") [ T ],
+                  Ty.apply (Ty.path "core::option::IntoIter") [] [ T ],
                   [],
                   "next",
                   []
@@ -164,7 +165,7 @@ Module iter.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         (*
@@ -172,16 +173,16 @@ Module iter.
                 self.inner.size_hint()
             }
         *)
-        Definition size_hint (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition size_hint (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self T in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.call_closure (|
                 M.get_trait_method (|
                   "core::iter::traits::iterator::Iterator",
-                  Ty.apply (Ty.path "core::option::IntoIter") [ T ],
+                  Ty.apply (Ty.path "core::option::IntoIter") [] [ T ],
                   [],
                   "size_hint",
                   []
@@ -194,7 +195,7 @@ Module iter.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -213,23 +214,23 @@ Module iter.
       
       Module Impl_core_iter_traits_double_ended_DoubleEndedIterator_for_core_iter_sources_once_Once_T.
         Definition Self (T : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "core::iter::sources::once::Once") [ T ].
+          Ty.apply (Ty.path "core::iter::sources::once::Once") [] [ T ].
         
         (*
             fn next_back(&mut self) -> Option<T> {
                 self.inner.next_back()
             }
         *)
-        Definition next_back (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition next_back (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self T in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.call_closure (|
                 M.get_trait_method (|
                   "core::iter::traits::double_ended::DoubleEndedIterator",
-                  Ty.apply (Ty.path "core::option::IntoIter") [ T ],
+                  Ty.apply (Ty.path "core::option::IntoIter") [] [ T ],
                   [],
                   "next_back",
                   []
@@ -242,7 +243,7 @@ Module iter.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -256,23 +257,23 @@ Module iter.
       
       Module Impl_core_iter_traits_exact_size_ExactSizeIterator_for_core_iter_sources_once_Once_T.
         Definition Self (T : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "core::iter::sources::once::Once") [ T ].
+          Ty.apply (Ty.path "core::iter::sources::once::Once") [] [ T ].
         
         (*
             fn len(&self) -> usize {
                 self.inner.len()
             }
         *)
-        Definition len (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        Definition len (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           let Self : Ty.t := Self T in
-          match τ, α with
-          | [], [ self ] =>
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.call_closure (|
                 M.get_trait_method (|
                   "core::iter::traits::exact_size::ExactSizeIterator",
-                  Ty.apply (Ty.path "core::option::IntoIter") [ T ],
+                  Ty.apply (Ty.path "core::option::IntoIter") [] [ T ],
                   [],
                   "len",
                   []
@@ -285,7 +286,7 @@ Module iter.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -299,7 +300,7 @@ Module iter.
       
       Module Impl_core_iter_traits_marker_TrustedLen_for_core_iter_sources_once_Once_T.
         Definition Self (T : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "core::iter::sources::once::Once") [ T ].
+          Ty.apply (Ty.path "core::iter::sources::once::Once") [] [ T ].
         
         Axiom Implements :
           forall (T : Ty.t),
@@ -312,7 +313,7 @@ Module iter.
       
       Module Impl_core_iter_traits_marker_FusedIterator_for_core_iter_sources_once_Once_T.
         Definition Self (T : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "core::iter::sources::once::Once") [ T ].
+          Ty.apply (Ty.path "core::iter::sources::once::Once") [] [ T ].
         
         Axiom Implements :
           forall (T : Ty.t),

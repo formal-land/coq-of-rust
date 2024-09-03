@@ -7,6 +7,7 @@ Module db.
       (*
       Enum AccountStatus
       {
+        const_params := [];
         ty_params := [];
         variants :=
           [
@@ -58,13 +59,13 @@ Module db.
         Definition Self : Ty.t := Ty.path "revm::db::states::account_status::AccountStatus".
         
         (* Clone *)
-        Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self ] =>
+        Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (| M.read (| self |) |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -90,14 +91,14 @@ Module db.
         Definition Self : Ty.t := Ty.path "revm::db::states::account_status::AccountStatus".
         
         (* Default *)
-        Definition default (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [] =>
+        Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [] =>
             ltac:(M.monadic
               (Value.StructTuple
                 "revm::db::states::account_status::AccountStatus::LoadedNotExisting"
                 []))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -112,9 +113,9 @@ Module db.
         Definition Self : Ty.t := Ty.path "revm::db::states::account_status::AccountStatus".
         
         (* Debug *)
-        Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self; f ] =>
+        Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self; f ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let f := M.alloc (| f |) in
@@ -203,7 +204,7 @@ Module db.
                   |)
                 ]
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -229,9 +230,9 @@ Module db.
         Definition Self : Ty.t := Ty.path "revm::db::states::account_status::AccountStatus".
         
         (* PartialEq *)
-        Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self; other ] =>
+        Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self; other ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let other := M.alloc (| other |) in
@@ -258,7 +259,7 @@ Module db.
                   |) in
                 M.alloc (| BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)) |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -284,13 +285,17 @@ Module db.
         Definition Self : Ty.t := Ty.path "revm::db::states::account_status::AccountStatus".
         
         (* Eq *)
-        Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self ] =>
+        Definition assert_receiver_is_total_eq
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               Value.Tuple []))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -306,9 +311,9 @@ Module db.
         Definition Self : Ty.t := Ty.path "revm::db::states::account_status::AccountStatus".
         
         (* Hash *)
-        Definition hash (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [ __H ], [ self; state ] =>
+        Definition hash (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [ __H ], [ self; state ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let state := M.alloc (| state |) in
@@ -336,7 +341,7 @@ Module db.
                   |)
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom Implements :
@@ -360,9 +365,9 @@ Module db.
                 )
             }
         *)
-        Definition is_not_modified (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self ] =>
+        Definition is_not_modified (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
@@ -414,7 +419,7 @@ Module db.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_is_not_modified :
@@ -430,9 +435,9 @@ Module db.
                 )
             }
         *)
-        Definition was_destroyed (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self ] =>
+        Definition was_destroyed (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
@@ -484,7 +489,7 @@ Module db.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_was_destroyed :
@@ -502,9 +507,9 @@ Module db.
                 )
             }
         *)
-        Definition is_storage_known (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self ] =>
+        Definition is_storage_known (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
@@ -574,7 +579,7 @@ Module db.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_is_storage_known :
@@ -585,9 +590,13 @@ Module db.
                 matches!(self, AccountStatus::Changed | AccountStatus::InMemoryChange)
             }
         *)
-        Definition is_modified_and_not_destroyed (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self ] =>
+        Definition is_modified_and_not_destroyed
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
@@ -630,7 +639,7 @@ Module db.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_is_modified_and_not_destroyed :
@@ -658,9 +667,9 @@ Module db.
                 }
             }
         *)
-        Definition on_created (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self ] =>
+        Definition on_created (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
@@ -780,7 +789,7 @@ Module db.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_on_created : M.IsAssociatedFunction Self "on_created" on_created.
@@ -805,9 +814,13 @@ Module db.
                 }
             }
         *)
-        Definition on_touched_empty_post_eip161 (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self ] =>
+        Definition on_touched_empty_post_eip161
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
@@ -974,6 +987,7 @@ Module db.
                                                           [
                                                             Ty.apply
                                                               (Ty.path "&")
+                                                              []
                                                               [
                                                                 Ty.path
                                                                   "revm::db::states::account_status::AccountStatus"
@@ -996,7 +1010,7 @@ Module db.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_on_touched_empty_post_eip161 :
@@ -1025,9 +1039,13 @@ Module db.
                 }
             }
         *)
-        Definition on_touched_created_pre_eip161 (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self; had_no_info ] =>
+        Definition on_touched_created_pre_eip161
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          match ε, τ, α with
+          | [], [], [ self; had_no_info ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let had_no_info := M.alloc (| had_no_info |) in
@@ -1223,6 +1241,7 @@ Module db.
                                                           [
                                                             Ty.apply
                                                               (Ty.path "&")
+                                                              []
                                                               [
                                                                 Ty.path
                                                                   "revm::db::states::account_status::AccountStatus"
@@ -1245,7 +1264,7 @@ Module db.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_on_touched_created_pre_eip161 :
@@ -1286,9 +1305,9 @@ Module db.
                 }
             }
         *)
-        Definition on_changed (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self; had_no_nonce_and_code ] =>
+        Definition on_changed (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self; had_no_nonce_and_code ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let had_no_nonce_and_code := M.alloc (| had_no_nonce_and_code |) in
@@ -1434,7 +1453,7 @@ Module db.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_on_changed : M.IsAssociatedFunction Self "on_changed" on_changed.
@@ -1456,9 +1475,9 @@ Module db.
                 }
             }
         *)
-        Definition on_selfdestructed (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self ] =>
+        Definition on_selfdestructed (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
@@ -1534,7 +1553,7 @@ Module db.
                   ]
                 |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_on_selfdestructed :
@@ -1549,9 +1568,9 @@ Module db.
                 };
             }
         *)
-        Definition transition (τ : list Ty.t) (α : list Value.t) : M :=
-          match τ, α with
-          | [], [ self; other ] =>
+        Definition transition (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          match ε, τ, α with
+          | [], [], [ self; other ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let other := M.alloc (| other |) in
@@ -1653,7 +1672,7 @@ Module db.
                   |) in
                 M.alloc (| Value.Tuple [] |)
               |)))
-          | _, _ => M.impossible
+          | _, _, _ => M.impossible
           end.
         
         Axiom AssociatedFunction_transition : M.IsAssociatedFunction Self "transition" transition.

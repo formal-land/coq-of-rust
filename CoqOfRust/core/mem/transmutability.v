@@ -9,6 +9,7 @@ Module mem.
     (* StructRecord
       {
         name := "Assume";
+        const_params := [];
         ty_params := [];
         fields :=
           [
@@ -34,9 +35,9 @@ Module mem.
       Definition Self : Ty.t := Ty.path "core::mem::transmutability::Assume".
       
       (* PartialEq *)
-      Definition eq (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -109,7 +110,7 @@ Module mem.
                     |)
                   |))))
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -135,9 +136,13 @@ Module mem.
       Definition Self : Ty.t := Ty.path "core::mem::transmutability::Assume".
       
       (* Eq *)
-      Definition assert_receiver_is_total_eq (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition assert_receiver_is_total_eq
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -146,7 +151,7 @@ Module mem.
                 [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -162,9 +167,9 @@ Module mem.
       Definition Self : Ty.t := Ty.path "core::mem::transmutability::Assume".
       
       (* Clone *)
-      Definition clone (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -173,7 +178,7 @@ Module mem.
                 [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -199,9 +204,9 @@ Module mem.
       Definition Self : Ty.t := Ty.path "core::mem::transmutability::Assume".
       
       (* Debug *)
-      Definition fmt (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; f ] =>
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -250,7 +255,7 @@ Module mem.
                   |))
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -363,9 +368,9 @@ Module mem.
               }
           }
       *)
-      Definition and (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other_assumptions ] =>
+      Definition and (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self; other_assumptions ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other_assumptions := M.alloc (| other_assumptions |) in
@@ -445,7 +450,7 @@ Module mem.
                       |)))
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_and : M.IsAssociatedFunction Self "and" and.
@@ -460,9 +465,9 @@ Module mem.
               }
           }
       *)
-      Definition but_not (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other_assumptions ] =>
+      Definition but_not (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self; other_assumptions ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other_assumptions := M.alloc (| other_assumptions |) in
@@ -546,7 +551,7 @@ Module mem.
                         |))))
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_but_not : M.IsAssociatedFunction Self "but_not" but_not.
@@ -563,9 +568,9 @@ Module mem.
               self.and(other_assumptions)
           }
       *)
-      Definition add (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other_assumptions ] =>
+      Definition add (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other_assumptions ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other_assumptions := M.alloc (| other_assumptions |) in
@@ -577,7 +582,7 @@ Module mem.
               |),
               [ M.read (| self |); M.read (| other_assumptions |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -600,9 +605,9 @@ Module mem.
               self.but_not(other_assumptions)
           }
       *)
-      Definition sub (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other_assumptions ] =>
+      Definition sub (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other_assumptions ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other_assumptions := M.alloc (| other_assumptions |) in
@@ -614,7 +619,7 @@ Module mem.
               |),
               [ M.read (| self |); M.read (| other_assumptions |) ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :

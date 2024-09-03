@@ -5,31 +5,35 @@ Module handler.
   Module register.
     Axiom EvmHandler :
       forall (EXT DB : Ty.t),
-      (Ty.apply (Ty.path "revm::handler::register::EvmHandler") [ EXT; DB ]) =
+      (Ty.apply (Ty.path "revm::handler::register::EvmHandler") [] [ EXT; DB ]) =
         (Ty.apply
           (Ty.path "revm::handler::Handler")
-          [ Ty.apply (Ty.path "revm::evm::Evm") [ EXT; DB ]; EXT; DB ]).
+          []
+          [ Ty.apply (Ty.path "revm::evm::Evm") [] [ EXT; DB ]; EXT; DB ]).
     
     Axiom HandleRegister :
       forall (EXT DB : Ty.t),
-      (Ty.apply (Ty.path "revm::handler::register::HandleRegister") [ EXT; DB ]) =
+      (Ty.apply (Ty.path "revm::handler::register::HandleRegister") [] [ EXT; DB ]) =
         (Ty.function
           [
             Ty.apply
               (Ty.path "&mut")
+              []
               [
                 Ty.apply
                   (Ty.path "revm::handler::Handler")
-                  [ Ty.apply (Ty.path "revm::evm::Evm") [ EXT; DB ]; EXT; DB ]
+                  []
+                  [ Ty.apply (Ty.path "revm::evm::Evm") [] [ EXT; DB ]; EXT; DB ]
               ]
           ]
           (Ty.tuple [])).
     
     Axiom HandleRegisterBox :
       forall (EXT DB : Ty.t),
-      (Ty.apply (Ty.path "revm::handler::register::HandleRegisterBox") [ EXT; DB ]) =
+      (Ty.apply (Ty.path "revm::handler::register::HandleRegisterBox") [] [ EXT; DB ]) =
         (Ty.apply
           (Ty.path "alloc::boxed::Box")
+          []
           [
             Ty.dyn
               [
@@ -42,6 +46,7 @@ Module handler.
     (*
     Enum HandleRegisters
     {
+      const_params := [];
       ty_params := [ "EXT"; "DB" ];
       variants :=
         [
@@ -54,10 +59,12 @@ Module handler.
                     [
                       Ty.apply
                         (Ty.path "&mut")
+                        []
                         [
                           Ty.apply
                             (Ty.path "revm::handler::Handler")
-                            [ Ty.apply (Ty.path "revm::evm::Evm") [ EXT; DB ]; EXT; DB ]
+                            []
+                            [ Ty.apply (Ty.path "revm::evm::Evm") [] [ EXT; DB ]; EXT; DB ]
                         ]
                     ]
                     (Ty.tuple [])
@@ -71,6 +78,7 @@ Module handler.
                 [
                   Ty.apply
                     (Ty.path "alloc::boxed::Box")
+                    []
                     [
                       Ty.dyn
                         [
@@ -88,7 +96,7 @@ Module handler.
     
     Module Impl_revm_handler_register_HandleRegisters_EXT_DB.
       Definition Self (EXT DB : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "revm::handler::register::HandleRegisters") [ EXT; DB ].
+        Ty.apply (Ty.path "revm::handler::register::HandleRegisters") [] [ EXT; DB ].
       
       (*
           pub fn register(&self, handler: &mut EvmHandler<'_, EXT, DB>) {
@@ -98,10 +106,15 @@ Module handler.
               }
           }
       *)
-      Definition register (EXT DB : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition register
+          (EXT DB : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self EXT DB in
-        match τ, α with
-        | [], [ self; handler ] =>
+        match ε, τ, α with
+        | [], [], [ self; handler ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let handler := M.alloc (| handler |) in
@@ -138,6 +151,7 @@ Module handler.
                             "core::ops::function::Fn",
                             Ty.apply
                               (Ty.path "alloc::boxed::Box")
+                              []
                               [
                                 Ty.dyn
                                   [
@@ -151,10 +165,16 @@ Module handler.
                                 [
                                   Ty.apply
                                     (Ty.path "&mut")
+                                    []
                                     [
                                       Ty.apply
                                         (Ty.path "revm::handler::Handler")
-                                        [ Ty.apply (Ty.path "revm::evm::Evm") [ EXT; DB ]; EXT; DB ]
+                                        []
+                                        [
+                                          Ty.apply (Ty.path "revm::evm::Evm") [] [ EXT; DB ];
+                                          EXT;
+                                          DB
+                                        ]
                                     ]
                                 ]
                             ],
@@ -167,7 +187,7 @@ Module handler.
                 ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_register :

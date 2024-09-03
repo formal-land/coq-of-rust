@@ -14,9 +14,9 @@ fn main() {
     println!("I got {:?} arguments: {:?}.", args.len() - 1, &args[1..]);
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [] =>
+Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
         let~ args :=
@@ -30,6 +30,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                 [
                   Ty.apply
                     (Ty.path "alloc::vec::Vec")
+                    []
                     [ Ty.path "alloc::string::String"; Ty.path "alloc::alloc::Global" ]
                 ]
               |),
@@ -72,6 +73,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                       "core::ops::index::Index",
                                       Ty.apply
                                         (Ty.path "alloc::vec::Vec")
+                                        []
                                         [
                                           Ty.path "alloc::string::String";
                                           Ty.path "alloc::alloc::Global"
@@ -131,6 +133,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "alloc::vec::Vec")
+                                            []
                                             [
                                               Ty.path "alloc::string::String";
                                               Ty.path "alloc::alloc::Global"
@@ -151,9 +154,11 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                   [
                                     Ty.apply
                                       (Ty.path "&")
+                                      []
                                       [
                                         Ty.apply
                                           (Ty.path "slice")
+                                          []
                                           [ Ty.path "alloc::string::String" ]
                                       ]
                                   ]
@@ -165,6 +170,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                         "core::ops::index::Index",
                                         Ty.apply
                                           (Ty.path "alloc::vec::Vec")
+                                          []
                                           [
                                             Ty.path "alloc::string::String";
                                             Ty.path "alloc::alloc::Global"
@@ -172,6 +178,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                         [
                                           Ty.apply
                                             (Ty.path "core::ops::range::RangeFrom")
+                                            []
                                             [ Ty.path "usize" ]
                                         ],
                                         "index",
@@ -197,7 +204,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (| Value.Tuple [] |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_main : M.IsFunction "program_arguments::main" main.

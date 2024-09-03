@@ -6,13 +6,14 @@ Module num.
     (* StructTuple
       {
         name := "Saturating";
+        const_params := [];
         ty_params := [ "T" ];
         fields := [ T ];
       } *)
     
     Module Impl_core_marker_StructuralPartialEq_for_core_num_saturating_Saturating_T.
       Definition Self (T : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ T ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ T ].
       
       Axiom Implements :
         forall (T : Ty.t),
@@ -25,13 +26,13 @@ Module num.
     
     Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_T_for_core_num_saturating_Saturating_T.
       Definition Self (T : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ T ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ T ].
       
       (* PartialEq *)
-      Definition eq (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition eq (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self; other ] =>
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -50,7 +51,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -64,7 +65,7 @@ Module num.
     
     Module Impl_core_marker_StructuralEq_for_core_num_saturating_Saturating_T.
       Definition Self (T : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ T ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ T ].
       
       Axiom Implements :
         forall (T : Ty.t),
@@ -77,13 +78,18 @@ Module num.
     
     Module Impl_core_cmp_Eq_where_core_cmp_Eq_T_for_core_num_saturating_Saturating_T.
       Definition Self (T : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ T ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ T ].
       
       (* Eq *)
-      Definition assert_receiver_is_total_eq (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition assert_receiver_is_total_eq
+          (T : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -92,7 +98,7 @@ Module num.
                 [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
               |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -107,13 +113,13 @@ Module num.
     
     Module Impl_core_cmp_PartialOrd_where_core_cmp_PartialOrd_T_for_core_num_saturating_Saturating_T.
       Definition Self (T : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ T ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ T ].
       
       (* PartialOrd *)
-      Definition partial_cmp (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition partial_cmp (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self; other ] =>
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -132,7 +138,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -146,13 +152,13 @@ Module num.
     
     Module Impl_core_cmp_Ord_where_core_cmp_Ord_T_for_core_num_saturating_Saturating_T.
       Definition Self (T : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ T ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ T ].
       
       (* Ord *)
-      Definition cmp (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition cmp (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self; other ] =>
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -171,7 +177,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -185,13 +191,13 @@ Module num.
     
     Module Impl_core_clone_Clone_where_core_clone_Clone_T_for_core_num_saturating_Saturating_T.
       Definition Self (T : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ T ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ T ].
       
       (* Clone *)
-      Definition clone (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition clone (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self ] =>
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -208,7 +214,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -222,7 +228,7 @@ Module num.
     
     Module Impl_core_marker_Copy_where_core_marker_Copy_T_for_core_num_saturating_Saturating_T.
       Definition Self (T : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ T ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ T ].
       
       Axiom Implements :
         forall (T : Ty.t),
@@ -235,13 +241,13 @@ Module num.
     
     Module Impl_core_default_Default_where_core_default_Default_T_for_core_num_saturating_Saturating_T.
       Definition Self (T : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ T ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ T ].
       
       (* Default *)
-      Definition default (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition default (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [] =>
+        match ε, τ, α with
+        | [], [], [] =>
           ltac:(M.monadic
             (Value.StructTuple
               "core::num::saturating::Saturating"
@@ -251,7 +257,7 @@ Module num.
                   []
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -265,13 +271,13 @@ Module num.
     
     Module Impl_core_hash_Hash_where_core_hash_Hash_T_for_core_num_saturating_Saturating_T.
       Definition Self (T : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ T ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ T ].
       
       (* Hash *)
-      Definition hash (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition hash (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [ __H ], [ self; state ] =>
+        match ε, τ, α with
+        | [], [ __H ], [ self; state ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
@@ -286,7 +292,7 @@ Module num.
                 M.read (| state |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -300,17 +306,17 @@ Module num.
     
     Module Impl_core_fmt_Debug_where_core_fmt_Debug_T_for_core_num_saturating_Saturating_T.
       Definition Self (T : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ T ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ T ].
       
       (*
           fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
               self.0.fmt(f)
           }
       *)
-      Definition fmt (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self; f ] =>
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -325,7 +331,7 @@ Module num.
                 M.read (| f |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -339,17 +345,17 @@ Module num.
     
     Module Impl_core_fmt_Display_where_core_fmt_Display_T_for_core_num_saturating_Saturating_T.
       Definition Self (T : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ T ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ T ].
       
       (*
           fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
               self.0.fmt(f)
           }
       *)
-      Definition fmt (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self; f ] =>
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -364,7 +370,7 @@ Module num.
                 M.read (| f |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -378,17 +384,17 @@ Module num.
     
     Module Impl_core_fmt_Binary_where_core_fmt_Binary_T_for_core_num_saturating_Saturating_T.
       Definition Self (T : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ T ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ T ].
       
       (*
           fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
               self.0.fmt(f)
           }
       *)
-      Definition fmt (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self; f ] =>
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -403,7 +409,7 @@ Module num.
                 M.read (| f |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -417,17 +423,17 @@ Module num.
     
     Module Impl_core_fmt_Octal_where_core_fmt_Octal_T_for_core_num_saturating_Saturating_T.
       Definition Self (T : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ T ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ T ].
       
       (*
           fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
               self.0.fmt(f)
           }
       *)
-      Definition fmt (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self; f ] =>
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -442,7 +448,7 @@ Module num.
                 M.read (| f |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -456,17 +462,17 @@ Module num.
     
     Module Impl_core_fmt_LowerHex_where_core_fmt_LowerHex_T_for_core_num_saturating_Saturating_T.
       Definition Self (T : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ T ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ T ].
       
       (*
           fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
               self.0.fmt(f)
           }
       *)
-      Definition fmt (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self; f ] =>
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -481,7 +487,7 @@ Module num.
                 M.read (| f |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -495,17 +501,17 @@ Module num.
     
     Module Impl_core_fmt_UpperHex_where_core_fmt_UpperHex_T_for_core_num_saturating_Saturating_T.
       Definition Self (T : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ T ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ T ].
       
       (*
           fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
               self.0.fmt(f)
           }
       *)
-      Definition fmt (T : Ty.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition fmt (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
-        match τ, α with
-        | [], [ self; f ] =>
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -520,7 +526,7 @@ Module num.
                 M.read (| f |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -534,20 +540,20 @@ Module num.
     
     Module Impl_core_ops_arith_Add_for_core_num_saturating_Saturating_usize.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "usize" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "usize" ].
       
       (*             type Output = Saturating<$t>; *)
       Definition _Output : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "usize" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "usize" ].
       
       (*
                   fn add(self, other: Saturating<$t>) -> Saturating<$t> {
                       Saturating(self.0.saturating_add(other.0))
                   }
       *)
-      Definition add (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition add (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -574,7 +580,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -588,16 +594,16 @@ Module num.
     
     Module Impl_core_ops_arith_AddAssign_for_core_num_saturating_Saturating_usize.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "usize" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "usize" ].
       
       (*
                   fn add_assign(&mut self, other: Saturating<$t>) {
                       *self = *self + other;
                   }
       *)
-      Definition add_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition add_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -608,8 +614,12 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Add",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "usize" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "usize" ]
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "usize" ],
+                      [
+                        Ty.apply
+                          (Ty.path "core::num::saturating::Saturating")
+                          []
+                          [ Ty.path "usize" ]
                       ],
                       "add",
                       []
@@ -619,7 +629,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -632,16 +642,16 @@ Module num.
     
     Module Impl_core_ops_arith_AddAssign_usize_for_core_num_saturating_Saturating_usize.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "usize" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "usize" ].
       
       (*
                   fn add_assign(&mut self, other: $t) {
                       *self = *self + Saturating(other);
                   }
       *)
-      Definition add_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition add_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -652,8 +662,12 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Add",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "usize" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "usize" ]
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "usize" ],
+                      [
+                        Ty.apply
+                          (Ty.path "core::num::saturating::Saturating")
+                          []
+                          [ Ty.path "usize" ]
                       ],
                       "add",
                       []
@@ -666,7 +680,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -679,20 +693,20 @@ Module num.
     
     Module Impl_core_ops_arith_Sub_for_core_num_saturating_Saturating_usize.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "usize" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "usize" ].
       
       (*             type Output = Saturating<$t>; *)
       Definition _Output : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "usize" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "usize" ].
       
       (*
                   fn sub(self, other: Saturating<$t>) -> Saturating<$t> {
                       Saturating(self.0.saturating_sub(other.0))
                   }
       *)
-      Definition sub (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition sub (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -719,7 +733,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -733,16 +747,16 @@ Module num.
     
     Module Impl_core_ops_arith_SubAssign_for_core_num_saturating_Saturating_usize.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "usize" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "usize" ].
       
       (*
                   fn sub_assign(&mut self, other: Saturating<$t>) {
                       *self = *self - other;
                   }
       *)
-      Definition sub_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition sub_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -753,8 +767,12 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Sub",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "usize" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "usize" ]
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "usize" ],
+                      [
+                        Ty.apply
+                          (Ty.path "core::num::saturating::Saturating")
+                          []
+                          [ Ty.path "usize" ]
                       ],
                       "sub",
                       []
@@ -764,7 +782,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -777,16 +795,16 @@ Module num.
     
     Module Impl_core_ops_arith_SubAssign_usize_for_core_num_saturating_Saturating_usize.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "usize" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "usize" ].
       
       (*
                   fn sub_assign(&mut self, other: $t) {
                       *self = *self - Saturating(other);
                   }
       *)
-      Definition sub_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition sub_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -797,8 +815,12 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Sub",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "usize" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "usize" ]
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "usize" ],
+                      [
+                        Ty.apply
+                          (Ty.path "core::num::saturating::Saturating")
+                          []
+                          [ Ty.path "usize" ]
                       ],
                       "sub",
                       []
@@ -811,7 +833,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -824,20 +846,20 @@ Module num.
     
     Module Impl_core_ops_arith_Mul_for_core_num_saturating_Saturating_usize.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "usize" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "usize" ].
       
       (*             type Output = Saturating<$t>; *)
       Definition _Output : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "usize" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "usize" ].
       
       (*
                   fn mul(self, other: Saturating<$t>) -> Saturating<$t> {
                       Saturating(self.0.saturating_mul(other.0))
                   }
       *)
-      Definition mul (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition mul (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -864,7 +886,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -878,16 +900,16 @@ Module num.
     
     Module Impl_core_ops_arith_MulAssign_for_core_num_saturating_Saturating_usize.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "usize" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "usize" ].
       
       (*
                   fn mul_assign(&mut self, other: Saturating<$t>) {
                       *self = *self * other;
                   }
       *)
-      Definition mul_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition mul_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -898,8 +920,12 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Mul",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "usize" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "usize" ]
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "usize" ],
+                      [
+                        Ty.apply
+                          (Ty.path "core::num::saturating::Saturating")
+                          []
+                          [ Ty.path "usize" ]
                       ],
                       "mul",
                       []
@@ -909,7 +935,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -922,16 +948,16 @@ Module num.
     
     Module Impl_core_ops_arith_MulAssign_usize_for_core_num_saturating_Saturating_usize.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "usize" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "usize" ].
       
       (*
                   fn mul_assign(&mut self, other: $t) {
                       *self = *self * Saturating(other);
                   }
       *)
-      Definition mul_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition mul_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -942,8 +968,12 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Mul",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "usize" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "usize" ]
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "usize" ],
+                      [
+                        Ty.apply
+                          (Ty.path "core::num::saturating::Saturating")
+                          []
+                          [ Ty.path "usize" ]
                       ],
                       "mul",
                       []
@@ -956,7 +986,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -969,20 +999,20 @@ Module num.
     
     Module Impl_core_ops_arith_Div_for_core_num_saturating_Saturating_usize.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "usize" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "usize" ].
       
       (*             type Output = Saturating<$t>; *)
       Definition _Output : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "usize" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "usize" ].
       
       (*
                   fn div(self, other: Saturating<$t>) -> Saturating<$t> {
                       Saturating(self.0.saturating_div(other.0))
                   }
       *)
-      Definition div (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition div (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -1009,7 +1039,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1023,16 +1053,16 @@ Module num.
     
     Module Impl_core_ops_arith_DivAssign_for_core_num_saturating_Saturating_usize.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "usize" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "usize" ].
       
       (*
                   fn div_assign(&mut self, other: Saturating<$t>) {
                       *self = *self / other;
                   }
       *)
-      Definition div_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition div_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -1043,8 +1073,12 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Div",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "usize" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "usize" ]
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "usize" ],
+                      [
+                        Ty.apply
+                          (Ty.path "core::num::saturating::Saturating")
+                          []
+                          [ Ty.path "usize" ]
                       ],
                       "div",
                       []
@@ -1054,7 +1088,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1067,16 +1101,16 @@ Module num.
     
     Module Impl_core_ops_arith_DivAssign_usize_for_core_num_saturating_Saturating_usize.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "usize" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "usize" ].
       
       (*
                   fn div_assign(&mut self, other: $t) {
                       *self = *self / Saturating(other);
                   }
       *)
-      Definition div_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition div_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -1087,8 +1121,12 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Div",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "usize" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "usize" ]
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "usize" ],
+                      [
+                        Ty.apply
+                          (Ty.path "core::num::saturating::Saturating")
+                          []
+                          [ Ty.path "usize" ]
                       ],
                       "div",
                       []
@@ -1101,7 +1139,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1114,20 +1152,20 @@ Module num.
     
     Module Impl_core_ops_arith_Rem_for_core_num_saturating_Saturating_usize.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "usize" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "usize" ].
       
       (*             type Output = Saturating<$t>; *)
       Definition _Output : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "usize" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "usize" ].
       
       (*
                   fn rem(self, other: Saturating<$t>) -> Saturating<$t> {
                       Saturating(self.0.rem(other.0))
                   }
       *)
-      Definition rem (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition rem (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -1160,7 +1198,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1174,16 +1212,16 @@ Module num.
     
     Module Impl_core_ops_arith_RemAssign_for_core_num_saturating_Saturating_usize.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "usize" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "usize" ].
       
       (*
                   fn rem_assign(&mut self, other: Saturating<$t>) {
                       *self = *self % other;
                   }
       *)
-      Definition rem_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition rem_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -1194,8 +1232,12 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Rem",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "usize" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "usize" ]
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "usize" ],
+                      [
+                        Ty.apply
+                          (Ty.path "core::num::saturating::Saturating")
+                          []
+                          [ Ty.path "usize" ]
                       ],
                       "rem",
                       []
@@ -1205,7 +1247,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1218,16 +1260,16 @@ Module num.
     
     Module Impl_core_ops_arith_RemAssign_usize_for_core_num_saturating_Saturating_usize.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "usize" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "usize" ].
       
       (*
                   fn rem_assign(&mut self, other: $t) {
                       *self = *self % Saturating(other);
                   }
       *)
-      Definition rem_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition rem_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -1238,8 +1280,12 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Rem",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "usize" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "usize" ]
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "usize" ],
+                      [
+                        Ty.apply
+                          (Ty.path "core::num::saturating::Saturating")
+                          []
+                          [ Ty.path "usize" ]
                       ],
                       "rem",
                       []
@@ -1252,7 +1298,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1265,20 +1311,20 @@ Module num.
     
     Module Impl_core_ops_bit_Not_for_core_num_saturating_Saturating_usize.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "usize" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "usize" ].
       
       (*             type Output = Saturating<$t>; *)
       Definition _Output : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "usize" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "usize" ].
       
       (*
                   fn not(self) -> Saturating<$t> {
                       Saturating(!self.0)
                   }
       *)
-      Definition not (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition not (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -1293,7 +1339,7 @@ Module num.
                     |)
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1307,20 +1353,20 @@ Module num.
     
     Module Impl_core_ops_bit_BitXor_for_core_num_saturating_Saturating_usize.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "usize" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "usize" ].
       
       (*             type Output = Saturating<$t>; *)
       Definition _Output : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "usize" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "usize" ].
       
       (*
                   fn bitxor(self, other: Saturating<$t>) -> Saturating<$t> {
                       Saturating(self.0 ^ other.0)
                   }
       *)
-      Definition bitxor (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition bitxor (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -1343,7 +1389,7 @@ Module num.
                     |)
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1357,16 +1403,16 @@ Module num.
     
     Module Impl_core_ops_bit_BitXorAssign_for_core_num_saturating_Saturating_usize.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "usize" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "usize" ].
       
       (*
                   fn bitxor_assign(&mut self, other: Saturating<$t>) {
                       *self = *self ^ other;
                   }
       *)
-      Definition bitxor_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition bitxor_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -1377,8 +1423,12 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::bit::BitXor",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "usize" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "usize" ]
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "usize" ],
+                      [
+                        Ty.apply
+                          (Ty.path "core::num::saturating::Saturating")
+                          []
+                          [ Ty.path "usize" ]
                       ],
                       "bitxor",
                       []
@@ -1388,7 +1438,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1401,16 +1451,16 @@ Module num.
     
     Module Impl_core_ops_bit_BitXorAssign_usize_for_core_num_saturating_Saturating_usize.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "usize" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "usize" ].
       
       (*
                   fn bitxor_assign(&mut self, other: $t) {
                       *self = *self ^ Saturating(other);
                   }
       *)
-      Definition bitxor_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition bitxor_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -1421,8 +1471,12 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::bit::BitXor",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "usize" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "usize" ]
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "usize" ],
+                      [
+                        Ty.apply
+                          (Ty.path "core::num::saturating::Saturating")
+                          []
+                          [ Ty.path "usize" ]
                       ],
                       "bitxor",
                       []
@@ -1435,7 +1489,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1448,20 +1502,20 @@ Module num.
     
     Module Impl_core_ops_bit_BitOr_for_core_num_saturating_Saturating_usize.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "usize" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "usize" ].
       
       (*             type Output = Saturating<$t>; *)
       Definition _Output : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "usize" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "usize" ].
       
       (*
                   fn bitor(self, other: Saturating<$t>) -> Saturating<$t> {
                       Saturating(self.0 | other.0)
                   }
       *)
-      Definition bitor (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition bitor (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -1484,7 +1538,7 @@ Module num.
                     |)
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1498,16 +1552,16 @@ Module num.
     
     Module Impl_core_ops_bit_BitOrAssign_for_core_num_saturating_Saturating_usize.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "usize" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "usize" ].
       
       (*
                   fn bitor_assign(&mut self, other: Saturating<$t>) {
                       *self = *self | other;
                   }
       *)
-      Definition bitor_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition bitor_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -1518,8 +1572,12 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::bit::BitOr",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "usize" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "usize" ]
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "usize" ],
+                      [
+                        Ty.apply
+                          (Ty.path "core::num::saturating::Saturating")
+                          []
+                          [ Ty.path "usize" ]
                       ],
                       "bitor",
                       []
@@ -1529,7 +1587,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1542,16 +1600,16 @@ Module num.
     
     Module Impl_core_ops_bit_BitOrAssign_usize_for_core_num_saturating_Saturating_usize.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "usize" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "usize" ].
       
       (*
                   fn bitor_assign(&mut self, other: $t) {
                       *self = *self | Saturating(other);
                   }
       *)
-      Definition bitor_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition bitor_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -1562,8 +1620,12 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::bit::BitOr",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "usize" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "usize" ]
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "usize" ],
+                      [
+                        Ty.apply
+                          (Ty.path "core::num::saturating::Saturating")
+                          []
+                          [ Ty.path "usize" ]
                       ],
                       "bitor",
                       []
@@ -1576,7 +1638,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1589,20 +1651,20 @@ Module num.
     
     Module Impl_core_ops_bit_BitAnd_for_core_num_saturating_Saturating_usize.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "usize" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "usize" ].
       
       (*             type Output = Saturating<$t>; *)
       Definition _Output : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "usize" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "usize" ].
       
       (*
                   fn bitand(self, other: Saturating<$t>) -> Saturating<$t> {
                       Saturating(self.0 & other.0)
                   }
       *)
-      Definition bitand (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition bitand (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -1625,7 +1687,7 @@ Module num.
                     |)
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1639,16 +1701,16 @@ Module num.
     
     Module Impl_core_ops_bit_BitAndAssign_for_core_num_saturating_Saturating_usize.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "usize" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "usize" ].
       
       (*
                   fn bitand_assign(&mut self, other: Saturating<$t>) {
                       *self = *self & other;
                   }
       *)
-      Definition bitand_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition bitand_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -1659,8 +1721,12 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::bit::BitAnd",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "usize" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "usize" ]
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "usize" ],
+                      [
+                        Ty.apply
+                          (Ty.path "core::num::saturating::Saturating")
+                          []
+                          [ Ty.path "usize" ]
                       ],
                       "bitand",
                       []
@@ -1670,7 +1736,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1683,16 +1749,16 @@ Module num.
     
     Module Impl_core_ops_bit_BitAndAssign_usize_for_core_num_saturating_Saturating_usize.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "usize" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "usize" ].
       
       (*
                   fn bitand_assign(&mut self, other: $t) {
                       *self = *self & Saturating(other);
                   }
       *)
-      Definition bitand_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition bitand_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -1703,8 +1769,12 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::bit::BitAnd",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "usize" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "usize" ]
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "usize" ],
+                      [
+                        Ty.apply
+                          (Ty.path "core::num::saturating::Saturating")
+                          []
+                          [ Ty.path "usize" ]
                       ],
                       "bitand",
                       []
@@ -1717,7 +1787,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1730,20 +1800,20 @@ Module num.
     
     Module Impl_core_ops_arith_Add_for_core_num_saturating_Saturating_u8.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u8" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ].
       
       (*             type Output = Saturating<$t>; *)
       Definition _Output : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u8" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ].
       
       (*
                   fn add(self, other: Saturating<$t>) -> Saturating<$t> {
                       Saturating(self.0.saturating_add(other.0))
                   }
       *)
-      Definition add (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition add (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -1770,7 +1840,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1784,16 +1854,16 @@ Module num.
     
     Module Impl_core_ops_arith_AddAssign_for_core_num_saturating_Saturating_u8.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u8" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ].
       
       (*
                   fn add_assign(&mut self, other: Saturating<$t>) {
                       *self = *self + other;
                   }
       *)
-      Definition add_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition add_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -1804,8 +1874,9 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Add",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u8" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u8" ] ],
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ]
+                      ],
                       "add",
                       []
                     |),
@@ -1814,7 +1885,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1827,16 +1898,16 @@ Module num.
     
     Module Impl_core_ops_arith_AddAssign_u8_for_core_num_saturating_Saturating_u8.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u8" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ].
       
       (*
                   fn add_assign(&mut self, other: $t) {
                       *self = *self + Saturating(other);
                   }
       *)
-      Definition add_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition add_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -1847,8 +1918,9 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Add",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u8" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u8" ] ],
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ]
+                      ],
                       "add",
                       []
                     |),
@@ -1860,7 +1932,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1873,20 +1945,20 @@ Module num.
     
     Module Impl_core_ops_arith_Sub_for_core_num_saturating_Saturating_u8.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u8" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ].
       
       (*             type Output = Saturating<$t>; *)
       Definition _Output : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u8" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ].
       
       (*
                   fn sub(self, other: Saturating<$t>) -> Saturating<$t> {
                       Saturating(self.0.saturating_sub(other.0))
                   }
       *)
-      Definition sub (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition sub (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -1913,7 +1985,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1927,16 +1999,16 @@ Module num.
     
     Module Impl_core_ops_arith_SubAssign_for_core_num_saturating_Saturating_u8.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u8" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ].
       
       (*
                   fn sub_assign(&mut self, other: Saturating<$t>) {
                       *self = *self - other;
                   }
       *)
-      Definition sub_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition sub_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -1947,8 +2019,9 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Sub",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u8" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u8" ] ],
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ]
+                      ],
                       "sub",
                       []
                     |),
@@ -1957,7 +2030,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -1970,16 +2043,16 @@ Module num.
     
     Module Impl_core_ops_arith_SubAssign_u8_for_core_num_saturating_Saturating_u8.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u8" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ].
       
       (*
                   fn sub_assign(&mut self, other: $t) {
                       *self = *self - Saturating(other);
                   }
       *)
-      Definition sub_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition sub_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -1990,8 +2063,9 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Sub",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u8" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u8" ] ],
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ]
+                      ],
                       "sub",
                       []
                     |),
@@ -2003,7 +2077,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -2016,20 +2090,20 @@ Module num.
     
     Module Impl_core_ops_arith_Mul_for_core_num_saturating_Saturating_u8.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u8" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ].
       
       (*             type Output = Saturating<$t>; *)
       Definition _Output : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u8" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ].
       
       (*
                   fn mul(self, other: Saturating<$t>) -> Saturating<$t> {
                       Saturating(self.0.saturating_mul(other.0))
                   }
       *)
-      Definition mul (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition mul (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -2056,7 +2130,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -2070,16 +2144,16 @@ Module num.
     
     Module Impl_core_ops_arith_MulAssign_for_core_num_saturating_Saturating_u8.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u8" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ].
       
       (*
                   fn mul_assign(&mut self, other: Saturating<$t>) {
                       *self = *self * other;
                   }
       *)
-      Definition mul_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition mul_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -2090,8 +2164,9 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Mul",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u8" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u8" ] ],
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ]
+                      ],
                       "mul",
                       []
                     |),
@@ -2100,7 +2175,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -2113,16 +2188,16 @@ Module num.
     
     Module Impl_core_ops_arith_MulAssign_u8_for_core_num_saturating_Saturating_u8.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u8" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ].
       
       (*
                   fn mul_assign(&mut self, other: $t) {
                       *self = *self * Saturating(other);
                   }
       *)
-      Definition mul_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition mul_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -2133,8 +2208,9 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Mul",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u8" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u8" ] ],
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ]
+                      ],
                       "mul",
                       []
                     |),
@@ -2146,7 +2222,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -2159,20 +2235,20 @@ Module num.
     
     Module Impl_core_ops_arith_Div_for_core_num_saturating_Saturating_u8.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u8" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ].
       
       (*             type Output = Saturating<$t>; *)
       Definition _Output : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u8" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ].
       
       (*
                   fn div(self, other: Saturating<$t>) -> Saturating<$t> {
                       Saturating(self.0.saturating_div(other.0))
                   }
       *)
-      Definition div (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition div (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -2199,7 +2275,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -2213,16 +2289,16 @@ Module num.
     
     Module Impl_core_ops_arith_DivAssign_for_core_num_saturating_Saturating_u8.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u8" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ].
       
       (*
                   fn div_assign(&mut self, other: Saturating<$t>) {
                       *self = *self / other;
                   }
       *)
-      Definition div_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition div_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -2233,8 +2309,9 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Div",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u8" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u8" ] ],
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ]
+                      ],
                       "div",
                       []
                     |),
@@ -2243,7 +2320,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -2256,16 +2333,16 @@ Module num.
     
     Module Impl_core_ops_arith_DivAssign_u8_for_core_num_saturating_Saturating_u8.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u8" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ].
       
       (*
                   fn div_assign(&mut self, other: $t) {
                       *self = *self / Saturating(other);
                   }
       *)
-      Definition div_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition div_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -2276,8 +2353,9 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Div",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u8" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u8" ] ],
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ]
+                      ],
                       "div",
                       []
                     |),
@@ -2289,7 +2367,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -2302,20 +2380,20 @@ Module num.
     
     Module Impl_core_ops_arith_Rem_for_core_num_saturating_Saturating_u8.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u8" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ].
       
       (*             type Output = Saturating<$t>; *)
       Definition _Output : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u8" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ].
       
       (*
                   fn rem(self, other: Saturating<$t>) -> Saturating<$t> {
                       Saturating(self.0.rem(other.0))
                   }
       *)
-      Definition rem (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition rem (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -2348,7 +2426,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -2362,16 +2440,16 @@ Module num.
     
     Module Impl_core_ops_arith_RemAssign_for_core_num_saturating_Saturating_u8.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u8" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ].
       
       (*
                   fn rem_assign(&mut self, other: Saturating<$t>) {
                       *self = *self % other;
                   }
       *)
-      Definition rem_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition rem_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -2382,8 +2460,9 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Rem",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u8" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u8" ] ],
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ]
+                      ],
                       "rem",
                       []
                     |),
@@ -2392,7 +2471,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -2405,16 +2484,16 @@ Module num.
     
     Module Impl_core_ops_arith_RemAssign_u8_for_core_num_saturating_Saturating_u8.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u8" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ].
       
       (*
                   fn rem_assign(&mut self, other: $t) {
                       *self = *self % Saturating(other);
                   }
       *)
-      Definition rem_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition rem_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -2425,8 +2504,9 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Rem",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u8" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u8" ] ],
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ]
+                      ],
                       "rem",
                       []
                     |),
@@ -2438,7 +2518,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -2451,20 +2531,20 @@ Module num.
     
     Module Impl_core_ops_bit_Not_for_core_num_saturating_Saturating_u8.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u8" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ].
       
       (*             type Output = Saturating<$t>; *)
       Definition _Output : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u8" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ].
       
       (*
                   fn not(self) -> Saturating<$t> {
                       Saturating(!self.0)
                   }
       *)
-      Definition not (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition not (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -2479,7 +2559,7 @@ Module num.
                     |)
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -2493,20 +2573,20 @@ Module num.
     
     Module Impl_core_ops_bit_BitXor_for_core_num_saturating_Saturating_u8.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u8" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ].
       
       (*             type Output = Saturating<$t>; *)
       Definition _Output : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u8" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ].
       
       (*
                   fn bitxor(self, other: Saturating<$t>) -> Saturating<$t> {
                       Saturating(self.0 ^ other.0)
                   }
       *)
-      Definition bitxor (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition bitxor (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -2529,7 +2609,7 @@ Module num.
                     |)
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -2543,16 +2623,16 @@ Module num.
     
     Module Impl_core_ops_bit_BitXorAssign_for_core_num_saturating_Saturating_u8.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u8" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ].
       
       (*
                   fn bitxor_assign(&mut self, other: Saturating<$t>) {
                       *self = *self ^ other;
                   }
       *)
-      Definition bitxor_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition bitxor_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -2563,8 +2643,9 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::bit::BitXor",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u8" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u8" ] ],
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ]
+                      ],
                       "bitxor",
                       []
                     |),
@@ -2573,7 +2654,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -2586,16 +2667,16 @@ Module num.
     
     Module Impl_core_ops_bit_BitXorAssign_u8_for_core_num_saturating_Saturating_u8.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u8" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ].
       
       (*
                   fn bitxor_assign(&mut self, other: $t) {
                       *self = *self ^ Saturating(other);
                   }
       *)
-      Definition bitxor_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition bitxor_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -2606,8 +2687,9 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::bit::BitXor",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u8" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u8" ] ],
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ]
+                      ],
                       "bitxor",
                       []
                     |),
@@ -2619,7 +2701,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -2632,20 +2714,20 @@ Module num.
     
     Module Impl_core_ops_bit_BitOr_for_core_num_saturating_Saturating_u8.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u8" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ].
       
       (*             type Output = Saturating<$t>; *)
       Definition _Output : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u8" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ].
       
       (*
                   fn bitor(self, other: Saturating<$t>) -> Saturating<$t> {
                       Saturating(self.0 | other.0)
                   }
       *)
-      Definition bitor (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition bitor (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -2668,7 +2750,7 @@ Module num.
                     |)
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -2682,16 +2764,16 @@ Module num.
     
     Module Impl_core_ops_bit_BitOrAssign_for_core_num_saturating_Saturating_u8.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u8" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ].
       
       (*
                   fn bitor_assign(&mut self, other: Saturating<$t>) {
                       *self = *self | other;
                   }
       *)
-      Definition bitor_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition bitor_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -2702,8 +2784,9 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::bit::BitOr",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u8" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u8" ] ],
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ]
+                      ],
                       "bitor",
                       []
                     |),
@@ -2712,7 +2795,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -2725,16 +2808,16 @@ Module num.
     
     Module Impl_core_ops_bit_BitOrAssign_u8_for_core_num_saturating_Saturating_u8.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u8" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ].
       
       (*
                   fn bitor_assign(&mut self, other: $t) {
                       *self = *self | Saturating(other);
                   }
       *)
-      Definition bitor_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition bitor_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -2745,8 +2828,9 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::bit::BitOr",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u8" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u8" ] ],
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ]
+                      ],
                       "bitor",
                       []
                     |),
@@ -2758,7 +2842,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -2771,20 +2855,20 @@ Module num.
     
     Module Impl_core_ops_bit_BitAnd_for_core_num_saturating_Saturating_u8.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u8" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ].
       
       (*             type Output = Saturating<$t>; *)
       Definition _Output : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u8" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ].
       
       (*
                   fn bitand(self, other: Saturating<$t>) -> Saturating<$t> {
                       Saturating(self.0 & other.0)
                   }
       *)
-      Definition bitand (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition bitand (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -2807,7 +2891,7 @@ Module num.
                     |)
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -2821,16 +2905,16 @@ Module num.
     
     Module Impl_core_ops_bit_BitAndAssign_for_core_num_saturating_Saturating_u8.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u8" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ].
       
       (*
                   fn bitand_assign(&mut self, other: Saturating<$t>) {
                       *self = *self & other;
                   }
       *)
-      Definition bitand_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition bitand_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -2841,8 +2925,9 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::bit::BitAnd",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u8" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u8" ] ],
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ]
+                      ],
                       "bitand",
                       []
                     |),
@@ -2851,7 +2936,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -2864,16 +2949,16 @@ Module num.
     
     Module Impl_core_ops_bit_BitAndAssign_u8_for_core_num_saturating_Saturating_u8.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u8" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ].
       
       (*
                   fn bitand_assign(&mut self, other: $t) {
                       *self = *self & Saturating(other);
                   }
       *)
-      Definition bitand_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition bitand_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -2884,8 +2969,9 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::bit::BitAnd",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u8" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u8" ] ],
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ]
+                      ],
                       "bitand",
                       []
                     |),
@@ -2897,7 +2983,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -2910,20 +2996,20 @@ Module num.
     
     Module Impl_core_ops_arith_Add_for_core_num_saturating_Saturating_u16.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u16" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u16" ].
       
       (*             type Output = Saturating<$t>; *)
       Definition _Output : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u16" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u16" ].
       
       (*
                   fn add(self, other: Saturating<$t>) -> Saturating<$t> {
                       Saturating(self.0.saturating_add(other.0))
                   }
       *)
-      Definition add (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition add (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -2950,7 +3036,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -2964,16 +3050,16 @@ Module num.
     
     Module Impl_core_ops_arith_AddAssign_for_core_num_saturating_Saturating_u16.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u16" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u16" ].
       
       (*
                   fn add_assign(&mut self, other: Saturating<$t>) {
                       *self = *self + other;
                   }
       *)
-      Definition add_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition add_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -2984,8 +3070,9 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Add",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u16" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u16" ] ],
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u16" ],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u16" ]
+                      ],
                       "add",
                       []
                     |),
@@ -2994,7 +3081,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -3007,16 +3094,16 @@ Module num.
     
     Module Impl_core_ops_arith_AddAssign_u16_for_core_num_saturating_Saturating_u16.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u16" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u16" ].
       
       (*
                   fn add_assign(&mut self, other: $t) {
                       *self = *self + Saturating(other);
                   }
       *)
-      Definition add_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition add_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -3027,8 +3114,9 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Add",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u16" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u16" ] ],
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u16" ],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u16" ]
+                      ],
                       "add",
                       []
                     |),
@@ -3040,7 +3128,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -3053,20 +3141,20 @@ Module num.
     
     Module Impl_core_ops_arith_Sub_for_core_num_saturating_Saturating_u16.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u16" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u16" ].
       
       (*             type Output = Saturating<$t>; *)
       Definition _Output : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u16" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u16" ].
       
       (*
                   fn sub(self, other: Saturating<$t>) -> Saturating<$t> {
                       Saturating(self.0.saturating_sub(other.0))
                   }
       *)
-      Definition sub (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition sub (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -3093,7 +3181,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -3107,16 +3195,16 @@ Module num.
     
     Module Impl_core_ops_arith_SubAssign_for_core_num_saturating_Saturating_u16.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u16" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u16" ].
       
       (*
                   fn sub_assign(&mut self, other: Saturating<$t>) {
                       *self = *self - other;
                   }
       *)
-      Definition sub_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition sub_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -3127,8 +3215,9 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Sub",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u16" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u16" ] ],
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u16" ],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u16" ]
+                      ],
                       "sub",
                       []
                     |),
@@ -3137,7 +3226,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -3150,16 +3239,16 @@ Module num.
     
     Module Impl_core_ops_arith_SubAssign_u16_for_core_num_saturating_Saturating_u16.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u16" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u16" ].
       
       (*
                   fn sub_assign(&mut self, other: $t) {
                       *self = *self - Saturating(other);
                   }
       *)
-      Definition sub_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition sub_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -3170,8 +3259,9 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Sub",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u16" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u16" ] ],
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u16" ],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u16" ]
+                      ],
                       "sub",
                       []
                     |),
@@ -3183,7 +3273,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -3196,20 +3286,20 @@ Module num.
     
     Module Impl_core_ops_arith_Mul_for_core_num_saturating_Saturating_u16.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u16" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u16" ].
       
       (*             type Output = Saturating<$t>; *)
       Definition _Output : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u16" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u16" ].
       
       (*
                   fn mul(self, other: Saturating<$t>) -> Saturating<$t> {
                       Saturating(self.0.saturating_mul(other.0))
                   }
       *)
-      Definition mul (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition mul (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -3236,7 +3326,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -3250,16 +3340,16 @@ Module num.
     
     Module Impl_core_ops_arith_MulAssign_for_core_num_saturating_Saturating_u16.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u16" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u16" ].
       
       (*
                   fn mul_assign(&mut self, other: Saturating<$t>) {
                       *self = *self * other;
                   }
       *)
-      Definition mul_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition mul_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -3270,8 +3360,9 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Mul",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u16" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u16" ] ],
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u16" ],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u16" ]
+                      ],
                       "mul",
                       []
                     |),
@@ -3280,7 +3371,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -3293,16 +3384,16 @@ Module num.
     
     Module Impl_core_ops_arith_MulAssign_u16_for_core_num_saturating_Saturating_u16.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u16" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u16" ].
       
       (*
                   fn mul_assign(&mut self, other: $t) {
                       *self = *self * Saturating(other);
                   }
       *)
-      Definition mul_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition mul_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -3313,8 +3404,9 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Mul",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u16" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u16" ] ],
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u16" ],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u16" ]
+                      ],
                       "mul",
                       []
                     |),
@@ -3326,7 +3418,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -3339,20 +3431,20 @@ Module num.
     
     Module Impl_core_ops_arith_Div_for_core_num_saturating_Saturating_u16.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u16" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u16" ].
       
       (*             type Output = Saturating<$t>; *)
       Definition _Output : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u16" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u16" ].
       
       (*
                   fn div(self, other: Saturating<$t>) -> Saturating<$t> {
                       Saturating(self.0.saturating_div(other.0))
                   }
       *)
-      Definition div (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition div (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -3379,7 +3471,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -3393,16 +3485,16 @@ Module num.
     
     Module Impl_core_ops_arith_DivAssign_for_core_num_saturating_Saturating_u16.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u16" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u16" ].
       
       (*
                   fn div_assign(&mut self, other: Saturating<$t>) {
                       *self = *self / other;
                   }
       *)
-      Definition div_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition div_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -3413,8 +3505,9 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Div",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u16" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u16" ] ],
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u16" ],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u16" ]
+                      ],
                       "div",
                       []
                     |),
@@ -3423,7 +3516,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -3436,16 +3529,16 @@ Module num.
     
     Module Impl_core_ops_arith_DivAssign_u16_for_core_num_saturating_Saturating_u16.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u16" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u16" ].
       
       (*
                   fn div_assign(&mut self, other: $t) {
                       *self = *self / Saturating(other);
                   }
       *)
-      Definition div_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition div_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -3456,8 +3549,9 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Div",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u16" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u16" ] ],
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u16" ],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u16" ]
+                      ],
                       "div",
                       []
                     |),
@@ -3469,7 +3563,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -3482,20 +3576,20 @@ Module num.
     
     Module Impl_core_ops_arith_Rem_for_core_num_saturating_Saturating_u16.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u16" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u16" ].
       
       (*             type Output = Saturating<$t>; *)
       Definition _Output : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u16" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u16" ].
       
       (*
                   fn rem(self, other: Saturating<$t>) -> Saturating<$t> {
                       Saturating(self.0.rem(other.0))
                   }
       *)
-      Definition rem (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition rem (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -3528,7 +3622,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -3542,16 +3636,16 @@ Module num.
     
     Module Impl_core_ops_arith_RemAssign_for_core_num_saturating_Saturating_u16.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u16" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u16" ].
       
       (*
                   fn rem_assign(&mut self, other: Saturating<$t>) {
                       *self = *self % other;
                   }
       *)
-      Definition rem_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition rem_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -3562,8 +3656,9 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Rem",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u16" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u16" ] ],
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u16" ],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u16" ]
+                      ],
                       "rem",
                       []
                     |),
@@ -3572,7 +3667,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -3585,16 +3680,16 @@ Module num.
     
     Module Impl_core_ops_arith_RemAssign_u16_for_core_num_saturating_Saturating_u16.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u16" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u16" ].
       
       (*
                   fn rem_assign(&mut self, other: $t) {
                       *self = *self % Saturating(other);
                   }
       *)
-      Definition rem_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition rem_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -3605,8 +3700,9 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Rem",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u16" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u16" ] ],
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u16" ],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u16" ]
+                      ],
                       "rem",
                       []
                     |),
@@ -3618,7 +3714,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -3631,20 +3727,20 @@ Module num.
     
     Module Impl_core_ops_bit_Not_for_core_num_saturating_Saturating_u16.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u16" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u16" ].
       
       (*             type Output = Saturating<$t>; *)
       Definition _Output : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u16" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u16" ].
       
       (*
                   fn not(self) -> Saturating<$t> {
                       Saturating(!self.0)
                   }
       *)
-      Definition not (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition not (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -3659,7 +3755,7 @@ Module num.
                     |)
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -3673,20 +3769,20 @@ Module num.
     
     Module Impl_core_ops_bit_BitXor_for_core_num_saturating_Saturating_u16.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u16" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u16" ].
       
       (*             type Output = Saturating<$t>; *)
       Definition _Output : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u16" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u16" ].
       
       (*
                   fn bitxor(self, other: Saturating<$t>) -> Saturating<$t> {
                       Saturating(self.0 ^ other.0)
                   }
       *)
-      Definition bitxor (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition bitxor (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -3709,7 +3805,7 @@ Module num.
                     |)
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -3723,16 +3819,16 @@ Module num.
     
     Module Impl_core_ops_bit_BitXorAssign_for_core_num_saturating_Saturating_u16.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u16" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u16" ].
       
       (*
                   fn bitxor_assign(&mut self, other: Saturating<$t>) {
                       *self = *self ^ other;
                   }
       *)
-      Definition bitxor_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition bitxor_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -3743,8 +3839,9 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::bit::BitXor",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u16" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u16" ] ],
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u16" ],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u16" ]
+                      ],
                       "bitxor",
                       []
                     |),
@@ -3753,7 +3850,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -3766,16 +3863,16 @@ Module num.
     
     Module Impl_core_ops_bit_BitXorAssign_u16_for_core_num_saturating_Saturating_u16.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u16" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u16" ].
       
       (*
                   fn bitxor_assign(&mut self, other: $t) {
                       *self = *self ^ Saturating(other);
                   }
       *)
-      Definition bitxor_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition bitxor_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -3786,8 +3883,9 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::bit::BitXor",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u16" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u16" ] ],
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u16" ],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u16" ]
+                      ],
                       "bitxor",
                       []
                     |),
@@ -3799,7 +3897,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -3812,20 +3910,20 @@ Module num.
     
     Module Impl_core_ops_bit_BitOr_for_core_num_saturating_Saturating_u16.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u16" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u16" ].
       
       (*             type Output = Saturating<$t>; *)
       Definition _Output : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u16" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u16" ].
       
       (*
                   fn bitor(self, other: Saturating<$t>) -> Saturating<$t> {
                       Saturating(self.0 | other.0)
                   }
       *)
-      Definition bitor (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition bitor (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -3848,7 +3946,7 @@ Module num.
                     |)
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -3862,16 +3960,16 @@ Module num.
     
     Module Impl_core_ops_bit_BitOrAssign_for_core_num_saturating_Saturating_u16.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u16" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u16" ].
       
       (*
                   fn bitor_assign(&mut self, other: Saturating<$t>) {
                       *self = *self | other;
                   }
       *)
-      Definition bitor_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition bitor_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -3882,8 +3980,9 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::bit::BitOr",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u16" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u16" ] ],
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u16" ],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u16" ]
+                      ],
                       "bitor",
                       []
                     |),
@@ -3892,7 +3991,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -3905,16 +4004,16 @@ Module num.
     
     Module Impl_core_ops_bit_BitOrAssign_u16_for_core_num_saturating_Saturating_u16.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u16" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u16" ].
       
       (*
                   fn bitor_assign(&mut self, other: $t) {
                       *self = *self | Saturating(other);
                   }
       *)
-      Definition bitor_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition bitor_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -3925,8 +4024,9 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::bit::BitOr",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u16" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u16" ] ],
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u16" ],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u16" ]
+                      ],
                       "bitor",
                       []
                     |),
@@ -3938,7 +4038,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -3951,20 +4051,20 @@ Module num.
     
     Module Impl_core_ops_bit_BitAnd_for_core_num_saturating_Saturating_u16.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u16" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u16" ].
       
       (*             type Output = Saturating<$t>; *)
       Definition _Output : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u16" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u16" ].
       
       (*
                   fn bitand(self, other: Saturating<$t>) -> Saturating<$t> {
                       Saturating(self.0 & other.0)
                   }
       *)
-      Definition bitand (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition bitand (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -3987,7 +4087,7 @@ Module num.
                     |)
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -4001,16 +4101,16 @@ Module num.
     
     Module Impl_core_ops_bit_BitAndAssign_for_core_num_saturating_Saturating_u16.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u16" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u16" ].
       
       (*
                   fn bitand_assign(&mut self, other: Saturating<$t>) {
                       *self = *self & other;
                   }
       *)
-      Definition bitand_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition bitand_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -4021,8 +4121,9 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::bit::BitAnd",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u16" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u16" ] ],
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u16" ],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u16" ]
+                      ],
                       "bitand",
                       []
                     |),
@@ -4031,7 +4132,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -4044,16 +4145,16 @@ Module num.
     
     Module Impl_core_ops_bit_BitAndAssign_u16_for_core_num_saturating_Saturating_u16.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u16" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u16" ].
       
       (*
                   fn bitand_assign(&mut self, other: $t) {
                       *self = *self & Saturating(other);
                   }
       *)
-      Definition bitand_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition bitand_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -4064,8 +4165,9 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::bit::BitAnd",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u16" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u16" ] ],
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u16" ],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u16" ]
+                      ],
                       "bitand",
                       []
                     |),
@@ -4077,7 +4179,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -4090,20 +4192,20 @@ Module num.
     
     Module Impl_core_ops_arith_Add_for_core_num_saturating_Saturating_u32.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u32" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u32" ].
       
       (*             type Output = Saturating<$t>; *)
       Definition _Output : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u32" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u32" ].
       
       (*
                   fn add(self, other: Saturating<$t>) -> Saturating<$t> {
                       Saturating(self.0.saturating_add(other.0))
                   }
       *)
-      Definition add (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition add (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -4130,7 +4232,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -4144,16 +4246,16 @@ Module num.
     
     Module Impl_core_ops_arith_AddAssign_for_core_num_saturating_Saturating_u32.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u32" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u32" ].
       
       (*
                   fn add_assign(&mut self, other: Saturating<$t>) {
                       *self = *self + other;
                   }
       *)
-      Definition add_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition add_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -4164,8 +4266,9 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Add",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u32" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u32" ] ],
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u32" ],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u32" ]
+                      ],
                       "add",
                       []
                     |),
@@ -4174,7 +4277,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -4187,16 +4290,16 @@ Module num.
     
     Module Impl_core_ops_arith_AddAssign_u32_for_core_num_saturating_Saturating_u32.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u32" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u32" ].
       
       (*
                   fn add_assign(&mut self, other: $t) {
                       *self = *self + Saturating(other);
                   }
       *)
-      Definition add_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition add_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -4207,8 +4310,9 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Add",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u32" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u32" ] ],
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u32" ],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u32" ]
+                      ],
                       "add",
                       []
                     |),
@@ -4220,7 +4324,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -4233,20 +4337,20 @@ Module num.
     
     Module Impl_core_ops_arith_Sub_for_core_num_saturating_Saturating_u32.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u32" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u32" ].
       
       (*             type Output = Saturating<$t>; *)
       Definition _Output : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u32" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u32" ].
       
       (*
                   fn sub(self, other: Saturating<$t>) -> Saturating<$t> {
                       Saturating(self.0.saturating_sub(other.0))
                   }
       *)
-      Definition sub (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition sub (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -4273,7 +4377,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -4287,16 +4391,16 @@ Module num.
     
     Module Impl_core_ops_arith_SubAssign_for_core_num_saturating_Saturating_u32.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u32" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u32" ].
       
       (*
                   fn sub_assign(&mut self, other: Saturating<$t>) {
                       *self = *self - other;
                   }
       *)
-      Definition sub_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition sub_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -4307,8 +4411,9 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Sub",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u32" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u32" ] ],
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u32" ],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u32" ]
+                      ],
                       "sub",
                       []
                     |),
@@ -4317,7 +4422,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -4330,16 +4435,16 @@ Module num.
     
     Module Impl_core_ops_arith_SubAssign_u32_for_core_num_saturating_Saturating_u32.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u32" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u32" ].
       
       (*
                   fn sub_assign(&mut self, other: $t) {
                       *self = *self - Saturating(other);
                   }
       *)
-      Definition sub_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition sub_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -4350,8 +4455,9 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Sub",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u32" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u32" ] ],
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u32" ],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u32" ]
+                      ],
                       "sub",
                       []
                     |),
@@ -4363,7 +4469,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -4376,20 +4482,20 @@ Module num.
     
     Module Impl_core_ops_arith_Mul_for_core_num_saturating_Saturating_u32.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u32" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u32" ].
       
       (*             type Output = Saturating<$t>; *)
       Definition _Output : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u32" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u32" ].
       
       (*
                   fn mul(self, other: Saturating<$t>) -> Saturating<$t> {
                       Saturating(self.0.saturating_mul(other.0))
                   }
       *)
-      Definition mul (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition mul (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -4416,7 +4522,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -4430,16 +4536,16 @@ Module num.
     
     Module Impl_core_ops_arith_MulAssign_for_core_num_saturating_Saturating_u32.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u32" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u32" ].
       
       (*
                   fn mul_assign(&mut self, other: Saturating<$t>) {
                       *self = *self * other;
                   }
       *)
-      Definition mul_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition mul_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -4450,8 +4556,9 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Mul",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u32" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u32" ] ],
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u32" ],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u32" ]
+                      ],
                       "mul",
                       []
                     |),
@@ -4460,7 +4567,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -4473,16 +4580,16 @@ Module num.
     
     Module Impl_core_ops_arith_MulAssign_u32_for_core_num_saturating_Saturating_u32.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u32" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u32" ].
       
       (*
                   fn mul_assign(&mut self, other: $t) {
                       *self = *self * Saturating(other);
                   }
       *)
-      Definition mul_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition mul_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -4493,8 +4600,9 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Mul",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u32" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u32" ] ],
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u32" ],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u32" ]
+                      ],
                       "mul",
                       []
                     |),
@@ -4506,7 +4614,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -4519,20 +4627,20 @@ Module num.
     
     Module Impl_core_ops_arith_Div_for_core_num_saturating_Saturating_u32.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u32" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u32" ].
       
       (*             type Output = Saturating<$t>; *)
       Definition _Output : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u32" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u32" ].
       
       (*
                   fn div(self, other: Saturating<$t>) -> Saturating<$t> {
                       Saturating(self.0.saturating_div(other.0))
                   }
       *)
-      Definition div (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition div (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -4559,7 +4667,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -4573,16 +4681,16 @@ Module num.
     
     Module Impl_core_ops_arith_DivAssign_for_core_num_saturating_Saturating_u32.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u32" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u32" ].
       
       (*
                   fn div_assign(&mut self, other: Saturating<$t>) {
                       *self = *self / other;
                   }
       *)
-      Definition div_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition div_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -4593,8 +4701,9 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Div",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u32" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u32" ] ],
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u32" ],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u32" ]
+                      ],
                       "div",
                       []
                     |),
@@ -4603,7 +4712,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -4616,16 +4725,16 @@ Module num.
     
     Module Impl_core_ops_arith_DivAssign_u32_for_core_num_saturating_Saturating_u32.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u32" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u32" ].
       
       (*
                   fn div_assign(&mut self, other: $t) {
                       *self = *self / Saturating(other);
                   }
       *)
-      Definition div_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition div_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -4636,8 +4745,9 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Div",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u32" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u32" ] ],
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u32" ],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u32" ]
+                      ],
                       "div",
                       []
                     |),
@@ -4649,7 +4759,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -4662,20 +4772,20 @@ Module num.
     
     Module Impl_core_ops_arith_Rem_for_core_num_saturating_Saturating_u32.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u32" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u32" ].
       
       (*             type Output = Saturating<$t>; *)
       Definition _Output : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u32" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u32" ].
       
       (*
                   fn rem(self, other: Saturating<$t>) -> Saturating<$t> {
                       Saturating(self.0.rem(other.0))
                   }
       *)
-      Definition rem (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition rem (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -4708,7 +4818,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -4722,16 +4832,16 @@ Module num.
     
     Module Impl_core_ops_arith_RemAssign_for_core_num_saturating_Saturating_u32.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u32" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u32" ].
       
       (*
                   fn rem_assign(&mut self, other: Saturating<$t>) {
                       *self = *self % other;
                   }
       *)
-      Definition rem_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition rem_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -4742,8 +4852,9 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Rem",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u32" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u32" ] ],
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u32" ],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u32" ]
+                      ],
                       "rem",
                       []
                     |),
@@ -4752,7 +4863,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -4765,16 +4876,16 @@ Module num.
     
     Module Impl_core_ops_arith_RemAssign_u32_for_core_num_saturating_Saturating_u32.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u32" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u32" ].
       
       (*
                   fn rem_assign(&mut self, other: $t) {
                       *self = *self % Saturating(other);
                   }
       *)
-      Definition rem_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition rem_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -4785,8 +4896,9 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Rem",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u32" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u32" ] ],
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u32" ],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u32" ]
+                      ],
                       "rem",
                       []
                     |),
@@ -4798,7 +4910,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -4811,20 +4923,20 @@ Module num.
     
     Module Impl_core_ops_bit_Not_for_core_num_saturating_Saturating_u32.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u32" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u32" ].
       
       (*             type Output = Saturating<$t>; *)
       Definition _Output : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u32" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u32" ].
       
       (*
                   fn not(self) -> Saturating<$t> {
                       Saturating(!self.0)
                   }
       *)
-      Definition not (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition not (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -4839,7 +4951,7 @@ Module num.
                     |)
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -4853,20 +4965,20 @@ Module num.
     
     Module Impl_core_ops_bit_BitXor_for_core_num_saturating_Saturating_u32.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u32" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u32" ].
       
       (*             type Output = Saturating<$t>; *)
       Definition _Output : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u32" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u32" ].
       
       (*
                   fn bitxor(self, other: Saturating<$t>) -> Saturating<$t> {
                       Saturating(self.0 ^ other.0)
                   }
       *)
-      Definition bitxor (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition bitxor (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -4889,7 +5001,7 @@ Module num.
                     |)
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -4903,16 +5015,16 @@ Module num.
     
     Module Impl_core_ops_bit_BitXorAssign_for_core_num_saturating_Saturating_u32.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u32" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u32" ].
       
       (*
                   fn bitxor_assign(&mut self, other: Saturating<$t>) {
                       *self = *self ^ other;
                   }
       *)
-      Definition bitxor_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition bitxor_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -4923,8 +5035,9 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::bit::BitXor",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u32" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u32" ] ],
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u32" ],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u32" ]
+                      ],
                       "bitxor",
                       []
                     |),
@@ -4933,7 +5046,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -4946,16 +5059,16 @@ Module num.
     
     Module Impl_core_ops_bit_BitXorAssign_u32_for_core_num_saturating_Saturating_u32.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u32" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u32" ].
       
       (*
                   fn bitxor_assign(&mut self, other: $t) {
                       *self = *self ^ Saturating(other);
                   }
       *)
-      Definition bitxor_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition bitxor_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -4966,8 +5079,9 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::bit::BitXor",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u32" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u32" ] ],
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u32" ],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u32" ]
+                      ],
                       "bitxor",
                       []
                     |),
@@ -4979,7 +5093,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -4992,20 +5106,20 @@ Module num.
     
     Module Impl_core_ops_bit_BitOr_for_core_num_saturating_Saturating_u32.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u32" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u32" ].
       
       (*             type Output = Saturating<$t>; *)
       Definition _Output : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u32" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u32" ].
       
       (*
                   fn bitor(self, other: Saturating<$t>) -> Saturating<$t> {
                       Saturating(self.0 | other.0)
                   }
       *)
-      Definition bitor (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition bitor (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -5028,7 +5142,7 @@ Module num.
                     |)
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -5042,16 +5156,16 @@ Module num.
     
     Module Impl_core_ops_bit_BitOrAssign_for_core_num_saturating_Saturating_u32.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u32" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u32" ].
       
       (*
                   fn bitor_assign(&mut self, other: Saturating<$t>) {
                       *self = *self | other;
                   }
       *)
-      Definition bitor_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition bitor_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -5062,8 +5176,9 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::bit::BitOr",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u32" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u32" ] ],
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u32" ],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u32" ]
+                      ],
                       "bitor",
                       []
                     |),
@@ -5072,7 +5187,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -5085,16 +5200,16 @@ Module num.
     
     Module Impl_core_ops_bit_BitOrAssign_u32_for_core_num_saturating_Saturating_u32.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u32" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u32" ].
       
       (*
                   fn bitor_assign(&mut self, other: $t) {
                       *self = *self | Saturating(other);
                   }
       *)
-      Definition bitor_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition bitor_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -5105,8 +5220,9 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::bit::BitOr",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u32" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u32" ] ],
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u32" ],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u32" ]
+                      ],
                       "bitor",
                       []
                     |),
@@ -5118,7 +5234,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -5131,20 +5247,20 @@ Module num.
     
     Module Impl_core_ops_bit_BitAnd_for_core_num_saturating_Saturating_u32.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u32" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u32" ].
       
       (*             type Output = Saturating<$t>; *)
       Definition _Output : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u32" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u32" ].
       
       (*
                   fn bitand(self, other: Saturating<$t>) -> Saturating<$t> {
                       Saturating(self.0 & other.0)
                   }
       *)
-      Definition bitand (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition bitand (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -5167,7 +5283,7 @@ Module num.
                     |)
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -5181,16 +5297,16 @@ Module num.
     
     Module Impl_core_ops_bit_BitAndAssign_for_core_num_saturating_Saturating_u32.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u32" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u32" ].
       
       (*
                   fn bitand_assign(&mut self, other: Saturating<$t>) {
                       *self = *self & other;
                   }
       *)
-      Definition bitand_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition bitand_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -5201,8 +5317,9 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::bit::BitAnd",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u32" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u32" ] ],
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u32" ],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u32" ]
+                      ],
                       "bitand",
                       []
                     |),
@@ -5211,7 +5328,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -5224,16 +5341,16 @@ Module num.
     
     Module Impl_core_ops_bit_BitAndAssign_u32_for_core_num_saturating_Saturating_u32.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u32" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u32" ].
       
       (*
                   fn bitand_assign(&mut self, other: $t) {
                       *self = *self & Saturating(other);
                   }
       *)
-      Definition bitand_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition bitand_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -5244,8 +5361,9 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::bit::BitAnd",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u32" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u32" ] ],
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u32" ],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u32" ]
+                      ],
                       "bitand",
                       []
                     |),
@@ -5257,7 +5375,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -5270,20 +5388,20 @@ Module num.
     
     Module Impl_core_ops_arith_Add_for_core_num_saturating_Saturating_u64.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u64" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u64" ].
       
       (*             type Output = Saturating<$t>; *)
       Definition _Output : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u64" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u64" ].
       
       (*
                   fn add(self, other: Saturating<$t>) -> Saturating<$t> {
                       Saturating(self.0.saturating_add(other.0))
                   }
       *)
-      Definition add (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition add (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -5310,7 +5428,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -5324,16 +5442,16 @@ Module num.
     
     Module Impl_core_ops_arith_AddAssign_for_core_num_saturating_Saturating_u64.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u64" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u64" ].
       
       (*
                   fn add_assign(&mut self, other: Saturating<$t>) {
                       *self = *self + other;
                   }
       *)
-      Definition add_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition add_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -5344,8 +5462,9 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Add",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u64" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u64" ] ],
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u64" ],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u64" ]
+                      ],
                       "add",
                       []
                     |),
@@ -5354,7 +5473,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -5367,16 +5486,16 @@ Module num.
     
     Module Impl_core_ops_arith_AddAssign_u64_for_core_num_saturating_Saturating_u64.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u64" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u64" ].
       
       (*
                   fn add_assign(&mut self, other: $t) {
                       *self = *self + Saturating(other);
                   }
       *)
-      Definition add_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition add_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -5387,8 +5506,9 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Add",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u64" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u64" ] ],
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u64" ],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u64" ]
+                      ],
                       "add",
                       []
                     |),
@@ -5400,7 +5520,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -5413,20 +5533,20 @@ Module num.
     
     Module Impl_core_ops_arith_Sub_for_core_num_saturating_Saturating_u64.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u64" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u64" ].
       
       (*             type Output = Saturating<$t>; *)
       Definition _Output : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u64" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u64" ].
       
       (*
                   fn sub(self, other: Saturating<$t>) -> Saturating<$t> {
                       Saturating(self.0.saturating_sub(other.0))
                   }
       *)
-      Definition sub (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition sub (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -5453,7 +5573,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -5467,16 +5587,16 @@ Module num.
     
     Module Impl_core_ops_arith_SubAssign_for_core_num_saturating_Saturating_u64.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u64" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u64" ].
       
       (*
                   fn sub_assign(&mut self, other: Saturating<$t>) {
                       *self = *self - other;
                   }
       *)
-      Definition sub_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition sub_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -5487,8 +5607,9 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Sub",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u64" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u64" ] ],
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u64" ],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u64" ]
+                      ],
                       "sub",
                       []
                     |),
@@ -5497,7 +5618,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -5510,16 +5631,16 @@ Module num.
     
     Module Impl_core_ops_arith_SubAssign_u64_for_core_num_saturating_Saturating_u64.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u64" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u64" ].
       
       (*
                   fn sub_assign(&mut self, other: $t) {
                       *self = *self - Saturating(other);
                   }
       *)
-      Definition sub_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition sub_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -5530,8 +5651,9 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Sub",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u64" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u64" ] ],
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u64" ],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u64" ]
+                      ],
                       "sub",
                       []
                     |),
@@ -5543,7 +5665,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -5556,20 +5678,20 @@ Module num.
     
     Module Impl_core_ops_arith_Mul_for_core_num_saturating_Saturating_u64.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u64" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u64" ].
       
       (*             type Output = Saturating<$t>; *)
       Definition _Output : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u64" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u64" ].
       
       (*
                   fn mul(self, other: Saturating<$t>) -> Saturating<$t> {
                       Saturating(self.0.saturating_mul(other.0))
                   }
       *)
-      Definition mul (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition mul (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -5596,7 +5718,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -5610,16 +5732,16 @@ Module num.
     
     Module Impl_core_ops_arith_MulAssign_for_core_num_saturating_Saturating_u64.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u64" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u64" ].
       
       (*
                   fn mul_assign(&mut self, other: Saturating<$t>) {
                       *self = *self * other;
                   }
       *)
-      Definition mul_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition mul_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -5630,8 +5752,9 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Mul",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u64" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u64" ] ],
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u64" ],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u64" ]
+                      ],
                       "mul",
                       []
                     |),
@@ -5640,7 +5763,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -5653,16 +5776,16 @@ Module num.
     
     Module Impl_core_ops_arith_MulAssign_u64_for_core_num_saturating_Saturating_u64.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u64" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u64" ].
       
       (*
                   fn mul_assign(&mut self, other: $t) {
                       *self = *self * Saturating(other);
                   }
       *)
-      Definition mul_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition mul_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -5673,8 +5796,9 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Mul",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u64" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u64" ] ],
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u64" ],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u64" ]
+                      ],
                       "mul",
                       []
                     |),
@@ -5686,7 +5810,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -5699,20 +5823,20 @@ Module num.
     
     Module Impl_core_ops_arith_Div_for_core_num_saturating_Saturating_u64.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u64" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u64" ].
       
       (*             type Output = Saturating<$t>; *)
       Definition _Output : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u64" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u64" ].
       
       (*
                   fn div(self, other: Saturating<$t>) -> Saturating<$t> {
                       Saturating(self.0.saturating_div(other.0))
                   }
       *)
-      Definition div (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition div (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -5739,7 +5863,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -5753,16 +5877,16 @@ Module num.
     
     Module Impl_core_ops_arith_DivAssign_for_core_num_saturating_Saturating_u64.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u64" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u64" ].
       
       (*
                   fn div_assign(&mut self, other: Saturating<$t>) {
                       *self = *self / other;
                   }
       *)
-      Definition div_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition div_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -5773,8 +5897,9 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Div",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u64" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u64" ] ],
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u64" ],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u64" ]
+                      ],
                       "div",
                       []
                     |),
@@ -5783,7 +5908,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -5796,16 +5921,16 @@ Module num.
     
     Module Impl_core_ops_arith_DivAssign_u64_for_core_num_saturating_Saturating_u64.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u64" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u64" ].
       
       (*
                   fn div_assign(&mut self, other: $t) {
                       *self = *self / Saturating(other);
                   }
       *)
-      Definition div_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition div_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -5816,8 +5941,9 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Div",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u64" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u64" ] ],
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u64" ],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u64" ]
+                      ],
                       "div",
                       []
                     |),
@@ -5829,7 +5955,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -5842,20 +5968,20 @@ Module num.
     
     Module Impl_core_ops_arith_Rem_for_core_num_saturating_Saturating_u64.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u64" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u64" ].
       
       (*             type Output = Saturating<$t>; *)
       Definition _Output : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u64" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u64" ].
       
       (*
                   fn rem(self, other: Saturating<$t>) -> Saturating<$t> {
                       Saturating(self.0.rem(other.0))
                   }
       *)
-      Definition rem (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition rem (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -5888,7 +6014,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -5902,16 +6028,16 @@ Module num.
     
     Module Impl_core_ops_arith_RemAssign_for_core_num_saturating_Saturating_u64.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u64" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u64" ].
       
       (*
                   fn rem_assign(&mut self, other: Saturating<$t>) {
                       *self = *self % other;
                   }
       *)
-      Definition rem_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition rem_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -5922,8 +6048,9 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Rem",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u64" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u64" ] ],
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u64" ],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u64" ]
+                      ],
                       "rem",
                       []
                     |),
@@ -5932,7 +6059,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -5945,16 +6072,16 @@ Module num.
     
     Module Impl_core_ops_arith_RemAssign_u64_for_core_num_saturating_Saturating_u64.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u64" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u64" ].
       
       (*
                   fn rem_assign(&mut self, other: $t) {
                       *self = *self % Saturating(other);
                   }
       *)
-      Definition rem_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition rem_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -5965,8 +6092,9 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Rem",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u64" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u64" ] ],
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u64" ],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u64" ]
+                      ],
                       "rem",
                       []
                     |),
@@ -5978,7 +6106,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -5991,20 +6119,20 @@ Module num.
     
     Module Impl_core_ops_bit_Not_for_core_num_saturating_Saturating_u64.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u64" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u64" ].
       
       (*             type Output = Saturating<$t>; *)
       Definition _Output : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u64" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u64" ].
       
       (*
                   fn not(self) -> Saturating<$t> {
                       Saturating(!self.0)
                   }
       *)
-      Definition not (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition not (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -6019,7 +6147,7 @@ Module num.
                     |)
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -6033,20 +6161,20 @@ Module num.
     
     Module Impl_core_ops_bit_BitXor_for_core_num_saturating_Saturating_u64.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u64" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u64" ].
       
       (*             type Output = Saturating<$t>; *)
       Definition _Output : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u64" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u64" ].
       
       (*
                   fn bitxor(self, other: Saturating<$t>) -> Saturating<$t> {
                       Saturating(self.0 ^ other.0)
                   }
       *)
-      Definition bitxor (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition bitxor (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -6069,7 +6197,7 @@ Module num.
                     |)
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -6083,16 +6211,16 @@ Module num.
     
     Module Impl_core_ops_bit_BitXorAssign_for_core_num_saturating_Saturating_u64.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u64" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u64" ].
       
       (*
                   fn bitxor_assign(&mut self, other: Saturating<$t>) {
                       *self = *self ^ other;
                   }
       *)
-      Definition bitxor_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition bitxor_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -6103,8 +6231,9 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::bit::BitXor",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u64" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u64" ] ],
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u64" ],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u64" ]
+                      ],
                       "bitxor",
                       []
                     |),
@@ -6113,7 +6242,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -6126,16 +6255,16 @@ Module num.
     
     Module Impl_core_ops_bit_BitXorAssign_u64_for_core_num_saturating_Saturating_u64.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u64" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u64" ].
       
       (*
                   fn bitxor_assign(&mut self, other: $t) {
                       *self = *self ^ Saturating(other);
                   }
       *)
-      Definition bitxor_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition bitxor_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -6146,8 +6275,9 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::bit::BitXor",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u64" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u64" ] ],
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u64" ],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u64" ]
+                      ],
                       "bitxor",
                       []
                     |),
@@ -6159,7 +6289,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -6172,20 +6302,20 @@ Module num.
     
     Module Impl_core_ops_bit_BitOr_for_core_num_saturating_Saturating_u64.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u64" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u64" ].
       
       (*             type Output = Saturating<$t>; *)
       Definition _Output : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u64" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u64" ].
       
       (*
                   fn bitor(self, other: Saturating<$t>) -> Saturating<$t> {
                       Saturating(self.0 | other.0)
                   }
       *)
-      Definition bitor (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition bitor (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -6208,7 +6338,7 @@ Module num.
                     |)
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -6222,16 +6352,16 @@ Module num.
     
     Module Impl_core_ops_bit_BitOrAssign_for_core_num_saturating_Saturating_u64.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u64" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u64" ].
       
       (*
                   fn bitor_assign(&mut self, other: Saturating<$t>) {
                       *self = *self | other;
                   }
       *)
-      Definition bitor_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition bitor_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -6242,8 +6372,9 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::bit::BitOr",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u64" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u64" ] ],
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u64" ],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u64" ]
+                      ],
                       "bitor",
                       []
                     |),
@@ -6252,7 +6383,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -6265,16 +6396,16 @@ Module num.
     
     Module Impl_core_ops_bit_BitOrAssign_u64_for_core_num_saturating_Saturating_u64.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u64" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u64" ].
       
       (*
                   fn bitor_assign(&mut self, other: $t) {
                       *self = *self | Saturating(other);
                   }
       *)
-      Definition bitor_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition bitor_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -6285,8 +6416,9 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::bit::BitOr",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u64" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u64" ] ],
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u64" ],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u64" ]
+                      ],
                       "bitor",
                       []
                     |),
@@ -6298,7 +6430,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -6311,20 +6443,20 @@ Module num.
     
     Module Impl_core_ops_bit_BitAnd_for_core_num_saturating_Saturating_u64.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u64" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u64" ].
       
       (*             type Output = Saturating<$t>; *)
       Definition _Output : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u64" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u64" ].
       
       (*
                   fn bitand(self, other: Saturating<$t>) -> Saturating<$t> {
                       Saturating(self.0 & other.0)
                   }
       *)
-      Definition bitand (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition bitand (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -6347,7 +6479,7 @@ Module num.
                     |)
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -6361,16 +6493,16 @@ Module num.
     
     Module Impl_core_ops_bit_BitAndAssign_for_core_num_saturating_Saturating_u64.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u64" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u64" ].
       
       (*
                   fn bitand_assign(&mut self, other: Saturating<$t>) {
                       *self = *self & other;
                   }
       *)
-      Definition bitand_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition bitand_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -6381,8 +6513,9 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::bit::BitAnd",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u64" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u64" ] ],
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u64" ],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u64" ]
+                      ],
                       "bitand",
                       []
                     |),
@@ -6391,7 +6524,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -6404,16 +6537,16 @@ Module num.
     
     Module Impl_core_ops_bit_BitAndAssign_u64_for_core_num_saturating_Saturating_u64.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u64" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u64" ].
       
       (*
                   fn bitand_assign(&mut self, other: $t) {
                       *self = *self & Saturating(other);
                   }
       *)
-      Definition bitand_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition bitand_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -6424,8 +6557,9 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::bit::BitAnd",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u64" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u64" ] ],
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u64" ],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u64" ]
+                      ],
                       "bitand",
                       []
                     |),
@@ -6437,7 +6571,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -6450,20 +6584,20 @@ Module num.
     
     Module Impl_core_ops_arith_Add_for_core_num_saturating_Saturating_u128.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u128" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u128" ].
       
       (*             type Output = Saturating<$t>; *)
       Definition _Output : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u128" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u128" ].
       
       (*
                   fn add(self, other: Saturating<$t>) -> Saturating<$t> {
                       Saturating(self.0.saturating_add(other.0))
                   }
       *)
-      Definition add (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition add (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -6490,7 +6624,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -6504,16 +6638,16 @@ Module num.
     
     Module Impl_core_ops_arith_AddAssign_for_core_num_saturating_Saturating_u128.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u128" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u128" ].
       
       (*
                   fn add_assign(&mut self, other: Saturating<$t>) {
                       *self = *self + other;
                   }
       *)
-      Definition add_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition add_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -6524,8 +6658,9 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Add",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u128" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u128" ] ],
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u128" ],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u128" ]
+                      ],
                       "add",
                       []
                     |),
@@ -6534,7 +6669,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -6547,16 +6682,16 @@ Module num.
     
     Module Impl_core_ops_arith_AddAssign_u128_for_core_num_saturating_Saturating_u128.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u128" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u128" ].
       
       (*
                   fn add_assign(&mut self, other: $t) {
                       *self = *self + Saturating(other);
                   }
       *)
-      Definition add_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition add_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -6567,8 +6702,9 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Add",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u128" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u128" ] ],
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u128" ],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u128" ]
+                      ],
                       "add",
                       []
                     |),
@@ -6580,7 +6716,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -6593,20 +6729,20 @@ Module num.
     
     Module Impl_core_ops_arith_Sub_for_core_num_saturating_Saturating_u128.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u128" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u128" ].
       
       (*             type Output = Saturating<$t>; *)
       Definition _Output : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u128" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u128" ].
       
       (*
                   fn sub(self, other: Saturating<$t>) -> Saturating<$t> {
                       Saturating(self.0.saturating_sub(other.0))
                   }
       *)
-      Definition sub (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition sub (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -6633,7 +6769,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -6647,16 +6783,16 @@ Module num.
     
     Module Impl_core_ops_arith_SubAssign_for_core_num_saturating_Saturating_u128.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u128" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u128" ].
       
       (*
                   fn sub_assign(&mut self, other: Saturating<$t>) {
                       *self = *self - other;
                   }
       *)
-      Definition sub_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition sub_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -6667,8 +6803,9 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Sub",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u128" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u128" ] ],
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u128" ],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u128" ]
+                      ],
                       "sub",
                       []
                     |),
@@ -6677,7 +6814,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -6690,16 +6827,16 @@ Module num.
     
     Module Impl_core_ops_arith_SubAssign_u128_for_core_num_saturating_Saturating_u128.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u128" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u128" ].
       
       (*
                   fn sub_assign(&mut self, other: $t) {
                       *self = *self - Saturating(other);
                   }
       *)
-      Definition sub_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition sub_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -6710,8 +6847,9 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Sub",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u128" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u128" ] ],
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u128" ],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u128" ]
+                      ],
                       "sub",
                       []
                     |),
@@ -6723,7 +6861,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -6736,20 +6874,20 @@ Module num.
     
     Module Impl_core_ops_arith_Mul_for_core_num_saturating_Saturating_u128.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u128" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u128" ].
       
       (*             type Output = Saturating<$t>; *)
       Definition _Output : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u128" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u128" ].
       
       (*
                   fn mul(self, other: Saturating<$t>) -> Saturating<$t> {
                       Saturating(self.0.saturating_mul(other.0))
                   }
       *)
-      Definition mul (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition mul (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -6776,7 +6914,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -6790,16 +6928,16 @@ Module num.
     
     Module Impl_core_ops_arith_MulAssign_for_core_num_saturating_Saturating_u128.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u128" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u128" ].
       
       (*
                   fn mul_assign(&mut self, other: Saturating<$t>) {
                       *self = *self * other;
                   }
       *)
-      Definition mul_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition mul_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -6810,8 +6948,9 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Mul",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u128" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u128" ] ],
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u128" ],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u128" ]
+                      ],
                       "mul",
                       []
                     |),
@@ -6820,7 +6959,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -6833,16 +6972,16 @@ Module num.
     
     Module Impl_core_ops_arith_MulAssign_u128_for_core_num_saturating_Saturating_u128.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u128" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u128" ].
       
       (*
                   fn mul_assign(&mut self, other: $t) {
                       *self = *self * Saturating(other);
                   }
       *)
-      Definition mul_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition mul_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -6853,8 +6992,9 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Mul",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u128" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u128" ] ],
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u128" ],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u128" ]
+                      ],
                       "mul",
                       []
                     |),
@@ -6866,7 +7006,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -6879,20 +7019,20 @@ Module num.
     
     Module Impl_core_ops_arith_Div_for_core_num_saturating_Saturating_u128.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u128" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u128" ].
       
       (*             type Output = Saturating<$t>; *)
       Definition _Output : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u128" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u128" ].
       
       (*
                   fn div(self, other: Saturating<$t>) -> Saturating<$t> {
                       Saturating(self.0.saturating_div(other.0))
                   }
       *)
-      Definition div (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition div (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -6919,7 +7059,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -6933,16 +7073,16 @@ Module num.
     
     Module Impl_core_ops_arith_DivAssign_for_core_num_saturating_Saturating_u128.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u128" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u128" ].
       
       (*
                   fn div_assign(&mut self, other: Saturating<$t>) {
                       *self = *self / other;
                   }
       *)
-      Definition div_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition div_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -6953,8 +7093,9 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Div",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u128" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u128" ] ],
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u128" ],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u128" ]
+                      ],
                       "div",
                       []
                     |),
@@ -6963,7 +7104,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -6976,16 +7117,16 @@ Module num.
     
     Module Impl_core_ops_arith_DivAssign_u128_for_core_num_saturating_Saturating_u128.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u128" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u128" ].
       
       (*
                   fn div_assign(&mut self, other: $t) {
                       *self = *self / Saturating(other);
                   }
       *)
-      Definition div_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition div_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -6996,8 +7137,9 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Div",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u128" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u128" ] ],
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u128" ],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u128" ]
+                      ],
                       "div",
                       []
                     |),
@@ -7009,7 +7151,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -7022,20 +7164,20 @@ Module num.
     
     Module Impl_core_ops_arith_Rem_for_core_num_saturating_Saturating_u128.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u128" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u128" ].
       
       (*             type Output = Saturating<$t>; *)
       Definition _Output : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u128" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u128" ].
       
       (*
                   fn rem(self, other: Saturating<$t>) -> Saturating<$t> {
                       Saturating(self.0.rem(other.0))
                   }
       *)
-      Definition rem (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition rem (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -7068,7 +7210,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -7082,16 +7224,16 @@ Module num.
     
     Module Impl_core_ops_arith_RemAssign_for_core_num_saturating_Saturating_u128.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u128" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u128" ].
       
       (*
                   fn rem_assign(&mut self, other: Saturating<$t>) {
                       *self = *self % other;
                   }
       *)
-      Definition rem_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition rem_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -7102,8 +7244,9 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Rem",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u128" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u128" ] ],
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u128" ],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u128" ]
+                      ],
                       "rem",
                       []
                     |),
@@ -7112,7 +7255,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -7125,16 +7268,16 @@ Module num.
     
     Module Impl_core_ops_arith_RemAssign_u128_for_core_num_saturating_Saturating_u128.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u128" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u128" ].
       
       (*
                   fn rem_assign(&mut self, other: $t) {
                       *self = *self % Saturating(other);
                   }
       *)
-      Definition rem_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition rem_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -7145,8 +7288,9 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Rem",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u128" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u128" ] ],
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u128" ],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u128" ]
+                      ],
                       "rem",
                       []
                     |),
@@ -7158,7 +7302,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -7171,20 +7315,20 @@ Module num.
     
     Module Impl_core_ops_bit_Not_for_core_num_saturating_Saturating_u128.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u128" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u128" ].
       
       (*             type Output = Saturating<$t>; *)
       Definition _Output : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u128" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u128" ].
       
       (*
                   fn not(self) -> Saturating<$t> {
                       Saturating(!self.0)
                   }
       *)
-      Definition not (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition not (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -7199,7 +7343,7 @@ Module num.
                     |)
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -7213,20 +7357,20 @@ Module num.
     
     Module Impl_core_ops_bit_BitXor_for_core_num_saturating_Saturating_u128.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u128" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u128" ].
       
       (*             type Output = Saturating<$t>; *)
       Definition _Output : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u128" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u128" ].
       
       (*
                   fn bitxor(self, other: Saturating<$t>) -> Saturating<$t> {
                       Saturating(self.0 ^ other.0)
                   }
       *)
-      Definition bitxor (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition bitxor (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -7249,7 +7393,7 @@ Module num.
                     |)
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -7263,16 +7407,16 @@ Module num.
     
     Module Impl_core_ops_bit_BitXorAssign_for_core_num_saturating_Saturating_u128.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u128" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u128" ].
       
       (*
                   fn bitxor_assign(&mut self, other: Saturating<$t>) {
                       *self = *self ^ other;
                   }
       *)
-      Definition bitxor_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition bitxor_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -7283,8 +7427,9 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::bit::BitXor",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u128" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u128" ] ],
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u128" ],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u128" ]
+                      ],
                       "bitxor",
                       []
                     |),
@@ -7293,7 +7438,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -7306,16 +7451,16 @@ Module num.
     
     Module Impl_core_ops_bit_BitXorAssign_u128_for_core_num_saturating_Saturating_u128.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u128" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u128" ].
       
       (*
                   fn bitxor_assign(&mut self, other: $t) {
                       *self = *self ^ Saturating(other);
                   }
       *)
-      Definition bitxor_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition bitxor_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -7326,8 +7471,9 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::bit::BitXor",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u128" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u128" ] ],
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u128" ],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u128" ]
+                      ],
                       "bitxor",
                       []
                     |),
@@ -7339,7 +7485,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -7352,20 +7498,20 @@ Module num.
     
     Module Impl_core_ops_bit_BitOr_for_core_num_saturating_Saturating_u128.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u128" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u128" ].
       
       (*             type Output = Saturating<$t>; *)
       Definition _Output : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u128" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u128" ].
       
       (*
                   fn bitor(self, other: Saturating<$t>) -> Saturating<$t> {
                       Saturating(self.0 | other.0)
                   }
       *)
-      Definition bitor (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition bitor (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -7388,7 +7534,7 @@ Module num.
                     |)
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -7402,16 +7548,16 @@ Module num.
     
     Module Impl_core_ops_bit_BitOrAssign_for_core_num_saturating_Saturating_u128.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u128" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u128" ].
       
       (*
                   fn bitor_assign(&mut self, other: Saturating<$t>) {
                       *self = *self | other;
                   }
       *)
-      Definition bitor_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition bitor_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -7422,8 +7568,9 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::bit::BitOr",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u128" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u128" ] ],
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u128" ],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u128" ]
+                      ],
                       "bitor",
                       []
                     |),
@@ -7432,7 +7579,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -7445,16 +7592,16 @@ Module num.
     
     Module Impl_core_ops_bit_BitOrAssign_u128_for_core_num_saturating_Saturating_u128.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u128" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u128" ].
       
       (*
                   fn bitor_assign(&mut self, other: $t) {
                       *self = *self | Saturating(other);
                   }
       *)
-      Definition bitor_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition bitor_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -7465,8 +7612,9 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::bit::BitOr",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u128" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u128" ] ],
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u128" ],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u128" ]
+                      ],
                       "bitor",
                       []
                     |),
@@ -7478,7 +7626,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -7491,20 +7639,20 @@ Module num.
     
     Module Impl_core_ops_bit_BitAnd_for_core_num_saturating_Saturating_u128.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u128" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u128" ].
       
       (*             type Output = Saturating<$t>; *)
       Definition _Output : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u128" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u128" ].
       
       (*
                   fn bitand(self, other: Saturating<$t>) -> Saturating<$t> {
                       Saturating(self.0 & other.0)
                   }
       *)
-      Definition bitand (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition bitand (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -7527,7 +7675,7 @@ Module num.
                     |)
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -7541,16 +7689,16 @@ Module num.
     
     Module Impl_core_ops_bit_BitAndAssign_for_core_num_saturating_Saturating_u128.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u128" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u128" ].
       
       (*
                   fn bitand_assign(&mut self, other: Saturating<$t>) {
                       *self = *self & other;
                   }
       *)
-      Definition bitand_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition bitand_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -7561,8 +7709,9 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::bit::BitAnd",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u128" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u128" ] ],
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u128" ],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u128" ]
+                      ],
                       "bitand",
                       []
                     |),
@@ -7571,7 +7720,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -7584,16 +7733,16 @@ Module num.
     
     Module Impl_core_ops_bit_BitAndAssign_u128_for_core_num_saturating_Saturating_u128.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u128" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u128" ].
       
       (*
                   fn bitand_assign(&mut self, other: $t) {
                       *self = *self & Saturating(other);
                   }
       *)
-      Definition bitand_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition bitand_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -7604,8 +7753,9 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::bit::BitAnd",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u128" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u128" ] ],
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u128" ],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u128" ]
+                      ],
                       "bitand",
                       []
                     |),
@@ -7617,7 +7767,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -7630,20 +7780,20 @@ Module num.
     
     Module Impl_core_ops_arith_Add_for_core_num_saturating_Saturating_isize.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "isize" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "isize" ].
       
       (*             type Output = Saturating<$t>; *)
       Definition _Output : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "isize" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "isize" ].
       
       (*
                   fn add(self, other: Saturating<$t>) -> Saturating<$t> {
                       Saturating(self.0.saturating_add(other.0))
                   }
       *)
-      Definition add (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition add (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -7670,7 +7820,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -7684,16 +7834,16 @@ Module num.
     
     Module Impl_core_ops_arith_AddAssign_for_core_num_saturating_Saturating_isize.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "isize" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "isize" ].
       
       (*
                   fn add_assign(&mut self, other: Saturating<$t>) {
                       *self = *self + other;
                   }
       *)
-      Definition add_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition add_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -7704,8 +7854,12 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Add",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "isize" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "isize" ]
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "isize" ],
+                      [
+                        Ty.apply
+                          (Ty.path "core::num::saturating::Saturating")
+                          []
+                          [ Ty.path "isize" ]
                       ],
                       "add",
                       []
@@ -7715,7 +7869,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -7728,16 +7882,16 @@ Module num.
     
     Module Impl_core_ops_arith_AddAssign_isize_for_core_num_saturating_Saturating_isize.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "isize" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "isize" ].
       
       (*
                   fn add_assign(&mut self, other: $t) {
                       *self = *self + Saturating(other);
                   }
       *)
-      Definition add_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition add_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -7748,8 +7902,12 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Add",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "isize" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "isize" ]
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "isize" ],
+                      [
+                        Ty.apply
+                          (Ty.path "core::num::saturating::Saturating")
+                          []
+                          [ Ty.path "isize" ]
                       ],
                       "add",
                       []
@@ -7762,7 +7920,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -7775,20 +7933,20 @@ Module num.
     
     Module Impl_core_ops_arith_Sub_for_core_num_saturating_Saturating_isize.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "isize" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "isize" ].
       
       (*             type Output = Saturating<$t>; *)
       Definition _Output : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "isize" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "isize" ].
       
       (*
                   fn sub(self, other: Saturating<$t>) -> Saturating<$t> {
                       Saturating(self.0.saturating_sub(other.0))
                   }
       *)
-      Definition sub (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition sub (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -7815,7 +7973,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -7829,16 +7987,16 @@ Module num.
     
     Module Impl_core_ops_arith_SubAssign_for_core_num_saturating_Saturating_isize.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "isize" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "isize" ].
       
       (*
                   fn sub_assign(&mut self, other: Saturating<$t>) {
                       *self = *self - other;
                   }
       *)
-      Definition sub_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition sub_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -7849,8 +8007,12 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Sub",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "isize" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "isize" ]
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "isize" ],
+                      [
+                        Ty.apply
+                          (Ty.path "core::num::saturating::Saturating")
+                          []
+                          [ Ty.path "isize" ]
                       ],
                       "sub",
                       []
@@ -7860,7 +8022,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -7873,16 +8035,16 @@ Module num.
     
     Module Impl_core_ops_arith_SubAssign_isize_for_core_num_saturating_Saturating_isize.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "isize" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "isize" ].
       
       (*
                   fn sub_assign(&mut self, other: $t) {
                       *self = *self - Saturating(other);
                   }
       *)
-      Definition sub_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition sub_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -7893,8 +8055,12 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Sub",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "isize" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "isize" ]
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "isize" ],
+                      [
+                        Ty.apply
+                          (Ty.path "core::num::saturating::Saturating")
+                          []
+                          [ Ty.path "isize" ]
                       ],
                       "sub",
                       []
@@ -7907,7 +8073,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -7920,20 +8086,20 @@ Module num.
     
     Module Impl_core_ops_arith_Mul_for_core_num_saturating_Saturating_isize.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "isize" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "isize" ].
       
       (*             type Output = Saturating<$t>; *)
       Definition _Output : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "isize" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "isize" ].
       
       (*
                   fn mul(self, other: Saturating<$t>) -> Saturating<$t> {
                       Saturating(self.0.saturating_mul(other.0))
                   }
       *)
-      Definition mul (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition mul (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -7960,7 +8126,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -7974,16 +8140,16 @@ Module num.
     
     Module Impl_core_ops_arith_MulAssign_for_core_num_saturating_Saturating_isize.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "isize" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "isize" ].
       
       (*
                   fn mul_assign(&mut self, other: Saturating<$t>) {
                       *self = *self * other;
                   }
       *)
-      Definition mul_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition mul_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -7994,8 +8160,12 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Mul",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "isize" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "isize" ]
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "isize" ],
+                      [
+                        Ty.apply
+                          (Ty.path "core::num::saturating::Saturating")
+                          []
+                          [ Ty.path "isize" ]
                       ],
                       "mul",
                       []
@@ -8005,7 +8175,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -8018,16 +8188,16 @@ Module num.
     
     Module Impl_core_ops_arith_MulAssign_isize_for_core_num_saturating_Saturating_isize.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "isize" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "isize" ].
       
       (*
                   fn mul_assign(&mut self, other: $t) {
                       *self = *self * Saturating(other);
                   }
       *)
-      Definition mul_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition mul_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -8038,8 +8208,12 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Mul",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "isize" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "isize" ]
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "isize" ],
+                      [
+                        Ty.apply
+                          (Ty.path "core::num::saturating::Saturating")
+                          []
+                          [ Ty.path "isize" ]
                       ],
                       "mul",
                       []
@@ -8052,7 +8226,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -8065,20 +8239,20 @@ Module num.
     
     Module Impl_core_ops_arith_Div_for_core_num_saturating_Saturating_isize.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "isize" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "isize" ].
       
       (*             type Output = Saturating<$t>; *)
       Definition _Output : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "isize" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "isize" ].
       
       (*
                   fn div(self, other: Saturating<$t>) -> Saturating<$t> {
                       Saturating(self.0.saturating_div(other.0))
                   }
       *)
-      Definition div (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition div (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -8105,7 +8279,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -8119,16 +8293,16 @@ Module num.
     
     Module Impl_core_ops_arith_DivAssign_for_core_num_saturating_Saturating_isize.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "isize" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "isize" ].
       
       (*
                   fn div_assign(&mut self, other: Saturating<$t>) {
                       *self = *self / other;
                   }
       *)
-      Definition div_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition div_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -8139,8 +8313,12 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Div",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "isize" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "isize" ]
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "isize" ],
+                      [
+                        Ty.apply
+                          (Ty.path "core::num::saturating::Saturating")
+                          []
+                          [ Ty.path "isize" ]
                       ],
                       "div",
                       []
@@ -8150,7 +8328,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -8163,16 +8341,16 @@ Module num.
     
     Module Impl_core_ops_arith_DivAssign_isize_for_core_num_saturating_Saturating_isize.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "isize" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "isize" ].
       
       (*
                   fn div_assign(&mut self, other: $t) {
                       *self = *self / Saturating(other);
                   }
       *)
-      Definition div_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition div_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -8183,8 +8361,12 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Div",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "isize" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "isize" ]
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "isize" ],
+                      [
+                        Ty.apply
+                          (Ty.path "core::num::saturating::Saturating")
+                          []
+                          [ Ty.path "isize" ]
                       ],
                       "div",
                       []
@@ -8197,7 +8379,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -8210,20 +8392,20 @@ Module num.
     
     Module Impl_core_ops_arith_Rem_for_core_num_saturating_Saturating_isize.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "isize" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "isize" ].
       
       (*             type Output = Saturating<$t>; *)
       Definition _Output : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "isize" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "isize" ].
       
       (*
                   fn rem(self, other: Saturating<$t>) -> Saturating<$t> {
                       Saturating(self.0.rem(other.0))
                   }
       *)
-      Definition rem (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition rem (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -8256,7 +8438,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -8270,16 +8452,16 @@ Module num.
     
     Module Impl_core_ops_arith_RemAssign_for_core_num_saturating_Saturating_isize.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "isize" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "isize" ].
       
       (*
                   fn rem_assign(&mut self, other: Saturating<$t>) {
                       *self = *self % other;
                   }
       *)
-      Definition rem_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition rem_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -8290,8 +8472,12 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Rem",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "isize" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "isize" ]
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "isize" ],
+                      [
+                        Ty.apply
+                          (Ty.path "core::num::saturating::Saturating")
+                          []
+                          [ Ty.path "isize" ]
                       ],
                       "rem",
                       []
@@ -8301,7 +8487,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -8314,16 +8500,16 @@ Module num.
     
     Module Impl_core_ops_arith_RemAssign_isize_for_core_num_saturating_Saturating_isize.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "isize" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "isize" ].
       
       (*
                   fn rem_assign(&mut self, other: $t) {
                       *self = *self % Saturating(other);
                   }
       *)
-      Definition rem_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition rem_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -8334,8 +8520,12 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Rem",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "isize" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "isize" ]
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "isize" ],
+                      [
+                        Ty.apply
+                          (Ty.path "core::num::saturating::Saturating")
+                          []
+                          [ Ty.path "isize" ]
                       ],
                       "rem",
                       []
@@ -8348,7 +8538,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -8361,20 +8551,20 @@ Module num.
     
     Module Impl_core_ops_bit_Not_for_core_num_saturating_Saturating_isize.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "isize" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "isize" ].
       
       (*             type Output = Saturating<$t>; *)
       Definition _Output : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "isize" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "isize" ].
       
       (*
                   fn not(self) -> Saturating<$t> {
                       Saturating(!self.0)
                   }
       *)
-      Definition not (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition not (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -8389,7 +8579,7 @@ Module num.
                     |)
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -8403,20 +8593,20 @@ Module num.
     
     Module Impl_core_ops_bit_BitXor_for_core_num_saturating_Saturating_isize.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "isize" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "isize" ].
       
       (*             type Output = Saturating<$t>; *)
       Definition _Output : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "isize" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "isize" ].
       
       (*
                   fn bitxor(self, other: Saturating<$t>) -> Saturating<$t> {
                       Saturating(self.0 ^ other.0)
                   }
       *)
-      Definition bitxor (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition bitxor (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -8439,7 +8629,7 @@ Module num.
                     |)
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -8453,16 +8643,16 @@ Module num.
     
     Module Impl_core_ops_bit_BitXorAssign_for_core_num_saturating_Saturating_isize.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "isize" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "isize" ].
       
       (*
                   fn bitxor_assign(&mut self, other: Saturating<$t>) {
                       *self = *self ^ other;
                   }
       *)
-      Definition bitxor_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition bitxor_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -8473,8 +8663,12 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::bit::BitXor",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "isize" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "isize" ]
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "isize" ],
+                      [
+                        Ty.apply
+                          (Ty.path "core::num::saturating::Saturating")
+                          []
+                          [ Ty.path "isize" ]
                       ],
                       "bitxor",
                       []
@@ -8484,7 +8678,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -8497,16 +8691,16 @@ Module num.
     
     Module Impl_core_ops_bit_BitXorAssign_isize_for_core_num_saturating_Saturating_isize.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "isize" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "isize" ].
       
       (*
                   fn bitxor_assign(&mut self, other: $t) {
                       *self = *self ^ Saturating(other);
                   }
       *)
-      Definition bitxor_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition bitxor_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -8517,8 +8711,12 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::bit::BitXor",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "isize" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "isize" ]
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "isize" ],
+                      [
+                        Ty.apply
+                          (Ty.path "core::num::saturating::Saturating")
+                          []
+                          [ Ty.path "isize" ]
                       ],
                       "bitxor",
                       []
@@ -8531,7 +8729,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -8544,20 +8742,20 @@ Module num.
     
     Module Impl_core_ops_bit_BitOr_for_core_num_saturating_Saturating_isize.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "isize" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "isize" ].
       
       (*             type Output = Saturating<$t>; *)
       Definition _Output : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "isize" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "isize" ].
       
       (*
                   fn bitor(self, other: Saturating<$t>) -> Saturating<$t> {
                       Saturating(self.0 | other.0)
                   }
       *)
-      Definition bitor (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition bitor (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -8580,7 +8778,7 @@ Module num.
                     |)
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -8594,16 +8792,16 @@ Module num.
     
     Module Impl_core_ops_bit_BitOrAssign_for_core_num_saturating_Saturating_isize.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "isize" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "isize" ].
       
       (*
                   fn bitor_assign(&mut self, other: Saturating<$t>) {
                       *self = *self | other;
                   }
       *)
-      Definition bitor_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition bitor_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -8614,8 +8812,12 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::bit::BitOr",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "isize" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "isize" ]
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "isize" ],
+                      [
+                        Ty.apply
+                          (Ty.path "core::num::saturating::Saturating")
+                          []
+                          [ Ty.path "isize" ]
                       ],
                       "bitor",
                       []
@@ -8625,7 +8827,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -8638,16 +8840,16 @@ Module num.
     
     Module Impl_core_ops_bit_BitOrAssign_isize_for_core_num_saturating_Saturating_isize.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "isize" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "isize" ].
       
       (*
                   fn bitor_assign(&mut self, other: $t) {
                       *self = *self | Saturating(other);
                   }
       *)
-      Definition bitor_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition bitor_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -8658,8 +8860,12 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::bit::BitOr",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "isize" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "isize" ]
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "isize" ],
+                      [
+                        Ty.apply
+                          (Ty.path "core::num::saturating::Saturating")
+                          []
+                          [ Ty.path "isize" ]
                       ],
                       "bitor",
                       []
@@ -8672,7 +8878,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -8685,20 +8891,20 @@ Module num.
     
     Module Impl_core_ops_bit_BitAnd_for_core_num_saturating_Saturating_isize.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "isize" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "isize" ].
       
       (*             type Output = Saturating<$t>; *)
       Definition _Output : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "isize" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "isize" ].
       
       (*
                   fn bitand(self, other: Saturating<$t>) -> Saturating<$t> {
                       Saturating(self.0 & other.0)
                   }
       *)
-      Definition bitand (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition bitand (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -8721,7 +8927,7 @@ Module num.
                     |)
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -8735,16 +8941,16 @@ Module num.
     
     Module Impl_core_ops_bit_BitAndAssign_for_core_num_saturating_Saturating_isize.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "isize" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "isize" ].
       
       (*
                   fn bitand_assign(&mut self, other: Saturating<$t>) {
                       *self = *self & other;
                   }
       *)
-      Definition bitand_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition bitand_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -8755,8 +8961,12 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::bit::BitAnd",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "isize" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "isize" ]
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "isize" ],
+                      [
+                        Ty.apply
+                          (Ty.path "core::num::saturating::Saturating")
+                          []
+                          [ Ty.path "isize" ]
                       ],
                       "bitand",
                       []
@@ -8766,7 +8976,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -8779,16 +8989,16 @@ Module num.
     
     Module Impl_core_ops_bit_BitAndAssign_isize_for_core_num_saturating_Saturating_isize.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "isize" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "isize" ].
       
       (*
                   fn bitand_assign(&mut self, other: $t) {
                       *self = *self & Saturating(other);
                   }
       *)
-      Definition bitand_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition bitand_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -8799,8 +9009,12 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::bit::BitAnd",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "isize" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "isize" ]
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "isize" ],
+                      [
+                        Ty.apply
+                          (Ty.path "core::num::saturating::Saturating")
+                          []
+                          [ Ty.path "isize" ]
                       ],
                       "bitand",
                       []
@@ -8813,7 +9027,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -8826,20 +9040,20 @@ Module num.
     
     Module Impl_core_ops_arith_Add_for_core_num_saturating_Saturating_i8.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i8" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ].
       
       (*             type Output = Saturating<$t>; *)
       Definition _Output : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i8" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ].
       
       (*
                   fn add(self, other: Saturating<$t>) -> Saturating<$t> {
                       Saturating(self.0.saturating_add(other.0))
                   }
       *)
-      Definition add (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition add (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -8866,7 +9080,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -8880,16 +9094,16 @@ Module num.
     
     Module Impl_core_ops_arith_AddAssign_for_core_num_saturating_Saturating_i8.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i8" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ].
       
       (*
                   fn add_assign(&mut self, other: Saturating<$t>) {
                       *self = *self + other;
                   }
       *)
-      Definition add_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition add_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -8900,8 +9114,9 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Add",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i8" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i8" ] ],
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ]
+                      ],
                       "add",
                       []
                     |),
@@ -8910,7 +9125,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -8923,16 +9138,16 @@ Module num.
     
     Module Impl_core_ops_arith_AddAssign_i8_for_core_num_saturating_Saturating_i8.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i8" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ].
       
       (*
                   fn add_assign(&mut self, other: $t) {
                       *self = *self + Saturating(other);
                   }
       *)
-      Definition add_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition add_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -8943,8 +9158,9 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Add",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i8" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i8" ] ],
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ]
+                      ],
                       "add",
                       []
                     |),
@@ -8956,7 +9172,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -8969,20 +9185,20 @@ Module num.
     
     Module Impl_core_ops_arith_Sub_for_core_num_saturating_Saturating_i8.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i8" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ].
       
       (*             type Output = Saturating<$t>; *)
       Definition _Output : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i8" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ].
       
       (*
                   fn sub(self, other: Saturating<$t>) -> Saturating<$t> {
                       Saturating(self.0.saturating_sub(other.0))
                   }
       *)
-      Definition sub (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition sub (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -9009,7 +9225,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -9023,16 +9239,16 @@ Module num.
     
     Module Impl_core_ops_arith_SubAssign_for_core_num_saturating_Saturating_i8.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i8" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ].
       
       (*
                   fn sub_assign(&mut self, other: Saturating<$t>) {
                       *self = *self - other;
                   }
       *)
-      Definition sub_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition sub_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -9043,8 +9259,9 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Sub",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i8" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i8" ] ],
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ]
+                      ],
                       "sub",
                       []
                     |),
@@ -9053,7 +9270,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -9066,16 +9283,16 @@ Module num.
     
     Module Impl_core_ops_arith_SubAssign_i8_for_core_num_saturating_Saturating_i8.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i8" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ].
       
       (*
                   fn sub_assign(&mut self, other: $t) {
                       *self = *self - Saturating(other);
                   }
       *)
-      Definition sub_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition sub_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -9086,8 +9303,9 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Sub",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i8" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i8" ] ],
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ]
+                      ],
                       "sub",
                       []
                     |),
@@ -9099,7 +9317,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -9112,20 +9330,20 @@ Module num.
     
     Module Impl_core_ops_arith_Mul_for_core_num_saturating_Saturating_i8.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i8" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ].
       
       (*             type Output = Saturating<$t>; *)
       Definition _Output : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i8" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ].
       
       (*
                   fn mul(self, other: Saturating<$t>) -> Saturating<$t> {
                       Saturating(self.0.saturating_mul(other.0))
                   }
       *)
-      Definition mul (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition mul (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -9152,7 +9370,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -9166,16 +9384,16 @@ Module num.
     
     Module Impl_core_ops_arith_MulAssign_for_core_num_saturating_Saturating_i8.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i8" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ].
       
       (*
                   fn mul_assign(&mut self, other: Saturating<$t>) {
                       *self = *self * other;
                   }
       *)
-      Definition mul_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition mul_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -9186,8 +9404,9 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Mul",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i8" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i8" ] ],
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ]
+                      ],
                       "mul",
                       []
                     |),
@@ -9196,7 +9415,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -9209,16 +9428,16 @@ Module num.
     
     Module Impl_core_ops_arith_MulAssign_i8_for_core_num_saturating_Saturating_i8.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i8" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ].
       
       (*
                   fn mul_assign(&mut self, other: $t) {
                       *self = *self * Saturating(other);
                   }
       *)
-      Definition mul_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition mul_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -9229,8 +9448,9 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Mul",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i8" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i8" ] ],
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ]
+                      ],
                       "mul",
                       []
                     |),
@@ -9242,7 +9462,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -9255,20 +9475,20 @@ Module num.
     
     Module Impl_core_ops_arith_Div_for_core_num_saturating_Saturating_i8.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i8" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ].
       
       (*             type Output = Saturating<$t>; *)
       Definition _Output : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i8" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ].
       
       (*
                   fn div(self, other: Saturating<$t>) -> Saturating<$t> {
                       Saturating(self.0.saturating_div(other.0))
                   }
       *)
-      Definition div (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition div (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -9295,7 +9515,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -9309,16 +9529,16 @@ Module num.
     
     Module Impl_core_ops_arith_DivAssign_for_core_num_saturating_Saturating_i8.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i8" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ].
       
       (*
                   fn div_assign(&mut self, other: Saturating<$t>) {
                       *self = *self / other;
                   }
       *)
-      Definition div_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition div_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -9329,8 +9549,9 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Div",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i8" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i8" ] ],
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ]
+                      ],
                       "div",
                       []
                     |),
@@ -9339,7 +9560,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -9352,16 +9573,16 @@ Module num.
     
     Module Impl_core_ops_arith_DivAssign_i8_for_core_num_saturating_Saturating_i8.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i8" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ].
       
       (*
                   fn div_assign(&mut self, other: $t) {
                       *self = *self / Saturating(other);
                   }
       *)
-      Definition div_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition div_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -9372,8 +9593,9 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Div",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i8" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i8" ] ],
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ]
+                      ],
                       "div",
                       []
                     |),
@@ -9385,7 +9607,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -9398,20 +9620,20 @@ Module num.
     
     Module Impl_core_ops_arith_Rem_for_core_num_saturating_Saturating_i8.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i8" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ].
       
       (*             type Output = Saturating<$t>; *)
       Definition _Output : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i8" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ].
       
       (*
                   fn rem(self, other: Saturating<$t>) -> Saturating<$t> {
                       Saturating(self.0.rem(other.0))
                   }
       *)
-      Definition rem (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition rem (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -9444,7 +9666,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -9458,16 +9680,16 @@ Module num.
     
     Module Impl_core_ops_arith_RemAssign_for_core_num_saturating_Saturating_i8.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i8" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ].
       
       (*
                   fn rem_assign(&mut self, other: Saturating<$t>) {
                       *self = *self % other;
                   }
       *)
-      Definition rem_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition rem_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -9478,8 +9700,9 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Rem",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i8" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i8" ] ],
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ]
+                      ],
                       "rem",
                       []
                     |),
@@ -9488,7 +9711,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -9501,16 +9724,16 @@ Module num.
     
     Module Impl_core_ops_arith_RemAssign_i8_for_core_num_saturating_Saturating_i8.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i8" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ].
       
       (*
                   fn rem_assign(&mut self, other: $t) {
                       *self = *self % Saturating(other);
                   }
       *)
-      Definition rem_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition rem_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -9521,8 +9744,9 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Rem",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i8" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i8" ] ],
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ]
+                      ],
                       "rem",
                       []
                     |),
@@ -9534,7 +9758,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -9547,20 +9771,20 @@ Module num.
     
     Module Impl_core_ops_bit_Not_for_core_num_saturating_Saturating_i8.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i8" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ].
       
       (*             type Output = Saturating<$t>; *)
       Definition _Output : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i8" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ].
       
       (*
                   fn not(self) -> Saturating<$t> {
                       Saturating(!self.0)
                   }
       *)
-      Definition not (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition not (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -9575,7 +9799,7 @@ Module num.
                     |)
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -9589,20 +9813,20 @@ Module num.
     
     Module Impl_core_ops_bit_BitXor_for_core_num_saturating_Saturating_i8.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i8" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ].
       
       (*             type Output = Saturating<$t>; *)
       Definition _Output : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i8" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ].
       
       (*
                   fn bitxor(self, other: Saturating<$t>) -> Saturating<$t> {
                       Saturating(self.0 ^ other.0)
                   }
       *)
-      Definition bitxor (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition bitxor (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -9625,7 +9849,7 @@ Module num.
                     |)
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -9639,16 +9863,16 @@ Module num.
     
     Module Impl_core_ops_bit_BitXorAssign_for_core_num_saturating_Saturating_i8.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i8" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ].
       
       (*
                   fn bitxor_assign(&mut self, other: Saturating<$t>) {
                       *self = *self ^ other;
                   }
       *)
-      Definition bitxor_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition bitxor_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -9659,8 +9883,9 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::bit::BitXor",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i8" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i8" ] ],
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ]
+                      ],
                       "bitxor",
                       []
                     |),
@@ -9669,7 +9894,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -9682,16 +9907,16 @@ Module num.
     
     Module Impl_core_ops_bit_BitXorAssign_i8_for_core_num_saturating_Saturating_i8.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i8" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ].
       
       (*
                   fn bitxor_assign(&mut self, other: $t) {
                       *self = *self ^ Saturating(other);
                   }
       *)
-      Definition bitxor_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition bitxor_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -9702,8 +9927,9 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::bit::BitXor",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i8" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i8" ] ],
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ]
+                      ],
                       "bitxor",
                       []
                     |),
@@ -9715,7 +9941,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -9728,20 +9954,20 @@ Module num.
     
     Module Impl_core_ops_bit_BitOr_for_core_num_saturating_Saturating_i8.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i8" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ].
       
       (*             type Output = Saturating<$t>; *)
       Definition _Output : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i8" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ].
       
       (*
                   fn bitor(self, other: Saturating<$t>) -> Saturating<$t> {
                       Saturating(self.0 | other.0)
                   }
       *)
-      Definition bitor (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition bitor (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -9764,7 +9990,7 @@ Module num.
                     |)
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -9778,16 +10004,16 @@ Module num.
     
     Module Impl_core_ops_bit_BitOrAssign_for_core_num_saturating_Saturating_i8.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i8" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ].
       
       (*
                   fn bitor_assign(&mut self, other: Saturating<$t>) {
                       *self = *self | other;
                   }
       *)
-      Definition bitor_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition bitor_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -9798,8 +10024,9 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::bit::BitOr",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i8" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i8" ] ],
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ]
+                      ],
                       "bitor",
                       []
                     |),
@@ -9808,7 +10035,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -9821,16 +10048,16 @@ Module num.
     
     Module Impl_core_ops_bit_BitOrAssign_i8_for_core_num_saturating_Saturating_i8.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i8" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ].
       
       (*
                   fn bitor_assign(&mut self, other: $t) {
                       *self = *self | Saturating(other);
                   }
       *)
-      Definition bitor_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition bitor_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -9841,8 +10068,9 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::bit::BitOr",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i8" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i8" ] ],
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ]
+                      ],
                       "bitor",
                       []
                     |),
@@ -9854,7 +10082,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -9867,20 +10095,20 @@ Module num.
     
     Module Impl_core_ops_bit_BitAnd_for_core_num_saturating_Saturating_i8.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i8" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ].
       
       (*             type Output = Saturating<$t>; *)
       Definition _Output : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i8" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ].
       
       (*
                   fn bitand(self, other: Saturating<$t>) -> Saturating<$t> {
                       Saturating(self.0 & other.0)
                   }
       *)
-      Definition bitand (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition bitand (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -9903,7 +10131,7 @@ Module num.
                     |)
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -9917,16 +10145,16 @@ Module num.
     
     Module Impl_core_ops_bit_BitAndAssign_for_core_num_saturating_Saturating_i8.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i8" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ].
       
       (*
                   fn bitand_assign(&mut self, other: Saturating<$t>) {
                       *self = *self & other;
                   }
       *)
-      Definition bitand_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition bitand_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -9937,8 +10165,9 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::bit::BitAnd",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i8" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i8" ] ],
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ]
+                      ],
                       "bitand",
                       []
                     |),
@@ -9947,7 +10176,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -9960,16 +10189,16 @@ Module num.
     
     Module Impl_core_ops_bit_BitAndAssign_i8_for_core_num_saturating_Saturating_i8.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i8" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ].
       
       (*
                   fn bitand_assign(&mut self, other: $t) {
                       *self = *self & Saturating(other);
                   }
       *)
-      Definition bitand_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition bitand_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -9980,8 +10209,9 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::bit::BitAnd",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i8" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i8" ] ],
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ]
+                      ],
                       "bitand",
                       []
                     |),
@@ -9993,7 +10223,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -10006,20 +10236,20 @@ Module num.
     
     Module Impl_core_ops_arith_Add_for_core_num_saturating_Saturating_i16.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i16" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ].
       
       (*             type Output = Saturating<$t>; *)
       Definition _Output : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i16" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ].
       
       (*
                   fn add(self, other: Saturating<$t>) -> Saturating<$t> {
                       Saturating(self.0.saturating_add(other.0))
                   }
       *)
-      Definition add (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition add (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -10046,7 +10276,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -10060,16 +10290,16 @@ Module num.
     
     Module Impl_core_ops_arith_AddAssign_for_core_num_saturating_Saturating_i16.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i16" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ].
       
       (*
                   fn add_assign(&mut self, other: Saturating<$t>) {
                       *self = *self + other;
                   }
       *)
-      Definition add_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition add_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -10080,8 +10310,9 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Add",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i16" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i16" ] ],
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ]
+                      ],
                       "add",
                       []
                     |),
@@ -10090,7 +10321,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -10103,16 +10334,16 @@ Module num.
     
     Module Impl_core_ops_arith_AddAssign_i16_for_core_num_saturating_Saturating_i16.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i16" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ].
       
       (*
                   fn add_assign(&mut self, other: $t) {
                       *self = *self + Saturating(other);
                   }
       *)
-      Definition add_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition add_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -10123,8 +10354,9 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Add",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i16" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i16" ] ],
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ]
+                      ],
                       "add",
                       []
                     |),
@@ -10136,7 +10368,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -10149,20 +10381,20 @@ Module num.
     
     Module Impl_core_ops_arith_Sub_for_core_num_saturating_Saturating_i16.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i16" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ].
       
       (*             type Output = Saturating<$t>; *)
       Definition _Output : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i16" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ].
       
       (*
                   fn sub(self, other: Saturating<$t>) -> Saturating<$t> {
                       Saturating(self.0.saturating_sub(other.0))
                   }
       *)
-      Definition sub (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition sub (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -10189,7 +10421,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -10203,16 +10435,16 @@ Module num.
     
     Module Impl_core_ops_arith_SubAssign_for_core_num_saturating_Saturating_i16.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i16" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ].
       
       (*
                   fn sub_assign(&mut self, other: Saturating<$t>) {
                       *self = *self - other;
                   }
       *)
-      Definition sub_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition sub_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -10223,8 +10455,9 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Sub",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i16" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i16" ] ],
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ]
+                      ],
                       "sub",
                       []
                     |),
@@ -10233,7 +10466,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -10246,16 +10479,16 @@ Module num.
     
     Module Impl_core_ops_arith_SubAssign_i16_for_core_num_saturating_Saturating_i16.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i16" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ].
       
       (*
                   fn sub_assign(&mut self, other: $t) {
                       *self = *self - Saturating(other);
                   }
       *)
-      Definition sub_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition sub_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -10266,8 +10499,9 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Sub",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i16" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i16" ] ],
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ]
+                      ],
                       "sub",
                       []
                     |),
@@ -10279,7 +10513,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -10292,20 +10526,20 @@ Module num.
     
     Module Impl_core_ops_arith_Mul_for_core_num_saturating_Saturating_i16.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i16" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ].
       
       (*             type Output = Saturating<$t>; *)
       Definition _Output : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i16" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ].
       
       (*
                   fn mul(self, other: Saturating<$t>) -> Saturating<$t> {
                       Saturating(self.0.saturating_mul(other.0))
                   }
       *)
-      Definition mul (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition mul (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -10332,7 +10566,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -10346,16 +10580,16 @@ Module num.
     
     Module Impl_core_ops_arith_MulAssign_for_core_num_saturating_Saturating_i16.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i16" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ].
       
       (*
                   fn mul_assign(&mut self, other: Saturating<$t>) {
                       *self = *self * other;
                   }
       *)
-      Definition mul_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition mul_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -10366,8 +10600,9 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Mul",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i16" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i16" ] ],
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ]
+                      ],
                       "mul",
                       []
                     |),
@@ -10376,7 +10611,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -10389,16 +10624,16 @@ Module num.
     
     Module Impl_core_ops_arith_MulAssign_i16_for_core_num_saturating_Saturating_i16.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i16" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ].
       
       (*
                   fn mul_assign(&mut self, other: $t) {
                       *self = *self * Saturating(other);
                   }
       *)
-      Definition mul_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition mul_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -10409,8 +10644,9 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Mul",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i16" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i16" ] ],
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ]
+                      ],
                       "mul",
                       []
                     |),
@@ -10422,7 +10658,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -10435,20 +10671,20 @@ Module num.
     
     Module Impl_core_ops_arith_Div_for_core_num_saturating_Saturating_i16.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i16" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ].
       
       (*             type Output = Saturating<$t>; *)
       Definition _Output : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i16" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ].
       
       (*
                   fn div(self, other: Saturating<$t>) -> Saturating<$t> {
                       Saturating(self.0.saturating_div(other.0))
                   }
       *)
-      Definition div (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition div (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -10475,7 +10711,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -10489,16 +10725,16 @@ Module num.
     
     Module Impl_core_ops_arith_DivAssign_for_core_num_saturating_Saturating_i16.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i16" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ].
       
       (*
                   fn div_assign(&mut self, other: Saturating<$t>) {
                       *self = *self / other;
                   }
       *)
-      Definition div_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition div_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -10509,8 +10745,9 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Div",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i16" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i16" ] ],
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ]
+                      ],
                       "div",
                       []
                     |),
@@ -10519,7 +10756,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -10532,16 +10769,16 @@ Module num.
     
     Module Impl_core_ops_arith_DivAssign_i16_for_core_num_saturating_Saturating_i16.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i16" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ].
       
       (*
                   fn div_assign(&mut self, other: $t) {
                       *self = *self / Saturating(other);
                   }
       *)
-      Definition div_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition div_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -10552,8 +10789,9 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Div",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i16" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i16" ] ],
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ]
+                      ],
                       "div",
                       []
                     |),
@@ -10565,7 +10803,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -10578,20 +10816,20 @@ Module num.
     
     Module Impl_core_ops_arith_Rem_for_core_num_saturating_Saturating_i16.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i16" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ].
       
       (*             type Output = Saturating<$t>; *)
       Definition _Output : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i16" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ].
       
       (*
                   fn rem(self, other: Saturating<$t>) -> Saturating<$t> {
                       Saturating(self.0.rem(other.0))
                   }
       *)
-      Definition rem (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition rem (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -10624,7 +10862,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -10638,16 +10876,16 @@ Module num.
     
     Module Impl_core_ops_arith_RemAssign_for_core_num_saturating_Saturating_i16.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i16" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ].
       
       (*
                   fn rem_assign(&mut self, other: Saturating<$t>) {
                       *self = *self % other;
                   }
       *)
-      Definition rem_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition rem_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -10658,8 +10896,9 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Rem",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i16" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i16" ] ],
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ]
+                      ],
                       "rem",
                       []
                     |),
@@ -10668,7 +10907,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -10681,16 +10920,16 @@ Module num.
     
     Module Impl_core_ops_arith_RemAssign_i16_for_core_num_saturating_Saturating_i16.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i16" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ].
       
       (*
                   fn rem_assign(&mut self, other: $t) {
                       *self = *self % Saturating(other);
                   }
       *)
-      Definition rem_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition rem_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -10701,8 +10940,9 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Rem",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i16" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i16" ] ],
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ]
+                      ],
                       "rem",
                       []
                     |),
@@ -10714,7 +10954,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -10727,20 +10967,20 @@ Module num.
     
     Module Impl_core_ops_bit_Not_for_core_num_saturating_Saturating_i16.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i16" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ].
       
       (*             type Output = Saturating<$t>; *)
       Definition _Output : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i16" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ].
       
       (*
                   fn not(self) -> Saturating<$t> {
                       Saturating(!self.0)
                   }
       *)
-      Definition not (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition not (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -10755,7 +10995,7 @@ Module num.
                     |)
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -10769,20 +11009,20 @@ Module num.
     
     Module Impl_core_ops_bit_BitXor_for_core_num_saturating_Saturating_i16.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i16" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ].
       
       (*             type Output = Saturating<$t>; *)
       Definition _Output : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i16" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ].
       
       (*
                   fn bitxor(self, other: Saturating<$t>) -> Saturating<$t> {
                       Saturating(self.0 ^ other.0)
                   }
       *)
-      Definition bitxor (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition bitxor (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -10805,7 +11045,7 @@ Module num.
                     |)
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -10819,16 +11059,16 @@ Module num.
     
     Module Impl_core_ops_bit_BitXorAssign_for_core_num_saturating_Saturating_i16.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i16" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ].
       
       (*
                   fn bitxor_assign(&mut self, other: Saturating<$t>) {
                       *self = *self ^ other;
                   }
       *)
-      Definition bitxor_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition bitxor_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -10839,8 +11079,9 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::bit::BitXor",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i16" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i16" ] ],
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ]
+                      ],
                       "bitxor",
                       []
                     |),
@@ -10849,7 +11090,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -10862,16 +11103,16 @@ Module num.
     
     Module Impl_core_ops_bit_BitXorAssign_i16_for_core_num_saturating_Saturating_i16.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i16" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ].
       
       (*
                   fn bitxor_assign(&mut self, other: $t) {
                       *self = *self ^ Saturating(other);
                   }
       *)
-      Definition bitxor_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition bitxor_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -10882,8 +11123,9 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::bit::BitXor",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i16" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i16" ] ],
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ]
+                      ],
                       "bitxor",
                       []
                     |),
@@ -10895,7 +11137,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -10908,20 +11150,20 @@ Module num.
     
     Module Impl_core_ops_bit_BitOr_for_core_num_saturating_Saturating_i16.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i16" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ].
       
       (*             type Output = Saturating<$t>; *)
       Definition _Output : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i16" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ].
       
       (*
                   fn bitor(self, other: Saturating<$t>) -> Saturating<$t> {
                       Saturating(self.0 | other.0)
                   }
       *)
-      Definition bitor (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition bitor (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -10944,7 +11186,7 @@ Module num.
                     |)
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -10958,16 +11200,16 @@ Module num.
     
     Module Impl_core_ops_bit_BitOrAssign_for_core_num_saturating_Saturating_i16.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i16" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ].
       
       (*
                   fn bitor_assign(&mut self, other: Saturating<$t>) {
                       *self = *self | other;
                   }
       *)
-      Definition bitor_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition bitor_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -10978,8 +11220,9 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::bit::BitOr",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i16" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i16" ] ],
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ]
+                      ],
                       "bitor",
                       []
                     |),
@@ -10988,7 +11231,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -11001,16 +11244,16 @@ Module num.
     
     Module Impl_core_ops_bit_BitOrAssign_i16_for_core_num_saturating_Saturating_i16.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i16" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ].
       
       (*
                   fn bitor_assign(&mut self, other: $t) {
                       *self = *self | Saturating(other);
                   }
       *)
-      Definition bitor_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition bitor_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -11021,8 +11264,9 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::bit::BitOr",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i16" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i16" ] ],
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ]
+                      ],
                       "bitor",
                       []
                     |),
@@ -11034,7 +11278,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -11047,20 +11291,20 @@ Module num.
     
     Module Impl_core_ops_bit_BitAnd_for_core_num_saturating_Saturating_i16.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i16" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ].
       
       (*             type Output = Saturating<$t>; *)
       Definition _Output : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i16" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ].
       
       (*
                   fn bitand(self, other: Saturating<$t>) -> Saturating<$t> {
                       Saturating(self.0 & other.0)
                   }
       *)
-      Definition bitand (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition bitand (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -11083,7 +11327,7 @@ Module num.
                     |)
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -11097,16 +11341,16 @@ Module num.
     
     Module Impl_core_ops_bit_BitAndAssign_for_core_num_saturating_Saturating_i16.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i16" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ].
       
       (*
                   fn bitand_assign(&mut self, other: Saturating<$t>) {
                       *self = *self & other;
                   }
       *)
-      Definition bitand_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition bitand_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -11117,8 +11361,9 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::bit::BitAnd",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i16" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i16" ] ],
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ]
+                      ],
                       "bitand",
                       []
                     |),
@@ -11127,7 +11372,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -11140,16 +11385,16 @@ Module num.
     
     Module Impl_core_ops_bit_BitAndAssign_i16_for_core_num_saturating_Saturating_i16.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i16" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ].
       
       (*
                   fn bitand_assign(&mut self, other: $t) {
                       *self = *self & Saturating(other);
                   }
       *)
-      Definition bitand_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition bitand_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -11160,8 +11405,9 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::bit::BitAnd",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i16" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i16" ] ],
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ]
+                      ],
                       "bitand",
                       []
                     |),
@@ -11173,7 +11419,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -11186,20 +11432,20 @@ Module num.
     
     Module Impl_core_ops_arith_Add_for_core_num_saturating_Saturating_i32.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i32" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ].
       
       (*             type Output = Saturating<$t>; *)
       Definition _Output : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i32" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ].
       
       (*
                   fn add(self, other: Saturating<$t>) -> Saturating<$t> {
                       Saturating(self.0.saturating_add(other.0))
                   }
       *)
-      Definition add (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition add (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -11226,7 +11472,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -11240,16 +11486,16 @@ Module num.
     
     Module Impl_core_ops_arith_AddAssign_for_core_num_saturating_Saturating_i32.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i32" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ].
       
       (*
                   fn add_assign(&mut self, other: Saturating<$t>) {
                       *self = *self + other;
                   }
       *)
-      Definition add_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition add_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -11260,8 +11506,9 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Add",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i32" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i32" ] ],
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ]
+                      ],
                       "add",
                       []
                     |),
@@ -11270,7 +11517,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -11283,16 +11530,16 @@ Module num.
     
     Module Impl_core_ops_arith_AddAssign_i32_for_core_num_saturating_Saturating_i32.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i32" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ].
       
       (*
                   fn add_assign(&mut self, other: $t) {
                       *self = *self + Saturating(other);
                   }
       *)
-      Definition add_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition add_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -11303,8 +11550,9 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Add",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i32" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i32" ] ],
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ]
+                      ],
                       "add",
                       []
                     |),
@@ -11316,7 +11564,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -11329,20 +11577,20 @@ Module num.
     
     Module Impl_core_ops_arith_Sub_for_core_num_saturating_Saturating_i32.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i32" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ].
       
       (*             type Output = Saturating<$t>; *)
       Definition _Output : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i32" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ].
       
       (*
                   fn sub(self, other: Saturating<$t>) -> Saturating<$t> {
                       Saturating(self.0.saturating_sub(other.0))
                   }
       *)
-      Definition sub (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition sub (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -11369,7 +11617,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -11383,16 +11631,16 @@ Module num.
     
     Module Impl_core_ops_arith_SubAssign_for_core_num_saturating_Saturating_i32.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i32" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ].
       
       (*
                   fn sub_assign(&mut self, other: Saturating<$t>) {
                       *self = *self - other;
                   }
       *)
-      Definition sub_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition sub_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -11403,8 +11651,9 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Sub",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i32" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i32" ] ],
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ]
+                      ],
                       "sub",
                       []
                     |),
@@ -11413,7 +11662,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -11426,16 +11675,16 @@ Module num.
     
     Module Impl_core_ops_arith_SubAssign_i32_for_core_num_saturating_Saturating_i32.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i32" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ].
       
       (*
                   fn sub_assign(&mut self, other: $t) {
                       *self = *self - Saturating(other);
                   }
       *)
-      Definition sub_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition sub_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -11446,8 +11695,9 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Sub",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i32" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i32" ] ],
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ]
+                      ],
                       "sub",
                       []
                     |),
@@ -11459,7 +11709,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -11472,20 +11722,20 @@ Module num.
     
     Module Impl_core_ops_arith_Mul_for_core_num_saturating_Saturating_i32.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i32" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ].
       
       (*             type Output = Saturating<$t>; *)
       Definition _Output : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i32" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ].
       
       (*
                   fn mul(self, other: Saturating<$t>) -> Saturating<$t> {
                       Saturating(self.0.saturating_mul(other.0))
                   }
       *)
-      Definition mul (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition mul (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -11512,7 +11762,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -11526,16 +11776,16 @@ Module num.
     
     Module Impl_core_ops_arith_MulAssign_for_core_num_saturating_Saturating_i32.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i32" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ].
       
       (*
                   fn mul_assign(&mut self, other: Saturating<$t>) {
                       *self = *self * other;
                   }
       *)
-      Definition mul_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition mul_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -11546,8 +11796,9 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Mul",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i32" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i32" ] ],
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ]
+                      ],
                       "mul",
                       []
                     |),
@@ -11556,7 +11807,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -11569,16 +11820,16 @@ Module num.
     
     Module Impl_core_ops_arith_MulAssign_i32_for_core_num_saturating_Saturating_i32.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i32" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ].
       
       (*
                   fn mul_assign(&mut self, other: $t) {
                       *self = *self * Saturating(other);
                   }
       *)
-      Definition mul_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition mul_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -11589,8 +11840,9 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Mul",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i32" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i32" ] ],
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ]
+                      ],
                       "mul",
                       []
                     |),
@@ -11602,7 +11854,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -11615,20 +11867,20 @@ Module num.
     
     Module Impl_core_ops_arith_Div_for_core_num_saturating_Saturating_i32.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i32" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ].
       
       (*             type Output = Saturating<$t>; *)
       Definition _Output : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i32" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ].
       
       (*
                   fn div(self, other: Saturating<$t>) -> Saturating<$t> {
                       Saturating(self.0.saturating_div(other.0))
                   }
       *)
-      Definition div (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition div (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -11655,7 +11907,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -11669,16 +11921,16 @@ Module num.
     
     Module Impl_core_ops_arith_DivAssign_for_core_num_saturating_Saturating_i32.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i32" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ].
       
       (*
                   fn div_assign(&mut self, other: Saturating<$t>) {
                       *self = *self / other;
                   }
       *)
-      Definition div_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition div_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -11689,8 +11941,9 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Div",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i32" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i32" ] ],
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ]
+                      ],
                       "div",
                       []
                     |),
@@ -11699,7 +11952,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -11712,16 +11965,16 @@ Module num.
     
     Module Impl_core_ops_arith_DivAssign_i32_for_core_num_saturating_Saturating_i32.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i32" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ].
       
       (*
                   fn div_assign(&mut self, other: $t) {
                       *self = *self / Saturating(other);
                   }
       *)
-      Definition div_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition div_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -11732,8 +11985,9 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Div",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i32" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i32" ] ],
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ]
+                      ],
                       "div",
                       []
                     |),
@@ -11745,7 +11999,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -11758,20 +12012,20 @@ Module num.
     
     Module Impl_core_ops_arith_Rem_for_core_num_saturating_Saturating_i32.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i32" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ].
       
       (*             type Output = Saturating<$t>; *)
       Definition _Output : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i32" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ].
       
       (*
                   fn rem(self, other: Saturating<$t>) -> Saturating<$t> {
                       Saturating(self.0.rem(other.0))
                   }
       *)
-      Definition rem (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition rem (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -11804,7 +12058,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -11818,16 +12072,16 @@ Module num.
     
     Module Impl_core_ops_arith_RemAssign_for_core_num_saturating_Saturating_i32.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i32" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ].
       
       (*
                   fn rem_assign(&mut self, other: Saturating<$t>) {
                       *self = *self % other;
                   }
       *)
-      Definition rem_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition rem_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -11838,8 +12092,9 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Rem",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i32" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i32" ] ],
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ]
+                      ],
                       "rem",
                       []
                     |),
@@ -11848,7 +12103,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -11861,16 +12116,16 @@ Module num.
     
     Module Impl_core_ops_arith_RemAssign_i32_for_core_num_saturating_Saturating_i32.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i32" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ].
       
       (*
                   fn rem_assign(&mut self, other: $t) {
                       *self = *self % Saturating(other);
                   }
       *)
-      Definition rem_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition rem_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -11881,8 +12136,9 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Rem",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i32" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i32" ] ],
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ]
+                      ],
                       "rem",
                       []
                     |),
@@ -11894,7 +12150,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -11907,20 +12163,20 @@ Module num.
     
     Module Impl_core_ops_bit_Not_for_core_num_saturating_Saturating_i32.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i32" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ].
       
       (*             type Output = Saturating<$t>; *)
       Definition _Output : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i32" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ].
       
       (*
                   fn not(self) -> Saturating<$t> {
                       Saturating(!self.0)
                   }
       *)
-      Definition not (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition not (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -11935,7 +12191,7 @@ Module num.
                     |)
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -11949,20 +12205,20 @@ Module num.
     
     Module Impl_core_ops_bit_BitXor_for_core_num_saturating_Saturating_i32.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i32" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ].
       
       (*             type Output = Saturating<$t>; *)
       Definition _Output : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i32" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ].
       
       (*
                   fn bitxor(self, other: Saturating<$t>) -> Saturating<$t> {
                       Saturating(self.0 ^ other.0)
                   }
       *)
-      Definition bitxor (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition bitxor (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -11985,7 +12241,7 @@ Module num.
                     |)
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -11999,16 +12255,16 @@ Module num.
     
     Module Impl_core_ops_bit_BitXorAssign_for_core_num_saturating_Saturating_i32.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i32" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ].
       
       (*
                   fn bitxor_assign(&mut self, other: Saturating<$t>) {
                       *self = *self ^ other;
                   }
       *)
-      Definition bitxor_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition bitxor_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -12019,8 +12275,9 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::bit::BitXor",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i32" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i32" ] ],
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ]
+                      ],
                       "bitxor",
                       []
                     |),
@@ -12029,7 +12286,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -12042,16 +12299,16 @@ Module num.
     
     Module Impl_core_ops_bit_BitXorAssign_i32_for_core_num_saturating_Saturating_i32.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i32" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ].
       
       (*
                   fn bitxor_assign(&mut self, other: $t) {
                       *self = *self ^ Saturating(other);
                   }
       *)
-      Definition bitxor_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition bitxor_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -12062,8 +12319,9 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::bit::BitXor",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i32" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i32" ] ],
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ]
+                      ],
                       "bitxor",
                       []
                     |),
@@ -12075,7 +12333,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -12088,20 +12346,20 @@ Module num.
     
     Module Impl_core_ops_bit_BitOr_for_core_num_saturating_Saturating_i32.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i32" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ].
       
       (*             type Output = Saturating<$t>; *)
       Definition _Output : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i32" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ].
       
       (*
                   fn bitor(self, other: Saturating<$t>) -> Saturating<$t> {
                       Saturating(self.0 | other.0)
                   }
       *)
-      Definition bitor (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition bitor (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -12124,7 +12382,7 @@ Module num.
                     |)
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -12138,16 +12396,16 @@ Module num.
     
     Module Impl_core_ops_bit_BitOrAssign_for_core_num_saturating_Saturating_i32.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i32" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ].
       
       (*
                   fn bitor_assign(&mut self, other: Saturating<$t>) {
                       *self = *self | other;
                   }
       *)
-      Definition bitor_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition bitor_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -12158,8 +12416,9 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::bit::BitOr",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i32" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i32" ] ],
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ]
+                      ],
                       "bitor",
                       []
                     |),
@@ -12168,7 +12427,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -12181,16 +12440,16 @@ Module num.
     
     Module Impl_core_ops_bit_BitOrAssign_i32_for_core_num_saturating_Saturating_i32.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i32" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ].
       
       (*
                   fn bitor_assign(&mut self, other: $t) {
                       *self = *self | Saturating(other);
                   }
       *)
-      Definition bitor_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition bitor_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -12201,8 +12460,9 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::bit::BitOr",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i32" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i32" ] ],
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ]
+                      ],
                       "bitor",
                       []
                     |),
@@ -12214,7 +12474,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -12227,20 +12487,20 @@ Module num.
     
     Module Impl_core_ops_bit_BitAnd_for_core_num_saturating_Saturating_i32.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i32" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ].
       
       (*             type Output = Saturating<$t>; *)
       Definition _Output : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i32" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ].
       
       (*
                   fn bitand(self, other: Saturating<$t>) -> Saturating<$t> {
                       Saturating(self.0 & other.0)
                   }
       *)
-      Definition bitand (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition bitand (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -12263,7 +12523,7 @@ Module num.
                     |)
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -12277,16 +12537,16 @@ Module num.
     
     Module Impl_core_ops_bit_BitAndAssign_for_core_num_saturating_Saturating_i32.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i32" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ].
       
       (*
                   fn bitand_assign(&mut self, other: Saturating<$t>) {
                       *self = *self & other;
                   }
       *)
-      Definition bitand_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition bitand_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -12297,8 +12557,9 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::bit::BitAnd",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i32" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i32" ] ],
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ]
+                      ],
                       "bitand",
                       []
                     |),
@@ -12307,7 +12568,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -12320,16 +12581,16 @@ Module num.
     
     Module Impl_core_ops_bit_BitAndAssign_i32_for_core_num_saturating_Saturating_i32.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i32" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ].
       
       (*
                   fn bitand_assign(&mut self, other: $t) {
                       *self = *self & Saturating(other);
                   }
       *)
-      Definition bitand_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition bitand_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -12340,8 +12601,9 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::bit::BitAnd",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i32" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i32" ] ],
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ]
+                      ],
                       "bitand",
                       []
                     |),
@@ -12353,7 +12615,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -12366,20 +12628,20 @@ Module num.
     
     Module Impl_core_ops_arith_Add_for_core_num_saturating_Saturating_i64.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i64" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ].
       
       (*             type Output = Saturating<$t>; *)
       Definition _Output : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i64" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ].
       
       (*
                   fn add(self, other: Saturating<$t>) -> Saturating<$t> {
                       Saturating(self.0.saturating_add(other.0))
                   }
       *)
-      Definition add (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition add (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -12406,7 +12668,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -12420,16 +12682,16 @@ Module num.
     
     Module Impl_core_ops_arith_AddAssign_for_core_num_saturating_Saturating_i64.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i64" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ].
       
       (*
                   fn add_assign(&mut self, other: Saturating<$t>) {
                       *self = *self + other;
                   }
       *)
-      Definition add_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition add_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -12440,8 +12702,9 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Add",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i64" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i64" ] ],
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ]
+                      ],
                       "add",
                       []
                     |),
@@ -12450,7 +12713,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -12463,16 +12726,16 @@ Module num.
     
     Module Impl_core_ops_arith_AddAssign_i64_for_core_num_saturating_Saturating_i64.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i64" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ].
       
       (*
                   fn add_assign(&mut self, other: $t) {
                       *self = *self + Saturating(other);
                   }
       *)
-      Definition add_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition add_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -12483,8 +12746,9 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Add",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i64" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i64" ] ],
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ]
+                      ],
                       "add",
                       []
                     |),
@@ -12496,7 +12760,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -12509,20 +12773,20 @@ Module num.
     
     Module Impl_core_ops_arith_Sub_for_core_num_saturating_Saturating_i64.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i64" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ].
       
       (*             type Output = Saturating<$t>; *)
       Definition _Output : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i64" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ].
       
       (*
                   fn sub(self, other: Saturating<$t>) -> Saturating<$t> {
                       Saturating(self.0.saturating_sub(other.0))
                   }
       *)
-      Definition sub (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition sub (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -12549,7 +12813,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -12563,16 +12827,16 @@ Module num.
     
     Module Impl_core_ops_arith_SubAssign_for_core_num_saturating_Saturating_i64.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i64" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ].
       
       (*
                   fn sub_assign(&mut self, other: Saturating<$t>) {
                       *self = *self - other;
                   }
       *)
-      Definition sub_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition sub_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -12583,8 +12847,9 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Sub",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i64" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i64" ] ],
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ]
+                      ],
                       "sub",
                       []
                     |),
@@ -12593,7 +12858,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -12606,16 +12871,16 @@ Module num.
     
     Module Impl_core_ops_arith_SubAssign_i64_for_core_num_saturating_Saturating_i64.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i64" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ].
       
       (*
                   fn sub_assign(&mut self, other: $t) {
                       *self = *self - Saturating(other);
                   }
       *)
-      Definition sub_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition sub_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -12626,8 +12891,9 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Sub",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i64" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i64" ] ],
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ]
+                      ],
                       "sub",
                       []
                     |),
@@ -12639,7 +12905,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -12652,20 +12918,20 @@ Module num.
     
     Module Impl_core_ops_arith_Mul_for_core_num_saturating_Saturating_i64.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i64" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ].
       
       (*             type Output = Saturating<$t>; *)
       Definition _Output : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i64" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ].
       
       (*
                   fn mul(self, other: Saturating<$t>) -> Saturating<$t> {
                       Saturating(self.0.saturating_mul(other.0))
                   }
       *)
-      Definition mul (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition mul (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -12692,7 +12958,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -12706,16 +12972,16 @@ Module num.
     
     Module Impl_core_ops_arith_MulAssign_for_core_num_saturating_Saturating_i64.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i64" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ].
       
       (*
                   fn mul_assign(&mut self, other: Saturating<$t>) {
                       *self = *self * other;
                   }
       *)
-      Definition mul_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition mul_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -12726,8 +12992,9 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Mul",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i64" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i64" ] ],
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ]
+                      ],
                       "mul",
                       []
                     |),
@@ -12736,7 +13003,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -12749,16 +13016,16 @@ Module num.
     
     Module Impl_core_ops_arith_MulAssign_i64_for_core_num_saturating_Saturating_i64.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i64" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ].
       
       (*
                   fn mul_assign(&mut self, other: $t) {
                       *self = *self * Saturating(other);
                   }
       *)
-      Definition mul_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition mul_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -12769,8 +13036,9 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Mul",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i64" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i64" ] ],
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ]
+                      ],
                       "mul",
                       []
                     |),
@@ -12782,7 +13050,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -12795,20 +13063,20 @@ Module num.
     
     Module Impl_core_ops_arith_Div_for_core_num_saturating_Saturating_i64.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i64" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ].
       
       (*             type Output = Saturating<$t>; *)
       Definition _Output : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i64" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ].
       
       (*
                   fn div(self, other: Saturating<$t>) -> Saturating<$t> {
                       Saturating(self.0.saturating_div(other.0))
                   }
       *)
-      Definition div (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition div (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -12835,7 +13103,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -12849,16 +13117,16 @@ Module num.
     
     Module Impl_core_ops_arith_DivAssign_for_core_num_saturating_Saturating_i64.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i64" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ].
       
       (*
                   fn div_assign(&mut self, other: Saturating<$t>) {
                       *self = *self / other;
                   }
       *)
-      Definition div_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition div_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -12869,8 +13137,9 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Div",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i64" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i64" ] ],
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ]
+                      ],
                       "div",
                       []
                     |),
@@ -12879,7 +13148,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -12892,16 +13161,16 @@ Module num.
     
     Module Impl_core_ops_arith_DivAssign_i64_for_core_num_saturating_Saturating_i64.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i64" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ].
       
       (*
                   fn div_assign(&mut self, other: $t) {
                       *self = *self / Saturating(other);
                   }
       *)
-      Definition div_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition div_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -12912,8 +13181,9 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Div",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i64" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i64" ] ],
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ]
+                      ],
                       "div",
                       []
                     |),
@@ -12925,7 +13195,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -12938,20 +13208,20 @@ Module num.
     
     Module Impl_core_ops_arith_Rem_for_core_num_saturating_Saturating_i64.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i64" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ].
       
       (*             type Output = Saturating<$t>; *)
       Definition _Output : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i64" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ].
       
       (*
                   fn rem(self, other: Saturating<$t>) -> Saturating<$t> {
                       Saturating(self.0.rem(other.0))
                   }
       *)
-      Definition rem (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition rem (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -12984,7 +13254,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -12998,16 +13268,16 @@ Module num.
     
     Module Impl_core_ops_arith_RemAssign_for_core_num_saturating_Saturating_i64.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i64" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ].
       
       (*
                   fn rem_assign(&mut self, other: Saturating<$t>) {
                       *self = *self % other;
                   }
       *)
-      Definition rem_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition rem_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -13018,8 +13288,9 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Rem",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i64" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i64" ] ],
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ]
+                      ],
                       "rem",
                       []
                     |),
@@ -13028,7 +13299,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -13041,16 +13312,16 @@ Module num.
     
     Module Impl_core_ops_arith_RemAssign_i64_for_core_num_saturating_Saturating_i64.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i64" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ].
       
       (*
                   fn rem_assign(&mut self, other: $t) {
                       *self = *self % Saturating(other);
                   }
       *)
-      Definition rem_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition rem_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -13061,8 +13332,9 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Rem",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i64" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i64" ] ],
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ]
+                      ],
                       "rem",
                       []
                     |),
@@ -13074,7 +13346,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -13087,20 +13359,20 @@ Module num.
     
     Module Impl_core_ops_bit_Not_for_core_num_saturating_Saturating_i64.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i64" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ].
       
       (*             type Output = Saturating<$t>; *)
       Definition _Output : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i64" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ].
       
       (*
                   fn not(self) -> Saturating<$t> {
                       Saturating(!self.0)
                   }
       *)
-      Definition not (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition not (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -13115,7 +13387,7 @@ Module num.
                     |)
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -13129,20 +13401,20 @@ Module num.
     
     Module Impl_core_ops_bit_BitXor_for_core_num_saturating_Saturating_i64.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i64" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ].
       
       (*             type Output = Saturating<$t>; *)
       Definition _Output : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i64" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ].
       
       (*
                   fn bitxor(self, other: Saturating<$t>) -> Saturating<$t> {
                       Saturating(self.0 ^ other.0)
                   }
       *)
-      Definition bitxor (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition bitxor (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -13165,7 +13437,7 @@ Module num.
                     |)
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -13179,16 +13451,16 @@ Module num.
     
     Module Impl_core_ops_bit_BitXorAssign_for_core_num_saturating_Saturating_i64.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i64" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ].
       
       (*
                   fn bitxor_assign(&mut self, other: Saturating<$t>) {
                       *self = *self ^ other;
                   }
       *)
-      Definition bitxor_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition bitxor_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -13199,8 +13471,9 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::bit::BitXor",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i64" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i64" ] ],
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ]
+                      ],
                       "bitxor",
                       []
                     |),
@@ -13209,7 +13482,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -13222,16 +13495,16 @@ Module num.
     
     Module Impl_core_ops_bit_BitXorAssign_i64_for_core_num_saturating_Saturating_i64.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i64" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ].
       
       (*
                   fn bitxor_assign(&mut self, other: $t) {
                       *self = *self ^ Saturating(other);
                   }
       *)
-      Definition bitxor_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition bitxor_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -13242,8 +13515,9 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::bit::BitXor",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i64" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i64" ] ],
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ]
+                      ],
                       "bitxor",
                       []
                     |),
@@ -13255,7 +13529,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -13268,20 +13542,20 @@ Module num.
     
     Module Impl_core_ops_bit_BitOr_for_core_num_saturating_Saturating_i64.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i64" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ].
       
       (*             type Output = Saturating<$t>; *)
       Definition _Output : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i64" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ].
       
       (*
                   fn bitor(self, other: Saturating<$t>) -> Saturating<$t> {
                       Saturating(self.0 | other.0)
                   }
       *)
-      Definition bitor (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition bitor (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -13304,7 +13578,7 @@ Module num.
                     |)
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -13318,16 +13592,16 @@ Module num.
     
     Module Impl_core_ops_bit_BitOrAssign_for_core_num_saturating_Saturating_i64.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i64" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ].
       
       (*
                   fn bitor_assign(&mut self, other: Saturating<$t>) {
                       *self = *self | other;
                   }
       *)
-      Definition bitor_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition bitor_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -13338,8 +13612,9 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::bit::BitOr",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i64" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i64" ] ],
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ]
+                      ],
                       "bitor",
                       []
                     |),
@@ -13348,7 +13623,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -13361,16 +13636,16 @@ Module num.
     
     Module Impl_core_ops_bit_BitOrAssign_i64_for_core_num_saturating_Saturating_i64.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i64" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ].
       
       (*
                   fn bitor_assign(&mut self, other: $t) {
                       *self = *self | Saturating(other);
                   }
       *)
-      Definition bitor_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition bitor_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -13381,8 +13656,9 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::bit::BitOr",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i64" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i64" ] ],
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ]
+                      ],
                       "bitor",
                       []
                     |),
@@ -13394,7 +13670,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -13407,20 +13683,20 @@ Module num.
     
     Module Impl_core_ops_bit_BitAnd_for_core_num_saturating_Saturating_i64.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i64" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ].
       
       (*             type Output = Saturating<$t>; *)
       Definition _Output : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i64" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ].
       
       (*
                   fn bitand(self, other: Saturating<$t>) -> Saturating<$t> {
                       Saturating(self.0 & other.0)
                   }
       *)
-      Definition bitand (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition bitand (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -13443,7 +13719,7 @@ Module num.
                     |)
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -13457,16 +13733,16 @@ Module num.
     
     Module Impl_core_ops_bit_BitAndAssign_for_core_num_saturating_Saturating_i64.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i64" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ].
       
       (*
                   fn bitand_assign(&mut self, other: Saturating<$t>) {
                       *self = *self & other;
                   }
       *)
-      Definition bitand_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition bitand_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -13477,8 +13753,9 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::bit::BitAnd",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i64" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i64" ] ],
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ]
+                      ],
                       "bitand",
                       []
                     |),
@@ -13487,7 +13764,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -13500,16 +13777,16 @@ Module num.
     
     Module Impl_core_ops_bit_BitAndAssign_i64_for_core_num_saturating_Saturating_i64.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i64" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ].
       
       (*
                   fn bitand_assign(&mut self, other: $t) {
                       *self = *self & Saturating(other);
                   }
       *)
-      Definition bitand_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition bitand_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -13520,8 +13797,9 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::bit::BitAnd",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i64" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i64" ] ],
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ]
+                      ],
                       "bitand",
                       []
                     |),
@@ -13533,7 +13811,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -13546,20 +13824,20 @@ Module num.
     
     Module Impl_core_ops_arith_Add_for_core_num_saturating_Saturating_i128.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i128" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i128" ].
       
       (*             type Output = Saturating<$t>; *)
       Definition _Output : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i128" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i128" ].
       
       (*
                   fn add(self, other: Saturating<$t>) -> Saturating<$t> {
                       Saturating(self.0.saturating_add(other.0))
                   }
       *)
-      Definition add (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition add (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -13586,7 +13864,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -13600,16 +13878,16 @@ Module num.
     
     Module Impl_core_ops_arith_AddAssign_for_core_num_saturating_Saturating_i128.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i128" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i128" ].
       
       (*
                   fn add_assign(&mut self, other: Saturating<$t>) {
                       *self = *self + other;
                   }
       *)
-      Definition add_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition add_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -13620,8 +13898,9 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Add",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i128" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i128" ] ],
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i128" ],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i128" ]
+                      ],
                       "add",
                       []
                     |),
@@ -13630,7 +13909,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -13643,16 +13922,16 @@ Module num.
     
     Module Impl_core_ops_arith_AddAssign_i128_for_core_num_saturating_Saturating_i128.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i128" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i128" ].
       
       (*
                   fn add_assign(&mut self, other: $t) {
                       *self = *self + Saturating(other);
                   }
       *)
-      Definition add_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition add_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -13663,8 +13942,9 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Add",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i128" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i128" ] ],
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i128" ],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i128" ]
+                      ],
                       "add",
                       []
                     |),
@@ -13676,7 +13956,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -13689,20 +13969,20 @@ Module num.
     
     Module Impl_core_ops_arith_Sub_for_core_num_saturating_Saturating_i128.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i128" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i128" ].
       
       (*             type Output = Saturating<$t>; *)
       Definition _Output : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i128" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i128" ].
       
       (*
                   fn sub(self, other: Saturating<$t>) -> Saturating<$t> {
                       Saturating(self.0.saturating_sub(other.0))
                   }
       *)
-      Definition sub (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition sub (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -13729,7 +14009,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -13743,16 +14023,16 @@ Module num.
     
     Module Impl_core_ops_arith_SubAssign_for_core_num_saturating_Saturating_i128.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i128" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i128" ].
       
       (*
                   fn sub_assign(&mut self, other: Saturating<$t>) {
                       *self = *self - other;
                   }
       *)
-      Definition sub_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition sub_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -13763,8 +14043,9 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Sub",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i128" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i128" ] ],
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i128" ],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i128" ]
+                      ],
                       "sub",
                       []
                     |),
@@ -13773,7 +14054,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -13786,16 +14067,16 @@ Module num.
     
     Module Impl_core_ops_arith_SubAssign_i128_for_core_num_saturating_Saturating_i128.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i128" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i128" ].
       
       (*
                   fn sub_assign(&mut self, other: $t) {
                       *self = *self - Saturating(other);
                   }
       *)
-      Definition sub_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition sub_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -13806,8 +14087,9 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Sub",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i128" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i128" ] ],
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i128" ],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i128" ]
+                      ],
                       "sub",
                       []
                     |),
@@ -13819,7 +14101,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -13832,20 +14114,20 @@ Module num.
     
     Module Impl_core_ops_arith_Mul_for_core_num_saturating_Saturating_i128.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i128" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i128" ].
       
       (*             type Output = Saturating<$t>; *)
       Definition _Output : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i128" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i128" ].
       
       (*
                   fn mul(self, other: Saturating<$t>) -> Saturating<$t> {
                       Saturating(self.0.saturating_mul(other.0))
                   }
       *)
-      Definition mul (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition mul (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -13872,7 +14154,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -13886,16 +14168,16 @@ Module num.
     
     Module Impl_core_ops_arith_MulAssign_for_core_num_saturating_Saturating_i128.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i128" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i128" ].
       
       (*
                   fn mul_assign(&mut self, other: Saturating<$t>) {
                       *self = *self * other;
                   }
       *)
-      Definition mul_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition mul_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -13906,8 +14188,9 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Mul",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i128" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i128" ] ],
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i128" ],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i128" ]
+                      ],
                       "mul",
                       []
                     |),
@@ -13916,7 +14199,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -13929,16 +14212,16 @@ Module num.
     
     Module Impl_core_ops_arith_MulAssign_i128_for_core_num_saturating_Saturating_i128.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i128" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i128" ].
       
       (*
                   fn mul_assign(&mut self, other: $t) {
                       *self = *self * Saturating(other);
                   }
       *)
-      Definition mul_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition mul_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -13949,8 +14232,9 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Mul",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i128" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i128" ] ],
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i128" ],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i128" ]
+                      ],
                       "mul",
                       []
                     |),
@@ -13962,7 +14246,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -13975,20 +14259,20 @@ Module num.
     
     Module Impl_core_ops_arith_Div_for_core_num_saturating_Saturating_i128.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i128" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i128" ].
       
       (*             type Output = Saturating<$t>; *)
       Definition _Output : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i128" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i128" ].
       
       (*
                   fn div(self, other: Saturating<$t>) -> Saturating<$t> {
                       Saturating(self.0.saturating_div(other.0))
                   }
       *)
-      Definition div (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition div (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -14015,7 +14299,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -14029,16 +14313,16 @@ Module num.
     
     Module Impl_core_ops_arith_DivAssign_for_core_num_saturating_Saturating_i128.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i128" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i128" ].
       
       (*
                   fn div_assign(&mut self, other: Saturating<$t>) {
                       *self = *self / other;
                   }
       *)
-      Definition div_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition div_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -14049,8 +14333,9 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Div",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i128" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i128" ] ],
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i128" ],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i128" ]
+                      ],
                       "div",
                       []
                     |),
@@ -14059,7 +14344,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -14072,16 +14357,16 @@ Module num.
     
     Module Impl_core_ops_arith_DivAssign_i128_for_core_num_saturating_Saturating_i128.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i128" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i128" ].
       
       (*
                   fn div_assign(&mut self, other: $t) {
                       *self = *self / Saturating(other);
                   }
       *)
-      Definition div_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition div_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -14092,8 +14377,9 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Div",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i128" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i128" ] ],
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i128" ],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i128" ]
+                      ],
                       "div",
                       []
                     |),
@@ -14105,7 +14391,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -14118,20 +14404,20 @@ Module num.
     
     Module Impl_core_ops_arith_Rem_for_core_num_saturating_Saturating_i128.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i128" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i128" ].
       
       (*             type Output = Saturating<$t>; *)
       Definition _Output : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i128" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i128" ].
       
       (*
                   fn rem(self, other: Saturating<$t>) -> Saturating<$t> {
                       Saturating(self.0.rem(other.0))
                   }
       *)
-      Definition rem (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition rem (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -14164,7 +14450,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -14178,16 +14464,16 @@ Module num.
     
     Module Impl_core_ops_arith_RemAssign_for_core_num_saturating_Saturating_i128.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i128" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i128" ].
       
       (*
                   fn rem_assign(&mut self, other: Saturating<$t>) {
                       *self = *self % other;
                   }
       *)
-      Definition rem_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition rem_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -14198,8 +14484,9 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Rem",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i128" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i128" ] ],
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i128" ],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i128" ]
+                      ],
                       "rem",
                       []
                     |),
@@ -14208,7 +14495,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -14221,16 +14508,16 @@ Module num.
     
     Module Impl_core_ops_arith_RemAssign_i128_for_core_num_saturating_Saturating_i128.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i128" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i128" ].
       
       (*
                   fn rem_assign(&mut self, other: $t) {
                       *self = *self % Saturating(other);
                   }
       *)
-      Definition rem_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition rem_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -14241,8 +14528,9 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Rem",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i128" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i128" ] ],
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i128" ],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i128" ]
+                      ],
                       "rem",
                       []
                     |),
@@ -14254,7 +14542,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -14267,20 +14555,20 @@ Module num.
     
     Module Impl_core_ops_bit_Not_for_core_num_saturating_Saturating_i128.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i128" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i128" ].
       
       (*             type Output = Saturating<$t>; *)
       Definition _Output : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i128" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i128" ].
       
       (*
                   fn not(self) -> Saturating<$t> {
                       Saturating(!self.0)
                   }
       *)
-      Definition not (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition not (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -14295,7 +14583,7 @@ Module num.
                     |)
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -14309,20 +14597,20 @@ Module num.
     
     Module Impl_core_ops_bit_BitXor_for_core_num_saturating_Saturating_i128.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i128" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i128" ].
       
       (*             type Output = Saturating<$t>; *)
       Definition _Output : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i128" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i128" ].
       
       (*
                   fn bitxor(self, other: Saturating<$t>) -> Saturating<$t> {
                       Saturating(self.0 ^ other.0)
                   }
       *)
-      Definition bitxor (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition bitxor (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -14345,7 +14633,7 @@ Module num.
                     |)
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -14359,16 +14647,16 @@ Module num.
     
     Module Impl_core_ops_bit_BitXorAssign_for_core_num_saturating_Saturating_i128.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i128" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i128" ].
       
       (*
                   fn bitxor_assign(&mut self, other: Saturating<$t>) {
                       *self = *self ^ other;
                   }
       *)
-      Definition bitxor_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition bitxor_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -14379,8 +14667,9 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::bit::BitXor",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i128" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i128" ] ],
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i128" ],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i128" ]
+                      ],
                       "bitxor",
                       []
                     |),
@@ -14389,7 +14678,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -14402,16 +14691,16 @@ Module num.
     
     Module Impl_core_ops_bit_BitXorAssign_i128_for_core_num_saturating_Saturating_i128.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i128" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i128" ].
       
       (*
                   fn bitxor_assign(&mut self, other: $t) {
                       *self = *self ^ Saturating(other);
                   }
       *)
-      Definition bitxor_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition bitxor_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -14422,8 +14711,9 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::bit::BitXor",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i128" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i128" ] ],
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i128" ],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i128" ]
+                      ],
                       "bitxor",
                       []
                     |),
@@ -14435,7 +14725,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -14448,20 +14738,20 @@ Module num.
     
     Module Impl_core_ops_bit_BitOr_for_core_num_saturating_Saturating_i128.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i128" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i128" ].
       
       (*             type Output = Saturating<$t>; *)
       Definition _Output : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i128" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i128" ].
       
       (*
                   fn bitor(self, other: Saturating<$t>) -> Saturating<$t> {
                       Saturating(self.0 | other.0)
                   }
       *)
-      Definition bitor (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition bitor (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -14484,7 +14774,7 @@ Module num.
                     |)
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -14498,16 +14788,16 @@ Module num.
     
     Module Impl_core_ops_bit_BitOrAssign_for_core_num_saturating_Saturating_i128.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i128" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i128" ].
       
       (*
                   fn bitor_assign(&mut self, other: Saturating<$t>) {
                       *self = *self | other;
                   }
       *)
-      Definition bitor_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition bitor_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -14518,8 +14808,9 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::bit::BitOr",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i128" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i128" ] ],
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i128" ],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i128" ]
+                      ],
                       "bitor",
                       []
                     |),
@@ -14528,7 +14819,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -14541,16 +14832,16 @@ Module num.
     
     Module Impl_core_ops_bit_BitOrAssign_i128_for_core_num_saturating_Saturating_i128.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i128" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i128" ].
       
       (*
                   fn bitor_assign(&mut self, other: $t) {
                       *self = *self | Saturating(other);
                   }
       *)
-      Definition bitor_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition bitor_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -14561,8 +14852,9 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::bit::BitOr",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i128" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i128" ] ],
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i128" ],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i128" ]
+                      ],
                       "bitor",
                       []
                     |),
@@ -14574,7 +14866,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -14587,20 +14879,20 @@ Module num.
     
     Module Impl_core_ops_bit_BitAnd_for_core_num_saturating_Saturating_i128.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i128" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i128" ].
       
       (*             type Output = Saturating<$t>; *)
       Definition _Output : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i128" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i128" ].
       
       (*
                   fn bitand(self, other: Saturating<$t>) -> Saturating<$t> {
                       Saturating(self.0 & other.0)
                   }
       *)
-      Definition bitand (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition bitand (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -14623,7 +14915,7 @@ Module num.
                     |)
                   |))
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -14637,16 +14929,16 @@ Module num.
     
     Module Impl_core_ops_bit_BitAndAssign_for_core_num_saturating_Saturating_i128.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i128" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i128" ].
       
       (*
                   fn bitand_assign(&mut self, other: Saturating<$t>) {
                       *self = *self & other;
                   }
       *)
-      Definition bitand_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition bitand_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -14657,8 +14949,9 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::bit::BitAnd",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i128" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i128" ] ],
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i128" ],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i128" ]
+                      ],
                       "bitand",
                       []
                     |),
@@ -14667,7 +14960,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -14680,16 +14973,16 @@ Module num.
     
     Module Impl_core_ops_bit_BitAndAssign_i128_for_core_num_saturating_Saturating_i128.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i128" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i128" ].
       
       (*
                   fn bitand_assign(&mut self, other: $t) {
                       *self = *self & Saturating(other);
                   }
       *)
-      Definition bitand_assign (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; other ] =>
+      Definition bitand_assign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -14700,8 +14993,9 @@ Module num.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::bit::BitAnd",
-                      Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i128" ],
-                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i128" ] ],
+                      Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i128" ],
+                      [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i128" ]
+                      ],
                       "bitand",
                       []
                     |),
@@ -14713,7 +15007,7 @@ Module num.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -14726,10 +15020,10 @@ Module num.
     
     Module Impl_core_num_saturating_Saturating_usize.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "usize" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "usize" ].
       
       (*             pub const MIN: Self = Self(<$t>::MIN); *)
-      (* Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "usize" ] *)
+      (* Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "usize" ] *)
       Definition value_MIN : Value.t :=
         M.run
           ltac:(M.monadic
@@ -14742,7 +15036,7 @@ Module num.
       Axiom AssociatedConstant_value_MIN : M.IsAssociatedConstant Self "value_MIN" value_MIN.
       
       (*             pub const MAX: Self = Self(<$t>::MAX); *)
-      (* Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "usize" ] *)
+      (* Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "usize" ] *)
       Definition value_MAX : Value.t :=
         M.run
           ltac:(M.monadic
@@ -14766,9 +15060,9 @@ Module num.
                       self.0.count_ones()
                   }
       *)
-      Definition count_ones (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition count_ones (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -14783,7 +15077,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_count_ones : M.IsAssociatedFunction Self "count_ones" count_ones.
@@ -14793,9 +15087,9 @@ Module num.
                       self.0.count_zeros()
                   }
       *)
-      Definition count_zeros (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition count_zeros (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -14810,7 +15104,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_count_zeros : M.IsAssociatedFunction Self "count_zeros" count_zeros.
@@ -14820,9 +15114,9 @@ Module num.
                       self.0.trailing_zeros()
                   }
       *)
-      Definition trailing_zeros (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition trailing_zeros (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -14837,7 +15131,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_trailing_zeros :
@@ -14848,9 +15142,9 @@ Module num.
                       Saturating(self.0.rotate_left(n))
                   }
       *)
-      Definition rotate_left (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; n ] =>
+      Definition rotate_left (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self; n ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
@@ -14871,7 +15165,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_rotate_left : M.IsAssociatedFunction Self "rotate_left" rotate_left.
@@ -14881,9 +15175,9 @@ Module num.
                       Saturating(self.0.rotate_right(n))
                   }
       *)
-      Definition rotate_right (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; n ] =>
+      Definition rotate_right (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self; n ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
@@ -14904,7 +15198,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_rotate_right :
@@ -14915,9 +15209,9 @@ Module num.
                       Saturating(self.0.swap_bytes())
                   }
       *)
-      Definition swap_bytes (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition swap_bytes (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -14936,7 +15230,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_swap_bytes : M.IsAssociatedFunction Self "swap_bytes" swap_bytes.
@@ -14946,9 +15240,9 @@ Module num.
                       Saturating(self.0.reverse_bits())
                   }
       *)
-      Definition reverse_bits (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition reverse_bits (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -14967,7 +15261,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_reverse_bits :
@@ -14978,9 +15272,9 @@ Module num.
                       Saturating(<$t>::from_be(x.0))
                   }
       *)
-      Definition from_be (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ x ] =>
+      Definition from_be (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ x ] =>
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
             Value.StructTuple
@@ -14999,7 +15293,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_from_be : M.IsAssociatedFunction Self "from_be" from_be.
@@ -15009,9 +15303,9 @@ Module num.
                       Saturating(<$t>::from_le(x.0))
                   }
       *)
-      Definition from_le (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ x ] =>
+      Definition from_le (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ x ] =>
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
             Value.StructTuple
@@ -15030,7 +15324,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_from_le : M.IsAssociatedFunction Self "from_le" from_le.
@@ -15040,9 +15334,9 @@ Module num.
                       Saturating(self.0.to_be())
                   }
       *)
-      Definition to_be (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition to_be (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -15061,7 +15355,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_to_be : M.IsAssociatedFunction Self "to_be" to_be.
@@ -15071,9 +15365,9 @@ Module num.
                       Saturating(self.0.to_le())
                   }
       *)
-      Definition to_le (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition to_le (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -15092,7 +15386,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_to_le : M.IsAssociatedFunction Self "to_le" to_le.
@@ -15102,9 +15396,9 @@ Module num.
                       Saturating(self.0.saturating_pow(exp))
                   }
       *)
-      Definition pow (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; exp ] =>
+      Definition pow (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self; exp ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let exp := M.alloc (| exp |) in
@@ -15125,7 +15419,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_pow : M.IsAssociatedFunction Self "pow" pow.
@@ -15134,9 +15428,9 @@ Module num.
                       self.0.leading_zeros()
                   }
       *)
-      Definition leading_zeros (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition leading_zeros (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -15151,7 +15445,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_leading_zeros :
@@ -15162,9 +15456,9 @@ Module num.
                       self.0.is_power_of_two()
                   }
       *)
-      Definition is_power_of_two (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition is_power_of_two (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -15179,7 +15473,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_is_power_of_two :
@@ -15188,10 +15482,10 @@ Module num.
     
     Module Impl_core_num_saturating_Saturating_u8.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u8" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ].
       
       (*             pub const MIN: Self = Self(<$t>::MIN); *)
-      (* Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u8" ] *)
+      (* Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ] *)
       Definition value_MIN : Value.t :=
         M.run
           ltac:(M.monadic
@@ -15204,7 +15498,7 @@ Module num.
       Axiom AssociatedConstant_value_MIN : M.IsAssociatedConstant Self "value_MIN" value_MIN.
       
       (*             pub const MAX: Self = Self(<$t>::MAX); *)
-      (* Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u8" ] *)
+      (* Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ] *)
       Definition value_MAX : Value.t :=
         M.run
           ltac:(M.monadic
@@ -15228,9 +15522,9 @@ Module num.
                       self.0.count_ones()
                   }
       *)
-      Definition count_ones (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition count_ones (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -15245,7 +15539,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_count_ones : M.IsAssociatedFunction Self "count_ones" count_ones.
@@ -15255,9 +15549,9 @@ Module num.
                       self.0.count_zeros()
                   }
       *)
-      Definition count_zeros (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition count_zeros (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -15272,7 +15566,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_count_zeros : M.IsAssociatedFunction Self "count_zeros" count_zeros.
@@ -15282,9 +15576,9 @@ Module num.
                       self.0.trailing_zeros()
                   }
       *)
-      Definition trailing_zeros (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition trailing_zeros (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -15299,7 +15593,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_trailing_zeros :
@@ -15310,9 +15604,9 @@ Module num.
                       Saturating(self.0.rotate_left(n))
                   }
       *)
-      Definition rotate_left (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; n ] =>
+      Definition rotate_left (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self; n ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
@@ -15333,7 +15627,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_rotate_left : M.IsAssociatedFunction Self "rotate_left" rotate_left.
@@ -15343,9 +15637,9 @@ Module num.
                       Saturating(self.0.rotate_right(n))
                   }
       *)
-      Definition rotate_right (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; n ] =>
+      Definition rotate_right (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self; n ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
@@ -15366,7 +15660,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_rotate_right :
@@ -15377,9 +15671,9 @@ Module num.
                       Saturating(self.0.swap_bytes())
                   }
       *)
-      Definition swap_bytes (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition swap_bytes (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -15398,7 +15692,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_swap_bytes : M.IsAssociatedFunction Self "swap_bytes" swap_bytes.
@@ -15408,9 +15702,9 @@ Module num.
                       Saturating(self.0.reverse_bits())
                   }
       *)
-      Definition reverse_bits (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition reverse_bits (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -15429,7 +15723,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_reverse_bits :
@@ -15440,9 +15734,9 @@ Module num.
                       Saturating(<$t>::from_be(x.0))
                   }
       *)
-      Definition from_be (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ x ] =>
+      Definition from_be (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ x ] =>
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
             Value.StructTuple
@@ -15461,7 +15755,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_from_be : M.IsAssociatedFunction Self "from_be" from_be.
@@ -15471,9 +15765,9 @@ Module num.
                       Saturating(<$t>::from_le(x.0))
                   }
       *)
-      Definition from_le (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ x ] =>
+      Definition from_le (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ x ] =>
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
             Value.StructTuple
@@ -15492,7 +15786,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_from_le : M.IsAssociatedFunction Self "from_le" from_le.
@@ -15502,9 +15796,9 @@ Module num.
                       Saturating(self.0.to_be())
                   }
       *)
-      Definition to_be (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition to_be (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -15523,7 +15817,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_to_be : M.IsAssociatedFunction Self "to_be" to_be.
@@ -15533,9 +15827,9 @@ Module num.
                       Saturating(self.0.to_le())
                   }
       *)
-      Definition to_le (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition to_le (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -15554,7 +15848,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_to_le : M.IsAssociatedFunction Self "to_le" to_le.
@@ -15564,9 +15858,9 @@ Module num.
                       Saturating(self.0.saturating_pow(exp))
                   }
       *)
-      Definition pow (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; exp ] =>
+      Definition pow (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self; exp ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let exp := M.alloc (| exp |) in
@@ -15587,7 +15881,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_pow : M.IsAssociatedFunction Self "pow" pow.
@@ -15596,9 +15890,9 @@ Module num.
                       self.0.leading_zeros()
                   }
       *)
-      Definition leading_zeros (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition leading_zeros (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -15613,7 +15907,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_leading_zeros :
@@ -15624,9 +15918,9 @@ Module num.
                       self.0.is_power_of_two()
                   }
       *)
-      Definition is_power_of_two (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition is_power_of_two (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -15641,7 +15935,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_is_power_of_two :
@@ -15650,10 +15944,10 @@ Module num.
     
     Module Impl_core_num_saturating_Saturating_u16.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u16" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u16" ].
       
       (*             pub const MIN: Self = Self(<$t>::MIN); *)
-      (* Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u16" ] *)
+      (* Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u16" ] *)
       Definition value_MIN : Value.t :=
         M.run
           ltac:(M.monadic
@@ -15666,7 +15960,7 @@ Module num.
       Axiom AssociatedConstant_value_MIN : M.IsAssociatedConstant Self "value_MIN" value_MIN.
       
       (*             pub const MAX: Self = Self(<$t>::MAX); *)
-      (* Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u16" ] *)
+      (* Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u16" ] *)
       Definition value_MAX : Value.t :=
         M.run
           ltac:(M.monadic
@@ -15690,9 +15984,9 @@ Module num.
                       self.0.count_ones()
                   }
       *)
-      Definition count_ones (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition count_ones (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -15707,7 +16001,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_count_ones : M.IsAssociatedFunction Self "count_ones" count_ones.
@@ -15717,9 +16011,9 @@ Module num.
                       self.0.count_zeros()
                   }
       *)
-      Definition count_zeros (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition count_zeros (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -15734,7 +16028,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_count_zeros : M.IsAssociatedFunction Self "count_zeros" count_zeros.
@@ -15744,9 +16038,9 @@ Module num.
                       self.0.trailing_zeros()
                   }
       *)
-      Definition trailing_zeros (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition trailing_zeros (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -15761,7 +16055,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_trailing_zeros :
@@ -15772,9 +16066,9 @@ Module num.
                       Saturating(self.0.rotate_left(n))
                   }
       *)
-      Definition rotate_left (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; n ] =>
+      Definition rotate_left (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self; n ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
@@ -15795,7 +16089,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_rotate_left : M.IsAssociatedFunction Self "rotate_left" rotate_left.
@@ -15805,9 +16099,9 @@ Module num.
                       Saturating(self.0.rotate_right(n))
                   }
       *)
-      Definition rotate_right (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; n ] =>
+      Definition rotate_right (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self; n ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
@@ -15828,7 +16122,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_rotate_right :
@@ -15839,9 +16133,9 @@ Module num.
                       Saturating(self.0.swap_bytes())
                   }
       *)
-      Definition swap_bytes (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition swap_bytes (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -15860,7 +16154,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_swap_bytes : M.IsAssociatedFunction Self "swap_bytes" swap_bytes.
@@ -15870,9 +16164,9 @@ Module num.
                       Saturating(self.0.reverse_bits())
                   }
       *)
-      Definition reverse_bits (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition reverse_bits (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -15891,7 +16185,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_reverse_bits :
@@ -15902,9 +16196,9 @@ Module num.
                       Saturating(<$t>::from_be(x.0))
                   }
       *)
-      Definition from_be (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ x ] =>
+      Definition from_be (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ x ] =>
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
             Value.StructTuple
@@ -15923,7 +16217,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_from_be : M.IsAssociatedFunction Self "from_be" from_be.
@@ -15933,9 +16227,9 @@ Module num.
                       Saturating(<$t>::from_le(x.0))
                   }
       *)
-      Definition from_le (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ x ] =>
+      Definition from_le (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ x ] =>
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
             Value.StructTuple
@@ -15954,7 +16248,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_from_le : M.IsAssociatedFunction Self "from_le" from_le.
@@ -15964,9 +16258,9 @@ Module num.
                       Saturating(self.0.to_be())
                   }
       *)
-      Definition to_be (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition to_be (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -15985,7 +16279,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_to_be : M.IsAssociatedFunction Self "to_be" to_be.
@@ -15995,9 +16289,9 @@ Module num.
                       Saturating(self.0.to_le())
                   }
       *)
-      Definition to_le (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition to_le (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -16016,7 +16310,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_to_le : M.IsAssociatedFunction Self "to_le" to_le.
@@ -16026,9 +16320,9 @@ Module num.
                       Saturating(self.0.saturating_pow(exp))
                   }
       *)
-      Definition pow (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; exp ] =>
+      Definition pow (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self; exp ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let exp := M.alloc (| exp |) in
@@ -16049,7 +16343,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_pow : M.IsAssociatedFunction Self "pow" pow.
@@ -16058,9 +16352,9 @@ Module num.
                       self.0.leading_zeros()
                   }
       *)
-      Definition leading_zeros (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition leading_zeros (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -16075,7 +16369,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_leading_zeros :
@@ -16086,9 +16380,9 @@ Module num.
                       self.0.is_power_of_two()
                   }
       *)
-      Definition is_power_of_two (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition is_power_of_two (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -16103,7 +16397,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_is_power_of_two :
@@ -16112,10 +16406,10 @@ Module num.
     
     Module Impl_core_num_saturating_Saturating_u32.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u32" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u32" ].
       
       (*             pub const MIN: Self = Self(<$t>::MIN); *)
-      (* Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u32" ] *)
+      (* Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u32" ] *)
       Definition value_MIN : Value.t :=
         M.run
           ltac:(M.monadic
@@ -16128,7 +16422,7 @@ Module num.
       Axiom AssociatedConstant_value_MIN : M.IsAssociatedConstant Self "value_MIN" value_MIN.
       
       (*             pub const MAX: Self = Self(<$t>::MAX); *)
-      (* Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u32" ] *)
+      (* Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u32" ] *)
       Definition value_MAX : Value.t :=
         M.run
           ltac:(M.monadic
@@ -16152,9 +16446,9 @@ Module num.
                       self.0.count_ones()
                   }
       *)
-      Definition count_ones (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition count_ones (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -16169,7 +16463,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_count_ones : M.IsAssociatedFunction Self "count_ones" count_ones.
@@ -16179,9 +16473,9 @@ Module num.
                       self.0.count_zeros()
                   }
       *)
-      Definition count_zeros (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition count_zeros (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -16196,7 +16490,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_count_zeros : M.IsAssociatedFunction Self "count_zeros" count_zeros.
@@ -16206,9 +16500,9 @@ Module num.
                       self.0.trailing_zeros()
                   }
       *)
-      Definition trailing_zeros (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition trailing_zeros (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -16223,7 +16517,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_trailing_zeros :
@@ -16234,9 +16528,9 @@ Module num.
                       Saturating(self.0.rotate_left(n))
                   }
       *)
-      Definition rotate_left (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; n ] =>
+      Definition rotate_left (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self; n ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
@@ -16257,7 +16551,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_rotate_left : M.IsAssociatedFunction Self "rotate_left" rotate_left.
@@ -16267,9 +16561,9 @@ Module num.
                       Saturating(self.0.rotate_right(n))
                   }
       *)
-      Definition rotate_right (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; n ] =>
+      Definition rotate_right (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self; n ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
@@ -16290,7 +16584,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_rotate_right :
@@ -16301,9 +16595,9 @@ Module num.
                       Saturating(self.0.swap_bytes())
                   }
       *)
-      Definition swap_bytes (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition swap_bytes (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -16322,7 +16616,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_swap_bytes : M.IsAssociatedFunction Self "swap_bytes" swap_bytes.
@@ -16332,9 +16626,9 @@ Module num.
                       Saturating(self.0.reverse_bits())
                   }
       *)
-      Definition reverse_bits (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition reverse_bits (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -16353,7 +16647,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_reverse_bits :
@@ -16364,9 +16658,9 @@ Module num.
                       Saturating(<$t>::from_be(x.0))
                   }
       *)
-      Definition from_be (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ x ] =>
+      Definition from_be (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ x ] =>
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
             Value.StructTuple
@@ -16385,7 +16679,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_from_be : M.IsAssociatedFunction Self "from_be" from_be.
@@ -16395,9 +16689,9 @@ Module num.
                       Saturating(<$t>::from_le(x.0))
                   }
       *)
-      Definition from_le (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ x ] =>
+      Definition from_le (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ x ] =>
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
             Value.StructTuple
@@ -16416,7 +16710,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_from_le : M.IsAssociatedFunction Self "from_le" from_le.
@@ -16426,9 +16720,9 @@ Module num.
                       Saturating(self.0.to_be())
                   }
       *)
-      Definition to_be (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition to_be (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -16447,7 +16741,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_to_be : M.IsAssociatedFunction Self "to_be" to_be.
@@ -16457,9 +16751,9 @@ Module num.
                       Saturating(self.0.to_le())
                   }
       *)
-      Definition to_le (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition to_le (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -16478,7 +16772,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_to_le : M.IsAssociatedFunction Self "to_le" to_le.
@@ -16488,9 +16782,9 @@ Module num.
                       Saturating(self.0.saturating_pow(exp))
                   }
       *)
-      Definition pow (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; exp ] =>
+      Definition pow (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self; exp ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let exp := M.alloc (| exp |) in
@@ -16511,7 +16805,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_pow : M.IsAssociatedFunction Self "pow" pow.
@@ -16520,9 +16814,9 @@ Module num.
                       self.0.leading_zeros()
                   }
       *)
-      Definition leading_zeros (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition leading_zeros (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -16537,7 +16831,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_leading_zeros :
@@ -16548,9 +16842,9 @@ Module num.
                       self.0.is_power_of_two()
                   }
       *)
-      Definition is_power_of_two (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition is_power_of_two (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -16565,7 +16859,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_is_power_of_two :
@@ -16574,10 +16868,10 @@ Module num.
     
     Module Impl_core_num_saturating_Saturating_u64.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u64" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u64" ].
       
       (*             pub const MIN: Self = Self(<$t>::MIN); *)
-      (* Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u64" ] *)
+      (* Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u64" ] *)
       Definition value_MIN : Value.t :=
         M.run
           ltac:(M.monadic
@@ -16590,7 +16884,7 @@ Module num.
       Axiom AssociatedConstant_value_MIN : M.IsAssociatedConstant Self "value_MIN" value_MIN.
       
       (*             pub const MAX: Self = Self(<$t>::MAX); *)
-      (* Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u64" ] *)
+      (* Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u64" ] *)
       Definition value_MAX : Value.t :=
         M.run
           ltac:(M.monadic
@@ -16614,9 +16908,9 @@ Module num.
                       self.0.count_ones()
                   }
       *)
-      Definition count_ones (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition count_ones (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -16631,7 +16925,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_count_ones : M.IsAssociatedFunction Self "count_ones" count_ones.
@@ -16641,9 +16935,9 @@ Module num.
                       self.0.count_zeros()
                   }
       *)
-      Definition count_zeros (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition count_zeros (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -16658,7 +16952,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_count_zeros : M.IsAssociatedFunction Self "count_zeros" count_zeros.
@@ -16668,9 +16962,9 @@ Module num.
                       self.0.trailing_zeros()
                   }
       *)
-      Definition trailing_zeros (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition trailing_zeros (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -16685,7 +16979,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_trailing_zeros :
@@ -16696,9 +16990,9 @@ Module num.
                       Saturating(self.0.rotate_left(n))
                   }
       *)
-      Definition rotate_left (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; n ] =>
+      Definition rotate_left (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self; n ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
@@ -16719,7 +17013,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_rotate_left : M.IsAssociatedFunction Self "rotate_left" rotate_left.
@@ -16729,9 +17023,9 @@ Module num.
                       Saturating(self.0.rotate_right(n))
                   }
       *)
-      Definition rotate_right (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; n ] =>
+      Definition rotate_right (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self; n ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
@@ -16752,7 +17046,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_rotate_right :
@@ -16763,9 +17057,9 @@ Module num.
                       Saturating(self.0.swap_bytes())
                   }
       *)
-      Definition swap_bytes (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition swap_bytes (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -16784,7 +17078,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_swap_bytes : M.IsAssociatedFunction Self "swap_bytes" swap_bytes.
@@ -16794,9 +17088,9 @@ Module num.
                       Saturating(self.0.reverse_bits())
                   }
       *)
-      Definition reverse_bits (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition reverse_bits (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -16815,7 +17109,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_reverse_bits :
@@ -16826,9 +17120,9 @@ Module num.
                       Saturating(<$t>::from_be(x.0))
                   }
       *)
-      Definition from_be (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ x ] =>
+      Definition from_be (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ x ] =>
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
             Value.StructTuple
@@ -16847,7 +17141,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_from_be : M.IsAssociatedFunction Self "from_be" from_be.
@@ -16857,9 +17151,9 @@ Module num.
                       Saturating(<$t>::from_le(x.0))
                   }
       *)
-      Definition from_le (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ x ] =>
+      Definition from_le (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ x ] =>
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
             Value.StructTuple
@@ -16878,7 +17172,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_from_le : M.IsAssociatedFunction Self "from_le" from_le.
@@ -16888,9 +17182,9 @@ Module num.
                       Saturating(self.0.to_be())
                   }
       *)
-      Definition to_be (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition to_be (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -16909,7 +17203,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_to_be : M.IsAssociatedFunction Self "to_be" to_be.
@@ -16919,9 +17213,9 @@ Module num.
                       Saturating(self.0.to_le())
                   }
       *)
-      Definition to_le (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition to_le (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -16940,7 +17234,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_to_le : M.IsAssociatedFunction Self "to_le" to_le.
@@ -16950,9 +17244,9 @@ Module num.
                       Saturating(self.0.saturating_pow(exp))
                   }
       *)
-      Definition pow (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; exp ] =>
+      Definition pow (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self; exp ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let exp := M.alloc (| exp |) in
@@ -16973,7 +17267,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_pow : M.IsAssociatedFunction Self "pow" pow.
@@ -16982,9 +17276,9 @@ Module num.
                       self.0.leading_zeros()
                   }
       *)
-      Definition leading_zeros (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition leading_zeros (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -16999,7 +17293,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_leading_zeros :
@@ -17010,9 +17304,9 @@ Module num.
                       self.0.is_power_of_two()
                   }
       *)
-      Definition is_power_of_two (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition is_power_of_two (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -17027,7 +17321,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_is_power_of_two :
@@ -17036,10 +17330,10 @@ Module num.
     
     Module Impl_core_num_saturating_Saturating_u128.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u128" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u128" ].
       
       (*             pub const MIN: Self = Self(<$t>::MIN); *)
-      (* Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u128" ] *)
+      (* Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u128" ] *)
       Definition value_MIN : Value.t :=
         M.run
           ltac:(M.monadic
@@ -17052,7 +17346,7 @@ Module num.
       Axiom AssociatedConstant_value_MIN : M.IsAssociatedConstant Self "value_MIN" value_MIN.
       
       (*             pub const MAX: Self = Self(<$t>::MAX); *)
-      (* Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "u128" ] *)
+      (* Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u128" ] *)
       Definition value_MAX : Value.t :=
         M.run
           ltac:(M.monadic
@@ -17076,9 +17370,9 @@ Module num.
                       self.0.count_ones()
                   }
       *)
-      Definition count_ones (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition count_ones (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -17093,7 +17387,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_count_ones : M.IsAssociatedFunction Self "count_ones" count_ones.
@@ -17103,9 +17397,9 @@ Module num.
                       self.0.count_zeros()
                   }
       *)
-      Definition count_zeros (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition count_zeros (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -17120,7 +17414,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_count_zeros : M.IsAssociatedFunction Self "count_zeros" count_zeros.
@@ -17130,9 +17424,9 @@ Module num.
                       self.0.trailing_zeros()
                   }
       *)
-      Definition trailing_zeros (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition trailing_zeros (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -17147,7 +17441,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_trailing_zeros :
@@ -17158,9 +17452,9 @@ Module num.
                       Saturating(self.0.rotate_left(n))
                   }
       *)
-      Definition rotate_left (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; n ] =>
+      Definition rotate_left (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self; n ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
@@ -17181,7 +17475,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_rotate_left : M.IsAssociatedFunction Self "rotate_left" rotate_left.
@@ -17191,9 +17485,9 @@ Module num.
                       Saturating(self.0.rotate_right(n))
                   }
       *)
-      Definition rotate_right (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; n ] =>
+      Definition rotate_right (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self; n ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
@@ -17214,7 +17508,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_rotate_right :
@@ -17225,9 +17519,9 @@ Module num.
                       Saturating(self.0.swap_bytes())
                   }
       *)
-      Definition swap_bytes (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition swap_bytes (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -17246,7 +17540,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_swap_bytes : M.IsAssociatedFunction Self "swap_bytes" swap_bytes.
@@ -17256,9 +17550,9 @@ Module num.
                       Saturating(self.0.reverse_bits())
                   }
       *)
-      Definition reverse_bits (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition reverse_bits (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -17277,7 +17571,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_reverse_bits :
@@ -17288,9 +17582,9 @@ Module num.
                       Saturating(<$t>::from_be(x.0))
                   }
       *)
-      Definition from_be (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ x ] =>
+      Definition from_be (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ x ] =>
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
             Value.StructTuple
@@ -17309,7 +17603,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_from_be : M.IsAssociatedFunction Self "from_be" from_be.
@@ -17319,9 +17613,9 @@ Module num.
                       Saturating(<$t>::from_le(x.0))
                   }
       *)
-      Definition from_le (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ x ] =>
+      Definition from_le (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ x ] =>
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
             Value.StructTuple
@@ -17340,7 +17634,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_from_le : M.IsAssociatedFunction Self "from_le" from_le.
@@ -17350,9 +17644,9 @@ Module num.
                       Saturating(self.0.to_be())
                   }
       *)
-      Definition to_be (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition to_be (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -17371,7 +17665,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_to_be : M.IsAssociatedFunction Self "to_be" to_be.
@@ -17381,9 +17675,9 @@ Module num.
                       Saturating(self.0.to_le())
                   }
       *)
-      Definition to_le (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition to_le (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -17402,7 +17696,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_to_le : M.IsAssociatedFunction Self "to_le" to_le.
@@ -17412,9 +17706,9 @@ Module num.
                       Saturating(self.0.saturating_pow(exp))
                   }
       *)
-      Definition pow (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; exp ] =>
+      Definition pow (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self; exp ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let exp := M.alloc (| exp |) in
@@ -17435,7 +17729,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_pow : M.IsAssociatedFunction Self "pow" pow.
@@ -17444,9 +17738,9 @@ Module num.
                       self.0.leading_zeros()
                   }
       *)
-      Definition leading_zeros (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition leading_zeros (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -17461,7 +17755,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_leading_zeros :
@@ -17472,9 +17766,9 @@ Module num.
                       self.0.is_power_of_two()
                   }
       *)
-      Definition is_power_of_two (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition is_power_of_two (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -17489,7 +17783,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_is_power_of_two :
@@ -17498,10 +17792,10 @@ Module num.
     
     Module Impl_core_num_saturating_Saturating_isize.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "isize" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "isize" ].
       
       (*             pub const MIN: Self = Self(<$t>::MIN); *)
-      (* Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "isize" ] *)
+      (* Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "isize" ] *)
       Definition value_MIN : Value.t :=
         M.run
           ltac:(M.monadic
@@ -17514,7 +17808,7 @@ Module num.
       Axiom AssociatedConstant_value_MIN : M.IsAssociatedConstant Self "value_MIN" value_MIN.
       
       (*             pub const MAX: Self = Self(<$t>::MAX); *)
-      (* Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "isize" ] *)
+      (* Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "isize" ] *)
       Definition value_MAX : Value.t :=
         M.run
           ltac:(M.monadic
@@ -17538,9 +17832,9 @@ Module num.
                       self.0.count_ones()
                   }
       *)
-      Definition count_ones (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition count_ones (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -17555,7 +17849,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_count_ones : M.IsAssociatedFunction Self "count_ones" count_ones.
@@ -17565,9 +17859,9 @@ Module num.
                       self.0.count_zeros()
                   }
       *)
-      Definition count_zeros (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition count_zeros (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -17582,7 +17876,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_count_zeros : M.IsAssociatedFunction Self "count_zeros" count_zeros.
@@ -17592,9 +17886,9 @@ Module num.
                       self.0.trailing_zeros()
                   }
       *)
-      Definition trailing_zeros (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition trailing_zeros (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -17609,7 +17903,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_trailing_zeros :
@@ -17620,9 +17914,9 @@ Module num.
                       Saturating(self.0.rotate_left(n))
                   }
       *)
-      Definition rotate_left (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; n ] =>
+      Definition rotate_left (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self; n ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
@@ -17643,7 +17937,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_rotate_left : M.IsAssociatedFunction Self "rotate_left" rotate_left.
@@ -17653,9 +17947,9 @@ Module num.
                       Saturating(self.0.rotate_right(n))
                   }
       *)
-      Definition rotate_right (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; n ] =>
+      Definition rotate_right (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self; n ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
@@ -17676,7 +17970,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_rotate_right :
@@ -17687,9 +17981,9 @@ Module num.
                       Saturating(self.0.swap_bytes())
                   }
       *)
-      Definition swap_bytes (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition swap_bytes (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -17708,7 +18002,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_swap_bytes : M.IsAssociatedFunction Self "swap_bytes" swap_bytes.
@@ -17718,9 +18012,9 @@ Module num.
                       Saturating(self.0.reverse_bits())
                   }
       *)
-      Definition reverse_bits (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition reverse_bits (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -17739,7 +18033,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_reverse_bits :
@@ -17750,9 +18044,9 @@ Module num.
                       Saturating(<$t>::from_be(x.0))
                   }
       *)
-      Definition from_be (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ x ] =>
+      Definition from_be (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ x ] =>
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
             Value.StructTuple
@@ -17771,7 +18065,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_from_be : M.IsAssociatedFunction Self "from_be" from_be.
@@ -17781,9 +18075,9 @@ Module num.
                       Saturating(<$t>::from_le(x.0))
                   }
       *)
-      Definition from_le (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ x ] =>
+      Definition from_le (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ x ] =>
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
             Value.StructTuple
@@ -17802,7 +18096,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_from_le : M.IsAssociatedFunction Self "from_le" from_le.
@@ -17812,9 +18106,9 @@ Module num.
                       Saturating(self.0.to_be())
                   }
       *)
-      Definition to_be (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition to_be (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -17833,7 +18127,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_to_be : M.IsAssociatedFunction Self "to_be" to_be.
@@ -17843,9 +18137,9 @@ Module num.
                       Saturating(self.0.to_le())
                   }
       *)
-      Definition to_le (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition to_le (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -17864,7 +18158,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_to_le : M.IsAssociatedFunction Self "to_le" to_le.
@@ -17874,9 +18168,9 @@ Module num.
                       Saturating(self.0.saturating_pow(exp))
                   }
       *)
-      Definition pow (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; exp ] =>
+      Definition pow (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self; exp ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let exp := M.alloc (| exp |) in
@@ -17897,7 +18191,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_pow : M.IsAssociatedFunction Self "pow" pow.
@@ -17906,9 +18200,9 @@ Module num.
                       self.0.leading_zeros()
                   }
       *)
-      Definition leading_zeros (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition leading_zeros (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -17923,7 +18217,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_leading_zeros :
@@ -17934,9 +18228,9 @@ Module num.
                       Saturating(self.0.saturating_abs())
                   }
       *)
-      Definition abs (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition abs (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -17955,7 +18249,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_abs : M.IsAssociatedFunction Self "abs" abs.
@@ -17965,9 +18259,9 @@ Module num.
                       Saturating(self.0.signum())
                   }
       *)
-      Definition signum (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition signum (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -17986,7 +18280,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_signum : M.IsAssociatedFunction Self "signum" signum.
@@ -17996,9 +18290,9 @@ Module num.
                       self.0.is_positive()
                   }
       *)
-      Definition is_positive (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition is_positive (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -18013,7 +18307,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_is_positive : M.IsAssociatedFunction Self "is_positive" is_positive.
@@ -18023,9 +18317,9 @@ Module num.
                       self.0.is_negative()
                   }
       *)
-      Definition is_negative (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition is_negative (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -18040,7 +18334,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_is_negative : M.IsAssociatedFunction Self "is_negative" is_negative.
@@ -18048,10 +18342,10 @@ Module num.
     
     Module Impl_core_num_saturating_Saturating_i8.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i8" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ].
       
       (*             pub const MIN: Self = Self(<$t>::MIN); *)
-      (* Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i8" ] *)
+      (* Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ] *)
       Definition value_MIN : Value.t :=
         M.run
           ltac:(M.monadic
@@ -18064,7 +18358,7 @@ Module num.
       Axiom AssociatedConstant_value_MIN : M.IsAssociatedConstant Self "value_MIN" value_MIN.
       
       (*             pub const MAX: Self = Self(<$t>::MAX); *)
-      (* Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i8" ] *)
+      (* Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ] *)
       Definition value_MAX : Value.t :=
         M.run
           ltac:(M.monadic
@@ -18088,9 +18382,9 @@ Module num.
                       self.0.count_ones()
                   }
       *)
-      Definition count_ones (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition count_ones (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -18105,7 +18399,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_count_ones : M.IsAssociatedFunction Self "count_ones" count_ones.
@@ -18115,9 +18409,9 @@ Module num.
                       self.0.count_zeros()
                   }
       *)
-      Definition count_zeros (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition count_zeros (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -18132,7 +18426,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_count_zeros : M.IsAssociatedFunction Self "count_zeros" count_zeros.
@@ -18142,9 +18436,9 @@ Module num.
                       self.0.trailing_zeros()
                   }
       *)
-      Definition trailing_zeros (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition trailing_zeros (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -18159,7 +18453,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_trailing_zeros :
@@ -18170,9 +18464,9 @@ Module num.
                       Saturating(self.0.rotate_left(n))
                   }
       *)
-      Definition rotate_left (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; n ] =>
+      Definition rotate_left (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self; n ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
@@ -18193,7 +18487,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_rotate_left : M.IsAssociatedFunction Self "rotate_left" rotate_left.
@@ -18203,9 +18497,9 @@ Module num.
                       Saturating(self.0.rotate_right(n))
                   }
       *)
-      Definition rotate_right (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; n ] =>
+      Definition rotate_right (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self; n ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
@@ -18226,7 +18520,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_rotate_right :
@@ -18237,9 +18531,9 @@ Module num.
                       Saturating(self.0.swap_bytes())
                   }
       *)
-      Definition swap_bytes (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition swap_bytes (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -18258,7 +18552,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_swap_bytes : M.IsAssociatedFunction Self "swap_bytes" swap_bytes.
@@ -18268,9 +18562,9 @@ Module num.
                       Saturating(self.0.reverse_bits())
                   }
       *)
-      Definition reverse_bits (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition reverse_bits (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -18289,7 +18583,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_reverse_bits :
@@ -18300,9 +18594,9 @@ Module num.
                       Saturating(<$t>::from_be(x.0))
                   }
       *)
-      Definition from_be (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ x ] =>
+      Definition from_be (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ x ] =>
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
             Value.StructTuple
@@ -18321,7 +18615,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_from_be : M.IsAssociatedFunction Self "from_be" from_be.
@@ -18331,9 +18625,9 @@ Module num.
                       Saturating(<$t>::from_le(x.0))
                   }
       *)
-      Definition from_le (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ x ] =>
+      Definition from_le (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ x ] =>
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
             Value.StructTuple
@@ -18352,7 +18646,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_from_le : M.IsAssociatedFunction Self "from_le" from_le.
@@ -18362,9 +18656,9 @@ Module num.
                       Saturating(self.0.to_be())
                   }
       *)
-      Definition to_be (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition to_be (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -18383,7 +18677,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_to_be : M.IsAssociatedFunction Self "to_be" to_be.
@@ -18393,9 +18687,9 @@ Module num.
                       Saturating(self.0.to_le())
                   }
       *)
-      Definition to_le (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition to_le (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -18414,7 +18708,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_to_le : M.IsAssociatedFunction Self "to_le" to_le.
@@ -18424,9 +18718,9 @@ Module num.
                       Saturating(self.0.saturating_pow(exp))
                   }
       *)
-      Definition pow (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; exp ] =>
+      Definition pow (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self; exp ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let exp := M.alloc (| exp |) in
@@ -18447,7 +18741,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_pow : M.IsAssociatedFunction Self "pow" pow.
@@ -18456,9 +18750,9 @@ Module num.
                       self.0.leading_zeros()
                   }
       *)
-      Definition leading_zeros (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition leading_zeros (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -18473,7 +18767,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_leading_zeros :
@@ -18484,9 +18778,9 @@ Module num.
                       Saturating(self.0.saturating_abs())
                   }
       *)
-      Definition abs (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition abs (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -18505,7 +18799,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_abs : M.IsAssociatedFunction Self "abs" abs.
@@ -18515,9 +18809,9 @@ Module num.
                       Saturating(self.0.signum())
                   }
       *)
-      Definition signum (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition signum (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -18536,7 +18830,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_signum : M.IsAssociatedFunction Self "signum" signum.
@@ -18546,9 +18840,9 @@ Module num.
                       self.0.is_positive()
                   }
       *)
-      Definition is_positive (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition is_positive (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -18563,7 +18857,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_is_positive : M.IsAssociatedFunction Self "is_positive" is_positive.
@@ -18573,9 +18867,9 @@ Module num.
                       self.0.is_negative()
                   }
       *)
-      Definition is_negative (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition is_negative (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -18590,7 +18884,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_is_negative : M.IsAssociatedFunction Self "is_negative" is_negative.
@@ -18598,10 +18892,10 @@ Module num.
     
     Module Impl_core_num_saturating_Saturating_i16.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i16" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ].
       
       (*             pub const MIN: Self = Self(<$t>::MIN); *)
-      (* Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i16" ] *)
+      (* Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ] *)
       Definition value_MIN : Value.t :=
         M.run
           ltac:(M.monadic
@@ -18614,7 +18908,7 @@ Module num.
       Axiom AssociatedConstant_value_MIN : M.IsAssociatedConstant Self "value_MIN" value_MIN.
       
       (*             pub const MAX: Self = Self(<$t>::MAX); *)
-      (* Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i16" ] *)
+      (* Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ] *)
       Definition value_MAX : Value.t :=
         M.run
           ltac:(M.monadic
@@ -18638,9 +18932,9 @@ Module num.
                       self.0.count_ones()
                   }
       *)
-      Definition count_ones (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition count_ones (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -18655,7 +18949,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_count_ones : M.IsAssociatedFunction Self "count_ones" count_ones.
@@ -18665,9 +18959,9 @@ Module num.
                       self.0.count_zeros()
                   }
       *)
-      Definition count_zeros (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition count_zeros (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -18682,7 +18976,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_count_zeros : M.IsAssociatedFunction Self "count_zeros" count_zeros.
@@ -18692,9 +18986,9 @@ Module num.
                       self.0.trailing_zeros()
                   }
       *)
-      Definition trailing_zeros (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition trailing_zeros (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -18709,7 +19003,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_trailing_zeros :
@@ -18720,9 +19014,9 @@ Module num.
                       Saturating(self.0.rotate_left(n))
                   }
       *)
-      Definition rotate_left (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; n ] =>
+      Definition rotate_left (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self; n ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
@@ -18743,7 +19037,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_rotate_left : M.IsAssociatedFunction Self "rotate_left" rotate_left.
@@ -18753,9 +19047,9 @@ Module num.
                       Saturating(self.0.rotate_right(n))
                   }
       *)
-      Definition rotate_right (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; n ] =>
+      Definition rotate_right (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self; n ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
@@ -18776,7 +19070,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_rotate_right :
@@ -18787,9 +19081,9 @@ Module num.
                       Saturating(self.0.swap_bytes())
                   }
       *)
-      Definition swap_bytes (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition swap_bytes (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -18808,7 +19102,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_swap_bytes : M.IsAssociatedFunction Self "swap_bytes" swap_bytes.
@@ -18818,9 +19112,9 @@ Module num.
                       Saturating(self.0.reverse_bits())
                   }
       *)
-      Definition reverse_bits (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition reverse_bits (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -18839,7 +19133,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_reverse_bits :
@@ -18850,9 +19144,9 @@ Module num.
                       Saturating(<$t>::from_be(x.0))
                   }
       *)
-      Definition from_be (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ x ] =>
+      Definition from_be (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ x ] =>
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
             Value.StructTuple
@@ -18871,7 +19165,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_from_be : M.IsAssociatedFunction Self "from_be" from_be.
@@ -18881,9 +19175,9 @@ Module num.
                       Saturating(<$t>::from_le(x.0))
                   }
       *)
-      Definition from_le (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ x ] =>
+      Definition from_le (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ x ] =>
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
             Value.StructTuple
@@ -18902,7 +19196,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_from_le : M.IsAssociatedFunction Self "from_le" from_le.
@@ -18912,9 +19206,9 @@ Module num.
                       Saturating(self.0.to_be())
                   }
       *)
-      Definition to_be (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition to_be (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -18933,7 +19227,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_to_be : M.IsAssociatedFunction Self "to_be" to_be.
@@ -18943,9 +19237,9 @@ Module num.
                       Saturating(self.0.to_le())
                   }
       *)
-      Definition to_le (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition to_le (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -18964,7 +19258,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_to_le : M.IsAssociatedFunction Self "to_le" to_le.
@@ -18974,9 +19268,9 @@ Module num.
                       Saturating(self.0.saturating_pow(exp))
                   }
       *)
-      Definition pow (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; exp ] =>
+      Definition pow (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self; exp ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let exp := M.alloc (| exp |) in
@@ -18997,7 +19291,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_pow : M.IsAssociatedFunction Self "pow" pow.
@@ -19006,9 +19300,9 @@ Module num.
                       self.0.leading_zeros()
                   }
       *)
-      Definition leading_zeros (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition leading_zeros (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -19023,7 +19317,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_leading_zeros :
@@ -19034,9 +19328,9 @@ Module num.
                       Saturating(self.0.saturating_abs())
                   }
       *)
-      Definition abs (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition abs (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -19055,7 +19349,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_abs : M.IsAssociatedFunction Self "abs" abs.
@@ -19065,9 +19359,9 @@ Module num.
                       Saturating(self.0.signum())
                   }
       *)
-      Definition signum (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition signum (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -19086,7 +19380,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_signum : M.IsAssociatedFunction Self "signum" signum.
@@ -19096,9 +19390,9 @@ Module num.
                       self.0.is_positive()
                   }
       *)
-      Definition is_positive (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition is_positive (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -19113,7 +19407,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_is_positive : M.IsAssociatedFunction Self "is_positive" is_positive.
@@ -19123,9 +19417,9 @@ Module num.
                       self.0.is_negative()
                   }
       *)
-      Definition is_negative (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition is_negative (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -19140,7 +19434,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_is_negative : M.IsAssociatedFunction Self "is_negative" is_negative.
@@ -19148,10 +19442,10 @@ Module num.
     
     Module Impl_core_num_saturating_Saturating_i32.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i32" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ].
       
       (*             pub const MIN: Self = Self(<$t>::MIN); *)
-      (* Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i32" ] *)
+      (* Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ] *)
       Definition value_MIN : Value.t :=
         M.run
           ltac:(M.monadic
@@ -19164,7 +19458,7 @@ Module num.
       Axiom AssociatedConstant_value_MIN : M.IsAssociatedConstant Self "value_MIN" value_MIN.
       
       (*             pub const MAX: Self = Self(<$t>::MAX); *)
-      (* Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i32" ] *)
+      (* Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ] *)
       Definition value_MAX : Value.t :=
         M.run
           ltac:(M.monadic
@@ -19188,9 +19482,9 @@ Module num.
                       self.0.count_ones()
                   }
       *)
-      Definition count_ones (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition count_ones (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -19205,7 +19499,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_count_ones : M.IsAssociatedFunction Self "count_ones" count_ones.
@@ -19215,9 +19509,9 @@ Module num.
                       self.0.count_zeros()
                   }
       *)
-      Definition count_zeros (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition count_zeros (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -19232,7 +19526,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_count_zeros : M.IsAssociatedFunction Self "count_zeros" count_zeros.
@@ -19242,9 +19536,9 @@ Module num.
                       self.0.trailing_zeros()
                   }
       *)
-      Definition trailing_zeros (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition trailing_zeros (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -19259,7 +19553,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_trailing_zeros :
@@ -19270,9 +19564,9 @@ Module num.
                       Saturating(self.0.rotate_left(n))
                   }
       *)
-      Definition rotate_left (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; n ] =>
+      Definition rotate_left (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self; n ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
@@ -19293,7 +19587,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_rotate_left : M.IsAssociatedFunction Self "rotate_left" rotate_left.
@@ -19303,9 +19597,9 @@ Module num.
                       Saturating(self.0.rotate_right(n))
                   }
       *)
-      Definition rotate_right (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; n ] =>
+      Definition rotate_right (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self; n ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
@@ -19326,7 +19620,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_rotate_right :
@@ -19337,9 +19631,9 @@ Module num.
                       Saturating(self.0.swap_bytes())
                   }
       *)
-      Definition swap_bytes (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition swap_bytes (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -19358,7 +19652,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_swap_bytes : M.IsAssociatedFunction Self "swap_bytes" swap_bytes.
@@ -19368,9 +19662,9 @@ Module num.
                       Saturating(self.0.reverse_bits())
                   }
       *)
-      Definition reverse_bits (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition reverse_bits (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -19389,7 +19683,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_reverse_bits :
@@ -19400,9 +19694,9 @@ Module num.
                       Saturating(<$t>::from_be(x.0))
                   }
       *)
-      Definition from_be (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ x ] =>
+      Definition from_be (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ x ] =>
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
             Value.StructTuple
@@ -19421,7 +19715,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_from_be : M.IsAssociatedFunction Self "from_be" from_be.
@@ -19431,9 +19725,9 @@ Module num.
                       Saturating(<$t>::from_le(x.0))
                   }
       *)
-      Definition from_le (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ x ] =>
+      Definition from_le (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ x ] =>
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
             Value.StructTuple
@@ -19452,7 +19746,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_from_le : M.IsAssociatedFunction Self "from_le" from_le.
@@ -19462,9 +19756,9 @@ Module num.
                       Saturating(self.0.to_be())
                   }
       *)
-      Definition to_be (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition to_be (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -19483,7 +19777,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_to_be : M.IsAssociatedFunction Self "to_be" to_be.
@@ -19493,9 +19787,9 @@ Module num.
                       Saturating(self.0.to_le())
                   }
       *)
-      Definition to_le (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition to_le (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -19514,7 +19808,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_to_le : M.IsAssociatedFunction Self "to_le" to_le.
@@ -19524,9 +19818,9 @@ Module num.
                       Saturating(self.0.saturating_pow(exp))
                   }
       *)
-      Definition pow (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; exp ] =>
+      Definition pow (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self; exp ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let exp := M.alloc (| exp |) in
@@ -19547,7 +19841,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_pow : M.IsAssociatedFunction Self "pow" pow.
@@ -19556,9 +19850,9 @@ Module num.
                       self.0.leading_zeros()
                   }
       *)
-      Definition leading_zeros (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition leading_zeros (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -19573,7 +19867,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_leading_zeros :
@@ -19584,9 +19878,9 @@ Module num.
                       Saturating(self.0.saturating_abs())
                   }
       *)
-      Definition abs (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition abs (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -19605,7 +19899,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_abs : M.IsAssociatedFunction Self "abs" abs.
@@ -19615,9 +19909,9 @@ Module num.
                       Saturating(self.0.signum())
                   }
       *)
-      Definition signum (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition signum (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -19636,7 +19930,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_signum : M.IsAssociatedFunction Self "signum" signum.
@@ -19646,9 +19940,9 @@ Module num.
                       self.0.is_positive()
                   }
       *)
-      Definition is_positive (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition is_positive (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -19663,7 +19957,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_is_positive : M.IsAssociatedFunction Self "is_positive" is_positive.
@@ -19673,9 +19967,9 @@ Module num.
                       self.0.is_negative()
                   }
       *)
-      Definition is_negative (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition is_negative (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -19690,7 +19984,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_is_negative : M.IsAssociatedFunction Self "is_negative" is_negative.
@@ -19698,10 +19992,10 @@ Module num.
     
     Module Impl_core_num_saturating_Saturating_i64.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i64" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ].
       
       (*             pub const MIN: Self = Self(<$t>::MIN); *)
-      (* Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i64" ] *)
+      (* Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ] *)
       Definition value_MIN : Value.t :=
         M.run
           ltac:(M.monadic
@@ -19714,7 +20008,7 @@ Module num.
       Axiom AssociatedConstant_value_MIN : M.IsAssociatedConstant Self "value_MIN" value_MIN.
       
       (*             pub const MAX: Self = Self(<$t>::MAX); *)
-      (* Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i64" ] *)
+      (* Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ] *)
       Definition value_MAX : Value.t :=
         M.run
           ltac:(M.monadic
@@ -19738,9 +20032,9 @@ Module num.
                       self.0.count_ones()
                   }
       *)
-      Definition count_ones (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition count_ones (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -19755,7 +20049,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_count_ones : M.IsAssociatedFunction Self "count_ones" count_ones.
@@ -19765,9 +20059,9 @@ Module num.
                       self.0.count_zeros()
                   }
       *)
-      Definition count_zeros (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition count_zeros (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -19782,7 +20076,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_count_zeros : M.IsAssociatedFunction Self "count_zeros" count_zeros.
@@ -19792,9 +20086,9 @@ Module num.
                       self.0.trailing_zeros()
                   }
       *)
-      Definition trailing_zeros (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition trailing_zeros (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -19809,7 +20103,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_trailing_zeros :
@@ -19820,9 +20114,9 @@ Module num.
                       Saturating(self.0.rotate_left(n))
                   }
       *)
-      Definition rotate_left (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; n ] =>
+      Definition rotate_left (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self; n ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
@@ -19843,7 +20137,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_rotate_left : M.IsAssociatedFunction Self "rotate_left" rotate_left.
@@ -19853,9 +20147,9 @@ Module num.
                       Saturating(self.0.rotate_right(n))
                   }
       *)
-      Definition rotate_right (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; n ] =>
+      Definition rotate_right (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self; n ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
@@ -19876,7 +20170,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_rotate_right :
@@ -19887,9 +20181,9 @@ Module num.
                       Saturating(self.0.swap_bytes())
                   }
       *)
-      Definition swap_bytes (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition swap_bytes (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -19908,7 +20202,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_swap_bytes : M.IsAssociatedFunction Self "swap_bytes" swap_bytes.
@@ -19918,9 +20212,9 @@ Module num.
                       Saturating(self.0.reverse_bits())
                   }
       *)
-      Definition reverse_bits (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition reverse_bits (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -19939,7 +20233,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_reverse_bits :
@@ -19950,9 +20244,9 @@ Module num.
                       Saturating(<$t>::from_be(x.0))
                   }
       *)
-      Definition from_be (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ x ] =>
+      Definition from_be (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ x ] =>
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
             Value.StructTuple
@@ -19971,7 +20265,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_from_be : M.IsAssociatedFunction Self "from_be" from_be.
@@ -19981,9 +20275,9 @@ Module num.
                       Saturating(<$t>::from_le(x.0))
                   }
       *)
-      Definition from_le (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ x ] =>
+      Definition from_le (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ x ] =>
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
             Value.StructTuple
@@ -20002,7 +20296,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_from_le : M.IsAssociatedFunction Self "from_le" from_le.
@@ -20012,9 +20306,9 @@ Module num.
                       Saturating(self.0.to_be())
                   }
       *)
-      Definition to_be (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition to_be (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -20033,7 +20327,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_to_be : M.IsAssociatedFunction Self "to_be" to_be.
@@ -20043,9 +20337,9 @@ Module num.
                       Saturating(self.0.to_le())
                   }
       *)
-      Definition to_le (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition to_le (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -20064,7 +20358,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_to_le : M.IsAssociatedFunction Self "to_le" to_le.
@@ -20074,9 +20368,9 @@ Module num.
                       Saturating(self.0.saturating_pow(exp))
                   }
       *)
-      Definition pow (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; exp ] =>
+      Definition pow (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self; exp ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let exp := M.alloc (| exp |) in
@@ -20097,7 +20391,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_pow : M.IsAssociatedFunction Self "pow" pow.
@@ -20106,9 +20400,9 @@ Module num.
                       self.0.leading_zeros()
                   }
       *)
-      Definition leading_zeros (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition leading_zeros (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -20123,7 +20417,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_leading_zeros :
@@ -20134,9 +20428,9 @@ Module num.
                       Saturating(self.0.saturating_abs())
                   }
       *)
-      Definition abs (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition abs (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -20155,7 +20449,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_abs : M.IsAssociatedFunction Self "abs" abs.
@@ -20165,9 +20459,9 @@ Module num.
                       Saturating(self.0.signum())
                   }
       *)
-      Definition signum (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition signum (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -20186,7 +20480,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_signum : M.IsAssociatedFunction Self "signum" signum.
@@ -20196,9 +20490,9 @@ Module num.
                       self.0.is_positive()
                   }
       *)
-      Definition is_positive (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition is_positive (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -20213,7 +20507,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_is_positive : M.IsAssociatedFunction Self "is_positive" is_positive.
@@ -20223,9 +20517,9 @@ Module num.
                       self.0.is_negative()
                   }
       *)
-      Definition is_negative (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition is_negative (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -20240,7 +20534,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_is_negative : M.IsAssociatedFunction Self "is_negative" is_negative.
@@ -20248,10 +20542,10 @@ Module num.
     
     Module Impl_core_num_saturating_Saturating_i128.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i128" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i128" ].
       
       (*             pub const MIN: Self = Self(<$t>::MIN); *)
-      (* Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i128" ] *)
+      (* Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i128" ] *)
       Definition value_MIN : Value.t :=
         M.run
           ltac:(M.monadic
@@ -20264,7 +20558,7 @@ Module num.
       Axiom AssociatedConstant_value_MIN : M.IsAssociatedConstant Self "value_MIN" value_MIN.
       
       (*             pub const MAX: Self = Self(<$t>::MAX); *)
-      (* Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i128" ] *)
+      (* Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i128" ] *)
       Definition value_MAX : Value.t :=
         M.run
           ltac:(M.monadic
@@ -20288,9 +20582,9 @@ Module num.
                       self.0.count_ones()
                   }
       *)
-      Definition count_ones (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition count_ones (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -20305,7 +20599,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_count_ones : M.IsAssociatedFunction Self "count_ones" count_ones.
@@ -20315,9 +20609,9 @@ Module num.
                       self.0.count_zeros()
                   }
       *)
-      Definition count_zeros (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition count_zeros (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -20332,7 +20626,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_count_zeros : M.IsAssociatedFunction Self "count_zeros" count_zeros.
@@ -20342,9 +20636,9 @@ Module num.
                       self.0.trailing_zeros()
                   }
       *)
-      Definition trailing_zeros (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition trailing_zeros (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -20359,7 +20653,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_trailing_zeros :
@@ -20370,9 +20664,9 @@ Module num.
                       Saturating(self.0.rotate_left(n))
                   }
       *)
-      Definition rotate_left (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; n ] =>
+      Definition rotate_left (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self; n ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
@@ -20393,7 +20687,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_rotate_left : M.IsAssociatedFunction Self "rotate_left" rotate_left.
@@ -20403,9 +20697,9 @@ Module num.
                       Saturating(self.0.rotate_right(n))
                   }
       *)
-      Definition rotate_right (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; n ] =>
+      Definition rotate_right (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self; n ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
@@ -20426,7 +20720,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_rotate_right :
@@ -20437,9 +20731,9 @@ Module num.
                       Saturating(self.0.swap_bytes())
                   }
       *)
-      Definition swap_bytes (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition swap_bytes (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -20458,7 +20752,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_swap_bytes : M.IsAssociatedFunction Self "swap_bytes" swap_bytes.
@@ -20468,9 +20762,9 @@ Module num.
                       Saturating(self.0.reverse_bits())
                   }
       *)
-      Definition reverse_bits (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition reverse_bits (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -20489,7 +20783,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_reverse_bits :
@@ -20500,9 +20794,9 @@ Module num.
                       Saturating(<$t>::from_be(x.0))
                   }
       *)
-      Definition from_be (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ x ] =>
+      Definition from_be (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ x ] =>
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
             Value.StructTuple
@@ -20521,7 +20815,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_from_be : M.IsAssociatedFunction Self "from_be" from_be.
@@ -20531,9 +20825,9 @@ Module num.
                       Saturating(<$t>::from_le(x.0))
                   }
       *)
-      Definition from_le (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ x ] =>
+      Definition from_le (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ x ] =>
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
             Value.StructTuple
@@ -20552,7 +20846,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_from_le : M.IsAssociatedFunction Self "from_le" from_le.
@@ -20562,9 +20856,9 @@ Module num.
                       Saturating(self.0.to_be())
                   }
       *)
-      Definition to_be (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition to_be (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -20583,7 +20877,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_to_be : M.IsAssociatedFunction Self "to_be" to_be.
@@ -20593,9 +20887,9 @@ Module num.
                       Saturating(self.0.to_le())
                   }
       *)
-      Definition to_le (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition to_le (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -20614,7 +20908,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_to_le : M.IsAssociatedFunction Self "to_le" to_le.
@@ -20624,9 +20918,9 @@ Module num.
                       Saturating(self.0.saturating_pow(exp))
                   }
       *)
-      Definition pow (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self; exp ] =>
+      Definition pow (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self; exp ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let exp := M.alloc (| exp |) in
@@ -20647,7 +20941,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_pow : M.IsAssociatedFunction Self "pow" pow.
@@ -20656,9 +20950,9 @@ Module num.
                       self.0.leading_zeros()
                   }
       *)
-      Definition leading_zeros (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition leading_zeros (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -20673,7 +20967,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_leading_zeros :
@@ -20684,9 +20978,9 @@ Module num.
                       Saturating(self.0.saturating_abs())
                   }
       *)
-      Definition abs (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition abs (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -20705,7 +20999,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_abs : M.IsAssociatedFunction Self "abs" abs.
@@ -20715,9 +21009,9 @@ Module num.
                       Saturating(self.0.signum())
                   }
       *)
-      Definition signum (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition signum (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -20736,7 +21030,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_signum : M.IsAssociatedFunction Self "signum" signum.
@@ -20746,9 +21040,9 @@ Module num.
                       self.0.is_positive()
                   }
       *)
-      Definition is_positive (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition is_positive (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -20763,7 +21057,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_is_positive : M.IsAssociatedFunction Self "is_positive" is_positive.
@@ -20773,9 +21067,9 @@ Module num.
                       self.0.is_negative()
                   }
       *)
-      Definition is_negative (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition is_negative (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [ host ], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -20790,7 +21084,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom AssociatedFunction_is_negative : M.IsAssociatedFunction Self "is_negative" is_negative.
@@ -20799,20 +21093,20 @@ Module num.
     
     Module Impl_core_ops_arith_Neg_for_core_num_saturating_Saturating_isize.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "isize" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "isize" ].
       
       (*             type Output = Self; *)
       Definition _Output : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "isize" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "isize" ].
       
       (*
                   fn neg(self) -> Self {
                       Saturating(self.0.saturating_neg())
                   }
       *)
-      Definition neg (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition neg (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -20831,7 +21125,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -20846,20 +21140,20 @@ Module num.
     
     Module Impl_core_ops_arith_Neg_for_core_num_saturating_Saturating_i8.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i8" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ].
       
       (*             type Output = Self; *)
       Definition _Output : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i8" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ].
       
       (*
                   fn neg(self) -> Self {
                       Saturating(self.0.saturating_neg())
                   }
       *)
-      Definition neg (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition neg (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -20878,7 +21172,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -20893,20 +21187,20 @@ Module num.
     
     Module Impl_core_ops_arith_Neg_for_core_num_saturating_Saturating_i16.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i16" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ].
       
       (*             type Output = Self; *)
       Definition _Output : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i16" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ].
       
       (*
                   fn neg(self) -> Self {
                       Saturating(self.0.saturating_neg())
                   }
       *)
-      Definition neg (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition neg (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -20925,7 +21219,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -20940,20 +21234,20 @@ Module num.
     
     Module Impl_core_ops_arith_Neg_for_core_num_saturating_Saturating_i32.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i32" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ].
       
       (*             type Output = Self; *)
       Definition _Output : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i32" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ].
       
       (*
                   fn neg(self) -> Self {
                       Saturating(self.0.saturating_neg())
                   }
       *)
-      Definition neg (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition neg (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -20972,7 +21266,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -20987,20 +21281,20 @@ Module num.
     
     Module Impl_core_ops_arith_Neg_for_core_num_saturating_Saturating_i64.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i64" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ].
       
       (*             type Output = Self; *)
       Definition _Output : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i64" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ].
       
       (*
                   fn neg(self) -> Self {
                       Saturating(self.0.saturating_neg())
                   }
       *)
-      Definition neg (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition neg (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -21019,7 +21313,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :
@@ -21034,20 +21328,20 @@ Module num.
     
     Module Impl_core_ops_arith_Neg_for_core_num_saturating_Saturating_i128.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i128" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i128" ].
       
       (*             type Output = Self; *)
       Definition _Output : Ty.t :=
-        Ty.apply (Ty.path "core::num::saturating::Saturating") [ Ty.path "i128" ].
+        Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i128" ].
       
       (*
                   fn neg(self) -> Self {
                       Saturating(self.0.saturating_neg())
                   }
       *)
-      Definition neg (τ : list Ty.t) (α : list Value.t) : M :=
-        match τ, α with
-        | [], [ self ] =>
+      Definition neg (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple
@@ -21066,7 +21360,7 @@ Module num.
                   ]
                 |)
               ]))
-        | _, _ => M.impossible
+        | _, _, _ => M.impossible
         end.
       
       Axiom Implements :

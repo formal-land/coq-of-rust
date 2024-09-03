@@ -9,9 +9,13 @@ fn combine_vecs_explicit_return_type(
     v.into_iter().chain(u.into_iter()).cycle()
 }
 *)
-Definition combine_vecs_explicit_return_type (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [ v; u ] =>
+Definition combine_vecs_explicit_return_type
+    (ε : list Value.t)
+    (τ : list Ty.t)
+    (α : list Value.t)
+    : M :=
+  match ε, τ, α with
+  | [], [], [ v; u ] =>
     ltac:(M.monadic
       (let v := M.alloc (| v |) in
       let u := M.alloc (| u |) in
@@ -20,12 +24,15 @@ Definition combine_vecs_explicit_return_type (τ : list Ty.t) (α : list Value.t
           "core::iter::traits::iterator::Iterator",
           Ty.apply
             (Ty.path "core::iter::adapters::chain::Chain")
+            []
             [
               Ty.apply
                 (Ty.path "alloc::vec::into_iter::IntoIter")
+                []
                 [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ];
               Ty.apply
                 (Ty.path "alloc::vec::into_iter::IntoIter")
+                []
                 [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ]
             ],
           [],
@@ -38,12 +45,14 @@ Definition combine_vecs_explicit_return_type (τ : list Ty.t) (α : list Value.t
               "core::iter::traits::iterator::Iterator",
               Ty.apply
                 (Ty.path "alloc::vec::into_iter::IntoIter")
+                []
                 [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
               [],
               "chain",
               [
                 Ty.apply
                   (Ty.path "alloc::vec::into_iter::IntoIter")
+                  []
                   [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ]
               ]
             |),
@@ -53,6 +62,7 @@ Definition combine_vecs_explicit_return_type (τ : list Ty.t) (α : list Value.t
                   "core::iter::traits::collect::IntoIterator",
                   Ty.apply
                     (Ty.path "alloc::vec::Vec")
+                    []
                     [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
                   [],
                   "into_iter",
@@ -65,6 +75,7 @@ Definition combine_vecs_explicit_return_type (τ : list Ty.t) (α : list Value.t
                   "core::iter::traits::collect::IntoIterator",
                   Ty.apply
                     (Ty.path "alloc::vec::Vec")
+                    []
                     [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
                   [],
                   "into_iter",
@@ -76,7 +87,7 @@ Definition combine_vecs_explicit_return_type (τ : list Ty.t) (α : list Value.t
           |)
         ]
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_combine_vecs_explicit_return_type :
@@ -89,9 +100,9 @@ fn combine_vecs(v: Vec<i32>, u: Vec<i32>) -> impl Iterator<Item = i32> {
     v.into_iter().chain(u.into_iter()).cycle()
 }
 *)
-Definition combine_vecs (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [ v; u ] =>
+Definition combine_vecs (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [ v; u ] =>
     ltac:(M.monadic
       (let v := M.alloc (| v |) in
       let u := M.alloc (| u |) in
@@ -100,12 +111,15 @@ Definition combine_vecs (τ : list Ty.t) (α : list Value.t) : M :=
           "core::iter::traits::iterator::Iterator",
           Ty.apply
             (Ty.path "core::iter::adapters::chain::Chain")
+            []
             [
               Ty.apply
                 (Ty.path "alloc::vec::into_iter::IntoIter")
+                []
                 [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ];
               Ty.apply
                 (Ty.path "alloc::vec::into_iter::IntoIter")
+                []
                 [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ]
             ],
           [],
@@ -118,12 +132,14 @@ Definition combine_vecs (τ : list Ty.t) (α : list Value.t) : M :=
               "core::iter::traits::iterator::Iterator",
               Ty.apply
                 (Ty.path "alloc::vec::into_iter::IntoIter")
+                []
                 [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
               [],
               "chain",
               [
                 Ty.apply
                   (Ty.path "alloc::vec::into_iter::IntoIter")
+                  []
                   [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ]
               ]
             |),
@@ -133,6 +149,7 @@ Definition combine_vecs (τ : list Ty.t) (α : list Value.t) : M :=
                   "core::iter::traits::collect::IntoIterator",
                   Ty.apply
                     (Ty.path "alloc::vec::Vec")
+                    []
                     [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
                   [],
                   "into_iter",
@@ -145,6 +162,7 @@ Definition combine_vecs (τ : list Ty.t) (α : list Value.t) : M :=
                   "core::iter::traits::collect::IntoIterator",
                   Ty.apply
                     (Ty.path "alloc::vec::Vec")
+                    []
                     [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
                   [],
                   "into_iter",
@@ -156,7 +174,7 @@ Definition combine_vecs (τ : list Ty.t) (α : list Value.t) : M :=
           |)
         ]
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_combine_vecs : M.IsFunction "impl_trait_as_return_type::combine_vecs" combine_vecs.
@@ -178,16 +196,16 @@ fn main() {
     println!("all done");
 }
 *)
-Definition main (τ : list Ty.t) (α : list Value.t) : M :=
-  match τ, α with
-  | [], [] =>
+Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
         let~ v1 :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "slice") [ Ty.path "i32" ],
+                Ty.apply (Ty.path "slice") [] [ Ty.path "i32" ],
                 "into_vec",
                 [ Ty.path "alloc::alloc::Global" ]
               |),
@@ -199,8 +217,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "alloc::boxed::Box")
+                          []
                           [
-                            Ty.apply (Ty.path "array") [ Ty.path "i32" ];
+                            Ty.apply (Ty.path "array") [ Value.Integer 3 ] [ Ty.path "i32" ];
                             Ty.path "alloc::alloc::Global"
                           ],
                         "new",
@@ -220,7 +239,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "slice") [ Ty.path "i32" ],
+                Ty.apply (Ty.path "slice") [] [ Ty.path "i32" ],
                 "into_vec",
                 [ Ty.path "alloc::alloc::Global" ]
               |),
@@ -232,8 +251,9 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "alloc::boxed::Box")
+                          []
                           [
-                            Ty.apply (Ty.path "array") [ Ty.path "i32" ];
+                            Ty.apply (Ty.path "array") [ Value.Integer 2 ] [ Ty.path "i32" ];
                             Ty.path "alloc::alloc::Global"
                           ],
                         "new",
@@ -291,8 +311,15 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                   (M.call_closure (|
                                     M.get_trait_method (|
                                       "core::cmp::PartialEq",
-                                      Ty.apply (Ty.path "core::option::Option") [ Ty.path "i32" ],
-                                      [ Ty.apply (Ty.path "core::option::Option") [ Ty.path "i32" ]
+                                      Ty.apply
+                                        (Ty.path "core::option::Option")
+                                        []
+                                        [ Ty.path "i32" ],
+                                      [
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [ Ty.path "i32" ]
                                       ],
                                       "eq",
                                       []
@@ -314,8 +341,14 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                     M.get_function (|
                                       "core::panicking::assert_failed",
                                       [
-                                        Ty.apply (Ty.path "core::option::Option") [ Ty.path "i32" ];
-                                        Ty.apply (Ty.path "core::option::Option") [ Ty.path "i32" ]
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [ Ty.path "i32" ];
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [ Ty.path "i32" ]
                                       ]
                                     |),
                                     [
@@ -373,8 +406,15 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                   (M.call_closure (|
                                     M.get_trait_method (|
                                       "core::cmp::PartialEq",
-                                      Ty.apply (Ty.path "core::option::Option") [ Ty.path "i32" ],
-                                      [ Ty.apply (Ty.path "core::option::Option") [ Ty.path "i32" ]
+                                      Ty.apply
+                                        (Ty.path "core::option::Option")
+                                        []
+                                        [ Ty.path "i32" ],
+                                      [
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [ Ty.path "i32" ]
                                       ],
                                       "eq",
                                       []
@@ -396,8 +436,14 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                     M.get_function (|
                                       "core::panicking::assert_failed",
                                       [
-                                        Ty.apply (Ty.path "core::option::Option") [ Ty.path "i32" ];
-                                        Ty.apply (Ty.path "core::option::Option") [ Ty.path "i32" ]
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [ Ty.path "i32" ];
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [ Ty.path "i32" ]
                                       ]
                                     |),
                                     [
@@ -455,8 +501,15 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                   (M.call_closure (|
                                     M.get_trait_method (|
                                       "core::cmp::PartialEq",
-                                      Ty.apply (Ty.path "core::option::Option") [ Ty.path "i32" ],
-                                      [ Ty.apply (Ty.path "core::option::Option") [ Ty.path "i32" ]
+                                      Ty.apply
+                                        (Ty.path "core::option::Option")
+                                        []
+                                        [ Ty.path "i32" ],
+                                      [
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [ Ty.path "i32" ]
                                       ],
                                       "eq",
                                       []
@@ -478,8 +531,14 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                     M.get_function (|
                                       "core::panicking::assert_failed",
                                       [
-                                        Ty.apply (Ty.path "core::option::Option") [ Ty.path "i32" ];
-                                        Ty.apply (Ty.path "core::option::Option") [ Ty.path "i32" ]
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [ Ty.path "i32" ];
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [ Ty.path "i32" ]
                                       ]
                                     |),
                                     [
@@ -537,8 +596,15 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                   (M.call_closure (|
                                     M.get_trait_method (|
                                       "core::cmp::PartialEq",
-                                      Ty.apply (Ty.path "core::option::Option") [ Ty.path "i32" ],
-                                      [ Ty.apply (Ty.path "core::option::Option") [ Ty.path "i32" ]
+                                      Ty.apply
+                                        (Ty.path "core::option::Option")
+                                        []
+                                        [ Ty.path "i32" ],
+                                      [
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [ Ty.path "i32" ]
                                       ],
                                       "eq",
                                       []
@@ -560,8 +626,14 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                     M.get_function (|
                                       "core::panicking::assert_failed",
                                       [
-                                        Ty.apply (Ty.path "core::option::Option") [ Ty.path "i32" ];
-                                        Ty.apply (Ty.path "core::option::Option") [ Ty.path "i32" ]
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [ Ty.path "i32" ];
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [ Ty.path "i32" ]
                                       ]
                                     |),
                                     [
@@ -619,8 +691,15 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                   (M.call_closure (|
                                     M.get_trait_method (|
                                       "core::cmp::PartialEq",
-                                      Ty.apply (Ty.path "core::option::Option") [ Ty.path "i32" ],
-                                      [ Ty.apply (Ty.path "core::option::Option") [ Ty.path "i32" ]
+                                      Ty.apply
+                                        (Ty.path "core::option::Option")
+                                        []
+                                        [ Ty.path "i32" ],
+                                      [
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [ Ty.path "i32" ]
                                       ],
                                       "eq",
                                       []
@@ -642,8 +721,14 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
                                     M.get_function (|
                                       "core::panicking::assert_failed",
                                       [
-                                        Ty.apply (Ty.path "core::option::Option") [ Ty.path "i32" ];
-                                        Ty.apply (Ty.path "core::option::Option") [ Ty.path "i32" ]
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [ Ty.path "i32" ];
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [ Ty.path "i32" ]
                                       ]
                                     |),
                                     [
@@ -683,7 +768,7 @@ Definition main (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (| Value.Tuple [] |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _ => M.impossible
+  | _, _, _ => M.impossible
   end.
 
 Axiom Function_main : M.IsFunction "impl_trait_as_return_type::main" main.
