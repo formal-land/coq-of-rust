@@ -12,6 +12,9 @@ Module FunctionInstantiationIndex := file_format.FunctionInstantiationIndex.
 Require CoqOfRust.move_sui.simulations.move_vm_types.values.values_impl.
 Module Locals := values_impl.Locals.
 Module Value := values_impl.Value.
+Module AccountAddress := values_impl.AccountAddress.
+Module ContainerRef := values_impl.ContainerRef.
+Module IndexedRef := values_impl.IndexedRef.
 
 Require CoqOfRust.move_sui.simulations.move_binary_format.errors.
 Module PartialVMResult := errors.PartialVMResult.
@@ -213,15 +216,6 @@ Module Stack.
   (* 
   impl Stack {
 
-      /// Pop a `Value` of a given type off the stack. Abort if the value is not of the given
-      /// type or if the stack is empty.
-      fn pop_as<T>(&mut self) -> PartialVMResult<T>
-      where
-          Value: VMValueCast<T>,
-      {
-          self.pop()?.value_as()
-      }
-
       /// Pop n values off the stack.
       fn popn(&mut self, n: u16) -> PartialVMResult<Vec<Value>> {
           let remaining_stack_size = self
@@ -297,6 +291,62 @@ Module Stack.
       | _ => returnS? $ Result.Err $ 
         PartialVMError.Impl_PartialVMError.new StatusCode.EMPTY_VALUE_STACK
       end.
+
+    (* 
+    /// Pop a `Value` of a given type off the stack. Abort if the value is not of the given
+    /// type or if the stack is empty.
+    fn pop_as<T>(&mut self) -> PartialVMResult<T>
+    where
+        Value: VMValueCast<T>,
+    {
+        self.pop()?.value_as()
+    }
+    *)
+    (* NOTE: `pop_as` will always be used explicitly with a type, so we can just treat it as a collection of functions *)
+    Module pop_as.
+      Definition u8 : MS? Self string (PartialVMResult.t Z) := 
+        letS?? v := pop in
+        returnS? $ Value.cast.cast_u8 v.
+
+      Definition u16 : MS? Self string (PartialVMResult.t Z) := 
+        letS?? v := pop in
+        returnS? $ Value.cast.cast_u16 v.
+
+      Definition u32 : MS? Self string (PartialVMResult.t Z) := 
+        letS?? v := pop in
+        returnS? $ Value.cast.cast_u32 v.
+
+      Definition u64 : MS? Self string (PartialVMResult.t Z) := 
+        letS?? v := pop in
+        returnS? $ Value.cast.cast_u64 v.
+
+      Definition u128 : MS? Self string (PartialVMResult.t Z) := 
+        letS?? v := pop in
+        returnS? $ Value.cast.cast_u128 v.
+
+      Definition u256 : MS? Self string (PartialVMResult.t Z) := 
+        letS?? v := pop in
+        returnS? $ Value.cast.cast_u256 v.
+
+      Definition bool : MS? Self string (PartialVMResult.t bool) := 
+        letS?? v := pop in
+        returnS? $ Value.cast.cast_bool v.
+
+      Definition AccountAddress : MS? Self string (PartialVMResult.t AccountAddress.t) := 
+        letS?? v := pop in
+        returnS? $ Value.cast.cast_AccountAddress v.
+
+      Definition ContainerRef : MS? Self string (PartialVMResult.t ContainerRef.t) := 
+        letS?? v := pop in
+        returnS? $ Value.cast.cast_ContainerRef v.
+
+      Definition IndexedRef : MS? Self string (PartialVMResult.t IndexedRef.t) := 
+        letS?? v := pop in
+        returnS? $ Value.cast.cast_IndexedRef v.
+    End pop_as.
+    (* TODO: write a `pop_as` for every case? or use polymorphic type? *)
+    (* TODO: move `cast` module to here from `values_impl` to directly implement each case for `pop_as` *)
+
   End Impl_Stack.
 End Stack.
 
@@ -801,11 +851,9 @@ Definition debug_execute_instruction (pc : Z)
   (interpreter : Interpreter.t) (* (gas_meter : GasMeter.t) *) (* NOTE: We ignore gas since it's never implemented *)
   (instruction : Bytecode.t)
   : MS? State string (PartialVMResult.t InstrRet.t) :=
+  letS? '(pc, locals, interpreter) := readS? in
   match instruction with
   (* fill debugging content here *)
-
-  | Bytecode.Ret => returnS? $ Result.Ok $ InstrRet.ExitCode ExitCode.Return
-
 
   | _ => returnS? $ Result.Ok InstrRet.Ok
   end.
@@ -859,7 +907,11 @@ Definition execute_instruction (pc : Z)
       }
   }
   *)
-  | Bytecode.BrTrue offset => returnS? $ Result.Ok InstrRet.Ok
+  | Bytecode.BrTrue offset => 
+    letS?? popped_val := liftS? Interpreter.Lens.lens_state_self (
+      liftS? Interpreter.Lens.lens_self_stack Stack.Impl_Stack.pop_as.bool) in 
+    letS? _ := writeS? (offset, locals, interpreter) in
+    returnS? $ Result.Ok InstrRet.Branch
 
   (* 
   Bytecode::BrFalse(offset) => {
@@ -870,4 +922,11 @@ Definition execute_instruction (pc : Z)
       }
   }
   *)
+  | Bytecode.BrFalse offset => 
+    letS?? popped_val := liftS? Interpreter.Lens.lens_state_self (
+      liftS? Interpreter.Lens.lens_self_stack Stack.Impl_Stack.pop_as.bool) in 
+    letS? _ := writeS? (offset, locals, interpreter) in
+    returnS? $ Result.Ok InstrRet.Branch
+
+  | _ => returnS? $ Result.Ok InstrRet.Ok
   end.
