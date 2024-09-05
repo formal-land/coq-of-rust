@@ -4,6 +4,13 @@ Require Import CoqOfRust.lib.lib.
 
 Import simulations.M.Notations.
 
+Require CoqOfRust.move_sui.simulations.move_binary_format.errors.
+Module PartialVMResult := errors.PartialVMResult.
+Module PartialVMError := errors.PartialVMError.
+
+Require CoqOfRust.move_sui.simulations.move_core_types.vm_status.
+Module StatusCode := vm_status.StatusCode.
+
 (* TODO(progress): 
 - Implement `Locals`
 *)
@@ -72,7 +79,8 @@ Module Value.
   Definition t : Set := ValueImpl.t.
 
   (* 
-  NOTE: For now we just roughly implement it. This might be helpful: 
+  NOTE: We just roughly implement it as a collection of functions since it's also performance-wise nice. 
+    Otherwise, this might be helpful: 
     https://stackoverflow.com/questions/70946233/coq-obtaining-equality-from-match-statement
 
   macro_rules! impl_vm_value_cast {
@@ -102,71 +110,61 @@ Module Value.
   *)
   Module cast.
     Definition cast_u8 (self : t) : PartialVMResult.t Z := 
-      let '(Build_t value) := self in
-      match value with
+      match self with
       | ValueImpl.U8 x => Result.Ok x
       | _ => Result.Err $ PartialVMError.Impl_PartialVMError.new StatusCode.INTERNAL_TYPE_ERROR
       end.
 
     Definition cast_u16 (self : t) : PartialVMResult.t Z := 
-      let '(Build_t value) := self in
-      match value with
+      match self with
       | ValueImpl.U16 x => Result.Ok x
       | _ => Result.Err $ PartialVMError.Impl_PartialVMError.new StatusCode.INTERNAL_TYPE_ERROR
       end.
 
     Definition cast_u32 (self : t) : PartialVMResult.t Z := 
-      let '(Build_t value) := self in
-      match value with
+      match self with
       | ValueImpl.U32 x => Result.Ok x
       | _ => Result.Err $ PartialVMError.Impl_PartialVMError.new StatusCode.INTERNAL_TYPE_ERROR
       end.
 
     Definition cast_u64 (self : t) : PartialVMResult.t Z := 
-      let '(Build_t value) := self in
-      match value with
+      match self with
       | ValueImpl.U64 x => Result.Ok x
       | _ => Result.Err $ PartialVMError.Impl_PartialVMError.new StatusCode.INTERNAL_TYPE_ERROR
       end.
 
     Definition cast_u128 (self : t) : PartialVMResult.t Z := 
-      let '(Build_t value) := self in
-      match value with
+      match self with
       | ValueImpl.U128 x => Result.Ok x
       | _ => Result.Err $ PartialVMError.Impl_PartialVMError.new StatusCode.INTERNAL_TYPE_ERROR
       end.
 
     Definition cast_u256 (self : t) : PartialVMResult.t Z := 
-      let '(Build_t value) := self in
-      match value with
+      match self with
       | ValueImpl.U256 x => Result.Ok x
       | _ => Result.Err $ PartialVMError.Impl_PartialVMError.new StatusCode.INTERNAL_TYPE_ERROR
       end.
 
-    Definition cast_bool (self : t) : PartialVMResult.t Z := 
-      let '(Build_t value) := self in
-      match value with
+    Definition cast_bool (self : t) : PartialVMResult.t bool := 
+      match self with
       | ValueImpl.Bool x => Result.Ok x
       | _ => Result.Err $ PartialVMError.Impl_PartialVMError.new StatusCode.INTERNAL_TYPE_ERROR
       end.
 
-    Definition cast_AccountAddress (self : t) : PartialVMResult.t Z := 
-      let '(Build_t value) := self in
-      match value with
+    Definition cast_AccountAddress (self : t) : PartialVMResult.t AccountAddress.t := 
+      match self with
       | ValueImpl.Address x => Result.Ok x
       | _ => Result.Err $ PartialVMError.Impl_PartialVMError.new StatusCode.INTERNAL_TYPE_ERROR
       end.
 
-    Definition cast_ContainerRef (self : t) : PartialVMResult.t Z := 
-      let '(Build_t value) := self in
-      match value with
+    Definition cast_ContainerRef (self : t) : PartialVMResult.t ContainerRef.t := 
+      match self with
       | ValueImpl.ContainerRef x => Result.Ok x
       | _ => Result.Err $ PartialVMError.Impl_PartialVMError.new StatusCode.INTERNAL_TYPE_ERROR
       end.
 
-    Definition cast_IndexedRef (self : t) : PartialVMResult.t Z := 
-      let '(Build_t value) := self in
-      match value with
+    Definition cast_IndexedRef (self : t) : PartialVMResult.t IndexedRef.t := 
+      match self with
       | ValueImpl.IndexedRef x => Result.Ok x
       | _ => Result.Err $ PartialVMError.Impl_PartialVMError.new StatusCode.INTERNAL_TYPE_ERROR
       end.
