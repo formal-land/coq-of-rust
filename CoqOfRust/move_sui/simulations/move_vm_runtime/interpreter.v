@@ -30,8 +30,6 @@ Module StatusCode := vm_status.StatusCode.
 (* TODO(progress):
 - Implement `Callstack` for Interpreter
 - Implement `Interpreter::binop_int`
-- Implement `Stack::pop_as`
-- Write the basic framework for that function
 *)
 
 (* NOTE: In the future when lens are more frequently defined, we might want to stub the lens into 
@@ -417,35 +415,6 @@ End Frame.
 
         match instruction {
 
-            Bytecode::Branch(offset) => {
-                gas_meter.charge_simple_instr(S::Branch)?;
-                *pc = *offset;
-                return Ok(InstrRet::Branch);
-            }
-            Bytecode::LdU8(int_const) => {
-                gas_meter.charge_simple_instr(S::LdU8)?;
-                interpreter.operand_stack.push(Value::u8(*int_const))?; //*)
-            }
-            Bytecode::LdU16(int_const) => {
-                gas_meter.charge_simple_instr(S::LdU16)?;
-                interpreter.operand_stack.push(Value::u16(*int_const))?; //*)
-            }
-            Bytecode::LdU32(int_const) => {
-                gas_meter.charge_simple_instr(S::LdU32)?;
-                interpreter.operand_stack.push(Value::u32(*int_const))?; //*)
-            }
-            Bytecode::LdU64(int_const) => {
-                gas_meter.charge_simple_instr(S::LdU64)?;
-                interpreter.operand_stack.push(Value::u64(*int_const))?; //*)
-            }
-            Bytecode::LdU128(int_const) => {
-                gas_meter.charge_simple_instr(S::LdU128)?;
-                interpreter.operand_stack.push(Value::u128(**int_const))?; //*)
-            }
-            Bytecode::LdU256(int_const) => {
-                gas_meter.charge_simple_instr(S::LdU256)?;
-                interpreter.operand_stack.push(Value::u256(**int_const))?; //*)
-            }
             Bytecode::LdConst(idx) => {
                 let constant = resolver.constant_at(*idx); //*)
                 gas_meter.charge_ld_const(NumBytes::new(constant.data.len() as u64))?;
@@ -896,15 +865,13 @@ Definition execute_instruction (pc : Z)
   *)
   | Bytecode.Ret => returnS? $ Result.Ok $ InstrRet.ExitCode ExitCode.Return
 
-  (* TODO: Finish below *)
-
   (* 
   Bytecode::BrTrue(offset) => {
-      gas_meter.charge_simple_instr(S::BrTrue)?;
-      if interpreter.operand_stack.pop_as::<bool>()? {
-          *pc = *offset;
-          return Ok(InstrRet::Branch);
-      }
+    gas_meter.charge_simple_instr(S::BrTrue)?;
+    if interpreter.operand_stack.pop_as::<bool>()? {
+        *pc = *offset;
+        return Ok(InstrRet::Branch);
+    }
   }
   *)
   | Bytecode.BrTrue offset => 
@@ -915,11 +882,11 @@ Definition execute_instruction (pc : Z)
 
   (* 
   Bytecode::BrFalse(offset) => {
-      gas_meter.charge_simple_instr(S::BrFalse)?;
-      if !interpreter.operand_stack.pop_as::<bool>()? {
-          *pc = *offset;
-          return Ok(InstrRet::Branch);
-      }
+    gas_meter.charge_simple_instr(S::BrFalse)?;
+    if !interpreter.operand_stack.pop_as::<bool>()? {
+        *pc = *offset;
+        return Ok(InstrRet::Branch);
+    }
   }
   *)
   | Bytecode.BrFalse offset => 
@@ -927,6 +894,56 @@ Definition execute_instruction (pc : Z)
       liftS? Interpreter.Lens.lens_self_stack Stack.Impl_Stack.pop_as.bool) in 
     letS? _ := writeS? (offset, locals, interpreter) in
     returnS? $ Result.Ok InstrRet.Branch
+
+  (* 
+  Bytecode::Branch(offset) => {
+    gas_meter.charge_simple_instr(S::Branch)?;
+    *pc = *offset;
+    return Ok(InstrRet::Branch);
+  }
+  *)
+  | Bytecode.Branch offset =>
+    letS? _ := writeS? (offset, locals, interpreter) in
+    returnS? $ Result.Ok InstrRet.Branch
+
+  (*
+  Bytecode::LdU8(int_const) => {
+      gas_meter.charge_simple_instr(S::LdU8)?;
+      interpreter.operand_stack.push(Value::u8(*int_const))?; //*)
+  }
+  *)
+  (* TODO: Finish below *)
+  | Bytecode.LdU8 int_const => returnS? $ Result.Ok InstrRet.Branch
+  (*
+  Bytecode::LdU16(int_const) => {
+      gas_meter.charge_simple_instr(S::LdU16)?;
+      interpreter.operand_stack.push(Value::u16(*int_const))?; //*)
+  }
+  *)
+  (*
+  Bytecode::LdU32(int_const) => {
+      gas_meter.charge_simple_instr(S::LdU32)?;
+      interpreter.operand_stack.push(Value::u32(*int_const))?; //*)
+  }
+  *)
+  (*
+  Bytecode::LdU64(int_const) => {
+      gas_meter.charge_simple_instr(S::LdU64)?;
+      interpreter.operand_stack.push(Value::u64(*int_const))?; //*)
+  }
+  *)
+  (*
+  Bytecode::LdU128(int_const) => {
+      gas_meter.charge_simple_instr(S::LdU128)?;
+      interpreter.operand_stack.push(Value::u128(**int_const))?; //*)
+  }
+  *)
+  (*
+  Bytecode::LdU256(int_const) => {
+      gas_meter.charge_simple_instr(S::LdU256)?;
+      interpreter.operand_stack.push(Value::u256(**int_const))?; //*)
+  }
+  *)
 
   | _ => returnS? $ Result.Ok InstrRet.Ok
   end.
