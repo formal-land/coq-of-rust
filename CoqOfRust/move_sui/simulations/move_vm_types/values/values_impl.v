@@ -70,4 +70,102 @@ End ValueImpl.
 (* pub struct Value(ValueImpl); *)
 Module Value.
   Definition t : Set := ValueImpl.t.
+
+  (* NOTE: for now we just roughly implement it
+  macro_rules! impl_vm_value_cast {
+      ($ty: ty, $tc: ident) => {
+          impl VMValueCast<$ty> for Value {
+              fn cast(self) -> PartialVMResult<$ty> {
+                  match self.0 {
+                      ValueImpl::$tc(x) => Ok(x),
+                      v => Err(PartialVMError::new(StatusCode::INTERNAL_TYPE_ERROR)
+                          .with_message(format!("cannot cast {:?} to {}", v, stringify!($ty)))),
+                  }
+              }
+          }
+      };
+  }
+
+  impl_vm_value_cast!(u8, U8);
+  impl_vm_value_cast!(u16, U16);
+  impl_vm_value_cast!(u32, U32);
+  impl_vm_value_cast!(u64, U64);
+  impl_vm_value_cast!(u128, U128);
+  impl_vm_value_cast!(u256::U256, U256);
+  impl_vm_value_cast!(bool, Bool);
+  impl_vm_value_cast!(AccountAddress, Address);
+  impl_vm_value_cast!(ContainerRef, ContainerRef);
+  impl_vm_value_cast!(IndexedRef, IndexedRef);
+  *)
+  Module cast.
+    Definition cast_u8 (self : t) : PartialVMResult.t Z := 
+      let '(Build_t value) := self in
+      match value with
+      | ValueImpl.U8 x => Result.Ok x
+      | _ => Result.Err $ PartialVMError.Impl_PartialVMError.new StatusCode.INTERNAL_TYPE_ERROR
+      end.
+
+    Definition cast_u16 (self : t) : PartialVMResult.t Z := 
+      let '(Build_t value) := self in
+      match value with
+      | ValueImpl.U16 x => Result.Ok x
+      | _ => Result.Err $ PartialVMError.Impl_PartialVMError.new StatusCode.INTERNAL_TYPE_ERROR
+      end.
+
+    Definition cast_u32 (self : t) : PartialVMResult.t Z := 
+      let '(Build_t value) := self in
+      match value with
+      | ValueImpl.U32 x => Result.Ok x
+      | _ => Result.Err $ PartialVMError.Impl_PartialVMError.new StatusCode.INTERNAL_TYPE_ERROR
+      end.
+
+    Definition cast_u64 (self : t) : PartialVMResult.t Z := 
+      let '(Build_t value) := self in
+      match value with
+      | ValueImpl.U64 x => Result.Ok x
+      | _ => Result.Err $ PartialVMError.Impl_PartialVMError.new StatusCode.INTERNAL_TYPE_ERROR
+      end.
+
+    Definition cast_u128 (self : t) : PartialVMResult.t Z := 
+      let '(Build_t value) := self in
+      match value with
+      | ValueImpl.U128 x => Result.Ok x
+      | _ => Result.Err $ PartialVMError.Impl_PartialVMError.new StatusCode.INTERNAL_TYPE_ERROR
+      end.
+
+    Definition cast_u256 (self : t) : PartialVMResult.t Z := 
+      let '(Build_t value) := self in
+      match value with
+      | ValueImpl.U256 x => Result.Ok x
+      | _ => Result.Err $ PartialVMError.Impl_PartialVMError.new StatusCode.INTERNAL_TYPE_ERROR
+      end.
+
+    Definition cast_bool (self : t) : PartialVMResult.t Z := 
+      let '(Build_t value) := self in
+      match value with
+      | ValueImpl.Bool x => Result.Ok x
+      | _ => Result.Err $ PartialVMError.Impl_PartialVMError.new StatusCode.INTERNAL_TYPE_ERROR
+      end.
+
+    Definition cast_AccountAddress (self : t) : PartialVMResult.t Z := 
+      let '(Build_t value) := self in
+      match value with
+      | ValueImpl.Address x => Result.Ok x
+      | _ => Result.Err $ PartialVMError.Impl_PartialVMError.new StatusCode.INTERNAL_TYPE_ERROR
+      end.
+
+    Definition cast_ContainerRef (self : t) : PartialVMResult.t Z := 
+      let '(Build_t value) := self in
+      match value with
+      | ValueImpl.ContainerRef x => Result.Ok x
+      | _ => Result.Err $ PartialVMError.Impl_PartialVMError.new StatusCode.INTERNAL_TYPE_ERROR
+      end.
+
+    Definition cast_IndexedRef (self : t) : PartialVMResult.t Z := 
+      let '(Build_t value) := self in
+      match value with
+      | ValueImpl.IndexedRef x => Result.Ok x
+      | _ => Result.Err $ PartialVMError.Impl_PartialVMError.new StatusCode.INTERNAL_TYPE_ERROR
+      end.
+  End cast.
 End Value.
