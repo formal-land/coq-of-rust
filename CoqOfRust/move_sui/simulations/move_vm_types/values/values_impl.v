@@ -71,7 +71,10 @@ End ValueImpl.
 Module Value.
   Definition t : Set := ValueImpl.t.
 
-  (* NOTE: for now we just roughly implement it
+  (* 
+  NOTE: For now we just roughly implement it. This might be helpful: 
+    https://stackoverflow.com/questions/70946233/coq-obtaining-equality-from-match-statement
+
   macro_rules! impl_vm_value_cast {
       ($ty: ty, $tc: ident) => {
           impl VMValueCast<$ty> for Value {
