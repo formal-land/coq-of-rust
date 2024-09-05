@@ -12,6 +12,7 @@ Module FunctionInstantiationIndex := file_format.FunctionInstantiationIndex.
 Require CoqOfRust.move_sui.simulations.move_vm_types.values.values_impl.
 Module Locals := values_impl.Locals.
 Module Value := values_impl.Value.
+Module ValueImpl := values_impl.ValueImpl.
 Module AccountAddress := values_impl.AccountAddress.
 Module ContainerRef := values_impl.ContainerRef.
 Module IndexedRef := values_impl.IndexedRef.
@@ -824,6 +825,12 @@ Definition debug_execute_instruction (pc : Z)
   match instruction with
   (* fill debugging content here *)
 
+  (* TODO: figure out how to push a value *)
+  | Bytecode.LdU8 int_const => 
+    letS?? _ := liftS? Interpreter.Lens.lens_state_self (
+      liftS? Interpreter.Lens.lens_self_stack $ Stack.Impl_Stack.push $ ValueImpl.U8 int_const) in 
+    returnS? $ Result.Ok InstrRet.Ok
+
   | _ => returnS? $ Result.Ok InstrRet.Ok
   end.
 
@@ -913,37 +920,60 @@ Definition execute_instruction (pc : Z)
   }
   *)
   (* TODO: Finish below *)
-  | Bytecode.LdU8 int_const => returnS? $ Result.Ok InstrRet.Branch
+  | Bytecode.LdU8 int_const => 
+    letS?? _ := liftS? Interpreter.Lens.lens_state_self (
+      liftS? Interpreter.Lens.lens_self_stack $ Stack.Impl_Stack.push $ ValueImpl.U8 int_const) in 
+    returnS? $ Result.Ok InstrRet.Ok
   (*
   Bytecode::LdU16(int_const) => {
       gas_meter.charge_simple_instr(S::LdU16)?;
       interpreter.operand_stack.push(Value::u16(*int_const))?; //*)
   }
   *)
+  | Bytecode.LdU16 int_const => 
+    letS?? _ := liftS? Interpreter.Lens.lens_state_self (
+      liftS? Interpreter.Lens.lens_self_stack $ Stack.Impl_Stack.push $ ValueImpl.U16 int_const) in 
+    returnS? $ Result.Ok InstrRet.Ok
   (*
   Bytecode::LdU32(int_const) => {
       gas_meter.charge_simple_instr(S::LdU32)?;
       interpreter.operand_stack.push(Value::u32(*int_const))?; //*)
   }
   *)
+  | Bytecode.LdU32 int_const => 
+    letS?? _ := liftS? Interpreter.Lens.lens_state_self (
+      liftS? Interpreter.Lens.lens_self_stack $ Stack.Impl_Stack.push $ ValueImpl.U32 int_const) in 
+    returnS? $ Result.Ok InstrRet.Ok
   (*
   Bytecode::LdU64(int_const) => {
       gas_meter.charge_simple_instr(S::LdU64)?;
       interpreter.operand_stack.push(Value::u64(*int_const))?; //*)
   }
   *)
+  | Bytecode.LdU64 int_const => 
+    letS?? _ := liftS? Interpreter.Lens.lens_state_self (
+      liftS? Interpreter.Lens.lens_self_stack $ Stack.Impl_Stack.push $ ValueImpl.U64 int_const) in 
+    returnS? $ Result.Ok InstrRet.Ok
   (*
   Bytecode::LdU128(int_const) => {
       gas_meter.charge_simple_instr(S::LdU128)?;
       interpreter.operand_stack.push(Value::u128(**int_const))?; //*)
   }
   *)
+  | Bytecode.LdU128 int_const => 
+    letS?? _ := liftS? Interpreter.Lens.lens_state_self (
+      liftS? Interpreter.Lens.lens_self_stack $ Stack.Impl_Stack.push $ ValueImpl.U128 int_const) in 
+    returnS? $ Result.Ok InstrRet.Ok
   (*
   Bytecode::LdU256(int_const) => {
       gas_meter.charge_simple_instr(S::LdU256)?;
       interpreter.operand_stack.push(Value::u256(**int_const))?; //*)
   }
   *)
+  | Bytecode.LdU256 int_const => 
+    letS?? _ := liftS? Interpreter.Lens.lens_state_self (
+      liftS? Interpreter.Lens.lens_self_stack $ Stack.Impl_Stack.push $ ValueImpl.U256 int_const) in 
+    returnS? $ Result.Ok InstrRet.Ok
 
   | _ => returnS? $ Result.Ok InstrRet.Ok
   end.
